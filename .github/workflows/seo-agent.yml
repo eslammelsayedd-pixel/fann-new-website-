@@ -43,13 +43,9 @@ jobs:
           name: seo-performance-reports
           path: reports/
 
-      - name: Notify Slack
-if: false
-        uses: slackapi/slack-github-action@v1.27.0
-        with:
-          payload: |
-            {
-              "text": "✅ FANN SEO & Performance Automation complete. Reports available in GitHub Actions artifacts."
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  - name: Notify Slack
+    if: false
+    run: echo "Slack notification disabled"
+
+        #env:
+          #SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
