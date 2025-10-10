@@ -44,7 +44,7 @@ jobs:
           path: reports/
 
       - name: Notify Slack
-        if: always()
+if: false
         uses: slackapi/slack-github-action@v1.27.0
         with:
           payload: |
