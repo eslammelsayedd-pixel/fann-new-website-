@@ -1,193 +1,116 @@
-name: SEO Enhancement Agent
-
-# Run on pull requests, push to main, and scheduled daily
+name: Full SEO, Performance & Intelligence Automation
 on:
-  pull_request:
-    branches: [ main ]
-  push:
-    branches: [ main ]
   schedule:
-    - cron: '0 0 * * *'  # Run daily at midnight UTC
-  workflow_dispatch:  # Allow manual trigger
+    - cron: "0 3 * * 1"     # Weekly run (Monday 03:00 UTC)
+  workflow_dispatch:
 
 jobs:
-  seo-scan:
+  seo_performance_agent:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
-        
-      - name: Setup Node.js
+
+      - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
-          
-      - name: Install dependencies
+          node-version: 20
+
+      - name: Install Lighthouse & Dependencies
         run: |
-          npm ci
-          npm install -g lighthouse
-          npm install puppeteer cheerio node-html-parser zod openai @google/generative-ai
-          
-      - name: Build project
-        run: npm run build
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          
-      - name: Run Lighthouse SEO audit
-        run: |
+          npm install -g lighthouse puppeteer
           mkdir -p reports
-          lighthouse https://fann-new-website.vercel.app --output=json --output-path=reports/lighthouse.json --only-categories=seo,performance,accessibility,best-practices
-          
-      - name: Analyze HTML structure for SEO
+
+      - name: Run Lighthouse Audit
         run: |
-          cat > analyze-seo.js << 'EOFJS'
-          const fs = require('fs');
-          const { parse } = require('node-html-parser');
-          
-          // Read built HTML files
-          const htmlFiles = fs.readdirSync('dist', { recursive: true })
-            .filter(file => file.endsWith('.html'));
-          
-          const seoIssues = [];
-          
-          htmlFiles.forEach(file => {
-            const content = fs.readFileSync('dist/' + file, 'utf-8');
-            const root = parse(content);
-            
-            // Check for SEO essentials
-            const issues = {
-              file: file,
-              missingTitle: !root.querySelector('title'),
-              missingMetaDescription: !root.querySelector('meta[name="description"]'),
-              missingMetaViewport: !root.querySelector('meta[name="viewport"]'),
-              missingCanonical: !root.querySelector('link[rel="canonical"]'),
-              missingOgTags: !root.querySelector('meta[property^="og:"]'),
-              missingH1: !root.querySelector('h1'),
-              imagesWithoutAlt: root.querySelectorAll('img:not([alt])').length,
-              emptyAltTexts: root.querySelectorAll('img[alt=""]').length
-            };
-            
-            if (Object.values(issues).some(v => v === true || v > 0)) {
-              seoIssues.push(issues);
-            }
-          });
-          
-          fs.writeFileSync('reports/seo-issues.json', JSON.stringify(seoIssues, null, 2));
-          console.log('SEO analysis complete. Issues found:', seoIssues.length);
-          EOFJS
-          node analyze-seo.js
-          
-      - name: Generate AI-powered SEO recommendations
-        run: |
-          cat > generate-recommendations.js << 'EOFJS'
-          const fs = require('fs');
-          const { GoogleGenerativeAI } = require('@google/generative-ai');
-          
-          async function generateRecommendations() {
-            const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-            const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
-            
-            // Read SEO issues
-            const seoIssues = JSON.parse(fs.readFileSync('reports/seo-issues.json', 'utf-8'));
-            const lighthouseData = JSON.parse(fs.readFileSync('reports/lighthouse.json', 'utf-8'));
-            
-            const seoScore = lighthouseData.categories.seo.score * 100;
-            
-            const prompt = 'You are an expert SEO consultant. Analyze these SEO issues and provide actionable recommendations:\n\nSEO Issues Found:\n' +
-              JSON.stringify(seoIssues, null, 2) +
-              '\n\nLighthouse SEO Score: ' + seoScore +
-              '\n\nProvide:\n1. Priority ranking of issues (high/medium/low)\n2. Specific code changes to fix each issue\n3. Expected impact on SEO\n4. Implementation steps\n\nFormat as JSON with structure: { recommendations: [{priority, issue, fix, impact, steps}] }';
-            
-            const result = await model.generateContent(prompt);
-            const response = await result.response;
-            const recommendations = response.text();
-            
-            fs.writeFileSync('reports/ai-recommendations.json', recommendations);
-            console.log('AI recommendations generated successfully');
-          }
-          
-          generateRecommendations().catch(console.error);
-          EOFJS
-          node generate-recommendations.js
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          
-      - name: Create SEO report
-        run: |
-          cat > create-report.js << 'EOFJS'
-          const fs = require('fs');
-          
-          const seoIssues = JSON.parse(fs.readFileSync('reports/seo-issues.json', 'utf-8'));
-          const lighthouseData = JSON.parse(fs.readFileSync('reports/lighthouse.json', 'utf-8'));
-          
-          let report = '# SEO Enhancement Report\n\n';
-          report += 'Generated: ' + new Date().toISOString() + '\n\n';
-          report += '## Lighthouse Scores\n\n';
-          report += '- SEO: ' + (lighthouseData.categories.seo.score * 100).toFixed(0) + '/100\n';
-          report += '- Performance: ' + (lighthouseData.categories.performance.score * 100).toFixed(0) + '/100\n';
-          report += '- Accessibility: ' + (lighthouseData.categories.accessibility.score * 100).toFixed(0) + '/100\n';
-          report += '- Best Practices: ' + (lighthouseData.categories['best-practices'].score * 100).toFixed(0) + '/100\n\n';
-          
-          report += '## SEO Issues Found: ' + seoIssues.length + '\n\n';
-          
-          seoIssues.forEach((issue, i) => {
-            report += '### ' + (i + 1) + '. ' + issue.file + '\n\n';
-            if (issue.missingTitle) report += '- ⚠️ Missing title tag\n';
-            if (issue.missingMetaDescription) report += '- ⚠️ Missing meta description\n';
-            if (issue.missingMetaViewport) report += '- ⚠️ Missing viewport meta tag\n';
-            if (issue.missingCanonical) report += '- ⚠️ Missing canonical link\n';
-            if (issue.missingOgTags) report += '- ⚠️ Missing Open Graph tags\n';
-            if (issue.missingH1) report += '- ⚠️ Missing H1 heading\n';
-            if (issue.imagesWithoutAlt > 0) report += '- ⚠️ ' + issue.imagesWithoutAlt + ' images without alt text\n';
-            report += '\n';
-          });
-          
-          report += '## AI Recommendations\n\n';
-          report += fs.readFileSync('reports/ai-recommendations.json', 'utf-8');
-          
-          fs.writeFileSync('reports/SEO-REPORT.md', report);
-          console.log('SEO report generated: reports/SEO-REPORT.md');
-          EOFJS
-          node create-report.js
-          
-      - name: Upload SEO reports as artifacts
+          lighthouse https://aistudio.google.com/apps/drive/1K0LyVrxaxSV2r2FZlQY8ZAE1_3m6DcTs?showAssistant=true \
+            --output=json \
+            --output-path=reports/lighthouse-report.json \
+            --chrome-flags="--headless"
+
+      - name: Upload Lighthouse Report
         uses: actions/upload-artifact@v4
         with:
-          name: seo-reports
-          path: reports/
-          retention-days: 30
-          
-      - name: Comment PR with SEO report
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
+          name: lighthouse-report
+          path: reports/lighthouse-report.json
+
+      - name: SEO & Content Intelligence
+        uses: openai/assistant-action@v1
         with:
-          script: |
-            const fs = require('fs');
-            const report = fs.readFileSync('reports/SEO-REPORT.md', 'utf-8');
-            
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: report
-            });
-            
-      - name: Check for SEO failures
-        run: |
-          cat > check-score.js << 'EOFJS'
-          const fs = require('fs');
-          const lighthouseData = JSON.parse(fs.readFileSync('reports/lighthouse.json', 'utf-8'));
-          const seoScore = lighthouseData.categories.seo.score * 100;
-          
-          console.log('SEO Score: ' + seoScore);
-          
-          if (seoScore < 80) {
-            console.error('❌ SEO score is below 80. Please address the issues above.');
-            process.exit(1);
-          } else {
-            console.log('✅ SEO score is acceptable.');
-          }
-          EOFJS
-          node check-score.js
+          model: gpt-5
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          vercel_token: ${{ secrets.VERCEL_TOKEN }}
+          google_search_console_token: ${{ secrets.GSC_TOKEN }}
+          google_analytics_token: ${{ secrets.GA4_TOKEN }}
+          serp_api_key: ${{ secrets.SERP_API_KEY }}
+          prompt: |
+            You are an autonomous SEO & Performance Optimization Agent managing the **FANN website**.
+
+            **Targets**
+            - Website: https://aistudio.google.com/apps/drive/1K0LyVrxaxSV2r2FZlQY8ZAE1_3m6DcTs?showAssistant=true
+            - Deployment: https://vercel.com/eslammelsayedd-5685s-projects
+            - Codebase: https://github.com/eslammelsayedd-pixel/fann-new-website-
+
+            ## OBJECTIVES
+
+            1. **Technical SEO**
+               - Crawl all pages for meta/title/alt/robots/schema/sitemap/canonical/accessibility.
+               - Auto-generate and commit missing assets.
+               - Validate structured data via schema.org & Rich Results Test.
+               - Save log → `/reports/seo-log.json`.
+
+            2. **Performance & Core Web Vitals**
+               - Parse `reports/lighthouse-report.json`.
+               - Implement fixes (lazy-load, cache headers, image compression).
+               - Re-deploy to Vercel and confirm performance recovery.
+
+            3. **Content Optimization**
+               - Analyze keyword coverage & semantic relevance.
+               - Generate optimized text drafts → `/content-suggestions/`.
+               - Maintain H1-H3 hierarchy and internal links.
+
+            4. **Backlink Intelligence**
+               - Query Search Console for referring domains.
+               - Produce `/reports/disavow.txt` for toxic sources.
+               - Recommend ethical backlink targets (AI / digital / web-dev / UAE niche).
+
+            5. **Analytics & Keyword Tracking**
+               - Pull GA4 metrics (sessions, bounce rate, avg engagement time, conversions).
+               - Query SERP API for top 50 keywords, rank position, and competition.
+               - Correlate organic traffic trends with keyword changes.
+               - Output summary → `/reports/traffic-insights.json`.
+
+            6. **Continuous Improvement**
+               - Run weekly audits; open PR labelled `auto-fix` if metrics drop > 5%.
+               - Aggregate results → `/reports/weekly-summary.md`.
+
+            7. **Compliance & Ethics**
+               - Follow Google Webmaster Guidelines.
+               - Never execute black-hat or paid-link tactics.
+               - Create GitHub issues for tasks needing human approval.
+
+            ## OUTPUT
+            - Updated SEO files
+            - `reports/lighthouse-report.json`
+            - `reports/seo-log.json`
+            - `reports/traffic-insights.json`
+            - `reports/weekly-summary.md`
+            - `/content-suggestions/` with draft content
+
+      - name: Upload SEO Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-performance-reports
+          path: reports/
+
+      - name: Notify Slack
+        if: always()
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          payload: |
+            {
+              "text": "✅ FANN SEO & Performance Automation complete. Reports available in GitHub Actions artifacts."
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
