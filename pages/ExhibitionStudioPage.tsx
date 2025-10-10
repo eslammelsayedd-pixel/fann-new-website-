@@ -1,8 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GoogleGenAI, Modality } from "@google/genai";
-import { Loader2, Sparkles, Upload, ArrowLeft, Building, Scaling, Palette, ListChecks, Crown, User, CheckCircle, PartyPopper, AlertCircle } from 'lucide-react';
+import { GoogleGenAI, Modality, Type } from "@google/genai";
+import { Loader2, Sparkles, Upload, ArrowLeft, Building, Scaling, ListChecks, Crown, User, CheckCircle, PartyPopper, AlertCircle, Popcorn, Palette } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
+import { regionalEvents } from '../constants';
 
 // --- Helper Functions & Types ---
 interface FormData {
@@ -14,7 +15,9 @@ interface FormData {
     standHeight: string;
     doubleDecker: boolean;
     hangingStructure: boolean;
+    eventName: string;
     style: string;
+    eventStyleDescription: string;
     functionality: string[];
     hostess: boolean;
     logo: File | null;
@@ -34,7 +37,9 @@ const initialFormData: FormData = {
     standHeight: '',
     doubleDecker: false,
     hangingStructure: false,
+    eventName: '',
     style: '',
+    eventStyleDescription: '',
     functionality: [],
     hostess: false,
     logo: null,
@@ -61,7 +66,7 @@ const functionalityOptions = [
 const steps = [
     { name: 'Foundation', icon: Building },
     { name: 'Structure', icon: Scaling },
-    { name: 'Style', icon: Crown },
+    { name: 'Show Details', icon: Popcorn },
     { name: 'Functionality', icon: ListChecks },
     { name: 'Branding', icon: Palette },
     { name: 'Your Details', icon: User },
@@ -95,12 +100,27 @@ const ExhibitionStudioPage: React.FC = () => {
     const [selectedImage, setSelectedImage] = useState<number | null>(null);
     const [isProposalRequested, setIsProposalRequested] = useState(false);
     const [isSending, setIsSending] = useState(false);
+    const [isCustomEvent, setIsCustomEvent] = useState(false);
+    const [isAnalyzingStyle, setIsAnalyzingStyle] = useState(false);
     
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const eventNames = useMemo(() => [...new Set(regionalEvents.map(e => e.name))].sort(), []);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleEventSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = e.target.value;
+        if (value === 'other') {
+            setIsCustomEvent(true);
+            setFormData(prev => ({ ...prev, eventName: '', style: '', eventStyleDescription: '' }));
+        } else {
+            setIsCustomEvent(false);
+            setFormData(prev => ({ ...prev, eventName: value, style: '', eventStyleDescription: '' }));
+        }
     };
 
     const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,25 +128,20 @@ const ExhibitionStudioPage: React.FC = () => {
         
         setFormData(prev => {
             const newFormData = { ...prev, [name]: checked };
-
-            // Automatically adjust height for double decker
-            if (name === 'doubleDecker' && checked) {
-                // If a height is selected and it's too low, upgrade it.
-                if (newFormData.standHeight === '4m' || newFormData.standHeight === '5m') {
-                    newFormData.standHeight = '6m';
-                }
+            if (name === 'doubleDecker' && checked && (newFormData.standHeight === '4m' || newFormData.standHeight === '5m')) {
+                newFormData.standHeight = '6m';
             }
             return newFormData;
         });
     };
 
     const handleFunctionalityChange = (item: string) => {
-        setFormData(prev => {
-            const newFunctionality = prev.functionality.includes(item)
+        setFormData(prev => ({
+            ...prev,
+            functionality: prev.functionality.includes(item)
                 ? prev.functionality.filter(i => i !== item)
-                : [...prev.functionality, item];
-            return { ...prev, functionality: newFunctionality };
-        });
+                : [...prev.functionality, item]
+        }));
     };
 
     const extractColorsFromLogo = async (file: File) => {
@@ -135,36 +150,27 @@ const ExhibitionStudioPage: React.FC = () => {
         try {
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const base64Data = await blobToBase64(file);
-            const imagePart = {
-                inlineData: { mimeType: file.type, data: base64Data },
-            };
-            const textPart = {
-                text: "Analyze the attached logo. Identify the 3-5 primary brand colors. List them as a simple, comma-separated string. For example: 'Deep Navy Blue, Metallic Gold, Off-White'. Only return the color names, nothing else."
-            };
             const response = await ai.models.generateContent({
                 model: 'gemini-2.5-flash',
-                contents: { parts: [imagePart, textPart] },
+                contents: { parts: [
+                    { inlineData: { mimeType: file.type, data: base64Data } },
+                    { text: "Analyze the attached logo. Identify 3-5 primary brand colors. List them as a simple, comma-separated string. Example: 'Deep Navy Blue, Metallic Gold, Off-White'. Return only the color names." }
+                ] },
             });
-
-            const colorsText = response.text;
-            if (colorsText) {
-                const colorsArray = colorsText.split(',').map(c => c.trim()).filter(c => c);
-                setSuggestedColors(colorsArray);
-            }
-
+            const colorsArray = response.text.split(',').map(c => c.trim()).filter(Boolean);
+            setSuggestedColors(colorsArray);
         } catch (e) {
             console.error("Error extracting colors:", e);
-            // Don't show an error to the user, just fail silently.
         } finally {
             setIsExtractingColors(false);
         }
     };
 
     const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
+        if (e.target.files?.[0]) {
             const file = e.target.files[0];
             const logoPreview = URL.createObjectURL(file);
-            setFormData(prev => ({ ...prev, logo: file, logoPreview, brandColors: '' })); // Reset brand colors
+            setFormData(prev => ({ ...prev, logo: file, logoPreview, brandColors: '' }));
             extractColorsFromLogo(file);
         }
     };
@@ -173,90 +179,112 @@ const ExhibitionStudioPage: React.FC = () => {
         setFormData(prev => {
             const currentColors = prev.brandColors.trim();
             const colorSet = new Set(currentColors.split(',').map(c => c.trim().toLowerCase()).filter(Boolean));
-            
-            if (colorSet.has(color.toLowerCase())) {
-                return prev; // Color already exists
-            }
-
-            const newColors = currentColors ? `${currentColors}, ${color}` : color;
-            return { ...prev, brandColors: newColors };
+            if (colorSet.has(color.toLowerCase())) return prev;
+            return { ...prev, brandColors: currentColors ? `${currentColors}, ${color}` : color };
         });
     };
 
+    const analyzeShowStyle = async () => {
+        if (!formData.eventName) {
+            setError("Please select or enter an event name.");
+            return;
+        }
+        setIsAnalyzingStyle(true);
+        setError(null);
+        setFormData(prev => ({ ...prev, style: '', eventStyleDescription: '' }));
+
+        try {
+            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const availableStyles = styles.map(s => s.name);
+
+            const response = await ai.models.generateContent({
+                model: "gemini-2.5-flash",
+                contents: `Analyze the event named '${formData.eventName}'. Determine the most appropriate exhibition stand style from the following options: [${availableStyles.join(', ')}]. Provide a one-sentence description of this event's typical stand characteristics.`,
+                config: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: Type.OBJECT,
+                        properties: {
+                            style: { type: Type.STRING, description: `The single best style for the event. Must be one of: ${availableStyles.join(', ')}.` },
+                            description: { type: Type.STRING, description: 'A one-sentence description of typical stand characteristics.' }
+                        },
+                        required: ['style', 'description']
+                    }
+                }
+            });
+
+            const result = JSON.parse(response.text);
+            const returnedStyle = result.style;
+            const validStyle = availableStyles.find(s => s.toLowerCase() === returnedStyle.toLowerCase());
+
+            if (validStyle) {
+                setFormData(prev => ({
+                    ...prev,
+                    style: validStyle,
+                    eventStyleDescription: result.description,
+                }));
+            } else {
+                throw new Error(`AI returned an invalid style: '${returnedStyle}'.`);
+            }
+        } catch (e) {
+            console.error("Style analysis failed:", e);
+            setError("Could not analyze the event style. Please try a different name or check the console for details.");
+        } finally {
+            setIsAnalyzingStyle(false);
+        }
+    };
+
     const validateStep = (step: number): boolean => {
+        setError(null);
         switch(step) {
-            case 0: // Foundation
-                if (!formData.standWidth || formData.standWidth <= 0 || !formData.standLength || formData.standLength <= 0) {
-                    setError("Please provide valid, positive stand dimensions.");
-                    return false;
-                }
-                 if (!formData.industry) {
-                    setError("Please select your industry.");
-                    return false;
-                }
-                if (!formData.standLayout) {
-                    setError("Please select the stand layout.");
+            case 0:
+                if (!formData.standWidth || !formData.standLength || !formData.industry || !formData.standLayout) {
+                    setError("Please complete all foundation details.");
                     return false;
                 }
                 return true;
-            case 1: // Structure
-                if (!formData.standType) {
-                    setError("Please select the stand type.");
-                    return false;
-                }
-                if (!formData.standHeight) {
-                    setError("Please select the stand height.");
+            case 1:
+                if (!formData.standType || !formData.standHeight) {
+                    setError("Please select structure details.");
                     return false;
                 }
                 if (formData.doubleDecker && (formData.standHeight === '4m' || formData.standHeight === '5m')) {
-                    setError("A double-decker stand requires a minimum height of 6m. Please select '6m' or 'Max Height Permitted'.");
+                    setError("A double-decker stand requires at least 6m height.");
                     return false;
                 }
                 return true;
-            case 2: // Style
-                if (formData.style === '') {
-                    setError("Please choose a style for your stand.");
+            case 2:
+                if (!formData.eventName || !formData.style) {
+                    setError("Please select an event and analyze its style.");
                     return false;
                 }
                 return true;
-            case 3: // Functionality
+            case 3:
                 if (formData.functionality.length === 0) {
-                    setError("Please select at least one feature or service.");
+                    setError("Please select at least one feature.");
                     return false;
                 }
                 return true;
-            case 4: // Branding
-                if (!formData.logo) {
-                    setError("Please upload your company logo.");
-                    return false;
-                }
-                if (formData.brandColors.trim() === '') {
-                    setError("Please provide your brand colors. You can use the suggestions or type them manually.");
+            case 4:
+                if (!formData.logo || !formData.brandColors.trim()) {
+                    setError("Please upload your logo and provide brand colors.");
                     return false;
                 }
                 return true;
-            case 5: // User Details (before final submit)
-                if (formData.userName.trim() === '' || formData.userEmail.trim() === '' || formData.userMobile.trim() === '') {
-                    setError("Please fill in all your contact details to receive your design.");
-                    return false;
-                }
-                // Basic email validation
-                if (!/\S+@\S+\.\S+/.test(formData.userEmail)) {
-                    setError("Please enter a valid email address.");
+            case 5:
+                if (!formData.userName.trim() || !formData.userEmail.trim() || !formData.userMobile.trim() || !/\S+@\S+\.\S+/.test(formData.userEmail)) {
+                    setError("Please provide valid contact details.");
                     return false;
                 }
                 return true;
-            default:
-                return true; // No validation for other steps
+            default: return true;
         }
     }
     
     const nextStep = () => {
-        setError(null);
-        if (!validateStep(currentStep)) {
-            return;
+        if (validateStep(currentStep)) {
+            setCurrentStep(prev => Math.min(prev + 1, steps.length));
         }
-        setCurrentStep(prev => Math.min(prev + 1, steps.length));
     };
 
     const prevStep = () => {
@@ -270,67 +298,62 @@ const ExhibitionStudioPage: React.FC = () => {
         setGeneratedImages([]);
 
         if (!formData.logo) {
-            setError("Logo is missing. Please go back and upload your logo.");
+            setError("Logo is missing.");
             setIsLoading(false);
             return;
         }
 
         try {
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-            
             const logoBase64 = await blobToBase64(formData.logo);
-            const logoMimeType = formData.logo.type;
-
-            const logoPart = {
-                inlineData: {
-                    data: logoBase64,
-                    mimeType: logoMimeType,
-                },
-            };
             
             const textPrompt = `
-                Create a photorealistic 3D render of a bespoke exhibition stand concept for a '${formData.industry}' company.
-                The stand size is ${formData.standWidth}m x ${formData.standLength}m.
-                The stand layout is '${formData.standLayout}'. This is a critical design constraint that dictates how many sides are open to visitor traffic.
-                The stand type is '${formData.standType}'.
-                The style must be '${formData.style}'.
-                Structural features: Stand height is '${formData.standHeight}'. ${formData.doubleDecker ? 'It MUST be a double-decker stand. ' : ''}${formData.hangingStructure ? 'It MUST include a prominent hanging structure from the ceiling. ' : ''}
-                The primary brand colors are '${formData.brandColors || 'neutral tones'}'.
-                The stand must include the following features: ${formData.functionality.join(', ')}.
-                ${formData.hostess ? 'Include a hostess at the reception desk.' : ''}
-                The design must be innovative, high-end, and award-winning quality, suitable for a major international expo like GITEX in Dubai.
-                Focus on premium materials, dynamic architectural lines, and sophisticated lighting.
-                IMPORTANT: You MUST incorporate the provided company logo image prominently and naturally into the design, for example on the main reception desk, a feature wall, or the hanging structure. The logo should be clearly visible and integrated into the stand's architecture.
-            `;
+Objective: Create a photorealistic 3D concept render for a premium, award-winning exhibition stand.
 
-            console.log("Generating designs with gemini-2.5-flash-image and user logo...");
+**Event Context:**
+- Event Name: ${formData.eventName}
+- Exhibitor Industry: ${formData.industry}
+
+**Architectural Specifications:**
+- Dimensions: ${formData.standWidth}m wide x ${formData.standLength}m long.
+- Layout: ${formData.standLayout} (${formData.standLayout === 'Island (4 sides open / standalone)' ? 'all sides open' : formData.standLayout === 'Peninsula (3 sides open)' ? 'three sides open' : formData.standLayout === 'Corner (2 sides open)' ? 'two sides open' : 'one side open'}).
+- Stand Type: ${formData.standType} build.
+- Max Height: ${formData.standHeight}.
+
+**Mandatory Structural Features:**
+${formData.doubleDecker ? '- The stand MUST be a two-story, double-decker structure.\n' : ''}${formData.hangingStructure ? '- Include a large, branded hanging structure suspended from the ceiling.\n' : ''}
+**Core Design & Style:**
+- Primary Style: ${formData.style}.
+- Style Guide: Adhere to these characteristics: "${formData.eventStyleDescription}".
+- Atmosphere: Professional, high-end, and inviting.
+
+**Functional Zones (Must be visible):**
+- Include areas for: ${formData.functionality.join(', ')}.
+
+**Branding & Aesthetics:**
+- **Primary Colors:** The design MUST prominently feature these brand colors: ${formData.brandColors}.
+- **Logo Integration:** The provided company logo is CRITICAL. It must be clearly visible and integrated elegantly on a major architectural feature like a main wall, reception desk, or the hanging structure.
+- **Visuals:** Ensure high-quality lighting, realistic textures, and a clean, uncluttered composition.
+${formData.hostess ? '- A professionally dressed hostess should be visible at the reception desk.' : ''}
+
+Generate a single, compelling, wide-angle view of the stand as if a visitor is approaching it.
+`;
 
             const imagePromises = Array(4).fill(0).map((_, i) => 
                 ai.models.generateContent({
                     model: 'gemini-2.5-flash-image',
-                    contents: { parts: [logoPart, { text: `${textPrompt}\n\nVariation ${i + 1} of 4.` }] },
-                    config: {
-                        responseModalities: [Modality.IMAGE, Modality.TEXT],
-                    },
+                    contents: { parts: [{ inlineData: { data: logoBase64, mimeType: formData.logo!.type } }, { text: `${textPrompt}\n\nVariation ${i + 1} of 4.` }] },
+                    config: { responseModalities: [Modality.IMAGE, Modality.TEXT] },
                 })
             );
 
             const responses = await Promise.all(imagePromises);
+            const imageUrls = responses.map(res => res.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData)
+                                        .filter(Boolean)
+                                        .map(data => `data:${data.mimeType};base64,${data.data}`);
 
-            const imageUrls = responses.map(response => {
-                const imagePart = response.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
-                if (imagePart?.inlineData) {
-                    return `data:${imagePart.inlineData.mimeType};base64,${imagePart.inlineData.data}`;
-                }
-                return null;
-            }).filter((url): url is string => url !== null);
-
-            if (imageUrls.length < 4) {
-                 // Even if some fail, show what we have, but log an error.
-                console.warn(`Could only generate ${imageUrls.length} out of 4 images.`);
-                if (imageUrls.length === 0) {
-                    throw new Error("The AI model failed to generate any images. This might be due to a strict safety policy or temporary issue.");
-                }
+            if (imageUrls.length < 1) {
+                throw new Error("The AI model failed to generate any images.");
             }
             
             setGeneratedImages(imageUrls);
@@ -338,7 +361,7 @@ const ExhibitionStudioPage: React.FC = () => {
             
         } catch (e) {
             console.error("Design generation failed:", e);
-            setError('An error occurred while generating the design. This could be due to a temporary issue or strict safety filters on the logo or prompt. Please try again in a few moments.');
+            setError('An error occurred during design generation. This could be a temporary issue or a safety filter violation. Please try again.');
         } finally {
             setIsLoading(false);
         }
@@ -346,35 +369,18 @@ const ExhibitionStudioPage: React.FC = () => {
     
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        setError(null);
-        if (!validateStep(currentStep)) {
-            return;
+        if (validateStep(currentStep)) {
+            nextStep();
+            generateDesign();
         }
-        nextStep(); // This moves to loading screen state
-        generateDesign();
     };
 
     const sendProposalRequest = async () => {
         if (selectedImage === null) return;
-
         setIsSending(true);
-
-        // In a real application, this would be a fetch/axios call to a backend API.
-        // We are simulating the network request here with a timeout.
-        const proposalData = {
-            ...formData,
-            logo: formData.logo?.name, // just send the name, not the file object
-            logoPreview: undefined, // Don't send the preview URL
-            selectedConceptImage: generatedImages[selectedImage],
-        };
-
-        console.log("--- PROPOSAL REQUEST SENT (SIMULATED) ---");
-        console.log(JSON.stringify(proposalData, null, 2));
-        console.log("------------------------------------------");
-
-        // Simulate network delay
+        // Simulate API call
+        console.log("--- PROPOSAL REQUEST (SIMULATED) ---", { ...formData, logo: formData.logo?.name, selectedConceptImageIndex: selectedImage });
         await new Promise(resolve => setTimeout(resolve, 1500));
-
         setIsSending(false);
         setIsProposalRequested(true);
     };
@@ -386,14 +392,14 @@ const ExhibitionStudioPage: React.FC = () => {
                     <div>
                         <h3 className="text-2xl font-semibold mb-2">Step 1: The Foundation</h3>
                         <p className="text-gray-400 mb-6">Let's start with the basics of your space.</p>
-                        <div className="space-y-4">
-                            <div className="flex items-end gap-4">
-                                <div className="flex-1">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="flex items-end gap-2">
+                                <div>
                                     <label htmlFor="standWidth" className="block text-sm font-medium text-gray-400 mb-1">Width (m)</label>
                                     <input id="standWidth" type="number" name="standWidth" value={formData.standWidth} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2" required min="1" />
                                 </div>
                                 <span className="text-gray-400 pb-2.5">x</span>
-                                <div className="flex-1">
+                                <div>
                                     <label htmlFor="standLength" className="block text-sm font-medium text-gray-400 mb-1">Length (m)</label>
                                     <input id="standLength" type="number" name="standLength" value={formData.standLength} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2" required min="1" />
                                 </div>
@@ -405,7 +411,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                     <option>Technology</option><option>Healthcare</option><option>Aviation</option><option>Real Estate</option><option>Luxury Goods</option><option>Food & Beverage</option><option>Other</option>
                                 </select>
                             </div>
-                            <div>
+                            <div className="md:col-span-2">
                                 <label className="block text-sm font-medium text-gray-400 mb-1">Stand Layout</label>
                                 <select name="standLayout" value={formData.standLayout} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded px-3 py-2" required>
                                     <option value="" disabled>Select stand layout</option>
@@ -424,19 +430,21 @@ const ExhibitionStudioPage: React.FC = () => {
                         <h3 className="text-2xl font-semibold mb-2">Step 2: Structure & Scale</h3>
                         <p className="text-gray-400 mb-6">Define the physical presence of your stand.</p>
                         <div className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-400 mb-1">Stand Type</label>
-                                <select name="standType" value={formData.standType} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded px-3 py-2" required>
-                                    <option value="" disabled>Select stand type</option>
-                                    <option>Space Only</option><option>Shell Scheme</option><option>Modular System</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-400 mb-1">Stand Height</label>
-                                <select name="standHeight" value={formData.standHeight} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded px-3 py-2" required>
-                                    <option value="" disabled>Select stand height</option>
-                                    <option>4m</option><option>5m</option><option>6m</option><option>Max Height Permitted</option>
-                                </select>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-400 mb-1">Stand Type</label>
+                                    <select name="standType" value={formData.standType} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded px-3 py-2" required>
+                                        <option value="" disabled>Select stand type</option>
+                                        <option>Space Only</option><option>Shell Scheme</option><option>Modular System</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-400 mb-1">Stand Height</label>
+                                    <select name="standHeight" value={formData.standHeight} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded px-3 py-2" required>
+                                        <option value="" disabled>Select stand height</option>
+                                        <option>4m</option><option>5m</option><option>6m</option><option>Max Height Permitted</option>
+                                    </select>
+                                </div>
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                <label className="flex items-center p-4 bg-fann-charcoal border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800">
@@ -451,21 +459,34 @@ const ExhibitionStudioPage: React.FC = () => {
                         </div>
                     </div>
                 );
-            case 2: // Style
+            case 2: // Show Details
                 return (
                     <div>
-                        <h3 className="text-2xl font-semibold mb-2">Step 3: Style & Vibe</h3>
-                        <p className="text-gray-400 mb-6">Choose one style that best represents your brand's aesthetic.</p>
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                            {styles.map(s => (
-                                <div key={s.name} onClick={() => setFormData(prev => ({...prev, style: s.name}))} className={`relative rounded-lg overflow-hidden cursor-pointer border-4 transition-all duration-300 ${formData.style === s.name ? 'border-fann-gold' : 'border-transparent'}`}>
-                                    <img src={s.image} alt={s.name} className="h-40 w-full object-cover" />
-                                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                                        <h4 className="text-white font-bold text-lg">{s.name}</h4>
-                                    </div>
-                                    {formData.style === s.name && <CheckCircle className="absolute top-2 right-2 text-fann-gold bg-fann-charcoal rounded-full" />}
-                                </div>
-                            ))}
+                        <h3 className="text-2xl font-semibold mb-2">Step 3: Show Details</h3>
+                        <p className="text-gray-400 mb-6">Select your event to help our AI tailor the design style.</p>
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-400 mb-1">Event Name</label>
+                                <select onChange={handleEventSelectChange} defaultValue="" className="w-full bg-fann-charcoal border border-gray-700 rounded px-3 py-2" required>
+                                    <option value="" disabled>Select from the list...</option>
+                                    {eventNames.map(name => <option key={name} value={name}>{name}</option>)}
+                                    <option value="other">Other (Please specify)</option>
+                                </select>
+                            </div>
+                            {isCustomEvent && (
+                                <input type="text" name="eventName" placeholder="Enter your event name" value={formData.eventName} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2" />
+                            )}
+                            <button type="button" onClick={analyzeShowStyle} disabled={isAnalyzingStyle || !formData.eventName} className="w-full flex items-center justify-center gap-2 bg-fann-teal text-white font-bold py-2.5 px-6 rounded-full disabled:bg-gray-600">
+                                {isAnalyzingStyle ? <><Loader2 className="w-5 h-5 animate-spin" /> Analyzing...</> : <><Sparkles size={16} /> Analyze Show Style</>}
+                            </button>
+
+                            {formData.style && (
+                                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-4 p-4 bg-fann-charcoal border border-fann-teal/50 rounded-lg">
+                                    <p className="text-sm text-gray-400">Recommended Style:</p>
+                                    <p className="text-xl font-bold text-fann-gold">{formData.style}</p>
+                                    <p className="text-gray-300 mt-1">{formData.eventStyleDescription}</p>
+                                </motion.div>
+                            )}
                         </div>
                     </div>
                 );
@@ -574,13 +595,8 @@ const ExhibitionStudioPage: React.FC = () => {
                     <CheckCircle className="w-20 h-20 text-fann-teal mb-6" />
                     <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Thank You!</h1>
                     <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
-                        Your selection has been received. Our team is now preparing a detailed proposal which includes:
+                        Your selection has been received. Our team is now preparing a detailed proposal which includes additional 3D views, a full quotation, and material specifications.
                     </p>
-                    <ul className="text-left max-w-md mx-auto space-y-2 text-gray-300 list-disc list-inside mb-8">
-                        <li>Additional 3D views of your chosen design.</li>
-                        <li>A comprehensive quotation and project timeline.</li>
-                        <li>Material specifications and options.</li>
-                    </ul>
                     <p className="text-lg text-gray-400">
                         You will receive the proposal at <strong>{formData.userEmail}</strong> shortly.
                     </p>
@@ -628,19 +644,11 @@ const ExhibitionStudioPage: React.FC = () => {
                              <div className="lg:col-span-1 bg-black/20 p-6 rounded-lg self-start sticky top-24">
                                 <h3 className="text-2xl font-serif text-fann-gold mb-4">Project Summary</h3>
                                 <div className="space-y-3 text-sm">
+                                    <p><strong>Event:</strong> {formData.eventName}</p>
                                     <p><strong>Size:</strong> {formData.standWidth}m x {formData.standLength}m ({formData.standWidth * formData.standLength} sqm)</p>
-                                    <p><strong>Industry:</strong> {formData.industry}</p>
+                                    <p><strong>AI Style:</strong> {formData.style}</p>
                                     <p><strong>Layout:</strong> {formData.standLayout}</p>
-                                    <p><strong>Style:</strong> {formData.style}</p>
                                     <p><strong>Type:</strong> {formData.standType}, {formData.standHeight} height</p>
-                                    {formData.doubleDecker && <p className="text-fann-teal font-bold">✓ Double Decker</p>}
-                                    {formData.hangingStructure && <p className="text-fann-teal font-bold">✓ Hanging Structure</p>}
-                                    <div>
-                                        <strong>Features:</strong>
-                                        <ul className="list-disc list-inside text-gray-300">
-                                            {formData.functionality.map(f => <li key={f}>{f}</li>)}
-                                        </ul>
-                                    </div>
                                      <div className="pt-4 mt-4 border-t border-gray-700">
                                         <motion.button
                                             onClick={sendProposalRequest}
@@ -649,14 +657,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                             whileHover={{ scale: selectedImage !== null && !isSending ? 1.05 : 1 }}
                                             whileTap={{ scale: selectedImage !== null && !isSending ? 0.95 : 1 }}
                                         >
-                                            {isSending ? (
-                                                <>
-                                                    <Loader2 className="w-5 h-5 animate-spin" />
-                                                    <span>Sending...</span>
-                                                </>
-                                            ) : (
-                                                "Request Detailed Proposal"
-                                            )}
+                                            {isSending ? <><Loader2 className="w-5 h-5 animate-spin" /> Sending...</> : "Request Detailed Proposal"}
                                         </motion.button>
                                         {selectedImage === null && <p className="text-xs text-center text-gray-400 mt-2">Please select a design to proceed.</p>}
                                     </div>
@@ -682,11 +683,11 @@ const ExhibitionStudioPage: React.FC = () => {
                     <div className="mb-8">
                         <div className="flex justify-between mb-2">
                             {steps.map((step, index) => (
-                                <div key={step.name} className="flex flex-col items-center">
+                                <div key={step.name} className="flex flex-col items-center w-1/6">
                                     <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${currentStep >= index ? 'bg-fann-gold text-fann-charcoal' : 'bg-gray-700 text-gray-400'}`}>
                                         <step.icon size={16} />
                                     </div>
-                                    <span className={`text-xs mt-1 ${currentStep >= index ? 'text-white' : 'text-gray-500'}`}>{step.name}</span>
+                                    <span className={`text-xs mt-1 text-center ${currentStep >= index ? 'text-white' : 'text-gray-500'}`}>{step.name}</span>
                                 </div>
                             ))}
                         </div>
@@ -721,12 +722,12 @@ const ExhibitionStudioPage: React.FC = () => {
                                         animate={{ opacity: 1, y: 0 }}
                                         className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-center gap-3 mb-4"
                                     >
-                                        <AlertCircle className="w-5 h-5" />
+                                        <AlertCircle className="w-5 h-5 flex-shrink-0" />
                                         <span>{error}</span>
                                     </motion.div>
                                 )}
                                 <div className="flex justify-between items-center">
-                                    <motion.button type="button" onClick={prevStep} disabled={currentStep === 0} className="flex items-center gap-2 text-fann-gold disabled:text-gray-500 disabled:cursor-not-allowed" whileHover={{scale: 1.05}} whileTap={{scale: 0.95}}>
+                                    <motion.button type="button" onClick={prevStep} disabled={currentStep === 0} className="flex items-center gap-2 text-fann-gold disabled:text-gray-500 disabled:cursor-not-allowed" whileHover={{scale: currentStep !== 0 ? 1.05 : 1}} whileTap={{scale: currentStep !== 0 ? 0.95 : 1}}>
                                         <ArrowLeft size={16} /> Back
                                     </motion.button>
                                     

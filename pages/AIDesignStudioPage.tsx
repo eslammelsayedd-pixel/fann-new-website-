@@ -19,7 +19,7 @@ const designOptions = [
         description: 'Visualize stunning concepts for corporate events, from high-profile product launches to elegant gala dinners.',
         link: '/ai-design-studio/events',
         image: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=1000&q=80',
-        status: 'Coming Soon'
+        status: 'Ready'
     },
     {
         icon: PenTool,
@@ -51,7 +51,7 @@ const AIDesignStudioPage: React.FC = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: index * 0.1 }}
                             >
-                                <Link to={option.link} className={`block h-full relative group overflow-hidden rounded-lg border-2 ${option.status === 'Coming Soon' ? 'border-gray-700' : 'border-fann-gold/50 hover:border-fann-gold'}`}>
+                                <Link to={option.link} className={`block h-full relative group overflow-hidden rounded-lg border-2 ${option.status === 'Coming Soon' ? 'border-gray-700 pointer-events-none' : 'border-fann-gold/50 hover:border-fann-gold'}`}>
                                     <img src={option.image} alt={option.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                                     <div className={`absolute inset-0 ${option.status === 'Coming Soon' ? 'bg-black/80' : 'bg-gradient-to-t from-black/90 via-black/60 to-transparent'}`}></div>
                                     
