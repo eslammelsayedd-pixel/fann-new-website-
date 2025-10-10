@@ -1,8 +1,9 @@
 name: Full SEO, Performance & Intelligence Automation
 on:
   schedule:
-    - cron: "0 3 * * 1"     # Weekly run (Monday 03:00 UTC)
-  workflow_dispatch:
+        - cron: "0 3 * * 1"     # Weekly run (Monday 03:00 UTC)
+  
+      workflow_dispatch:
 
 jobs:
   seo_performance_agent:
