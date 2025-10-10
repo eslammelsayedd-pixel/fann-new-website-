@@ -42,7 +42,7 @@ jobs:
           
       - name: Analyze HTML structure for SEO
         run: |
-          node << 'EOF'
+          cat > analyze-seo.js << 'EOFJS'
           const fs = require('fs');
           const { parse } = require('node-html-parser');
           
@@ -53,7 +53,7 @@ jobs:
           const seoIssues = [];
           
           htmlFiles.forEach(file => {
-            const content = fs.readFileSync(`dist/${file}`, 'utf-8');
+            const content = fs.readFileSync('dist/' + file, 'utf-8');
             const root = parse(content);
             
             // Check for SEO essentials
@@ -76,11 +76,12 @@ jobs:
           
           fs.writeFileSync('reports/seo-issues.json', JSON.stringify(seoIssues, null, 2));
           console.log('SEO analysis complete. Issues found:', seoIssues.length);
-          EOF
+          EOFJS
+          node analyze-seo.js
           
       - name: Generate AI-powered SEO recommendations
         run: |
-          node << 'EOF'
+          cat > generate-recommendations.js << 'EOFJS'
           const fs = require('fs');
           const { GoogleGenerativeAI } = require('@google/generative-ai');
           
@@ -92,20 +93,12 @@ jobs:
             const seoIssues = JSON.parse(fs.readFileSync('reports/seo-issues.json', 'utf-8'));
             const lighthouseData = JSON.parse(fs.readFileSync('reports/lighthouse.json', 'utf-8'));
             
-            const prompt = `You are an expert SEO consultant. Analyze these SEO issues and provide actionable recommendations:
-
-SEO Issues Found:
-${JSON.stringify(seoIssues, null, 2)}
-
-Lighthouse SEO Score: ${lighthouseData.categories.seo.score * 100}
-
-Provide:
-1. Priority ranking of issues (high/medium/low)
-2. Specific code changes to fix each issue
-3. Expected impact on SEO
-4. Implementation steps
-
-Format as JSON with structure: { recommendations: [{priority, issue, fix, impact, steps}] }`;
+            const seoScore = lighthouseData.categories.seo.score * 100;
+            
+            const prompt = 'You are an expert SEO consultant. Analyze these SEO issues and provide actionable recommendations:\n\nSEO Issues Found:\n' +
+              JSON.stringify(seoIssues, null, 2) +
+              '\n\nLighthouse SEO Score: ' + seoScore +
+              '\n\nProvide:\n1. Priority ranking of issues (high/medium/low)\n2. Specific code changes to fix each issue\n3. Expected impact on SEO\n4. Implementation steps\n\nFormat as JSON with structure: { recommendations: [{priority, issue, fix, impact, steps}] }';
             
             const result = await model.generateContent(prompt);
             const response = await result.response;
@@ -116,46 +109,48 @@ Format as JSON with structure: { recommendations: [{priority, issue, fix, impact
           }
           
           generateRecommendations().catch(console.error);
-          EOF
+          EOFJS
+          node generate-recommendations.js
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           
       - name: Create SEO report
         run: |
-          node << 'EOF'
+          cat > create-report.js << 'EOFJS'
           const fs = require('fs');
           
           const seoIssues = JSON.parse(fs.readFileSync('reports/seo-issues.json', 'utf-8'));
           const lighthouseData = JSON.parse(fs.readFileSync('reports/lighthouse.json', 'utf-8'));
           
           let report = '# SEO Enhancement Report\n\n';
-          report += `Generated: ${new Date().toISOString()}\n\n`;
-          report += `## Lighthouse Scores\n\n`;
-          report += `- SEO: ${(lighthouseData.categories.seo.score * 100).toFixed(0)}/100\n`;
-          report += `- Performance: ${(lighthouseData.categories.performance.score * 100).toFixed(0)}/100\n`;
-          report += `- Accessibility: ${(lighthouseData.categories.accessibility.score * 100).toFixed(0)}/100\n`;
-          report += `- Best Practices: ${(lighthouseData.categories['best-practices'].score * 100).toFixed(0)}/100\n\n`;
+          report += 'Generated: ' + new Date().toISOString() + '\n\n';
+          report += '## Lighthouse Scores\n\n';
+          report += '- SEO: ' + (lighthouseData.categories.seo.score * 100).toFixed(0) + '/100\n';
+          report += '- Performance: ' + (lighthouseData.categories.performance.score * 100).toFixed(0) + '/100\n';
+          report += '- Accessibility: ' + (lighthouseData.categories.accessibility.score * 100).toFixed(0) + '/100\n';
+          report += '- Best Practices: ' + (lighthouseData.categories['best-practices'].score * 100).toFixed(0) + '/100\n\n';
           
-          report += `## SEO Issues Found: ${seoIssues.length}\n\n`;
+          report += '## SEO Issues Found: ' + seoIssues.length + '\n\n';
           
           seoIssues.forEach((issue, i) => {
-            report += `### ${i + 1}. ${issue.file}\n\n`;
+            report += '### ' + (i + 1) + '. ' + issue.file + '\n\n';
             if (issue.missingTitle) report += '- ⚠️ Missing title tag\n';
             if (issue.missingMetaDescription) report += '- ⚠️ Missing meta description\n';
             if (issue.missingMetaViewport) report += '- ⚠️ Missing viewport meta tag\n';
             if (issue.missingCanonical) report += '- ⚠️ Missing canonical link\n';
             if (issue.missingOgTags) report += '- ⚠️ Missing Open Graph tags\n';
             if (issue.missingH1) report += '- ⚠️ Missing H1 heading\n';
-            if (issue.imagesWithoutAlt > 0) report += `- ⚠️ ${issue.imagesWithoutAlt} images without alt text\n`;
+            if (issue.imagesWithoutAlt > 0) report += '- ⚠️ ' + issue.imagesWithoutAlt + ' images without alt text\n';
             report += '\n';
           });
           
-          report += `## AI Recommendations\n\n`;
+          report += '## AI Recommendations\n\n';
           report += fs.readFileSync('reports/ai-recommendations.json', 'utf-8');
           
           fs.writeFileSync('reports/SEO-REPORT.md', report);
           console.log('SEO report generated: reports/SEO-REPORT.md');
-          EOF
+          EOFJS
+          node create-report.js
           
       - name: Upload SEO reports as artifacts
         uses: actions/upload-artifact@v4
@@ -181,12 +176,12 @@ Format as JSON with structure: { recommendations: [{priority, issue, fix, impact
             
       - name: Check for SEO failures
         run: |
-          node << 'EOF'
+          cat > check-score.js << 'EOFJS'
           const fs = require('fs');
           const lighthouseData = JSON.parse(fs.readFileSync('reports/lighthouse.json', 'utf-8'));
           const seoScore = lighthouseData.categories.seo.score * 100;
           
-          console.log(`SEO Score: ${seoScore}`);
+          console.log('SEO Score: ' + seoScore);
           
           if (seoScore < 80) {
             console.error('❌ SEO score is below 80. Please address the issues above.');
@@ -194,4 +189,5 @@ Format as JSON with structure: { recommendations: [{priority, issue, fix, impact
           } else {
             console.log('✅ SEO score is acceptable.');
           }
-          EOF
+          EOFJS
+          node check-score.js
