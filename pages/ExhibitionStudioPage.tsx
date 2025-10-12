@@ -87,6 +87,20 @@ const blobToBase64 = (blob: Blob): Promise<string> => {
     });
 };
 
+const getLayoutDescription = (layout: string): string => {
+    switch (layout) {
+        case 'Linear (1 side open / in-line)':
+            return 'An in-line booth, typically positioned in a row with other stands. It has solid walls on three sides (back, left, and right) and is only open to the aisle from the front.';
+        case 'Corner (2 sides open)':
+            return 'A corner booth, located at the end of a row. It has two solid walls (back and one side) and is open to aisles on two intersecting sides (front and one side), offering more visibility.';
+        case 'Peninsula (3 sides open)':
+            return 'A peninsula booth, which juts out into an aisle. It is open to aisles on three sides (front, left, and right) and has one solid back wall connecting it to a row of other stands.';
+        case 'Island (4 sides open / standalone)':
+            return 'An island booth, a completely standalone structure open to aisles on all four sides. It offers the highest visibility and has no connecting walls to other stands.';
+        default:
+            return `A standard ${layout} layout.`;
+    }
+};
 
 const ExhibitionStudioPage: React.FC = () => {
     const [currentStep, setCurrentStep] = useState(0);
@@ -307,6 +321,8 @@ const ExhibitionStudioPage: React.FC = () => {
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const logoBase64 = await blobToBase64(formData.logo);
             
+            const layoutDescription = getLayoutDescription(formData.standLayout);
+
             const textPrompt = `
 Objective: Create a photorealistic 3D concept render for a premium, award-winning exhibition stand.
 
@@ -316,7 +332,8 @@ Objective: Create a photorealistic 3D concept render for a premium, award-winnin
 
 **Architectural Specifications:**
 - Dimensions: ${formData.standWidth}m wide x ${formData.standLength}m long.
-- Layout: ${formData.standLayout} (${formData.standLayout === 'Island (4 sides open / standalone)' ? 'all sides open' : formData.standLayout === 'Peninsula (3 sides open)' ? 'three sides open' : formData.standLayout === 'Corner (2 sides open)' ? 'two sides open' : 'one side open'}).
+- Stand Layout: ${formData.standLayout}.
+- Layout Constraint: ${layoutDescription} This is a critical instruction. The generated image's perspective MUST clearly show the stand's configuration, including any solid walls and open sides as described. The surrounding environment should hint at its position (e.g., adjacent stands for a linear layout, aisles on all sides for an island).
 - Stand Type: ${formData.standType} build.
 - Max Height: ${formData.standHeight}.
 
