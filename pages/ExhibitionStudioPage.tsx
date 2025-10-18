@@ -1,4 +1,5 @@
 
+
 import React, { useState, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GoogleGenAI, Type } from "@google/genai";
@@ -215,9 +216,11 @@ const ExhibitionStudioPage: React.FC = () => {
             const eventDetails = regionalEvents.find(e => e.name.toLowerCase() === formData.eventName.toLowerCase());
             const industryContext = eventDetails ? `The event is in the ${eventDetails.industry} industry.` : '';
     
+            const prompt = `Analyze the event named '${formData.eventName}'. ${industryContext} Considering its industry and typical audience, determine the single most appropriate exhibition stand design style from this list: [${availableStyles.join(', ')}]. Also provide a concise, one-sentence description of the event's typical stand characteristics. Respond ONLY with a valid JSON object matching the provided schema.`;
+    
             const response = await ai.models.generateContent({
                 model: "gemini-2.5-flash",
-                contents: `Analyze the event named '${formData.eventName}'. ${industryContext} Based on its industry and reputation, determine the single most appropriate exhibition stand design style from the following options: [${availableStyles.join(', ')}]. Provide a concise, one-sentence description of this event's typical stand characteristics.`,
+                contents: prompt,
                 config: {
                     responseMimeType: "application/json",
                     responseSchema: {
@@ -232,43 +235,51 @@ const ExhibitionStudioPage: React.FC = () => {
             });
     
             const rawText = response.text;
-            if (!rawText) {
+            if (!rawText || rawText.trim() === '') {
+                console.error("Style analysis error: AI response was empty.");
                 throw new Error("AI response was empty.");
             }
-
-            // Clean markdown and find JSON object
-            let jsonString = rawText.trim().replace(/^```json\s*/, '').replace(/```$/, '').trim();
-            const firstBrace = jsonString.indexOf('{');
-            const lastBrace = jsonString.lastIndexOf('}');
-            if (firstBrace === -1 || lastBrace === -1 || lastBrace < firstBrace) {
-                throw new Error("AI response did not contain a valid JSON object structure.");
+    
+            let jsonString = rawText;
+            const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+                jsonString = jsonMatch[0];
+            } else {
+                console.error("Style analysis error: No JSON object found in the AI response.", rawText);
+                throw new Error("AI response did not contain a recognizable JSON object.");
             }
-            jsonString = jsonString.substring(firstBrace, lastBrace + 1);
-
-            let result: { style: string, description: string };
+    
+            let result: { style?: string, description?: string };
             try {
                 result = JSON.parse(jsonString);
             } catch (parseError) {
-                console.error("Failed to parse AI response:", jsonString, parseError);
-                throw new Error("AI returned a malformed JSON object.");
+                console.error("Style analysis error: Failed to parse the extracted JSON string.", jsonString, parseError);
+                throw new Error("AI returned a malformed JSON object that could not be parsed.");
             }
     
             const returnedStyle = result.style;
-            const validStyle = returnedStyle && availableStyles.find(s => s.toLowerCase() === returnedStyle.toLowerCase());
+            if (typeof returnedStyle !== 'string' || returnedStyle.trim() === '') {
+                console.error("Style analysis error: AI response JSON is missing the 'style' property or it is not a string.", result);
+                throw new Error("AI response was missing the required 'style' information.");
+            }
+            
+            const validStyle = availableStyles.find(s => s.toLowerCase() === returnedStyle.toLowerCase());
     
             if (validStyle) {
                 setFormData(prev => ({
                     ...prev,
                     style: validStyle,
-                    eventStyleDescription: result.description,
+                    eventStyleDescription: result.description || "No description provided.",
                 }));
             } else {
-                console.error(`AI returned an invalid style: '${returnedStyle}'. Valid styles are: ${availableStyles.join(', ')}`);
-                throw new Error(`AI returned an invalid style: '${returnedStyle}'.`);
+                console.error(`Style analysis error: AI returned an invalid style '${returnedStyle}'. Valid options are: [${availableStyles.join(', ')}]`);
+                throw new Error(`The AI suggested an unsupported style: '${returnedStyle}'. Please try again.`);
             }
-        } catch (e) {
-            console.error("Style analysis failed:", e);
-            setError("Could not analyze the event style. Please try a different name or check the console for details.");
+    
+        } catch (e: any) {
+            console.error("Full style analysis failed:", e);
+            const userFriendlyError = e.message || "Could not analyze the event style. Please try a different name or check the console for details.";
+            setError(userFriendlyError);
         } finally {
             setIsAnalyzingStyle(false);
         }
