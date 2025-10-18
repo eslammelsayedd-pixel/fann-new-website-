@@ -231,15 +231,28 @@ const ExhibitionStudioPage: React.FC = () => {
                 }
             });
     
-            let jsonString = response.text.trim();
-            // Robustly find and extract the JSON object from the response string
-            const jsonMatch = jsonString.match(/\{[\s\S]*\}/);
-            if (!jsonMatch) {
-                throw new Error("AI response did not contain a valid JSON object.");
+            const rawText = response.text;
+            if (!rawText) {
+                throw new Error("AI response was empty.");
             }
-            jsonString = jsonMatch[0];
+
+            // Clean markdown and find JSON object
+            let jsonString = rawText.trim().replace(/^```json\s*/, '').replace(/```$/, '').trim();
+            const firstBrace = jsonString.indexOf('{');
+            const lastBrace = jsonString.lastIndexOf('}');
+            if (firstBrace === -1 || lastBrace === -1 || lastBrace < firstBrace) {
+                throw new Error("AI response did not contain a valid JSON object structure.");
+            }
+            jsonString = jsonString.substring(firstBrace, lastBrace + 1);
+
+            let result: { style: string, description: string };
+            try {
+                result = JSON.parse(jsonString);
+            } catch (parseError) {
+                console.error("Failed to parse AI response:", jsonString, parseError);
+                throw new Error("AI returned a malformed JSON object.");
+            }
     
-            const result = JSON.parse(jsonString);
             const returnedStyle = result.style;
             const validStyle = returnedStyle && availableStyles.find(s => s.toLowerCase() === returnedStyle.toLowerCase());
     
@@ -250,7 +263,8 @@ const ExhibitionStudioPage: React.FC = () => {
                     eventStyleDescription: result.description,
                 }));
             } else {
-                throw new Error(`AI returned an invalid or missing style: '${returnedStyle}'.`);
+                console.error(`AI returned an invalid style: '${returnedStyle}'. Valid styles are: ${availableStyles.join(', ')}`);
+                throw new Error(`AI returned an invalid style: '${returnedStyle}'.`);
             }
         } catch (e) {
             console.error("Style analysis failed:", e);
