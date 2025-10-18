@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, Type } from "@google/genai";
 import { Loader2, Sparkles, Upload, ArrowLeft, Building, Scaling, ListChecks, Crown, User, CheckCircle, PartyPopper, AlertCircle, Popcorn, Palette } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import { regionalEvents } from '../constants';
@@ -215,21 +215,28 @@ const ExhibitionStudioPage: React.FC = () => {
 
             const response = await ai.models.generateContent({
                 model: "gemini-2.5-flash",
-                contents: `Analyze the event named '${formData.eventName}'. Determine the most appropriate exhibition stand style from the following options: [${availableStyles.join(', ')}]. Provide a one-sentence description of this event's typical stand characteristics.`,
+                contents: `Analyze the event named '${formData.eventName}'. Based on its industry and reputation, determine the single most appropriate exhibition stand design style from the following options: [${availableStyles.join(', ')}]. Provide a concise, one-sentence description of this event's typical stand characteristics.`,
                 config: {
                     responseMimeType: "application/json",
                     responseSchema: {
-                        type: 'OBJECT',
+                        type: Type.OBJECT,
                         properties: {
-                            style: { type: 'STRING', description: `The single best style for the event. Must be one of: ${availableStyles.join(', ')}.` },
-                            description: { type: 'STRING', description: 'A one-sentence description of typical stand characteristics.' }
+                            style: { type: Type.STRING, description: `The single best style for the event. Must be one of: ${availableStyles.join(', ')}.` },
+                            description: { type: Type.STRING, description: 'A one-sentence description of typical stand characteristics.' }
                         },
                         required: ['style', 'description']
                     }
                 }
             });
 
-            const result = JSON.parse(response.text);
+            let jsonString = response.text.trim();
+            if (jsonString.startsWith('```json')) {
+                jsonString = jsonString.substring(7, jsonString.length - 3).trim();
+            } else if (jsonString.startsWith('```')) {
+                 jsonString = jsonString.substring(3, jsonString.length - 3).trim();
+            }
+
+            const result = JSON.parse(jsonString);
             const returnedStyle = result.style;
             const validStyle = availableStyles.find(s => s.toLowerCase() === returnedStyle.toLowerCase());
 
