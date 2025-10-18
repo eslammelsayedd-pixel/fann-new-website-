@@ -1,5 +1,4 @@
 
-
 import React, { useState, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GoogleGenAI, Type } from "@google/genai";
@@ -208,14 +207,17 @@ const ExhibitionStudioPage: React.FC = () => {
         setIsAnalyzingStyle(true);
         setError(null);
         setFormData(prev => ({ ...prev, style: '', eventStyleDescription: '' }));
-
+    
         try {
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const availableStyles = styles.map(s => s.name);
-
+            
+            const eventDetails = regionalEvents.find(e => e.name.toLowerCase() === formData.eventName.toLowerCase());
+            const industryContext = eventDetails ? `The event is in the ${eventDetails.industry} industry.` : '';
+    
             const response = await ai.models.generateContent({
                 model: "gemini-2.5-flash",
-                contents: `Analyze the event named '${formData.eventName}'. Based on its industry and reputation, determine the single most appropriate exhibition stand design style from the following options: [${availableStyles.join(', ')}]. Provide a concise, one-sentence description of this event's typical stand characteristics.`,
+                contents: `Analyze the event named '${formData.eventName}'. ${industryContext} Based on its industry and reputation, determine the single most appropriate exhibition stand design style from the following options: [${availableStyles.join(', ')}]. Provide a concise, one-sentence description of this event's typical stand characteristics.`,
                 config: {
                     responseMimeType: "application/json",
                     responseSchema: {
@@ -228,18 +230,19 @@ const ExhibitionStudioPage: React.FC = () => {
                     }
                 }
             });
-
+    
             let jsonString = response.text.trim();
-            if (jsonString.startsWith('```json')) {
-                jsonString = jsonString.substring(7, jsonString.length - 3).trim();
-            } else if (jsonString.startsWith('```')) {
-                 jsonString = jsonString.substring(3, jsonString.length - 3).trim();
+            // Robustly find and extract the JSON object from the response string
+            const jsonMatch = jsonString.match(/\{[\s\S]*\}/);
+            if (!jsonMatch) {
+                throw new Error("AI response did not contain a valid JSON object.");
             }
-
+            jsonString = jsonMatch[0];
+    
             const result = JSON.parse(jsonString);
             const returnedStyle = result.style;
-            const validStyle = availableStyles.find(s => s.toLowerCase() === returnedStyle.toLowerCase());
-
+            const validStyle = returnedStyle && availableStyles.find(s => s.toLowerCase() === returnedStyle.toLowerCase());
+    
             if (validStyle) {
                 setFormData(prev => ({
                     ...prev,
@@ -247,7 +250,7 @@ const ExhibitionStudioPage: React.FC = () => {
                     eventStyleDescription: result.description,
                 }));
             } else {
-                throw new Error(`AI returned an invalid style: '${returnedStyle}'.`);
+                throw new Error(`AI returned an invalid or missing style: '${returnedStyle}'.`);
             }
         } catch (e) {
             console.error("Style analysis failed:", e);
