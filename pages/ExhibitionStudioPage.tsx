@@ -230,11 +230,10 @@ const ExhibitionStudioPage: React.FC = () => {
         try {
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const availableStyles = styles.map(s => s.name);
-            
             const eventDetails = regionalEvents.find(e => e.name.toLowerCase() === formData.eventName.toLowerCase());
             const industryContext = eventDetails ? `The event is in the ${eventDetails.industry} industry.` : '';
     
-            const prompt = `Analyze the event named '${formData.eventName}'. ${industryContext} Considering its industry and typical audience, determine the single most appropriate exhibition stand design style from this list: [${availableStyles.join(', ')}]. Also provide a concise, one-sentence description of the event's typical stand characteristics. Respond ONLY with a valid JSON object matching the provided schema.`;
+            const prompt = `Analyze the event named '${formData.eventName}'. ${industryContext} Based on its industry and audience, determine the most fitting design style from this list: [${availableStyles.join(', ')}]. Also, write a concise, one-sentence description of the event's typical stand aesthetics. IMPORTANT: Your entire response must be ONLY a valid JSON object matching the provided schema, with no introductory text, markdown, or explanations.`;
     
             const response = await ai.models.generateContent({
                 model: "gemini-2.5-flash",
@@ -254,27 +253,20 @@ const ExhibitionStudioPage: React.FC = () => {
     
             const rawText = response.text;
             if (!rawText || rawText.trim() === '') {
-                throw new Error("AI response was empty.");
+                throw new Error("The AI returned an empty response. Please try again.");
             }
     
-            let jsonString = rawText;
-            const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-            if (jsonMatch) {
-                jsonString = jsonMatch[0];
-            } else {
-                throw new Error("AI response did not contain a recognizable JSON object.");
-            }
-    
-            let result: { style?: string, description?: string };
+            let result: { style?: string; description?: string };
             try {
-                result = JSON.parse(jsonString);
+                result = JSON.parse(rawText);
             } catch (parseError) {
-                throw new Error("AI returned a malformed JSON object that could not be parsed.");
+                console.error("Failed to parse AI JSON response. Raw text:", rawText, "Error:", parseError);
+                throw new Error("The AI returned an invalid data format. Please try analyzing again.");
             }
-    
+
             const returnedStyle = result.style;
             if (typeof returnedStyle !== 'string' || returnedStyle.trim() === '') {
-                throw new Error("AI response was missing the required 'style' information.");
+                throw new Error("The AI analysis was incomplete and did not provide a style. Please try again.");
             }
             
             const validStyle = availableStyles.find(s => s.toLowerCase() === returnedStyle.toLowerCase());
@@ -283,10 +275,10 @@ const ExhibitionStudioPage: React.FC = () => {
                 setFormData(prev => ({
                     ...prev,
                     style: validStyle,
-                    eventStyleDescription: result.description || "No description provided.",
+                    eventStyleDescription: result.description || "Style analysis complete.",
                 }));
             } else {
-                throw new Error(`The AI suggested an unsupported style: '${returnedStyle}'. Please try again.`);
+                throw new Error(`The AI suggested an unsupported style ('${returnedStyle}'). Please try again.`);
             }
     
         } catch (e: any) {
@@ -319,7 +311,7 @@ const ExhibitionStudioPage: React.FC = () => {
                 return true;
             case 2:
                 if (!formData.eventName || !formData.style) {
-                    setValidationError("Please select an event and analyze its style.");
+                    setValidationError("Please select an event and analyze its style, or manually select a style if analysis fails.");
                     return false;
                 }
                 return true;

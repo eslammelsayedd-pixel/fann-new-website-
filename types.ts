@@ -35,6 +35,9 @@ export interface Testimonial {
 declare global {
   namespace JSX {
     interface IntrinsicElements {
+      // FIX: Add index signature to allow all standard HTML elements.
+      // The original definition was overwriting React's intrinsic elements.
+      [elemName: string]: any;
       'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
         src?: string;
         alt?: string;
