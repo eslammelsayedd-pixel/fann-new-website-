@@ -67,7 +67,6 @@ const functionalityOptions = [
 const steps = [
     { name: 'Foundation', icon: Building },
     { name: 'Structure', icon: Scaling },
-    { name: 'Show Details', icon: Popcorn },
     { name: 'Functionality', icon: ListChecks },
     { name: 'Branding', icon: Palette },
     { name: 'Your Details', icon: User },
@@ -116,10 +115,10 @@ const ExhibitionStudioPage: React.FC = () => {
     const [isProposalRequested, setIsProposalRequested] = useState(false);
     const [isSending, setIsSending] = useState(false);
     const [isCustomEvent, setIsCustomEvent] = useState(false);
-    const [isAnalyzingStyle, setIsAnalyzingStyle] = useState(false);
+    const [isNavigating, setIsNavigating] = useState(false);
     
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const { ensureApiKey, handleApiError, error: apiKeyError, clearError: clearApiKeyError } = useApiKey();
+    const { ensureApiKey, handleApiError, error: apiKeyError, isKeyError, clearError: clearApiKeyError } = useApiKey();
 
     const eventNames = useMemo(() => [...new Set(regionalEvents.map(e => e.name))].sort(), []);
     const error = validationError || apiKeyError;
@@ -213,18 +212,16 @@ const ExhibitionStudioPage: React.FC = () => {
         });
     };
 
-    const analyzeShowStyle = async () => {
+    const analyzeShowStyle = async (): Promise<boolean> => {
         if (!formData.eventName) {
             setValidationError("Please select or enter an event name first.");
-            return;
+            return false;
         }
-        setIsAnalyzingStyle(true);
         clearAllErrors();
         setFormData(prev => ({ ...prev, style: '', eventStyleDescription: '' }));
     
         if (!await ensureApiKey()) {
-            setIsAnalyzingStyle(false);
-            return;
+            return false;
         }
     
         try {
@@ -289,6 +286,7 @@ The JSON object must contain two keys: "style" and "description".
                     style: validStyle,
                     eventStyleDescription: result.description || "Style analysis complete.",
                 }));
+                return true;
             } else {
                 console.error(`AI returned an unsupported style: '${returnedStyle}'. Supported styles are: ${availableStyles.join(', ')}`);
                 throw new Error(`The AI suggested an unsupported style ('${returnedStyle}'). Please select a style manually or try again.`);
@@ -298,8 +296,7 @@ The JSON object must contain two keys: "style" and "description".
             const errorMessage = e.message || "An unknown error occurred during analysis. Please check the console for details.";
             setValidationError(errorMessage);
             handleApiError(e); 
-        } finally {
-            setIsAnalyzingStyle(false);
+            return false;
         }
     };
 
@@ -307,8 +304,8 @@ The JSON object must contain two keys: "style" and "description".
         clearAllErrors();
         switch(step) {
             case 0:
-                if (!formData.standWidth || !formData.standLength || !formData.industry || !formData.standLayout) {
-                    setValidationError("Please complete all foundation details.");
+                if (!formData.standWidth || !formData.standLength || !formData.industry || !formData.standLayout || !formData.eventName) {
+                    setValidationError("Please complete all foundation details, including the event name.");
                     return false;
                 }
                 return true;
@@ -323,24 +320,18 @@ The JSON object must contain two keys: "style" and "description".
                 }
                 return true;
             case 2:
-                if (!formData.eventName || !formData.style) {
-                    setValidationError("Please select an event and analyze its style, or manually select a style if analysis fails.");
-                    return false;
-                }
-                return true;
-            case 3:
                 if (formData.functionality.length === 0) {
                     setValidationError("Please select at least one feature.");
                     return false;
                 }
                 return true;
-            case 4:
+            case 3:
                 if (!formData.logo || !formData.brandColors.trim()) {
                     setValidationError("Please upload your logo and provide brand colors.");
                     return false;
                 }
                 return true;
-            case 5:
+            case 4:
                 if (!formData.userName.trim() || !formData.userEmail.trim() || !formData.userMobile.trim() || !/\S+@\S+\.\S+/.test(formData.userEmail)) {
                     setValidationError("Please provide valid contact details.");
                     return false;
@@ -350,8 +341,20 @@ The JSON object must contain two keys: "style" and "description".
         }
     }
     
-    const nextStep = () => {
-        if (validateStep(currentStep)) {
+    const nextStep = async () => {
+        if (!validateStep(currentStep)) {
+            return;
+        }
+
+        if (currentStep === 0) { // On first step, run analysis
+            setIsNavigating(true);
+            const analysisSuccess = await analyzeShowStyle();
+            setIsNavigating(false);
+            if (analysisSuccess) {
+                setCurrentStep(prev => Math.min(prev + 1, steps.length));
+            }
+            // On failure, error is shown, and we stay on the step
+        } else {
             setCurrentStep(prev => Math.min(prev + 1, steps.length));
         }
     };
@@ -384,36 +387,30 @@ The JSON object must contain two keys: "style" and "description".
             const layoutDescription = getLayoutDescription(formData.standLayout);
 
             const textPrompt = `
-Objective: Create a photorealistic 3D concept render for a premium, award-winning exhibition stand.
+**Objective:** Generate a photorealistic, high-fidelity 3D render of a premium, award-winning exhibition stand concept. The image should be suitable for a client proposal.
 
-**Event Context:**
-- Event Name: ${formData.eventName}
-- Exhibitor Industry: ${formData.industry}
+**Core Brief:**
+- **Event:** ${formData.eventName}
+- **Industry:** ${formData.industry}
+- **Primary Style:** ${formData.style}
+- **Style Keywords:** ${formData.eventStyleDescription}, professional, high-end, inviting.
 
-**Architectural Specifications:**
-- Dimensions: ${formData.standWidth}m wide x ${formData.standLength}m long.
-- Stand Layout: ${formData.standLayout}.
-- Layout Constraint: ${layoutDescription} This is a critical instruction. The generated image's perspective MUST clearly show the stand's configuration, including any solid walls and open sides as described. The surrounding environment should hint at its position (e.g., adjacent stands for a linear layout, aisles on all sides for an island).
-- Stand Type: ${formData.standType} build.
-- Max Height: ${formData.standHeight}.
+**Architectural & Structural Mandates:**
+- **Dimensions:** ${formData.standWidth}m width x ${formData.standLength}m length.
+- **Layout (CRITICAL):** ${formData.standLayout}. The render MUST accurately depict this layout: ${layoutDescription}. For example, an 'Island' must be open on all 4 sides with aisles visible around it. A 'Linear' stand must show one open side and walls connecting to unseen neighbors on the other three. This is non-negotiable.
+- **Build Type:** ${formData.standType}.
+- **Height:** Up to ${formData.standHeight}.
+- **Key Structures:** ${formData.doubleDecker ? 'A two-story, double-decker structure is MANDATORY. ' : ''}${formData.hangingStructure ? 'A large, branded hanging structure suspended above the stand is MANDATORY. ' : ''}
 
-**Mandatory Structural Features:**
-${formData.doubleDecker ? '- The stand MUST be a two-story, double-decker structure.\\n' : ''}${formData.hangingStructure ? '- Include a large, branded hanging structure suspended from the ceiling.\\n' : ''}
-**Core Design & Style:**
-- Primary Style: ${formData.style}.
-- Style Guide: Adhere to these characteristics: "${formData.eventStyleDescription}".
-- Atmosphere: Professional, high-end, and inviting.
+**Functional & Branding Mandates:**
+- **Visible Zones:** The design must clearly show spaces for: ${formData.functionality.join(', ')}.
+- **Color Palette (CRITICAL):** The design's color scheme must be strictly based on these brand colors: ${formData.brandColors}. Do not introduce other dominant colors.
+- **Logo Integration (CRITICAL):** The provided logo must be a hero element, prominently and elegantly placed on a major surface like the main fascia, reception desk, or hanging banner.
 
-**Functional Zones (Must be visible):**
-- Include areas for: ${formData.functionality.join(', ')}.
-
-**Branding & Aesthetics:**
-- **Primary Colors:** The design MUST prominently feature these brand colors: ${formData.brandColors}.
-- **Logo Integration:** The provided company logo is CRITICAL. It must be clearly visible and integrated elegantly on a major architectural feature like a main wall, reception desk, or the hanging structure.
-- **Visuals:** Ensure high-quality lighting, realistic textures, and a clean, uncluttered composition.
-${formData.hostess ? '- A professionally dressed hostess should be visible at the reception desk.' : ''}
-
-Generate a single, compelling, wide-angle view of the stand as if a visitor is approaching it.
+**Output Requirements:**
+- **Camera Angle:** Generate a single, compelling, wide-angle shot from a human-eye-level perspective, as if a visitor is approaching the stand.
+- **Realism:** Focus on photorealistic lighting (e.g., exhibition hall spotlights), accurate material textures (woods, metals, fabrics), and realistic shadows.
+- **Negative Prompt:** AVOID blurry or low-resolution output, distorted perspectives, unrealistic or cartoonish elements, floating objects, and empty or generic-looking product displays. ${formData.hostess ? 'A professionally dressed hostess should be visible and realistically integrated at the reception desk.' : 'Do not include any people.'}
 `;
 
             const imagePromises = Array(4).fill(0).map((_, i) => 
@@ -446,7 +443,6 @@ Generate a single, compelling, wide-angle view of the stand as if a visitor is a
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (validateStep(currentStep)) {
-            nextStep();
             generateDesign();
         }
     };
@@ -467,7 +463,7 @@ Generate a single, compelling, wide-angle view of the stand as if a visitor is a
                 return (
                     <div>
                         <h3 className="text-2xl font-semibold mb-2">Step 1: The Foundation</h3>
-                        <p className="text-gray-400 mb-6">Let's start with the basics of your space.</p>
+                        <p className="text-gray-400 mb-6">Let's start with the basics of your space and event.</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="flex items-end gap-2">
                                 <div>
@@ -480,7 +476,7 @@ Generate a single, compelling, wide-angle view of the stand as if a visitor is a
                                     <input id="standLength" type="number" name="standLength" value={formData.standLength} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2" required min="1" />
                                 </div>
                             </div>
-                            <div>
+                             <div>
                                 <label className="block text-sm font-medium text-gray-400 mb-1">Your Industry</label>
                                 <select name="industry" value={formData.industry} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded px-3 py-2" required>
                                     <option value="" disabled>Select your industry</option>
@@ -496,6 +492,17 @@ Generate a single, compelling, wide-angle view of the stand as if a visitor is a
                                     <option>Island (4 sides open / standalone)</option>
                                     <option>Peninsula (3 sides open)</option>
                                 </select>
+                            </div>
+                             <div className="md:col-span-2 space-y-2">
+                                <label className="block text-sm font-medium text-gray-400">Event Name</label>
+                                <select onChange={handleEventSelectChange} value={isCustomEvent ? 'other' : formData.eventName} className="w-full bg-fann-charcoal border border-gray-700 rounded px-3 py-2" required>
+                                    <option value="" disabled>Select from the list...</option>
+                                    {eventNames.map(name => <option key={name} value={name}>{name}</option>)}
+                                    <option value="other">Other (Please specify)</option>
+                                </select>
+                                {isCustomEvent && (
+                                    <input type="text" name="eventName" placeholder="Enter your event name" value={formData.eventName} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2" />
+                                )}
                             </div>
                         </div>
                     </div>
@@ -535,41 +542,10 @@ Generate a single, compelling, wide-angle view of the stand as if a visitor is a
                         </div>
                     </div>
                 );
-            case 2: // Show Details
+            case 2: // Functionality
                 return (
                     <div>
-                        <h3 className="text-2xl font-semibold mb-2">Step 3: Show Details</h3>
-                        <p className="text-gray-400 mb-6">Select your event to help our AI tailor the design style.</p>
-                        <div className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-400 mb-1">Event Name</label>
-                                <select onChange={handleEventSelectChange} value={isCustomEvent ? 'other' : formData.eventName} className="w-full bg-fann-charcoal border border-gray-700 rounded px-3 py-2" required>
-                                    <option value="" disabled>Select from the list...</option>
-                                    {eventNames.map(name => <option key={name} value={name}>{name}</option>)}
-                                    <option value="other">Other (Please specify)</option>
-                                </select>
-                            </div>
-                            {isCustomEvent && (
-                                <input type="text" name="eventName" placeholder="Enter your event name" value={formData.eventName} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2" />
-                            )}
-                            <button type="button" onClick={analyzeShowStyle} disabled={isAnalyzingStyle || !formData.eventName} className="w-full flex items-center justify-center gap-2 bg-fann-teal text-white font-bold py-2.5 px-6 rounded-full disabled:bg-gray-600">
-                                {isAnalyzingStyle ? <><Loader2 className="w-5 h-5 animate-spin" /> Analyzing...</> : <><Sparkles size={16} /> Analyze Show Style</>}
-                            </button>
-
-                            {formData.style && (
-                                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-4 p-4 bg-fann-charcoal border border-fann-teal/50 rounded-lg">
-                                    <p className="text-sm text-gray-400">Recommended Style:</p>
-                                    <p className="text-xl font-bold text-fann-gold">{formData.style}</p>
-                                    <p className="text-gray-300 mt-1">{formData.eventStyleDescription}</p>
-                                </motion.div>
-                            )}
-                        </div>
-                    </div>
-                );
-            case 3: // Functionality
-                return (
-                    <div>
-                        <h3 className="text-2xl font-semibold mb-2">Step 4: Functionality & Services</h3>
+                        <h3 className="text-2xl font-semibold mb-2">Step 3: Functionality & Services</h3>
                         <p className="text-gray-400 mb-6">Select the key features and services your stand must include.</p>
                          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
                             {functionalityOptions.map(opt => (
@@ -585,10 +561,10 @@ Generate a single, compelling, wide-angle view of the stand as if a visitor is a
                          </label>
                     </div>
                 );
-            case 4: // Branding
+            case 3: // Branding
                 return (
                     <div>
-                         <h3 className="text-2xl font-semibold mb-2">Step 5: Branding & Vision</h3>
+                         <h3 className="text-2xl font-semibold mb-2">Step 4: Branding & Vision</h3>
                          <p className="text-gray-400 mb-6">Provide your brand assets to guide the design.</p>
                          <div className="space-y-4">
                             <div>
@@ -638,10 +614,10 @@ Generate a single, compelling, wide-angle view of the stand as if a visitor is a
                          </div>
                     </div>
                 );
-            case 5: // User Details
+            case 4: // User Details
                 return (
                      <div>
-                         <h3 className="text-2xl font-semibold mb-2">Step 6: Almost There!</h3>
+                         <h3 className="text-2xl font-semibold mb-2">Step 5: Almost There!</h3>
                          <p className="text-gray-400 mb-6">Enter your details to generate your design and receive your complimentary proposal.</p>
                          <div className="space-y-4">
                             <input type="text" name="userName" placeholder="Your Name" value={formData.userName} onChange={handleInputChange} required className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2" />
@@ -779,7 +755,7 @@ Generate a single, compelling, wide-angle view of the stand as if a visitor is a
                     <div className="mb-8">
                         <div className="flex justify-between mb-2">
                             {steps.map((step, index) => (
-                                <div key={step.name} className="flex flex-col items-center w-1/6">
+                                <div key={step.name} className="flex flex-col items-center" style={{ width: `${100 / steps.length}%` }}>
                                     <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${currentStep >= index ? 'bg-fann-gold text-fann-charcoal' : 'bg-gray-700 text-gray-400'}`}>
                                         <step.icon size={16} />
                                     </div>
@@ -816,20 +792,31 @@ Generate a single, compelling, wide-angle view of the stand as if a visitor is a
                                     <motion.div 
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-center gap-3 mb-4"
+                                        className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-center justify-between gap-3 mb-4"
                                     >
-                                        <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                                        <span>{error}</span>
+                                        <div className="flex items-center gap-3">
+                                            <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                                            <span>{error}</span>
+                                        </div>
+                                        {isKeyError && (
+                                            <button
+                                                type="button"
+                                                onClick={ensureApiKey}
+                                                className="bg-fann-gold text-fann-charcoal text-xs font-bold py-1 px-3 rounded-full flex-shrink-0 hover:opacity-90"
+                                            >
+                                                Select Key
+                                            </button>
+                                        )}
                                     </motion.div>
                                 )}
                                 <div className="flex justify-between items-center">
-                                    <motion.button type="button" onClick={prevStep} disabled={currentStep === 0} className="flex items-center gap-2 text-fann-gold disabled:text-gray-500 disabled:cursor-not-allowed" whileHover={{scale: currentStep !== 0 ? 1.05 : 1}} whileTap={{scale: currentStep !== 0 ? 0.95 : 1}}>
+                                    <motion.button type="button" onClick={prevStep} disabled={currentStep === 0 || isNavigating} className="flex items-center gap-2 text-fann-gold disabled:text-gray-500 disabled:cursor-not-allowed" whileHover={{scale: currentStep !== 0 ? 1.05 : 1}} whileTap={{scale: currentStep !== 0 ? 0.95 : 1}}>
                                         <ArrowLeft size={16} /> Back
                                     </motion.button>
                                     
                                     {currentStep < steps.length - 1 ? (
-                                        <motion.button type="button" onClick={nextStep} className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full" whileHover={{scale: 1.05}} whileTap={{scale: 0.95}}>
-                                            Next
+                                        <motion.button type="button" onClick={nextStep} disabled={isNavigating} className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full w-32 disabled:bg-gray-600" whileHover={{scale: !isNavigating ? 1.05 : 1}} whileTap={{scale: !isNavigating ? 0.95 : 1}}>
+                                            {isNavigating ? <Loader2 className="w-5 h-5 mx-auto animate-spin" /> : 'Next'}
                                         </motion.button>
                                     ) : (
                                         <motion.button type="submit" className="bg-fann-teal text-white font-bold py-2 px-6 rounded-full flex items-center gap-2" whileHover={{scale: 1.05}} whileTap={{scale: 0.95}}>

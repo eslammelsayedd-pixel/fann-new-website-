@@ -21,7 +21,7 @@ const VideoStudioPage: React.FC = () => {
     const [videoUrl, setVideoUrl] = useState<string | null>(null);
     const [statusMessage, setStatusMessage] = useState<string>('');
     
-    const { ensureApiKey, handleApiError, error, clearError } = useApiKey();
+    const { ensureApiKey, handleApiError, error, isKeyError, clearError } = useApiKey();
 
     const handleGenerateVideo = async () => {
         setIsLoading(true);
@@ -139,10 +139,22 @@ const VideoStudioPage: React.FC = () => {
                                 <motion.div 
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-center gap-3 my-4"
+                                    className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-center my-4"
                                 >
-                                    <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                                    <span>{error}</span>
+                                    <div className="flex items-center justify-center gap-3 mb-3">
+                                        <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                                        <span>{error}</span>
+                                    </div>
+                                    {isKeyError && (
+                                        <motion.button
+                                            onClick={handleGenerateVideo}
+                                            className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full text-sm"
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                        >
+                                            Select API Key & Retry
+                                        </motion.button>
+                                    )}
                                 </motion.div>
                             )}
                             <div className="mt-8">

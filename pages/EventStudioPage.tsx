@@ -85,7 +85,7 @@ const EventStudioPage: React.FC = () => {
     const [isSending, setIsSending] = useState(false);
     
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const { ensureApiKey, handleApiError, error: apiKeyError, clearError: clearApiKeyError } = useApiKey();
+    const { ensureApiKey, handleApiError, error: apiKeyError, isKeyError, clearError: clearApiKeyError } = useApiKey();
     const error = validationError || apiKeyError;
 
     const clearAllErrors = () => {
@@ -255,24 +255,25 @@ const EventStudioPage: React.FC = () => {
             };
             
             const textPrompt = `
-Objective: Create a photorealistic 3D concept render for an immersive and luxurious corporate event for a major brand in Dubai. The aesthetic should be high-end and highly "Instagrammable".
+**Objective:** Generate a photorealistic, high-fidelity 3D render of an immersive and luxurious corporate event concept. The final image should feel like a professional photograph from a high-end event in Dubai, perfect for a client pitch.
 
-**Event Brief:**
-- Event Type: ${formData.eventType}
-- Core Theme: "${formData.theme}" (This is the central creative driver).
-- Venue Style: The event is set in a ${formData.venueType}.
-- Scale: The space should be designed to comfortably host approximately ${formData.guestCount} guests.
+**Core Brief:**
+- **Event Type:** ${formData.eventType}
+- **Creative Theme (CRITICAL):** "${formData.theme}". All design choices must stem from this central theme.
+- **Venue Ambiance:** ${formData.venueType}. The render should reflect this environment.
+- **Atmosphere:** High-end, luxurious, and highly "Instagrammable".
+- **Scale:** The scene should be appropriately scaled for approximately ${formData.guestCount} guests.
 
-**Key Design Elements (Must be visible):**
-- The setup MUST include distinct areas for: ${formData.eventElements.join(', ')}.
+**Design & Branding Mandates:**
+- **Key Elements (CRITICAL):** The render must visibly include and integrate the following elements: ${formData.eventElements.join(', ')}.
+- **Color Palette (CRITICAL):** The event's color scheme MUST be strictly dominated by the provided brand colors: ${formData.brandColors}. Accent colors should be minimal and complementary.
+- **Logo Integration (CRITICAL):** The provided logo is the hero brand element. It must be featured prominently and elegantly, for example, on the main stage backdrop, a bespoke photo wall, or the welcome area.
+- **Materials & Lighting:** The design must use premium materials (like marble, polished metals, lush velvets) and feature dramatic, professional event lighting (spotlights, uplighting, gobos) that enhances the theme.
 
-**Branding & Atmosphere:**
-- **Primary Colors:** The event's color palette MUST be dominated by: ${formData.brandColors}.
-- **Logo Integration:** The provided company logo is the hero brand element. It MUST be integrated prominently and elegantly into a key feature like the main stage backdrop, a dedicated photo wall, or the welcome desk.
-- **Lighting & Materials:** Emphasize dramatic, creative lighting and premium materials (e.g., marble, metallics, lush fabrics) to create a luxurious atmosphere.
-- **Cohesion:** All elements must cohesively reflect the core theme.
-
-Generate a single, captivating wide shot that showcases the overall ambiance and key design features of the event space.
+**Output Requirements:**
+- **Camera Angle:** Generate a single, captivating, wide-angle shot that captures the overall ambiance and showcases the key design features from a guest's perspective.
+- **Realism:** Focus on photorealistic lighting, accurate material reflections and textures, and a sense of depth and scale.
+- **Negative Prompt:** AVOID flat lighting, unrealistic or generic-looking furniture, empty spaces that feel sterile, cartoonish decor, or blurry/low-resolution output. Any people shown should be subtly in the background, out of focus, and dressed appropriately for a luxury corporate event to suggest scale, not be the focus.
 `;
             
             const imagePromises = Array(4).fill(0).map((_, i) => 
@@ -516,7 +517,27 @@ Generate a single, captivating wide shot that showcases the overall ambiance and
                                 {renderStepContent()}
                             </motion.div>
                             <div className="mt-8">
-                                {error && <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-center gap-3 mb-4"><AlertCircle className="w-5 h-5" /><span>{error}</span></motion.div>}
+                                {error && (
+                                    <motion.div 
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-center justify-between gap-3 mb-4"
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                                            <span>{error}</span>
+                                        </div>
+                                        {isKeyError && (
+                                            <button
+                                                type="button"
+                                                onClick={ensureApiKey}
+                                                className="bg-fann-gold text-fann-charcoal text-xs font-bold py-1 px-3 rounded-full flex-shrink-0 hover:opacity-90"
+                                            >
+                                                Select Key
+                                            </button>
+                                        )}
+                                    </motion.div>
+                                )}
                                 <div className="flex justify-between items-center">
                                     <button type="button" onClick={prevStep} disabled={currentStep === 0} className="flex items-center gap-2 text-fann-gold disabled:text-gray-500">
                                         <ArrowLeft size={16} /> Back

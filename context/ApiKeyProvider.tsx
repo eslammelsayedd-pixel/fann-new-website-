@@ -4,6 +4,7 @@ interface ApiKeyContextType {
   ensureApiKey: () => Promise<boolean>;
   handleApiError: (e: any) => void;
   error: string | null;
+  isKeyError: boolean;
   clearError: () => void;
 }
 
@@ -11,10 +12,13 @@ const ApiKeyContext = createContext<ApiKeyContextType | undefined>(undefined);
 
 export const ApiKeyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [error, setError] = useState<string | null>(null);
-  // Use a ref to track session readiness to avoid re-renders just for this flag
+  const [isKeyError, setIsKeyError] = useState(false);
   const isKeyReadyInSession = useRef(false);
 
-  const clearError = useCallback(() => setError(null), []);
+  const clearError = useCallback(() => {
+    setError(null);
+    setIsKeyError(false);
+  }, []);
 
   const ensureApiKey = useCallback(async (): Promise<boolean> => {
     clearError();
@@ -37,6 +41,7 @@ export const ApiKeyProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     } catch (e) {
       console.error("API key selection process was cancelled or failed.", e);
       setError("An API Key is required to use AI features. Please select one to proceed.");
+      setIsKeyError(true);
       isKeyReadyInSession.current = false;
       return false;
     }
@@ -44,20 +49,21 @@ export const ApiKeyProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const handleApiError = useCallback((e: any) => {
     console.error("An API error occurred:", e);
-    if (e.message?.includes("API Key")) {
-      setError("An API Key is required. Please select one to proceed.");
-      isKeyReadyInSession.current = false;
-    } else if (e.message?.includes("Requested entity was not found")) {
-      setError("The selected API Key appears to be invalid. Please select another one.");
+    const message = e.message || '';
+    if (message.includes("API Key") || message.includes("Requested entity was not found")) {
+      const isInvalidKeyError = message.includes("Requested entity was not found");
+      setError(isInvalidKeyError ? "The selected API Key appears to be invalid. Please select another one." : "An API Key is required. Please select one to proceed.");
+      setIsKeyError(true);
       // Force re-selection next time
       isKeyReadyInSession.current = false; 
     } else {
       setError("An unexpected error occurred. This could be a network issue or content safety restriction. Please try again.");
+      setIsKeyError(false);
     }
   }, []);
 
   return (
-    <ApiKeyContext.Provider value={{ ensureApiKey, handleApiError, error, clearError }}>
+    <ApiKeyContext.Provider value={{ ensureApiKey, handleApiError, error, isKeyError, clearError }}>
       {children}
     </ApiKeyContext.Provider>
   );
