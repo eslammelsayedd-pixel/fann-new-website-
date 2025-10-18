@@ -215,7 +215,7 @@ const ExhibitionStudioPage: React.FC = () => {
 
     const analyzeShowStyle = async () => {
         if (!formData.eventName) {
-            setValidationError("Please select or enter an event name.");
+            setValidationError("Please select or enter an event name first.");
             return;
         }
         setIsAnalyzingStyle(true);
@@ -226,14 +226,21 @@ const ExhibitionStudioPage: React.FC = () => {
             setIsAnalyzingStyle(false);
             return;
         }
-
+    
         try {
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const availableStyles = styles.map(s => s.name);
             const eventDetails = regionalEvents.find(e => e.name.toLowerCase() === formData.eventName.toLowerCase());
             const industryContext = eventDetails ? `The event is in the ${eventDetails.industry} industry.` : '';
-    
-            const prompt = `Analyze the event named '${formData.eventName}'. ${industryContext} Based on its industry and audience, determine the most fitting design style from this list: [${availableStyles.join(', ')}]. Also, write a concise, one-sentence description of the event's typical stand aesthetics. IMPORTANT: Your entire response must be ONLY a valid JSON object matching the provided schema, with no introductory text, markdown, or explanations.`;
+            
+            const prompt = `You are a design assistant. Your task is to analyze an event and recommend a design style.
+Event Name: '${formData.eventName}'.
+Event Industry context: ${industryContext}
+Available design styles: [${availableStyles.join(', ')}].
+Your response MUST be a single, valid JSON object and nothing else. Do not include markdown formatting, explanations, or any text outside of the JSON structure.
+The JSON object must contain two keys: "style" and "description".
+- The "style" value must be exactly one of the available design styles.
+- The "description" value must be a concise, one-sentence summary of the typical stand aesthetics for the event.`;
     
             const response = await ai.models.generateContent({
                 model: "gemini-2.5-flash",
@@ -253,17 +260,22 @@ const ExhibitionStudioPage: React.FC = () => {
     
             const rawText = response.text;
             if (!rawText || rawText.trim() === '') {
-                throw new Error("The AI returned an empty response. Please try again.");
+                throw new Error("The AI returned an empty response. This might be a temporary issue. Please try again.");
             }
     
             let result: { style?: string; description?: string };
             try {
-                result = JSON.parse(rawText);
+                const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+                if (!jsonMatch) {
+                    console.error("No JSON object found in AI response. Raw text:", rawText);
+                    throw new Error("The AI returned a non-standard response. Please try analyzing again.");
+                }
+                result = JSON.parse(jsonMatch[0]);
             } catch (parseError) {
                 console.error("Failed to parse AI JSON response. Raw text:", rawText, "Error:", parseError);
                 throw new Error("The AI returned an invalid data format. Please try analyzing again.");
             }
-
+    
             const returnedStyle = result.style;
             if (typeof returnedStyle !== 'string' || returnedStyle.trim() === '') {
                 throw new Error("The AI analysis was incomplete and did not provide a style. Please try again.");
@@ -278,13 +290,14 @@ const ExhibitionStudioPage: React.FC = () => {
                     eventStyleDescription: result.description || "Style analysis complete.",
                 }));
             } else {
-                throw new Error(`The AI suggested an unsupported style ('${returnedStyle}'). Please try again.`);
+                console.error(`AI returned an unsupported style: '${returnedStyle}'. Supported styles are: ${availableStyles.join(', ')}`);
+                throw new Error(`The AI suggested an unsupported style ('${returnedStyle}'). Please select a style manually or try again.`);
             }
     
         } catch (e: any) {
-            const userFriendlyError = e.message || "Could not analyze the event style. Please try a different name.";
-            setValidationError(userFriendlyError);
-            handleApiError(e);
+            const errorMessage = e.message || "An unknown error occurred during analysis. Please check the console for details.";
+            setValidationError(errorMessage);
+            handleApiError(e); 
         } finally {
             setIsAnalyzingStyle(false);
         }
