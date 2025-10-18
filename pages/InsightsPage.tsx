@@ -3,6 +3,7 @@ import { GoogleGenAI } from "@google/genai";
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, BookOpen, BrainCircuit, Building2, Globe, Lightbulb, Loader2, Rocket, ServerCrash, Sparkles, Store, TrendingUp } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
+import { useApiKey } from '../context/ApiKeyProvider';
 
 interface InsightTopic {
     title: string;
@@ -97,13 +98,18 @@ const InsightsPage: React.FC = () => {
     const [selectedTopic, setSelectedTopic] = useState<InsightTopic | null>(null);
     const [generatedArticle, setGeneratedArticle] = useState<Article | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const { ensureApiKey, handleApiError, error, clearError } = useApiKey();
 
     const generateArticle = async (topic: InsightTopic) => {
         setSelectedTopic(topic);
         setIsLoading(true);
-        setError(null);
         setGeneratedArticle(null);
+        clearError();
+
+        if (!await ensureApiKey()) {
+            setIsLoading(false);
+            return;
+        }
 
         try {
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
@@ -122,9 +128,8 @@ const InsightsPage: React.FC = () => {
                 sources: sources.filter(source => source && source.uri && source.title)
             });
 
-        } catch (e) {
-            console.error("Article generation failed:", e);
-            setError("Failed to generate the insight. This may be due to a network issue or content safety restrictions. Please try another topic.");
+        } catch (e: any) {
+            handleApiError(e);
         } finally {
             setIsLoading(false);
         }
@@ -133,7 +138,7 @@ const InsightsPage: React.FC = () => {
     const handleBack = () => {
         setSelectedTopic(null);
         setGeneratedArticle(null);
-        setError(null);
+        clearError();
     };
 
     const renderTopicSelection = () => (

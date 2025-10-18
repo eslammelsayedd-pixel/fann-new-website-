@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { GoogleGenAI } from "@google/genai";
 import { Loader2, Sparkles, Upload, ArrowLeft, Building, Users, Palette, ListChecks, Crown, User, CheckCircle, PartyPopper, AlertCircle, Popcorn } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
+import { useApiKey } from '../context/ApiKeyProvider';
 
 // --- Helper Functions & Types ---
 interface FormData {
@@ -75,7 +76,7 @@ const EventStudioPage: React.FC = () => {
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const [isLoading, setIsLoading] = useState(false);
     const [generatedImages, setGeneratedImages] = useState<string[]>([]);
-    const [error, setError] = useState<string | null>(null);
+    const [validationError, setValidationError] = useState<string | null>(null);
     const [isFinished, setIsFinished] = useState(false);
     const [isExtractingColors, setIsExtractingColors] = useState(false);
     const [suggestedColors, setSuggestedColors] = useState<string[]>([]);
@@ -84,6 +85,13 @@ const EventStudioPage: React.FC = () => {
     const [isSending, setIsSending] = useState(false);
     
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const { ensureApiKey, handleApiError, error: apiKeyError, clearError: clearApiKeyError } = useApiKey();
+    const error = validationError || apiKeyError;
+
+    const clearAllErrors = () => {
+        setValidationError(null);
+        clearApiKeyError();
+    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -102,6 +110,12 @@ const EventStudioPage: React.FC = () => {
     const extractColorsFromLogo = async (file: File) => {
         setIsExtractingColors(true);
         setSuggestedColors([]);
+        
+        if (!await ensureApiKey()) {
+            setIsExtractingColors(false);
+            return;
+        }
+
         try {
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const base64Data = await blobToBase64(file);
@@ -124,6 +138,7 @@ const EventStudioPage: React.FC = () => {
 
         } catch (e) {
             console.error("Error extracting colors:", e);
+            handleApiError(e);
         } finally {
             setIsExtractingColors(false);
         }
@@ -151,50 +166,51 @@ const EventStudioPage: React.FC = () => {
     };
 
     const validateStep = (step: number): boolean => {
+        clearAllErrors();
         switch(step) {
             case 0:
                 if (formData.eventType === '') {
-                    setError("Please select an event type.");
+                    setValidationError("Please select an event type.");
                     return false;
                 }
                 if (formData.theme.trim() === '') {
-                    setError("Please provide a theme for your event.");
+                    setValidationError("Please provide a theme for your event.");
                     return false;
                 }
                 return true;
             case 1:
                 if (formData.venueType === '') {
-                    setError("Please select a venue type.");
+                    setValidationError("Please select a venue type.");
                     return false;
                 }
                 if (formData.guestCount <= 0) {
-                    setError("Please enter a valid number of guests.");
+                    setValidationError("Please enter a valid number of guests.");
                     return false;
                 }
                 return true;
             case 2:
                 if (formData.eventElements.length === 0) {
-                    setError("Please select at least one key element for your event.");
+                    setValidationError("Please select at least one key element for your event.");
                     return false;
                 }
                 return true;
             case 3:
                 if (!formData.logo) {
-                    setError("Please upload your company logo.");
+                    setValidationError("Please upload your company logo.");
                     return false;
                 }
                 if (formData.brandColors.trim() === '') {
-                    setError("Please provide your brand colors.");
+                    setValidationError("Please provide your brand colors.");
                     return false;
                 }
                 return true;
             case 4:
                 if (!formData.userName.trim() || !formData.userEmail.trim() || !formData.userMobile.trim()) {
-                    setError("Please fill in all your contact details.");
+                    setValidationError("Please fill in all your contact details.");
                     return false;
                 }
                 if (!/\S+@\S+\.\S+/.test(formData.userEmail)) {
-                    setError("Please enter a valid email address.");
+                    setValidationError("Please enter a valid email address.");
                     return false;
                 }
                 return true;
@@ -204,24 +220,28 @@ const EventStudioPage: React.FC = () => {
     }
     
     const nextStep = () => {
-        setError(null);
         if (validateStep(currentStep)) {
             setCurrentStep(prev => Math.min(prev + 1, steps.length));
         }
     };
 
     const prevStep = () => {
-        setError(null);
+        clearAllErrors();
         setCurrentStep(prev => Math.max(prev - 1, 0));
     };
 
     const generateDesign = async () => {
         setIsLoading(true);
-        setError(null);
+        clearAllErrors();
         setGeneratedImages([]);
 
+        if (!await ensureApiKey()) {
+            setIsLoading(false);
+            return;
+        }
+
         if (!formData.logo) {
-            setError("Logo is missing. Please go back and upload it.");
+            setValidationError("Logo is missing. Please go back and upload it.");
             setIsLoading(false);
             return;
         }
@@ -270,17 +290,15 @@ Generate a single, captivating wide shot that showcases the overall ambiance and
                                         .filter(Boolean)
                                         .map(data => `data:${data.mimeType};base64,${data.data}`);
 
-            if (imageUrls.length < 4) {
-                console.warn(`Could only generate ${imageUrls.length} out of 4 images.`);
-                if (imageUrls.length === 0) throw new Error("AI failed to generate any images.");
+            if (imageUrls.length < 1) {
+                throw new Error("AI failed to generate any images.");
             }
             
             setGeneratedImages(imageUrls);
             setIsFinished(true);
             
-        } catch (e) {
-            console.error("Design generation failed:", e);
-            setError('An error occurred while generating the design. Please try again.');
+        } catch (e: any) {
+            handleApiError(e);
         } finally {
             setIsLoading(false);
         }
@@ -484,9 +502,9 @@ Generate a single, captivating wide shot that showcases the overall ambiance and
                     <div className="mb-8">
                         <div className="flex justify-between mb-2">
                             {steps.map((step, index) => (
-                                <div key={step.name} className="flex flex-col items-center">
+                                <div key={step.name} className="flex flex-col items-center w-1/5">
                                     <div className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= index ? 'bg-fann-gold text-fann-charcoal' : 'bg-gray-700 text-gray-400'}`}><step.icon size={16} /></div>
-                                    <span className={`text-xs mt-1 ${currentStep >= index ? 'text-white' : 'text-gray-500'}`}>{step.name}</span>
+                                    <span className={`text-xs mt-1 text-center ${currentStep >= index ? 'text-white' : 'text-gray-500'}`}>{step.name}</span>
                                 </div>
                             ))}
                         </div>

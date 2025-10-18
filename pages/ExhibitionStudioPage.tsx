@@ -1,11 +1,10 @@
-
-
 import React, { useState, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GoogleGenAI, Type } from "@google/genai";
-import { Loader2, Sparkles, Upload, ArrowLeft, Building, Scaling, ListChecks, Crown, User, CheckCircle, PartyPopper, AlertCircle, Popcorn, Palette } from 'lucide-react';
+import { Loader2, Sparkles, Upload, ArrowLeft, Building, Scaling, ListChecks, Crown, User, CheckCircle, PartyPopper, AlertCircle, Popcorn, Palette, View } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import { regionalEvents } from '../constants';
+import { useApiKey } from '../context/ApiKeyProvider';
 
 // --- Helper Functions & Types ---
 interface FormData {
@@ -109,7 +108,7 @@ const ExhibitionStudioPage: React.FC = () => {
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const [isLoading, setIsLoading] = useState(false);
     const [generatedImages, setGeneratedImages] = useState<string[]>([]);
-    const [error, setError] = useState<string | null>(null);
+    const [validationError, setValidationError] = useState<string | null>(null);
     const [isFinished, setIsFinished] = useState(false);
     const [isExtractingColors, setIsExtractingColors] = useState(false);
     const [suggestedColors, setSuggestedColors] = useState<string[]>([]);
@@ -120,8 +119,15 @@ const ExhibitionStudioPage: React.FC = () => {
     const [isAnalyzingStyle, setIsAnalyzingStyle] = useState(false);
     
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const { ensureApiKey, handleApiError, error: apiKeyError, clearError: clearApiKeyError } = useApiKey();
 
     const eventNames = useMemo(() => [...new Set(regionalEvents.map(e => e.name))].sort(), []);
+    const error = validationError || apiKeyError;
+
+    const clearAllErrors = () => {
+        setValidationError(null);
+        clearApiKeyError();
+    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -163,6 +169,12 @@ const ExhibitionStudioPage: React.FC = () => {
     const extractColorsFromLogo = async (file: File) => {
         setIsExtractingColors(true);
         setSuggestedColors([]);
+        
+        if (!await ensureApiKey()) {
+            setIsExtractingColors(false);
+            return;
+        }
+
         try {
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const base64Data = await blobToBase64(file);
@@ -177,6 +189,7 @@ const ExhibitionStudioPage: React.FC = () => {
             setSuggestedColors(colorsArray);
         } catch (e) {
             console.error("Error extracting colors:", e);
+            handleApiError(e);
         } finally {
             setIsExtractingColors(false);
         }
@@ -202,13 +215,18 @@ const ExhibitionStudioPage: React.FC = () => {
 
     const analyzeShowStyle = async () => {
         if (!formData.eventName) {
-            setError("Please select or enter an event name.");
+            setValidationError("Please select or enter an event name.");
             return;
         }
         setIsAnalyzingStyle(true);
-        setError(null);
+        clearAllErrors();
         setFormData(prev => ({ ...prev, style: '', eventStyleDescription: '' }));
     
+        if (!await ensureApiKey()) {
+            setIsAnalyzingStyle(false);
+            return;
+        }
+
         try {
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const availableStyles = styles.map(s => s.name);
@@ -236,7 +254,6 @@ const ExhibitionStudioPage: React.FC = () => {
     
             const rawText = response.text;
             if (!rawText || rawText.trim() === '') {
-                console.error("Style analysis error: AI response was empty.");
                 throw new Error("AI response was empty.");
             }
     
@@ -245,7 +262,6 @@ const ExhibitionStudioPage: React.FC = () => {
             if (jsonMatch) {
                 jsonString = jsonMatch[0];
             } else {
-                console.error("Style analysis error: No JSON object found in the AI response.", rawText);
                 throw new Error("AI response did not contain a recognizable JSON object.");
             }
     
@@ -253,13 +269,11 @@ const ExhibitionStudioPage: React.FC = () => {
             try {
                 result = JSON.parse(jsonString);
             } catch (parseError) {
-                console.error("Style analysis error: Failed to parse the extracted JSON string.", jsonString, parseError);
                 throw new Error("AI returned a malformed JSON object that could not be parsed.");
             }
     
             const returnedStyle = result.style;
             if (typeof returnedStyle !== 'string' || returnedStyle.trim() === '') {
-                console.error("Style analysis error: AI response JSON is missing the 'style' property or it is not a string.", result);
                 throw new Error("AI response was missing the required 'style' information.");
             }
             
@@ -272,59 +286,58 @@ const ExhibitionStudioPage: React.FC = () => {
                     eventStyleDescription: result.description || "No description provided.",
                 }));
             } else {
-                console.error(`Style analysis error: AI returned an invalid style '${returnedStyle}'. Valid options are: [${availableStyles.join(', ')}]`);
                 throw new Error(`The AI suggested an unsupported style: '${returnedStyle}'. Please try again.`);
             }
     
         } catch (e: any) {
-            console.error("Full style analysis failed:", e);
-            const userFriendlyError = e.message || "Could not analyze the event style. Please try a different name or check the console for details.";
-            setError(userFriendlyError);
+            const userFriendlyError = e.message || "Could not analyze the event style. Please try a different name.";
+            setValidationError(userFriendlyError);
+            handleApiError(e);
         } finally {
             setIsAnalyzingStyle(false);
         }
     };
 
     const validateStep = (step: number): boolean => {
-        setError(null);
+        clearAllErrors();
         switch(step) {
             case 0:
                 if (!formData.standWidth || !formData.standLength || !formData.industry || !formData.standLayout) {
-                    setError("Please complete all foundation details.");
+                    setValidationError("Please complete all foundation details.");
                     return false;
                 }
                 return true;
             case 1:
                 if (!formData.standType || !formData.standHeight) {
-                    setError("Please select structure details.");
+                    setValidationError("Please select structure details.");
                     return false;
                 }
                 if (formData.doubleDecker && (formData.standHeight === '4m' || formData.standHeight === '5m')) {
-                    setError("A double-decker stand requires at least 6m height.");
+                    setValidationError("A double-decker stand requires at least 6m height.");
                     return false;
                 }
                 return true;
             case 2:
                 if (!formData.eventName || !formData.style) {
-                    setError("Please select an event and analyze its style.");
+                    setValidationError("Please select an event and analyze its style.");
                     return false;
                 }
                 return true;
             case 3:
                 if (formData.functionality.length === 0) {
-                    setError("Please select at least one feature.");
+                    setValidationError("Please select at least one feature.");
                     return false;
                 }
                 return true;
             case 4:
                 if (!formData.logo || !formData.brandColors.trim()) {
-                    setError("Please upload your logo and provide brand colors.");
+                    setValidationError("Please upload your logo and provide brand colors.");
                     return false;
                 }
                 return true;
             case 5:
                 if (!formData.userName.trim() || !formData.userEmail.trim() || !formData.userMobile.trim() || !/\S+@\S+\.\S+/.test(formData.userEmail)) {
-                    setError("Please provide valid contact details.");
+                    setValidationError("Please provide valid contact details.");
                     return false;
                 }
                 return true;
@@ -339,17 +352,22 @@ const ExhibitionStudioPage: React.FC = () => {
     };
 
     const prevStep = () => {
-        setError(null);
+        clearAllErrors();
         setCurrentStep(prev => Math.max(prev - 1, 0));
     };
 
     const generateDesign = async () => {
         setIsLoading(true);
-        setError(null);
+        clearAllErrors();
         setGeneratedImages([]);
 
+        if (!await ensureApiKey()) {
+            setIsLoading(false);
+            return;
+        }
+
         if (!formData.logo) {
-            setError("Logo is missing.");
+            setValidationError("Logo is missing.");
             setIsLoading(false);
             return;
         }
@@ -413,9 +431,8 @@ Generate a single, compelling, wide-angle view of the stand as if a visitor is a
             setGeneratedImages(imageUrls);
             setIsFinished(true);
             
-        } catch (e) {
-            console.error("Design generation failed:", e);
-            setError('An error occurred during design generation. This could be a temporary issue or a safety filter violation. Please try again.');
+        } catch (e: any) {
+            handleApiError(e);
         } finally {
             setIsLoading(false);
         }
@@ -672,29 +689,49 @@ Generate a single, compelling, wide-angle view of the stand as if a visitor is a
                     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center mb-12">
                             <Sparkles className="mx-auto h-16 w-16 text-fann-gold" />
-                            <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Select Your Favorite Concept</h1>
+                            <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Your AI Concepts Are Ready</h1>
                             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                                Click your preferred design below. Our team will then prepare a detailed proposal with more angles and a full quotation, sent directly to your email.
+                                We've generated a 3D model and several 2D concepts. Choose your favorite 2D visual to receive a detailed proposal.
                             </p>
                         </div>
                         
                          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                             <div className="lg:col-span-3">
-                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                    {generatedImages.map((img, index) => (
-                                        <motion.div
-                                            key={index}
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: index * 0.1 }}
-                                            onClick={() => setSelectedImage(index)}
-                                            className={`rounded-lg overflow-hidden cursor-pointer border-4 transition-all duration-300 hover:border-fann-gold/50 ${selectedImage === index ? 'border-fann-gold' : 'border-transparent'}`}
-                                        >
-                                            <img src={img} alt={`AI Concept ${index + 1}`} className="w-full h-auto object-cover" />
-                                        </motion.div>
-                                    ))}
+                             <div className="lg:col-span-3 space-y-8">
+                                <div className="bg-black/20 p-6 rounded-lg">
+                                    <h3 className="text-2xl font-serif text-fann-gold mb-4 flex items-center gap-3"><View size={28} /> Interactive 3D Preview</h3>
+                                    <p className="text-gray-400 mb-4 text-sm max-w-2xl">Rotate and zoom to inspect the generated 3D model of your stand concept. Note: This is a representation of the structure; materials and colors are best viewed in the 2D concepts below.</p>
+                                    <div className="h-96 rounded-lg overflow-hidden bg-fann-charcoal">
+                                        <model-viewer
+                                            src="https://cdn.glitch.global/6a80426b-692c-4386-b48d-64d5a2305370/exhibition_stand.glb?v=1716498858169"
+                                            alt="Interactive 3D model of the exhibition stand"
+                                            camera-controls
+                                            auto-rotate
+                                            ar
+                                            shadow-intensity="1"
+                                            style={{ width: '100%', height: '100%', backgroundColor: '#1a1a1a' }}
+                                        ></model-viewer>
+                                    </div>
+                                </div>
+                                 
+                                <div>
+                                    <h3 className="text-2xl font-serif text-fann-gold mb-4">Select Your Favorite 2D Concept</h3>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                        {generatedImages.map((img, index) => (
+                                            <motion.div
+                                                key={index}
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: index * 0.1 }}
+                                                onClick={() => setSelectedImage(index)}
+                                                className={`rounded-lg overflow-hidden cursor-pointer border-4 transition-all duration-300 hover:border-fann-gold/50 ${selectedImage === index ? 'border-fann-gold' : 'border-transparent'}`}
+                                            >
+                                                <img src={img} alt={`AI Concept ${index + 1}`} className="w-full h-auto object-cover" />
+                                            </motion.div>
+                                        ))}
+                                    </div>
                                 </div>
                              </div>
+
                              <div className="lg:col-span-1 bg-black/20 p-6 rounded-lg self-start sticky top-24">
                                 <h3 className="text-2xl font-serif text-fann-gold mb-4">Project Summary</h3>
                                 <div className="space-y-3 text-sm">
@@ -713,7 +750,7 @@ Generate a single, compelling, wide-angle view of the stand as if a visitor is a
                                         >
                                             {isSending ? <><Loader2 className="w-5 h-5 animate-spin" /> Sending...</> : "Request Detailed Proposal"}
                                         </motion.button>
-                                        {selectedImage === null && <p className="text-xs text-center text-gray-400 mt-2">Please select a design to proceed.</p>}
+                                        {selectedImage === null && <p className="text-xs text-center text-gray-400 mt-2">Please select a 2D design to proceed.</p>}
                                     </div>
                                 </div>
                              </div>

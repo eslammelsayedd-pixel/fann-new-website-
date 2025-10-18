@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Layers, Calendar, PenTool, ArrowRight } from 'lucide-react';
+import { Layers, Calendar, PenTool, ArrowRight, Video } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 
 const designOptions = [
@@ -19,6 +19,14 @@ const designOptions = [
         description: 'Visualize stunning concepts for corporate events, from high-profile product launches to elegant gala dinners.',
         link: '/ai-design-studio/events',
         image: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=1000&q=80',
+        status: 'Ready'
+    },
+    {
+        icon: Video,
+        title: 'Video Concepts',
+        description: 'Generate short, dynamic promotional video concepts for your brand, event, or exhibition.',
+        link: '/ai-design-studio/video',
+        image: 'https://images.unsplash.com/photo-1574717024633-616de4a233b2?w=1000&q=80',
         status: 'Ready'
     },
     {
@@ -43,7 +51,7 @@ const AIDesignStudioPage: React.FC = () => {
                         </p>
                     </div>
 
-                    <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
                         {designOptions.map((option, index) => (
                             <motion.div
                                 key={option.title}
