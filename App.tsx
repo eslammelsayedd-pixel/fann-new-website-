@@ -5,10 +5,10 @@ const App: React.FC = () => {
     return (
         <div className="min-h-screen bg-fann-charcoal text-white flex items-center justify-center">
             <div className="text-center">
-                <h1 className="text-4xl font-bold text-fann-gold mb-4">🎉 App is Loading!</h1>
-                <p className="text-xl">If you see this, the basic setup works.</p>
+                <h1 className="text-4xl font-bold text-fann-gold mb-4">Welcome to Fann</h1>
+                <p className="text-xl">Your gateway to amazing experiences.</p>
                 <Routes>
-                    <Route path="/" element={<div className="mt-8 text-green-400">✅ Router is working too!</div>} />
+                    <route path="/" element={<div className="mt-8 text-green-400">✅ Router is working too!</div>} />
                 </Routes>
             </div>
         </div>
