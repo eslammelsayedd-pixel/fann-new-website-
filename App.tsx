@@ -1,41 +1,17 @@
 import React from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
-
-import Layout from './components/Layout';
-import HomePage from './pages/HomePage';
-import ServicesPage from './pages/ServicesPage';
-import PortfolioPage from './pages/PortfolioPage';
-import AIDesignStudioLandingPage from './pages/AIDesignStudioLandingPage';
-import ExhibitionStudioPage from './pages/ExhibitionStudioPage';
-import EventStudioPage from './pages/EventStudioPage';
-import InteriorStudioPage from './pages/InteriorStudioPage';
-import EventsCalendarPage from './pages/EventsCalendarPage';
-import AboutPage from './pages/AboutPage';
-import ContactPage from './pages/ContactPage';
-import InsightsPage from './pages/InsightsPage';
+import { Routes, Route } from 'react-router-dom';
 
 const App: React.FC = () => {
-    const location = useLocation();
-
     return (
-        <Layout>
-            <AnimatePresence mode="wait">
-                <Routes location={location} key={location.pathname}>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/services" element={<ServicesPage />} />
-                    <Route path="/portfolio" element={<PortfolioPage />} />
-                    <Route path="/ai-design-studio" element={<AIDesignStudioLandingPage />} />
-                    <Route path="/ai-design-studio/exhibition" element={<ExhibitionStudioPage />} />
-                    <Route path="/ai-design-studio/events" element={<EventStudioPage />} />
-                    <Route path="/ai-design-studio/interior-design" element={<InteriorStudioPage />} />
-                    <Route path="/events-calendar" element={<EventsCalendarPage />} />
-                    <Route path="/about" element={<AboutPage />} />
-                    <Route path="/contact" element={<ContactPage />} />
-                    <Route path="/insights" element={<InsightsPage />} />
+        <div className="min-h-screen bg-fann-charcoal text-white flex items-center justify-center">
+            <div className="text-center">
+                <h1 className="text-4xl font-bold text-fann-gold mb-4">🎉 App is Loading!</h1>
+                <p className="text-xl">If you see this, the basic setup works.</p>
+                <Routes>
+                    <Route path="/" element={<div className="mt-8 text-green-400">✅ Router is working too!</div>} />
                 </Routes>
-            </AnimatePresence>
-        </Layout>
+            </div>
+        </div>
     );
 };
 

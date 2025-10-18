@@ -1,6 +1,8 @@
+
+
 import React, { useState, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GoogleGenAI, Modality, Type } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
 import { Loader2, Sparkles, Upload, ArrowLeft, Building, Scaling, ListChecks, Crown, User, CheckCircle, PartyPopper, AlertCircle, Popcorn, Palette } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import { regionalEvents } from '../constants';
@@ -217,10 +219,10 @@ const ExhibitionStudioPage: React.FC = () => {
                 config: {
                     responseMimeType: "application/json",
                     responseSchema: {
-                        type: Type.OBJECT,
+                        type: 'OBJECT',
                         properties: {
-                            style: { type: Type.STRING, description: `The single best style for the event. Must be one of: ${availableStyles.join(', ')}.` },
-                            description: { type: Type.STRING, description: 'A one-sentence description of typical stand characteristics.' }
+                            style: { type: 'STRING', description: `The single best style for the event. Must be one of: ${availableStyles.join(', ')}.` },
+                            description: { type: 'STRING', description: 'A one-sentence description of typical stand characteristics.' }
                         },
                         required: ['style', 'description']
                     }
@@ -338,7 +340,7 @@ Objective: Create a photorealistic 3D concept render for a premium, award-winnin
 - Max Height: ${formData.standHeight}.
 
 **Mandatory Structural Features:**
-${formData.doubleDecker ? '- The stand MUST be a two-story, double-decker structure.\n' : ''}${formData.hangingStructure ? '- Include a large, branded hanging structure suspended from the ceiling.\n' : ''}
+${formData.doubleDecker ? '- The stand MUST be a two-story, double-decker structure.\\n' : ''}${formData.hangingStructure ? '- Include a large, branded hanging structure suspended from the ceiling.\\n' : ''}
 **Core Design & Style:**
 - Primary Style: ${formData.style}.
 - Style Guide: Adhere to these characteristics: "${formData.eventStyleDescription}".
@@ -359,8 +361,8 @@ Generate a single, compelling, wide-angle view of the stand as if a visitor is a
             const imagePromises = Array(4).fill(0).map((_, i) => 
                 ai.models.generateContent({
                     model: 'gemini-2.5-flash-image',
-                    contents: { parts: [{ inlineData: { data: logoBase64, mimeType: formData.logo!.type } }, { text: `${textPrompt}\n\nVariation ${i + 1} of 4.` }] },
-                    config: { responseModalities: [Modality.IMAGE, Modality.TEXT] },
+                    contents: { parts: [{ inlineData: { data: logoBase64, mimeType: formData.logo!.type } }, { text: `${textPrompt}\\n\\nVariation ${i + 1} of 4.` }] },
+                    config: { responseModalities: ['IMAGE'] },
                 })
             );
 
@@ -484,7 +486,7 @@ Generate a single, compelling, wide-angle view of the stand as if a visitor is a
                         <div className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-400 mb-1">Event Name</label>
-                                <select onChange={handleEventSelectChange} defaultValue="" className="w-full bg-fann-charcoal border border-gray-700 rounded px-3 py-2" required>
+                                <select onChange={handleEventSelectChange} value={isCustomEvent ? 'other' : formData.eventName} className="w-full bg-fann-charcoal border border-gray-700 rounded px-3 py-2" required>
                                     <option value="" disabled>Select from the list...</option>
                                     {eventNames.map(name => <option key={name} value={name}>{name}</option>)}
                                     <option value="other">Other (Please specify)</option>

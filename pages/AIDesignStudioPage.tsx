@@ -50,9 +50,23 @@ const AIDesignStudioPage: React.FC = () => {
                                 initial={{ opacity: 0, y: 50 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: index * 0.1 }}
+                                whileHover="hover"
+                                whileTap={option.status === 'Ready' ? "tap" : undefined}
+                                variants={{
+                                    initial: { scale: 1, y: 0, boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.3)" },
+                                    hover: option.status === 'Ready' ? { scale: 1.03, y: -5, boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.5)" } : {},
+                                    tap: { scale: 0.98 }
+                                }}
+                                className="h-full group"
                             >
-                                <Link to={option.link} className={`block h-full relative group overflow-hidden rounded-lg border-2 ${option.status === 'Coming Soon' ? 'border-gray-700 pointer-events-none' : 'border-fann-gold/50 hover:border-fann-gold'}`}>
-                                    <img src={option.image} alt={option.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                                <Link to={option.link} className={`block h-full relative overflow-hidden rounded-lg border-2 transition-colors duration-300 ${option.status === 'Coming Soon' ? 'border-gray-700 pointer-events-none' : 'border-fann-gold/50 group-hover:border-fann-gold'}`}>
+                                    <motion.img 
+                                        src={option.image} 
+                                        alt={option.title} 
+                                        className="absolute inset-0 w-full h-full object-cover" 
+                                        variants={{ hover: { scale: 1.1 }, initial: { scale: 1 } }}
+                                        transition={{ duration: 0.5 }}
+                                    />
                                     <div className={`absolute inset-0 ${option.status === 'Coming Soon' ? 'bg-black/80' : 'bg-gradient-to-t from-black/90 via-black/60 to-transparent'}`}></div>
                                     
                                     <div className="relative h-full flex flex-col justify-end p-8 text-white">
@@ -63,9 +77,12 @@ const AIDesignStudioPage: React.FC = () => {
                                         <p className="text-gray-300 mb-6 flex-grow">{option.description}</p>
                                         
                                         {option.status === 'Ready' ? (
-                                             <div className="flex items-center font-bold text-fann-gold group-hover:underline">
-                                                Start Designing <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-                                            </div>
+                                             <motion.div className="flex items-center font-bold text-fann-gold" variants={{ hover: { textDecoration: 'underline' }, initial: { textDecoration: 'none' }}}>
+                                                Start Designing 
+                                                <motion.div variants={{ hover: { x: 4 }, initial: { x: 0 } }}>
+                                                    <ArrowRight className="ml-2 h-5 w-5" />
+                                                </motion.div>
+                                            </motion.div>
                                         ) : (
                                             <div className="bg-fann-teal text-white text-xs font-bold uppercase tracking-wider py-1 px-3 rounded-full self-start">
                                                 {option.status}

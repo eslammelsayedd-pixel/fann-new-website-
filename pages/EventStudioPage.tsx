@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { GoogleGenAI, Modality } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
 import { Loader2, Sparkles, Upload, ArrowLeft, Building, Users, Palette, ListChecks, Crown, User, CheckCircle, PartyPopper, AlertCircle, Popcorn } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 
@@ -258,9 +258,9 @@ Generate a single, captivating wide shot that showcases the overall ambiance and
             const imagePromises = Array(4).fill(0).map((_, i) => 
                 ai.models.generateContent({
                     model: 'gemini-2.5-flash-image',
-                    contents: { parts: [logoPart, { text: `${textPrompt}\n\nVariation ${i + 1} of 4.` }] },
+                    contents: { parts: [logoPart, { text: `${textPrompt}\\n\\nVariation ${i + 1} of 4.` }] },
                     config: {
-                        responseModalities: [Modality.IMAGE, Modality.TEXT],
+                        responseModalities: ['IMAGE'],
                     },
                 })
             );

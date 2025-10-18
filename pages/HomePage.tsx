@@ -5,33 +5,35 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { portfolioProjects, testimonials } from '../constants';
 import AnimatedPage from '../components/AnimatedPage';
 
+// Move this OUTSIDE the component to prevent re-creation on every render
+const dynamicContent = [
+    { 
+        headline: "Unforgettable Exhibitions", 
+        backgroundVideo: "https://videos.pexels.com/video-files/3254013/3254013-hd_1920_1080_25fps.mp4"
+    },
+    { 
+        headline: "Flawless Events", 
+        backgroundVideo: "https://videos.pexels.com/video-files/8788448/8788448-hd_1920_1080_24fps.mp4"
+    },
+    { 
+        headline: "Inspiring Interiors", 
+        backgroundVideo: "https://videos.pexels.com/video-files/8324311/8324311-hd_1920_1080_25fps.mp4"
+    }
+];
+
 const HeroSection: React.FC = () => {
-    const dynamicContent = [
-        { 
-            headline: "Unforgettable Exhibitions", 
-            backgroundVideo: "https://videos.pexels.com/video-files/3254013/3254013-hd_1920_1080_25fps.mp4"
-        },
-        { 
-            headline: "Flawless Events", 
-            backgroundVideo: "https://videos.pexels.com/video-files/8788448/8788448-hd_1920_1080_24fps.mp4"
-        },
-        { 
-            headline: "Inspiring Interiors", 
-            backgroundVideo: "https://videos.pexels.com/video-files/8324311/8324311-hd_1920_1080_25fps.mp4"
-        }
-    ];
     const [contentIndex, setContentIndex] = useState(0);
 
     useEffect(() => {
         const timer = setInterval(() => {
             setContentIndex(prevIndex => (prevIndex + 1) % dynamicContent.length);
-        }, 5000); // Change every 5 seconds
+        }, 5000);
         return () => clearInterval(timer);
-    }, [dynamicContent.length]);
+    }, []); // Empty dependency array - only run once on mount
 
     return (
         <section className="relative h-screen flex items-center justify-center text-center text-white overflow-hidden">
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
                 <motion.video
                     key={contentIndex}
                     src={dynamicContent[contentIndex].backgroundVideo}
@@ -200,7 +202,6 @@ const HomePage: React.FC = () => {
                     <section className="mt-24 text-center">
                         <h2 className="text-4xl md:text-5xl font-serif font-bold mb-12">What Our Clients Say</h2>
                         <div className="relative max-w-3xl mx-auto">
-                            {/* This would ideally be a carousel */}
                             <div className="bg-black/20 p-8 rounded-lg">
                                 <Star className="text-fann-gold mx-auto mb-4" size={32} />
                                 <p className="text-xl italic text-gray-300 mb-6">"{testimonials[0].quote}"</p>
