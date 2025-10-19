@@ -113,18 +113,18 @@ const EventsCalendarPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
                 <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">Events Calendar</h1>
-                <p className="text-xl text-gray-300">Your guide to the most important exhibitions and trade shows in the UAE & KSA.</p>
+                <p className="text-xl text-fann-cream">Your guide to the most important exhibitions and trade shows in the UAE & KSA.</p>
             </div>
             
-            <div className="max-w-6xl mx-auto bg-black/20 p-4 rounded-lg mb-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="max-w-6xl mx-auto bg-fann-charcoal-light p-4 rounded-lg mb-8 grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-2">Country</label>
+                    <label className="block text-sm font-medium text-fann-light-gray mb-2">Country</label>
                     <div className="grid grid-cols-3 gap-2">
                          {countries.map(country => (
                             <button
                                 key={country}
                                 onClick={() => setSelectedCountry(country)}
-                                className={`w-full text-sm py-2 px-1 rounded-md transition-colors ${selectedCountry === country ? 'bg-fann-teal text-white font-bold' : 'bg-fann-charcoal hover:bg-gray-700'}`}
+                                className={`w-full text-sm py-2 px-1 rounded-md transition-colors ${selectedCountry === country ? 'bg-fann-teal text-white font-bold' : 'bg-fann-charcoal hover:bg-white/10'}`}
                             >
                                 {country}
                             </button>
@@ -132,12 +132,12 @@ const EventsCalendarPage: React.FC = () => {
                     </div>
                 </div>
                  <div>
-                    <label htmlFor="industry-filter" className="block text-sm font-medium text-gray-400 mb-2">Industry</label>
+                    <label htmlFor="industry-filter" className="block text-sm font-medium text-fann-light-gray mb-2">Industry</label>
                     <select
                         id="industry-filter"
                         value={selectedIndustry}
                         onChange={(e) => setSelectedIndustry(e.target.value)}
-                        className="w-full bg-fann-charcoal border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fann-gold"
+                        className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fann-gold"
                     >
                         {industries.map(industry => (
                             <option key={industry} value={industry}>{industry}</option>
@@ -145,13 +145,13 @@ const EventsCalendarPage: React.FC = () => {
                     </select>
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-2">Date Range</label>
+                    <label className="block text-sm font-medium text-fann-light-gray mb-2">Date Range</label>
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
                          {dateRanges.map(range => (
                             <button
                                 key={range}
                                 onClick={() => setSelectedDateRange(range)}
-                                className={`w-full text-sm py-2 px-1 rounded-md transition-colors ${selectedDateRange === range ? 'bg-fann-teal text-white font-bold' : 'bg-fann-charcoal hover:bg-gray-700'}`}
+                                className={`w-full text-sm py-2 px-1 rounded-md transition-colors ${selectedDateRange === range ? 'bg-fann-teal text-white font-bold' : 'bg-fann-charcoal hover:bg-white/10'}`}
                             >
                                 {range}
                             </button>
@@ -164,21 +164,21 @@ const EventsCalendarPage: React.FC = () => {
                 <div className="space-y-6">
                     {filteredEvents.length > 0 ? (
                       filteredEvents.map((event, index) => (
-                          <div key={index} className="bg-black/30 p-6 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center border-l-4 border-fann-teal">
+                          <div key={index} className="bg-fann-charcoal-light p-6 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center border-l-4 border-fann-teal">
                               <div>
                                   <h3 className="text-2xl font-bold text-white mb-1">{event.name}</h3>
-                                  <p className="text-gray-400">{event.venue}, {event.country}</p>
+                                  <p className="text-fann-light-gray">{event.venue}, {event.country}</p>
                               </div>
                               <div className="mt-4 sm:mt-0 text-left sm:text-right flex-shrink-0 sm:pl-4">
                                   <p className="text-lg font-semibold text-fann-gold">{event.date}</p>
-                                  <p className="text-gray-300">{event.industry}</p>
+                                  <p className="text-fann-cream">{event.industry}</p>
                               </div>
                           </div>
                       ))
                     ) : (
-                      <div className="text-center py-16 bg-black/20 rounded-lg">
+                      <div className="text-center py-16 bg-fann-charcoal-light rounded-lg">
                         <h3 className="text-2xl font-serif text-fann-gold">No Events Found</h3>
-                        <p className="text-gray-400 mt-2">Try adjusting your filters to find more events.</p>
+                        <p className="text-fann-light-gray mt-2">Try adjusting your filters to find more events.</p>
                       </div>
                     )}
                 </div>

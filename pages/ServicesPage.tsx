@@ -38,12 +38,12 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, descriptio
             <div className="text-fann-gold">{icon}</div>
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-fann-gold">{title}</h2>
           </div>
-          <p className="text-gray-300 mb-6 leading-relaxed">{description}</p>
+          <p className="text-fann-cream mb-6 leading-relaxed">{description}</p>
           <ul className="space-y-3 mb-8">
             {services.map((service, index) => (
               <li key={index} className="flex items-center gap-3">
                 <CheckCircle className="text-fann-teal w-5 h-5 flex-shrink-0" />
-                <span className="text-gray-200">{service}</span>
+                <span className="text-white">{service}</span>
               </li>
             ))}
           </ul>
@@ -72,7 +72,7 @@ const ServicesPage: React.FC = () => {
       <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
           <h1 className="text-5xl md:text-6xl font-serif font-bold text-fann-gold mb-4">Our Core Capabilities</h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-xl text-fann-cream max-w-3xl mx-auto">
             From monumental exhibitions to bespoke interiors, we deliver end-to-end solutions with precision, creativity, and a commitment to excellence.
           </p>
         </div>
@@ -94,7 +94,7 @@ const ServicesPage: React.FC = () => {
           link="/portfolio"
         />
 
-        <div className="bg-black/20">
+        <div className="bg-fann-charcoal-light">
           <ServiceSection
             icon={<Calendar size={40} />}
             title="Corporate Event Management"
@@ -117,7 +117,7 @@ const ServicesPage: React.FC = () => {
           icon={<PenTool size={40} />}
           title="Commercial & Residential Interiors"
           description="Our interior design philosophy centers on creating spaces that are both beautiful and functional. We specialize in designing inspiring commercial environments and luxurious residential properties, blending timeless aesthetics with modern innovation to reflect your unique identity."
-          image="https://images.unsplash.com/photo-1618221195710-dd6b41fa2047?w=800&q=80"
+          image="https://images.unsplash.com/photo-16182211957_10-dd6b41fa2047?w=800&q=80"
           services={[
             "Comprehensive Space Planning",
             "Concept & Mood Board Development",
@@ -135,7 +135,7 @@ const ServicesPage: React.FC = () => {
             <div className="text-center bg-gradient-to-r from-fann-teal to-fann-gold p-1 rounded-lg">
                  <div className="bg-fann-charcoal rounded-lg py-16 px-8">
                     <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4">Have a Project in Mind?</h2>
-                    <p className="max-w-2xl mx-auto text-gray-300 mb-8">Let's turn your vision into a reality. Contact us today for a complimentary consultation with our design experts.</p>
+                    <p className="max-w-2xl mx-auto text-fann-cream mb-8">Let's turn your vision into a reality. Contact us today for a complimentary consultation with our design experts.</p>
                     <Link to="/contact">
                         <motion.button 
                             whileHover={{ scale: 1.05, boxShadow: "0px 0px 15px rgba(212, 175, 118, 0.5)" }}

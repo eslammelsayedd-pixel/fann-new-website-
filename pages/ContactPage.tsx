@@ -9,11 +9,11 @@ const ContactPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">Contact Us</h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">We'd love to hear about your next project. Reach out to us through any of the channels below.</p>
+            <p className="text-xl text-fann-cream max-w-3xl mx-auto">We'd love to hear about your next project. Reach out to us through any of the channels below.</p>
           </div>
           
           <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
-            <div className="bg-black/20 p-8 rounded-lg">
+            <div className="bg-fann-charcoal-light p-8 rounded-lg">
                 <h2 className="text-3xl font-serif text-white mb-6">Get in Touch</h2>
                 <div className="space-y-6">
                     <div className="flex items-center space-x-4">
@@ -31,17 +31,17 @@ const ContactPage: React.FC = () => {
                 </div>
             </div>
 
-            <div className="bg-black/20 p-8 rounded-lg">
+            <div className="bg-fann-charcoal-light p-8 rounded-lg">
                  <h2 className="text-3xl font-serif text-white mb-6">Send a Message</h2>
                  <form className="space-y-4">
                     <div>
-                        <input type="text" placeholder="Your Name" className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fann-gold" />
+                        <input type="text" placeholder="Your Name" className="w-full bg-fann-charcoal border border-fann-border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fann-gold" />
                     </div>
                      <div>
-                        <input type="email" placeholder="Your Email" className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fann-gold" />
+                        <input type="email" placeholder="Your Email" className="w-full bg-fann-charcoal border border-fann-border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fann-gold" />
                     </div>
                      <div>
-                        <textarea placeholder="Your Message" rows={4} className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fann-gold"></textarea>
+                        <textarea placeholder="Your Message" rows={4} className="w-full bg-fann-charcoal border border-fann-border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fann-gold"></textarea>
                     </div>
                     <div>
                         <button type="submit" className="w-full bg-fann-gold text-fann-charcoal font-bold py-3 rounded-full uppercase tracking-wider hover:opacity-90 transition-opacity">

@@ -1,8 +1,9 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, Sparkles, Upload, ArrowLeft, Building, Scaling, ListChecks, Crown, User, CheckCircle, PartyPopper, AlertCircle, Popcorn, Palette, View } from 'lucide-react';
+import { Loader2, Sparkles, Upload, ArrowLeft, Building, Scaling, ListChecks, User, CheckCircle, AlertCircle, Palette, View } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import { regionalEvents } from '../constants';
+import { useApiKey } from '../context/ApiKeyProvider';
 
 // --- Helper Functions & Types ---
 interface FormData {
@@ -105,7 +106,6 @@ const ExhibitionStudioPage: React.FC = () => {
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const [isLoading, setIsLoading] = useState(false);
     const [generatedImages, setGeneratedImages] = useState<string[]>([]);
-    const [error, setError] = useState<string | null>(null);
     const [isFinished, setIsFinished] = useState(false);
     const [isExtractingColors, setIsExtractingColors] = useState(false);
     const [suggestedColors, setSuggestedColors] = useState<string[]>([]);
@@ -114,9 +114,22 @@ const ExhibitionStudioPage: React.FC = () => {
     const [isSending, setIsSending] = useState(false);
     const [isCustomEvent, setIsCustomEvent] = useState(false);
     const [isNavigating, setIsNavigating] = useState(false);
+
+    const { ensureApiKey, handleApiError, error: apiKeyError, isKeyError, clearError: clearApiKeyError } = useApiKey();
+    const [localError, setLocalError] = useState<string | null>(null);
     
     const fileInputRef = useRef<HTMLInputElement>(null);
     const eventNames = useMemo(() => ['Other (Please Specify)', ...new Set(regionalEvents.map(e => e.name))].sort(), []);
+
+    const setError = (message: string | null) => {
+        clearApiKeyError();
+        setLocalError(message);
+    };
+
+    const clearAllErrors = () => {
+        setLocalError(null);
+        clearApiKeyError();
+    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -156,9 +169,11 @@ const ExhibitionStudioPage: React.FC = () => {
     };
 
     const extractColorsFromLogo = async (file: File) => {
+        clearAllErrors();
+        if (!await ensureApiKey()) return;
+
         setIsExtractingColors(true);
         setSuggestedColors([]);
-        setError(null);
         
         try {
             const base64Data = await blobToBase64(file);
@@ -177,7 +192,7 @@ const ExhibitionStudioPage: React.FC = () => {
             setSuggestedColors(data.colors || []);
         } catch (e: any) {
             console.error("Error extracting colors:", e);
-            setError(e.message);
+            handleApiError(e);
         } finally {
             setIsExtractingColors(false);
         }
@@ -206,7 +221,9 @@ const ExhibitionStudioPage: React.FC = () => {
             setError("Please select or enter an event name first.");
             return false;
         }
-        setError(null);
+        clearAllErrors();
+        if (!await ensureApiKey()) return false;
+        
         setFormData(prev => ({ ...prev, style: '', eventStyleDescription: '' }));
     
         try {
@@ -229,7 +246,6 @@ const ExhibitionStudioPage: React.FC = () => {
             }
             
             const result = await response.json();
-            // FIX: The `find` method is called on an array of strings, so `s` is a string, not an object.
             const validStyle = styles.map(s => s.name).find(s => s.toLowerCase() === result.style.toLowerCase());
             
             if (validStyle) {
@@ -244,13 +260,13 @@ const ExhibitionStudioPage: React.FC = () => {
             }
     
         } catch (e: any) {
-            setError(e.message);
+            handleApiError(e);
             return false;
         }
     };
 
     const validateStep = (step: number): boolean => {
-        setError(null);
+        clearAllErrors();
         switch(step) {
             case 0:
                 if (!formData.standWidth || !formData.standLength || !formData.industry || !formData.standLayout || !formData.eventName) {
@@ -295,7 +311,7 @@ const ExhibitionStudioPage: React.FC = () => {
             return;
         }
 
-        if (currentStep === 0 && !isCustomEvent) { // On first step, run analysis if not a custom event
+        if (currentStep === 0 && !isCustomEvent) {
             setIsNavigating(true);
             const analysisSuccess = await analyzeShowStyle();
             setIsNavigating(false);
@@ -308,13 +324,15 @@ const ExhibitionStudioPage: React.FC = () => {
     };
 
     const prevStep = () => {
-        setError(null);
+        clearAllErrors();
         setCurrentStep(prev => Math.max(prev - 1, 0));
     };
 
     const generateDesign = async () => {
+        clearAllErrors();
+        if (!await ensureApiKey()) return;
+
         setIsLoading(true);
-        setError(null);
         setGeneratedImages([]);
 
         if (!formData.logo) {
@@ -364,7 +382,7 @@ const ExhibitionStudioPage: React.FC = () => {
             setIsFinished(true);
             
         } catch (e: any) {
-            setError(e.message);
+            handleApiError(e);
         } finally {
             setIsLoading(false);
         }
@@ -386,6 +404,8 @@ const ExhibitionStudioPage: React.FC = () => {
         setIsProposalRequested(true);
     };
 
+    const error = apiKeyError || localError;
+
     const renderStepContent = () => {
         switch (currentStep) {
             case 0: // Foundation
@@ -394,22 +414,22 @@ const ExhibitionStudioPage: React.FC = () => {
                         <h2 className="text-2xl font-serif text-white mb-4">Step 1: The Foundation</h2>
                         <div className="grid md:grid-cols-2 gap-6">
                             <div>
-                                <label className="block text-sm font-medium text-gray-400 mb-2">Stand Size (meters)</label>
+                                <label className="block text-sm font-medium text-fann-light-gray mb-2">Stand Size (meters)</label>
                                 <div className="flex items-center gap-2">
-                                    <input type="number" name="standWidth" value={formData.standWidth} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" placeholder="Width" />
-                                    <span className="text-gray-500">x</span>
-                                    <input type="number" name="standLength" value={formData.standLength} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" placeholder="Length" />
+                                    <input type="number" name="standWidth" value={formData.standWidth} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" placeholder="Width" />
+                                    <span className="text-fann-light-gray">x</span>
+                                    <input type="number" name="standLength" value={formData.standLength} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" placeholder="Length" />
                                 </div>
-                                <p className="text-xs text-gray-500 mt-1">{formData.standWidth * formData.standLength} sqm</p>
+                                <p className="text-xs text-fann-light-gray mt-1">{formData.standWidth * formData.standLength} sqm</p>
                             </div>
                             <div>
-                                <label htmlFor="industry" className="block text-sm font-medium text-gray-400 mb-2">Your Industry</label>
-                                <input type="text" id="industry" name="industry" value={formData.industry} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" placeholder="e.g., Technology, Healthcare, Aviation" />
+                                <label htmlFor="industry" className="block text-sm font-medium text-fann-light-gray mb-2">Your Industry</label>
+                                <input type="text" id="industry" name="industry" value={formData.industry} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" placeholder="e.g., Technology, Healthcare, Aviation" />
                             </div>
                         </div>
                         <div>
-                             <label htmlFor="standLayout" className="block text-sm font-medium text-gray-400 mb-2">Stand Layout</label>
-                            <select id="standLayout" name="standLayout" value={formData.standLayout} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2">
+                             <label htmlFor="standLayout" className="block text-sm font-medium text-fann-light-gray mb-2">Stand Layout</label>
+                            <select id="standLayout" name="standLayout" value={formData.standLayout} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2">
                                 <option value="" disabled>Select a layout...</option>
                                 <option>Linear (1 side open / in-line)</option>
                                 <option>Corner (2 sides open)</option>
@@ -418,16 +438,16 @@ const ExhibitionStudioPage: React.FC = () => {
                             </select>
                         </div>
                          <div>
-                            <label htmlFor="eventName" className="block text-sm font-medium text-gray-400 mb-2">Event Name</label>
-                            <select id="eventName" name="eventName" value={isCustomEvent ? 'Other (Please Specify)' : formData.eventName} onChange={handleEventSelectChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2">
+                            <label htmlFor="eventName" className="block text-sm font-medium text-fann-light-gray mb-2">Event Name</label>
+                            <select id="eventName" name="eventName" value={isCustomEvent ? 'Other (Please Specify)' : formData.eventName} onChange={handleEventSelectChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2">
                                 <option value="" disabled>Select an event...</option>
                                 {eventNames.map(name => <option key={name} value={name}>{name}</option>)}
                             </select>
                         </div>
                         {isCustomEvent && (
                             <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="overflow-hidden">
-                                <label htmlFor="customEventName" className="block text-sm font-medium text-gray-400 mb-2">Please specify the event name</label>
-                                <input type="text" id="customEventName" name="eventName" value={formData.eventName} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" placeholder="e.g., My Company's Annual Conference" />
+                                <label htmlFor="customEventName" className="block text-sm font-medium text-fann-light-gray mb-2">Please specify the event name</label>
+                                <input type="text" id="customEventName" name="eventName" value={formData.eventName} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" placeholder="e.g., My Company's Annual Conference" />
                             </motion.div>
                         )}
                     </div>
@@ -437,20 +457,20 @@ const ExhibitionStudioPage: React.FC = () => {
                     <div className="space-y-6">
                         <h2 className="text-2xl font-serif text-white mb-4">Step 2: The Structure</h2>
                         <div>
-                            <label className="block text-sm font-medium text-gray-400 mb-2">Stand Type</label>
+                            <label className="block text-sm font-medium text-fann-light-gray mb-2">Stand Type</label>
                             <div className="grid grid-cols-2 gap-4">
                                 {['Custom-built', 'Modular System'].map(type => (
-                                    <button type="button" key={type} onClick={() => setFormData(prev => ({...prev, standType: type}))} className={`p-4 rounded-lg border-2 text-center transition-colors ${formData.standType === type ? 'border-fann-gold bg-fann-gold/10' : 'border-gray-700 hover:border-fann-gold/50'}`}>
+                                    <button type="button" key={type} onClick={() => setFormData(prev => ({...prev, standType: type}))} className={`p-4 rounded-lg border-2 text-center transition-colors ${formData.standType === type ? 'border-fann-gold bg-fann-gold/10' : 'border-fann-border hover:border-fann-gold/50'}`}>
                                         {type}
                                     </button>
                                 ))}
                             </div>
                         </div>
                          <div>
-                            <label className="block text-sm font-medium text-gray-400 mb-2">Max Stand Height (Venue Permitted)</label>
+                            <label className="block text-sm font-medium text-fann-light-gray mb-2">Max Stand Height (Venue Permitted)</label>
                             <div className="grid grid-cols-4 gap-4">
                                 {['4m', '5m', '6m', '6m+'].map(height => (
-                                    <button type="button" key={height} onClick={() => setFormData(prev => ({...prev, standHeight: height}))} className={`p-4 rounded-lg border-2 text-center transition-colors ${formData.standHeight === height ? 'border-fann-gold bg-fann-gold/10' : 'border-gray-700 hover:border-fann-gold/50'}`}>
+                                    <button type="button" key={height} onClick={() => setFormData(prev => ({...prev, standHeight: height}))} className={`p-4 rounded-lg border-2 text-center transition-colors ${formData.standHeight === height ? 'border-fann-gold bg-fann-gold/10' : 'border-fann-border hover:border-fann-gold/50'}`}>
                                         {height}
                                     </button>
                                 ))}
@@ -458,11 +478,11 @@ const ExhibitionStudioPage: React.FC = () => {
                         </div>
                         <div className="flex items-center justify-around">
                             <label className="flex items-center gap-3 cursor-pointer">
-                                <input type="checkbox" name="doubleDecker" checked={formData.doubleDecker} onChange={handleCheckboxChange} className="h-5 w-5 rounded bg-gray-700 border-gray-600 text-fann-teal focus:ring-fann-teal" />
+                                <input type="checkbox" name="doubleDecker" checked={formData.doubleDecker} onChange={handleCheckboxChange} className="h-5 w-5 rounded bg-fann-charcoal border-fann-border text-fann-teal focus:ring-fann-teal" />
                                 <span>Double-Decker?</span>
                             </label>
                             <label className="flex items-center gap-3 cursor-pointer">
-                                <input type="checkbox" name="hangingStructure" checked={formData.hangingStructure} onChange={handleCheckboxChange} className="h-5 w-5 rounded bg-gray-700 border-gray-600 text-fann-teal focus:ring-fann-teal" />
+                                <input type="checkbox" name="hangingStructure" checked={formData.hangingStructure} onChange={handleCheckboxChange} className="h-5 w-5 rounded bg-fann-charcoal border-fann-border text-fann-teal focus:ring-fann-teal" />
                                 <span>Hanging Structure?</span>
                             </label>
                         </div>
@@ -472,11 +492,11 @@ const ExhibitionStudioPage: React.FC = () => {
                 return (
                      <div className="space-y-6">
                         <h2 className="text-2xl font-serif text-white mb-4">Step 3: Functionality & Features</h2>
-                        <p className="text-gray-400 text-sm">Select all the features you require for your stand.</p>
+                        <p className="text-fann-light-gray text-sm">Select all the features you require for your stand.</p>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                             {functionalityOptions.map(item => (
-                                <button type="button" key={item} onClick={() => handleFunctionalityChange(item)} className={`p-3 rounded-lg border-2 text-left text-sm transition-colors flex items-center gap-2 ${formData.functionality.includes(item) ? 'border-fann-teal bg-fann-teal/10' : 'border-gray-700 hover:border-fann-teal/50'}`}>
-                                    <div className={`w-4 h-4 rounded-sm flex-shrink-0 border-2 ${formData.functionality.includes(item) ? 'bg-fann-teal border-fann-teal' : 'border-gray-500'}`}/>
+                                <button type="button" key={item} onClick={() => handleFunctionalityChange(item)} className={`p-3 rounded-lg border-2 text-left text-sm transition-colors flex items-center gap-2 ${formData.functionality.includes(item) ? 'border-fann-teal bg-fann-teal/10' : 'border-fann-border hover:border-fann-teal/50'}`}>
+                                    <div className={`w-4 h-4 rounded-sm flex-shrink-0 border-2 ${formData.functionality.includes(item) ? 'bg-fann-teal border-fann-teal' : 'border-fann-light-gray'}`}/>
                                     <span>{item}</span>
                                 </button>
                             ))}
@@ -489,12 +509,12 @@ const ExhibitionStudioPage: React.FC = () => {
                         <h2 className="text-2xl font-serif text-white mb-4">Step 4: Branding & Style</h2>
                         <div className="grid md:grid-cols-2 gap-8 items-start">
                             <div>
-                                <label className="block text-sm font-medium text-gray-400 mb-2">Upload Your Logo (Vector Preferred)</label>
-                                <div onClick={() => fileInputRef.current?.click()} className="h-48 w-full bg-fann-charcoal border-2 border-dashed border-gray-600 rounded-lg flex items-center justify-center cursor-pointer hover:border-fann-gold transition-colors">
+                                <label className="block text-sm font-medium text-fann-light-gray mb-2">Upload Your Logo (Vector Preferred)</label>
+                                <div onClick={() => fileInputRef.current?.click()} className="h-48 w-full bg-fann-charcoal border-2 border-dashed border-fann-border rounded-lg flex items-center justify-center cursor-pointer hover:border-fann-gold transition-colors">
                                     {formData.logoPreview ? (
                                         <img src={formData.logoPreview} alt="Logo Preview" className="max-h-full max-w-full object-contain p-4" />
                                     ) : (
-                                        <div className="text-center text-gray-500">
+                                        <div className="text-center text-fann-light-gray">
                                             <Upload className="mx-auto w-8 h-8 mb-2" />
                                             <p>Click to upload</p>
                                         </div>
@@ -504,27 +524,27 @@ const ExhibitionStudioPage: React.FC = () => {
                             </div>
                             <div className="space-y-4">
                                 <div>
-                                    <label htmlFor="brandColors" className="block text-sm font-medium text-gray-400 mb-2">Primary Brand Colors</label>
-                                    <input type="text" id="brandColors" name="brandColors" value={formData.brandColors} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" placeholder="e.g., #0A192F, Fann Gold, White" />
+                                    <label htmlFor="brandColors" className="block text-sm font-medium text-fann-light-gray mb-2">Primary Brand Colors</label>
+                                    <input type="text" id="brandColors" name="brandColors" value={formData.brandColors} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" placeholder="e.g., #0A192F, Fann Gold, White" />
                                 </div>
                                  <div>
-                                    <label className="block text-sm font-medium text-gray-400 mb-2">Suggested from Logo</label>
+                                    <label className="block text-sm font-medium text-fann-light-gray mb-2">Suggested from Logo</label>
                                     {isExtractingColors ? (
-                                        <div className="flex items-center gap-2 text-sm text-gray-400"><Loader2 className="w-4 h-4 animate-spin"/>Analyzing...</div>
+                                        <div className="flex items-center gap-2 text-sm text-fann-light-gray"><Loader2 className="w-4 h-4 animate-spin"/>Analyzing...</div>
                                     ) : suggestedColors.length > 0 ? (
                                         <div className="flex flex-wrap gap-2">
                                             {suggestedColors.map(color => (
-                                                <button type="button" key={color} onClick={() => addSuggestedColor(color)} className="px-3 py-1 bg-gray-700 rounded-full text-xs hover:bg-fann-teal transition-colors">{color}</button>
+                                                <button type="button" key={color} onClick={() => addSuggestedColor(color)} className="px-3 py-1 bg-fann-charcoal rounded-full text-xs hover:bg-fann-teal transition-colors">{color}</button>
                                             ))}
                                         </div>
-                                    ) : <p className="text-xs text-gray-500">Upload a logo to see suggestions.</p>}
+                                    ) : <p className="text-xs text-fann-light-gray">Upload a logo to see suggestions.</p>}
                                 </div>
                             </div>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-400 mb-2">Design Style</label>
+                            <label className="block text-sm font-medium text-fann-light-gray mb-2">Design Style</label>
                             {formData.eventStyleDescription && (
-                                 <motion.div initial={{opacity:0, y: -10}} animate={{opacity:1, y:0}} className="bg-fann-charcoal/50 p-3 rounded-lg text-sm text-gray-300 mb-3 border-l-2 border-fann-teal">
+                                 <motion.div initial={{opacity:0, y: -10}} animate={{opacity:1, y:0}} className="bg-fann-charcoal/50 p-3 rounded-lg text-sm text-fann-cream mb-3 border-l-2 border-fann-teal">
                                     <strong>AI Suggestion for {formData.eventName}:</strong> {formData.eventStyleDescription}
                                 </motion.div>
                             )}
@@ -544,18 +564,18 @@ const ExhibitionStudioPage: React.FC = () => {
                  return (
                     <div className="space-y-6 max-w-md mx-auto">
                         <h2 className="text-2xl font-serif text-white text-center">Step 5: Your Details</h2>
-                        <p className="text-center text-gray-400 text-sm">We'll use this to send you the generated concepts and proposal.</p>
+                        <p className="text-center text-fann-light-gray text-sm">We'll use this to send you the generated concepts and proposal.</p>
                         <div>
-                            <label htmlFor="userName" className="block text-sm font-medium text-gray-400 mb-1">Full Name</label>
-                            <input type="text" id="userName" name="userName" value={formData.userName} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" />
+                            <label htmlFor="userName" className="block text-sm font-medium text-fann-light-gray mb-1">Full Name</label>
+                            <input type="text" id="userName" name="userName" value={formData.userName} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" />
                         </div>
                         <div>
-                            <label htmlFor="userEmail" className="block text-sm font-medium text-gray-400 mb-1">Email Address</label>
-                            <input type="email" id="userEmail" name="userEmail" value={formData.userEmail} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" />
+                            <label htmlFor="userEmail" className="block text-sm font-medium text-fann-light-gray mb-1">Email Address</label>
+                            <input type="email" id="userEmail" name="userEmail" value={formData.userEmail} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" />
                         </div>
                         <div>
-                            <label htmlFor="userMobile" className="block text-sm font-medium text-gray-400 mb-1">Mobile Number</label>
-                            <input type="tel" id="userMobile" name="userMobile" value={formData.userMobile} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" />
+                            <label htmlFor="userMobile" className="block text-sm font-medium text-fann-light-gray mb-1">Mobile Number</label>
+                            <input type="tel" id="userMobile" name="userMobile" value={formData.userMobile} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" />
                         </div>
                     </div>
                 );
@@ -568,7 +588,7 @@ const ExhibitionStudioPage: React.FC = () => {
             <div className="min-h-screen flex flex-col justify-center items-center text-center p-4">
                 <Loader2 className="w-16 h-16 text-fann-gold animate-spin" />
                 <h2 className="text-3xl font-serif text-white mt-6">Crafting Your Vision...</h2>
-                <p className="text-gray-400 mt-2 max-w-sm">Our AI is assembling architectural elements, materials, and lighting to bring your concept to life. This may take a few moments.</p>
+                <p className="text-fann-light-gray mt-2 max-w-sm">Our AI is assembling architectural elements, materials, and lighting to bring your concept to life. This may take a few moments.</p>
             </div>
         );
     }
@@ -579,15 +599,15 @@ const ExhibitionStudioPage: React.FC = () => {
                 <div className="min-h-screen flex flex-col justify-center items-center text-center p-4">
                     <CheckCircle className="w-20 h-20 text-fann-teal mb-6" />
                     <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Thank You!</h1>
-                    <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
+                    <p className="text-xl text-fann-cream max-w-2xl mx-auto mb-8">
                         Your selection has been received. Our team is now preparing a detailed proposal which includes additional 3D views, a full quotation, and material specifications.
                     </p>
-                    <p className="text-lg text-gray-400">
+                    <p className="text-lg text-fann-light-gray">
                         You will receive the proposal at <strong>{formData.userEmail}</strong> shortly.
                     </p>
                      {selectedImage !== null && generatedImages[selectedImage] && (
                         <div className="mt-8 max-w-lg w-full">
-                            <p className="text-sm text-gray-500 mb-2">Your Selected Concept:</p>
+                            <p className="text-sm text-fann-light-gray mb-2">Your Selected Concept:</p>
                             <img src={generatedImages[selectedImage]} alt="Selected Concept" className="rounded-lg shadow-2xl w-full h-auto object-cover" />
                         </div>
                     )}
@@ -604,16 +624,16 @@ const ExhibitionStudioPage: React.FC = () => {
                         <div className="text-center mb-12">
                             <Sparkles className="mx-auto h-16 w-16 text-fann-gold" />
                             <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Your AI Concepts Are Ready</h1>
-                            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+                            <p className="text-xl text-fann-cream max-w-3xl mx-auto">
                                 We've generated a 3D model and several 2D concepts. Choose your favorite 2D visual to receive a detailed proposal.
                             </p>
                         </div>
                         
                          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                              <div className="lg:col-span-3 space-y-8">
-                                <div className="bg-black/20 p-6 rounded-lg">
+                                <div className="bg-fann-charcoal-light p-6 rounded-lg">
                                     <h3 className="text-2xl font-serif text-fann-gold mb-4 flex items-center gap-3"><View size={28} /> Interactive 3D Preview</h3>
-                                    <p className="text-gray-400 mb-4 text-sm max-w-2xl">Rotate and zoom to inspect the generated 3D model of your stand concept. Note: This is a representation of the structure; materials and colors are best viewed in the 2D concepts below.</p>
+                                    <p className="text-fann-light-gray mb-4 text-sm max-w-2xl">Rotate and zoom to inspect the generated 3D model of your stand concept. Note: This is a representation of the structure; materials and colors are best viewed in the 2D concepts below.</p>
                                     <div className="h-96 rounded-lg overflow-hidden bg-fann-charcoal">
                                         <model-viewer
                                             src="https://cdn.glitch.global/6a80426b-692c-4386-b48d-64d5a2305370/exhibition_stand.glb?v=1716498858169"
@@ -646,7 +666,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                 </div>
                              </div>
 
-                             <div className="lg:col-span-1 bg-black/20 p-6 rounded-lg self-start sticky top-24">
+                             <div className="lg:col-span-1 bg-fann-charcoal-light p-6 rounded-lg self-start sticky top-24">
                                 <h3 className="text-2xl font-serif text-fann-gold mb-4">Project Summary</h3>
                                 <div className="space-y-3 text-sm">
                                     <p><strong>Event:</strong> {formData.eventName}</p>
@@ -654,17 +674,17 @@ const ExhibitionStudioPage: React.FC = () => {
                                     <p><strong>AI Style:</strong> {formData.style}</p>
                                     <p><strong>Layout:</strong> {formData.standLayout}</p>
                                     <p><strong>Type:</strong> {formData.standType}, {formData.standHeight} height</p>
-                                     <div className="pt-4 mt-4 border-t border-gray-700">
+                                     <div className="pt-4 mt-4 border-t border-fann-border">
                                         <motion.button
                                             onClick={sendProposalRequest}
                                             disabled={selectedImage === null || isSending}
-                                            className="w-full bg-fann-teal text-white font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 disabled:bg-gray-600 disabled:cursor-not-allowed"
+                                            className="w-full bg-fann-teal text-white font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed"
                                             whileHover={{ scale: selectedImage !== null && !isSending ? 1.05 : 1 }}
                                             whileTap={{ scale: selectedImage !== null && !isSending ? 0.95 : 1 }}
                                         >
                                             {isSending ? <><Loader2 className="w-5 h-5 animate-spin" /> Sending...</> : "Request Detailed Proposal"}
                                         </motion.button>
-                                        {selectedImage === null && <p className="text-xs text-center text-gray-400 mt-2">Please select a 2D design to proceed.</p>}
+                                        {selectedImage === null && <p className="text-xs text-center text-fann-light-gray mt-2">Please select a 2D design to proceed.</p>}
                                     </div>
                                 </div>
                              </div>
@@ -681,7 +701,7 @@ const ExhibitionStudioPage: React.FC = () => {
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
                     <div className="text-center mb-8">
                         <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">Exhibition Stand Studio</h1>
-                        <p className="text-xl text-gray-300">Follow the steps to create a bespoke exhibition stand concept.</p>
+                        <p className="text-xl text-fann-cream">Follow the steps to create a bespoke exhibition stand concept.</p>
                     </div>
 
                     {/* Progress Bar */}
@@ -689,14 +709,14 @@ const ExhibitionStudioPage: React.FC = () => {
                         <div className="flex justify-between mb-2">
                             {steps.map((step, index) => (
                                 <div key={step.name} className="flex flex-col items-center" style={{ width: `${100 / steps.length}%` }}>
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${currentStep >= index ? 'bg-fann-gold text-fann-charcoal' : 'bg-gray-700 text-gray-400'}`}>
+                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${currentStep >= index ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-charcoal-light text-fann-light-gray'}`}>
                                         <step.icon size={16} />
                                     </div>
-                                    <span className={`text-xs mt-1 text-center ${currentStep >= index ? 'text-white' : 'text-gray-500'}`}>{step.name}</span>
+                                    <span className={`text-xs mt-1 text-center ${currentStep >= index ? 'text-white' : 'text-fann-light-gray'}`}>{step.name}</span>
                                 </div>
                             ))}
                         </div>
-                        <div className="bg-gray-700 rounded-full h-1.5">
+                        <div className="bg-fann-charcoal-light rounded-full h-1.5">
                             <motion.div 
                                 className="bg-fann-gold h-1.5 rounded-full"
                                 initial={{ width: 0 }}
@@ -706,7 +726,7 @@ const ExhibitionStudioPage: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="bg-black/20 p-8 rounded-lg">
+                    <div className="bg-fann-charcoal-light p-8 rounded-lg">
                         <form onSubmit={handleSubmit}>
                             <AnimatePresence mode="wait">
                                 <motion.div
@@ -725,19 +745,38 @@ const ExhibitionStudioPage: React.FC = () => {
                                     <motion.div 
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-center gap-3 mb-4"
+                                        className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-start gap-3 mb-4"
                                     >
-                                        <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                                        <span>{error}</span>
+                                        <div className="flex-shrink-0 pt-0.5"><AlertCircle className="w-5 h-5" /></div>
+                                        <div className="flex-grow">
+                                            <span>{error}</span>
+                                            {isKeyError && (
+                                                <div className="mt-2 flex items-center gap-4">
+                                                    <button
+                                                        type="button"
+                                                        onClick={async () => {
+                                                            await window.aistudio.openSelectKey();
+                                                            clearApiKeyError();
+                                                        }}
+                                                        className="bg-fann-gold text-fann-charcoal text-xs font-bold py-1 px-3 rounded-full hover:opacity-90"
+                                                    >
+                                                        Select API Key
+                                                    </button>
+                                                    <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer" className="text-xs text-fann-light-gray hover:underline">
+                                                        Learn about billing
+                                                    </a>
+                                                </div>
+                                            )}
+                                        </div>
                                     </motion.div>
                                 )}
                                 <div className="flex justify-between items-center">
-                                    <motion.button type="button" onClick={prevStep} disabled={currentStep === 0 || isNavigating} className="flex items-center gap-2 text-fann-gold disabled:text-gray-500 disabled:cursor-not-allowed" whileHover={{scale: currentStep !== 0 ? 1.05 : 1}} whileTap={{scale: currentStep !== 0 ? 0.95 : 1}}>
+                                    <motion.button type="button" onClick={prevStep} disabled={currentStep === 0 || isNavigating} className="flex items-center gap-2 text-fann-gold disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: currentStep !== 0 ? 1.05 : 1}} whileTap={{scale: currentStep !== 0 ? 0.95 : 1}}>
                                         <ArrowLeft size={16} /> Back
                                     </motion.button>
                                     
                                     {currentStep < steps.length - 1 ? (
-                                        <motion.button type="button" onClick={nextStep} disabled={isNavigating} className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full w-32 disabled:bg-gray-600" whileHover={{scale: !isNavigating ? 1.05 : 1}} whileTap={{scale: !isNavigating ? 0.95 : 1}}>
+                                        <motion.button type="button" onClick={nextStep} disabled={isNavigating} className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full w-32 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray" whileHover={{scale: !isNavigating ? 1.05 : 1}} whileTap={{scale: !isNavigating ? 0.95 : 1}}>
                                             {isNavigating ? <Loader2 className="w-5 h-5 mx-auto animate-spin" /> : 'Next'}
                                         </motion.button>
                                     ) : (

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Loader2, Sparkles, AlertCircle, Video, Download } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
+import { useApiKey } from '../context/ApiKeyProvider';
 
 const videoStyles = [
     "A high-energy, fast-cut promotional video for a major tech conference like GITEX.",
@@ -18,12 +19,14 @@ const VideoStudioPage: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [videoUrl, setVideoUrl] = useState<string | null>(null);
     const [statusMessage, setStatusMessage] = useState<string>('');
-    const [error, setError] = useState<string | null>(null);
+    const { ensureApiKey, handleApiError, error, isKeyError, clearError } = useApiKey();
     
     const handleGenerateVideo = async () => {
+        clearError();
+        if (!await ensureApiKey()) return;
+        
         setIsLoading(true);
         setVideoUrl(null);
-        setError(null);
         setStatusMessage("Initiating video generation... This can take several minutes.");
 
         try {
@@ -46,7 +49,7 @@ const VideoStudioPage: React.FC = () => {
             setVideoUrl(objectUrl);
 
         } catch (e: any) {
-            setError(e.message);
+            handleApiError(e);
         } finally {
             setIsLoading(false);
             setStatusMessage('');
@@ -69,18 +72,18 @@ const VideoStudioPage: React.FC = () => {
                         <motion.div 
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="bg-black/20 p-8 rounded-lg"
+                            className="bg-fann-charcoal-light p-8 rounded-lg"
                         >
                             <div className="space-y-6">
                                 <div>
-                                    <label htmlFor="style-select" className="block text-sm font-medium text-gray-400 mb-2">
+                                    <label htmlFor="style-select" className="block text-sm font-medium text-fann-light-gray mb-2">
                                         Base Style
                                     </label>
                                     <select
                                         id="style-select"
                                         value={selectedStyle}
                                         onChange={(e) => setSelectedStyle(e.target.value)}
-                                        className="w-full bg-fann-charcoal border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fann-gold"
+                                        className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fann-gold"
                                     >
                                         {videoStyles.map((style, index) => (
                                             <option key={index} value={style}>{style.split(' for ')[0]}</option>
@@ -88,7 +91,7 @@ const VideoStudioPage: React.FC = () => {
                                     </select>
                                 </div>
                                 <div>
-                                    <label htmlFor="prompt-input" className="block text-sm font-medium text-gray-400 mb-2">
+                                    <label htmlFor="prompt-input" className="block text-sm font-medium text-fann-light-gray mb-2">
                                         Describe Your Vision (Optional)
                                     </label>
                                     <textarea
@@ -97,7 +100,7 @@ const VideoStudioPage: React.FC = () => {
                                         value={prompt}
                                         onChange={(e) => setPrompt(e.target.value)}
                                         placeholder="e.g., featuring a futuristic city skyline, with neon holograms of our logo."
-                                        className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fann-gold"
+                                        className="w-full bg-fann-charcoal border border-fann-border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fann-gold"
                                     />
                                 </div>
                             </div>
@@ -105,10 +108,28 @@ const VideoStudioPage: React.FC = () => {
                                 <motion.div 
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-center my-4 flex items-center justify-center gap-3"
+                                    className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-start gap-3 my-4"
                                 >
-                                    <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                                    <span>{error}</span>
+                                     <div className="flex-shrink-0 pt-0.5"><AlertCircle className="w-5 h-5" /></div>
+                                     <div className="flex-grow">
+                                        <span>{error}</span>
+                                        {isKeyError && (
+                                            <div className="mt-2 flex items-center gap-4">
+                                                <button
+                                                    onClick={async () => {
+                                                        await window.aistudio.openSelectKey();
+                                                        clearError();
+                                                    }}
+                                                    className="bg-fann-gold text-fann-charcoal text-xs font-bold py-1 px-3 rounded-full hover:opacity-90"
+                                                >
+                                                    Select API Key
+                                                </button>
+                                                <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer" className="text-xs text-fann-light-gray hover:underline">
+                                                    Learn about billing
+                                                </a>
+                                            </div>
+                                        )}
+                                     </div>
                                 </motion.div>
                             )}
                             <div className="mt-8">
@@ -120,7 +141,7 @@ const VideoStudioPage: React.FC = () => {
                                 >
                                     <Sparkles size={20} /> Generate Video
                                 </motion.button>
-                                <p className="text-xs text-gray-500 text-center mt-3">Video generation can take several minutes. Please be patient.</p>
+                                <p className="text-xs text-fann-light-gray text-center mt-3">Video generation can take several minutes. Please be patient.</p>
                             </div>
                         </motion.div>
                     )}
@@ -133,7 +154,7 @@ const VideoStudioPage: React.FC = () => {
                         >
                             <Loader2 className="w-16 h-16 text-fann-gold animate-spin mx-auto" />
                             <h2 className="text-3xl font-serif text-white mt-6">Generating Video...</h2>
-                            <p className="text-gray-400 mt-2">{statusMessage}</p>
+                            <p className="text-fann-light-gray mt-2">{statusMessage}</p>
                         </motion.div>
                     )}
 
@@ -147,7 +168,7 @@ const VideoStudioPage: React.FC = () => {
                                 <a href={videoUrl} download="fann-ai-video-concept.mp4" className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full flex items-center justify-center gap-2">
                                     <Download size={20} /> Download Video
                                 </a>
-                                <button onClick={() => { setVideoUrl(null); setPrompt(''); }} className="border-2 border-fann-gold text-fann-gold font-bold py-3 px-8 rounded-full">
+                                <button onClick={() => { setVideoUrl(null); setPrompt(''); clearError(); }} className="border-2 border-fann-gold text-fann-gold font-bold py-3 px-8 rounded-full">
                                     Generate Another
                                 </button>
                             </div>

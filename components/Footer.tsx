@@ -4,12 +4,12 @@ import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-black/50 text-gray-300 py-12">
+    <footer className="bg-fann-charcoal-light text-fann-cream py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <h3 className="text-2xl font-serif font-bold text-fann-gold mb-4">FANN</h3>
-            <p className="text-sm text-gray-400">Transforming visions into unforgettable experiences. Dubai's premier exhibition, event, and interior design innovators.</p>
+            <p className="text-sm text-fann-light-gray">Transforming visions into unforgettable experiences. Dubai's premier exhibition, event, and interior design innovators.</p>
           </div>
           <div>
             <h4 className="font-bold text-white uppercase tracking-wider mb-4">Quick Links</h4>
@@ -31,14 +31,14 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="font-bold text-white uppercase tracking-wider mb-4">Follow Us</h4>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-fann-gold transition-colors"><Facebook /></a>
-              <a href="#" className="text-gray-400 hover:text-fann-gold transition-colors"><Instagram /></a>
-              <a href="#" className="text-gray-400 hover:text-fann-gold transition-colors"><Linkedin /></a>
-              <a href="#" className="text-gray-400 hover:text-fann-gold transition-colors"><Twitter /></a>
+              <a href="#" className="text-fann-light-gray hover:text-fann-gold transition-colors"><Facebook /></a>
+              <a href="#" className="text-fann-light-gray hover:text-fann-gold transition-colors"><Instagram /></a>
+              <a href="#" className="text-fann-light-gray hover:text-fann-gold transition-colors"><Linkedin /></a>
+              <a href="#" className="text-fann-light-gray hover:text-fann-gold transition-colors"><Twitter /></a>
             </div>
           </div>
         </div>
-        <div className="border-t border-gray-800 mt-8 pt-6 text-center text-sm text-gray-500">
+        <div className="border-t border-fann-charcoal mt-8 pt-6 text-center text-sm text-fann-light-gray">
           <p>&copy; {new Date().getFullYear()} FANN. All Rights Reserved. | <a href="#" className="hover:text-fann-gold">Privacy Policy</a></p>
         </div>
       </div>

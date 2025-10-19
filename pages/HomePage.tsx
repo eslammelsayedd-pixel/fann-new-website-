@@ -77,7 +77,7 @@ const HeroSection: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
-                    className="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-gray-300"
+                    className="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-fann-cream"
                 >
                     Premier Exhibition, Event & Interior Design Innovators
                 </motion.p>
@@ -122,13 +122,13 @@ const ServiceCard: React.FC<{ icon: React.ReactNode; title: string; description:
     <motion.div 
         whileHover="hover"
         initial="rest"
-        className="relative p-8 bg-black/30 rounded-lg overflow-hidden border border-white/10"
+        className="relative p-8 bg-fann-charcoal-light rounded-lg overflow-hidden border border-fann-border"
     >
         <motion.div className="absolute inset-0 bg-gradient-to-br from-fann-teal/20 to-transparent opacity-0" variants={{ hover: { opacity: 1 }, rest: { opacity: 0 } }} transition={{ duration: 0.5 }} />
         <div className="relative z-10">
             <div className="text-fann-gold mb-4">{icon}</div>
             <h3 className="text-2xl font-serif font-bold mb-2">{title}</h3>
-            <p className="text-gray-400 mb-6">{description}</p>
+            <p className="text-fann-light-gray mb-6">{description}</p>
             <Link to={link} className="font-semibold text-fann-gold hover:underline">Learn More &rarr;</Link>
         </div>
     </motion.div>
@@ -153,9 +153,9 @@ const HomePage: React.FC = () => {
                     </section>
 
                     {/* AI Design Studio Section */}
-                    <section className="mt-24 text-center bg-black/20 rounded-lg py-16 px-8">
+                    <section className="mt-24 text-center bg-fann-charcoal-light rounded-lg py-16 px-8">
                         <h2 className="text-4xl md:text-5xl font-serif font-bold text-fann-gold mb-4">Visualize Your Vision in Minutes</h2>
-                        <p className="max-w-2xl mx-auto text-gray-300 mb-8">Our revolutionary AI Design Studio allows you to configure your exhibition stand, see it in 3D, and get instant pricing. Innovation at your fingertips.</p>
+                        <p className="max-w-2xl mx-auto text-fann-cream mb-8">Our revolutionary AI Design Studio allows you to configure your exhibition stand, see it in 3D, and get instant pricing. Innovation at your fingertips.</p>
                         <div className="mb-8">
                            <img src="https://images.unsplash.com/photo-1677708511494-1b157aa7a104?w=1000&q=80" alt="AI Design Studio Preview" className="rounded-lg shadow-2xl mx-auto" />
                         </div>
@@ -181,7 +181,7 @@ const HomePage: React.FC = () => {
                                     <div className="absolute bottom-0 left-0 p-6">
                                         <span className="text-sm bg-fann-gold text-fann-charcoal font-bold py-1 px-2 rounded">{project.service}</span>
                                         <h3 className="text-xl font-bold mt-2 text-white">{project.title}</h3>
-                                        <p className="text-gray-300">{project.client}</p>
+                                        <p className="text-fann-cream">{project.client}</p>
                                     </div>
                                 </div>
                             ))}
@@ -202,11 +202,11 @@ const HomePage: React.FC = () => {
                     <section className="mt-24 text-center">
                         <h2 className="text-4xl md:text-5xl font-serif font-bold mb-12">What Our Clients Say</h2>
                         <div className="relative max-w-3xl mx-auto">
-                            <div className="bg-black/20 p-8 rounded-lg">
+                            <div className="bg-fann-charcoal-light p-8 rounded-lg">
                                 <Star className="text-fann-gold mx-auto mb-4" size={32} />
-                                <p className="text-xl italic text-gray-300 mb-6">"{testimonials[0].quote}"</p>
+                                <p className="text-xl italic text-fann-cream mb-6">"{testimonials[0].quote}"</p>
                                 <h4 className="font-bold text-white text-lg">{testimonials[0].client}</h4>
-                                <p className="text-gray-400">{testimonials[0].company}</p>
+                                <p className="text-fann-light-gray">{testimonials[0].company}</p>
                             </div>
                         </div>
                     </section>
@@ -215,7 +215,7 @@ const HomePage: React.FC = () => {
                     <section className="mt-24 text-center bg-gradient-to-r from-fann-teal to-fann-gold p-1 rounded-lg">
                          <div className="bg-fann-charcoal rounded-lg py-16 px-8">
                             <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4">Ready to Create Something Extraordinary?</h2>
-                            <p className="max-w-2xl mx-auto text-gray-300 mb-8">Let's discuss how we can bring your vision to life. Schedule a complimentary consultation with our experts today.</p>
+                            <p className="max-w-2xl mx-auto text-fann-cream mb-8">Let's discuss how we can bring your vision to life. Schedule a complimentary consultation with our experts today.</p>
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                                <Link to="/contact">
                                   <motion.button 

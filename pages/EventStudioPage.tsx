@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Loader2, Sparkles, Upload, ArrowLeft, Users, Palette, ListChecks, Crown, User, CheckCircle, AlertCircle } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
+import { useApiKey } from '../context/ApiKeyProvider';
 
 // --- Helper Functions & Types ---
 interface FormData {
@@ -74,7 +75,6 @@ const EventStudioPage: React.FC = () => {
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const [isLoading, setIsLoading] = useState(false);
     const [generatedImages, setGeneratedImages] = useState<string[]>([]);
-    const [error, setError] = useState<string | null>(null);
     const [isFinished, setIsFinished] = useState(false);
     const [isExtractingColors, setIsExtractingColors] = useState(false);
     const [suggestedColors, setSuggestedColors] = useState<string[]>([]);
@@ -82,7 +82,20 @@ const EventStudioPage: React.FC = () => {
     const [isProposalRequested, setIsProposalRequested] = useState(false);
     const [isSending, setIsSending] = useState(false);
     
+    const { ensureApiKey, handleApiError, error: apiKeyError, isKeyError, clearError: clearApiKeyError } = useApiKey();
+    const [localError, setLocalError] = useState<string | null>(null);
+
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const setError = (message: string | null) => {
+        clearApiKeyError();
+        setLocalError(message);
+    };
+
+    const clearAllErrors = () => {
+        setLocalError(null);
+        clearApiKeyError();
+    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -99,9 +112,11 @@ const EventStudioPage: React.FC = () => {
     };
 
     const extractColorsFromLogo = async (file: File) => {
+        clearAllErrors();
+        if (!await ensureApiKey()) return;
+
         setIsExtractingColors(true);
         setSuggestedColors([]);
-        setError(null);
         
         try {
             const base64Data = await blobToBase64(file);
@@ -120,7 +135,7 @@ const EventStudioPage: React.FC = () => {
             setSuggestedColors(data.colors || []);
         } catch (e: any) {
             console.error("Error extracting colors:", e);
-            setError(e.message);
+            handleApiError(e);
         } finally {
             setIsExtractingColors(false);
         }
@@ -148,7 +163,7 @@ const EventStudioPage: React.FC = () => {
     };
 
     const validateStep = (step: number): boolean => {
-        setError(null);
+        clearAllErrors();
         switch(step) {
             case 0:
                 if (formData.eventType === '') {
@@ -208,13 +223,15 @@ const EventStudioPage: React.FC = () => {
     };
 
     const prevStep = () => {
-        setError(null);
+        clearAllErrors();
         setCurrentStep(prev => Math.max(prev - 1, 0));
     };
 
     const generateDesign = async () => {
+        clearAllErrors();
+        if (!await ensureApiKey()) return;
+
         setIsLoading(true);
-        setError(null);
         setGeneratedImages([]);
 
         if (!formData.logo) {
@@ -260,7 +277,7 @@ const EventStudioPage: React.FC = () => {
             setIsFinished(true);
             
         } catch (e: any) {
-            setError(e.message);
+            handleApiError(e);
         } finally {
             setIsLoading(false);
         }
@@ -282,6 +299,8 @@ const EventStudioPage: React.FC = () => {
         setIsProposalRequested(true);
     };
 
+    const error = apiKeyError || localError;
+
     const renderStepContent = () => {
         switch (currentStep) {
             case 0: // Concept
@@ -289,7 +308,7 @@ const EventStudioPage: React.FC = () => {
                     <div className="space-y-6">
                         <h2 className="text-2xl font-serif text-white mb-4">Step 1: The Concept</h2>
                         <div>
-                            <label className="block text-sm font-medium text-gray-400 mb-2">Event Type</label>
+                            <label className="block text-sm font-medium text-fann-light-gray mb-2">Event Type</label>
                             <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
                                 {eventTypes.map(type => (
                                     <div key={type.name} onClick={() => setFormData(p => ({...p, eventType: type.name}))} className={`relative h-24 rounded-lg overflow-hidden cursor-pointer border-2 ${formData.eventType === type.name ? 'border-fann-gold' : 'border-transparent'}`}>
@@ -301,8 +320,8 @@ const EventStudioPage: React.FC = () => {
                             </div>
                         </div>
                         <div>
-                             <label htmlFor="theme" className="block text-sm font-medium text-gray-400 mb-2">Event Theme or Core Message</label>
-                            <input id="theme" name="theme" type="text" value={formData.theme} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" placeholder="e.g., 'Future Horizons', 'A Night of Stars', 'Innovate & Elevate'" />
+                             <label htmlFor="theme" className="block text-sm font-medium text-fann-light-gray mb-2">Event Theme or Core Message</label>
+                            <input id="theme" name="theme" type="text" value={formData.theme} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" placeholder="e.g., 'Future Horizons', 'A Night of Stars', 'Innovate & Elevate'" />
                         </div>
                     </div>
                 );
@@ -311,8 +330,8 @@ const EventStudioPage: React.FC = () => {
                     <div className="space-y-6">
                         <h2 className="text-2xl font-serif text-white mb-4">Step 2: The Scale</h2>
                         <div>
-                            <label htmlFor="venueType" className="block text-sm font-medium text-gray-400 mb-2">Venue Type</label>
-                            <select id="venueType" name="venueType" value={formData.venueType} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2">
+                            <label htmlFor="venueType" className="block text-sm font-medium text-fann-light-gray mb-2">Venue Type</label>
+                            <select id="venueType" name="venueType" value={formData.venueType} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2">
                                 <option value="" disabled>Select a venue type...</option>
                                 <option>Hotel Ballroom</option>
                                 <option>Conference Center Hall</option>
@@ -322,8 +341,8 @@ const EventStudioPage: React.FC = () => {
                             </select>
                         </div>
                         <div>
-                            <label htmlFor="guestCount" className="block text-sm font-medium text-gray-400 mb-2">Expected Number of Guests: {formData.guestCount}</label>
-                            <input id="guestCount" name="guestCount" type="range" min="50" max="2000" step="50" value={formData.guestCount} onChange={handleInputChange} className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-fann-gold" />
+                            <label htmlFor="guestCount" className="block text-sm font-medium text-fann-light-gray mb-2">Expected Number of Guests: {formData.guestCount}</label>
+                            <input id="guestCount" name="guestCount" type="range" min="50" max="2000" step="50" value={formData.guestCount} onChange={handleInputChange} className="w-full h-2 bg-fann-charcoal-light rounded-lg appearance-none cursor-pointer accent-fann-gold" />
                         </div>
                     </div>
                 );
@@ -331,11 +350,11 @@ const EventStudioPage: React.FC = () => {
                 return (
                      <div className="space-y-6">
                         <h2 className="text-2xl font-serif text-white mb-4">Step 3: Key Elements</h2>
-                        <p className="text-gray-400 text-sm">Select all the features you require for your event.</p>
+                        <p className="text-fann-light-gray text-sm">Select all the features you require for your event.</p>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                             {eventElementsOptions.map(item => (
-                                <button type="button" key={item} onClick={() => handleElementsChange(item)} className={`p-3 rounded-lg border-2 text-left text-sm transition-colors flex items-center gap-2 ${formData.eventElements.includes(item) ? 'border-fann-teal bg-fann-teal/10' : 'border-gray-700 hover:border-fann-teal/50'}`}>
-                                    <div className={`w-4 h-4 rounded-sm flex-shrink-0 border-2 ${formData.eventElements.includes(item) ? 'bg-fann-teal border-fann-teal' : 'border-gray-500'}`}/>
+                                <button type="button" key={item} onClick={() => handleElementsChange(item)} className={`p-3 rounded-lg border-2 text-left text-sm transition-colors flex items-center gap-2 ${formData.eventElements.includes(item) ? 'border-fann-teal bg-fann-teal/10' : 'border-fann-border hover:border-fann-teal/50'}`}>
+                                    <div className={`w-4 h-4 rounded-sm flex-shrink-0 border-2 ${formData.eventElements.includes(item) ? 'bg-fann-teal border-fann-teal' : 'border-fann-light-gray'}`}/>
                                     <span>{item}</span>
                                 </button>
                             ))}
@@ -348,20 +367,20 @@ const EventStudioPage: React.FC = () => {
                         <h2 className="text-2xl font-serif text-white mb-4">Step 4: Branding</h2>
                         <div className="grid md:grid-cols-2 gap-8 items-start">
                             <div>
-                                <label className="block text-sm font-medium text-gray-400 mb-2">Upload Your Logo (Vector Preferred)</label>
-                                <div onClick={() => fileInputRef.current?.click()} className="h-48 w-full bg-fann-charcoal border-2 border-dashed border-gray-600 rounded-lg flex items-center justify-center cursor-pointer hover:border-fann-gold transition-colors">
-                                    {formData.logoPreview ? <img src={formData.logoPreview} alt="Logo Preview" className="max-h-full max-w-full object-contain p-4" /> : <div className="text-center text-gray-500"><Upload className="mx-auto w-8 h-8 mb-2" /><p>Click to upload</p></div>}
+                                <label className="block text-sm font-medium text-fann-light-gray mb-2">Upload Your Logo (Vector Preferred)</label>
+                                <div onClick={() => fileInputRef.current?.click()} className="h-48 w-full bg-fann-charcoal border-2 border-dashed border-fann-border rounded-lg flex items-center justify-center cursor-pointer hover:border-fann-gold transition-colors">
+                                    {formData.logoPreview ? <img src={formData.logoPreview} alt="Logo Preview" className="max-h-full max-w-full object-contain p-4" /> : <div className="text-center text-fann-light-gray"><Upload className="mx-auto w-8 h-8 mb-2" /><p>Click to upload</p></div>}
                                 </div>
                                 <input type="file" ref={fileInputRef} onChange={handleLogoChange} className="hidden" accept="image/png, image/jpeg, image/svg+xml, .ai, .eps" />
                             </div>
                             <div className="space-y-4">
                                 <div>
-                                    <label htmlFor="brandColors" className="block text-sm font-medium text-gray-400 mb-2">Primary Brand Colors</label>
-                                    <input type="text" id="brandColors" name="brandColors" value={formData.brandColors} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" placeholder="e.g., #0A192F, Fann Gold, White" />
+                                    <label htmlFor="brandColors" className="block text-sm font-medium text-fann-light-gray mb-2">Primary Brand Colors</label>
+                                    <input type="text" id="brandColors" name="brandColors" value={formData.brandColors} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" placeholder="e.g., #0A192F, Fann Gold, White" />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-400 mb-2">Suggested from Logo</label>
-                                    {isExtractingColors ? <div className="flex items-center gap-2 text-sm text-gray-400"><Loader2 className="w-4 h-4 animate-spin"/>Analyzing...</div> : suggestedColors.length > 0 ? <div className="flex flex-wrap gap-2">{suggestedColors.map(color => <button type="button" key={color} onClick={() => addSuggestedColor(color)} className="px-3 py-1 bg-gray-700 rounded-full text-xs hover:bg-fann-teal transition-colors">{color}</button>)}</div> : <p className="text-xs text-gray-500">Upload a logo to see suggestions.</p>}
+                                    <label className="block text-sm font-medium text-fann-light-gray mb-2">Suggested from Logo</label>
+                                    {isExtractingColors ? <div className="flex items-center gap-2 text-sm text-fann-light-gray"><Loader2 className="w-4 h-4 animate-spin"/>Analyzing...</div> : suggestedColors.length > 0 ? <div className="flex flex-wrap gap-2">{suggestedColors.map(color => <button type="button" key={color} onClick={() => addSuggestedColor(color)} className="px-3 py-1 bg-fann-charcoal rounded-full text-xs hover:bg-fann-teal transition-colors">{color}</button>)}</div> : <p className="text-xs text-fann-light-gray">Upload a logo to see suggestions.</p>}
                                 </div>
                             </div>
                         </div>
@@ -371,18 +390,18 @@ const EventStudioPage: React.FC = () => {
                  return (
                     <div className="space-y-6 max-w-md mx-auto">
                         <h2 className="text-2xl font-serif text-white text-center">Step 5: Your Details</h2>
-                        <p className="text-center text-gray-400 text-sm">We'll use this to send you the generated concepts and proposal.</p>
+                        <p className="text-center text-fann-light-gray text-sm">We'll use this to send you the generated concepts and proposal.</p>
                         <div>
-                            <label htmlFor="userName" className="block text-sm font-medium text-gray-400 mb-1">Full Name</label>
-                            <input type="text" id="userName" name="userName" value={formData.userName} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" />
+                            <label htmlFor="userName" className="block text-sm font-medium text-fann-light-gray mb-1">Full Name</label>
+                            <input type="text" id="userName" name="userName" value={formData.userName} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" />
                         </div>
                         <div>
-                            <label htmlFor="userEmail" className="block text-sm font-medium text-gray-400 mb-1">Email Address</label>
-                            <input type="email" id="userEmail" name="userEmail" value={formData.userEmail} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" />
+                            <label htmlFor="userEmail" className="block text-sm font-medium text-fann-light-gray mb-1">Email Address</label>
+                            <input type="email" id="userEmail" name="userEmail" value={formData.userEmail} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" />
                         </div>
                         <div>
-                            <label htmlFor="userMobile" className="block text-sm font-medium text-gray-400 mb-1">Mobile Number</label>
-                            <input type="tel" id="userMobile" name="userMobile" value={formData.userMobile} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" />
+                            <label htmlFor="userMobile" className="block text-sm font-medium text-fann-light-gray mb-1">Mobile Number</label>
+                            <input type="tel" id="userMobile" name="userMobile" value={formData.userMobile} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" />
                         </div>
                     </div>
                 );
@@ -394,7 +413,7 @@ const EventStudioPage: React.FC = () => {
         <div className="min-h-screen flex flex-col justify-center items-center text-center p-4">
             <Loader2 className="w-16 h-16 text-fann-gold animate-spin" />
             <h2 className="text-3xl font-serif text-white mt-6">Imagining Your Event...</h2>
-            <p className="text-gray-400 mt-2 max-w-sm">Our AI is designing the decor, arranging the layout, and setting the mood. This may take a few moments.</p>
+            <p className="text-fann-light-gray mt-2 max-w-sm">Our AI is designing the decor, arranging the layout, and setting the mood. This may take a few moments.</p>
         </div>
     );
     
@@ -403,7 +422,7 @@ const EventStudioPage: React.FC = () => {
             <div className="min-h-screen flex flex-col justify-center items-center text-center p-4">
                 <CheckCircle className="w-20 h-20 text-fann-teal mb-6" />
                 <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Thank You!</h1>
-                <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8">Our team has received your concept selection and will prepare a detailed proposal, which will be sent to <strong>{formData.userEmail}</strong> shortly.</p>
+                <p className="text-xl text-fann-cream max-w-2xl mx-auto mb-8">Our team has received your concept selection and will prepare a detailed proposal, which will be sent to <strong>{formData.userEmail}</strong> shortly.</p>
                 {selectedImage !== null && <img src={generatedImages[selectedImage]} alt="Selected" className="rounded-lg shadow-2xl w-full max-w-lg mt-8" />}
             </div>
         </AnimatedPage>
@@ -416,7 +435,7 @@ const EventStudioPage: React.FC = () => {
                     <div className="text-center mb-12">
                         <Sparkles className="mx-auto h-16 w-16 text-fann-gold" />
                         <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Select Your Favorite Concept</h1>
-                        <p className="text-xl text-gray-300 max-w-3xl mx-auto">Click your preferred design. Our team will then prepare a detailed proposal and quotation for you.</p>
+                        <p className="text-xl text-fann-cream max-w-3xl mx-auto">Click your preferred design. Our team will then prepare a detailed proposal and quotation for you.</p>
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                         <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -426,17 +445,17 @@ const EventStudioPage: React.FC = () => {
                                 </motion.div>
                             ))}
                         </div>
-                        <div className="lg:col-span-1 bg-black/20 p-6 rounded-lg self-start sticky top-24">
+                        <div className="lg:col-span-1 bg-fann-charcoal-light p-6 rounded-lg self-start sticky top-24">
                             <h3 className="text-2xl font-serif text-fann-gold mb-4">Event Summary</h3>
                             <div className="space-y-3 text-sm">
                                 <p><strong>Type:</strong> {formData.eventType}</p>
                                 <p><strong>Theme:</strong> {formData.theme}</p>
                                 <p><strong>Venue:</strong> {formData.venueType}</p>
                                 <p><strong>Guests:</strong> ~{formData.guestCount}</p>
-                                <button onClick={sendProposalRequest} disabled={selectedImage === null || isSending} className="w-full bg-fann-teal text-white font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 disabled:bg-gray-600 mt-4">
+                                <button onClick={sendProposalRequest} disabled={selectedImage === null || isSending} className="w-full bg-fann-teal text-white font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray mt-4">
                                     {isSending ? <><Loader2 className="w-5 h-5 animate-spin" /> Sending...</> : "Request Detailed Proposal"}
                                 </button>
-                                {selectedImage === null && <p className="text-xs text-center text-gray-400 mt-2">Please select a design.</p>}
+                                {selectedImage === null && <p className="text-xs text-center text-fann-light-gray mt-2">Please select a design.</p>}
                             </div>
                         </div>
                     </div>
@@ -451,20 +470,20 @@ const EventStudioPage: React.FC = () => {
                 <div className="container mx-auto px-4 max-w-4xl">
                     <div className="text-center mb-8">
                         <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">Event Concept Studio</h1>
-                        <p className="text-xl text-gray-300">Follow the steps to create a bespoke event concept.</p>
+                        <p className="text-xl text-fann-cream">Follow the steps to create a bespoke event concept.</p>
                     </div>
                     <div className="mb-8">
                         <div className="flex justify-between mb-2">
                             {steps.map((step, index) => (
                                 <div key={step.name} className="flex flex-col items-center w-1/5">
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= index ? 'bg-fann-gold text-fann-charcoal' : 'bg-gray-700 text-gray-400'}`}><step.icon size={16} /></div>
-                                    <span className={`text-xs mt-1 text-center ${currentStep >= index ? 'text-white' : 'text-gray-500'}`}>{step.name}</span>
+                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= index ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-charcoal-light text-fann-light-gray'}`}><step.icon size={16} /></div>
+                                    <span className={`text-xs mt-1 text-center ${currentStep >= index ? 'text-white' : 'text-fann-light-gray'}`}>{step.name}</span>
                                 </div>
                             ))}
                         </div>
-                        <div className="bg-gray-700 rounded-full h-1.5"><motion.div className="bg-fann-gold h-1.5 rounded-full" animate={{ width: `${(currentStep / (steps.length -1)) * 100}%` }}/></div>
+                        <div className="bg-fann-charcoal-light rounded-full h-1.5"><motion.div className="bg-fann-gold h-1.5 rounded-full" animate={{ width: `${(currentStep / (steps.length -1)) * 100}%` }}/></div>
                     </div>
-                    <div className="bg-black/20 p-8 rounded-lg">
+                    <div className="bg-fann-charcoal-light p-8 rounded-lg">
                         <form onSubmit={handleSubmit}>
                             <motion.div key={currentStep} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.3 }}>
                                 {renderStepContent()}
@@ -474,14 +493,33 @@ const EventStudioPage: React.FC = () => {
                                     <motion.div 
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-center gap-3 mb-4"
+                                        className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-start gap-3 mb-4"
                                     >
-                                        <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                                        <span>{error}</span>
+                                        <div className="flex-shrink-0 pt-0.5"><AlertCircle className="w-5 h-5" /></div>
+                                        <div className="flex-grow">
+                                            <span>{error}</span>
+                                            {isKeyError && (
+                                                <div className="mt-2 flex items-center gap-4">
+                                                    <button
+                                                        type="button"
+                                                        onClick={async () => {
+                                                            await window.aistudio.openSelectKey();
+                                                            clearApiKeyError();
+                                                        }}
+                                                        className="bg-fann-gold text-fann-charcoal text-xs font-bold py-1 px-3 rounded-full hover:opacity-90"
+                                                    >
+                                                        Select API Key
+                                                    </button>
+                                                    <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer" className="text-xs text-fann-light-gray hover:underline">
+                                                        Learn about billing
+                                                    </a>
+                                                </div>
+                                            )}
+                                        </div>
                                     </motion.div>
                                 )}
                                 <div className="flex justify-between items-center">
-                                    <button type="button" onClick={prevStep} disabled={currentStep === 0} className="flex items-center gap-2 text-fann-gold disabled:text-gray-500">
+                                    <button type="button" onClick={prevStep} disabled={currentStep === 0} className="flex items-center gap-2 text-fann-gold disabled:text-fann-light-gray">
                                         <ArrowLeft size={16} /> Back
                                     </button>
                                     {currentStep < steps.length - 1 ? (

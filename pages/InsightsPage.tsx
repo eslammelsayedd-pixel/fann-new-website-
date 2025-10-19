@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, BookOpen, BrainCircuit, Building2, Globe, Lightbulb, Loader2, Rocket, ServerCrash, Sparkles, Store, TrendingUp } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
+import { useApiKey } from '../context/ApiKeyProvider';
 
 interface InsightTopic {
     title: string;
@@ -96,13 +97,16 @@ const InsightsPage: React.FC = () => {
     const [selectedTopic, setSelectedTopic] = useState<InsightTopic | null>(null);
     const [generatedArticle, setGeneratedArticle] = useState<Article | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const { ensureApiKey, handleApiError, error, isKeyError, clearError } = useApiKey();
+
 
     const generateArticle = async (topic: InsightTopic) => {
+        clearError();
+        if (!await ensureApiKey()) return;
+
         setSelectedTopic(topic);
         setIsLoading(true);
         setGeneratedArticle(null);
-        setError(null);
 
         try {
             const response = await fetch('/api/generate-insights', {
@@ -120,7 +124,7 @@ const InsightsPage: React.FC = () => {
             setGeneratedArticle(data);
 
         } catch (e: any) {
-            setError(e.message);
+            handleApiError(e);
         } finally {
             setIsLoading(false);
         }
@@ -129,13 +133,13 @@ const InsightsPage: React.FC = () => {
     const handleBack = () => {
         setSelectedTopic(null);
         setGeneratedArticle(null);
-        setError(null);
+        clearError();
     };
 
     const renderTopicSelection = () => (
         <div className="text-center">
             <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">AI Trendspotter</h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-12">
+            <p className="text-xl text-fann-cream max-w-3xl mx-auto mb-12">
                 Select a topic for a real-time analysis of key industry trends, with a focus on Dubai and Saudi Arabia.
             </p>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
@@ -177,30 +181,43 @@ const InsightsPage: React.FC = () => {
                     <div className="flex flex-col items-center text-center p-8">
                         <Loader2 className="w-12 h-12 text-fann-gold animate-spin" />
                         <h2 className="text-3xl font-serif text-white mt-6">Generating Analysis...</h2>
-                        <p className="text-gray-400 mt-2">Our AI is analyzing real-time data from across the web. This might take a moment.</p>
+                        <p className="text-fann-light-gray mt-2">Our AI is analyzing real-time data from across the web. This might take a moment.</p>
                     </div>
                 </motion.div>
             ) : error ? (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-red-900/50 border border-red-500 text-red-300 p-8 rounded-lg text-center">
+                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-red-900/50 border border-red-500 text-red-300 p-8 rounded-lg text-center">
                     <ServerCrash className="w-12 h-12 mx-auto mb-4"/>
                     <h2 className="text-2xl font-serif text-white mb-2">An Error Occurred</h2>
                     <p>{error}</p>
+                    {isKeyError && (
+                        <div className="mt-4">
+                            <button
+                                onClick={async () => {
+                                    await window.aistudio.openSelectKey();
+                                    clearError();
+                                }}
+                                className="bg-fann-gold text-fann-charcoal text-sm font-bold py-2 px-4 rounded-full"
+                            >
+                                Select API Key
+                            </button>
+                        </div>
+                    )}
                 </motion.div>
             ) : generatedArticle && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-black/20 p-8 sm:p-12 rounded-lg">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-fann-charcoal-light p-8 sm:p-12 rounded-lg">
                     <h1 className="text-4xl md:text-5xl font-serif font-bold text-fann-gold mb-6">{selectedTopic?.title}</h1>
                     <div
-                        className="prose prose-invert prose-lg max-w-none text-gray-300 leading-relaxed space-y-4"
+                        className="prose prose-invert prose-lg max-w-none text-fann-cream leading-relaxed space-y-4"
                         dangerouslySetInnerHTML={{ __html: formatContent(generatedArticle.content) }}
                     />
 
                     {generatedArticle.sources && generatedArticle.sources.length > 0 && (
-                        <div className="mt-12 border-t border-gray-700 pt-6">
+                        <div className="mt-12 border-t border-fann-border pt-6">
                             <h3 className="text-xl font-bold text-fann-teal mb-4 flex items-center gap-2"><BookOpen size={20} /> Sources</h3>
                              <ul className="space-y-2 list-disc list-inside">
                                 {generatedArticle.sources.map((source, index) => (
                                     <li key={index}>
-                                        <a href={source.uri} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-fann-gold hover:underline transition-colors" title={source.title}>
+                                        <a href={source.uri} target="_blank" rel="noopener noreferrer" className="text-fann-light-gray hover:text-fann-gold hover:underline transition-colors" title={source.title}>
                                             {source.title || new URL(source.uri).hostname}
                                         </a>
                                     </li>
