@@ -1,9 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { GoogleGenAI } from "@google/genai";
-import { Loader2, Sparkles, Upload, ArrowLeft, Building, Users, Palette, ListChecks, Crown, User, CheckCircle, PartyPopper, AlertCircle, Popcorn } from 'lucide-react';
+import { Loader2, Sparkles, Upload, ArrowLeft, Users, Palette, ListChecks, Crown, User, CheckCircle, AlertCircle } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
-import { useApiKey } from '../context/ApiKeyProvider';
 
 // --- Helper Functions & Types ---
 interface FormData {
@@ -76,7 +74,7 @@ const EventStudioPage: React.FC = () => {
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const [isLoading, setIsLoading] = useState(false);
     const [generatedImages, setGeneratedImages] = useState<string[]>([]);
-    const [validationError, setValidationError] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
     const [isFinished, setIsFinished] = useState(false);
     const [isExtractingColors, setIsExtractingColors] = useState(false);
     const [suggestedColors, setSuggestedColors] = useState<string[]>([]);
@@ -85,13 +83,6 @@ const EventStudioPage: React.FC = () => {
     const [isSending, setIsSending] = useState(false);
     
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const { ensureApiKey, handleApiError, error: apiKeyError, isKeyError, clearError: clearApiKeyError } = useApiKey();
-    const error = validationError || apiKeyError;
-
-    const clearAllErrors = () => {
-        setValidationError(null);
-        clearApiKeyError();
-    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -110,35 +101,26 @@ const EventStudioPage: React.FC = () => {
     const extractColorsFromLogo = async (file: File) => {
         setIsExtractingColors(true);
         setSuggestedColors([]);
+        setError(null);
         
-        if (!await ensureApiKey()) {
-            setIsExtractingColors(false);
-            return;
-        }
-
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const base64Data = await blobToBase64(file);
-            const imagePart = {
-                inlineData: { mimeType: file.type, data: base64Data },
-            };
-            const textPart = {
-                text: "Analyze the attached logo. Identify the 3-5 primary brand colors. List them as a simple, comma-separated string. For example: 'Deep Navy Blue, Metallic Gold, Off-White'. Only return the color names, nothing else."
-            };
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
-                contents: { parts: [imagePart, textPart] },
+             const response = await fetch('/api/extract-colors', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: base64Data, mimeType: file.type })
             });
 
-            const colorsText = response.text;
-            if (colorsText) {
-                const colorsArray = colorsText.split(',').map(c => c.trim()).filter(c => c);
-                setSuggestedColors(colorsArray);
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error || 'Failed to extract colors.');
             }
-
-        } catch (e) {
+            
+            const data = await response.json();
+            setSuggestedColors(data.colors || []);
+        } catch (e: any) {
             console.error("Error extracting colors:", e);
-            handleApiError(e);
+            setError(e.message);
         } finally {
             setIsExtractingColors(false);
         }
@@ -166,51 +148,51 @@ const EventStudioPage: React.FC = () => {
     };
 
     const validateStep = (step: number): boolean => {
-        clearAllErrors();
+        setError(null);
         switch(step) {
             case 0:
                 if (formData.eventType === '') {
-                    setValidationError("Please select an event type.");
+                    setError("Please select an event type.");
                     return false;
                 }
                 if (formData.theme.trim() === '') {
-                    setValidationError("Please provide a theme for your event.");
+                    setError("Please provide a theme for your event.");
                     return false;
                 }
                 return true;
             case 1:
                 if (formData.venueType === '') {
-                    setValidationError("Please select a venue type.");
+                    setError("Please select a venue type.");
                     return false;
                 }
                 if (formData.guestCount <= 0) {
-                    setValidationError("Please enter a valid number of guests.");
+                    setError("Please enter a valid number of guests.");
                     return false;
                 }
                 return true;
             case 2:
                 if (formData.eventElements.length === 0) {
-                    setValidationError("Please select at least one key element for your event.");
+                    setError("Please select at least one key element for your event.");
                     return false;
                 }
                 return true;
             case 3:
                 if (!formData.logo) {
-                    setValidationError("Please upload your company logo.");
+                    setError("Please upload your company logo.");
                     return false;
                 }
                 if (formData.brandColors.trim() === '') {
-                    setValidationError("Please provide your brand colors.");
+                    setError("Please provide your brand colors.");
                     return false;
                 }
                 return true;
             case 4:
                 if (!formData.userName.trim() || !formData.userEmail.trim() || !formData.userMobile.trim()) {
-                    setValidationError("Please fill in all your contact details.");
+                    setError("Please fill in all your contact details.");
                     return false;
                 }
                 if (!/\S+@\S+\.\S+/.test(formData.userEmail)) {
-                    setValidationError("Please enter a valid email address.");
+                    setError("Please enter a valid email address.");
                     return false;
                 }
                 return true;
@@ -226,80 +208,59 @@ const EventStudioPage: React.FC = () => {
     };
 
     const prevStep = () => {
-        clearAllErrors();
+        setError(null);
         setCurrentStep(prev => Math.max(prev - 1, 0));
     };
 
     const generateDesign = async () => {
         setIsLoading(true);
-        clearAllErrors();
+        setError(null);
         setGeneratedImages([]);
 
-        if (!await ensureApiKey()) {
-            setIsLoading(false);
-            return;
-        }
-
         if (!formData.logo) {
-            setValidationError("Logo is missing. Please go back and upload it.");
+            setError("Logo is missing. Please go back and upload it.");
             setIsLoading(false);
             return;
         }
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const logoBase64 = await blobToBase64(formData.logo);
-
-            const logoPart = {
-                inlineData: { data: logoBase64, mimeType: formData.logo.type },
-            };
             
-            const textPrompt = `
-**Objective:** Generate a photorealistic, high-fidelity 3D render of an immersive and luxurious corporate event concept. The final image should feel like a professional photograph from a high-end event in Dubai, perfect for a client pitch.
-
-**Core Brief:**
+            const textPrompt = `Generate 4 photorealistic concept images for a corporate event.
 - **Event Type:** ${formData.eventType}
-- **Creative Theme (CRITICAL):** "${formData.theme}". All design choices must stem from this central theme.
-- **Venue Ambiance:** ${formData.venueType}. The render should reflect this environment.
-- **Atmosphere:** High-end, luxurious, and highly "Instagrammable".
-- **Scale:** The scene should be appropriately scaled for approximately ${formData.guestCount} guests.
-
-**Design & Branding Mandates:**
-- **Key Elements (CRITICAL):** The render must visibly include and integrate the following elements: ${formData.eventElements.join(', ')}.
-- **Color Palette (CRITICAL):** The event's color scheme MUST be strictly dominated by the provided brand colors: ${formData.brandColors}. Accent colors should be minimal and complementary.
-- **Logo Integration (CRITICAL):** The provided logo is the hero brand element. It must be featured prominently and elegantly, for example, on the main stage backdrop, a bespoke photo wall, or the welcome area.
-- **Materials & Lighting:** The design must use premium materials (like marble, polished metals, lush velvets) and feature dramatic, professional event lighting (spotlights, uplighting, gobos) that enhances the theme.
-
-**Output Requirements:**
-- **Camera Angle:** Generate a single, captivating, wide-angle shot that captures the overall ambiance and showcases the key design features from a guest's perspective.
-- **Realism:** Focus on photorealistic lighting, accurate material reflections and textures, and a sense of depth and scale.
-- **Negative Prompt:** AVOID flat lighting, unrealistic or generic-looking furniture, empty spaces that feel sterile, cartoonish decor, or blurry/low-resolution output. Any people shown should be subtly in the background, out of focus, and dressed appropriately for a luxury corporate event to suggest scale, not be the focus.
-`;
+- **Theme:** ${formData.theme}
+- **Venue Type:** A luxurious ${formData.venueType} in Dubai.
+- **Guest Count:** Approximately ${formData.guestCount} people.
+- **Key Elements to feature:** ${formData.eventElements.join(', ')}.
+- **Branding:** The event is for a company whose logo is attached. The brand colors are **${formData.brandColors}**. The logo should be integrated tastefully into the design on backdrops, podiums, or screens.
+- **Atmosphere:** The images should look high-end, professionally produced, and create a 'wow' factor. Use dramatic lighting and realistic textures. The setting should feel grand and impressive. Do not include people.`;
             
-            const imagePromises = Array(4).fill(0).map((_, i) => 
-                ai.models.generateContent({
-                    model: 'gemini-2.5-flash-image',
-                    contents: { parts: [logoPart, { text: `${textPrompt}\\n\\nVariation ${i + 1} of 4.` }] },
-                    config: {
-                        responseModalities: ['IMAGE'],
-                    },
+            const response = await fetch('/api/generate-images', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    logo: logoBase64,
+                    mimeType: formData.logo.type,
+                    prompt: textPrompt,
                 })
-            );
+            });
 
-            const responses = await Promise.all(imagePromises);
-            const imageUrls = responses.map(res => res.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData)
-                                        .filter(Boolean)
-                                        .map(data => `data:${data.mimeType};base64,${data.data}`);
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error || 'Failed to generate images.');
+            }
 
-            if (imageUrls.length < 1) {
-                throw new Error("AI failed to generate any images.");
+            const data = await response.json();
+            
+            if (!data.imageUrls || data.imageUrls.length === 0) {
+                 throw new Error("The AI model failed to generate any images.");
             }
             
-            setGeneratedImages(imageUrls);
+            setGeneratedImages(data.imageUrls);
             setIsFinished(true);
             
         } catch (e: any) {
-            handleApiError(e);
+            setError(e.message);
         } finally {
             setIsLoading(false);
         }
@@ -308,7 +269,6 @@ const EventStudioPage: React.FC = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (validateStep(currentStep)) {
-            nextStep();
             generateDesign();
         }
     };
@@ -316,126 +276,119 @@ const EventStudioPage: React.FC = () => {
     const sendProposalRequest = async () => {
         if (selectedImage === null) return;
         setIsSending(true);
-
-        const proposalData = { ...formData, logo: formData.logo?.name, logoPreview: undefined, selectedConceptImage: generatedImages[selectedImage] };
-        console.log("--- EVENT PROPOSAL REQUEST (SIMULATED) ---", JSON.stringify(proposalData, null, 2));
-        
+        console.log("--- EVENT PROPOSAL REQUEST (SIMULATED) ---", { ...formData, logo: formData.logo?.name, selectedConceptImageIndex: selectedImage });
         await new Promise(resolve => setTimeout(resolve, 1500));
-
         setIsSending(false);
         setIsProposalRequested(true);
     };
 
     const renderStepContent = () => {
-        switch(currentStep) {
+        switch (currentStep) {
             case 0: // Concept
                 return (
-                    <div>
-                        <h3 className="text-2xl font-semibold mb-2">Step 1: The Concept</h3>
-                        <p className="text-gray-400 mb-6">What is the vision for your event?</p>
-                        <div className="space-y-6">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-400 mb-2">Event Type</label>
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                    {eventTypes.map(e => (
-                                        <div key={e.name} onClick={() => setFormData(prev => ({...prev, eventType: e.name}))} className={`relative rounded-lg overflow-hidden cursor-pointer border-4 ${formData.eventType === e.name ? 'border-fann-gold' : 'border-transparent'}`}>
-                                            <img src={e.image} alt={e.name} className="h-32 w-full object-cover" />
-                                            <div className="absolute inset-0 bg-black/50 flex items-center justify-center p-2">
-                                                <h4 className="text-white font-bold text-center text-md">{e.name}</h4>
-                                            </div>
-                                            {formData.eventType === e.name && <CheckCircle className="absolute top-2 right-2 text-fann-gold bg-fann-charcoal rounded-full" />}
-                                        </div>
-                                    ))}
-                                </div>
+                    <div className="space-y-6">
+                        <h2 className="text-2xl font-serif text-white mb-4">Step 1: The Concept</h2>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-400 mb-2">Event Type</label>
+                            <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
+                                {eventTypes.map(type => (
+                                    <div key={type.name} onClick={() => setFormData(p => ({...p, eventType: type.name}))} className={`relative h-24 rounded-lg overflow-hidden cursor-pointer border-2 ${formData.eventType === type.name ? 'border-fann-gold' : 'border-transparent'}`}>
+                                        <img src={type.image} alt={type.name} className="w-full h-full object-cover" />
+                                        <div className="absolute inset-0 bg-black/50"></div>
+                                        <p className="absolute bottom-2 left-2 text-xs font-bold">{type.name}</p>
+                                    </div>
+                                ))}
                             </div>
-                            <div>
-                                <label htmlFor="theme" className="block text-sm font-medium text-gray-400 mb-1">Event Theme</label>
-                                <input id="theme" type="text" name="theme" value={formData.theme} onChange={handleInputChange} placeholder="e.g., 'Futuristic Neon City', 'Enchanted Forest Gala'" className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2" required />
-                            </div>
+                        </div>
+                        <div>
+                             <label htmlFor="theme" className="block text-sm font-medium text-gray-400 mb-2">Event Theme or Core Message</label>
+                            <input id="theme" name="theme" type="text" value={formData.theme} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" placeholder="e.g., 'Future Horizons', 'A Night of Stars', 'Innovate & Elevate'" />
                         </div>
                     </div>
                 );
             case 1: // Scale
                 return (
-                    <div>
-                        <h3 className="text-2xl font-semibold mb-2">Step 2: Scale & Venue</h3>
-                        <p className="text-gray-400 mb-6">Define the setting and size of your event.</p>
-                        <div className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-400 mb-1">Venue Type</label>
-                                <select name="venueType" value={formData.venueType} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded px-3 py-2" required>
-                                    <option value="" disabled>Select a venue type</option>
-                                    <option>Hotel Ballroom</option><option>Industrial Warehouse</option><option>Outdoor Garden/Terrace</option><option>Modern Conference Hall</option><option>Luxury Villa</option><option>Art Gallery</option>
-                                </select>
-                            </div>
-                             <div>
-                                <label htmlFor="guestCount" className="block text-sm font-medium text-gray-400 mb-1">Number of Guests</label>
-                                <input id="guestCount" type="number" name="guestCount" value={formData.guestCount} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2" required min="1" step="10" />
-                            </div>
+                    <div className="space-y-6">
+                        <h2 className="text-2xl font-serif text-white mb-4">Step 2: The Scale</h2>
+                        <div>
+                            <label htmlFor="venueType" className="block text-sm font-medium text-gray-400 mb-2">Venue Type</label>
+                            <select id="venueType" name="venueType" value={formData.venueType} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2">
+                                <option value="" disabled>Select a venue type...</option>
+                                <option>Hotel Ballroom</option>
+                                <option>Conference Center Hall</option>
+                                <option>Outdoor Space (e.g., Burj Park)</option>
+                                <option>Unique Venue (e.g., Museum, Warehouse)</option>
+                                <option>Luxury Rooftop</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label htmlFor="guestCount" className="block text-sm font-medium text-gray-400 mb-2">Expected Number of Guests: {formData.guestCount}</label>
+                            <input id="guestCount" name="guestCount" type="range" min="50" max="2000" step="50" value={formData.guestCount} onChange={handleInputChange} className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-fann-gold" />
                         </div>
                     </div>
                 );
             case 2: // Elements
                 return (
-                     <div>
-                        <h3 className="text-2xl font-semibold mb-2">Step 3: Key Elements</h3>
-                        <p className="text-gray-400 mb-6">Select the features your event must include.</p>
-                         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                            {eventElementsOptions.map(opt => (
-                                <label key={opt} className={`flex items-center p-3 text-sm rounded-lg cursor-pointer ${formData.eventElements.includes(opt) ? 'bg-fann-teal text-white' : 'bg-fann-charcoal border border-gray-700'}`}>
-                                    <input type="checkbox" checked={formData.eventElements.includes(opt)} onChange={() => handleElementsChange(opt)} className="hidden" />
-                                    <span>{opt}</span>
-                                </label>
+                     <div className="space-y-6">
+                        <h2 className="text-2xl font-serif text-white mb-4">Step 3: Key Elements</h2>
+                        <p className="text-gray-400 text-sm">Select all the features you require for your event.</p>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            {eventElementsOptions.map(item => (
+                                <button type="button" key={item} onClick={() => handleElementsChange(item)} className={`p-3 rounded-lg border-2 text-left text-sm transition-colors flex items-center gap-2 ${formData.eventElements.includes(item) ? 'border-fann-teal bg-fann-teal/10' : 'border-gray-700 hover:border-fann-teal/50'}`}>
+                                    <div className={`w-4 h-4 rounded-sm flex-shrink-0 border-2 ${formData.eventElements.includes(item) ? 'bg-fann-teal border-fann-teal' : 'border-gray-500'}`}/>
+                                    <span>{item}</span>
+                                </button>
                             ))}
                         </div>
                     </div>
                 );
             case 3: // Branding
                 return (
-                    <div>
-                         <h3 className="text-2xl font-semibold mb-2">Step 4: Branding</h3>
-                         <p className="text-gray-400 mb-6">Provide your brand assets to guide the design.</p>
-                         <div className="space-y-4">
+                    <div className="space-y-6">
+                        <h2 className="text-2xl font-serif text-white mb-4">Step 4: Branding</h2>
+                        <div className="grid md:grid-cols-2 gap-8 items-start">
                             <div>
-                                <label className="block text-sm font-medium text-gray-400 mb-1">Upload Your Logo</label>
-                                <div onClick={() => fileInputRef.current?.click()} className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-600 border-dashed rounded-md cursor-pointer">
-                                    <div className="space-y-1 text-center">
-                                        {formData.logoPreview ? <img src={formData.logoPreview} alt="Logo" className="mx-auto h-24 w-auto" /> : <><Upload className="mx-auto h-12 w-12 text-gray-500" /><p>Click to upload</p></>}
-                                    </div>
+                                <label className="block text-sm font-medium text-gray-400 mb-2">Upload Your Logo (Vector Preferred)</label>
+                                <div onClick={() => fileInputRef.current?.click()} className="h-48 w-full bg-fann-charcoal border-2 border-dashed border-gray-600 rounded-lg flex items-center justify-center cursor-pointer hover:border-fann-gold transition-colors">
+                                    {formData.logoPreview ? <img src={formData.logoPreview} alt="Logo Preview" className="max-h-full max-w-full object-contain p-4" /> : <div className="text-center text-gray-500"><Upload className="mx-auto w-8 h-8 mb-2" /><p>Click to upload</p></div>}
                                 </div>
-                                <input ref={fileInputRef} type="file" className="sr-only" onChange={handleLogoChange} accept="image/*"/>
+                                <input type="file" ref={fileInputRef} onChange={handleLogoChange} className="hidden" accept="image/png, image/jpeg, image/svg+xml, .ai, .eps" />
                             </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-400 mb-1">Brand Colors</label>
-                                <input type="text" name="brandColors" value={formData.brandColors} onChange={handleInputChange} placeholder="e.g., Navy Blue, Gold, White" className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2" required />
-                                {isExtractingColors && <div className="flex items-center gap-2 mt-2 text-sm text-gray-400"><Loader2 className="w-4 h-4 animate-spin" /><span>Extracting colors...</span></div>}
-                                {!isExtractingColors && suggestedColors.length > 0 && (
-                                    <div className="mt-3">
-                                        <p className="text-sm text-gray-400 mb-2">Suggestions (click to add):</p>
-                                        <div className="flex flex-wrap gap-2">
-                                            {suggestedColors.map(color => (<button type="button" key={color} onClick={() => addSuggestedColor(color)} className="bg-gray-700 text-white text-xs px-3 py-1 rounded-full hover:bg-fann-teal">{color}</button>))}
-                                        </div>
-                                    </div>
-                                )}
+                            <div className="space-y-4">
+                                <div>
+                                    <label htmlFor="brandColors" className="block text-sm font-medium text-gray-400 mb-2">Primary Brand Colors</label>
+                                    <input type="text" id="brandColors" name="brandColors" value={formData.brandColors} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" placeholder="e.g., #0A192F, Fann Gold, White" />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-400 mb-2">Suggested from Logo</label>
+                                    {isExtractingColors ? <div className="flex items-center gap-2 text-sm text-gray-400"><Loader2 className="w-4 h-4 animate-spin"/>Analyzing...</div> : suggestedColors.length > 0 ? <div className="flex flex-wrap gap-2">{suggestedColors.map(color => <button type="button" key={color} onClick={() => addSuggestedColor(color)} className="px-3 py-1 bg-gray-700 rounded-full text-xs hover:bg-fann-teal transition-colors">{color}</button>)}</div> : <p className="text-xs text-gray-500">Upload a logo to see suggestions.</p>}
+                                </div>
                             </div>
-                         </div>
+                        </div>
                     </div>
                 );
-            case 4: // User Details
-                return (
-                     <div>
-                         <h3 className="text-2xl font-semibold mb-2">Step 5: Almost There!</h3>
-                         <p className="text-gray-400 mb-6">Enter your details to generate your design concept.</p>
-                         <div className="space-y-4">
-                            <input type="text" name="userName" placeholder="Your Name" value={formData.userName} onChange={handleInputChange} required className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2" />
-                            <input type="email" name="userEmail" placeholder="Your Email" value={formData.userEmail} onChange={handleInputChange} required className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2" />
-                            <input type="tel" name="userMobile" placeholder="Your Mobile" value={formData.userMobile} onChange={handleInputChange} required className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2" />
-                         </div>
+            case 4: // Your Details
+                 return (
+                    <div className="space-y-6 max-w-md mx-auto">
+                        <h2 className="text-2xl font-serif text-white text-center">Step 5: Your Details</h2>
+                        <p className="text-center text-gray-400 text-sm">We'll use this to send you the generated concepts and proposal.</p>
+                        <div>
+                            <label htmlFor="userName" className="block text-sm font-medium text-gray-400 mb-1">Full Name</label>
+                            <input type="text" id="userName" name="userName" value={formData.userName} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" />
+                        </div>
+                        <div>
+                            <label htmlFor="userEmail" className="block text-sm font-medium text-gray-400 mb-1">Email Address</label>
+                            <input type="email" id="userEmail" name="userEmail" value={formData.userEmail} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" />
+                        </div>
+                        <div>
+                            <label htmlFor="userMobile" className="block text-sm font-medium text-gray-400 mb-1">Mobile Number</label>
+                            <input type="tel" id="userMobile" name="userMobile" value={formData.userMobile} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" />
+                        </div>
                     </div>
                 );
             default: return null;
         }
-    }
+    };
     
     if (isLoading) return (
         <div className="min-h-screen flex flex-col justify-center items-center text-center p-4">
@@ -521,21 +474,10 @@ const EventStudioPage: React.FC = () => {
                                     <motion.div 
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-center justify-between gap-3 mb-4"
+                                        className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-center gap-3 mb-4"
                                     >
-                                        <div className="flex items-center gap-3">
-                                            <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                                            <span>{error}</span>
-                                        </div>
-                                        {isKeyError && (
-                                            <button
-                                                type="button"
-                                                onClick={ensureApiKey}
-                                                className="bg-fann-gold text-fann-charcoal text-xs font-bold py-1 px-3 rounded-full flex-shrink-0 hover:opacity-90"
-                                            >
-                                                Select Key
-                                            </button>
-                                        )}
+                                        <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                                        <span>{error}</span>
                                     </motion.div>
                                 )}
                                 <div className="flex justify-between items-center">

@@ -1,10 +1,8 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GoogleGenAI, Type } from "@google/genai";
 import { Loader2, Sparkles, Upload, ArrowLeft, Building, Scaling, ListChecks, Crown, User, CheckCircle, PartyPopper, AlertCircle, Popcorn, Palette, View } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import { regionalEvents } from '../constants';
-import { useApiKey } from '../context/ApiKeyProvider';
 
 // --- Helper Functions & Types ---
 interface FormData {
@@ -107,7 +105,7 @@ const ExhibitionStudioPage: React.FC = () => {
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const [isLoading, setIsLoading] = useState(false);
     const [generatedImages, setGeneratedImages] = useState<string[]>([]);
-    const [validationError, setValidationError] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
     const [isFinished, setIsFinished] = useState(false);
     const [isExtractingColors, setIsExtractingColors] = useState(false);
     const [suggestedColors, setSuggestedColors] = useState<string[]>([]);
@@ -118,15 +116,7 @@ const ExhibitionStudioPage: React.FC = () => {
     const [isNavigating, setIsNavigating] = useState(false);
     
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const { ensureApiKey, handleApiError, error: apiKeyError, isKeyError, clearError: clearApiKeyError } = useApiKey();
-
-    const eventNames = useMemo(() => [...new Set(regionalEvents.map(e => e.name))].sort(), []);
-    const error = validationError || apiKeyError;
-
-    const clearAllErrors = () => {
-        setValidationError(null);
-        clearApiKeyError();
-    };
+    const eventNames = useMemo(() => ['Other (Please Specify)', ...new Set(regionalEvents.map(e => e.name))].sort(), []);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -135,7 +125,7 @@ const ExhibitionStudioPage: React.FC = () => {
 
     const handleEventSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value;
-        if (value === 'other') {
+        if (value === 'Other (Please Specify)') {
             setIsCustomEvent(true);
             setFormData(prev => ({ ...prev, eventName: '', style: '', eventStyleDescription: '' }));
         } else {
@@ -168,27 +158,26 @@ const ExhibitionStudioPage: React.FC = () => {
     const extractColorsFromLogo = async (file: File) => {
         setIsExtractingColors(true);
         setSuggestedColors([]);
+        setError(null);
         
-        if (!await ensureApiKey()) {
-            setIsExtractingColors(false);
-            return;
-        }
-
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const base64Data = await blobToBase64(file);
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
-                contents: { parts: [
-                    { inlineData: { mimeType: file.type, data: base64Data } },
-                    { text: "Analyze the attached logo. Identify 3-5 primary brand colors. List them as a simple, comma-separated string. Example: 'Deep Navy Blue, Metallic Gold, Off-White'. Return only the color names." }
-                ] },
+            const response = await fetch('/api/extract-colors', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: base64Data, mimeType: file.type })
             });
-            const colorsArray = response.text.split(',').map(c => c.trim()).filter(Boolean);
-            setSuggestedColors(colorsArray);
-        } catch (e) {
+
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error || 'Failed to extract colors.');
+            }
+            
+            const data = await response.json();
+            setSuggestedColors(data.colors || []);
+        } catch (e: any) {
             console.error("Error extracting colors:", e);
-            handleApiError(e);
+            setError(e.message);
         } finally {
             setIsExtractingColors(false);
         }
@@ -214,72 +203,35 @@ const ExhibitionStudioPage: React.FC = () => {
 
     const analyzeShowStyle = async (): Promise<boolean> => {
         if (!formData.eventName) {
-            setValidationError("Please select or enter an event name first.");
+            setError("Please select or enter an event name first.");
             return false;
         }
-        clearAllErrors();
+        setError(null);
         setFormData(prev => ({ ...prev, style: '', eventStyleDescription: '' }));
     
-        if (!await ensureApiKey()) {
-            return false;
-        }
-    
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-            const availableStyles = styles.map(s => s.name);
             const eventDetails = regionalEvents.find(e => e.name.toLowerCase() === formData.eventName.toLowerCase());
             const industryContext = eventDetails ? `The event is in the ${eventDetails.industry} industry.` : '';
             
-            const prompt = `You are a design assistant. Your task is to analyze an event and recommend a design style.
-Event Name: '${formData.eventName}'.
-Event Industry context: ${industryContext}
-Available design styles: [${availableStyles.join(', ')}].
-Your response MUST be a single, valid JSON object and nothing else. Do not include markdown formatting, explanations, or any text outside of the JSON structure.
-The JSON object must contain two keys: "style" and "description".
-- The "style" value must be exactly one of the available design styles.
-- The "description" value must be a concise, one-sentence summary of the typical stand aesthetics for the event.`;
-    
-            const response = await ai.models.generateContent({
-                model: "gemini-2.5-flash",
-                contents: prompt,
-                config: {
-                    responseMimeType: "application/json",
-                    responseSchema: {
-                        type: Type.OBJECT,
-                        properties: {
-                            style: { type: Type.STRING, description: `The single best style for the event. Must be one of: ${availableStyles.join(', ')}.` },
-                            description: { type: Type.STRING, description: 'A one-sentence description of typical stand characteristics.' }
-                        },
-                        required: ['style', 'description']
-                    }
-                }
+            const response = await fetch('/api/analyze-show-style', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    eventName: formData.eventName,
+                    industryContext,
+                    availableStyles: styles.map(s => s.name)
+                })
             });
-    
-            const rawText = response.text;
-            if (!rawText || rawText.trim() === '') {
-                throw new Error("The AI returned an empty response. This might be a temporary issue. Please try again.");
-            }
-    
-            let result: { style?: string; description?: string };
-            try {
-                const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-                if (!jsonMatch) {
-                    console.error("No JSON object found in AI response. Raw text:", rawText);
-                    throw new Error("The AI returned a non-standard response. Please try analyzing again.");
-                }
-                result = JSON.parse(jsonMatch[0]);
-            } catch (parseError) {
-                console.error("Failed to parse AI JSON response. Raw text:", rawText, "Error:", parseError);
-                throw new Error("The AI returned an invalid data format. Please try analyzing again.");
-            }
-    
-            const returnedStyle = result.style;
-            if (typeof returnedStyle !== 'string' || returnedStyle.trim() === '') {
-                throw new Error("The AI analysis was incomplete and did not provide a style. Please try again.");
+
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error || 'Failed to analyze event style.');
             }
             
-            const validStyle = availableStyles.find(s => s.toLowerCase() === returnedStyle.toLowerCase());
-    
+            const result = await response.json();
+            // FIX: The `find` method is called on an array of strings, so `s` is a string, not an object.
+            const validStyle = styles.map(s => s.name).find(s => s.toLowerCase() === result.style.toLowerCase());
+            
             if (validStyle) {
                 setFormData(prev => ({
                     ...prev,
@@ -288,52 +240,49 @@ The JSON object must contain two keys: "style" and "description".
                 }));
                 return true;
             } else {
-                console.error(`AI returned an unsupported style: '${returnedStyle}'. Supported styles are: ${availableStyles.join(', ')}`);
-                throw new Error(`The AI suggested an unsupported style ('${returnedStyle}'). Please select a style manually or try again.`);
+                throw new Error(`The AI suggested an unsupported style ('${result.style}'). Please select a style manually or try again.`);
             }
     
         } catch (e: any) {
-            const errorMessage = e.message || "An unknown error occurred during analysis. Please check the console for details.";
-            setValidationError(errorMessage);
-            handleApiError(e); 
+            setError(e.message);
             return false;
         }
     };
 
     const validateStep = (step: number): boolean => {
-        clearAllErrors();
+        setError(null);
         switch(step) {
             case 0:
                 if (!formData.standWidth || !formData.standLength || !formData.industry || !formData.standLayout || !formData.eventName) {
-                    setValidationError("Please complete all foundation details, including the event name.");
+                    setError("Please complete all foundation details, including the event name.");
                     return false;
                 }
                 return true;
             case 1:
                 if (!formData.standType || !formData.standHeight) {
-                    setValidationError("Please select structure details.");
+                    setError("Please select structure details.");
                     return false;
                 }
                 if (formData.doubleDecker && (formData.standHeight === '4m' || formData.standHeight === '5m')) {
-                    setValidationError("A double-decker stand requires at least 6m height.");
+                    setError("A double-decker stand requires at least 6m height.");
                     return false;
                 }
                 return true;
             case 2:
                 if (formData.functionality.length === 0) {
-                    setValidationError("Please select at least one feature.");
+                    setError("Please select at least one feature.");
                     return false;
                 }
                 return true;
             case 3:
                 if (!formData.logo || !formData.brandColors.trim()) {
-                    setValidationError("Please upload your logo and provide brand colors.");
+                    setError("Please upload your logo and provide brand colors.");
                     return false;
                 }
                 return true;
             case 4:
                 if (!formData.userName.trim() || !formData.userEmail.trim() || !formData.userMobile.trim() || !/\S+@\S+\.\S+/.test(formData.userEmail)) {
-                    setValidationError("Please provide valid contact details.");
+                    setError("Please provide valid contact details.");
                     return false;
                 }
                 return true;
@@ -346,95 +295,76 @@ The JSON object must contain two keys: "style" and "description".
             return;
         }
 
-        if (currentStep === 0) { // On first step, run analysis
+        if (currentStep === 0 && !isCustomEvent) { // On first step, run analysis if not a custom event
             setIsNavigating(true);
             const analysisSuccess = await analyzeShowStyle();
             setIsNavigating(false);
             if (analysisSuccess) {
                 setCurrentStep(prev => Math.min(prev + 1, steps.length));
             }
-            // On failure, error is shown, and we stay on the step
         } else {
             setCurrentStep(prev => Math.min(prev + 1, steps.length));
         }
     };
 
     const prevStep = () => {
-        clearAllErrors();
+        setError(null);
         setCurrentStep(prev => Math.max(prev - 1, 0));
     };
 
     const generateDesign = async () => {
         setIsLoading(true);
-        clearAllErrors();
+        setError(null);
         setGeneratedImages([]);
 
-        if (!await ensureApiKey()) {
-            setIsLoading(false);
-            return;
-        }
-
         if (!formData.logo) {
-            setValidationError("Logo is missing.");
+            setError("Logo is missing.");
             setIsLoading(false);
             return;
         }
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const logoBase64 = await blobToBase64(formData.logo);
-            
             const layoutDescription = getLayoutDescription(formData.standLayout);
 
-            const textPrompt = `
-**Objective:** Generate a photorealistic, high-fidelity 3D render of a premium, award-winning exhibition stand concept. The image should be suitable for a client proposal.
-
-**Core Brief:**
-- **Event:** ${formData.eventName}
-- **Industry:** ${formData.industry}
-- **Primary Style:** ${formData.style}
-- **Style Keywords:** ${formData.eventStyleDescription}, professional, high-end, inviting.
-
-**Architectural & Structural Mandates:**
-- **Dimensions:** ${formData.standWidth}m width x ${formData.standLength}m length.
-- **Layout (CRITICAL):** ${formData.standLayout}. The render MUST accurately depict this layout: ${layoutDescription}. For example, an 'Island' must be open on all 4 sides with aisles visible around it. A 'Linear' stand must show one open side and walls connecting to unseen neighbors on the other three. This is non-negotiable.
-- **Build Type:** ${formData.standType}.
-- **Height:** Up to ${formData.standHeight}.
-- **Key Structures:** ${formData.doubleDecker ? 'A two-story, double-decker structure is MANDATORY. ' : ''}${formData.hangingStructure ? 'A large, branded hanging structure suspended above the stand is MANDATORY. ' : ''}
-
-**Functional & Branding Mandates:**
-- **Visible Zones:** The design must clearly show spaces for: ${formData.functionality.join(', ')}.
-- **Color Palette (CRITICAL):** The design's color scheme must be strictly based on these brand colors: ${formData.brandColors}. Do not introduce other dominant colors.
-- **Logo Integration (CRITICAL):** The provided logo must be a hero element, prominently and elegantly placed on a major surface like the main fascia, reception desk, or hanging banner.
-
-**Output Requirements:**
-- **Camera Angle:** Generate a single, compelling, wide-angle shot from a human-eye-level perspective, as if a visitor is approaching the stand.
-- **Realism:** Focus on photorealistic lighting (e.g., exhibition hall spotlights), accurate material textures (woods, metals, fabrics), and realistic shadows.
-- **Negative Prompt:** AVOID blurry or low-resolution output, distorted perspectives, unrealistic or cartoonish elements, floating objects, and empty or generic-looking product displays. ${formData.hostess ? 'A professionally dressed hostess should be visible and realistically integrated at the reception desk.' : 'Do not include any people.'}
-`;
-
-            const imagePromises = Array(4).fill(0).map((_, i) => 
-                ai.models.generateContent({
-                    model: 'gemini-2.5-flash-image',
-                    contents: { parts: [{ inlineData: { data: logoBase64, mimeType: formData.logo!.type } }, { text: `${textPrompt}\\n\\nVariation ${i + 1} of 4.` }] },
-                    config: { responseModalities: ['IMAGE'] },
-                })
-            );
-
-            const responses = await Promise.all(imagePromises);
-            const imageUrls = responses.map(res => res.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData)
-                                        .filter(Boolean)
-                                        .map(data => `data:${data.mimeType};base64,${data.data}`);
-
-            if (imageUrls.length < 1) {
-                throw new Error("The AI model failed to generate any images.");
-            }
+            const textPrompt = `Generate 4 photorealistic 2D renders of a bespoke exhibition stand concept for a tradeshow.
+- **Client Industry:** ${formData.industry}
+- **Event Name:** ${formData.eventName}
+- **Stand Dimensions:** ${formData.standWidth}m width x ${formData.standLength}m length (${formData.standWidth * formData.standLength} sqm area).
+- **Stand Layout:** ${formData.standLayout}. ${layoutDescription}
+- **Stand Type:** ${formData.standType}.
+- **Structure:** ${formData.standHeight} height. It ${formData.doubleDecker ? 'IS a double-decker' : 'is NOT a double-decker'}. It ${formData.hangingStructure ? 'DOES have a hanging structure/banner' : 'does NOT have a hanging structure'}.
+- **Core Functionality:** Must include areas for: ${formData.functionality.join(', ')}.
+- **Design Style:** The overall aesthetic must be **${formData.style}**.
+- **Branding:** Use the attached logo prominently but elegantly. The primary brand colors are **${formData.brandColors}**.
+- **Atmosphere:** The stand should feel professional, high-end, and inviting, suitable for a major international event in Dubai or Riyadh. Use realistic lighting and materials. Do not include people.`;
             
-            setGeneratedImages(imageUrls);
+            const response = await fetch('/api/generate-images', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    logo: logoBase64,
+                    mimeType: formData.logo.type,
+                    prompt: textPrompt,
+                })
+            });
+
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error || 'Failed to generate images.');
+            }
+
+            const data = await response.json();
+            
+            if (!data.imageUrls || data.imageUrls.length === 0) {
+                 throw new Error("The AI model failed to generate any images.");
+            }
+
+            setGeneratedImages(data.imageUrls);
             setIsFinished(true);
             
         } catch (e: any) {
-            handleApiError(e);
+            setError(e.message);
         } finally {
             setIsLoading(false);
         }
@@ -450,7 +380,6 @@ The JSON object must contain two keys: "style" and "description".
     const sendProposalRequest = async () => {
         if (selectedImage === null) return;
         setIsSending(true);
-        // Simulate API call
         console.log("--- PROPOSAL REQUEST (SIMULATED) ---", { ...formData, logo: formData.logo?.name, selectedConceptImageIndex: selectedImage });
         await new Promise(resolve => setTimeout(resolve, 1500));
         setIsSending(false);
@@ -458,181 +387,185 @@ The JSON object must contain two keys: "style" and "description".
     };
 
     const renderStepContent = () => {
-        switch(currentStep) {
+        switch (currentStep) {
             case 0: // Foundation
                 return (
-                    <div>
-                        <h3 className="text-2xl font-semibold mb-2">Step 1: The Foundation</h3>
-                        <p className="text-gray-400 mb-6">Let's start with the basics of your space and event.</p>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="flex items-end gap-2">
-                                <div>
-                                    <label htmlFor="standWidth" className="block text-sm font-medium text-gray-400 mb-1">Width (m)</label>
-                                    <input id="standWidth" type="number" name="standWidth" value={formData.standWidth} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2" required min="1" />
+                    <div className="space-y-6">
+                        <h2 className="text-2xl font-serif text-white mb-4">Step 1: The Foundation</h2>
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-400 mb-2">Stand Size (meters)</label>
+                                <div className="flex items-center gap-2">
+                                    <input type="number" name="standWidth" value={formData.standWidth} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" placeholder="Width" />
+                                    <span className="text-gray-500">x</span>
+                                    <input type="number" name="standLength" value={formData.standLength} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" placeholder="Length" />
                                 </div>
-                                <span className="text-gray-400 pb-2.5">x</span>
-                                <div>
-                                    <label htmlFor="standLength" className="block text-sm font-medium text-gray-400 mb-1">Length (m)</label>
-                                    <input id="standLength" type="number" name="standLength" value={formData.standLength} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2" required min="1" />
-                                </div>
+                                <p className="text-xs text-gray-500 mt-1">{formData.standWidth * formData.standLength} sqm</p>
                             </div>
-                             <div>
-                                <label className="block text-sm font-medium text-gray-400 mb-1">Your Industry</label>
-                                <select name="industry" value={formData.industry} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded px-3 py-2" required>
-                                    <option value="" disabled>Select your industry</option>
-                                    <option>Technology</option><option>Healthcare</option><option>Aviation</option><option>Real Estate</option><option>Luxury Goods</option><option>Food & Beverage</option><option>Other</option>
-                                </select>
-                            </div>
-                            <div className="md:col-span-2">
-                                <label className="block text-sm font-medium text-gray-400 mb-1">Stand Layout</label>
-                                <select name="standLayout" value={formData.standLayout} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded px-3 py-2" required>
-                                    <option value="" disabled>Select stand layout</option>
-                                    <option>Corner (2 sides open)</option>
-                                    <option>Linear (1 side open / in-line)</option>
-                                    <option>Island (4 sides open / standalone)</option>
-                                    <option>Peninsula (3 sides open)</option>
-                                </select>
-                            </div>
-                             <div className="md:col-span-2 space-y-2">
-                                <label className="block text-sm font-medium text-gray-400">Event Name</label>
-                                <select onChange={handleEventSelectChange} value={isCustomEvent ? 'other' : formData.eventName} className="w-full bg-fann-charcoal border border-gray-700 rounded px-3 py-2" required>
-                                    <option value="" disabled>Select from the list...</option>
-                                    {eventNames.map(name => <option key={name} value={name}>{name}</option>)}
-                                    <option value="other">Other (Please specify)</option>
-                                </select>
-                                {isCustomEvent && (
-                                    <input type="text" name="eventName" placeholder="Enter your event name" value={formData.eventName} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2" />
-                                )}
+                            <div>
+                                <label htmlFor="industry" className="block text-sm font-medium text-gray-400 mb-2">Your Industry</label>
+                                <input type="text" id="industry" name="industry" value={formData.industry} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" placeholder="e.g., Technology, Healthcare, Aviation" />
                             </div>
                         </div>
+                        <div>
+                             <label htmlFor="standLayout" className="block text-sm font-medium text-gray-400 mb-2">Stand Layout</label>
+                            <select id="standLayout" name="standLayout" value={formData.standLayout} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2">
+                                <option value="" disabled>Select a layout...</option>
+                                <option>Linear (1 side open / in-line)</option>
+                                <option>Corner (2 sides open)</option>
+                                <option>Peninsula (3 sides open)</option>
+                                <option>Island (4 sides open / standalone)</option>
+                            </select>
+                        </div>
+                         <div>
+                            <label htmlFor="eventName" className="block text-sm font-medium text-gray-400 mb-2">Event Name</label>
+                            <select id="eventName" name="eventName" value={isCustomEvent ? 'Other (Please Specify)' : formData.eventName} onChange={handleEventSelectChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2">
+                                <option value="" disabled>Select an event...</option>
+                                {eventNames.map(name => <option key={name} value={name}>{name}</option>)}
+                            </select>
+                        </div>
+                        {isCustomEvent && (
+                            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="overflow-hidden">
+                                <label htmlFor="customEventName" className="block text-sm font-medium text-gray-400 mb-2">Please specify the event name</label>
+                                <input type="text" id="customEventName" name="eventName" value={formData.eventName} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" placeholder="e.g., My Company's Annual Conference" />
+                            </motion.div>
+                        )}
                     </div>
                 );
             case 1: // Structure
-                return (
-                    <div>
-                        <h3 className="text-2xl font-semibold mb-2">Step 2: Structure & Scale</h3>
-                        <p className="text-gray-400 mb-6">Define the physical presence of your stand.</p>
-                        <div className="space-y-4">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-400 mb-1">Stand Type</label>
-                                    <select name="standType" value={formData.standType} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded px-3 py-2" required>
-                                        <option value="" disabled>Select stand type</option>
-                                        <option>Space Only</option><option>Shell Scheme</option><option>Modular System</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-400 mb-1">Stand Height</label>
-                                    <select name="standHeight" value={formData.standHeight} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded px-3 py-2" required>
-                                        <option value="" disabled>Select stand height</option>
-                                        <option>4m</option><option>5m</option><option>6m</option><option>Max Height Permitted</option>
-                                    </select>
-                                </div>
-                            </div>
+                 return (
+                    <div className="space-y-6">
+                        <h2 className="text-2xl font-serif text-white mb-4">Step 2: The Structure</h2>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-400 mb-2">Stand Type</label>
                             <div className="grid grid-cols-2 gap-4">
-                               <label className="flex items-center p-4 bg-fann-charcoal border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800">
-                                   <input type="checkbox" name="doubleDecker" checked={formData.doubleDecker} onChange={handleCheckboxChange} className="h-5 w-5 rounded text-fann-teal focus:ring-fann-teal" />
-                                   <span className="ml-3 text-white">Double Decker?</span>
-                               </label>
-                               <label className="flex items-center p-4 bg-fann-charcoal border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800">
-                                   <input type="checkbox" name="hangingStructure" checked={formData.hangingStructure} onChange={handleCheckboxChange} className="h-5 w-5 rounded text-fann-teal focus:ring-fann-teal" />
-                                   <span className="ml-3 text-white">Hanging Structure?</span>
-                               </label>
+                                {['Custom-built', 'Modular System'].map(type => (
+                                    <button type="button" key={type} onClick={() => setFormData(prev => ({...prev, standType: type}))} className={`p-4 rounded-lg border-2 text-center transition-colors ${formData.standType === type ? 'border-fann-gold bg-fann-gold/10' : 'border-gray-700 hover:border-fann-gold/50'}`}>
+                                        {type}
+                                    </button>
+                                ))}
                             </div>
+                        </div>
+                         <div>
+                            <label className="block text-sm font-medium text-gray-400 mb-2">Max Stand Height (Venue Permitted)</label>
+                            <div className="grid grid-cols-4 gap-4">
+                                {['4m', '5m', '6m', '6m+'].map(height => (
+                                    <button type="button" key={height} onClick={() => setFormData(prev => ({...prev, standHeight: height}))} className={`p-4 rounded-lg border-2 text-center transition-colors ${formData.standHeight === height ? 'border-fann-gold bg-fann-gold/10' : 'border-gray-700 hover:border-fann-gold/50'}`}>
+                                        {height}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="flex items-center justify-around">
+                            <label className="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" name="doubleDecker" checked={formData.doubleDecker} onChange={handleCheckboxChange} className="h-5 w-5 rounded bg-gray-700 border-gray-600 text-fann-teal focus:ring-fann-teal" />
+                                <span>Double-Decker?</span>
+                            </label>
+                            <label className="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" name="hangingStructure" checked={formData.hangingStructure} onChange={handleCheckboxChange} className="h-5 w-5 rounded bg-gray-700 border-gray-600 text-fann-teal focus:ring-fann-teal" />
+                                <span>Hanging Structure?</span>
+                            </label>
                         </div>
                     </div>
                 );
             case 2: // Functionality
                 return (
-                    <div>
-                        <h3 className="text-2xl font-semibold mb-2">Step 3: Functionality & Services</h3>
-                        <p className="text-gray-400 mb-6">Select the key features and services your stand must include.</p>
-                         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
-                            {functionalityOptions.map(opt => (
-                                <label key={opt} className={`flex items-center p-3 text-sm rounded-lg cursor-pointer transition-colors ${formData.functionality.includes(opt) ? 'bg-fann-teal text-white' : 'bg-fann-charcoal border border-gray-700'}`}>
-                                    <input type="checkbox" checked={formData.functionality.includes(opt)} onChange={() => handleFunctionalityChange(opt)} className="hidden" />
-                                    <span>{opt}</span>
-                                </label>
+                     <div className="space-y-6">
+                        <h2 className="text-2xl font-serif text-white mb-4">Step 3: Functionality & Features</h2>
+                        <p className="text-gray-400 text-sm">Select all the features you require for your stand.</p>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            {functionalityOptions.map(item => (
+                                <button type="button" key={item} onClick={() => handleFunctionalityChange(item)} className={`p-3 rounded-lg border-2 text-left text-sm transition-colors flex items-center gap-2 ${formData.functionality.includes(item) ? 'border-fann-teal bg-fann-teal/10' : 'border-gray-700 hover:border-fann-teal/50'}`}>
+                                    <div className={`w-4 h-4 rounded-sm flex-shrink-0 border-2 ${formData.functionality.includes(item) ? 'bg-fann-teal border-fann-teal' : 'border-gray-500'}`}/>
+                                    <span>{item}</span>
+                                </button>
                             ))}
                         </div>
-                         <label className="flex items-center p-4 bg-fann-charcoal border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800">
-                             <input type="checkbox" name="hostess" checked={formData.hostess} onChange={handleCheckboxChange} className="h-5 w-5 rounded text-fann-teal focus:ring-fann-teal" />
-                             <span className="ml-3 text-white">Hostess Required?</span>
-                         </label>
                     </div>
                 );
             case 3: // Branding
                 return (
-                    <div>
-                         <h3 className="text-2xl font-semibold mb-2">Step 4: Branding & Vision</h3>
-                         <p className="text-gray-400 mb-6">Provide your brand assets to guide the design.</p>
-                         <div className="space-y-4">
+                    <div className="space-y-6">
+                        <h2 className="text-2xl font-serif text-white mb-4">Step 4: Branding & Style</h2>
+                        <div className="grid md:grid-cols-2 gap-8 items-start">
                             <div>
-                                <label className="block text-sm font-medium text-gray-400 mb-1">Upload Your Logo</label>
-                                <div onClick={() => fileInputRef.current?.click()} className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-600 border-dashed rounded-md cursor-pointer">
-                                    <div className="space-y-1 text-center">
-                                        {formData.logoPreview ? (
-                                            <img src={formData.logoPreview} alt="Logo Preview" className="mx-auto h-24 w-auto" />
-                                        ) : (
-                                            <>
-                                                <Upload className="mx-auto h-12 w-12 text-gray-500" />
-                                                <p className="text-sm text-gray-400">Click to upload a file</p>
-                                                <p className="text-xs text-gray-500">PNG, JPG, SVG up to 10MB</p>
-                                            </>
-                                        )}
-                                    </div>
+                                <label className="block text-sm font-medium text-gray-400 mb-2">Upload Your Logo (Vector Preferred)</label>
+                                <div onClick={() => fileInputRef.current?.click()} className="h-48 w-full bg-fann-charcoal border-2 border-dashed border-gray-600 rounded-lg flex items-center justify-center cursor-pointer hover:border-fann-gold transition-colors">
+                                    {formData.logoPreview ? (
+                                        <img src={formData.logoPreview} alt="Logo Preview" className="max-h-full max-w-full object-contain p-4" />
+                                    ) : (
+                                        <div className="text-center text-gray-500">
+                                            <Upload className="mx-auto w-8 h-8 mb-2" />
+                                            <p>Click to upload</p>
+                                        </div>
+                                    )}
                                 </div>
-                                <input ref={fileInputRef} id="file-upload" name="file-upload" type="file" className="sr-only" onChange={handleLogoChange} accept="image/*"/>
+                                <input type="file" ref={fileInputRef} onChange={handleLogoChange} className="hidden" accept="image/png, image/jpeg, image/svg+xml, .ai, .eps" />
                             </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-400 mb-1">Brand Colors</label>
-                                <input type="text" name="brandColors" value={formData.brandColors} onChange={handleInputChange} placeholder="e.g., Navy Blue, Gold, White" className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2" required />
-                                {isExtractingColors && (
-                                    <div className="flex items-center gap-2 mt-2 text-sm text-gray-400">
-                                        <Loader2 className="w-4 h-4 animate-spin" />
-                                        <span>Extracting colors from your logo...</span>
-                                    </div>
-                                )}
-                                {!isExtractingColors && suggestedColors.length > 0 && (
-                                    <div className="mt-3">
-                                        <p className="text-sm text-gray-400 mb-2">Suggested colors (click to add):</p>
+                            <div className="space-y-4">
+                                <div>
+                                    <label htmlFor="brandColors" className="block text-sm font-medium text-gray-400 mb-2">Primary Brand Colors</label>
+                                    <input type="text" id="brandColors" name="brandColors" value={formData.brandColors} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" placeholder="e.g., #0A192F, Fann Gold, White" />
+                                </div>
+                                 <div>
+                                    <label className="block text-sm font-medium text-gray-400 mb-2">Suggested from Logo</label>
+                                    {isExtractingColors ? (
+                                        <div className="flex items-center gap-2 text-sm text-gray-400"><Loader2 className="w-4 h-4 animate-spin"/>Analyzing...</div>
+                                    ) : suggestedColors.length > 0 ? (
                                         <div className="flex flex-wrap gap-2">
                                             {suggestedColors.map(color => (
-                                                <button
-                                                    type="button"
-                                                    key={color}
-                                                    onClick={() => addSuggestedColor(color)}
-                                                    className="bg-gray-700 text-white text-xs font-medium px-3 py-1 rounded-full hover:bg-fann-teal transition-colors"
-                                                >
-                                                    {color}
-                                                </button>
+                                                <button type="button" key={color} onClick={() => addSuggestedColor(color)} className="px-3 py-1 bg-gray-700 rounded-full text-xs hover:bg-fann-teal transition-colors">{color}</button>
                                             ))}
                                         </div>
-                                    </div>
-                                )}
+                                    ) : <p className="text-xs text-gray-500">Upload a logo to see suggestions.</p>}
+                                </div>
                             </div>
-                         </div>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-400 mb-2">Design Style</label>
+                            {formData.eventStyleDescription && (
+                                 <motion.div initial={{opacity:0, y: -10}} animate={{opacity:1, y:0}} className="bg-fann-charcoal/50 p-3 rounded-lg text-sm text-gray-300 mb-3 border-l-2 border-fann-teal">
+                                    <strong>AI Suggestion for {formData.eventName}:</strong> {formData.eventStyleDescription}
+                                </motion.div>
+                            )}
+                             <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
+                                {styles.map(s => (
+                                    <div key={s.name} onClick={() => setFormData(prev => ({...prev, style: s.name}))} className={`relative rounded-lg overflow-hidden h-24 cursor-pointer border-2 transition-all ${formData.style === s.name ? 'border-fann-gold' : 'border-transparent'}`}>
+                                        <img src={s.image} alt={s.name} className="w-full h-full object-cover"/>
+                                        <div className="absolute inset-0 bg-black/50"></div>
+                                        <p className="absolute bottom-2 left-2 text-xs font-bold">{s.name}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 );
-            case 4: // User Details
-                return (
-                     <div>
-                         <h3 className="text-2xl font-semibold mb-2">Step 5: Almost There!</h3>
-                         <p className="text-gray-400 mb-6">Enter your details to generate your design and receive your complimentary proposal.</p>
-                         <div className="space-y-4">
-                            <input type="text" name="userName" placeholder="Your Name" value={formData.userName} onChange={handleInputChange} required className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2" />
-                            <input type="email" name="userEmail" placeholder="Your Email" value={formData.userEmail} onChange={handleInputChange} required className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2" />
-                            <input type="tel" name="userMobile" placeholder="Your Mobile" value={formData.userMobile} onChange={handleInputChange} required className="w-full bg-fann-charcoal border border-gray-700 rounded px-4 py-2" />
-                         </div>
+            case 4: // Your Details
+                 return (
+                    <div className="space-y-6 max-w-md mx-auto">
+                        <h2 className="text-2xl font-serif text-white text-center">Step 5: Your Details</h2>
+                        <p className="text-center text-gray-400 text-sm">We'll use this to send you the generated concepts and proposal.</p>
+                        <div>
+                            <label htmlFor="userName" className="block text-sm font-medium text-gray-400 mb-1">Full Name</label>
+                            <input type="text" id="userName" name="userName" value={formData.userName} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" />
+                        </div>
+                        <div>
+                            <label htmlFor="userEmail" className="block text-sm font-medium text-gray-400 mb-1">Email Address</label>
+                            <input type="email" id="userEmail" name="userEmail" value={formData.userEmail} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" />
+                        </div>
+                        <div>
+                            <label htmlFor="userMobile" className="block text-sm font-medium text-gray-400 mb-1">Mobile Number</label>
+                            <input type="tel" id="userMobile" name="userMobile" value={formData.userMobile} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-gray-700 rounded-md px-3 py-2" />
+                        </div>
                     </div>
                 );
             default: return null;
         }
-    }
+    };
     
     if (isLoading) {
         return (
-            <div className="min-h-screen flex flex-col justify-center items-center text-center">
+            <div className="min-h-screen flex flex-col justify-center items-center text-center p-4">
                 <Loader2 className="w-16 h-16 text-fann-gold animate-spin" />
                 <h2 className="text-3xl font-serif text-white mt-6">Crafting Your Vision...</h2>
                 <p className="text-gray-400 mt-2 max-w-sm">Our AI is assembling architectural elements, materials, and lighting to bring your concept to life. This may take a few moments.</p>
@@ -792,21 +725,10 @@ The JSON object must contain two keys: "style" and "description".
                                     <motion.div 
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-center justify-between gap-3 mb-4"
+                                        className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-center gap-3 mb-4"
                                     >
-                                        <div className="flex items-center gap-3">
-                                            <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                                            <span>{error}</span>
-                                        </div>
-                                        {isKeyError && (
-                                            <button
-                                                type="button"
-                                                onClick={ensureApiKey}
-                                                className="bg-fann-gold text-fann-charcoal text-xs font-bold py-1 px-3 rounded-full flex-shrink-0 hover:opacity-90"
-                                            >
-                                                Select Key
-                                            </button>
-                                        )}
+                                        <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                                        <span>{error}</span>
                                     </motion.div>
                                 )}
                                 <div className="flex justify-between items-center">

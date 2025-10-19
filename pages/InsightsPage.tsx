@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { GoogleGenAI } from "@google/genai";
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, BookOpen, BrainCircuit, Building2, Globe, Lightbulb, Loader2, Rocket, ServerCrash, Sparkles, Store, TrendingUp } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
-import { useApiKey } from '../context/ApiKeyProvider';
 
 interface InsightTopic {
     title: string;
@@ -59,7 +57,7 @@ const insightTopics: InsightTopic[] = [
         prompt: "Write an article for an event industry magazine about the emerging trend of large-scale, immersive launch events for Saudi Arabia's 'Giga-Projects' (e.g., NEOM, Red Sea Project). Discuss the scale, production complexity, and global impact of these brand experiences.",
         category: 'Events',
         icon: Rocket,
-        image: 'https://images.unsplash.com/photo-1674278474510-5300539f1c9a?w=800&q=80'
+        image: 'https://images.unsplash.com/photo-1674278474510-5300537f1c9a?w=800&q=80'
     },
     {
         title: "Integrating Arabic Culture into Modern Design",
@@ -98,38 +96,31 @@ const InsightsPage: React.FC = () => {
     const [selectedTopic, setSelectedTopic] = useState<InsightTopic | null>(null);
     const [generatedArticle, setGeneratedArticle] = useState<Article | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const { ensureApiKey, handleApiError, error, isKeyError, clearError } = useApiKey();
+    const [error, setError] = useState<string | null>(null);
 
     const generateArticle = async (topic: InsightTopic) => {
         setSelectedTopic(topic);
         setIsLoading(true);
         setGeneratedArticle(null);
-        clearError();
-
-        if (!await ensureApiKey()) {
-            setIsLoading(false);
-            return;
-        }
+        setError(null);
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-            const response = await ai.models.generateContent({
-                model: "gemini-2.5-flash",
-                contents: topic.prompt,
-                config: {
-                    tools: [{ googleSearch: {} }],
-                },
+            const response = await fetch('/api/generate-insights', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: topic.prompt }),
             });
 
-            const sources = response.candidates?.[0]?.groundingMetadata?.groundingChunks?.map(chunk => chunk.web) || [];
-            
-            setGeneratedArticle({
-                content: response.text,
-                sources: sources.filter(source => source && source.uri && source.title)
-            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to generate article.');
+            }
+
+            const data = await response.json();
+            setGeneratedArticle(data);
 
         } catch (e: any) {
-            handleApiError(e);
+            setError(e.message);
         } finally {
             setIsLoading(false);
         }
@@ -138,7 +129,7 @@ const InsightsPage: React.FC = () => {
     const handleBack = () => {
         setSelectedTopic(null);
         setGeneratedArticle(null);
-        clearError();
+        setError(null);
     };
 
     const renderTopicSelection = () => (
@@ -194,18 +185,6 @@ const InsightsPage: React.FC = () => {
                     <ServerCrash className="w-12 h-12 mx-auto mb-4"/>
                     <h2 className="text-2xl font-serif text-white mb-2">An Error Occurred</h2>
                     <p>{error}</p>
-                    {isKeyError && (
-                        <div className="mt-6">
-                            <motion.button
-                                onClick={() => generateArticle(selectedTopic!)}
-                                className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full"
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                            >
-                                Select API Key & Retry
-                            </motion.button>
-                        </div>
-                    )}
                 </motion.div>
             ) : generatedArticle && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-black/20 p-8 sm:p-12 rounded-lg">
@@ -215,7 +194,7 @@ const InsightsPage: React.FC = () => {
                         dangerouslySetInnerHTML={{ __html: formatContent(generatedArticle.content) }}
                     />
 
-                    {generatedArticle.sources.length > 0 && (
+                    {generatedArticle.sources && generatedArticle.sources.length > 0 && (
                         <div className="mt-12 border-t border-gray-700 pt-6">
                             <h3 className="text-xl font-bold text-fann-teal mb-4 flex items-center gap-2"><BookOpen size={20} /> Sources</h3>
                              <ul className="space-y-2 list-disc list-inside">

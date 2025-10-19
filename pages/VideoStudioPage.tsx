@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { GoogleGenAI } from "@google/genai";
 import { motion } from 'framer-motion';
 import { Loader2, Sparkles, AlertCircle, Video, Download } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
-import { useApiKey } from '../context/ApiKeyProvider';
 
 const videoStyles = [
     "A high-energy, fast-cut promotional video for a major tech conference like GITEX.",
@@ -20,67 +18,35 @@ const VideoStudioPage: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [videoUrl, setVideoUrl] = useState<string | null>(null);
     const [statusMessage, setStatusMessage] = useState<string>('');
+    const [error, setError] = useState<string | null>(null);
     
-    const { ensureApiKey, handleApiError, error, isKeyError, clearError } = useApiKey();
-
     const handleGenerateVideo = async () => {
         setIsLoading(true);
         setVideoUrl(null);
-        clearError();
-
-        setStatusMessage("Checking API key...");
-        if (!await ensureApiKey()) {
-            setIsLoading(false);
-            return;
-        }
+        setError(null);
+        setStatusMessage("Initiating video generation... This can take several minutes.");
 
         try {
-            setStatusMessage("Initiating video generation...");
             const fullPrompt = `${selectedStyle} ${prompt}`;
             
-            // Use a new instance to ensure the latest key is used.
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
-            let operation = await ai.models.generateVideos({
-              model: 'veo-3.1-fast-generate-preview',
-              prompt: fullPrompt,
-              config: {
-                numberOfVideos: 1,
-                resolution: '720p',
-                aspectRatio: '16:9'
-              }
+            const response = await fetch('/api/generate-video', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: fullPrompt })
             });
 
-            setStatusMessage("Polling for video status... This can take several minutes.");
-            
-            while (!operation.done) {
-              await new Promise(resolve => setTimeout(resolve, 10000)); // Poll every 10 seconds
-              operation = await ai.operations.getVideosOperation({operation: operation});
-            }
-
-            if (operation.error) {
-                throw new Error(operation.error.message || "An error occurred during video generation.");
-            }
-
-            setStatusMessage("Video generated. Fetching file...");
-            const downloadLink = operation.response?.generatedVideos?.[0]?.video?.uri;
-
-            if (!downloadLink) {
-                throw new Error("Could not retrieve the video download link.");
-            }
-            
-            // The response.body contains the MP4 bytes. You must append an API key when fetching from the download link.
-            const response = await fetch(`${downloadLink}&key=${process.env.API_KEY}`);
             if (!response.ok) {
-                throw new Error(`Failed to download the video file (status: ${response.status}).`);
+                const errorData = await response.json();
+                throw new Error(errorData.error || `Failed to generate video (status: ${response.status}).`);
             }
+            
+            setStatusMessage("Video generated. Preparing for playback...");
             const videoBlob = await response.blob();
             const objectUrl = URL.createObjectURL(videoBlob);
-
             setVideoUrl(objectUrl);
 
         } catch (e: any) {
-            handleApiError(e);
+            setError(e.message);
         } finally {
             setIsLoading(false);
             setStatusMessage('');
@@ -139,22 +105,10 @@ const VideoStudioPage: React.FC = () => {
                                 <motion.div 
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-center my-4"
+                                    className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-center my-4 flex items-center justify-center gap-3"
                                 >
-                                    <div className="flex items-center justify-center gap-3 mb-3">
-                                        <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                                        <span>{error}</span>
-                                    </div>
-                                    {isKeyError && (
-                                        <motion.button
-                                            onClick={handleGenerateVideo}
-                                            className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full text-sm"
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.95 }}
-                                        >
-                                            Select API Key & Retry
-                                        </motion.button>
-                                    )}
+                                    <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                                    <span>{error}</span>
                                 </motion.div>
                             )}
                             <div className="mt-8">
