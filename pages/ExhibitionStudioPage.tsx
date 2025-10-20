@@ -120,6 +120,7 @@ const ExhibitionStudioPage: React.FC = () => {
     
     const fileInputRef = useRef<HTMLInputElement>(null);
     const eventNames = useMemo(() => ['Other (Please Specify)', ...new Set(regionalEvents.map(e => e.name))].sort(), []);
+    const industries = useMemo(() => [...new Set(regionalEvents.map(event => event.industry))].sort(), []);
 
     const setError = (message: string | null) => {
         clearApiKeyError();
@@ -133,7 +134,13 @@ const ExhibitionStudioPage: React.FC = () => {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        const target = e.target as HTMLInputElement;
+
+        if (target.type === 'number') {
+            setFormData(prev => ({ ...prev, [name]: value === '' ? 0 : parseInt(value, 10) }));
+        } else {
+            setFormData(prev => ({ ...prev, [name]: value }));
+        }
     };
 
     const handleEventSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -317,6 +324,12 @@ const ExhibitionStudioPage: React.FC = () => {
             setIsNavigating(false);
             if (analysisSuccess) {
                 setCurrentStep(prev => Math.min(prev + 1, steps.length));
+            } else {
+                // Check if a specific error was already set by a sub-function.
+                // If not, it means the process likely failed silently (e.g., API key selection was cancelled).
+                if (!apiKeyError && !localError) {
+                    setError("Could not complete the action. An API Key might be required. Please try again.");
+                }
             }
         } else {
             setCurrentStep(prev => Math.min(prev + 1, steps.length));
@@ -424,7 +437,18 @@ const ExhibitionStudioPage: React.FC = () => {
                             </div>
                             <div>
                                 <label htmlFor="industry" className="block text-sm font-medium text-fann-light-gray mb-2">Your Industry</label>
-                                <input type="text" id="industry" name="industry" value={formData.industry} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" placeholder="e.g., Technology, Healthcare, Aviation" />
+                                <select
+                                    id="industry"
+                                    name="industry"
+                                    value={formData.industry}
+                                    onChange={handleInputChange}
+                                    className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2"
+                                >
+                                    <option value="" disabled>Select an industry...</option>
+                                    {industries.map(industry => (
+                                        <option key={industry} value={industry}>{industry}</option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
                         <div>
