@@ -127,19 +127,8 @@ const ExhibitionStudioPage: React.FC = () => {
         clearApiKeyError();
     };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        const target = e.target as HTMLInputElement;
-
-        if (target.type === 'number') {
-            setFormData(prev => ({ ...prev, [name]: value === '' ? 0 : parseInt(value, 10) }));
-        } else {
-            setFormData(prev => ({ ...prev, [name]: value }));
-        }
-    };
-    
-    const triggerStyleAnalysis = async (eventName: string) => {
-        if (!eventName) return;
+    const triggerStyleAnalysis = async (eventName: string, industry: string) => {
+        if (!eventName || !industry) return;
         clearAllErrors();
         if (!await ensureApiKey()) return;
         
@@ -147,15 +136,12 @@ const ExhibitionStudioPage: React.FC = () => {
         setFormData(prev => ({ ...prev, style: '', eventStyleDescription: '' }));
     
         try {
-            const eventDetails = regionalEvents.find(e => e.name.toLowerCase() === eventName.toLowerCase());
-            const industryContext = eventDetails ? `The event is in the ${eventDetails.industry} industry.` : '';
-            
             const response = await fetch('/api/analyze-show-style', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     eventName: eventName,
-                    industryContext,
+                    industryContext: `The event is in the ${industry} industry.`,
                     availableStyles: styles.map(s => s.name)
                 })
             });
@@ -185,7 +171,29 @@ const ExhibitionStudioPage: React.FC = () => {
         }
     };
 
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        const target = e.target as HTMLInputElement;
 
+        setFormData(prev => {
+            let newFormData: FormData;
+            if (target.type === 'number') {
+                newFormData = { ...prev, [name]: value === '' ? 0 : parseInt(value, 10) };
+            } else {
+                newFormData = { ...prev, [name]: value };
+            }
+
+            if (name === 'industry' && newFormData.eventName && newFormData.eventName !== 'Other (Please Specify)') {
+                triggerStyleAnalysis(newFormData.eventName, value);
+            }
+             if (name === 'eventName' && value !== 'Other (Please Specify)' && newFormData.industry) {
+                triggerStyleAnalysis(value, newFormData.industry);
+            }
+
+            return newFormData;
+        });
+    };
+    
     const handleEventSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value;
         if (value === 'Other (Please Specify)') {
@@ -193,21 +201,17 @@ const ExhibitionStudioPage: React.FC = () => {
             setFormData(prev => ({ ...prev, eventName: '', style: '', eventStyleDescription: '' }));
         } else {
             setIsCustomEvent(false);
-            setFormData(prev => ({ ...prev, eventName: value, style: '', eventStyleDescription: '' }));
-            triggerStyleAnalysis(value);
+            const newFormData = { ...formData, eventName: value, style: '', eventStyleDescription: '' };
+            setFormData(newFormData);
+            if (newFormData.industry) {
+                triggerStyleAnalysis(value, newFormData.industry);
+            }
         }
     };
 
     const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, checked } = e.target;
-        
-        setFormData(prev => {
-            const newFormData = { ...prev, [name]: checked };
-            if (name === 'doubleDecker' && checked && (newFormData.standHeight === '4m' || newFormData.standHeight === '5m')) {
-                newFormData.standHeight = '6m';
-            }
-            return newFormData;
-        });
+        setFormData(prev => ({ ...prev, [name]: checked }));
     };
 
     const handleFunctionalityChange = (item: string) => {
@@ -278,11 +282,11 @@ const ExhibitionStudioPage: React.FC = () => {
                 return true;
             case 1:
                 if (!formData.standType || !formData.standHeight) {
-                    setLocalError("Please select structure details.");
+                    setLocalError("Please select all structure details.");
                     return false;
                 }
-                if (formData.doubleDecker && (formData.standHeight === '4m' || formData.standHeight === '5m')) {
-                    setLocalError("A double-decker stand requires at least 6m height.");
+                if (formData.doubleDecker && formData.standHeight === '4m') {
+                    setLocalError("A double-decker stand requires a height of more than 4 meters. Please select a greater height.");
                     return false;
                 }
                 return true;
@@ -293,10 +297,6 @@ const ExhibitionStudioPage: React.FC = () => {
                 }
                 return true;
             case 3:
-                 if (!formData.style) {
-                    setLocalError("Please select a design style.");
-                    return false;
-                }
                 if (!formData.logo || !formData.brandColors.trim()) {
                     setLocalError("Please upload your logo and provide brand colors.");
                     return false;
@@ -313,11 +313,7 @@ const ExhibitionStudioPage: React.FC = () => {
     }
     
     const nextStep = () => {
-        // Prevent moving forward if a persistent API error exists.
-        if (apiKeyError) {
-            return;
-        }
-        // Validate form fields for the current step.
+        if (apiKeyError) return;
         if (validateStep(currentStep)) {
             setCurrentStep(prev => Math.min(prev + 1, steps.length));
         }
@@ -353,7 +349,8 @@ const ExhibitionStudioPage: React.FC = () => {
 - **Stand Type:** ${formData.standType}.
 - **Structure:** ${formData.standHeight} height. It ${formData.doubleDecker ? 'IS a double-decker' : 'is NOT a double-decker'}. It ${formData.hangingStructure ? 'DOES have a hanging structure/banner' : 'does NOT have a hanging structure'}.
 - **Core Functionality:** Must include areas for: ${formData.functionality.join(', ')}.
-- **Design Style:** The overall aesthetic must be **${formData.style}**.
+- **Staffing:** The client ${formData.hostess ? 'DOES require a hostess desk/area' : 'does NOT require a hostess'}.
+- **Design Style:** The overall aesthetic must be **${formData.style || 'Modern and professional'}**. ${formData.eventStyleDescription ? `The AI's analysis for this event suggests the following characteristics: ${formData.eventStyleDescription}` : ''}
 - **Branding:** Use the attached logo prominently but elegantly. The primary brand colors are **${formData.brandColors}**.
 - **Atmosphere:** The stand should feel professional, high-end, and inviting, suitable for a major international event in Dubai or Riyadh. Use realistic lighting and materials. Do not include people.`;
             
@@ -390,9 +387,16 @@ const ExhibitionStudioPage: React.FC = () => {
     
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (validateStep(currentStep)) {
-            generateDesign();
+        // Validate ALL steps before submitting
+        for (let i = 0; i < steps.length; i++) {
+            if (!validateStep(i)) {
+                // Set current step to the one with the error so user can see it
+                setCurrentStep(i); 
+                return;
+            }
         }
+        // If all steps are valid, proceed
+        generateDesign();
     };
 
     const sendProposalRequest = async () => {
@@ -463,7 +467,7 @@ const ExhibitionStudioPage: React.FC = () => {
                         )}
                         {isCustomEvent && (
                             <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="overflow-hidden">
-                                <label htmlFor="customEventName" className="block text-sm font-medium text-fann-light-gray mb-2">Please specify the event name</label>
+                                <label htmlFor="customEventName" className="block text-sm font-medium text-fann-light-gray mb-2 mt-4">Please specify the event name</label>
                                 <input type="text" id="customEventName" name="eventName" value={formData.eventName} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" placeholder="e.g., My Company's Annual Conference" />
                             </motion.div>
                         )}
@@ -475,8 +479,8 @@ const ExhibitionStudioPage: React.FC = () => {
                         <h2 className="text-2xl font-serif text-white mb-4">Step 2: The Structure</h2>
                         <div>
                             <label className="block text-sm font-medium text-fann-light-gray mb-2">Stand Type</label>
-                            <div className="grid grid-cols-2 gap-4">
-                                {['Custom-built', 'Modular System'].map(type => (
+                            <div className="grid grid-cols-3 gap-4">
+                                {['Custom-built', 'Modular System', 'Shell Scheme'].map(type => (
                                     <button type="button" key={type} onClick={() => setFormData(prev => ({...prev, standType: type}))} className={`p-4 rounded-lg border-2 text-center transition-colors ${formData.standType === type ? 'border-fann-gold bg-fann-gold/10' : 'border-fann-border hover:border-fann-gold/50'}`}>
                                         {type}
                                     </button>
@@ -518,12 +522,18 @@ const ExhibitionStudioPage: React.FC = () => {
                                 </button>
                             ))}
                         </div>
+                        <div className="pt-6 mt-6 border-t border-fann-border">
+                            <label className="flex items-center gap-3 cursor-pointer text-white">
+                                <input type="checkbox" name="hostess" checked={formData.hostess} onChange={handleCheckboxChange} className="h-5 w-5 rounded bg-fann-charcoal border-fann-border text-fann-teal focus:ring-fann-teal" />
+                                <span>Do you require a hostess for the stand?</span>
+                            </label>
+                        </div>
                     </div>
                 );
             case 3: // Branding
                 return (
                     <div className="space-y-6">
-                        <h2 className="text-2xl font-serif text-white mb-4">Step 4: Branding & Style</h2>
+                        <h2 className="text-2xl font-serif text-white mb-4">Step 4: Branding</h2>
                         <div className="grid md:grid-cols-2 gap-8 items-start">
                             <div>
                                 <label className="block text-sm font-medium text-fann-light-gray mb-2">Upload Your Logo (Vector Preferred)</label>
@@ -558,23 +568,11 @@ const ExhibitionStudioPage: React.FC = () => {
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            <label className="block text-sm font-medium text-fann-light-gray mb-2">Design Style</label>
-                            {formData.eventStyleDescription && (
-                                 <motion.div initial={{opacity:0, y: -10}} animate={{opacity:1, y:0}} className="bg-fann-charcoal/50 p-3 rounded-lg text-sm text-fann-cream mb-3 border-l-2 border-fann-teal">
-                                    <strong>AI Suggestion for {formData.eventName}:</strong> {formData.eventStyleDescription}
-                                </motion.div>
-                            )}
-                             <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
-                                {styles.map(s => (
-                                    <div key={s.name} onClick={() => setFormData(prev => ({...prev, style: s.name}))} className={`relative rounded-lg overflow-hidden h-24 cursor-pointer border-2 transition-all ${formData.style === s.name ? 'border-fann-gold' : 'border-transparent'}`}>
-                                        <img src={s.image} alt={s.name} className="w-full h-full object-cover"/>
-                                        <div className="absolute inset-0 bg-black/50"></div>
-                                        <p className="absolute bottom-2 left-2 text-xs font-bold">{s.name}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+                         {formData.eventStyleDescription && (
+                             <motion.div initial={{opacity:0, y: -10}} animate={{opacity:1, y:0}} className="bg-fann-charcoal/50 p-3 rounded-lg text-sm text-fann-cream mt-4 border-l-2 border-fann-teal">
+                                <strong>AI Design Direction:</strong> {formData.eventStyleDescription}
+                            </motion.div>
+                        )}
                     </div>
                 );
             case 4: // Your Details
