@@ -1,4 +1,4 @@
-import React from 'react';
+import type * as React from 'react';
 
 export interface Project {
   id: number;
@@ -31,13 +31,14 @@ export interface Testimonial {
   projectType: string;
 }
 
-// Add JSX namespace for model-viewer web component
+// FIX: Correctly defined props for the 'model-viewer' custom element.
+// The previous implementation had a circular reference which broke JSX type
+// checking across the entire application. Using a type-only import for React's
+// HTML attributes provides a safe and correct way to extend JSX.IntrinsicElements
+// without causing runtime module resolution conflicts.
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      // FIX: Add index signature to allow all standard HTML elements.
-      // The original definition was overwriting React's intrinsic elements.
-      [elemName: string]: any;
       'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
         src?: string;
         alt?: string;

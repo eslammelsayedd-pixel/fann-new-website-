@@ -4,7 +4,7 @@ import { motion, Transition } from 'framer-motion';
 const pageVariants = {
   initial: {
     opacity: 0,
-    y: 10,
+    y: 20,
   },
   animate: {
     opacity: 1,
@@ -12,7 +12,7 @@ const pageVariants = {
   },
   exit: {
     opacity: 0,
-    y: -10,
+    y: -20,
   },
 };
 

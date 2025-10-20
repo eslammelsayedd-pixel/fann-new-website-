@@ -20,11 +20,14 @@ export default async function handler(req: Request) {
             model: 'gemini-2.5-flash',
             contents: { parts: [
                 { inlineData: { mimeType, data: image } },
-                { text: "Analyze the attached logo. Identify 3-5 primary brand colors. List them as a simple, comma-separated string. Example: 'Deep Navy Blue, Metallic Gold, Off-White'. Return only the color names." }
+                { text: "Analyze the attached logo. Identify the 3-5 most dominant brand colors. Return them as a simple, comma-separated string of HEX codes. Example: '#0A192F, #D4AF76, #F5F5DC'. Return ONLY the comma-separated HEX codes and nothing else." }
             ] },
         });
         
-        const colors = response.text.split(',').map(c => c.trim()).filter(Boolean);
+        const text = response.text.trim();
+        // Simple validation to ensure we're getting hex-like strings
+        const colors = text.split(',').map(c => c.trim()).filter(c => /^#([0-9A-F]{3}){1,2}$/i.test(c));
+        
         return new Response(JSON.stringify({ colors }), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
     } catch (error: any) {

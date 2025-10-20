@@ -127,7 +127,6 @@ const ExhibitionStudioPage: React.FC = () => {
     const triggerStyleAnalysis = async (eventName: string, industry: string) => {
         if (!eventName || !industry) return;
         clearLocalError();
-        clearError();
         if (!await ensureApiKey()) return;
         
         setIsAnalyzingStyle(true);
@@ -223,7 +222,6 @@ const ExhibitionStudioPage: React.FC = () => {
 
     const extractColorsFromLogo = async (file: File) => {
         clearLocalError();
-        clearError();
         if (!await ensureApiKey()) return;
 
         setIsExtractingColors(true);
@@ -269,67 +267,23 @@ const ExhibitionStudioPage: React.FC = () => {
             extractColorsFromLogo(file);
         }
     };
-
-    const validateStep = (step: number): boolean => {
-        switch(step) {
-            case 0:
-                if (!formData.standWidth || !formData.standLength || !formData.industry || !formData.standLayout || !formData.eventName) {
-                    setLocalError("Please complete all foundation details, including the event name.");
-                    return false;
-                }
-                break;
-            case 1:
-                if (!formData.standType || !formData.standHeight) {
-                    setLocalError("Please select all structure details.");
-                    return false;
-                }
-                if (formData.doubleDecker && formData.standHeight === '4m') {
-                    setLocalError("A double-decker stand requires a height of more than 4 meters. Please select a greater height.");
-                    return false;
-                }
-                break;
-            case 2:
-                if (formData.functionality.length === 0) {
-                    setLocalError("Please select at least one feature.");
-                    return false;
-                }
-                break;
-            case 3:
-                if (!formData.logo || !formData.brandColors.trim()) {
-                    setLocalError("Please upload your logo and provide brand colors.");
-                    return false;
-                }
-                break;
-            case 4:
-                if (!formData.userName.trim() || !formData.userEmail.trim() || !formData.userMobile.trim() || !/\S+@\S+\.\S+/.test(formData.userEmail)) {
-                    setLocalError("Please provide valid contact details.");
-                    return false;
-                }
-                break;
-            default:
-                break;
-        }
-        return true;
-    }
     
     const nextStep = () => {
         if (apiKeyError) return;
         clearLocalError();
-        clearError();
-        if (validateStep(currentStep)) {
+        if (validateStep(currentStep, false)) { // Don't set error on "Next"
             setCurrentStep(prev => Math.min(prev + 1, steps.length));
         }
     };
 
     const prevStep = () => {
         clearLocalError();
-        clearError();
+        clearError(); // Clear API key errors when navigating back
         setCurrentStep(prev => Math.max(prev - 1, 0));
     };
 
     const generateDesign = async () => {
         clearLocalError();
-        clearError();
         if (!await ensureApiKey()) return;
 
         setIsLoading(true);
@@ -388,24 +342,65 @@ const ExhibitionStudioPage: React.FC = () => {
             setIsLoading(false);
         }
     };
+
+    const validateStep = (step: number, shouldSetError: boolean): boolean => {
+        let errorMessage = '';
+        switch(step) {
+            case 0:
+                if (!formData.standWidth || !formData.standLength || !formData.industry || !formData.standLayout || !formData.eventName) {
+                    errorMessage = "Please complete all foundation details, including the event name.";
+                }
+                break;
+            case 1:
+                if (!formData.standType || !formData.standHeight) {
+                    errorMessage = "Please select a stand type and maximum height.";
+                } else if (formData.doubleDecker && formData.standHeight === '4m') {
+                    errorMessage = "A double-decker stand requires a height of more than 4 meters. Please select a greater height.";
+                }
+                break;
+            case 2:
+                if (formData.functionality.length === 0) {
+                    errorMessage = "Please select at least one required feature for your stand.";
+                }
+                break;
+            case 3:
+                if (!formData.logo || !formData.brandColors.trim()) {
+                    errorMessage = "Please upload your logo and provide brand colors for the design.";
+                }
+                break;
+            case 4:
+                if (!formData.userName.trim() || !formData.userMobile.trim() || !/\S+@\S+\.\S+/.test(formData.userEmail)) {
+                    errorMessage = "Please provide your full name, a valid email, and mobile number.";
+                }
+                break;
+        }
+
+        if (errorMessage && shouldSetError) {
+            setLocalError(errorMessage);
+        }
+        
+        return !errorMessage;
+    };
     
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        console.log("Submit button clicked. Current form data:", formData);
+        
         if (apiKeyError) return;
         clearLocalError();
-        clearError();
 
-        // Validate ALL steps before submitting
         for (let i = 0; i < steps.length; i++) {
-            if (!validateStep(i)) {
-                // Set current step to the one with the error so user can see it
+            if (!validateStep(i, true)) {
+                console.log(`Validation failed at step ${i}`);
                 setCurrentStep(i); 
                 return;
             }
         }
-        // If all steps are valid, proceed
+        
+        console.log("All steps validated successfully. Calling generateDesign.");
         generateDesign();
     };
+
 
     const sendProposalRequest = async () => {
         if (selectedImage === null) return;
@@ -555,7 +550,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                         </div>
                                     )}
                                 </div>
-                                <input type="file" ref={fileInputRef} onChange={handleLogoChange} className="hidden" accept="image/png, image/jpeg, image/svg+xml, .ai, .eps" />
+                                <input type="file" ref={fileInputRef} onChange={handleLogoChange} className="hidden" accept="image/png, image/jpeg, image/svg+xml, image/webp" />
                             </div>
                              <div>
                                 <label htmlFor="brandColors" className="block text-sm font-medium text-fann-light-gray mb-2">Primary Brand Colors</label>
@@ -568,15 +563,25 @@ const ExhibitionStudioPage: React.FC = () => {
                                     className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" 
                                     placeholder="Colors will be extracted from your logo" 
                                 />
-                                <div className="mt-2 text-xs h-4">
+                                <div className="mt-2 text-xs min-h-[4rem]">
                                     {isExtractingColors ? (
                                         <span className="flex items-center gap-1 text-fann-light-gray">
                                             <Loader2 className="w-3 h-3 animate-spin"/>Analyzing logo colors...
                                         </span>
                                     ) : suggestedColors.length > 0 && suggestedColors[0] !== 'ERROR' ? (
-                                         <span className="flex items-center gap-1 text-green-400">
-                                            <CheckCircle className="w-3 h-3"/>Colors automatically extracted from logo.
-                                        </span>
+                                        <div>
+                                            <span className="flex items-center gap-1 text-green-400 mb-2">
+                                                <CheckCircle className="w-3 h-3"/>Colors extracted successfully.
+                                            </span>
+                                            <div className="flex flex-wrap gap-2">
+                                                {suggestedColors.map(color => (
+                                                    <div key={color} className="flex items-center gap-1.5 p-1 bg-fann-charcoal rounded">
+                                                        <div className="w-4 h-4 rounded-full border border-white/20" style={{ backgroundColor: color }}></div>
+                                                        <span className="text-xs font-mono text-fann-light-gray">{color}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
                                     ) : suggestedColors[0] === 'ERROR' ? (
                                          <span className="flex items-center gap-1 text-red-400">
                                             <AlertCircle className="w-3 h-3"/>Could not extract colors. Please enter them manually.
