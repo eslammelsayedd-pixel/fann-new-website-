@@ -113,7 +113,7 @@ const ExhibitionStudioPage: React.FC = () => {
     const [isProposalRequested, setIsProposalRequested] = useState(false);
     const [isSending, setIsSending] = useState(false);
     const [isCustomEvent, setIsCustomEvent] = useState(false);
-    const [isNavigating, setIsNavigating] = useState(false);
+    const [isAnalyzingStyle, setIsAnalyzingStyle] = useState(false);
 
     const { ensureApiKey, handleApiError, error: apiKeyError, isKeyError, clearError: clearApiKeyError } = useApiKey();
     const [localError, setLocalError] = useState<string | null>(null);
@@ -121,11 +121,6 @@ const ExhibitionStudioPage: React.FC = () => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const eventNames = useMemo(() => ['Other (Please Specify)', ...new Set(regionalEvents.map(e => e.name))].sort(), []);
     const industries = useMemo(() => [...new Set(regionalEvents.map(event => event.industry))].sort(), []);
-
-    const setError = (message: string | null) => {
-        clearApiKeyError();
-        setLocalError(message);
-    };
 
     const clearAllErrors = () => {
         setLocalError(null);
@@ -142,6 +137,54 @@ const ExhibitionStudioPage: React.FC = () => {
             setFormData(prev => ({ ...prev, [name]: value }));
         }
     };
+    
+    const triggerStyleAnalysis = async (eventName: string) => {
+        if (!eventName) return;
+        clearAllErrors();
+        if (!await ensureApiKey()) return;
+        
+        setIsAnalyzingStyle(true);
+        setFormData(prev => ({ ...prev, style: '', eventStyleDescription: '' }));
+    
+        try {
+            const eventDetails = regionalEvents.find(e => e.name.toLowerCase() === eventName.toLowerCase());
+            const industryContext = eventDetails ? `The event is in the ${eventDetails.industry} industry.` : '';
+            
+            const response = await fetch('/api/analyze-show-style', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    eventName: eventName,
+                    industryContext,
+                    availableStyles: styles.map(s => s.name)
+                })
+            });
+
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error || 'Failed to analyze event style.');
+            }
+            
+            const result = await response.json();
+            const validStyle = styles.map(s => s.name).find(s => s.toLowerCase() === result.style.toLowerCase());
+            
+            if (validStyle) {
+                setFormData(prev => ({
+                    ...prev,
+                    style: validStyle,
+                    eventStyleDescription: result.description || "Style analysis complete.",
+                }));
+            } else {
+                throw new Error(`The AI suggested an unsupported style ('${result.style}'). Please select a style manually or try again.`);
+            }
+    
+        } catch (e: any) {
+            handleApiError(e);
+        } finally {
+            setIsAnalyzingStyle(false);
+        }
+    };
+
 
     const handleEventSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value;
@@ -151,6 +194,7 @@ const ExhibitionStudioPage: React.FC = () => {
         } else {
             setIsCustomEvent(false);
             setFormData(prev => ({ ...prev, eventName: value, style: '', eventStyleDescription: '' }));
+            triggerStyleAnalysis(value);
         }
     };
 
@@ -223,89 +267,44 @@ const ExhibitionStudioPage: React.FC = () => {
         });
     };
 
-    const analyzeShowStyle = async (): Promise<boolean> => {
-        if (!formData.eventName) {
-            setError("Please select or enter an event name first.");
-            return false;
-        }
-        clearAllErrors();
-        if (!await ensureApiKey()) return false;
-        
-        setFormData(prev => ({ ...prev, style: '', eventStyleDescription: '' }));
-    
-        try {
-            const eventDetails = regionalEvents.find(e => e.name.toLowerCase() === formData.eventName.toLowerCase());
-            const industryContext = eventDetails ? `The event is in the ${eventDetails.industry} industry.` : '';
-            
-            const response = await fetch('/api/analyze-show-style', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    eventName: formData.eventName,
-                    industryContext,
-                    availableStyles: styles.map(s => s.name)
-                })
-            });
-
-            if (!response.ok) {
-                const err = await response.json();
-                throw new Error(err.error || 'Failed to analyze event style.');
-            }
-            
-            const result = await response.json();
-            const validStyle = styles.map(s => s.name).find(s => s.toLowerCase() === result.style.toLowerCase());
-            
-            if (validStyle) {
-                setFormData(prev => ({
-                    ...prev,
-                    style: validStyle,
-                    eventStyleDescription: result.description || "Style analysis complete.",
-                }));
-                return true;
-            } else {
-                throw new Error(`The AI suggested an unsupported style ('${result.style}'). Please select a style manually or try again.`);
-            }
-    
-        } catch (e: any) {
-            handleApiError(e);
-            return false;
-        }
-    };
-
     const validateStep = (step: number): boolean => {
-        clearAllErrors();
+        setLocalError(null);
         switch(step) {
             case 0:
                 if (!formData.standWidth || !formData.standLength || !formData.industry || !formData.standLayout || !formData.eventName) {
-                    setError("Please complete all foundation details, including the event name.");
+                    setLocalError("Please complete all foundation details, including the event name.");
                     return false;
                 }
                 return true;
             case 1:
                 if (!formData.standType || !formData.standHeight) {
-                    setError("Please select structure details.");
+                    setLocalError("Please select structure details.");
                     return false;
                 }
                 if (formData.doubleDecker && (formData.standHeight === '4m' || formData.standHeight === '5m')) {
-                    setError("A double-decker stand requires at least 6m height.");
+                    setLocalError("A double-decker stand requires at least 6m height.");
                     return false;
                 }
                 return true;
             case 2:
                 if (formData.functionality.length === 0) {
-                    setError("Please select at least one feature.");
+                    setLocalError("Please select at least one feature.");
                     return false;
                 }
                 return true;
             case 3:
+                 if (!formData.style) {
+                    setLocalError("Please select a design style.");
+                    return false;
+                }
                 if (!formData.logo || !formData.brandColors.trim()) {
-                    setError("Please upload your logo and provide brand colors.");
+                    setLocalError("Please upload your logo and provide brand colors.");
                     return false;
                 }
                 return true;
             case 4:
                 if (!formData.userName.trim() || !formData.userEmail.trim() || !formData.userMobile.trim() || !/\S+@\S+\.\S+/.test(formData.userEmail)) {
-                    setError("Please provide valid contact details.");
+                    setLocalError("Please provide valid contact details.");
                     return false;
                 }
                 return true;
@@ -313,25 +312,13 @@ const ExhibitionStudioPage: React.FC = () => {
         }
     }
     
-    const nextStep = async () => {
-        if (!validateStep(currentStep)) {
+    const nextStep = () => {
+        // Prevent moving forward if a persistent API error exists.
+        if (apiKeyError) {
             return;
         }
-
-        if (currentStep === 0 && !isCustomEvent) {
-            setIsNavigating(true);
-            const analysisSuccess = await analyzeShowStyle();
-            setIsNavigating(false);
-            if (analysisSuccess) {
-                setCurrentStep(prev => Math.min(prev + 1, steps.length));
-            } else {
-                // Check if a specific error was already set by a sub-function.
-                // If not, it means the process likely failed silently (e.g., API key selection was cancelled).
-                if (!apiKeyError && !localError) {
-                    setError("Could not complete the action. An API Key might be required. Please try again.");
-                }
-            }
-        } else {
+        // Validate form fields for the current step.
+        if (validateStep(currentStep)) {
             setCurrentStep(prev => Math.min(prev + 1, steps.length));
         }
     };
@@ -349,7 +336,7 @@ const ExhibitionStudioPage: React.FC = () => {
         setGeneratedImages([]);
 
         if (!formData.logo) {
-            setError("Logo is missing.");
+            setLocalError("Logo is missing.");
             setIsLoading(false);
             return;
         }
@@ -468,6 +455,12 @@ const ExhibitionStudioPage: React.FC = () => {
                                 {eventNames.map(name => <option key={name} value={name}>{name}</option>)}
                             </select>
                         </div>
+                         {isAnalyzingStyle && (
+                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2 text-sm text-fann-light-gray mt-2">
+                                <Loader2 className="w-4 h-4 animate-spin"/>
+                                Analyzing event style...
+                            </motion.div>
+                        )}
                         {isCustomEvent && (
                             <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="overflow-hidden">
                                 <label htmlFor="customEventName" className="block text-sm font-medium text-fann-light-gray mb-2">Please specify the event name</label>
@@ -795,13 +788,13 @@ const ExhibitionStudioPage: React.FC = () => {
                                     </motion.div>
                                 )}
                                 <div className="flex justify-between items-center">
-                                    <motion.button type="button" onClick={prevStep} disabled={currentStep === 0 || isNavigating} className="flex items-center gap-2 text-fann-gold disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: currentStep !== 0 ? 1.05 : 1}} whileTap={{scale: currentStep !== 0 ? 0.95 : 1}}>
+                                    <motion.button type="button" onClick={prevStep} disabled={currentStep === 0 || isAnalyzingStyle} className="flex items-center gap-2 text-fann-gold disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: currentStep !== 0 ? 1.05 : 1}} whileTap={{scale: currentStep !== 0 ? 0.95 : 1}}>
                                         <ArrowLeft size={16} /> Back
                                     </motion.button>
                                     
                                     {currentStep < steps.length - 1 ? (
-                                        <motion.button type="button" onClick={nextStep} disabled={isNavigating} className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full w-32 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray" whileHover={{scale: !isNavigating ? 1.05 : 1}} whileTap={{scale: !isNavigating ? 0.95 : 1}}>
-                                            {isNavigating ? <Loader2 className="w-5 h-5 mx-auto animate-spin" /> : 'Next'}
+                                        <motion.button type="button" onClick={nextStep} disabled={isAnalyzingStyle} className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full w-32 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray" whileHover={{scale: !isAnalyzingStyle ? 1.05 : 1}} whileTap={{scale: !isAnalyzingStyle ? 0.95 : 1}}>
+                                            {isAnalyzingStyle ? <Loader2 className="w-5 h-5 mx-auto animate-spin" /> : 'Next'}
                                         </motion.button>
                                     ) : (
                                         <motion.button type="submit" className="bg-fann-teal text-white font-bold py-2 px-6 rounded-full flex items-center gap-2" whileHover={{scale: 1.05}} whileTap={{scale: 0.95}}>
