@@ -115,21 +115,19 @@ const ExhibitionStudioPage: React.FC = () => {
     const [isCustomEvent, setIsCustomEvent] = useState(false);
     const [isAnalyzingStyle, setIsAnalyzingStyle] = useState(false);
 
-    const { ensureApiKey, handleApiError, error: apiKeyError, isKeyError, clearError: clearApiKeyError } = useApiKey();
+    const { ensureApiKey, handleApiError, error: apiKeyError, isKeyError, clearError } = useApiKey();
     const [localError, setLocalError] = useState<string | null>(null);
     
     const fileInputRef = useRef<HTMLInputElement>(null);
     const eventNames = useMemo(() => ['Other (Please Specify)', ...new Set(regionalEvents.map(e => e.name))].sort(), []);
     const industries = useMemo(() => [...new Set(regionalEvents.map(event => event.industry))].sort(), []);
 
-    const clearAllErrors = () => {
-        setLocalError(null);
-        clearApiKeyError();
-    };
+    const clearLocalError = () => setLocalError(null);
 
     const triggerStyleAnalysis = async (eventName: string, industry: string) => {
         if (!eventName || !industry) return;
-        clearAllErrors();
+        clearLocalError();
+        clearError();
         if (!await ensureApiKey()) return;
         
         setIsAnalyzingStyle(true);
@@ -224,11 +222,13 @@ const ExhibitionStudioPage: React.FC = () => {
     };
 
     const extractColorsFromLogo = async (file: File) => {
-        clearAllErrors();
+        clearLocalError();
+        clearError();
         if (!await ensureApiKey()) return;
 
         setIsExtractingColors(true);
         setSuggestedColors([]);
+        setFormData(prev => ({ ...prev, brandColors: '' }));
         
         try {
             const base64Data = await blobToBase64(file);
@@ -244,10 +244,18 @@ const ExhibitionStudioPage: React.FC = () => {
             }
             
             const data = await response.json();
-            setSuggestedColors(data.colors || []);
+            const extracted = data.colors || [];
+            
+            if (extracted.length > 0) {
+                setSuggestedColors(extracted);
+                setFormData(prev => ({ ...prev, brandColors: extracted.join(', ') }));
+            } else {
+                throw new Error("No distinct colors were found in the logo.");
+            }
         } catch (e: any) {
             console.error("Error extracting colors:", e);
             handleApiError(e);
+            setSuggestedColors(['ERROR']);
         } finally {
             setIsExtractingColors(false);
         }
@@ -262,24 +270,14 @@ const ExhibitionStudioPage: React.FC = () => {
         }
     };
 
-    const addSuggestedColor = (color: string) => {
-        setFormData(prev => {
-            const currentColors = prev.brandColors.trim();
-            const colorSet = new Set(currentColors.split(',').map(c => c.trim().toLowerCase()).filter(Boolean));
-            if (colorSet.has(color.toLowerCase())) return prev;
-            return { ...prev, brandColors: currentColors ? `${currentColors}, ${color}` : color };
-        });
-    };
-
     const validateStep = (step: number): boolean => {
-        setLocalError(null);
         switch(step) {
             case 0:
                 if (!formData.standWidth || !formData.standLength || !formData.industry || !formData.standLayout || !formData.eventName) {
                     setLocalError("Please complete all foundation details, including the event name.");
                     return false;
                 }
-                return true;
+                break;
             case 1:
                 if (!formData.standType || !formData.standHeight) {
                     setLocalError("Please select all structure details.");
@@ -289,43 +287,49 @@ const ExhibitionStudioPage: React.FC = () => {
                     setLocalError("A double-decker stand requires a height of more than 4 meters. Please select a greater height.");
                     return false;
                 }
-                return true;
+                break;
             case 2:
                 if (formData.functionality.length === 0) {
                     setLocalError("Please select at least one feature.");
                     return false;
                 }
-                return true;
+                break;
             case 3:
                 if (!formData.logo || !formData.brandColors.trim()) {
                     setLocalError("Please upload your logo and provide brand colors.");
                     return false;
                 }
-                return true;
+                break;
             case 4:
                 if (!formData.userName.trim() || !formData.userEmail.trim() || !formData.userMobile.trim() || !/\S+@\S+\.\S+/.test(formData.userEmail)) {
                     setLocalError("Please provide valid contact details.");
                     return false;
                 }
-                return true;
-            default: return true;
+                break;
+            default:
+                break;
         }
+        return true;
     }
     
     const nextStep = () => {
         if (apiKeyError) return;
+        clearLocalError();
+        clearError();
         if (validateStep(currentStep)) {
             setCurrentStep(prev => Math.min(prev + 1, steps.length));
         }
     };
 
     const prevStep = () => {
-        clearAllErrors();
+        clearLocalError();
+        clearError();
         setCurrentStep(prev => Math.max(prev - 1, 0));
     };
 
     const generateDesign = async () => {
-        clearAllErrors();
+        clearLocalError();
+        clearError();
         if (!await ensureApiKey()) return;
 
         setIsLoading(true);
@@ -387,6 +391,10 @@ const ExhibitionStudioPage: React.FC = () => {
     
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        if (apiKeyError) return;
+        clearLocalError();
+        clearError();
+
         // Validate ALL steps before submitting
         for (let i = 0; i < steps.length; i++) {
             if (!validateStep(i)) {
@@ -549,22 +557,35 @@ const ExhibitionStudioPage: React.FC = () => {
                                 </div>
                                 <input type="file" ref={fileInputRef} onChange={handleLogoChange} className="hidden" accept="image/png, image/jpeg, image/svg+xml, .ai, .eps" />
                             </div>
-                            <div className="space-y-4">
-                                <div>
-                                    <label htmlFor="brandColors" className="block text-sm font-medium text-fann-light-gray mb-2">Primary Brand Colors</label>
-                                    <input type="text" id="brandColors" name="brandColors" value={formData.brandColors} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" placeholder="e.g., #0A192F, Fann Gold, White" />
-                                </div>
-                                 <div>
-                                    <label className="block text-sm font-medium text-fann-light-gray mb-2">Suggested from Logo</label>
+                             <div>
+                                <label htmlFor="brandColors" className="block text-sm font-medium text-fann-light-gray mb-2">Primary Brand Colors</label>
+                                <input 
+                                    type="text" 
+                                    id="brandColors" 
+                                    name="brandColors" 
+                                    value={formData.brandColors} 
+                                    onChange={handleInputChange} 
+                                    className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" 
+                                    placeholder="Colors will be extracted from your logo" 
+                                />
+                                <div className="mt-2 text-xs h-4">
                                     {isExtractingColors ? (
-                                        <div className="flex items-center gap-2 text-sm text-fann-light-gray"><Loader2 className="w-4 h-4 animate-spin"/>Analyzing...</div>
-                                    ) : suggestedColors.length > 0 ? (
-                                        <div className="flex flex-wrap gap-2">
-                                            {suggestedColors.map(color => (
-                                                <button type="button" key={color} onClick={() => addSuggestedColor(color)} className="px-3 py-1 bg-fann-charcoal rounded-full text-xs hover:bg-fann-teal transition-colors">{color}</button>
-                                            ))}
-                                        </div>
-                                    ) : <p className="text-xs text-fann-light-gray">Upload a logo to see suggestions.</p>}
+                                        <span className="flex items-center gap-1 text-fann-light-gray">
+                                            <Loader2 className="w-3 h-3 animate-spin"/>Analyzing logo colors...
+                                        </span>
+                                    ) : suggestedColors.length > 0 && suggestedColors[0] !== 'ERROR' ? (
+                                         <span className="flex items-center gap-1 text-green-400">
+                                            <CheckCircle className="w-3 h-3"/>Colors automatically extracted from logo.
+                                        </span>
+                                    ) : suggestedColors[0] === 'ERROR' ? (
+                                         <span className="flex items-center gap-1 text-red-400">
+                                            <AlertCircle className="w-3 h-3"/>Could not extract colors. Please enter them manually.
+                                        </span>
+                                    ) : (
+                                        <span className="text-fann-light-gray">
+                                            Upload a logo to automatically detect brand colors.
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -771,7 +792,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                                         type="button"
                                                         onClick={async () => {
                                                             await window.aistudio.openSelectKey();
-                                                            clearApiKeyError();
+                                                            clearError();
                                                         }}
                                                         className="bg-fann-gold text-fann-charcoal text-xs font-bold py-1 px-3 rounded-full hover:opacity-90"
                                                     >
