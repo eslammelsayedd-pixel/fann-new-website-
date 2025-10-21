@@ -27,7 +27,9 @@ export default async function handler(req: Request) {
         }
 
         if (operation.error) {
-            throw new Error(operation.error.message || "An error occurred during video generation.");
+            // FIX: The operation error message can be of type `unknown`. Coercing to a string
+            // ensures it can be safely passed to the Error constructor.
+            throw new Error(String(operation.error.message) || "An error occurred during video generation.");
         }
 
         const downloadLink = operation.response?.generatedVideos?.[0]?.video?.uri;

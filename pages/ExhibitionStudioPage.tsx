@@ -122,114 +122,41 @@ const ExhibitionStudioPage: React.FC = () => {
     const [isCustomEvent, setIsCustomEvent] = useState(false);
     const [isAnalyzingStyle, setIsAnalyzingStyle] = useState(false);
 
-    const { ensureApiKey, handleApiError, error: apiKeyError, isKeyError, clearError } = useApiKey();
+    const { ensureApiKey, handleApiError, error: apiKeyError, isKeyError, clearError: clearApiKeyError } = useApiKey();
     const [localError, setLocalError] = useState<string | null>(null);
     
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const eventNames = useMemo(() => ['Other (Please Specify)', ...new Set(regionalEvents.map(e => e.name))].sort(), []);
-    const industries = useMemo(() => [...new Set(regionalEvents.map(event => event.industry))].sort(), []);
 
-    const clearLocalError = () => setLocalError(null);
-
-    const triggerStyleAnalysis = async (eventName: string, industry: string) => {
-        if (!eventName || !industry) return;
-        clearLocalError();
-        if (!await ensureApiKey()) return;
-        
-        setIsAnalyzingStyle(true);
-        setFormData(prev => ({ ...prev, style: '', eventStyleDescription: '' }));
-    
-        try {
-            const response = await fetch('/api/analyze-show-style', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    eventName: eventName,
-                    industryContext: `The event is in the ${industry} industry.`,
-                    availableStyles: styles.map(s => s.name)
-                })
-            });
-
-            if (!response.ok) {
-                const err = await response.json();
-                throw new Error(err.error || 'Failed to analyze event style.');
-            }
-            
-            const result = await response.json();
-            const validStyle = styles.map(s => s.name).find(s => s.toLowerCase() === result.style.toLowerCase());
-            
-            if (validStyle) {
-                setFormData(prev => ({
-                    ...prev,
-                    style: validStyle,
-                    eventStyleDescription: result.description || "Style analysis complete.",
-                }));
-            } else {
-                throw new Error(`The AI suggested an unsupported style ('${result.style}'). Please select a style manually or try again.`);
-            }
-    
-        } catch (e: any) {
-            handleApiError(e);
-        } finally {
-            setIsAnalyzingStyle(false);
-        }
+    const setError = (message: string | null) => {
+        clearApiKeyError();
+        setLocalError(message);
     };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        const target = e.target as HTMLInputElement;
+    const clearAllErrors = () => {
+        setLocalError(null);
+        clearApiKeyError();
+    };
 
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value, type } = e.target;
+        const checked = (e.target as HTMLInputElement).checked;
+        setFormData(prev => ({
+            ...prev,
+            [name]: type === 'checkbox' ? checked : value,
+        }));
+    };
+    
+    const handleFunctionalityChange = (item: string) => {
         setFormData(prev => {
-            let newFormData: FormData;
-            if (target.type === 'number') {
-                newFormData = { ...prev, [name]: value === '' ? 0 : parseInt(value, 10) };
-            } else {
-                newFormData = { ...prev, [name]: value };
-            }
-
-            if (name === 'industry' && newFormData.eventName && newFormData.eventName !== 'Other (Please Specify)') {
-                triggerStyleAnalysis(newFormData.eventName, value);
-            }
-             if (name === 'eventName' && value !== 'Other (Please Specify)' && newFormData.industry) {
-                triggerStyleAnalysis(value, newFormData.industry);
-            }
-
-            return newFormData;
+            const newFunctionality = prev.functionality.includes(item)
+                ? prev.functionality.filter(i => i !== item)
+                : [...prev.functionality, item];
+            return { ...prev, functionality: newFunctionality };
         });
     };
     
-    const handleEventSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const value = e.target.value;
-        if (value === 'Other (Please Specify)') {
-            setIsCustomEvent(true);
-            setFormData(prev => ({ ...prev, eventName: '', style: '', eventStyleDescription: '' }));
-        } else {
-            setIsCustomEvent(false);
-            const newFormData = { ...formData, eventName: value, style: '', eventStyleDescription: '' };
-            setFormData(newFormData);
-            if (newFormData.industry) {
-                triggerStyleAnalysis(value, newFormData.industry);
-            }
-        }
-    };
-
-    const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, checked } = e.target;
-        setFormData(prev => ({ ...prev, [name]: checked }));
-    };
-
-    const handleFunctionalityChange = (item: string) => {
-        setFormData(prev => ({
-            ...prev,
-            functionality: prev.functionality.includes(item)
-                ? prev.functionality.filter(i => i !== item)
-                : [...prev.functionality, item]
-        }));
-    };
-
     const extractColorsFromLogo = async (file: File) => {
-        clearError();
-        clearLocalError();
+        clearAllErrors();
         if (!await ensureApiKey()) return;
 
         setIsExtractingColors(true);
@@ -238,7 +165,7 @@ const ExhibitionStudioPage: React.FC = () => {
         
         try {
             const base64Data = await blobToBase64(file);
-            const response = await fetch('/api/extract-colors', {
+             const response = await fetch('/api/extract-colors', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ image: base64Data, mimeType: file.type })
@@ -256,78 +183,102 @@ const ExhibitionStudioPage: React.FC = () => {
                 setSuggestedColors(extracted);
                 setFormData(prev => ({ ...prev, brandColors: extracted }));
             } else {
+                setSuggestedColors(['ERROR']);
                 throw new Error("No distinct colors were found in the logo.");
             }
         } catch (e: any) {
             console.error("Error extracting colors:", e);
             handleApiError(e);
-            setSuggestedColors(['ERROR']);
         } finally {
             setIsExtractingColors(false);
         }
     };
-
+    
     const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files?.[0]) {
+        if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
             const logoPreview = URL.createObjectURL(file);
             setFormData(prev => ({ ...prev, logo: file, logoPreview, brandColors: [] }));
             extractColorsFromLogo(file);
         }
     };
+
+    const validateStep = (step: number, shouldSetError: boolean): boolean => {
+        let errorMessage = '';
+        switch (step) {
+            case 0:
+                if (!formData.industry || !formData.eventName) errorMessage = "Please select an industry and event.";
+                break;
+            case 1:
+                if (!formData.standLayout || !formData.standType || !formData.standHeight) errorMessage = "Please complete all structure details.";
+                break;
+            case 2:
+                if (formData.functionality.length === 0) errorMessage = "Please select at least one functionality requirement.";
+                break;
+            case 3:
+                if (!formData.logo) errorMessage = "Please upload your company logo.";
+                else if (formData.brandColors.length === 0) errorMessage = "Please provide your brand colors.";
+                break;
+            case 4:
+                if (!formData.userName.trim() || !formData.userEmail.trim() || !formData.userMobile.trim()) errorMessage = "Please fill in all your contact details.";
+                else if (!/\S+@\S+\.\S+/.test(formData.userEmail)) errorMessage = "Please enter a valid email address.";
+                break;
+        }
+
+        if (errorMessage && shouldSetError) {
+            setError(errorMessage);
+        }
+
+        return !errorMessage;
+    }
     
     const nextStep = () => {
-        if (apiKeyError) return;
-        clearLocalError();
+        clearAllErrors();
         if (validateStep(currentStep, true)) {
             setCurrentStep(prev => Math.min(prev + 1, steps.length));
         }
     };
 
     const prevStep = () => {
-        clearLocalError();
-        clearError(); // Clear API key errors when navigating back
+        clearAllErrors();
         setCurrentStep(prev => Math.max(prev - 1, 0));
     };
 
     const generateDesign = async () => {
-        clearError();
-        clearLocalError();
+        clearAllErrors();
         if (!await ensureApiKey()) return;
 
         setIsLoading(true);
         setGeneratedImages([]);
 
         if (!formData.logo) {
-            setLocalError("Logo is missing.");
+            setError("Logo is missing. Please go back and upload it.");
             setIsLoading(false);
             return;
         }
 
         try {
             const logoBase64 = await blobToBase64(formData.logo);
-            const layoutDescription = getLayoutDescription(formData.standLayout);
-
-            const textPrompt = `Generate 4 photorealistic 2D renders of a bespoke exhibition stand concept for a tradeshow.
-- **Client Industry:** ${formData.industry}
-- **Event Name:** ${formData.eventName}
-- **Stand Dimensions:** ${formData.standWidth}m width x ${formData.standLength}m length (${formData.standWidth * formData.standLength} sqm area).
-- **Stand Layout:** ${formData.standLayout}. ${layoutDescription}
-- **Stand Type:** ${formData.standType}.
-- **Structure:** ${formData.standHeight} height. It ${formData.doubleDecker ? 'IS a double-decker' : 'is NOT a double-decker'}. It ${formData.hangingStructure ? 'DOES have a hanging structure/banner' : 'does NOT have a hanging structure'}.
-- **Core Functionality:** Must include areas for: ${formData.functionality.join(', ')}.
-- **Staffing:** The client ${formData.hostess ? 'DOES require a hostess desk/area' : 'does NOT require a hostess'}.
-- **Design Style:** The overall aesthetic must be **${formData.style || 'Modern and professional'}**. ${formData.eventStyleDescription ? `The AI's analysis for this event suggests the following characteristics: ${formData.eventStyleDescription}` : ''}
-- **Branding:** Use the attached logo prominently but elegantly. The primary brand colors are **${formData.brandColors.join(', ')}**.
-- **Atmosphere:** The stand should feel professional, high-end, and inviting, suitable for a major international event in Dubai or Riyadh. Use realistic lighting and materials. Do not include people.`;
             
+            const prompt = `Generate 4 photorealistic concept images for a bespoke exhibition stand.
+- **Event:** ${formData.eventName}
+- **Industry:** ${formData.industry}
+- **Stand Dimensions:** ${formData.standWidth}m width x ${formData.standLength}m length (${formData.standWidth * formData.standLength} sqm).
+- **Layout:** ${formData.standLayout}. This is ${getLayoutDescription(formData.standLayout)}
+- **Stand Type:** ${formData.standType}.
+- **Structure:** Maximum height is ${formData.standHeight}. ${formData.doubleDecker ? 'It MUST be a double-decker (two-story) stand.' : ''} ${formData.hangingStructure ? 'It MUST include a prominent hanging structure suspended from the ceiling.' : ''}
+- **Style:** The overall design aesthetic should be **${formData.style}**.
+- **Functionality Requirements:** The stand must visibly include areas for: ${formData.functionality.join(', ')}.
+- **Branding:** The stand is for a company whose logo is attached. The brand colors are **${formData.brandColors.join(', ')}**. Integrate the logo and colors naturally into the design on walls, reception desks, or digital screens.
+- **Atmosphere:** The images should look high-end, professionally lit, and visually stunning. Do not include any people in the images.`;
+
             const response = await fetch('/api/generate-images', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     logo: logoBase64,
                     mimeType: formData.logo.type,
-                    prompt: textPrompt,
+                    prompt: prompt,
                 })
             });
 
@@ -341,7 +292,7 @@ const ExhibitionStudioPage: React.FC = () => {
             if (!data.imageUrls || data.imageUrls.length === 0) {
                  throw new Error("The AI model failed to generate any images.");
             }
-
+            
             setGeneratedImages(data.imageUrls);
             setIsFinished(true);
             
@@ -351,51 +302,12 @@ const ExhibitionStudioPage: React.FC = () => {
             setIsLoading(false);
         }
     };
-
-    const validateStep = (step: number, shouldSetError: boolean): boolean => {
-        let errorMessage = '';
-        switch(step) {
-            case 0:
-                if (!formData.standWidth || !formData.standLength || !formData.industry || !formData.standLayout || !formData.eventName) {
-                    errorMessage = "Please complete all foundation details, including the event name.";
-                }
-                break;
-            case 1:
-                if (!formData.standType || !formData.standHeight) {
-                    errorMessage = "Please select a stand type and maximum height.";
-                } else if (formData.doubleDecker && formData.standHeight === '4m') {
-                    errorMessage = "A double-decker stand requires a height of more than 4 meters. Please select a greater height.";
-                }
-                break;
-            case 2:
-                if (formData.functionality.length === 0) {
-                    errorMessage = "Please select at least one required feature for your stand.";
-                }
-                break;
-            case 3:
-                if (!formData.logo || formData.brandColors.length === 0) {
-                    errorMessage = "Please upload your logo and provide brand colors for the design.";
-                }
-                break;
-            case 4:
-                if (!formData.userName.trim() || !formData.userMobile.trim() || !/\S+@\S+\.\S+/.test(formData.userEmail)) {
-                    errorMessage = "Please provide your full name, a valid email, and mobile number.";
-                }
-                break;
-        }
-
-        if (errorMessage && shouldSetError) {
-            setLocalError(errorMessage);
-        }
-        
-        return !errorMessage;
-    };
     
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         
         if (apiKeyError) return;
-        clearLocalError();
+        clearAllErrors();
 
         for (let i = 0; i < steps.length; i++) {
             if (!validateStep(i, true)) {
@@ -407,7 +319,6 @@ const ExhibitionStudioPage: React.FC = () => {
         generateDesign();
     };
 
-
     const sendProposalRequest = async () => {
         if (selectedImage === null) return;
         setIsSending(true);
@@ -418,7 +329,78 @@ const ExhibitionStudioPage: React.FC = () => {
     };
 
     const error = apiKeyError || localError;
-    const isNextButtonDisabled = isAnalyzingStyle || (currentStep === 3 && isExtractingColors);
+    const isNextButtonDisabled = currentStep === 3 && isExtractingColors || currentStep === 0 && isAnalyzingStyle;
+    
+    const analyzeShowStyle = async (eventName: string, industry: string) => {
+        if (!eventName || !industry) return;
+        
+        clearAllErrors();
+        if (!await ensureApiKey()) return;
+
+        setIsAnalyzingStyle(true);
+        try {
+            const response = await fetch('/api/analyze-show-style', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    eventName, 
+                    industryContext: industry, 
+                    availableStyles: styles.map(s => s.name)
+                })
+            });
+
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error || 'Failed to analyze event style.');
+            }
+
+            const data = await response.json();
+            if (data.style && data.description) {
+                setFormData(p => ({ ...p, style: data.style, eventStyleDescription: data.description }));
+            }
+        } catch (e: any) {
+            console.error('Error analyzing show style:', e);
+            handleApiError(e); // This will show the error in the UI
+        } finally {
+            setIsAnalyzingStyle(false);
+        }
+    };
+    
+     useEffect(() => {
+        if (formData.eventName && formData.industry && !isCustomEvent) {
+            analyzeShowStyle(formData.eventName, formData.industry);
+        }
+    }, [formData.eventName, formData.industry, isCustomEvent]);
+    
+    const events = useMemo(() => {
+        const uniqueEvents = new Map<string, { industry: string }>();
+        regionalEvents.forEach(event => {
+            if (!uniqueEvents.has(event.name)) {
+                uniqueEvents.set(event.name, { industry: event.industry });
+            }
+        });
+        return Array.from(uniqueEvents.entries()).map(([name, { industry }]) => ({ name, industry }));
+    }, []);
+    
+    const handleEventChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedEventName = e.target.value;
+        if (selectedEventName === 'custom') {
+            setIsCustomEvent(true);
+            setFormData(p => ({ ...p, eventName: '', industry: p.industry || '', style: '', eventStyleDescription: '' }));
+        } else {
+            setIsCustomEvent(false);
+            const selectedEvent = events.find(event => event.name === selectedEventName);
+            setFormData(p => ({
+                ...p,
+                eventName: selectedEventName,
+                industry: selectedEvent?.industry || p.industry,
+                style: '',
+                eventStyleDescription: ''
+            }));
+        }
+    };
+
+    // --- RENDER LOGIC ---
 
     const renderStepContent = () => {
         switch (currentStep) {
@@ -428,100 +410,83 @@ const ExhibitionStudioPage: React.FC = () => {
                         <h2 className="text-2xl font-serif text-white mb-4">Step 1: The Foundation</h2>
                         <div className="grid md:grid-cols-2 gap-6">
                             <div>
-                                <label className="block text-sm font-medium text-fann-light-gray mb-2">Stand Size (meters)</label>
-                                <div className="flex items-center gap-2">
-                                    <input type="number" name="standWidth" value={formData.standWidth} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" placeholder="Width" />
-                                    <span className="text-fann-light-gray">x</span>
-                                    <input type="number" name="standLength" value={formData.standLength} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" placeholder="Length" />
-                                </div>
-                                <p className="text-xs text-fann-light-gray mt-1">{formData.standWidth * formData.standLength} sqm</p>
-                            </div>
-                            <div>
-                                <label htmlFor="industry" className="block text-sm font-medium text-fann-light-gray mb-2">Your Industry</label>
-                                <select
-                                    id="industry"
-                                    name="industry"
-                                    value={formData.industry}
-                                    onChange={handleInputChange}
-                                    className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2"
-                                >
-                                    <option value="" disabled>Select an industry...</option>
-                                    {industries.map(industry => (
-                                        <option key={industry} value={industry}>{industry}</option>
-                                    ))}
+                                <label htmlFor="eventName" className="block text-sm font-medium text-fann-light-gray mb-2">Event Name</label>
+                                <select id="eventName" value={isCustomEvent ? 'custom' : formData.eventName} onChange={handleEventChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2">
+                                    <option value="" disabled>Select an event...</option>
+                                    {events.map(e => <option key={e.name} value={e.name}>{e.name}</option>)}
+                                    <option value="custom">Other / Not Listed</option>
                                 </select>
                             </div>
+                            <div>
+                                <label htmlFor="industry" className="block text-sm font-medium text-fann-light-gray mb-2">Industry</label>
+                                <input type="text" id="industry" name="industry" value={formData.industry} onChange={handleInputChange} disabled={!isCustomEvent} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2 disabled:bg-fann-charcoal-light/50" />
+                            </div>
                         </div>
-                        <div>
-                             <label htmlFor="standLayout" className="block text-sm font-medium text-fann-light-gray mb-2">Stand Layout</label>
-                            <select id="standLayout" name="standLayout" value={formData.standLayout} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2">
-                                <option value="" disabled>Select a layout...</option>
-                                <option>Linear (1 side open / in-line)</option>
-                                <option>Corner (2 sides open)</option>
-                                <option>Peninsula (3 sides open)</option>
-                                <option>Island (4 sides open / standalone)</option>
-                            </select>
-                        </div>
-                         <div>
-                            <label htmlFor="eventName" className="block text-sm font-medium text-fann-light-gray mb-2">Event Name</label>
-                            <select id="eventName" name="eventName" value={isCustomEvent ? 'Other (Please Specify)' : formData.eventName} onChange={handleEventSelectChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2">
-                                <option value="" disabled>Select an event...</option>
-                                {eventNames.map(name => <option key={name} value={name}>{name}</option>)}
-                            </select>
-                        </div>
-                         {isAnalyzingStyle && (
-                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2 text-sm text-fann-light-gray mt-2">
-                                <Loader2 className="w-4 h-4 animate-spin"/>
-                                Analyzing event style...
-                            </motion.div>
-                        )}
                         {isCustomEvent && (
-                            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="overflow-hidden">
-                                <label htmlFor="customEventName" className="block text-sm font-medium text-fann-light-gray mb-2 mt-4">Please specify the event name</label>
-                                <input type="text" id="customEventName" name="eventName" value={formData.eventName} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" placeholder="e.g., My Company's Annual Conference" />
-                            </motion.div>
+                            <input type="text" name="eventName" placeholder="Enter your event name" value={formData.eventName} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2 mt-4" />
                         )}
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label htmlFor="standWidth" className="block text-sm font-medium text-fann-light-gray mb-2">Stand Width (m): {formData.standWidth}</label>
+                                <input type="range" id="standWidth" name="standWidth" min="3" max="30" value={formData.standWidth} onChange={handleInputChange} className="w-full h-2 bg-fann-charcoal-light rounded-lg appearance-none cursor-pointer accent-fann-gold" />
+                            </div>
+                            <div>
+                                <label htmlFor="standLength" className="block text-sm font-medium text-fann-light-gray mb-2">Stand Length (m): {formData.standLength}</label>
+                                <input type="range" id="standLength" name="standLength" min="3" max="30" value={formData.standLength} onChange={handleInputChange} className="w-full h-2 bg-fann-charcoal-light rounded-lg appearance-none cursor-pointer accent-fann-gold" />
+                            </div>
+                        </div>
+                         <div className="text-center text-lg font-bold">Total Area: <span className="text-fann-gold">{formData.standWidth * formData.standLength} sqm</span></div>
                     </div>
                 );
             case 1: // Structure
                  return (
                     <div className="space-y-6">
                         <h2 className="text-2xl font-serif text-white mb-4">Step 2: The Structure</h2>
-                        <div>
-                            <label className="block text-sm font-medium text-fann-light-gray mb-2">Stand Type</label>
-                            <div className="grid grid-cols-3 gap-4">
-                                {['Custom-built', 'Modular System', 'Shell Scheme'].map(type => (
-                                    <button type="button" key={type} onClick={() => setFormData(prev => ({...prev, standType: type}))} className={`p-4 rounded-lg border-2 text-center transition-colors ${formData.standType === type ? 'border-fann-gold bg-fann-gold/10' : 'border-fann-border hover:border-fann-gold/50'}`}>
-                                        {type}
-                                    </button>
-                                ))}
+                        <div className="grid md:grid-cols-3 gap-6">
+                           <div>
+                                <label htmlFor="standLayout" className="block text-sm font-medium text-fann-light-gray mb-2">Stand Layout (Open Sides)</label>
+                                <select id="standLayout" name="standLayout" value={formData.standLayout} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2">
+                                    <option value="" disabled>Select layout...</option>
+                                    <option>Linear (1 side open / in-line)</option>
+                                    <option>Corner (2 sides open)</option>
+                                    <option>Peninsula (3 sides open)</option>
+                                    <option>Island (4 sides open / standalone)</option>
+                                </select>
+                            </div>
+                             <div>
+                                <label htmlFor="standType" className="block text-sm font-medium text-fann-light-gray mb-2">Stand Type</label>
+                                <select id="standType" name="standType" value={formData.standType} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2">
+                                    <option value="" disabled>Select type...</option>
+                                    <option>Custom Build</option>
+                                    <option>Modular System</option>
+                                    <option>Hybrid (Custom + Modular)</option>
+                                </select>
+                            </div>
+                             <div>
+                                <label htmlFor="standHeight" className="block text-sm font-medium text-fann-light-gray mb-2">Maximum Height</label>
+                                <select id="standHeight" name="standHeight" value={formData.standHeight} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2">
+                                    <option value="" disabled>Select height...</option>
+                                    <option>4 meters</option>
+                                    <option>6 meters</option>
+                                    <option>Venue Maximum</option>
+                                </select>
                             </div>
                         </div>
-                         <div>
-                            <label className="block text-sm font-medium text-fann-light-gray mb-2">Max Stand Height (Venue Permitted)</label>
-                            <div className="grid grid-cols-4 gap-4">
-                                {['4m', '5m', '6m', '6m+'].map(height => (
-                                    <button type="button" key={height} onClick={() => setFormData(prev => ({...prev, standHeight: height}))} className={`p-4 rounded-lg border-2 text-center transition-colors ${formData.standHeight === height ? 'border-fann-gold bg-fann-gold/10' : 'border-fann-border hover:border-fann-gold/50'}`}>
-                                        {height}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                        <div className="flex items-center justify-around">
-                            <label className="flex items-center gap-3 cursor-pointer">
-                                <input type="checkbox" name="doubleDecker" checked={formData.doubleDecker} onChange={handleCheckboxChange} className="h-5 w-5 rounded bg-fann-charcoal border-fann-border text-fann-teal focus:ring-fann-teal" />
-                                <span>Double-Decker?</span>
+                        <div className="flex items-center space-x-8 pt-4">
+                            <label htmlFor="doubleDecker" className="flex items-center space-x-3 cursor-pointer">
+                                <input type="checkbox" id="doubleDecker" name="doubleDecker" checked={formData.doubleDecker} onChange={handleInputChange} className="h-4 w-4 rounded accent-fann-teal"/>
+                                <span>Double Decker (Two Story)</span>
                             </label>
-                            <label className="flex items-center gap-3 cursor-pointer">
-                                <input type="checkbox" name="hangingStructure" checked={formData.hangingStructure} onChange={handleCheckboxChange} className="h-5 w-5 rounded bg-fann-charcoal border-fann-border text-fann-teal focus:ring-fann-teal" />
-                                <span>Hanging Structure?</span>
+                             <label htmlFor="hangingStructure" className="flex items-center space-x-3 cursor-pointer">
+                                <input type="checkbox" id="hangingStructure" name="hangingStructure" checked={formData.hangingStructure} onChange={handleInputChange} className="h-4 w-4 rounded accent-fann-teal"/>
+                                <span>Hanging Structure</span>
                             </label>
                         </div>
                     </div>
                 );
             case 2: // Functionality
                 return (
-                     <div className="space-y-6">
+                    <div className="space-y-6">
                         <h2 className="text-2xl font-serif text-white mb-4">Step 3: Functionality & Features</h2>
                         <p className="text-fann-light-gray text-sm">Select all the features you require for your stand.</p>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -531,12 +496,6 @@ const ExhibitionStudioPage: React.FC = () => {
                                     <span>{item}</span>
                                 </button>
                             ))}
-                        </div>
-                        <div className="pt-6 mt-6 border-t border-fann-border">
-                            <label className="flex items-center gap-3 cursor-pointer text-white">
-                                <input type="checkbox" name="hostess" checked={formData.hostess} onChange={handleCheckboxChange} className="h-5 w-5 rounded bg-fann-charcoal border-fann-border text-fann-teal focus:ring-fann-teal" />
-                                <span>Do you require a hostess for the stand?</span>
-                            </label>
                         </div>
                     </div>
                 );
@@ -551,81 +510,59 @@ const ExhibitionStudioPage: React.FC = () => {
                 };
                 return (
                     <div className="space-y-6">
-                        <h2 className="text-2xl font-serif text-white mb-4">Step 4: Branding</h2>
-                        <div className="grid md:grid-cols-2 gap-8 items-start">
+                        <h2 className="text-2xl font-serif text-white mb-4">Step 4: Style & Branding</h2>
+                         <div>
+                            <label htmlFor="style" className="block text-sm font-medium text-fann-light-gray mb-2">Design Style</label>
+                            <div className="relative">
+                                <select id="style" name="style" value={formData.style} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2">
+                                    <option value="" disabled>Select a style...</option>
+                                    {styles.map(s => <option key={s.name} value={s.name}>{s.name}</option>)}
+                                </select>
+                                {isAnalyzingStyle && <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 animate-spin text-fann-gold" />}
+                            </div>
+                            {formData.eventStyleDescription && (
+                                <p className="text-xs text-fann-light-gray mt-2 bg-fann-charcoal p-2 rounded-md border border-fann-border">
+                                    <strong>AI Suggestion:</strong> {formData.eventStyleDescription}
+                                </p>
+                            )}
+                        </div>
+                        <div className="grid md:grid-cols-2 gap-8 items-start pt-4">
                             <div>
                                 <label className="block text-sm font-medium text-fann-light-gray mb-2">Upload Your Logo (Vector Preferred)</label>
                                 <div onClick={() => fileInputRef.current?.click()} className="h-48 w-full bg-fann-charcoal border-2 border-dashed border-fann-border rounded-lg flex items-center justify-center cursor-pointer hover:border-fann-gold transition-colors">
-                                    {formData.logoPreview ? (
-                                        <img src={formData.logoPreview} alt="Logo Preview" className="max-h-full max-w-full object-contain p-4" />
-                                    ) : (
-                                        <div className="text-center text-fann-light-gray">
-                                            <Upload className="mx-auto w-8 h-8 mb-2" />
-                                            <p>Click to upload</p>
-                                        </div>
-                                    )}
+                                    {formData.logoPreview ? <img src={formData.logoPreview} alt="Logo Preview" className="max-h-full max-w-full object-contain p-4" /> : <div className="text-center text-fann-light-gray"><Upload className="mx-auto w-8 h-8 mb-2" /><p>Click to upload</p></div>}
                                 </div>
                                 <input type="file" ref={fileInputRef} onChange={handleLogoChange} className="hidden" accept="image/png, image/jpeg, image/svg+xml, image/webp, image/gif, .svg" />
                             </div>
-                             <div>
+                            <div>
                                 <label htmlFor="brandColors" className="block text-sm font-medium text-fann-light-gray mb-2">Primary Brand Colors</label>
-                                <input 
-                                    type="text" 
-                                    id="brandColors" 
-                                    name="brandColors" 
-                                    value={formData.brandColors.join(', ')} 
-                                    onChange={(e) => setFormData(p => ({...p, brandColors: e.target.value.split(',').map(c => c.trim()).filter(c => c)}))}
-                                    className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" 
-                                    placeholder="Colors will be extracted from your logo" 
-                                />
+                                <input type="text" id="brandColors" name="brandColors" value={formData.brandColors.join(', ')} onChange={(e) => setFormData(p => ({...p, brandColors: e.target.value.split(',').map(c => c.trim()).filter(c => c)}))} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" placeholder="e.g., #0A192F, Fann Gold, White" />
                                 <div className="mt-2 min-h-[4rem]">
-                                    {isExtractingColors ? (
-                                        <span className="flex items-center gap-1 text-fann-light-gray text-sm">
-                                            <Loader2 className="w-4 h-4 animate-spin"/>Analyzing logo colors...
-                                        </span>
-                                    ) : suggestedColors.length > 0 && suggestedColors[0] !== 'ERROR' ? (
+                                    {isExtractingColors ? <div className="flex items-center gap-2 text-sm text-fann-light-gray"><Loader2 className="w-4 h-4 animate-spin"/>Analyzing...</div> : suggestedColors.length > 0 && suggestedColors[0] !== 'ERROR' ? (
                                         <div>
-                                            <span className="flex items-center gap-1 text-green-400 mb-2 text-sm">
-                                                <CheckCircle className="w-4 h-4"/>AI suggestions are ready. Click to select/deselect.
-                                            </span>
+                                            <span className="flex items-center gap-1 text-green-400 mb-2 text-sm"><CheckCircle className="w-4 h-4"/>AI suggestions are ready. Click to select/deselect.</span>
                                             <div className="flex flex-wrap gap-2">
                                                 {suggestedColors.map(color => {
                                                     const isSelected = formData.brandColors.includes(color);
                                                     return (
-                                                        <button
-                                                          type="button"
-                                                          key={color}
-                                                          onClick={() => handleColorToggle(color)}
-                                                          className={`flex items-center text-xs gap-1.5 p-1.5 rounded-md transition-all border ${isSelected ? 'border-fann-gold bg-fann-gold/10' : 'border-fann-border bg-fann-charcoal hover:border-fann-gold/50'}`}
-                                                        >
+                                                        <button type="button" key={color} onClick={() => handleColorToggle(color)} className={`flex items-center text-xs gap-1.5 p-1.5 rounded-md transition-all border ${isSelected ? 'border-fann-gold bg-fann-gold/10' : 'border-fann-border bg-fann-charcoal hover:border-fann-gold/50'}`}>
                                                             <div className="w-5 h-5 rounded border border-white/20" style={{ backgroundColor: color }}></div>
                                                             <span className="font-mono text-fann-light-gray">{color}</span>
                                                         </button>
-                                                    )
+                                                    );
                                                 })}
                                             </div>
                                         </div>
                                     ) : suggestedColors[0] === 'ERROR' ? (
-                                         <span className="flex items-center gap-1 text-red-400 text-sm">
-                                            <AlertCircle className="w-4 h-4"/>Could not extract colors. Please enter them manually.
-                                        </span>
-                                    ) : (
-                                        <span className="text-fann-light-gray text-sm">
-                                            Upload a logo to automatically detect brand colors.
-                                        </span>
-                                    )}
+                                         <span className="flex items-center gap-1 text-red-400 text-sm"><AlertCircle className="w-4 h-4"/>Could not extract colors. Please enter them manually.</span>
+                                    ) : <p className="text-sm text-fann-light-gray">Upload a logo to see suggestions.</p>}
                                 </div>
                             </div>
                         </div>
-                         {formData.eventStyleDescription && (
-                             <motion.div initial={{opacity:0, y: -10}} animate={{opacity:1, y:0}} className="bg-fann-charcoal/50 p-3 rounded-lg text-sm text-fann-cream mt-4 border-l-2 border-fann-teal">
-                                <strong>AI Design Direction:</strong> {formData.eventStyleDescription}
-                            </motion.div>
-                        )}
                     </div>
                 );
             case 4: // Your Details
-                 return (
+                return (
                     <div className="space-y-6 max-w-md mx-auto">
                         <h2 className="text-2xl font-serif text-white text-center">Step 5: Your Details</h2>
                         <p className="text-center text-fann-light-gray text-sm">We'll use this to send you the generated concepts and proposal.</p>
@@ -647,117 +584,61 @@ const ExhibitionStudioPage: React.FC = () => {
         }
     };
     
-    if (isLoading) {
-        return (
-            <div className="min-h-screen flex flex-col justify-center items-center text-center p-4">
-                <Loader2 className="w-16 h-16 text-fann-gold animate-spin" />
-                <h2 className="text-3xl font-serif text-white mt-6">Crafting Your Vision...</h2>
-                <p className="text-fann-light-gray mt-2 max-w-sm">Our AI is assembling architectural elements, materials, and lighting to bring your concept to life. This may take a few moments.</p>
-            </div>
-        );
-    }
+    if (isLoading) return (
+        <div className="min-h-screen flex flex-col justify-center items-center text-center p-4">
+            <Loader2 className="w-16 h-16 text-fann-gold animate-spin" />
+            <h2 className="text-3xl font-serif text-white mt-6">Building Your Vision...</h2>
+            <p className="text-fann-light-gray mt-2 max-w-sm">Our AI is drafting blueprints and rendering concepts. This might take up to a minute.</p>
+        </div>
+    );
     
-    if (isFinished && isProposalRequested) {
-        return (
-            <AnimatedPage>
-                <div className="min-h-screen flex flex-col justify-center items-center text-center p-4">
-                    <CheckCircle className="w-20 h-20 text-fann-teal mb-6" />
-                    <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Thank You!</h1>
-                    <p className="text-xl text-fann-cream max-w-2xl mx-auto mb-8">
-                        Your selection has been received. Our team is now preparing a detailed proposal which includes additional 3D views, a full quotation, and material specifications.
-                    </p>
-                    <p className="text-lg text-fann-light-gray">
-                        You will receive the proposal at <strong>{formData.userEmail}</strong> shortly.
-                    </p>
-                     {selectedImage !== null && generatedImages[selectedImage] && (
-                        <div className="mt-8 max-w-lg w-full">
-                            <p className="text-sm text-fann-light-gray mb-2">Your Selected Concept:</p>
-                            <img src={generatedImages[selectedImage]} alt="Selected Concept" className="rounded-lg shadow-2xl w-full h-auto object-cover" />
-                        </div>
-                    )}
-                </div>
-            </AnimatedPage>
-        );
-    }
+    if (isFinished && isProposalRequested) return (
+        <AnimatedPage>
+            <div className="min-h-screen flex flex-col justify-center items-center text-center p-4">
+                <CheckCircle className="w-20 h-20 text-fann-teal mb-6" />
+                <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Thank You!</h1>
+                <p className="text-xl text-fann-cream max-w-2xl mx-auto mb-8">Our team has received your concept selection and will prepare a detailed proposal, which will be sent to <strong>{formData.userEmail}</strong> shortly.</p>
+                {selectedImage !== null && <img src={generatedImages[selectedImage]} alt="Selected" className="rounded-lg shadow-2xl w-full max-w-lg mt-8" />}
+            </div>
+        </AnimatedPage>
+    );
 
-    if (isFinished) {
-         return (
-            <AnimatedPage>
-                 <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
-                    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="text-center mb-12">
-                            <Sparkles className="mx-auto h-16 w-16 text-fann-gold" />
-                            <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Your AI Concepts Are Ready</h1>
-                            <p className="text-xl text-fann-cream max-w-3xl mx-auto">
-                                We've generated a 3D model and several 2D concepts. Choose your favorite 2D visual to receive a detailed proposal.
-                            </p>
+    if (isFinished) return (
+        <AnimatedPage>
+            <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-12">
+                        <Sparkles className="mx-auto h-16 w-16 text-fann-gold" />
+                        <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Select Your Favorite Concept</h1>
+                        <p className="text-xl text-fann-cream max-w-3xl mx-auto">Click your preferred design. Our team will then prepare a detailed proposal and quotation for you.</p>
+                    </div>
+                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                        <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            {generatedImages.map((img, index) => (
+                                <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} onClick={() => setSelectedImage(index)} className={`rounded-lg overflow-hidden cursor-pointer border-4 transition-all duration-300 hover:border-fann-gold/50 ${selectedImage === index ? 'border-fann-gold' : 'border-transparent'}`}>
+                                    <img src={img} alt={`AI Concept ${index + 1}`} className="w-full h-auto object-cover" />
+                                </motion.div>
+                            ))}
                         </div>
-                        
-                         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                             <div className="lg:col-span-3 space-y-8">
-                                <div className="bg-fann-charcoal-light p-6 rounded-lg">
-                                    <h3 className="text-2xl font-serif text-fann-gold mb-4 flex items-center gap-3"><View size={28} /> Interactive 3D Preview</h3>
-                                    <p className="text-fann-light-gray mb-4 text-sm max-w-2xl">Rotate and zoom to inspect the generated 3D model of your stand concept. Note: This is a representation of the structure; materials and colors are best viewed in the 2D concepts below.</p>
-                                    <div className="h-96 rounded-lg overflow-hidden bg-fann-charcoal">
-                                        <model-viewer
-                                            src="https://cdn.glitch.global/6a80426b-692c-4386-b48d-64d5a2305370/exhibition_stand.glb?v=1716498858169"
-                                            alt="Interactive 3D model of the exhibition stand"
-                                            camera-controls
-                                            auto-rotate
-                                            ar
-                                            shadow-intensity="1"
-                                            style={{ width: '100%', height: '100%', backgroundColor: '#1a1a1a' }}
-                                        ></model-viewer>
-                                    </div>
+                        <div className="lg:col-span-1 bg-fann-charcoal-light p-6 rounded-lg self-start sticky top-24">
+                            <h3 className="text-2xl font-serif text-fann-gold mb-4">Stand Summary</h3>
+                            <div className="space-y-3 text-sm">
+                                <p><strong>Event:</strong> {formData.eventName}</p>
+                                <p><strong>Size:</strong> {formData.standWidth}m x {formData.standLength}m ({formData.standWidth * formData.standLength} sqm)</p>
+                                <p><strong>Style:</strong> {formData.style}</p>
+                                <div className="pt-4 mt-4 border-t border-fann-border">
+                                    <motion.button onClick={sendProposalRequest} disabled={selectedImage === null || isSending} className="w-full bg-fann-teal text-white font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{ scale: selectedImage !== null && !isSending ? 1.05 : 1 }} whileTap={{ scale: selectedImage !== null && !isSending ? 0.95 : 1 }}>
+                                        {isSending ? <><Loader2 className="w-5 h-5 animate-spin" /> Sending...</> : "Request Detailed Proposal"}
+                                    </motion.button>
+                                    {selectedImage === null && <p className="text-xs text-center text-fann-light-gray mt-2">Please select a design to proceed.</p>}
                                 </div>
-                                 
-                                <div>
-                                    <h3 className="text-2xl font-serif text-fann-gold mb-4">Select Your Favorite 2D Concept</h3>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                        {generatedImages.map((img, index) => (
-                                            <motion.div
-                                                key={index}
-                                                initial={{ opacity: 0, y: 20 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ delay: index * 0.1 }}
-                                                onClick={() => setSelectedImage(index)}
-                                                className={`rounded-lg overflow-hidden cursor-pointer border-4 transition-all duration-300 hover:border-fann-gold/50 ${selectedImage === index ? 'border-fann-gold' : 'border-transparent'}`}
-                                            >
-                                                <img src={img} alt={`AI Concept ${index + 1}`} className="w-full h-auto object-cover" />
-                                            </motion.div>
-                                        ))}
-                                    </div>
-                                </div>
-                             </div>
-
-                             <div className="lg:col-span-1 bg-fann-charcoal-light p-6 rounded-lg self-start sticky top-24">
-                                <h3 className="text-2xl font-serif text-fann-gold mb-4">Project Summary</h3>
-                                <div className="space-y-3 text-sm">
-                                    <p><strong>Event:</strong> {formData.eventName}</p>
-                                    <p><strong>Size:</strong> {formData.standWidth}m x {formData.standLength}m ({formData.standWidth * formData.standLength} sqm)</p>
-                                    <p><strong>AI Style:</strong> {formData.style}</p>
-                                    <p><strong>Layout:</strong> {formData.standLayout}</p>
-                                    <p><strong>Type:</strong> {formData.standType}, {formData.standHeight} height</p>
-                                     <div className="pt-4 mt-4 border-t border-fann-border">
-                                        <motion.button
-                                            onClick={sendProposalRequest}
-                                            disabled={selectedImage === null || isSending}
-                                            className="w-full bg-fann-teal text-white font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed"
-                                            whileHover={{ scale: selectedImage !== null && !isSending ? 1.05 : 1 }}
-                                            whileTap={{ scale: selectedImage !== null && !isSending ? 0.95 : 1 }}
-                                        >
-                                            {isSending ? <><Loader2 className="w-5 h-5 animate-spin" /> Sending...</> : "Request Detailed Proposal"}
-                                        </motion.button>
-                                        {selectedImage === null && <p className="text-xs text-center text-fann-light-gray mt-2">Please select a 2D design to proceed.</p>}
-                                    </div>
-                                </div>
-                             </div>
-                         </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </AnimatedPage>
-        );
-    }
+            </div>
+        </AnimatedPage>
+    );
 
     return (
         <AnimatedPage>
@@ -765,89 +646,48 @@ const ExhibitionStudioPage: React.FC = () => {
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
                     <div className="text-center mb-8">
                         <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">Exhibition Stand Studio</h1>
-                        <p className="text-xl text-fann-cream">Follow the steps to create a bespoke exhibition stand concept.</p>
+                        <p className="text-xl text-fann-cream">Follow the steps to generate a bespoke 3D stand concept.</p>
                     </div>
 
-                    {/* Progress Bar */}
                     <div className="mb-8">
                         <div className="flex justify-between mb-2">
                             {steps.map((step, index) => (
                                 <div key={step.name} className="flex flex-col items-center" style={{ width: `${100 / steps.length}%` }}>
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${currentStep >= index ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-charcoal-light text-fann-light-gray'}`}>
-                                        <step.icon size={16} />
-                                    </div>
+                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${currentStep >= index ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-charcoal-light text-fann-light-gray'}`}><step.icon size={16} /></div>
                                     <span className={`text-xs mt-1 text-center ${currentStep >= index ? 'text-white' : 'text-fann-light-gray'}`}>{step.name}</span>
                                 </div>
                             ))}
                         </div>
-                        <div className="bg-fann-charcoal-light rounded-full h-1.5">
-                            <motion.div 
-                                className="bg-fann-gold h-1.5 rounded-full"
-                                initial={{ width: 0 }}
-                                animate={{ width: `${(currentStep / (steps.length -1)) * 100}%` }}
-                                transition={{ type: 'spring', stiffness: 50 }}
-                            />
-                        </div>
+                        <div className="bg-fann-charcoal-light rounded-full h-1.5"><motion.div className="bg-fann-gold h-1.5 rounded-full" initial={{ width: 0 }} animate={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }} transition={{ type: 'spring', stiffness: 50 }}/></div>
                     </div>
 
                     <div className="bg-fann-charcoal-light p-8 rounded-lg">
                         <form onSubmit={handleSubmit}>
-                            <AnimatePresence mode="wait">
-                                <motion.div
-                                    key={currentStep}
-                                    initial={{ opacity: 0, x: 50 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -50 }}
-                                    transition={{ duration: 0.3 }}
-                                >
-                                    {renderStepContent()}
-                                </motion.div>
-                            </AnimatePresence>
-                            
+                            <motion.div key={currentStep} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.3 }}>
+                                {renderStepContent()}
+                            </motion.div>
                             <div className="mt-8">
                                 {error && (
-                                    <motion.div 
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-start gap-3 mb-4"
-                                    >
+                                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-start gap-3 mb-4">
                                         <div className="flex-shrink-0 pt-0.5"><AlertCircle className="w-5 h-5" /></div>
                                         <div className="flex-grow">
                                             <span>{error}</span>
                                             {isKeyError && (
                                                 <div className="mt-2 flex items-center gap-4">
-                                                    <button
-                                                        type="button"
-                                                        onClick={async () => {
-                                                            await window.aistudio.openSelectKey();
-                                                            clearError();
-                                                        }}
-                                                        className="bg-fann-gold text-fann-charcoal text-xs font-bold py-1 px-3 rounded-full hover:opacity-90"
-                                                    >
-                                                        Select API Key
-                                                    </button>
-                                                    <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer" className="text-xs text-fann-light-gray hover:underline">
-                                                        Learn about billing
-                                                    </a>
+                                                    <button type="button" onClick={async () => { await window.aistudio.openSelectKey(); clearApiKeyError(); }} className="bg-fann-gold text-fann-charcoal text-xs font-bold py-1 px-3 rounded-full hover:opacity-90">Select API Key</button>
+                                                    <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer" className="text-xs text-fann-light-gray hover:underline">Learn about billing</a>
                                                 </div>
                                             )}
                                         </div>
                                     </motion.div>
                                 )}
                                 <div className="flex justify-between items-center">
-                                    <motion.button type="button" onClick={prevStep} disabled={currentStep === 0 || isAnalyzingStyle} className="flex items-center gap-2 text-fann-gold disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: currentStep !== 0 ? 1.05 : 1}} whileTap={{scale: currentStep !== 0 ? 0.95 : 1}}>
+                                    <motion.button type="button" onClick={prevStep} disabled={currentStep === 0} className="flex items-center gap-2 text-fann-gold disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: currentStep !== 0 ? 1.05 : 1}} whileTap={{scale: currentStep !== 0 ? 0.95 : 1}}>
                                         <ArrowLeft size={16} /> Back
                                     </motion.button>
                                     
                                     {currentStep < steps.length - 1 ? (
-                                        <motion.button
-                                            type="button"
-                                            onClick={nextStep}
-                                            disabled={isNextButtonDisabled}
-                                            className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full w-32 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed"
-                                            whileHover={{ scale: !isNextButtonDisabled ? 1.05 : 1 }}
-                                            whileTap={{ scale: !isNextButtonDisabled ? 0.95 : 1 }}
-                                        >
+                                        <motion.button type="button" onClick={nextStep} disabled={isNextButtonDisabled} className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full w-32 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: !isNextButtonDisabled ? 1.05 : 1}} whileTap={{scale: !isNextButtonDisabled ? 0.95 : 1}}>
                                             {isNextButtonDisabled ? <Loader2 className="w-5 h-5 mx-auto animate-spin" /> : 'Next'}
                                         </motion.button>
                                     ) : (
