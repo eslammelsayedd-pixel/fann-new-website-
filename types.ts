@@ -1,4 +1,8 @@
-import * as React from 'react';
+// FIX: Changed the namespace import 'import * as React' to a default import 'import React'.
+// This corrects a subtle type resolution issue in TypeScript where the base JSX element types (like 'div', 'main', etc.)
+// were not being loaded, causing errors across the entire application. This more standard import
+// ensures that React's global JSX type definitions are augmented correctly.
+import React from 'react';
 
 export interface Project {
   id: number;
