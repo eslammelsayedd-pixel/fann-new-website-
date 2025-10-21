@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, Type } from "@google/genai";
 
 export const config = {
   runtime: 'edge',
@@ -20,15 +20,37 @@ export default async function handler(req: Request) {
             model: 'gemini-2.5-flash',
             contents: { parts: [
                 { inlineData: { mimeType, data: image } },
-                { text: "Analyze the attached logo. Identify the 3-5 most dominant brand colors. Return them as a simple, comma-separated string of HEX codes. Example: '#0A192F, #D4AF76, #F5F5DC'. Return ONLY the comma-separated HEX codes and nothing else." }
-            ] },
+                { text: "Analyze the attached logo to identify the 3-5 most dominant brand colors and return them as an array of HEX codes." }
+            ]},
+            config: {
+                responseMimeType: "application/json",
+                responseSchema: {
+                    type: Type.OBJECT,
+                    properties: {
+                        colors: {
+                            type: Type.ARRAY,
+                            items: {
+                                type: Type.STRING,
+                                description: 'A color in HEX code format (e.g., "#RRGGBB").'
+                            }
+                        }
+                    },
+                    required: ['colors']
+                }
+            }
         });
         
-        const text = response.text.trim();
-        // Simple validation to ensure we're getting hex-like strings
-        const colors = text.split(',').map(c => c.trim()).filter(c => /^#([0-9A-F]{3}){1,2}$/i.test(c));
-        
-        return new Response(JSON.stringify({ colors }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        const rawText = response.text.trim();
+        try {
+            const result = JSON.parse(rawText);
+            const colors = result.colors || [];
+            // Validate that the returned values are indeed hex codes.
+            const validatedColors = colors.filter((c: any) => typeof c === 'string' && /^#([0-9A-F]{3}){1,2}$/i.test(c));
+            return new Response(JSON.stringify({ colors: validatedColors }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        } catch (e) {
+            console.error("Failed to parse AI JSON response for colors:", rawText);
+            throw new Error("AI returned an invalid JSON response for color extraction.");
+        }
 
     } catch (error: any) {
         console.error('Error in extract-colors API:', error);

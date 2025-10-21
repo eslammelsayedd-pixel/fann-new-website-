@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, Modality } from "@google/genai";
 
 export const config = {
   runtime: 'edge',
@@ -25,7 +25,7 @@ export default async function handler(req: Request) {
                 { inlineData: { data: logo, mimeType: mimeType } }, 
                 { text: `${prompt}\\n\\nVariation ${i + 1} of 4.` }
             ]},
-            config: { responseModalities: ['IMAGE'] },
+            config: { responseModalities: [Modality.IMAGE] },
         })
     );
 

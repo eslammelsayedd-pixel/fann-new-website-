@@ -1,7 +1,6 @@
-// FIX: Removed the explicit `import React from 'react';` to resolve a project-wide JSX type conflict.
-// The import caused this file's `declare global` to overwrite, rather than augment, React's intrinsic element types,
-// leading to errors like "Property 'div' does not exist...". By removing it, we rely on the globally available React
-// type namespace, allowing the augmentation to work correctly. The file remains a module due to its `export` statements.
+// FIX: Added `import React from 'react';` to ensure the global JSX type augmentations are processed correctly by TypeScript.
+// Without this import, the `React` namespace is not available, invalidating the type definition for the custom `<model-viewer>` element.
+import React from 'react';
 
 export interface Project {
   id: number;
