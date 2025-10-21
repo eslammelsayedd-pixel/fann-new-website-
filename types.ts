@@ -1,8 +1,7 @@
-// FIX: Changed the namespace import 'import * as React' to a default import 'import React'.
-// This corrects a subtle type resolution issue in TypeScript where the base JSX element types (like 'div', 'main', etc.)
-// were not being loaded, causing errors across the entire application. This more standard import
-// ensures that React's global JSX type definitions are augmented correctly.
-import React from 'react';
+// FIX: Removed the explicit `import React from 'react';` to resolve a project-wide JSX type conflict.
+// The import caused this file's `declare global` to overwrite, rather than augment, React's intrinsic element types,
+// leading to errors like "Property 'div' does not exist...". By removing it, we rely on the globally available React
+// type namespace, allowing the augmentation to work correctly. The file remains a module due to its `export` statements.
 
 export interface Project {
   id: number;
@@ -35,11 +34,6 @@ export interface Testimonial {
   projectType: string;
 }
 
-// FIX: Correctly define props for the 'model-viewer' custom element.
-// A regular import of React is used here to ensure that this file is treated
-// as a module and that the JSX.IntrinsicElements interface is augmented correctly
-// rather than being overwritten. This resolves JSX type-checking issues across
-// the application.
 declare global {
   namespace JSX {
     interface IntrinsicElements {
