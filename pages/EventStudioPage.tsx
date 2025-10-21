@@ -81,6 +81,7 @@ const EventStudioPage: React.FC = () => {
     const [selectedImage, setSelectedImage] = useState<number | null>(null);
     const [isProposalRequested, setIsProposalRequested] = useState(false);
     const [isSending, setIsSending] = useState(false);
+    const [apiKeyNeeded, setApiKeyNeeded] = useState(false);
     
     const { ensureApiKey, handleApiError, error: apiKeyError, isKeyError, clearError: clearApiKeyError } = useApiKey();
     const [localError, setLocalError] = useState<string | null>(null);
@@ -95,6 +96,7 @@ const EventStudioPage: React.FC = () => {
     const clearAllErrors = () => {
         setLocalError(null);
         clearApiKeyError();
+        setApiKeyNeeded(false);
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -115,7 +117,7 @@ const EventStudioPage: React.FC = () => {
         clearAllErrors();
         const hasApiKey = await ensureApiKey();
         if (!hasApiKey) {
-            setError("Color analysis requires an API key. Please upload the logo again to select a key.");
+            setApiKeyNeeded(true);
             return;
         }
 
@@ -156,10 +158,17 @@ const EventStudioPage: React.FC = () => {
 
     const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
+            clearAllErrors();
             const file = e.target.files[0];
             const logoPreview = URL.createObjectURL(file);
             setFormData(prev => ({ ...prev, logo: file, logoPreview, brandColors: [] }));
             extractColorsFromLogo(file);
+        }
+    };
+
+    const retryColorExtraction = async () => {
+        if (formData.logo) {
+            await extractColorsFromLogo(formData.logo);
         }
     };
 
@@ -179,6 +188,7 @@ const EventStudioPage: React.FC = () => {
                 break;
             case 3:
                 if (!formData.logo) errorMessage = "Please upload your company logo.";
+                else if (apiKeyNeeded) errorMessage = "An API Key is required to proceed with color analysis.";
                 else if (formData.brandColors.length === 0) errorMessage = "Please provide your brand colors.";
                 break;
             case 4:
@@ -382,7 +392,12 @@ const EventStudioPage: React.FC = () => {
                                     placeholder="e.g., #0A192F, Fann Gold, White" 
                                 />
                                 <div className="mt-2 min-h-[4rem]">
-                                    {isExtractingColors ? <div className="flex items-center gap-2 text-sm text-fann-light-gray"><Loader2 className="w-4 h-4 animate-spin"/>Analyzing...</div> : suggestedColors.length > 0 && suggestedColors[0] !== 'ERROR' ? (
+                                    {apiKeyNeeded ? (
+                                        <div className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm">
+                                            <p className="mb-2 font-semibold">Color analysis requires an API key.</p>
+                                            <button type="button" onClick={retryColorExtraction} className="bg-fann-gold text-fann-charcoal text-xs font-bold py-1 px-3 rounded-full hover:opacity-90">Select API Key</button>
+                                        </div>
+                                    ) : isExtractingColors ? <div className="flex items-center gap-2 text-sm text-fann-light-gray"><Loader2 className="w-4 h-4 animate-spin"/>Analyzing...</div> : suggestedColors.length > 0 && suggestedColors[0] !== 'ERROR' ? (
                                         <div>
                                             <span className="flex items-center gap-1 text-green-400 mb-2 text-sm">
                                                 <CheckCircle className="w-4 h-4"/>AI suggestions are ready. Click to select/deselect.
