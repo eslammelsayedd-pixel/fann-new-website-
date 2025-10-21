@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Loader2, Sparkles, Upload, ArrowLeft, Users, Palette, ListChecks, Crown, User, CheckCircle, AlertCircle } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
@@ -78,6 +78,7 @@ const EventStudioPage: React.FC = () => {
     const [isFinished, setIsFinished] = useState(false);
     const [isExtractingColors, setIsExtractingColors] = useState(false);
     const [suggestedColors, setSuggestedColors] = useState<string[]>([]);
+    const [selectedColors, setSelectedColors] = useState<string[]>([]);
     const [selectedImage, setSelectedImage] = useState<number | null>(null);
     const [isProposalRequested, setIsProposalRequested] = useState(false);
     const [isSending, setIsSending] = useState(false);
@@ -86,6 +87,11 @@ const EventStudioPage: React.FC = () => {
     const [localError, setLocalError] = useState<string | null>(null);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
+    
+    useEffect(() => {
+        // This effect synchronizes the selected colors array with the form's brandColors string.
+        setFormData(prev => ({ ...prev, brandColors: selectedColors.join(', ') }));
+    }, [selectedColors]);
 
     const setError = (message: string | null) => {
         clearApiKeyError();
@@ -117,7 +123,7 @@ const EventStudioPage: React.FC = () => {
 
         setIsExtractingColors(true);
         setSuggestedColors([]);
-        setFormData(prev => ({ ...prev, brandColors: '' }));
+        setSelectedColors([]);
         
         try {
             const base64Data = await blobToBase64(file);
@@ -137,7 +143,7 @@ const EventStudioPage: React.FC = () => {
             
             if (extracted.length > 0) {
                 setSuggestedColors(extracted);
-                setFormData(prev => ({ ...prev, brandColors: extracted.join(', ') }));
+                setSelectedColors(extracted);
             } else {
                 setSuggestedColors(['ERROR']);
                 throw new Error("No distinct colors were found in the logo.");
@@ -155,6 +161,7 @@ const EventStudioPage: React.FC = () => {
             const file = e.target.files[0];
             const logoPreview = URL.createObjectURL(file);
             setFormData(prev => ({ ...prev, logo: file, logoPreview, brandColors: '' }));
+            setSelectedColors([]);
             extractColorsFromLogo(file);
         }
     };
@@ -347,6 +354,13 @@ const EventStudioPage: React.FC = () => {
                     </div>
                 );
             case 3: // Branding
+                 const handleColorToggle = (color: string) => {
+                    setSelectedColors(prev => 
+                        prev.includes(color) 
+                        ? prev.filter(c => c !== color)
+                        : [...prev, color]
+                    );
+                };
                 return (
                     <div className="space-y-6">
                         <h2 className="text-2xl font-serif text-white mb-4">Step 4: Branding</h2>
@@ -358,32 +372,37 @@ const EventStudioPage: React.FC = () => {
                                 </div>
                                 <input type="file" ref={fileInputRef} onChange={handleLogoChange} className="hidden" accept="image/png, image/jpeg, image/svg+xml, image/webp, image/gif" />
                             </div>
-                            <div className="space-y-4">
-                                <div>
-                                    <label htmlFor="brandColors" className="block text-sm font-medium text-fann-light-gray mb-2">Primary Brand Colors</label>
-                                    <input type="text" id="brandColors" name="brandColors" value={formData.brandColors} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" placeholder="e.g., #0A192F, Fann Gold, White" />
-                                </div>
-                                <div className="text-xs min-h-[4rem]">
-                                    <label className="block text-sm font-medium text-fann-light-gray mb-2">Suggested from Logo</label>
+                            <div>
+                                <label htmlFor="brandColors" className="block text-sm font-medium text-fann-light-gray mb-2">Primary Brand Colors</label>
+                                <input type="text" id="brandColors" name="brandColors" value={formData.brandColors} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" placeholder="e.g., #0A192F, Fann Gold, White" />
+                                <div className="mt-2 min-h-[4rem]">
                                     {isExtractingColors ? <div className="flex items-center gap-2 text-sm text-fann-light-gray"><Loader2 className="w-4 h-4 animate-spin"/>Analyzing...</div> : suggestedColors.length > 0 && suggestedColors[0] !== 'ERROR' ? (
                                         <div>
-                                            <span className="flex items-center gap-1 text-green-400 mb-2">
-                                                <CheckCircle className="w-3 h-3"/>Colors extracted & populated above.
+                                            <span className="flex items-center gap-1 text-green-400 mb-2 text-sm">
+                                                <CheckCircle className="w-4 h-4"/>AI suggestions are ready. Click to select/deselect.
                                             </span>
                                             <div className="flex flex-wrap gap-2">
-                                                {suggestedColors.map(color => (
-                                                    <div key={color} className="flex items-center gap-1.5 p-1 bg-fann-charcoal rounded">
-                                                        <div className="w-4 h-4 rounded-full border border-white/20" style={{ backgroundColor: color }}></div>
-                                                        <span className="text-xs font-mono text-fann-light-gray">{color}</span>
-                                                    </div>
-                                                ))}
+                                                {suggestedColors.map(color => {
+                                                    const isSelected = selectedColors.includes(color);
+                                                    return (
+                                                        <button
+                                                          type="button"
+                                                          key={color}
+                                                          onClick={() => handleColorToggle(color)}
+                                                          className={`flex items-center text-xs gap-1.5 p-1.5 rounded-md transition-all border ${isSelected ? 'border-fann-gold bg-fann-gold/10' : 'border-fann-border bg-fann-charcoal hover:border-fann-gold/50'}`}
+                                                        >
+                                                            <div className="w-5 h-5 rounded border border-white/20" style={{ backgroundColor: color }}></div>
+                                                            <span className="font-mono text-fann-light-gray">{color}</span>
+                                                        </button>
+                                                    );
+                                                })}
                                             </div>
                                         </div>
                                     ) : suggestedColors[0] === 'ERROR' ? (
-                                         <span className="flex items-center gap-1 text-red-400">
-                                            <AlertCircle className="w-3 h-3"/>Could not extract colors. Please enter them manually.
+                                         <span className="flex items-center gap-1 text-red-400 text-sm">
+                                            <AlertCircle className="w-4 h-4"/>Could not extract colors. Please enter them manually.
                                         </span>
-                                    ) : <p className="text-xs text-fann-light-gray">Upload a logo to see suggestions.</p>}
+                                    ) : <p className="text-sm text-fann-light-gray">Upload a logo to see suggestions.</p>}
                                 </div>
                             </div>
                         </div>
