@@ -113,7 +113,11 @@ const EventStudioPage: React.FC = () => {
 
     const extractColorsFromLogo = async (file: File) => {
         clearAllErrors();
-        if (!await ensureApiKey()) return;
+        const hasApiKey = await ensureApiKey();
+        if (!hasApiKey) {
+            setError("Color analysis requires an API key. Please upload the logo again to select a key.");
+            return;
+        }
 
         setIsExtractingColors(true);
         setSuggestedColors([]);

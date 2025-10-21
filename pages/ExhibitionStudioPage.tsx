@@ -157,7 +157,11 @@ const ExhibitionStudioPage: React.FC = () => {
     
     const extractColorsFromLogo = async (file: File) => {
         clearAllErrors();
-        if (!await ensureApiKey()) return;
+        const hasApiKey = await ensureApiKey();
+        if (!hasApiKey) {
+            setError("Color analysis requires an API key. Please upload the logo again to select a key.");
+            return;
+        }
 
         setIsExtractingColors(true);
         setSuggestedColors([]);
@@ -181,7 +185,8 @@ const ExhibitionStudioPage: React.FC = () => {
             
             if (extracted.length > 0) {
                 setSuggestedColors(extracted);
-                setFormData(prev => ({ ...prev, brandColors: extracted }));
+                // Auto-select the first suggested color
+                setFormData(prev => ({ ...prev, brandColors: [extracted[0]] }));
             } else {
                 setSuggestedColors(['ERROR']);
                 throw new Error("No distinct colors were found in the logo.");
