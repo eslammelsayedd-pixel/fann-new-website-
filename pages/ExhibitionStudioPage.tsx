@@ -673,7 +673,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-start gap-3 mb-4">
                                         <div className="flex-shrink-0 pt-0.5"><AlertCircle className="w-5 h-5" /></div>
                                         <div className="flex-grow">
-                                            <span>{error}</span>
+                                            <span className="whitespace-pre-wrap">{error}</span>
                                         </div>
                                     </motion.div>
                                 )}

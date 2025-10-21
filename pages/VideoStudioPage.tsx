@@ -112,7 +112,7 @@ const VideoStudioPage: React.FC = () => {
                                 >
                                      <div className="flex-shrink-0 pt-0.5"><AlertCircle className="w-5 h-5" /></div>
                                      <div className="flex-grow">
-                                        <span>{error}</span>
+                                        <span className="whitespace-pre-wrap">{error}</span>
                                      </div>
                                 </motion.div>
                             )}

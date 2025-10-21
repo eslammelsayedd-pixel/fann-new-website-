@@ -13,7 +13,11 @@ export default async function handler(req: Request) {
             return new Response(JSON.stringify({ error: 'Prompt is required.' }), { status: 400, headers: {'Content-Type': 'application/json'} });
         }
 
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        const apiKey = process.env.API_KEY || process.env.GOOGLE_CLOUD_API_KEY;
+        if (!apiKey) {
+          throw new Error("API key is not configured on the server. Please set either API_KEY or GOOGLE_CLOUD_API_KEY in your Vercel environment variables.");
+        }
+        const ai = new GoogleGenAI({ apiKey });
 
         let operation = await ai.models.generateVideos({
             model: 'veo-3.1-fast-generate-preview',
@@ -39,7 +43,7 @@ export default async function handler(req: Request) {
         }
 
         // Fetch the video file on the server to avoid exposing the key to the client.
-        const videoResponse = await fetch(`${downloadLink}&key=${process.env.API_KEY}`);
+        const videoResponse = await fetch(`${downloadLink}&key=${apiKey}`);
         if (!videoResponse.ok) {
             throw new Error(`Failed to download video file from Google (status: ${videoResponse.status})`);
         }

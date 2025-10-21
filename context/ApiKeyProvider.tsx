@@ -36,8 +36,9 @@ export const ApiKeyProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const message = e.message || '';
     
     // Check for standard API key error messages from Google or our server wrapper.
-    if (message.includes("API Key") || message.includes("API key not valid") || message.includes("Requested entity was not found")) {
-      setError("The API key is missing or invalid. Please check your project's environment variables.");
+    if (message.includes("API Key") || message.includes("API key not valid") || message.includes("Requested entity was not found") || message.includes("API key is not configured")) {
+      const detailedKeyError = `AI Service Connection Error: The API key is missing or invalid.\n\nPlease check your Vercel project's Environment Variables:\n\n1. Ensure you have an environment variable named either API_KEY or GOOGLE_CLOUD_API_KEY.\n2. Confirm the value is a correct and currently active Google AI API key.\n3. Make sure the key has the "Generative Language API" enabled in your Google Cloud project.\n4. After adding or updating the key, you must create a new Vercel deployment for the changes to take effect.`;
+      setError(detailedKeyError);
       setIsKeyError(true); 
     } else {
       setError("An unexpected error occurred. This could be a network issue or a content safety restriction. Please try again.");

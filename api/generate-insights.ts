@@ -15,7 +15,12 @@ export default async function handler(req: Request) {
              return new Response(JSON.stringify({ error: 'Prompt is required.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
         }
         
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        const apiKey = process.env.API_KEY || process.env.GOOGLE_CLOUD_API_KEY;
+        if (!apiKey) {
+          throw new Error("API key is not configured on the server. Please set either API_KEY or GOOGLE_CLOUD_API_KEY in your Vercel environment variables.");
+        }
+        const ai = new GoogleGenAI({ apiKey });
+
         const response = await ai.models.generateContent({
             model: "gemini-2.5-flash",
             contents: prompt,

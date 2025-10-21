@@ -185,10 +185,10 @@ const InsightsPage: React.FC = () => {
                     </div>
                 </motion.div>
             ) : error ? (
-                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-red-900/50 border border-red-500 text-red-300 p-8 rounded-lg text-center">
+                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-red-900/50 border border-red-500 text-red-300 p-8 rounded-lg text-left">
                     <ServerCrash className="w-12 h-12 mx-auto mb-4"/>
-                    <h2 className="text-2xl font-serif text-white mb-2">An Error Occurred</h2>
-                    <p>{error}</p>
+                    <h2 className="text-2xl font-serif text-white mb-2 text-center">An Error Occurred</h2>
+                    <p className="whitespace-pre-wrap">{error}</p>
                 </motion.div>
             ) : generatedArticle && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-fann-charcoal-light p-8 sm:p-12 rounded-lg">
