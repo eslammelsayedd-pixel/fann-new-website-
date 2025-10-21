@@ -1,4 +1,4 @@
-import type * as React from 'react';
+import * as React from 'react';
 
 export interface Project {
   id: number;
@@ -31,11 +31,11 @@ export interface Testimonial {
   projectType: string;
 }
 
-// FIX: Correctly defined props for the 'model-viewer' custom element.
-// The previous implementation had a circular reference which broke JSX type
-// checking across the entire application. Using a type-only import for React's
-// HTML attributes provides a safe and correct way to extend JSX.IntrinsicElements
-// without causing runtime module resolution conflicts.
+// FIX: Correctly define props for the 'model-viewer' custom element.
+// A regular import of React is used here to ensure that this file is treated
+// as a module and that the JSX.IntrinsicElements interface is augmented correctly
+// rather than being overwritten. This resolves JSX type-checking issues across
+// the application.
 declare global {
   namespace JSX {
     interface IntrinsicElements {

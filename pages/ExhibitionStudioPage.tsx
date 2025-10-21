@@ -50,6 +50,8 @@ const initialFormData: FormData = {
     userMobile: '',
 };
 
+// The styles array is used to provide a constrained list of options to the AI for the automatic style analysis.
+// This improves the reliability of the AI's output and is not shown to the user in the UI.
 const styles = [
     { name: 'Luxury', image: 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=800&q=80' },
     { name: 'Minimalist', image: 'https://images.unsplash.com/photo-1517705008128-361805f42e86?w=800&q=80' },
@@ -221,6 +223,7 @@ const ExhibitionStudioPage: React.FC = () => {
     };
 
     const extractColorsFromLogo = async (file: File) => {
+        clearError();
         clearLocalError();
         if (!await ensureApiKey()) return;
 
@@ -271,7 +274,7 @@ const ExhibitionStudioPage: React.FC = () => {
     const nextStep = () => {
         if (apiKeyError) return;
         clearLocalError();
-        if (validateStep(currentStep, false)) { // Don't set error on "Next"
+        if (validateStep(currentStep, true)) {
             setCurrentStep(prev => Math.min(prev + 1, steps.length));
         }
     };
@@ -283,6 +286,7 @@ const ExhibitionStudioPage: React.FC = () => {
     };
 
     const generateDesign = async () => {
+        clearError();
         clearLocalError();
         if (!await ensureApiKey()) return;
 
@@ -384,20 +388,17 @@ const ExhibitionStudioPage: React.FC = () => {
     
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Submit button clicked. Current form data:", formData);
         
         if (apiKeyError) return;
         clearLocalError();
 
         for (let i = 0; i < steps.length; i++) {
             if (!validateStep(i, true)) {
-                console.log(`Validation failed at step ${i}`);
                 setCurrentStep(i); 
                 return;
             }
         }
         
-        console.log("All steps validated successfully. Calling generateDesign.");
         generateDesign();
     };
 
@@ -412,6 +413,7 @@ const ExhibitionStudioPage: React.FC = () => {
     };
 
     const error = apiKeyError || localError;
+    const isNextButtonDisabled = isAnalyzingStyle || (currentStep === 3 && isExtractingColors);
 
     const renderStepContent = () => {
         switch (currentStep) {
@@ -550,7 +552,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                         </div>
                                     )}
                                 </div>
-                                <input type="file" ref={fileInputRef} onChange={handleLogoChange} className="hidden" accept="image/png, image/jpeg, image/svg+xml, image/webp" />
+                                <input type="file" ref={fileInputRef} onChange={handleLogoChange} className="hidden" accept="image/png, image/jpeg, image/svg+xml, image/webp, image/gif" />
                             </div>
                              <div>
                                 <label htmlFor="brandColors" className="block text-sm font-medium text-fann-light-gray mb-2">Primary Brand Colors</label>
@@ -571,7 +573,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                     ) : suggestedColors.length > 0 && suggestedColors[0] !== 'ERROR' ? (
                                         <div>
                                             <span className="flex items-center gap-1 text-green-400 mb-2">
-                                                <CheckCircle className="w-3 h-3"/>Colors extracted successfully.
+                                                <CheckCircle className="w-3 h-3"/>Colors extracted & populated above.
                                             </span>
                                             <div className="flex flex-wrap gap-2">
                                                 {suggestedColors.map(color => (
@@ -817,8 +819,15 @@ const ExhibitionStudioPage: React.FC = () => {
                                     </motion.button>
                                     
                                     {currentStep < steps.length - 1 ? (
-                                        <motion.button type="button" onClick={nextStep} disabled={isAnalyzingStyle} className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full w-32 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray" whileHover={{scale: !isAnalyzingStyle ? 1.05 : 1}} whileTap={{scale: !isAnalyzingStyle ? 0.95 : 1}}>
-                                            {isAnalyzingStyle ? <Loader2 className="w-5 h-5 mx-auto animate-spin" /> : 'Next'}
+                                        <motion.button
+                                            type="button"
+                                            onClick={nextStep}
+                                            disabled={isNextButtonDisabled}
+                                            className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full w-32 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed"
+                                            whileHover={{ scale: !isNextButtonDisabled ? 1.05 : 1 }}
+                                            whileTap={{ scale: !isNextButtonDisabled ? 0.95 : 1 }}
+                                        >
+                                            {isNextButtonDisabled ? <Loader2 className="w-5 h-5 mx-auto animate-spin" /> : 'Next'}
                                         </motion.button>
                                     ) : (
                                         <motion.button type="submit" className="bg-fann-teal text-white font-bold py-2 px-6 rounded-full flex items-center gap-2" whileHover={{scale: 1.05}} whileTap={{scale: 0.95}}>

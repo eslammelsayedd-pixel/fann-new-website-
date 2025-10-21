@@ -117,6 +117,7 @@ const EventStudioPage: React.FC = () => {
 
         setIsExtractingColors(true);
         setSuggestedColors([]);
+        setFormData(prev => ({ ...prev, brandColors: '' }));
         
         try {
             const base64Data = await blobToBase64(file);
@@ -132,7 +133,15 @@ const EventStudioPage: React.FC = () => {
             }
             
             const data = await response.json();
-            setSuggestedColors(data.colors || []);
+            const extracted = data.colors || [];
+            
+            if (extracted.length > 0) {
+                setSuggestedColors(extracted);
+                setFormData(prev => ({ ...prev, brandColors: extracted.join(', ') }));
+            } else {
+                setSuggestedColors(['ERROR']);
+                throw new Error("No distinct colors were found in the logo.");
+            }
         } catch (e: any) {
             console.error("Error extracting colors:", e);
             handleApiError(e);
@@ -150,74 +159,40 @@ const EventStudioPage: React.FC = () => {
         }
     };
 
-    const addSuggestedColor = (color: string) => {
-        setFormData(prev => {
-            const currentColors = prev.brandColors.trim();
-            const colorSet = new Set(currentColors.split(',').map(c => c.trim().toLowerCase()).filter(Boolean));
-            
-            if (colorSet.has(color.toLowerCase())) return prev;
-
-            const newColors = currentColors ? `${currentColors}, ${color}` : color;
-            return { ...prev, brandColors: newColors };
-        });
-    };
-
-    const validateStep = (step: number): boolean => {
-        clearAllErrors();
-        switch(step) {
+    const validateStep = (step: number, shouldSetError: boolean): boolean => {
+        let errorMessage = '';
+        switch (step) {
             case 0:
-                if (formData.eventType === '') {
-                    setError("Please select an event type.");
-                    return false;
-                }
-                if (formData.theme.trim() === '') {
-                    setError("Please provide a theme for your event.");
-                    return false;
-                }
-                return true;
+                if (formData.eventType === '') errorMessage = "Please select an event type.";
+                else if (formData.theme.trim() === '') errorMessage = "Please provide a theme for your event.";
+                break;
             case 1:
-                if (formData.venueType === '') {
-                    setError("Please select a venue type.");
-                    return false;
-                }
-                if (formData.guestCount <= 0) {
-                    setError("Please enter a valid number of guests.");
-                    return false;
-                }
-                return true;
+                if (formData.venueType === '') errorMessage = "Please select a venue type.";
+                else if (formData.guestCount <= 0) errorMessage = "Please enter a valid number of guests.";
+                break;
             case 2:
-                if (formData.eventElements.length === 0) {
-                    setError("Please select at least one key element for your event.");
-                    return false;
-                }
-                return true;
+                if (formData.eventElements.length === 0) errorMessage = "Please select at least one key element for your event.";
+                break;
             case 3:
-                if (!formData.logo) {
-                    setError("Please upload your company logo.");
-                    return false;
-                }
-                if (formData.brandColors.trim() === '') {
-                    setError("Please provide your brand colors.");
-                    return false;
-                }
-                return true;
+                if (!formData.logo) errorMessage = "Please upload your company logo.";
+                else if (formData.brandColors.trim() === '') errorMessage = "Please provide your brand colors.";
+                break;
             case 4:
-                if (!formData.userName.trim() || !formData.userEmail.trim() || !formData.userMobile.trim()) {
-                    setError("Please fill in all your contact details.");
-                    return false;
-                }
-                if (!/\S+@\S+\.\S+/.test(formData.userEmail)) {
-                    setError("Please enter a valid email address.");
-                    return false;
-                }
-                return true;
-            default:
-                return true;
+                if (!formData.userName.trim() || !formData.userEmail.trim() || !formData.userMobile.trim()) errorMessage = "Please fill in all your contact details.";
+                else if (!/\S+@\S+\.\S+/.test(formData.userEmail)) errorMessage = "Please enter a valid email address.";
+                break;
         }
+
+        if (errorMessage && shouldSetError) {
+            setError(errorMessage);
+        }
+
+        return !errorMessage;
     }
     
     const nextStep = () => {
-        if (validateStep(currentStep)) {
+        clearAllErrors();
+        if (validateStep(currentStep, true)) {
             setCurrentStep(prev => Math.min(prev + 1, steps.length));
         }
     };
@@ -285,9 +260,18 @@ const EventStudioPage: React.FC = () => {
     
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (validateStep(currentStep)) {
-            generateDesign();
+        
+        if (apiKeyError) return;
+        clearAllErrors();
+
+        for (let i = 0; i < steps.length; i++) {
+            if (!validateStep(i, true)) {
+                setCurrentStep(i); 
+                return;
+            }
         }
+        
+        generateDesign();
     };
 
     const sendProposalRequest = async () => {
@@ -300,6 +284,7 @@ const EventStudioPage: React.FC = () => {
     };
 
     const error = apiKeyError || localError;
+    const isNextButtonDisabled = currentStep === 3 && isExtractingColors;
 
     const renderStepContent = () => {
         switch (currentStep) {
@@ -371,16 +356,34 @@ const EventStudioPage: React.FC = () => {
                                 <div onClick={() => fileInputRef.current?.click()} className="h-48 w-full bg-fann-charcoal border-2 border-dashed border-fann-border rounded-lg flex items-center justify-center cursor-pointer hover:border-fann-gold transition-colors">
                                     {formData.logoPreview ? <img src={formData.logoPreview} alt="Logo Preview" className="max-h-full max-w-full object-contain p-4" /> : <div className="text-center text-fann-light-gray"><Upload className="mx-auto w-8 h-8 mb-2" /><p>Click to upload</p></div>}
                                 </div>
-                                <input type="file" ref={fileInputRef} onChange={handleLogoChange} className="hidden" accept="image/png, image/jpeg, image/svg+xml, .ai, .eps" />
+                                <input type="file" ref={fileInputRef} onChange={handleLogoChange} className="hidden" accept="image/png, image/jpeg, image/svg+xml, image/webp, image/gif" />
                             </div>
                             <div className="space-y-4">
                                 <div>
                                     <label htmlFor="brandColors" className="block text-sm font-medium text-fann-light-gray mb-2">Primary Brand Colors</label>
                                     <input type="text" id="brandColors" name="brandColors" value={formData.brandColors} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" placeholder="e.g., #0A192F, Fann Gold, White" />
                                 </div>
-                                <div>
+                                <div className="text-xs min-h-[4rem]">
                                     <label className="block text-sm font-medium text-fann-light-gray mb-2">Suggested from Logo</label>
-                                    {isExtractingColors ? <div className="flex items-center gap-2 text-sm text-fann-light-gray"><Loader2 className="w-4 h-4 animate-spin"/>Analyzing...</div> : suggestedColors.length > 0 ? <div className="flex flex-wrap gap-2">{suggestedColors.map(color => <button type="button" key={color} onClick={() => addSuggestedColor(color)} className="px-3 py-1 bg-fann-charcoal rounded-full text-xs hover:bg-fann-teal transition-colors">{color}</button>)}</div> : <p className="text-xs text-fann-light-gray">Upload a logo to see suggestions.</p>}
+                                    {isExtractingColors ? <div className="flex items-center gap-2 text-sm text-fann-light-gray"><Loader2 className="w-4 h-4 animate-spin"/>Analyzing...</div> : suggestedColors.length > 0 && suggestedColors[0] !== 'ERROR' ? (
+                                        <div>
+                                            <span className="flex items-center gap-1 text-green-400 mb-2">
+                                                <CheckCircle className="w-3 h-3"/>Colors extracted & populated above.
+                                            </span>
+                                            <div className="flex flex-wrap gap-2">
+                                                {suggestedColors.map(color => (
+                                                    <div key={color} className="flex items-center gap-1.5 p-1 bg-fann-charcoal rounded">
+                                                        <div className="w-4 h-4 rounded-full border border-white/20" style={{ backgroundColor: color }}></div>
+                                                        <span className="text-xs font-mono text-fann-light-gray">{color}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ) : suggestedColors[0] === 'ERROR' ? (
+                                         <span className="flex items-center gap-1 text-red-400">
+                                            <AlertCircle className="w-3 h-3"/>Could not extract colors. Please enter them manually.
+                                        </span>
+                                    ) : <p className="text-xs text-fann-light-gray">Upload a logo to see suggestions.</p>}
                                 </div>
                             </div>
                         </div>
@@ -440,7 +443,7 @@ const EventStudioPage: React.FC = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                         <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
                             {generatedImages.map((img, index) => (
-                                <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} onClick={() => setSelectedImage(index)} className={`rounded-lg overflow-hidden cursor-pointer border-4 ${selectedImage === index ? 'border-fann-gold' : 'border-transparent'}`}>
+                                <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} onClick={() => setSelectedImage(index)} className={`rounded-lg overflow-hidden cursor-pointer border-4 transition-all duration-300 hover:border-fann-gold/50 ${selectedImage === index ? 'border-fann-gold' : 'border-transparent'}`}>
                                     <img src={img} alt={`AI Concept ${index + 1}`} className="w-full h-auto object-cover" />
                                 </motion.div>
                             ))}
@@ -452,10 +455,12 @@ const EventStudioPage: React.FC = () => {
                                 <p><strong>Theme:</strong> {formData.theme}</p>
                                 <p><strong>Venue:</strong> {formData.venueType}</p>
                                 <p><strong>Guests:</strong> ~{formData.guestCount}</p>
-                                <button onClick={sendProposalRequest} disabled={selectedImage === null || isSending} className="w-full bg-fann-teal text-white font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray mt-4">
-                                    {isSending ? <><Loader2 className="w-5 h-5 animate-spin" /> Sending...</> : "Request Detailed Proposal"}
-                                </button>
-                                {selectedImage === null && <p className="text-xs text-center text-fann-light-gray mt-2">Please select a design.</p>}
+                                <div className="pt-4 mt-4 border-t border-fann-border">
+                                    <motion.button onClick={sendProposalRequest} disabled={selectedImage === null || isSending} className="w-full bg-fann-teal text-white font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{ scale: selectedImage !== null && !isSending ? 1.05 : 1 }} whileTap={{ scale: selectedImage !== null && !isSending ? 0.95 : 1 }}>
+                                        {isSending ? <><Loader2 className="w-5 h-5 animate-spin" /> Sending...</> : "Request Detailed Proposal"}
+                                    </motion.button>
+                                    {selectedImage === null && <p className="text-xs text-center text-fann-light-gray mt-2">Please select a design to proceed.</p>}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -467,22 +472,24 @@ const EventStudioPage: React.FC = () => {
     return (
         <AnimatedPage>
             <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white flex items-center justify-center">
-                <div className="container mx-auto px-4 max-w-4xl">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
                     <div className="text-center mb-8">
                         <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">Event Concept Studio</h1>
-                        <p className="text-xl text-fann-cream">Follow the steps to create a bespoke event concept.</p>
+                        <p className="text-xl text-fann-cream">Follow the steps to create a stunning event concept.</p>
                     </div>
+
                     <div className="mb-8">
                         <div className="flex justify-between mb-2">
                             {steps.map((step, index) => (
-                                <div key={step.name} className="flex flex-col items-center w-1/5">
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= index ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-charcoal-light text-fann-light-gray'}`}><step.icon size={16} /></div>
+                                <div key={step.name} className="flex flex-col items-center" style={{ width: `${100 / steps.length}%` }}>
+                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${currentStep >= index ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-charcoal-light text-fann-light-gray'}`}><step.icon size={16} /></div>
                                     <span className={`text-xs mt-1 text-center ${currentStep >= index ? 'text-white' : 'text-fann-light-gray'}`}>{step.name}</span>
                                 </div>
                             ))}
                         </div>
-                        <div className="bg-fann-charcoal-light rounded-full h-1.5"><motion.div className="bg-fann-gold h-1.5 rounded-full" animate={{ width: `${(currentStep / (steps.length -1)) * 100}%` }}/></div>
+                        <div className="bg-fann-charcoal-light rounded-full h-1.5"><motion.div className="bg-fann-gold h-1.5 rounded-full" initial={{ width: 0 }} animate={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }} transition={{ type: 'spring', stiffness: 50 }}/></div>
                     </div>
+
                     <div className="bg-fann-charcoal-light p-8 rounded-lg">
                         <form onSubmit={handleSubmit}>
                             <motion.div key={currentStep} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.3 }}>
@@ -490,44 +497,32 @@ const EventStudioPage: React.FC = () => {
                             </motion.div>
                             <div className="mt-8">
                                 {error && (
-                                    <motion.div 
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-start gap-3 mb-4"
-                                    >
+                                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-start gap-3 mb-4">
                                         <div className="flex-shrink-0 pt-0.5"><AlertCircle className="w-5 h-5" /></div>
                                         <div className="flex-grow">
                                             <span>{error}</span>
                                             {isKeyError && (
                                                 <div className="mt-2 flex items-center gap-4">
-                                                    <button
-                                                        type="button"
-                                                        onClick={async () => {
-                                                            await window.aistudio.openSelectKey();
-                                                            clearApiKeyError();
-                                                        }}
-                                                        className="bg-fann-gold text-fann-charcoal text-xs font-bold py-1 px-3 rounded-full hover:opacity-90"
-                                                    >
-                                                        Select API Key
-                                                    </button>
-                                                    <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer" className="text-xs text-fann-light-gray hover:underline">
-                                                        Learn about billing
-                                                    </a>
+                                                    <button type="button" onClick={async () => { await window.aistudio.openSelectKey(); clearApiKeyError(); }} className="bg-fann-gold text-fann-charcoal text-xs font-bold py-1 px-3 rounded-full hover:opacity-90">Select API Key</button>
+                                                    <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer" className="text-xs text-fann-light-gray hover:underline">Learn about billing</a>
                                                 </div>
                                             )}
                                         </div>
                                     </motion.div>
                                 )}
                                 <div className="flex justify-between items-center">
-                                    <button type="button" onClick={prevStep} disabled={currentStep === 0} className="flex items-center gap-2 text-fann-gold disabled:text-fann-light-gray">
+                                    <motion.button type="button" onClick={prevStep} disabled={currentStep === 0} className="flex items-center gap-2 text-fann-gold disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: currentStep !== 0 ? 1.05 : 1}} whileTap={{scale: currentStep !== 0 ? 0.95 : 1}}>
                                         <ArrowLeft size={16} /> Back
-                                    </button>
+                                    </motion.button>
+                                    
                                     {currentStep < steps.length - 1 ? (
-                                        <button type="button" onClick={nextStep} className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full">Next</button>
+                                        <motion.button type="button" onClick={nextStep} disabled={isNextButtonDisabled} className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full w-32 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: !isNextButtonDisabled ? 1.05 : 1}} whileTap={{scale: !isNextButtonDisabled ? 0.95 : 1}}>
+                                            {isNextButtonDisabled ? <Loader2 className="w-5 h-5 mx-auto animate-spin" /> : 'Next'}
+                                        </motion.button>
                                     ) : (
-                                        <button type="submit" className="bg-fann-teal text-white font-bold py-2 px-6 rounded-full flex items-center gap-2">
+                                        <motion.button type="submit" className="bg-fann-teal text-white font-bold py-2 px-6 rounded-full flex items-center gap-2" whileHover={{scale: 1.05}} whileTap={{scale: 0.95}}>
                                             <Sparkles size={16} /> Generate My Concept
-                                        </button>
+                                        </motion.button>
                                     )}
                                 </div>
                             </div>
