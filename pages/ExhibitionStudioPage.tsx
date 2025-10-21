@@ -4,6 +4,11 @@ import { Loader2, Sparkles, Upload, ArrowLeft, Building, Scaling, ListChecks, Us
 import AnimatedPage from '../components/AnimatedPage';
 import { regionalEvents } from '../constants';
 import { useApiKey } from '../context/ApiKeyProvider';
+// FIX: Add a type-only import from 'types.ts' to ensure the TypeScript
+// compiler includes the global JSX augmentations defined in that file, resolving
+// the error for the custom <model-viewer> element.
+import type {} from '../types';
+
 
 // --- Helper Functions & Types ---
 interface FormData {
@@ -22,7 +27,7 @@ interface FormData {
     hostess: boolean;
     logo: File | null;
     logoPreview: string;
-    brandColors: string;
+    brandColors: string[];
     userName: string;
     userEmail: string;
     userMobile: string;
@@ -44,7 +49,7 @@ const initialFormData: FormData = {
     hostess: false,
     logo: null,
     logoPreview: '',
-    brandColors: '',
+    brandColors: [],
     userName: '',
     userEmail: '',
     userMobile: '',
@@ -111,7 +116,6 @@ const ExhibitionStudioPage: React.FC = () => {
     const [isFinished, setIsFinished] = useState(false);
     const [isExtractingColors, setIsExtractingColors] = useState(false);
     const [suggestedColors, setSuggestedColors] = useState<string[]>([]);
-    const [selectedColors, setSelectedColors] = useState<string[]>([]);
     const [selectedImage, setSelectedImage] = useState<number | null>(null);
     const [isProposalRequested, setIsProposalRequested] = useState(false);
     const [isSending, setIsSending] = useState(false);
@@ -126,11 +130,6 @@ const ExhibitionStudioPage: React.FC = () => {
     const industries = useMemo(() => [...new Set(regionalEvents.map(event => event.industry))].sort(), []);
 
     const clearLocalError = () => setLocalError(null);
-
-    useEffect(() => {
-        // This effect synchronizes the selected colors array with the form's brandColors string.
-        setFormData(prev => ({ ...prev, brandColors: selectedColors.join(', ') }));
-    }, [selectedColors]);
 
     const triggerStyleAnalysis = async (eventName: string, industry: string) => {
         if (!eventName || !industry) return;
@@ -235,7 +234,7 @@ const ExhibitionStudioPage: React.FC = () => {
 
         setIsExtractingColors(true);
         setSuggestedColors([]);
-        setSelectedColors([]);
+        setFormData(prev => ({ ...prev, brandColors: [] }));
         
         try {
             const base64Data = await blobToBase64(file);
@@ -255,7 +254,7 @@ const ExhibitionStudioPage: React.FC = () => {
             
             if (extracted.length > 0) {
                 setSuggestedColors(extracted);
-                setSelectedColors(extracted);
+                setFormData(prev => ({ ...prev, brandColors: extracted }));
             } else {
                 throw new Error("No distinct colors were found in the logo.");
             }
@@ -272,8 +271,7 @@ const ExhibitionStudioPage: React.FC = () => {
         if (e.target.files?.[0]) {
             const file = e.target.files[0];
             const logoPreview = URL.createObjectURL(file);
-            setFormData(prev => ({ ...prev, logo: file, logoPreview, brandColors: '' }));
-            setSelectedColors([]);
+            setFormData(prev => ({ ...prev, logo: file, logoPreview, brandColors: [] }));
             extractColorsFromLogo(file);
         }
     };
@@ -320,7 +318,7 @@ const ExhibitionStudioPage: React.FC = () => {
 - **Core Functionality:** Must include areas for: ${formData.functionality.join(', ')}.
 - **Staffing:** The client ${formData.hostess ? 'DOES require a hostess desk/area' : 'does NOT require a hostess'}.
 - **Design Style:** The overall aesthetic must be **${formData.style || 'Modern and professional'}**. ${formData.eventStyleDescription ? `The AI's analysis for this event suggests the following characteristics: ${formData.eventStyleDescription}` : ''}
-- **Branding:** Use the attached logo prominently but elegantly. The primary brand colors are **${formData.brandColors}**.
+- **Branding:** Use the attached logo prominently but elegantly. The primary brand colors are **${formData.brandColors.join(', ')}**.
 - **Atmosphere:** The stand should feel professional, high-end, and inviting, suitable for a major international event in Dubai or Riyadh. Use realistic lighting and materials. Do not include people.`;
             
             const response = await fetch('/api/generate-images', {
@@ -375,7 +373,7 @@ const ExhibitionStudioPage: React.FC = () => {
                 }
                 break;
             case 3:
-                if (!formData.logo || !formData.brandColors.trim()) {
+                if (!formData.logo || formData.brandColors.length === 0) {
                     errorMessage = "Please upload your logo and provide brand colors for the design.";
                 }
                 break;
@@ -544,11 +542,12 @@ const ExhibitionStudioPage: React.FC = () => {
                 );
             case 3: // Branding
                 const handleColorToggle = (color: string) => {
-                    setSelectedColors(prev => 
-                        prev.includes(color) 
-                        ? prev.filter(c => c !== color)
-                        : [...prev, color]
-                    );
+                    setFormData(prev => {
+                        const newColors = prev.brandColors.includes(color)
+                            ? prev.brandColors.filter(c => c !== color)
+                            : [...prev.brandColors, color];
+                        return { ...prev, brandColors: newColors };
+                    });
                 };
                 return (
                     <div className="space-y-6">
@@ -574,8 +573,8 @@ const ExhibitionStudioPage: React.FC = () => {
                                     type="text" 
                                     id="brandColors" 
                                     name="brandColors" 
-                                    value={formData.brandColors} 
-                                    onChange={handleInputChange} 
+                                    value={formData.brandColors.join(', ')} 
+                                    onChange={(e) => setFormData(p => ({...p, brandColors: e.target.value.split(',').map(c => c.trim()).filter(c => c)}))}
                                     className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" 
                                     placeholder="Colors will be extracted from your logo" 
                                 />
@@ -591,7 +590,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                             </span>
                                             <div className="flex flex-wrap gap-2">
                                                 {suggestedColors.map(color => {
-                                                    const isSelected = selectedColors.includes(color);
+                                                    const isSelected = formData.brandColors.includes(color);
                                                     return (
                                                         <button
                                                           type="button"

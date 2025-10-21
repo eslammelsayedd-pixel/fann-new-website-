@@ -13,7 +13,7 @@ interface FormData {
     eventElements: string[];
     logo: File | null;
     logoPreview: string;
-    brandColors: string;
+    brandColors: string[];
     userName: string;
     userEmail: string;
     userMobile: string;
@@ -27,7 +27,7 @@ const initialFormData: FormData = {
     eventElements: [],
     logo: null,
     logoPreview: '',
-    brandColors: '',
+    brandColors: [],
     userName: '',
     userEmail: '',
     userMobile: '',
@@ -78,7 +78,6 @@ const EventStudioPage: React.FC = () => {
     const [isFinished, setIsFinished] = useState(false);
     const [isExtractingColors, setIsExtractingColors] = useState(false);
     const [suggestedColors, setSuggestedColors] = useState<string[]>([]);
-    const [selectedColors, setSelectedColors] = useState<string[]>([]);
     const [selectedImage, setSelectedImage] = useState<number | null>(null);
     const [isProposalRequested, setIsProposalRequested] = useState(false);
     const [isSending, setIsSending] = useState(false);
@@ -88,11 +87,6 @@ const EventStudioPage: React.FC = () => {
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     
-    useEffect(() => {
-        // This effect synchronizes the selected colors array with the form's brandColors string.
-        setFormData(prev => ({ ...prev, brandColors: selectedColors.join(', ') }));
-    }, [selectedColors]);
-
     const setError = (message: string | null) => {
         clearApiKeyError();
         setLocalError(message);
@@ -123,7 +117,7 @@ const EventStudioPage: React.FC = () => {
 
         setIsExtractingColors(true);
         setSuggestedColors([]);
-        setSelectedColors([]);
+        setFormData(prev => ({ ...prev, brandColors: [] }));
         
         try {
             const base64Data = await blobToBase64(file);
@@ -143,7 +137,7 @@ const EventStudioPage: React.FC = () => {
             
             if (extracted.length > 0) {
                 setSuggestedColors(extracted);
-                setSelectedColors(extracted);
+                setFormData(prev => ({ ...prev, brandColors: extracted }));
             } else {
                 setSuggestedColors(['ERROR']);
                 throw new Error("No distinct colors were found in the logo.");
@@ -160,8 +154,7 @@ const EventStudioPage: React.FC = () => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
             const logoPreview = URL.createObjectURL(file);
-            setFormData(prev => ({ ...prev, logo: file, logoPreview, brandColors: '' }));
-            setSelectedColors([]);
+            setFormData(prev => ({ ...prev, logo: file, logoPreview, brandColors: [] }));
             extractColorsFromLogo(file);
         }
     };
@@ -182,7 +175,7 @@ const EventStudioPage: React.FC = () => {
                 break;
             case 3:
                 if (!formData.logo) errorMessage = "Please upload your company logo.";
-                else if (formData.brandColors.trim() === '') errorMessage = "Please provide your brand colors.";
+                else if (formData.brandColors.length === 0) errorMessage = "Please provide your brand colors.";
                 break;
             case 4:
                 if (!formData.userName.trim() || !formData.userEmail.trim() || !formData.userMobile.trim()) errorMessage = "Please fill in all your contact details.";
@@ -231,7 +224,7 @@ const EventStudioPage: React.FC = () => {
 - **Venue Type:** A luxurious ${formData.venueType} in Dubai.
 - **Guest Count:** Approximately ${formData.guestCount} people.
 - **Key Elements to feature:** ${formData.eventElements.join(', ')}.
-- **Branding:** The event is for a company whose logo is attached. The brand colors are **${formData.brandColors}**. The logo should be integrated tastefully into the design on backdrops, podiums, or screens.
+- **Branding:** The event is for a company whose logo is attached. The brand colors are **${formData.brandColors.join(', ')}**. The logo should be integrated tastefully into the design on backdrops, podiums, or screens.
 - **Atmosphere:** The images should look high-end, professionally produced, and create a 'wow' factor. Use dramatic lighting and realistic textures. The setting should feel grand and impressive. Do not include people.`;
             
             const response = await fetch('/api/generate-images', {
@@ -355,11 +348,12 @@ const EventStudioPage: React.FC = () => {
                 );
             case 3: // Branding
                  const handleColorToggle = (color: string) => {
-                    setSelectedColors(prev => 
-                        prev.includes(color) 
-                        ? prev.filter(c => c !== color)
-                        : [...prev, color]
-                    );
+                    setFormData(prev => {
+                        const newColors = prev.brandColors.includes(color)
+                            ? prev.brandColors.filter(c => c !== color)
+                            : [...prev.brandColors, color];
+                        return { ...prev, brandColors: newColors };
+                    });
                 };
                 return (
                     <div className="space-y-6">
@@ -374,7 +368,15 @@ const EventStudioPage: React.FC = () => {
                             </div>
                             <div>
                                 <label htmlFor="brandColors" className="block text-sm font-medium text-fann-light-gray mb-2">Primary Brand Colors</label>
-                                <input type="text" id="brandColors" name="brandColors" value={formData.brandColors} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" placeholder="e.g., #0A192F, Fann Gold, White" />
+                                <input 
+                                    type="text" 
+                                    id="brandColors" 
+                                    name="brandColors" 
+                                    value={formData.brandColors.join(', ')} 
+                                    onChange={(e) => setFormData(p => ({...p, brandColors: e.target.value.split(',').map(c => c.trim()).filter(c => c)}))}
+                                    className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" 
+                                    placeholder="e.g., #0A192F, Fann Gold, White" 
+                                />
                                 <div className="mt-2 min-h-[4rem]">
                                     {isExtractingColors ? <div className="flex items-center gap-2 text-sm text-fann-light-gray"><Loader2 className="w-4 h-4 animate-spin"/>Analyzing...</div> : suggestedColors.length > 0 && suggestedColors[0] !== 'ERROR' ? (
                                         <div>
@@ -383,7 +385,7 @@ const EventStudioPage: React.FC = () => {
                                             </span>
                                             <div className="flex flex-wrap gap-2">
                                                 {suggestedColors.map(color => {
-                                                    const isSelected = selectedColors.includes(color);
+                                                    const isSelected = formData.brandColors.includes(color);
                                                     return (
                                                         <button
                                                           type="button"
