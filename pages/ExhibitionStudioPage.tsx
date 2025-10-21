@@ -121,9 +121,8 @@ const ExhibitionStudioPage: React.FC = () => {
     const [isSending, setIsSending] = useState(false);
     const [isCustomEvent, setIsCustomEvent] = useState(false);
     const [isAnalyzingStyle, setIsAnalyzingStyle] = useState(false);
-    const [apiKeyNeeded, setApiKeyNeeded] = useState(false);
 
-    const { ensureApiKey, handleApiError, error: apiKeyError, isKeyError, clearError: clearApiKeyError } = useApiKey();
+    const { ensureApiKey, handleApiError, error: apiKeyError, clearError: clearApiKeyError } = useApiKey();
     const [localError, setLocalError] = useState<string | null>(null);
     
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -136,7 +135,6 @@ const ExhibitionStudioPage: React.FC = () => {
     const clearAllErrors = () => {
         setLocalError(null);
         clearApiKeyError();
-        setApiKeyNeeded(false);
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -159,11 +157,7 @@ const ExhibitionStudioPage: React.FC = () => {
     
     const extractColorsFromLogo = async (file: File) => {
         clearAllErrors();
-        const hasApiKey = await ensureApiKey();
-        if (!hasApiKey) {
-            setApiKeyNeeded(true);
-            return;
-        }
+        if (!await ensureApiKey()) return;
 
         setIsExtractingColors(true);
         setSuggestedColors([]);
@@ -211,12 +205,6 @@ const ExhibitionStudioPage: React.FC = () => {
         }
     };
 
-    const retryColorExtraction = async () => {
-        if (formData.logo) {
-            await extractColorsFromLogo(formData.logo);
-        }
-    };
-
     const validateStep = (step: number, shouldSetError: boolean): boolean => {
         let errorMessage = '';
         switch (step) {
@@ -231,7 +219,6 @@ const ExhibitionStudioPage: React.FC = () => {
                 break;
             case 3:
                 if (!formData.logo) errorMessage = "Please upload your company logo.";
-                else if (apiKeyNeeded) errorMessage = "An API Key is required to proceed with color analysis.";
                 else if (formData.brandColors.length === 0) errorMessage = "Please provide your brand colors.";
                 break;
             case 4:
@@ -553,12 +540,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                 <label htmlFor="brandColors" className="block text-sm font-medium text-fann-light-gray mb-2">Primary Brand Colors</label>
                                 <input type="text" id="brandColors" name="brandColors" value={formData.brandColors.join(', ')} onChange={(e) => setFormData(p => ({...p, brandColors: e.target.value.split(',').map(c => c.trim()).filter(c => c)}))} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" placeholder="e.g., #0A192F, Fann Gold, White" />
                                 <div className="mt-2 min-h-[4rem]">
-                                    {apiKeyNeeded ? (
-                                        <div className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm">
-                                            <p className="mb-2 font-semibold">Color analysis requires an API key.</p>
-                                            <button type="button" onClick={retryColorExtraction} className="bg-fann-gold text-fann-charcoal text-xs font-bold py-1 px-3 rounded-full hover:opacity-90">Select API Key</button>
-                                        </div>
-                                    ) : isExtractingColors ? <div className="flex items-center gap-2 text-sm text-fann-light-gray"><Loader2 className="w-4 h-4 animate-spin"/>Analyzing...</div> : suggestedColors.length > 0 && suggestedColors[0] !== 'ERROR' ? (
+                                    {isExtractingColors ? <div className="flex items-center gap-2 text-sm text-fann-light-gray"><Loader2 className="w-4 h-4 animate-spin"/>Analyzing...</div> : suggestedColors.length > 0 && suggestedColors[0] !== 'ERROR' ? (
                                         <div>
                                             <span className="flex items-center gap-1 text-green-400 mb-2 text-sm"><CheckCircle className="w-4 h-4"/>AI suggestions are ready. Click to select/deselect.</span>
                                             <div className="flex flex-wrap gap-2">
@@ -692,12 +674,6 @@ const ExhibitionStudioPage: React.FC = () => {
                                         <div className="flex-shrink-0 pt-0.5"><AlertCircle className="w-5 h-5" /></div>
                                         <div className="flex-grow">
                                             <span>{error}</span>
-                                            {isKeyError && (
-                                                <div className="mt-2 flex items-center gap-4">
-                                                    <button type="button" onClick={async () => { await window.aistudio.openSelectKey(); clearApiKeyError(); }} className="bg-fann-gold text-fann-charcoal text-xs font-bold py-1 px-3 rounded-full hover:opacity-90">Select API Key</button>
-                                                    <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer" className="text-xs text-fann-light-gray hover:underline">Learn about billing</a>
-                                                </div>
-                                            )}
                                         </div>
                                     </motion.div>
                                 )}

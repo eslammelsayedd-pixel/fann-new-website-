@@ -97,7 +97,7 @@ const InsightsPage: React.FC = () => {
     const [selectedTopic, setSelectedTopic] = useState<InsightTopic | null>(null);
     const [generatedArticle, setGeneratedArticle] = useState<Article | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const { ensureApiKey, handleApiError, error, isKeyError, clearError } = useApiKey();
+    const { ensureApiKey, handleApiError, error, clearError } = useApiKey();
 
 
     const generateArticle = async (topic: InsightTopic) => {
@@ -189,19 +189,6 @@ const InsightsPage: React.FC = () => {
                     <ServerCrash className="w-12 h-12 mx-auto mb-4"/>
                     <h2 className="text-2xl font-serif text-white mb-2">An Error Occurred</h2>
                     <p>{error}</p>
-                    {isKeyError && (
-                        <div className="mt-4">
-                            <button
-                                onClick={async () => {
-                                    await window.aistudio.openSelectKey();
-                                    clearError();
-                                }}
-                                className="bg-fann-gold text-fann-charcoal text-sm font-bold py-2 px-4 rounded-full"
-                            >
-                                Select API Key
-                            </button>
-                        </div>
-                    )}
                 </motion.div>
             ) : generatedArticle && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-fann-charcoal-light p-8 sm:p-12 rounded-lg">

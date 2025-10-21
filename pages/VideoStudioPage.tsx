@@ -19,7 +19,7 @@ const VideoStudioPage: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [videoUrl, setVideoUrl] = useState<string | null>(null);
     const [statusMessage, setStatusMessage] = useState<string>('');
-    const { ensureApiKey, handleApiError, error, isKeyError, clearError } = useApiKey();
+    const { ensureApiKey, handleApiError, error, clearError } = useApiKey();
     
     const handleGenerateVideo = async () => {
         clearError();
@@ -113,22 +113,6 @@ const VideoStudioPage: React.FC = () => {
                                      <div className="flex-shrink-0 pt-0.5"><AlertCircle className="w-5 h-5" /></div>
                                      <div className="flex-grow">
                                         <span>{error}</span>
-                                        {isKeyError && (
-                                            <div className="mt-2 flex items-center gap-4">
-                                                <button
-                                                    onClick={async () => {
-                                                        await window.aistudio.openSelectKey();
-                                                        clearError();
-                                                    }}
-                                                    className="bg-fann-gold text-fann-charcoal text-xs font-bold py-1 px-3 rounded-full hover:opacity-90"
-                                                >
-                                                    Select API Key
-                                                </button>
-                                                <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer" className="text-xs text-fann-light-gray hover:underline">
-                                                    Learn about billing
-                                                </a>
-                                            </div>
-                                        )}
                                      </div>
                                 </motion.div>
                             )}

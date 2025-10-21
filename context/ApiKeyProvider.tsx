@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, useRef } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 
 interface ApiKeyContextType {
   ensureApiKey: () => Promise<boolean>;
@@ -13,60 +13,34 @@ const ApiKeyContext = createContext<ApiKeyContextType | undefined>(undefined);
 export const ApiKeyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [error, setError] = useState<string | null>(null);
   const [isKeyError, setIsKeyError] = useState(false);
-  const isKeyReadyInSession = useRef(false);
 
   const clearError = useCallback(() => {
     setError(null);
     setIsKeyError(false);
   }, []);
 
+  /**
+   * This function no longer performs an interactive check.
+   * In a Vercel/production environment, the API key is expected to be in the server-side
+   * environment variables. This function now acts as a simple passthrough,
+   * allowing the client-side request to proceed to the API endpoint where the
+   * actual key validation will occur.
+   */
   const ensureApiKey = useCallback(async (): Promise<boolean> => {
     clearError();
-    if (isKeyReadyInSession.current) {
-        // Re-validate to ensure the key wasn't removed in another tab/window
-        if (await window.aistudio.hasSelectedApiKey()) {
-            return true;
-        }
-        isKeyReadyInSession.current = false; // The ref was stale, reset it.
-    }
-
-    try {
-      if (await window.aistudio.hasSelectedApiKey()) {
-        isKeyReadyInSession.current = true;
-        return true;
-      }
-      
-      // If no key is present, proactively prompt the user.
-      await window.aistudio.openSelectKey();
-      
-      // Assume success after the prompt. The subsequent API call will fail if the key is bad,
-      // which is handled by handleApiError.
-      isKeyReadyInSession.current = true; 
-      return true;
-
-    } catch (e) {
-      // This catch block is for when the user CANCELS the `openSelectKey` dialog.
-      // Instead of showing an error, we now fail silently. The user can simply
-      // click the action button again to re-trigger the prompt. This creates a smoother flow.
-      console.warn("API key selection was cancelled by the user.");
-      isKeyReadyInSession.current = false;
-      return false;
-    }
+    return Promise.resolve(true);
   }, [clearError]);
 
   const handleApiError = useCallback((e: any) => {
     console.error("An API error occurred:", e);
     const message = e.message || '';
-    // This error handler is for when an API call *fails*, which is different from cancelling the prompt.
-    // If the failure is due to a bad key, we MUST inform the user.
-    if (message.includes("API Key") || message.includes("Requested entity was not found")) {
-      const isInvalidKeyError = message.includes("Requested entity was not found");
-      setError(isInvalidKeyError ? "The selected API Key appears to be invalid. Please select another one." : "An API Key is required. Please select one to proceed.");
-      setIsKeyError(true);
-      // Force re-selection next time an action is attempted.
-      isKeyReadyInSession.current = false; 
+    
+    // Check for standard API key error messages from Google or our server wrapper.
+    if (message.includes("API Key") || message.includes("API key not valid") || message.includes("Requested entity was not found")) {
+      setError("The API key is missing or invalid. Please check your project's environment variables.");
+      setIsKeyError(true); 
     } else {
-      setError("An unexpected error occurred. This could be a network issue or content safety restriction. Please try again.");
+      setError("An unexpected error occurred. This could be a network issue or a content safety restriction. Please try again.");
       setIsKeyError(false);
     }
   }, []);
