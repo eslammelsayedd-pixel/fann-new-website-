@@ -1,12 +1,13 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, Sparkles, Upload, ArrowLeft, Building, Scaling, ListChecks, User, CheckCircle, AlertCircle, Palette, View, FileText } from 'lucide-react';
+import { Loader2, Sparkles, Upload, ArrowLeft, Building, Scaling, ListChecks, User, CheckCircle, AlertCircle, Palette, View, FileText, Mail, Phone } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import { regionalEvents } from '../constants';
 import { useApiKey } from '../context/ApiKeyProvider';
-// FIX: Explicitly import a type from '../types' to ensure TypeScript processes
-// the global JSX augmentations for custom elements like <model-viewer>. The previous 'import type {}' was not sufficient.
-import type { Project } from '../types';
+// FIX: Directly import from `../types` to load the global JSX augmentations
+// for custom elements like `<model-viewer>`, resolving TypeScript errors. An empty
+// braces import ensures the module is included for its compile-time effects.
+import {} from '../types';
 
 
 // --- Helper Functions & Types ---
@@ -136,6 +137,7 @@ const ExhibitionStudioPage: React.FC = () => {
     const [isCustomEvent, setIsCustomEvent] = useState(false);
     const [isAnalyzingStyle, setIsAnalyzingStyle] = useState(false);
     const [isModelViewerOpen, setIsModelViewerOpen] = useState(false);
+    const [formErrors, setFormErrors] = useState<Partial<Record<keyof FormData, string>>>({});
 
     const { ensureApiKey, handleApiError, error: apiKeyError, clearError: clearApiKeyError } = useApiKey();
     const [localError, setLocalError] = useState<string | null>(null);
@@ -219,45 +221,79 @@ const ExhibitionStudioPage: React.FC = () => {
         }
     };
 
-    const validateStep = (step: number, shouldSetError: boolean): boolean => {
-        let errorMessage = '';
+    const validateStep = (step: number): boolean => {
+        // Clear previous errors for the current step's validation
+        clearAllErrors();
+        const newErrors: Partial<Record<keyof FormData, string>> = {};
+
         switch (step) {
             case 0:
-                if (!formData.industry || !formData.eventName) errorMessage = "Please select an industry and event.";
+                if (!formData.industry || !formData.eventName) {
+                    setError("Please select an industry and event.");
+                    return false;
+                }
                 break;
             case 1:
-                if (!formData.standLayout || !formData.standType || !formData.standHeight) errorMessage = "Please complete all structure details.";
+                if (!formData.standLayout || !formData.standType || !formData.standHeight) {
+                    setError("Please complete all structure details.");
+                    return false;
+                }
                 break;
             case 2:
-                if (formData.functionality.length === 0) errorMessage = "Please select at least one functionality requirement.";
+                if (formData.functionality.length === 0) {
+                    setError("Please select at least one functionality requirement.");
+                    return false;
+                }
                 break;
             case 3:
-                if (!formData.style) errorMessage = "Please select a design style.";
-                else if (!formData.logo) errorMessage = "Please upload your company logo.";
-                else if (formData.brandColors.length === 0) errorMessage = "Please provide your brand colors.";
+                if (!formData.style) {
+                    setError("Please select a design style.");
+                    return false;
+                }
+                if (!formData.logo) {
+                    setError("Please upload your company logo.");
+                    return false;
+                }
+                if (formData.brandColors.length === 0) {
+                    setError("Please provide your brand colors.");
+                    return false;
+                }
                 break;
             case 4:
-                if (!formData.userName.trim() || !formData.userEmail.trim() || !formData.userMobile.trim()) errorMessage = "Please fill in all your contact details.";
-                else if (!/\S+@\S+\.\S+/.test(formData.userEmail)) errorMessage = "Please enter a valid email address.";
-                break;
-        }
+                if (!formData.userName.trim()) {
+                    newErrors.userName = "Full name is required.";
+                } else if (formData.userName.trim().split(/\s+/).filter(n => n).length < 2) {
+                    newErrors.userName = "Please enter both your first and last name.";
+                }
 
-        if (errorMessage && shouldSetError) {
-            setError(errorMessage);
-        }
+                if (!formData.userEmail.trim()) {
+                    newErrors.userEmail = "Email address is required.";
+                } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.userEmail)) {
+                    newErrors.userEmail = "Please enter a valid email format.";
+                }
 
-        return !errorMessage;
-    }
+                if (!formData.userMobile.trim()) {
+                    newErrors.userMobile = "Mobile number is required.";
+                } else if (!/^\+\d{1,4}[-.\s]?\d{6,14}$/.test(formData.userMobile)) {
+                    newErrors.userMobile = "Use international format (e.g., +971 50 123 4567).";
+                }
+                
+                setFormErrors(newErrors);
+                return Object.keys(newErrors).length === 0;
+        }
+        return true;
+    };
     
     const nextStep = () => {
-        clearAllErrors();
-        if (validateStep(currentStep, true)) {
+        setFormErrors({}); // Clear inline errors from previous attempts
+        if (validateStep(currentStep)) {
             setCurrentStep(prev => Math.min(prev + 1, steps.length));
         }
     };
 
     const prevStep = () => {
         clearAllErrors();
+        setFormErrors({});
         setCurrentStep(prev => Math.max(prev - 1, 0));
     };
 
@@ -323,19 +359,21 @@ const ExhibitionStudioPage: React.FC = () => {
     
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        
         if (apiKeyError) return;
-        clearAllErrors();
+        setFormErrors({});
 
+        // Validate all steps sequentially
         for (let i = 0; i < steps.length; i++) {
-            if (!validateStep(i, true)) {
+            if (!validateStep(i)) {
                 setCurrentStep(i); 
                 return;
             }
         }
         
+        // If all steps are valid, generate design
         generateDesign();
     };
+
 
     const sendProposalRequest = async () => {
         if (selectedConcept === null) return;
@@ -599,20 +637,38 @@ const ExhibitionStudioPage: React.FC = () => {
             case 4: // Review & Contact
                 return (
                     <div className="grid md:grid-cols-2 gap-8">
-                        <div className="space-y-6">
+                        <div className="space-y-4">
                             <h2 className="text-2xl font-serif text-white">Step 5: Review & Contact</h2>
                             <p className="text-fann-light-gray text-sm">Please provide your details. The generated concepts and a proposal link will be sent to your email.</p>
-                            <div>
+                            
+                            <div className="relative">
                                 <label htmlFor="userName" className="block text-sm font-medium text-fann-light-gray mb-1">Full Name</label>
-                                <input type="text" id="userName" name="userName" value={formData.userName} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" />
+                                <User className="absolute left-3 top-[2.4rem] -translate-y-1/2 w-5 h-5 text-fann-light-gray pointer-events-none" />
+                                <input 
+                                    type="text" id="userName" name="userName" value={formData.userName} onChange={handleInputChange} 
+                                    placeholder="e.g., John Doe" aria-invalid={!!formErrors.userName}
+                                    className={`w-full bg-fann-charcoal border rounded-md px-3 py-2 pl-10 transition-colors ${formErrors.userName ? 'border-red-500 ring-1 ring-red-500' : 'border-fann-border focus:outline-none focus:border-fann-gold focus:ring-1 focus:ring-fann-gold'}`} />
+                                {formErrors.userName && <p className="text-red-400 text-xs mt-1 absolute">{formErrors.userName}</p>}
                             </div>
-                            <div>
+
+                            <div className="relative pt-4">
                                 <label htmlFor="userEmail" className="block text-sm font-medium text-fann-light-gray mb-1">Email Address</label>
-                                <input type="email" id="userEmail" name="userEmail" value={formData.userEmail} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" />
+                                <Mail className="absolute left-3 top-[2.4rem] -translate-y-1/2 w-5 h-5 text-fann-light-gray pointer-events-none" />
+                                <input 
+                                    type="email" id="userEmail" name="userEmail" value={formData.userEmail} onChange={handleInputChange} 
+                                    placeholder="e.g., j.doe@company.com" aria-invalid={!!formErrors.userEmail}
+                                    className={`w-full bg-fann-charcoal border rounded-md px-3 py-2 pl-10 transition-colors ${formErrors.userEmail ? 'border-red-500 ring-1 ring-red-500' : 'border-fann-border focus:outline-none focus:border-fann-gold focus:ring-1 focus:ring-fann-gold'}`} />
+                                {formErrors.userEmail && <p className="text-red-400 text-xs mt-1 absolute">{formErrors.userEmail}</p>}
                             </div>
-                            <div>
+
+                             <div className="relative pt-4">
                                 <label htmlFor="userMobile" className="block text-sm font-medium text-fann-light-gray mb-1">Mobile Number</label>
-                                <input type="tel" id="userMobile" name="userMobile" value={formData.userMobile} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" />
+                                 <Phone className="absolute left-3 top-[2.4rem] -translate-y-1/2 w-5 h-5 text-fann-light-gray pointer-events-none" />
+                                <input 
+                                    type="tel" id="userMobile" name="userMobile" value={formData.userMobile} onChange={handleInputChange} 
+                                    placeholder="+971 50 123 4567" aria-invalid={!!formErrors.userMobile}
+                                    className={`w-full bg-fann-charcoal border rounded-md px-3 py-2 pl-10 transition-colors ${formErrors.userMobile ? 'border-red-500 ring-1 ring-red-500' : 'border-fann-border focus:outline-none focus:border-fann-gold focus:ring-1 focus:ring-fann-gold'}`} />
+                                {formErrors.userMobile && <p className="text-red-400 text-xs mt-1 absolute">{formErrors.userMobile}</p>}
                             </div>
                         </div>
                         <div className="bg-fann-charcoal p-4 rounded-lg">
