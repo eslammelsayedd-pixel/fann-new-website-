@@ -1,7 +1,6 @@
 import { Project, Event, Testimonial } from './types';
 
 export const navLinks = [
-    { name: 'Home', path: '/' },
     { name: 'Services', path: '/services' },
     { name: 'Portfolio', path: '/portfolio' },
     { name: 'AI Design Studio', path: '/ai-design-studio' },
