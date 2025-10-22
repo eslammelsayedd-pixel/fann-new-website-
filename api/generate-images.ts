@@ -1,4 +1,4 @@
-import { GoogleGenAI, Modality } from "@google/genai";
+import { GoogleGenAI, Modality, Type } from "@google/genai";
 
 export const config = {
   runtime: 'edge',
@@ -10,9 +10,9 @@ export default async function handler(req: Request) {
   }
 
   try {
-    const { logo, prompt, mimeType } = await req.json();
-    if (!logo || !prompt || !mimeType) {
-        return new Response(JSON.stringify({ error: 'Missing required fields: logo, prompt, mimeType' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+    const { logo, promptData, mimeType } = await req.json();
+    if (!logo || !promptData || !mimeType) {
+        return new Response(JSON.stringify({ error: 'Missing required fields: logo, promptData, mimeType' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
     }
 
     const apiKey = process.env.API_KEY || process.env.GOOGLE_CLOUD_API_KEY;
@@ -21,29 +21,80 @@ export default async function handler(req: Request) {
     }
     const ai = new GoogleGenAI({ apiKey });
     
-    // Create multiple images in parallel
-    const imagePromises = Array(4).fill(0).map((_, i) => 
+    // --- 1. Generate Images in Parallel ---
+    const imageGenPrompt = `You are an expert exhibition stand designer. Generate a photorealistic concept image for a bespoke exhibition stand, following these strict requirements:
+- **Event:** ${promptData.event}
+- **Industry:** ${promptData.industry}
+- **Stand Dimensions:** ${promptData.dimensions}.
+- **Layout:** ${promptData.layout}. This is ${promptData.layoutDescription}
+- **Stand Type:** ${promptData.type}.
+- **Structure:** ${promptData.structure}.
+- **Style:** The overall design aesthetic should be **${promptData.style}**.
+- **Key Mandate:** The stand must visibly include spaces/areas for all specified 'Functionality Requirements': ${promptData.functionality}. This is critical.
+- **Branding:** The stand is for a company whose logo is attached. The brand colors are **${promptData.colors}**. Integrate the logo and colors naturally into the design on walls, reception desks, or digital screens.
+- **Atmosphere:** The image should look high-end, professionally lit, and visually stunning. Do not include any people in the image.`;
+
+    const imagePromises = Array(4).fill(0).map(() => 
         ai.models.generateContent({
             model: 'gemini-2.5-flash-image',
             contents: { parts: [
                 { inlineData: { data: logo, mimeType: mimeType } }, 
-                { text: `${prompt}\\n\\nVariation ${i + 1} of 4.` }
+                { text: imageGenPrompt }
             ]},
             config: { responseModalities: [Modality.IMAGE] },
         })
     );
 
-    const responses = await Promise.all(imagePromises);
-    const imageUrls = responses
+    const imageResponses = await Promise.all(imagePromises);
+    const imageUrls = imageResponses
         .map(res => res.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData)
         .filter(Boolean)
         .map(data => `data:${data.mimeType};base64,${data.data}`);
 
-    if (imageUrls.length < 1) {
-        throw new Error("The AI model failed to generate any images.");
+    if (imageUrls.length < 4) {
+        throw new Error(`The AI model only generated ${imageUrls.length} out of 4 images. Please try again.`);
     }
 
-    return new Response(JSON.stringify({ imageUrls }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    // --- 2. Generate Titles and Descriptions ---
+    const textGenPrompt = `Based on the following design brief for an exhibition stand, generate 4 distinct and creative concept proposals. For each proposal, provide a unique "title" and a short "description" (2-3 sentences).
+**Design Brief:**
+${imageGenPrompt.replace('The stand is for a company whose logo is attached.', '')}
+**Output Format:**
+Return your response as a single, valid JSON array. Do not include any text or markdown formatting outside of the JSON structure. Each object in the array must have two keys: "title" (string) and "description" (string).`;
+
+    const textResponse = await ai.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: textGenPrompt,
+        config: {
+            responseMimeType: "application/json",
+            responseSchema: {
+                type: Type.ARRAY,
+                items: {
+                    type: Type.OBJECT,
+                    properties: {
+                        title: { type: Type.STRING },
+                        description: { type: Type.STRING }
+                    },
+                    required: ['title', 'description']
+                }
+            }
+        }
+    });
+
+    const textData = JSON.parse(textResponse.text);
+
+    if (!textData || textData.length < 4) {
+        throw new Error("The AI model failed to generate enough titles and descriptions.");
+    }
+    
+    // --- 3. Combine and Respond ---
+    const concepts = imageUrls.map((url, index) => ({
+        imageUrl: url,
+        title: textData[index].title,
+        description: textData[index].description,
+    }));
+
+    return new Response(JSON.stringify({ concepts }), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
   } catch (error: any) {
     console.error('Error in generate-images API:', error);
