@@ -1,17 +1,11 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AnimatedPage from '../components/AnimatedPage';
 import { portfolioProjects } from '../constants';
-import { Cube, X } from 'lucide-react';
-// FIX: Add a type-only import from 'types.ts' to ensure the TypeScript
-// compiler includes the global JSX augmentations defined in that file, resolving
-// the error for the custom <model-viewer> element.
-import type {} from '../types';
 
 const PortfolioPage: React.FC = () => {
   const [selectedService, setSelectedService] = useState('All');
   const [selectedIndustry, setSelectedIndustry] = useState('All');
-  const [selectedModel, setSelectedModel] = useState<string | null>(null);
 
   const services = ['All', 'Exhibitions', 'Events', 'Interior Design'];
   const industries = useMemo(() => {
@@ -26,18 +20,6 @@ const PortfolioPage: React.FC = () => {
         return serviceMatch && industryMatch;
     });
   }, [selectedService, selectedIndustry]);
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setSelectedModel(null);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
 
   const FilterButtons: React.FC<{title: string, options: string[], selected: string, setSelected: (value: string) => void}> = ({ title, options, selected, setSelected }) => (
     <div className="mb-6">
@@ -90,15 +72,6 @@ const PortfolioPage: React.FC = () => {
                       <h3 className="text-xl font-bold mt-2 text-white">{project.title}</h3>
                       <p className="text-fann-cream">{project.client}</p>
                     </div>
-                    {project.model3d && (
-                      <button 
-                        onClick={() => setSelectedModel(project.model3d as string)}
-                        className="absolute top-4 right-4 bg-fann-charcoal/70 backdrop-blur-sm text-white px-3 py-2 rounded-full text-xs font-bold flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-fann-teal"
-                      >
-                        <Cube size={14} />
-                        View 3D Model
-                      </button>
-                    )}
                   </motion.div>
                 ))
               ) : (
@@ -113,44 +86,9 @@ const PortfolioPage: React.FC = () => {
               )}
             </AnimatePresence>
           </motion.div>
+
         </div>
       </div>
-      <AnimatePresence>
-        {selectedModel && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelectedModel(null)}
-            className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
-          >
-            <motion.div
-              initial={{ scale: 0.8, y: 50 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.8, y: 50 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-4xl h-full max-h-[80vh] bg-fann-charcoal-light rounded-lg shadow-2xl"
-            >
-              <button
-                onClick={() => setSelectedModel(null)}
-                className="absolute top-2 right-2 z-10 bg-fann-charcoal p-2 rounded-full text-white hover:bg-fann-teal transition-colors"
-                aria-label="Close 3D viewer"
-              >
-                <X size={24} />
-              </button>
-              <model-viewer
-                src={selectedModel}
-                alt="A 3D model of the project"
-                camera-controls
-                auto-rotate
-                ar
-                shadow-intensity="1"
-                style={{ width: '100%', height: '100%', borderRadius: '8px' }}
-              />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </AnimatedPage>
   );
 };

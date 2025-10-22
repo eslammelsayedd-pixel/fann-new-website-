@@ -16,7 +16,6 @@ export interface Project {
   timeline: string;
   challenge: string;
   result: string;
-  model3d?: string;
 }
 
 export interface Event {
