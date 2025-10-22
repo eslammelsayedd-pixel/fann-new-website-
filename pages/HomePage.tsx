@@ -56,10 +56,9 @@ const HeroSection: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
-                    className="text-5xl md:text-7xl lg:text-8xl font-serif font-extrabold"
+                    className="text-5xl md:text-7xl lg:text-8xl font-serif font-extrabold leading-tight md:leading-snug"
                 >
-                    Transforming Visions Into
-                    <br />
+                    <span className="block font-bold">Transforming Visions Into</span>
                     <AnimatePresence mode="wait">
                         <motion.span
                             key={contentIndex}
@@ -67,7 +66,7 @@ const HeroSection: React.FC = () => {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -30 }}
                             transition={{ duration: 0.7 }}
-                            className="text-fann-gold inline-block"
+                            className="text-fann-gold inline-block mt-2 md:mt-4"
                         >
                             {dynamicContent[contentIndex].headline}
                         </motion.span>
