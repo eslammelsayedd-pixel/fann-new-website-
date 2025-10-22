@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import AnimatedPage from '../components/AnimatedPage';
-import { Building, Crown, PenTool, Video, ArrowRight } from 'lucide-react';
+import { Building, Crown, PenTool, Video, ArrowRight, Wand2 } from 'lucide-react';
 
 interface StudioCardProps {
   icon: React.ElementType;
@@ -14,7 +14,7 @@ interface StudioCardProps {
 }
 
 const StudioCard: React.FC<StudioCardProps> = ({ icon: Icon, title, description, link, image, comingSoon }) => (
-  <Link to={link} className={`block relative group overflow-hidden rounded-lg border-2 transition-all duration-300 ${comingSoon ? 'border-fann-border' : 'border-fann-gold/20 hover:border-fann-gold'}`}>
+  <Link to={link} className={`block relative group overflow-hidden rounded-lg border-2 transition-all duration-300 ${comingSoon ? 'border-fann-border cursor-default' : 'border-fann-gold/20 hover:border-fann-gold'}`}>
     <img src={image} alt={title} className={`absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 ${comingSoon ? 'grayscale' : ''}`} />
     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent"></div>
     {comingSoon && (
@@ -48,7 +48,7 @@ const AIDesignStudioPage: React.FC = () => {
               Your vision, realized in minutes. Select a studio to begin creating with the power of generative AI.
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}>
               <StudioCard
                 icon={Building}
@@ -67,23 +67,32 @@ const AIDesignStudioPage: React.FC = () => {
                 image="https://images.unsplash.com/photo-1516475429286-465d815a0d72?w=800&q=80"
               />
             </motion.div>
-            <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
+             <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
               <StudioCard
-                icon={PenTool}
-                title="Interior Design Studio"
-                description="Craft stunning concepts for commercial and residential spaces. The future of interior design is on its way."
-                link="/ai-design-studio/interior-design"
-                image="https://images.unsplash.com/photo-1618221195710-dd6b41fa2047?w=800&q=80"
-                comingSoon
+                icon={Wand2}
+                title="Image Studio"
+                description="Edit images with text prompts. Add filters, remove objects, and more with generative AI."
+                link="/ai-design-studio/image-editing"
+                image="https://images.unsplash.com/photo-1572419932067-5b6a7d8851c2?w=800&q=80"
               />
             </motion.div>
-             <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }}>
+            <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }}>
               <StudioCard
                 icon={Video}
                 title="Video Concept Studio"
                 description="Generate short, promotional video concepts for your event or brand to use in marketing campaigns."
                 link="/ai-design-studio/video"
                 image="https://images.unsplash.com/photo-1578171688145-2f5a0e49c32f?w=800&q=80"
+              />
+            </motion.div>
+             <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 }}>
+              <StudioCard
+                icon={PenTool}
+                title="Interior Design Studio"
+                description="Craft stunning concepts for commercial and residential spaces. The future of interior design is on its way."
+                link="/ai-design-studio/interior-design"
+                image="https://images.unsplash.com/photo-16182211957_10-dd6b41fa2047?w=800&q=80"
+                comingSoon
               />
             </motion.div>
           </div>
