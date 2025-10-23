@@ -36,8 +36,9 @@ export interface Testimonial {
 
 declare global {
   namespace JSX {
-    // FIX: Extend React's intrinsic elements to add 'model-viewer' without overwriting existing HTML element types.
-    interface IntrinsicElements extends import('react').JSX.IntrinsicElements {
+    // FIX: Corrected augmentation of JSX.IntrinsicElements. The `extends` keyword is not needed for declaration merging
+    // and was causing the original intrinsic elements to be overwritten.
+    interface IntrinsicElements {
       'model-viewer': import('react').DetailedHTMLProps<import('react').HTMLAttributes<HTMLElement>, HTMLElement> & {
         src?: string;
         alt?: string;

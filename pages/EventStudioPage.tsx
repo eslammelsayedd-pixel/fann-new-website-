@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Loader2, Sparkles, Upload, ArrowLeft, Users, Palette, ListChecks, Crown, User, CheckCircle, AlertCircle } from 'lucide-react';
-import AnimatedPage from '../components/AnimatedPage';
 import { useApiKey } from '../context/ApiKeyProvider';
 import { useSearchParams } from 'react-router-dom';
 
@@ -447,7 +446,7 @@ const EventStudioPage: React.FC = () => {
     };
     
     if (isLoading) return (
-        <div className="min-h-screen flex flex-col justify-center items-center text-center p-4">
+        <div className="min-h-[70vh] flex flex-col justify-center items-center text-center p-4">
             <Loader2 className="w-16 h-16 text-fann-gold animate-spin" />
             <h2 className="text-3xl font-serif text-white mt-6">Imagining Your Event...</h2>
             <p className="text-fann-light-gray mt-2 max-w-sm">Our AI is designing the decor, arranging the layout, and setting the mood. This may take a few moments.</p>
@@ -455,110 +454,97 @@ const EventStudioPage: React.FC = () => {
     );
     
     if (isFinished && isProposalRequested) return (
-        <AnimatedPage>
-            <div className="min-h-screen flex flex-col justify-center items-center text-center p-4">
-                <CheckCircle className="w-20 h-20 text-fann-teal mb-6" />
-                <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Thank You!</h1>
-                <p className="text-xl text-fann-cream max-w-2xl mx-auto mb-8">Our team has received your concept selection and will prepare a detailed proposal, which will be sent to <strong>{formData.userEmail}</strong> shortly.</p>
-                {selectedImage !== null && <img src={generatedImages[selectedImage]} alt="Selected" className="rounded-lg shadow-2xl w-full max-w-lg mt-8" />}
-            </div>
-        </AnimatedPage>
+        <div className="min-h-[70vh] flex flex-col justify-center items-center text-center p-4">
+            <CheckCircle className="w-20 h-20 text-fann-teal mb-6" />
+            <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Thank You!</h1>
+            <p className="text-xl text-fann-cream max-w-2xl mx-auto mb-8">Our team has received your concept selection and will prepare a detailed proposal, which will be sent to <strong>{formData.userEmail}</strong> shortly.</p>
+            {selectedImage !== null && <img src={generatedImages[selectedImage]} alt="Selected" className="rounded-lg shadow-2xl w-full max-w-lg mt-8" />}
+        </div>
     );
 
     if (isFinished) return (
-        <AnimatedPage>
-            <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-12">
-                        <Sparkles className="mx-auto h-16 w-16 text-fann-gold" />
-                        <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Select Your Favorite Concept</h1>
-                        <p className="text-xl text-fann-cream max-w-3xl mx-auto">Click your preferred design. Our team will then prepare a detailed proposal and quotation for you.</p>
+        <div className="pb-20 text-white">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center mb-12">
+                    <Sparkles className="mx-auto h-16 w-16 text-fann-gold" />
+                    <h1 className="text-4xl font-serif font-bold text-fann-gold mt-4 mb-4">Select Your Favorite Concept</h1>
+                    <p className="text-lg text-fann-cream max-w-3xl mx-auto">Click your preferred design. Our team will then prepare a detailed proposal and quotation for you.</p>
+                </div>
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                    <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        {generatedImages.map((img, index) => (
+                            <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} onClick={() => setSelectedImage(index)} className={`rounded-lg overflow-hidden cursor-pointer border-4 transition-all duration-300 hover:border-fann-gold/50 ${selectedImage === index ? 'border-fann-gold' : 'border-transparent'}`}>
+                                <img src={img} alt={`AI Concept ${index + 1}`} className="w-full h-auto object-cover" />
+                            </motion.div>
+                        ))}
                     </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                        <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            {generatedImages.map((img, index) => (
-                                <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} onClick={() => setSelectedImage(index)} className={`rounded-lg overflow-hidden cursor-pointer border-4 transition-all duration-300 hover:border-fann-gold/50 ${selectedImage === index ? 'border-fann-gold' : 'border-transparent'}`}>
-                                    <img src={img} alt={`AI Concept ${index + 1}`} className="w-full h-auto object-cover" />
-                                </motion.div>
-                            ))}
-                        </div>
-                        <div className="lg:col-span-1 bg-fann-charcoal-light p-6 rounded-lg self-start sticky top-24">
-                            <h3 className="text-2xl font-serif text-fann-gold mb-4">Event Summary</h3>
-                            <div className="space-y-3 text-sm">
-                                <p><strong>Type:</strong> {formData.eventType}</p>
-                                <p><strong>Theme:</strong> {formData.theme}</p>
-                                <p><strong>Venue:</strong> {formData.venueType}</p>
-                                <p><strong>Guests:</strong> ~{formData.guestCount}</p>
-                                <div className="pt-4 mt-4 border-t border-fann-border">
-                                    <motion.button onClick={sendProposalRequest} disabled={selectedImage === null || isSending} className="w-full bg-fann-teal text-white font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{ scale: selectedImage !== null && !isSending ? 1.05 : 1 }} whileTap={{ scale: selectedImage !== null && !isSending ? 0.95 : 1 }}>
-                                        {isSending ? <><Loader2 className="w-5 h-5 animate-spin" /> Sending...</> : "Request Detailed Proposal"}
-                                    </motion.button>
-                                    {selectedImage === null && <p className="text-xs text-center text-fann-light-gray mt-2">Please select a design to proceed.</p>}
-                                </div>
+                    <div className="lg:col-span-1 bg-fann-charcoal-light p-6 rounded-lg self-start sticky top-24">
+                        <h3 className="text-2xl font-serif text-fann-gold mb-4">Event Summary</h3>
+                        <div className="space-y-3 text-sm">
+                            <p><strong>Type:</strong> {formData.eventType}</p>
+                            <p><strong>Theme:</strong> {formData.theme}</p>
+                            <p><strong>Venue:</strong> {formData.venueType}</p>
+                            <p><strong>Guests:</strong> ~{formData.guestCount}</p>
+                            <div className="pt-4 mt-4 border-t border-fann-border">
+                                <motion.button onClick={sendProposalRequest} disabled={selectedImage === null || isSending} className="w-full bg-fann-teal text-white font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{ scale: selectedImage !== null && !isSending ? 1.05 : 1 }} whileTap={{ scale: selectedImage !== null && !isSending ? 0.95 : 1 }}>
+                                    {isSending ? <><Loader2 className="w-5 h-5 animate-spin" /> Sending...</> : "Request Detailed Proposal"}
+                                </motion.button>
+                                {selectedImage === null && <p className="text-xs text-center text-fann-light-gray mt-2">Please select a design to proceed.</p>}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </AnimatedPage>
+        </div>
     );
 
     return (
-        <AnimatedPage>
-            <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white flex items-center justify-center">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-                    <div className="text-center mb-8">
-                        <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">Event Concept Studio</h1>
-                        <p className="text-xl text-fann-cream">Follow the steps to create a stunning event concept.</p>
-                    </div>
-
-                    <div className="mb-8">
-                        <div className="flex justify-between mb-2">
-                            {steps.map((step, index) => (
-                                <div key={step.name} className="flex flex-col items-center" style={{ width: `${100 / steps.length}%` }}>
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${currentStep >= index ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-charcoal-light text-fann-light-gray'}`}><step.icon size={16} /></div>
-                                    <span className={`text-xs mt-1 text-center ${currentStep >= index ? 'text-white' : 'text-fann-light-gray'}`}>{step.name}</span>
-                                </div>
-                            ))}
+        <div className="max-w-4xl mx-auto">
+            <div className="mb-8">
+                <div className="flex justify-between mb-2">
+                    {steps.map((step, index) => (
+                        <div key={step.name} className="flex flex-col items-center" style={{ width: `${100 / steps.length}%` }}>
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${currentStep >= index ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-charcoal-light text-fann-light-gray'}`}><step.icon size={16} /></div>
+                            <span className={`text-xs mt-1 text-center ${currentStep >= index ? 'text-white' : 'text-fann-light-gray'}`}>{step.name}</span>
                         </div>
-                        <div className="bg-fann-charcoal-light rounded-full h-1.5"><motion.div className="bg-fann-gold h-1.5 rounded-full" initial={{ width: 0 }} animate={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }} transition={{ type: 'spring', stiffness: 50 }}/></div>
-                    </div>
-
-                    <div className="bg-fann-charcoal-light p-8 rounded-lg">
-                        <form onSubmit={handleSubmit}>
-                            <motion.div key={currentStep} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.3 }}>
-                                {renderStepContent()}
-                            </motion.div>
-                            <div className="mt-8">
-                                {error && (
-                                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-start gap-3 mb-4">
-                                        <div className="flex-shrink-0 pt-0.5"><AlertCircle className="w-5 h-5" /></div>
-                                        <div className="flex-grow">
-                                            <span className="whitespace-pre-wrap">{error}</span>
-                                        </div>
-                                    </motion.div>
-                                )}
-                                <div className="flex justify-between items-center">
-                                    <motion.button type="button" onClick={prevStep} disabled={currentStep === 0} className="flex items-center gap-2 text-fann-gold disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: currentStep !== 0 ? 1.05 : 1}} whileTap={{scale: currentStep !== 0 ? 0.95 : 1}}>
-                                        <ArrowLeft size={16} /> Back
-                                    </motion.button>
-                                    
-                                    {currentStep < steps.length - 1 ? (
-                                        <motion.button type="button" onClick={nextStep} disabled={isNextButtonDisabled} className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full w-32 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: !isNextButtonDisabled ? 1.05 : 1}} whileTap={{scale: !isNextButtonDisabled ? 0.95 : 1}}>
-                                            {isNextButtonDisabled ? <Loader2 className="w-5 h-5 mx-auto animate-spin" /> : 'Next'}
-                                        </motion.button>
-                                    ) : (
-                                        <motion.button type="submit" className="bg-fann-teal text-white font-bold py-2 px-6 rounded-full flex items-center gap-2" whileHover={{scale: 1.05}} whileTap={{scale: 0.95}}>
-                                            <Sparkles size={16} /> Generate My Concept
-                                        </motion.button>
-                                    )}
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                    ))}
                 </div>
+                <div className="bg-fann-charcoal-light rounded-full h-1.5"><motion.div className="bg-fann-gold h-1.5 rounded-full" initial={{ width: 0 }} animate={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }} transition={{ type: 'spring', stiffness: 50 }}/></div>
             </div>
-        </AnimatedPage>
+
+            <div className="bg-fann-charcoal-light p-8 rounded-lg">
+                <form onSubmit={handleSubmit}>
+                    <motion.div key={currentStep} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.3 }}>
+                        {renderStepContent()}
+                    </motion.div>
+                    <div className="mt-8">
+                        {error && (
+                            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-start gap-3 mb-4">
+                                <div className="flex-shrink-0 pt-0.5"><AlertCircle className="w-5 h-5" /></div>
+                                <div className="flex-grow">
+                                    <span className="whitespace-pre-wrap">{error}</span>
+                                </div>
+                            </motion.div>
+                        )}
+                        <div className="flex justify-between items-center">
+                            <motion.button type="button" onClick={prevStep} disabled={currentStep === 0} className="flex items-center gap-2 text-fann-gold disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: currentStep !== 0 ? 1.05 : 1}} whileTap={{scale: currentStep !== 0 ? 0.95 : 1}}>
+                                <ArrowLeft size={16} /> Back
+                            </motion.button>
+                            
+                            {currentStep < steps.length - 1 ? (
+                                <motion.button type="button" onClick={nextStep} disabled={isNextButtonDisabled} className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full w-32 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: !isNextButtonDisabled ? 1.05 : 1}} whileTap={{scale: !isNextButtonDisabled ? 0.95 : 1}}>
+                                    {isNextButtonDisabled ? <Loader2 className="w-5 h-5 mx-auto animate-spin" /> : 'Next'}
+                                </motion.button>
+                            ) : (
+                                <motion.button type="submit" className="bg-fann-teal text-white font-bold py-2 px-6 rounded-full flex items-center gap-2" whileHover={{scale: 1.05}} whileTap={{scale: 0.95}}>
+                                    <Sparkles size={16} /> Generate My Concept
+                                </motion.button>
+                            )}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     );
 };
 

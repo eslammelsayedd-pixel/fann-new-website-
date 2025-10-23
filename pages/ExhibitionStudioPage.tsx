@@ -1,7 +1,6 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2, Sparkles, Upload, ArrowLeft, Building, Scaling, ListChecks, User, CheckCircle, AlertCircle, Palette, View, FileText, Mail, Phone } from 'lucide-react';
-import AnimatedPage from '../components/AnimatedPage';
 import { regionalEvents } from '../constants';
 import { useApiKey } from '../context/ApiKeyProvider';
 // To resolve errors related to the custom `<model-viewer>` element, its type definition must be loaded.
@@ -715,7 +714,7 @@ const ExhibitionStudioPage: React.FC = () => {
     };
     
     if (isLoading) return (
-        <div className="min-h-screen flex flex-col justify-center items-center text-center p-4">
+        <div className="min-h-[70vh] flex flex-col justify-center items-center text-center p-4">
             <Loader2 className="w-16 h-16 text-fann-gold animate-spin" />
             <h2 className="text-3xl font-serif text-white mt-6">Building Your Vision...</h2>
             <p className="text-fann-light-gray mt-2 max-w-sm">Our AI is drafting blueprints and rendering concepts. This might take up to a minute.</p>
@@ -723,19 +722,17 @@ const ExhibitionStudioPage: React.FC = () => {
     );
     
     if (isFinished && isProposalRequested) return (
-        <AnimatedPage>
-            <div className="min-h-screen flex flex-col justify-center items-center text-center p-4">
-                <CheckCircle className="w-20 h-20 text-fann-teal mb-6" />
-                <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Thank You!</h1>
-                <p className="text-xl text-fann-cream max-w-2xl mx-auto mb-8">Our team has received your concept selection and will prepare a detailed proposal, which will be sent to <strong>{formData.userEmail}</strong> shortly.</p>
-                {selectedConcept !== null && <img src={generatedConcepts[selectedConcept].imageUrl} alt="Selected" className="rounded-lg shadow-2xl w-full max-w-lg mt-8" />}
-            </div>
-        </AnimatedPage>
+        <div className="min-h-[70vh] flex flex-col justify-center items-center text-center p-4">
+            <CheckCircle className="w-20 h-20 text-fann-teal mb-6" />
+            <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Thank You!</h1>
+            <p className="text-xl text-fann-cream max-w-2xl mx-auto mb-8">Our team has received your concept selection and will prepare a detailed proposal, which will be sent to <strong>{formData.userEmail}</strong> shortly.</p>
+            {selectedConcept !== null && <img src={generatedConcepts[selectedConcept].imageUrl} alt="Selected" className="rounded-lg shadow-2xl w-full max-w-lg mt-8" />}
+        </div>
     );
 
     if (isFinished) return (
-        <AnimatedPage>
-             <AnimatePresence>
+        <div className="bg-fann-charcoal pb-20 text-white">
+            <AnimatePresence>
                 {isModelViewerOpen && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsModelViewerOpen(false)} className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
                         <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} exit={{ scale: 0.8 }} onClick={e => e.stopPropagation()} className="relative w-full max-w-4xl h-[80vh] bg-fann-charcoal-light rounded-lg">
@@ -753,94 +750,83 @@ const ExhibitionStudioPage: React.FC = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
-            <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-12">
-                        <Sparkles className="mx-auto h-16 w-16 text-fann-gold" />
-                        <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Your AI-Generated Concepts</h1>
-                        <p className="text-xl text-fann-cream max-w-3xl mx-auto">Click your preferred design. Our team will then prepare a detailed proposal and quotation for you.</p>
-                    </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        {generatedConcepts.map((concept, index) => (
-                            <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.15 }} onClick={() => setSelectedConcept(index)} className={`rounded-lg overflow-hidden cursor-pointer border-4 bg-fann-charcoal-light transition-all duration-300 ${selectedConcept === index ? 'border-fann-gold' : 'border-transparent hover:border-fann-gold/50'}`}>
-                                <img src={concept.imageUrl} alt={concept.title} className="w-full h-auto object-cover aspect-video" />
-                                <div className="p-6">
-                                    <h3 className="text-2xl font-serif font-bold text-fann-gold">{concept.title}</h3>
-                                    <p className="text-fann-cream mt-2 text-sm">{concept.description}</p>
-                                    <button onClick={(e) => { e.stopPropagation(); setIsModelViewerOpen(true); }} className="mt-4 text-sm font-semibold text-fann-teal flex items-center gap-2 hover:underline">
-                                        <View size={16} /> View in 3D
-                                    </button>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                     <div className="text-center mt-12">
-                        <motion.button onClick={sendProposalRequest} disabled={selectedConcept === null || isSending} className="bg-fann-teal text-white font-bold py-4 px-10 rounded-full text-lg uppercase tracking-wider flex items-center justify-center gap-2 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{ scale: selectedConcept !== null && !isSending ? 1.05 : 1 }} whileTap={{ scale: selectedConcept !== null && !isSending ? 0.95 : 1 }}>
-                            {isSending ? <><Loader2 className="w-6 h-6 animate-spin" /> Sending Request...</> : "Request Detailed Proposal"}
-                        </motion.button>
-                        {selectedConcept === null && <p className="text-sm text-center text-fann-light-gray mt-3">Please select a design concept to proceed.</p>}
-                    </div>
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center mb-12">
+                    <Sparkles className="mx-auto h-16 w-16 text-fann-gold" />
+                    <h1 className="text-4xl font-serif font-bold text-fann-gold mt-4 mb-4">Your AI-Generated Concepts</h1>
+                    <p className="text-lg text-fann-cream max-w-3xl mx-auto">Click your preferred design. Our team will then prepare a detailed proposal and quotation for you.</p>
+                </div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    {generatedConcepts.map((concept, index) => (
+                        <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.15 }} onClick={() => setSelectedConcept(index)} className={`rounded-lg overflow-hidden cursor-pointer border-4 bg-fann-charcoal-light transition-all duration-300 ${selectedConcept === index ? 'border-fann-gold' : 'border-transparent hover:border-fann-gold/50'}`}>
+                            <img src={concept.imageUrl} alt={concept.title} className="w-full h-auto object-cover aspect-video" />
+                            <div className="p-6">
+                                <h3 className="text-2xl font-serif font-bold text-fann-gold">{concept.title}</h3>
+                                <p className="text-fann-cream mt-2 text-sm">{concept.description}</p>
+                                <button onClick={(e) => { e.stopPropagation(); setIsModelViewerOpen(true); }} className="mt-4 text-sm font-semibold text-fann-teal flex items-center gap-2 hover:underline">
+                                    <View size={16} /> View in 3D
+                                </button>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
+                    <div className="text-center mt-12">
+                    <motion.button onClick={sendProposalRequest} disabled={selectedConcept === null || isSending} className="bg-fann-teal text-white font-bold py-4 px-10 rounded-full text-lg uppercase tracking-wider flex items-center justify-center gap-2 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{ scale: selectedConcept !== null && !isSending ? 1.05 : 1 }} whileTap={{ scale: selectedConcept !== null && !isSending ? 0.95 : 1 }}>
+                        {isSending ? <><Loader2 className="w-6 h-6 animate-spin" /> Sending Request...</> : "Request Detailed Proposal"}
+                    </motion.button>
+                    {selectedConcept === null && <p className="text-sm text-center text-fann-light-gray mt-3">Please select a design concept to proceed.</p>}
                 </div>
             </div>
-        </AnimatedPage>
+        </div>
     );
 
     return (
-        <AnimatedPage>
-            <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white flex items-center justify-center">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
-                    <div className="text-center mb-8">
-                        <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">Exhibition Stand Studio</h1>
-                        <p className="text-xl text-fann-cream">Follow the steps to generate a bespoke stand concept.</p>
-                    </div>
-
-                    <div className="mb-8">
-                        <div className="flex justify-between mb-2">
-                            {steps.map((step, index) => (
-                                <div key={step.name} className="flex flex-col items-center" style={{ width: `${100 / steps.length}%` }}>
-                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors border-2 ${currentStep >= index ? 'bg-fann-gold text-fann-charcoal border-fann-gold' : 'bg-fann-charcoal-light text-fann-light-gray border-fann-border'}`}><step.icon size={20} /></div>
-                                    <span className={`text-xs mt-2 text-center font-semibold ${currentStep >= index ? 'text-white' : 'text-fann-light-gray'}`}>{step.name}</span>
-                                </div>
-                            ))}
+        <div className="max-w-5xl mx-auto">
+            <div className="mb-8">
+                <div className="flex justify-between mb-2">
+                    {steps.map((step, index) => (
+                        <div key={step.name} className="flex flex-col items-center" style={{ width: `${100 / steps.length}%` }}>
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors border-2 ${currentStep >= index ? 'bg-fann-gold text-fann-charcoal border-fann-gold' : 'bg-fann-charcoal-light text-fann-light-gray border-fann-border'}`}><step.icon size={20} /></div>
+                            <span className={`text-xs mt-2 text-center font-semibold ${currentStep >= index ? 'text-white' : 'text-fann-light-gray'}`}>{step.name}</span>
                         </div>
-                        <div className="bg-fann-charcoal-light rounded-full h-1.5"><motion.div className="bg-fann-gold h-1.5 rounded-full" initial={{ width: 0 }} animate={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }} transition={{ type: 'spring', stiffness: 50 }}/></div>
-                    </div>
-
-                    <div className="bg-fann-charcoal-light p-8 rounded-lg">
-                        <form onSubmit={handleSubmit}>
-                            <motion.div key={currentStep} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.3 }}>
-                                {renderStepContent()}
-                            </motion.div>
-                            <div className="mt-8">
-                                {error && (
-                                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-start gap-3 mb-4">
-                                        <div className="flex-shrink-0 pt-0.5"><AlertCircle className="w-5 h-5" /></div>
-                                        <div className="flex-grow">
-                                            <span className="whitespace-pre-wrap">{error}</span>
-                                        </div>
-                                    </motion.div>
-                                )}
-                                <div className="flex justify-between items-center">
-                                    <motion.button type="button" onClick={prevStep} disabled={currentStep === 0} className="flex items-center gap-2 text-fann-gold disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: currentStep !== 0 ? 1.05 : 1}} whileTap={{scale: currentStep !== 0 ? 0.95 : 1}}>
-                                        <ArrowLeft size={16} /> Back
-                                    </motion.button>
-                                    
-                                    {currentStep < steps.length - 1 ? (
-                                        <motion.button type="button" onClick={nextStep} disabled={isNextButtonDisabled} className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full w-36 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: !isNextButtonDisabled ? 1.05 : 1}} whileTap={{scale: !isNextButtonDisabled ? 0.95 : 1}}>
-                                            {isNextButtonDisabled ? <Loader2 className="w-5 h-5 mx-auto animate-spin" /> : 'Next Step'}
-                                        </motion.button>
-                                    ) : (
-                                        <motion.button type="submit" className="bg-fann-teal text-white font-bold py-3 px-8 rounded-full flex items-center gap-2" whileHover={{scale: 1.05}} whileTap={{scale: 0.95}}>
-                                            <Sparkles size={16} /> Generate My Design
-                                        </motion.button>
-                                    )}
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                    ))}
                 </div>
+                <div className="bg-fann-charcoal-light rounded-full h-1.5"><motion.div className="bg-fann-gold h-1.5 rounded-full" initial={{ width: 0 }} animate={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }} transition={{ type: 'spring', stiffness: 50 }}/></div>
             </div>
-        </AnimatedPage>
+
+            <div className="bg-fann-charcoal-light p-8 rounded-lg">
+                <form onSubmit={handleSubmit}>
+                    <motion.div key={currentStep} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.3 }}>
+                        {renderStepContent()}
+                    </motion.div>
+                    <div className="mt-8">
+                        {error && (
+                            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-start gap-3 mb-4">
+                                <div className="flex-shrink-0 pt-0.5"><AlertCircle className="w-5 h-5" /></div>
+                                <div className="flex-grow">
+                                    <span className="whitespace-pre-wrap">{error}</span>
+                                </div>
+                            </motion.div>
+                        )}
+                        <div className="flex justify-between items-center">
+                            <motion.button type="button" onClick={prevStep} disabled={currentStep === 0} className="flex items-center gap-2 text-fann-gold disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: currentStep !== 0 ? 1.05 : 1}} whileTap={{scale: currentStep !== 0 ? 0.95 : 1}}>
+                                <ArrowLeft size={16} /> Back
+                            </motion.button>
+                            
+                            {currentStep < steps.length - 1 ? (
+                                <motion.button type="button" onClick={nextStep} disabled={isNextButtonDisabled} className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full w-36 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: !isNextButtonDisabled ? 1.05 : 1}} whileTap={{scale: !isNextButtonDisabled ? 0.95 : 1}}>
+                                    {isNextButtonDisabled ? <Loader2 className="w-5 h-5 mx-auto animate-spin" /> : 'Next Step'}
+                                </motion.button>
+                            ) : (
+                                <motion.button type="submit" className="bg-fann-teal text-white font-bold py-3 px-8 rounded-full flex items-center gap-2" whileHover={{scale: 1.05}} whileTap={{scale: 0.95}}>
+                                    <Sparkles size={16} /> Generate My Design
+                                </motion.button>
+                            )}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     );
 };
 
