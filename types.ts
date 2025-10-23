@@ -34,19 +34,21 @@ export interface Testimonial {
   projectType: string;
 }
 
-declare global {
-  namespace JSX {
-    // FIX: This declaration augments the global JSX namespace to include the custom <model-viewer> element.
-    // The previous implementation was overwriting the default HTML element types, causing compilation errors.
-    interface IntrinsicElements {
-      'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
-        src?: string;
-        alt?: string;
-        'camera-controls'?: boolean;
-        'auto-rotate'?: boolean;
-        ar?: boolean;
-        'shadow-intensity'?: string;
-      };
+// FIX: The original JSX namespace augmentation was overwriting the default HTML element types,
+// causing compilation errors for standard tags like `div` and `p`.
+// This updated declaration merges with React's intrinsic elements, preserving all
+// standard HTML tags while adding support for the custom `<model-viewer>` element.
+declare module 'react' {
+    namespace JSX {
+        interface IntrinsicElements {
+            'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+                src?: string;
+                alt?: string;
+                'camera-controls'?: boolean;
+                'auto-rotate'?: boolean;
+                ar?: boolean;
+                'shadow-intensity'?: string;
+            };
+        }
     }
-  }
 }

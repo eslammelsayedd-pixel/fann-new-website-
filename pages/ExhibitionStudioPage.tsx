@@ -159,6 +159,10 @@ const ExhibitionStudioPage: React.FC = () => {
     const { ensureApiKey, handleApiError, error: apiKeyError, clearError: clearApiKeyError } = useApiKey();
     const [localError, setLocalError] = useState<string | null>(null);
     
+    // FIX: The 'error' variable was used before it was declared.
+    // Moved the declaration to the top of the component and wrapped it in useMemo to correctly handle derived state.
+    const error = useMemo(() => apiKeyError || localError, [apiKeyError, localError]);
+    
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -245,6 +249,18 @@ const ExhibitionStudioPage: React.FC = () => {
         }
     };
 
+    useEffect(() => {
+        const heightValue = parseFloat(formData.standHeight);
+        const doubleDeckerError = "Minimum height for a Double Decker stand is 5 meters. Please select 5m or higher.";
+
+        if (formData.doubleDecker && !isNaN(heightValue) && heightValue < 5) {
+            setError(doubleDeckerError);
+        } else if (error === doubleDeckerError) {
+            clearAllErrors();
+        }
+    }, [formData.doubleDecker, formData.standHeight, error, setError]);
+
+
     const validateStep = (step: number): boolean => {
         clearAllErrors();
         const newErrors: Partial<Record<keyof FormData, string>> = {};
@@ -267,6 +283,11 @@ const ExhibitionStudioPage: React.FC = () => {
             case 1:
                 if (!formData.standLayout || !formData.standType || !formData.standHeight) {
                     setError("Please complete all structure details.");
+                    return false;
+                }
+                const heightValue = parseFloat(formData.standHeight);
+                if (formData.doubleDecker && !isNaN(heightValue) && heightValue < 5) {
+                    setError("Minimum height for a Double Decker stand is 5 meters. Please select 5m or higher.");
                     return false;
                 }
                 break;
@@ -420,7 +441,6 @@ const ExhibitionStudioPage: React.FC = () => {
         setIsProposalRequested(true);
     };
 
-    const error = apiKeyError || localError;
     const isNextButtonDisabled = currentStep === 3 && isExtractingColors || currentStep === 0 && (isAnalyzingStyle || isAnalyzingIndustry);
     
     const analyzeShowStyle = async (eventName: string, industry: string) => {
@@ -564,50 +584,63 @@ const ExhibitionStudioPage: React.FC = () => {
                     </div>
                 );
             case 1: // Structure
-                 return (
-                    <div className="space-y-6">
-                        <h2 className="text-2xl font-serif text-white mb-4">Step 2: Structural Configuration</h2>
+                return (
+                    <div className="space-y-8">
+                        <h2 className="text-2xl font-serif text-white">Step 2: Structural Configuration</h2>
+                        
                         <div>
                             <label className="block text-sm font-medium text-fann-light-gray mb-3">Stand Layout (Open Sides)</label>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 {layoutOptions.map(opt => (
-                                    <div key={opt.name} onClick={() => setFormData(p => ({ ...p, standLayout: opt.name }))} className={`p-4 rounded-lg border-2 cursor-pointer transition-colors ${formData.standLayout === opt.name ? 'border-fann-gold bg-fann-gold/10' : 'border-fann-border hover:border-fann-gold/50'}`}>
+                                    <div key={opt.name} onClick={() => setFormData(p => ({ ...p, standLayout: opt.name }))} className={`p-4 rounded-lg border-2 cursor-pointer transition-colors flex flex-col justify-between items-center h-full ${formData.standLayout === opt.name ? 'border-fann-gold bg-fann-gold/10' : 'border-fann-border hover:border-fann-gold/50'}`}>
                                         <div className="flex justify-center items-center h-16">{opt.visual}</div>
-                                        <p className="font-semibold text-sm mt-3 text-center">{opt.name.split(' (')[0]}</p>
-                                        <p className="text-xs text-fann-light-gray text-center">{opt.description}</p>
+                                        <div className="text-center">
+                                            <p className="font-semibold text-sm mt-3">{opt.name.split(' (')[0]}</p>
+                                            <p className="text-xs text-fann-light-gray">{opt.description}</p>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
                         </div>
-                         <div className="grid md:grid-cols-2 gap-6 pt-4">
-                             <div>
-                                <label htmlFor="standType" className="block text-sm font-medium text-fann-light-gray mb-2">Stand Type</label>
-                                <select id="standType" name="standType" value={formData.standType} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2">
-                                    <option value="" disabled>Select type...</option>
-                                    <option>Custom Build</option>
-                                    <option>Modular System</option>
-                                    <option>Hybrid (Custom + Modular)</option>
-                                </select>
-                            </div>
-                             <div>
-                                <label htmlFor="standHeight" className="block text-sm font-medium text-fann-light-gray mb-2">Maximum Height</label>
-                                <select id="standHeight" name="standHeight" value={formData.standHeight} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2">
-                                    <option value="" disabled>Select height...</option>
-                                    <option>4 meters</option>
-                                    <option>6 meters</option>
-                                    <option>Venue Maximum</option>
-                                </select>
+
+                        <div className="border-t border-fann-border pt-6">
+                            <div className="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label htmlFor="standType" className="block text-sm font-medium text-fann-light-gray mb-2">Stand Type</label>
+                                    <select id="standType" name="standType" value={formData.standType} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2">
+                                        <option value="" disabled>Select type...</option>
+                                        <option>Shell Scheme</option>
+                                        <option>Modular</option>
+                                        <option>Custom Built</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label htmlFor="standHeight" className="block text-sm font-medium text-fann-light-gray mb-2">Maximum Height</label>
+                                    <select id="standHeight" name="standHeight" value={formData.standHeight} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2">
+                                        <option value="" disabled>Select height...</option>
+                                        <option>2 meters</option>
+                                        <option>3 meters</option>
+                                        <option>4 meters</option>
+                                        <option>5 meters</option>
+                                        <option>6 meters</option>
+                                        <option>Venue Maximum</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div className="flex items-center space-x-8 pt-4">
-                            <label htmlFor="doubleDecker" className="flex items-center space-x-3 cursor-pointer">
-                                <input type="checkbox" id="doubleDecker" name="doubleDecker" checked={formData.doubleDecker} onChange={handleInputChange} className="h-4 w-4 rounded accent-fann-teal"/>
-                                <span>Double Decker (Two Story)</span>
-                            </label>
-                             <label htmlFor="hangingStructure" className="flex items-center space-x-3 cursor-pointer">
-                                <input type="checkbox" id="hangingStructure" name="hangingStructure" checked={formData.hangingStructure} onChange={handleInputChange} className="h-4 w-4 rounded accent-fann-teal"/>
-                                <span>Hanging Structure</span>
-                            </label>
+                        
+                        <div className="border-t border-fann-border pt-6">
+                            <label className="block text-sm font-medium text-fann-light-gray mb-3">Structural Add-ons</label>
+                            <div className="flex items-center space-x-8">
+                                <label htmlFor="doubleDecker" className="flex items-center space-x-3 cursor-pointer p-2 rounded-md hover:bg-white/5">
+                                    <input type="checkbox" id="doubleDecker" name="doubleDecker" checked={formData.doubleDecker} onChange={handleInputChange} className="h-4 w-4 rounded accent-fann-teal"/>
+                                    <span>Double Decker (Two Story)</span>
+                                </label>
+                                <label htmlFor="hangingStructure" className="flex items-center space-x-3 cursor-pointer p-2 rounded-md hover:bg-white/5">
+                                    <input type="checkbox" id="hangingStructure" name="hangingStructure" checked={formData.hangingStructure} onChange={handleInputChange} className="h-4 w-4 rounded accent-fann-teal"/>
+                                    <span>Hanging Structure</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 );
