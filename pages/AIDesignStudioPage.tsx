@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import AnimatedPage from '../components/AnimatedPage';
-import { Building, Crown, PenTool, Video, ArrowRight, Wand2 } from 'lucide-react';
+import { Building, Crown, PenTool, ArrowRight } from 'lucide-react';
 
 interface StudioCardProps {
   icon: React.ElementType;
@@ -68,24 +68,6 @@ const AIDesignStudioPage: React.FC = () => {
               />
             </motion.div>
              <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
-              <StudioCard
-                icon={Wand2}
-                title="Image Studio"
-                description="Edit images with text prompts. Add filters, remove objects, and more with generative AI."
-                link="/ai-design-studio/image-editing"
-                image="https://images.unsplash.com/photo-1572419932067-5b6a7d8851c2?w=800&q=80"
-              />
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }}>
-              <StudioCard
-                icon={Video}
-                title="Video Concept Studio"
-                description="Generate short, promotional video concepts for your event or brand to use in marketing campaigns."
-                link="/ai-design-studio/video"
-                image="https://images.unsplash.com/photo-1578171688145-2f5a0e49c32f?w=800&q=80"
-              />
-            </motion.div>
-             <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 }}>
               <StudioCard
                 icon={PenTool}
                 title="Interior Design Studio"

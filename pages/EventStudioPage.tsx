@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Loader2, Sparkles, Upload, ArrowLeft, Users, Palette, ListChecks, Crown, User, CheckCircle, AlertCircle } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import { useApiKey } from '../context/ApiKeyProvider';
+import { useSearchParams } from 'react-router-dom';
 
 // --- Helper Functions & Types ---
 interface FormData {
@@ -71,7 +72,14 @@ const blobToBase64 = (blob: Blob): Promise<string> => {
 
 
 const EventStudioPage: React.FC = () => {
-    const [currentStep, setCurrentStep] = useState(0);
+    const [searchParams, setSearchParams] = useSearchParams();
+    
+    const [currentStep, setCurrentStep] = useState(() => {
+        const stepParam = searchParams.get('step');
+        const initialStep = stepParam ? parseInt(stepParam, 10) : 0;
+        return Math.max(0, Math.min(initialStep, steps.length - 1));
+    });
+
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const [isLoading, setIsLoading] = useState(false);
     const [generatedImages, setGeneratedImages] = useState<string[]>([]);
@@ -87,6 +95,10 @@ const EventStudioPage: React.FC = () => {
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     
+    useEffect(() => {
+        setSearchParams({ step: currentStep.toString() });
+    }, [currentStep, setSearchParams]);
+
     const setError = (message: string | null) => {
         clearApiKeyError();
         setLocalError(message);

@@ -7,6 +7,7 @@ import { useApiKey } from '../context/ApiKeyProvider';
 // To resolve errors related to the custom `<model-viewer>` element, its type definition must be loaded.
 // The global JSX augmentations are defined in `../types.ts`, and importing it here makes them available to this file.
 import {} from '../types';
+import { useSearchParams } from 'react-router-dom';
 
 
 // --- Data & Constants ---
@@ -133,7 +134,14 @@ const getLayoutDescription = (layout: string): string => {
 };
 
 const ExhibitionStudioPage: React.FC = () => {
-    const [currentStep, setCurrentStep] = useState(0);
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const [currentStep, setCurrentStep] = useState(() => {
+        const stepParam = searchParams.get('step');
+        const initialStep = stepParam ? parseInt(stepParam, 10) : 0;
+        return Math.max(0, Math.min(initialStep, steps.length - 1));
+    });
+
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const [isLoading, setIsLoading] = useState(false);
     const [generatedConcepts, setGeneratedConcepts] = useState<GeneratedConcept[]>([]);
@@ -152,6 +160,10 @@ const ExhibitionStudioPage: React.FC = () => {
     const [localError, setLocalError] = useState<string | null>(null);
     
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        setSearchParams({ step: currentStep.toString() });
+    }, [currentStep, setSearchParams]);
 
     const setError = (message: string | null) => {
         clearApiKeyError();

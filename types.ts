@@ -1,6 +1,7 @@
-// FIX: Added `import React from 'react';` to ensure the global JSX type augmentations are processed correctly by TypeScript.
-// Without this import, the `React` namespace is not available, invalidating the type definition for the custom `<model-viewer>` element.
-import React from 'react';
+// By defining custom element types in a global declaration, we can use them in JSX
+// without TypeScript errors. Using inline `import('react')` for types allows TypeScript
+// to correctly merge (augment) the global JSX definitions instead of overwriting them,
+// which would cause errors for standard HTML elements like `div`.
 
 export interface Project {
   id: number;
@@ -35,8 +36,9 @@ export interface Testimonial {
 
 declare global {
   namespace JSX {
-    interface IntrinsicElements {
-      'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+    // FIX: Extend React's intrinsic elements to add 'model-viewer' without overwriting existing HTML element types.
+    interface IntrinsicElements extends import('react').JSX.IntrinsicElements {
+      'model-viewer': import('react').DetailedHTMLProps<import('react').HTMLAttributes<HTMLElement>, HTMLElement> & {
         src?: string;
         alt?: string;
         'camera-controls'?: boolean;
