@@ -1,7 +1,7 @@
+import type React from 'react';
+
 // By defining custom element types in a global declaration, we can use them in JSX
-// without TypeScript errors. Using inline `import('react')` for types allows TypeScript
-// to correctly merge (augment) the global JSX definitions instead of overwriting them,
-// which would cause errors for standard HTML elements like `div`.
+// without TypeScript errors.
 
 export interface Project {
   id: number;
@@ -36,10 +36,10 @@ export interface Testimonial {
 
 declare global {
   namespace JSX {
-    // FIX: Corrected augmentation of JSX.IntrinsicElements. The `extends` keyword is not needed for declaration merging
-    // and was causing the original intrinsic elements to be overwritten.
+    // FIX: This declaration augments the global JSX namespace to include the custom <model-viewer> element.
+    // The previous implementation was overwriting the default HTML element types, causing compilation errors.
     interface IntrinsicElements {
-      'model-viewer': import('react').DetailedHTMLProps<import('react').HTMLAttributes<HTMLElement>, HTMLElement> & {
+      'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
         src?: string;
         alt?: string;
         'camera-controls'?: boolean;

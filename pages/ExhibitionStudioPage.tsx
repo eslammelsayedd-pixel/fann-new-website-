@@ -1,7 +1,6 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2, Sparkles, Upload, ArrowLeft, Building, Scaling, ListChecks, User, CheckCircle, AlertCircle, Palette, View, FileText, Mail, Phone } from 'lucide-react';
-import { regionalEvents } from '../constants';
 import { useApiKey } from '../context/ApiKeyProvider';
 // To resolve errors related to the custom `<model-viewer>` element, its type definition must be loaded.
 // The global JSX augmentations are defined in `../types.ts`, and importing it here makes them available to this file.
@@ -26,6 +25,7 @@ interface FormData {
     doubleDecker: boolean;
     hangingStructure: boolean;
     eventName: string;
+    location: string;
     style: string;
     eventStyleDescription: string;
     functionality: string[];
@@ -56,6 +56,7 @@ const initialFormData: FormData = {
     doubleDecker: false,
     hangingStructure: false,
     eventName: '',
+    location: '',
     style: '',
     eventStyleDescription: '',
     functionality: [],
@@ -95,8 +96,8 @@ const layoutOptions = [
 ];
 
 const steps = [
-    { name: 'Brief', icon: Building },
-    { name: 'Structure', icon: Scaling },
+    { name: 'Brief', icon: FileText },
+    { name: 'Structure', icon: Building },
     { name: 'Functionality', icon: ListChecks },
     { name: 'Aesthetics', icon: Palette },
     { name: 'Review & Contact', icon: User },
@@ -150,8 +151,8 @@ const ExhibitionStudioPage: React.FC = () => {
     const [selectedConcept, setSelectedConcept] = useState<number | null>(null);
     const [isProposalRequested, setIsProposalRequested] = useState(false);
     const [isSending, setIsSending] = useState(false);
-    const [isCustomEvent, setIsCustomEvent] = useState(false);
     const [isAnalyzingStyle, setIsAnalyzingStyle] = useState(false);
+    const [isAnalyzingIndustry, setIsAnalyzingIndustry] = useState(false);
     const [isModelViewerOpen, setIsModelViewerOpen] = useState(false);
     const [formErrors, setFormErrors] = useState<Partial<Record<keyof FormData, string>>>({});
 
@@ -250,8 +251,16 @@ const ExhibitionStudioPage: React.FC = () => {
 
         switch (step) {
             case 0:
-                if (!formData.industry || !formData.eventName) {
-                    setError("Please select an industry and event.");
+                if (!formData.eventName) {
+                    setError("Please enter an event name.");
+                    return false;
+                }
+                if (!formData.location) {
+                    setError("Please enter the event location.");
+                    return false;
+                }
+                if (!formData.industry) {
+                    setError("Could not determine industry. Please enter a recognized event name or contact us.");
                     return false;
                 }
                 break;
@@ -412,7 +421,7 @@ const ExhibitionStudioPage: React.FC = () => {
     };
 
     const error = apiKeyError || localError;
-    const isNextButtonDisabled = currentStep === 3 && isExtractingColors || currentStep === 0 && isAnalyzingStyle;
+    const isNextButtonDisabled = currentStep === 3 && isExtractingColors || currentStep === 0 && (isAnalyzingStyle || isAnalyzingIndustry);
     
     const analyzeShowStyle = async (eventName: string, industry: string) => {
         if (!eventName || !industry) return;
@@ -447,40 +456,45 @@ const ExhibitionStudioPage: React.FC = () => {
             setIsAnalyzingStyle(false);
         }
     };
-    
-     useEffect(() => {
-        if (formData.eventName && formData.industry && !isCustomEvent) {
-            analyzeShowStyle(formData.eventName, formData.industry);
-        }
-    }, [formData.eventName, formData.industry, isCustomEvent]);
-    
-    const events = useMemo(() => {
-        const uniqueEvents = new Map<string, { industry: string }>();
-        regionalEvents.forEach(event => {
-            if (!uniqueEvents.has(event.name)) {
-                uniqueEvents.set(event.name, { industry: event.industry });
+
+    const analyzeIndustry = async (eventName: string) => {
+        if (!eventName.trim()) return;
+
+        clearAllErrors();
+        if (!await ensureApiKey()) return;
+
+        setIsAnalyzingIndustry(true);
+        setFormData(p => ({ ...p, industry: '', style: '', eventStyleDescription: '' })); // Clear previous industry and style
+
+        try {
+            const response = await fetch('/api/analyze-event-industry', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ eventName })
+            });
+
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error || 'Failed to analyze event industry.');
             }
-        });
-        return Array.from(uniqueEvents.entries()).map(([name, { industry }]) => ({ name, industry }));
-    }, []);
-    
-    const handleEventChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedEventName = e.target.value;
-        if (selectedEventName === 'custom') {
-            setIsCustomEvent(true);
-            setFormData(p => ({ ...p, eventName: '', industry: p.industry || '', style: '', eventStyleDescription: '' }));
-        } else {
-            setIsCustomEvent(false);
-            const selectedEvent = events.find(event => event.name === selectedEventName);
-            setFormData(p => ({
-                ...p,
-                eventName: selectedEventName,
-                industry: selectedEvent?.industry || p.industry,
-                style: '',
-                eventStyleDescription: ''
-            }));
+
+            const data = await response.json();
+            if (data.industry) {
+                setFormData(p => ({ ...p, industry: data.industry }));
+            }
+        } catch (e: any) {
+            console.error('Error analyzing event industry:', e);
+            handleApiError(e); // Let the context handle API errors
+        } finally {
+            setIsAnalyzingIndustry(false);
         }
     };
+    
+     useEffect(() => {
+        if (formData.eventName && formData.industry) {
+            analyzeShowStyle(formData.eventName, formData.industry);
+        }
+    }, [formData.eventName, formData.industry]);
 
     // --- RENDER LOGIC ---
 
@@ -493,21 +507,50 @@ const ExhibitionStudioPage: React.FC = () => {
                         <div className="grid md:grid-cols-2 gap-6">
                             <div>
                                 <label htmlFor="eventName" className="block text-sm font-medium text-fann-light-gray mb-2">Event Name</label>
-                                <select id="eventName" value={isCustomEvent ? 'custom' : formData.eventName} onChange={handleEventChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2">
-                                    <option value="" disabled>Select an event...</option>
-                                    {events.map(e => <option key={e.name} value={e.name}>{e.name}</option>)}
-                                    <option value="custom">Other / Not Listed</option>
-                                </select>
+                                <input
+                                    type="text"
+                                    id="eventName"
+                                    name="eventName"
+                                    value={formData.eventName}
+                                    onChange={handleInputChange}
+                                    onBlur={(e) => analyzeIndustry(e.target.value)}
+                                    placeholder="e.g., GITEX Global"
+                                    className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2"
+                                />
                             </div>
                             <div>
-                                <label htmlFor="industry" className="block text-sm font-medium text-fann-light-gray mb-2">Industry</label>
-                                <input type="text" id="industry" name="industry" value={formData.industry} onChange={handleInputChange} disabled={!isCustomEvent} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2 disabled:bg-fann-charcoal-light/50" />
+                                <label htmlFor="location" className="block text-sm font-medium text-fann-light-gray mb-2">Event Location</label>
+                                <input
+                                    type="text"
+                                    id="location"
+                                    name="location"
+                                    value={formData.location}
+                                    onChange={handleInputChange}
+                                    placeholder="e.g., Dubai World Trade Centre"
+                                    className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2"
+                                />
                             </div>
                         </div>
-                        {isCustomEvent && (
-                            <input type="text" name="eventName" placeholder="Enter your event name" value={formData.eventName} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2 mt-4" />
-                        )}
-                        <div className="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label htmlFor="industry" className="block text-sm font-medium text-fann-light-gray mb-2">Industry (Auto-detected)</label>
+                            <div className="relative">
+                                <input
+                                    type="text"
+                                    id="industry"
+                                    name="industry"
+                                    value={formData.industry}
+                                    readOnly
+                                    placeholder="Analyzed from event name..."
+                                    className="w-full bg-fann-charcoal-light/50 border border-fann-border rounded-md px-3 py-2 text-fann-light-gray"
+                                />
+                                {isAnalyzingIndustry && (
+                                    <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                                        <Loader2 className="w-5 h-5 animate-spin text-fann-gold" />
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        <div className="grid md:grid-cols-2 gap-6 pt-4">
                             <div>
                                 <label htmlFor="standWidth" className="block text-sm font-medium text-fann-light-gray mb-2">Stand Width (m): {formData.standWidth}</label>
                                 <input type="range" id="standWidth" name="standWidth" min="3" max="30" value={formData.standWidth} onChange={handleInputChange} className="w-full h-2 bg-fann-charcoal-light rounded-lg appearance-none cursor-pointer accent-fann-gold" />
@@ -699,7 +742,7 @@ const ExhibitionStudioPage: React.FC = () => {
                         <div className="bg-fann-charcoal p-4 rounded-lg">
                              <h3 className="text-lg font-serif text-white mb-3 flex items-center gap-2"><FileText size={20}/> Design Brief Summary</h3>
                              <div className="space-y-2 text-sm text-fann-light-gray">
-                                <p><strong>Event:</strong> <span className="text-white">{formData.eventName || 'N/A'}</span></p>
+                                <p><strong>Event:</strong> <span className="text-white">{formData.eventName || 'N/A'} at {formData.location || 'N/A'}</span></p>
                                 <p><strong>Size:</strong> <span className="text-white">{formData.standWidth}m x {formData.standLength}m ({formData.standWidth * formData.standLength} sqm)</span></p>
                                 <p><strong>Layout:</strong> <span className="text-white">{formData.standLayout || 'N/A'}</span></p>
                                 <p><strong>Structure:</strong> <span className="text-white">{[formData.standType, formData.standHeight, formData.doubleDecker && "Double Decker", formData.hangingStructure && "Hanging Structure"].filter(Boolean).join(', ') || 'N/A'}</span></p>
