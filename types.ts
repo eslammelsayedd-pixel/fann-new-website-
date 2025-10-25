@@ -36,9 +36,10 @@ export interface Testimonial {
   projectType: string;
 }
 
-// FIX: Reverted from `declare global` to `declare module 'react'` to correctly augment
-// React's own JSX namespace. This avoids overwriting the global `JSX.IntrinsicElements` and
-// resolves errors where standard HTML tags were not recognized.
+// FIX: The original JSX namespace augmentation was overwriting the default HTML element types,
+// causing compilation errors for standard tags like `div` and `p`.
+// This updated declaration merges with React's intrinsic elements, preserving all
+// standard HTML tags while adding support for the custom `<model-viewer>` element.
 declare module 'react' {
     namespace JSX {
         interface IntrinsicElements {

@@ -14,7 +14,7 @@ const countryCodes = [
 ];
 const aestheticStyles = ['Minimalist & Clean', 'Luxury & Elegant', 'High-Tech & Futuristic', 'Industrial & Raw', 'Biophilic & Natural', 'Bold & Colorful'];
 const functionalityOptions = [
-    'Reception / Welcome Desk', 'Hostess', 'Casual Meeting Area', 'Private Meeting Room', 'Product Display Zones', 'Live Demo Area', 'Hospitality / Bar', 'Storage Room', 'Video Wall / LED Screen', 'Interactive Station', 'Photo Booth Area'
+    'Reception / Welcome Desk', 'Casual Meeting Area', 'Private Meeting Room', 'Product Display Zones', 'Live Demo Area', 'Hospitality / Bar', 'Storage Room', 'Video Wall / LED Screen', 'Interactive Station', 'Photo Booth Area'
 ];
 
 interface FormData {

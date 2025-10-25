@@ -2,9 +2,6 @@
   "functions": {
     "api/generate-video.ts": {
       "maxDuration": 300
-    },
-    "api/generate-images.ts": {
-      "maxDuration": 60
     }
   }
 }
