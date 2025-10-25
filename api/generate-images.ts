@@ -40,7 +40,7 @@ export default async function handler(req: any, res: any) {
 - **Atmosphere:** The image should look high-end, professionally lit, and visually stunning. Do not include any people in the image.`;
 
       // OPTIMIZATION: Run image and text generation in parallel to avoid timeouts.
-      const imagePromises = Array(2).fill(0).map(() => 
+      const imagePromises = Array(4).fill(0).map(() => 
           ai.models.generateContent({
               model: 'gemini-2.5-flash-image',
               contents: { parts: [
@@ -51,7 +51,7 @@ export default async function handler(req: any, res: any) {
           })
       );
 
-      const textGenPrompt = `Based on the following design brief for an exhibition stand, generate 2 distinct and creative concept proposals. For each proposal, provide a unique "title" and a short "description" (2-3 sentences).
+      const textGenPrompt = `Based on the following design brief for an exhibition stand, generate 4 distinct and creative concept proposals. For each proposal, provide a unique "title" and a short "description" (2-3 sentences).
 **Design Brief:**
 ${imageGenPrompt.replace('The stand is for a company whose logo is attached.', '')}
 **Output Format:**
@@ -86,8 +86,8 @@ Return your response as a single, valid JSON array. Do not include any text or m
           .filter(Boolean)
           .map(data => `data:${data.mimeType};base64,${data.data}`);
 
-      if (imageUrls.length < 2) {
-          throw new Error(`The AI model only generated ${imageUrls.length} out of 2 images. Please try again.`);
+      if (imageUrls.length < 4) {
+          throw new Error(`The AI model only generated ${imageUrls.length} out of 4 images. Please try again.`);
       }
 
       if (!textResponse.candidates || textResponse.candidates.length === 0) {
@@ -110,8 +110,8 @@ Return your response as a single, valid JSON array. Do not include any text or m
           throw new Error("The AI failed to return valid JSON for the concept descriptions. Please try generating again.");
       }
 
-      if (!Array.isArray(textData) || textData.length < 2) {
-          console.error("AI response for descriptions was not a valid array of 2 items:", textData);
+      if (!Array.isArray(textData) || textData.length < 4) {
+          console.error("AI response for descriptions was not a valid array of 4 items:", textData);
           throw new Error("The AI model failed to generate enough titles and descriptions in the correct format.");
       }
       

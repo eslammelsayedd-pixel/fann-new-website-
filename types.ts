@@ -1,9 +1,9 @@
-// FIX: The `declare global` was overwriting React's `JSX.IntrinsicElements`
-// because this file is treated as a module (due to the `export` statements).
-// To fix this, we now explicitly import React's `JSX` namespace and extend its
-// `IntrinsicElements` interface. This merges our custom `<model-viewer>` type
-// with all the standard HTML element types, resolving errors across the app.
-import type { DetailedHTMLProps, HTMLAttributes, JSX as ReactJSX } from 'react';
+// The `declare global` block allows augmenting global types from within a module.
+// By redeclaring the `JSX.IntrinsicElements` interface, we can add custom elements
+// like `<model-viewer>` to TypeScript's known JSX elements. This is called
+// "declaration merging" and it adds our type to the existing list of elements
+// from React, preventing type errors across the application.
+import type { DetailedHTMLProps, HTMLAttributes } from 'react';
 
 // By defining custom element types in a global declaration, we can use them in JSX
 // without TypeScript errors.
@@ -43,7 +43,7 @@ export interface Testimonial {
 // `<model-viewer>` element, allowing it to be used in TSX files without type errors.
 declare global {
     namespace JSX {
-        interface IntrinsicElements extends ReactJSX.IntrinsicElements {
+        interface IntrinsicElements {
             'model-viewer': DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> & {
                 src?: string;
                 alt?: string;
