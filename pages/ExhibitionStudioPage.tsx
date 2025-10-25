@@ -75,12 +75,12 @@ const initialFormData: FormData = {
 };
 
 const styles = [
-    { name: 'Luxury', image: 'https://images.pexels.com/photos/1879061/pexels-photo-1879061.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Minimalist', image: 'https://images.pexels.com/photos/1037992/pexels-photo-1037992.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Futuristic', image: 'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Biophilic', image: 'https://images.pexels.com/photos/2740411/pexels-photo-2740411.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Industrial', image: 'https://images.pexels.com/photos/2099691/pexels-photo-2099691.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Playful', image: 'https://images.pexels.com/photos/7598110/pexels-photo-7598110.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Luxury', image: 'https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Minimalist', image: 'https://images.pexels.com/photos/1227511/pexels-photo-1227511.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Futuristic', image: 'https://images.pexels.com/photos/325185/pexels-photo-325185.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Biophilic', image: 'https://images.pexels.com/photos/1739849/pexels-photo-1739849.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Industrial', image: 'https://images.pexels.com/photos/196643/pexels-photo-196643.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Playful', image: 'https://images.pexels.com/photos/1128318/pexels-photo-1128318.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
 ];
 
 const functionalityGroups = {

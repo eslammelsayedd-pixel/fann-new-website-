@@ -34,12 +34,12 @@ const initialFormData: FormData = {
 };
 
 const eventTypes = [
-    { name: 'Gala Dinner', image: 'https://images.pexels.com/photos/94843/pexels-photo-94843.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Product Launch', image: 'https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Conference', image: 'https://images.pexels.com/photos/236697/pexels-photo-236697.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Awards Ceremony', image: 'https://images.pexels.com/photos/11149726/pexels-photo-11149726.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Brand Activation', image: 'https://images.pexels.com/photos/8566427/pexels-photo-8566427.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Corporate Summit', image: 'https://images.pexels.com/photos/1181395/pexels-photo-1181395.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Gala Dinner', image: 'https://images.pexels.com/photos/2265876/pexels-photo-2265876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Product Launch', image: 'https://images.pexels.com/photos/14297491/pexels-photo-14297491.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Conference', image: 'https://images.pexels.com/photos/1181396/pexels-photo-1181396.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Awards Ceremony', image: 'https://images.pexels.com/photos/13354563/pexels-photo-13354563.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Brand Activation', image: 'https://images.pexels.com/photos/1157557/pexels-photo-1157557.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Corporate Summit', image: 'https://images.pexels.com/photos/3184325/pexels-photo-3184325.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
 ];
 
 const eventElementsOptions = [

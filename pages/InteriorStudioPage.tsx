@@ -61,12 +61,12 @@ const initialFormData: FormData = {
 };
 
 const styles = [
-    { name: 'Modern Luxury', image: 'https://images.pexels.com/photos/6284223/pexels-photo-6284223.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Minimalist Zen', image: 'https://images.pexels.com/photos/2082087/pexels-photo-2082087.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Contemporary Arabic', image: 'https://images.pexels.com/photos/8134937/pexels-photo-8134937.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Scandinavian Comfort', image: 'https://images.pexels.com/photos/4144422/pexels-photo-4144422.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Industrial Loft', image: 'https://images.pexels.com/photos/1643384/pexels-photo-1643384.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Biophilic & Natural', image: 'https://images.pexels.com/photos/2251247/pexels-photo-2251247.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Modern Luxury', image: 'https://images.pexels.com/photos/271816/pexels-photo-271816.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Minimalist Zen', image: 'https://images.pexels.com/photos/2128043/pexels-photo-2128043.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Contemporary Arabic', image: 'https://images.pexels.com/photos/8089255/pexels-photo-8089255.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Scandinavian Comfort', image: 'https://images.pexels.com/photos/4203100/pexels-photo-4203100.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Industrial Loft', image: 'https://images.pexels.com/photos/3753644/pexels-photo-3753644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Biophilic & Natural', image: 'https://images.pexels.com/photos/2280927/pexels-photo-2280927.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
 ];
 
 const residentialZones = ['Living Area', 'Dining Area', 'Kitchen', 'Master Bedroom', 'Guest Bedroom', 'Home Office', 'Master Bathroom', 'Walk-in Closet', 'Prayer Room', 'Kids\' Play Area', 'Home Cinema', 'Private Gym', 'Majlis'];

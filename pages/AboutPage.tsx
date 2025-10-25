@@ -11,7 +11,7 @@ const AboutPage: React.FC = () => {
             Founded on the principles of innovation and excellence, FANN is Dubai's leading force in creating spaces and events that tell a story. Our team of international experts brings global standards to local execution.
           </p>
            <div className="mt-12">
-            <img src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="FANN Team in a modern design office" className="rounded-lg shadow-xl" />
+            <img src="https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="FANN Team in a modern design office" className="rounded-lg shadow-xl" />
           </div>
         </div>
       </div>
