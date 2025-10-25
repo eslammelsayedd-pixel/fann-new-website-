@@ -1,50 +1,69 @@
 import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { siteMetadata } from '../seo-metadata';
 
-interface SEOProps {
-  title: string;
-  description: string;
-  schema?: object; // Add schema prop
-  children?: React.ReactNode;
+// Define a type for our metadata structure
+interface PageMetadata {
+  seoTitle: string;
+  metaDescription: string;
+  jsonLdSchema: string;
 }
 
-const SEO: React.FC<SEOProps> = ({ title, description, schema, children }) => {
+const SEO: React.FC = () => {
+  const location = useLocation();
+  const path = location.pathname;
+
+  // Type assertion for the imported metadata
+  const metadataMap: Record<string, PageMetadata> = siteMetadata;
+
+  // Find metadata for the current path, provide fallbacks
+  const metadata = metadataMap[path] || {
+    seoTitle: 'Exhibition, Events & Interior Design',
+    metaDescription: 'FANN is a premier exhibition, events, and interior design company in Dubai, transforming visions into unforgettable experiences.',
+    jsonLdSchema: '{}',
+  };
+
   useEffect(() => {
-    const fullTitle = `${title} | FANN`;
+    const fullTitle = `${metadata.seoTitle} | FANN`;
     if (document.title !== fullTitle) {
       document.title = fullTitle;
     }
     
-    let metaDescription = document.querySelector('meta[name="description"]');
-    if (!metaDescription) {
-      metaDescription = document.createElement('meta');
-      metaDescription.setAttribute('name', 'description');
-      document.head.appendChild(metaDescription);
+    let metaDescriptionTag = document.querySelector('meta[name="description"]');
+    if (!metaDescriptionTag) {
+      metaDescriptionTag = document.createElement('meta');
+      metaDescriptionTag.setAttribute('name', 'description');
+      document.head.appendChild(metaDescriptionTag);
     }
-    metaDescription.setAttribute('content', description);
+    metaDescriptionTag.setAttribute('content', metadata.metaDescription);
 
-    // Handle Schema Markup
     const scriptId = 'json-ld-schema';
-    // FIX: Add type assertion to ensure TypeScript knows this is an HTMLScriptElement.
     let scriptTag = document.getElementById(scriptId) as HTMLScriptElement | null;
     
-    if (schema) {
-      if (!scriptTag) {
-        scriptTag = document.createElement('script');
-        scriptTag.id = scriptId;
-        scriptTag.type = 'application/ld+json';
-        document.head.appendChild(scriptTag);
-      }
-      scriptTag.innerHTML = JSON.stringify(schema);
-    } else if (scriptTag) {
-      // If no schema is provided on a page, remove the old one
-      scriptTag.remove();
+    try {
+        const schemaObject = JSON.parse(metadata.jsonLdSchema);
+        if (Object.keys(schemaObject).length > 0) {
+            if (!scriptTag) {
+                scriptTag = document.createElement('script');
+                scriptTag.id = scriptId;
+                scriptTag.type = 'application/ld+json';
+                document.head.appendChild(scriptTag);
+            }
+            scriptTag.innerHTML = JSON.stringify(schemaObject);
+        } else if (scriptTag) {
+            scriptTag.remove();
+        }
+    } catch (e) {
+        console.warn(`Could not parse JSON-LD schema for path: ${path}`, e);
+        if (scriptTag) {
+            scriptTag.remove();
+        }
     }
     
-  }, [title, description, schema]);
+  }, [path, metadata]);
 
-  // Children are passed through, but this component doesn't render them directly.
-  // It's used for injecting script tags into the document head.
-  return <>{children}</>; 
+  // This component only manages the document head, so it renders nothing.
+  return null;
 };
 
 export default SEO;

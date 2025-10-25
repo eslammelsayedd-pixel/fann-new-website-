@@ -2,7 +2,6 @@ import React from 'react';
 import { motion, Variants } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedPage from '../components/AnimatedPage';
-import SEO from '../components/SEO';
 import { Layers, Calendar, PenTool, CheckCircle, ArrowRight } from 'lucide-react';
 
 interface ServiceSectionProps {
@@ -70,39 +69,6 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, descriptio
 const ServicesPage: React.FC = () => {
   return (
     <AnimatedPage>
-      <SEO
-          title="Expert Services for Exhibitions, Events & Interiors"
-          description="Explore FANN's core capabilities: award-winning exhibition stand design and build, flawless corporate event management, and bespoke commercial and residential interior design."
-      >
-          <script type="application/ld+json">
-              {JSON.stringify([
-                  {
-                      "@context": "https://schema.org",
-                      "@type": "Service",
-                      "serviceType": "Exhibition Stand Design & Build",
-                      "provider": { "@type": "Organization", "name": "FANN" },
-                      "areaServed": "Dubai, UAE",
-                      "description": "Turnkey solutions for creating powerful brand experiences at major venues like the Dubai World Trade Centre and ADNEC, from 3D concept to final handover."
-                  },
-                  {
-                      "@context": "https://schema.org",
-                      "@type": "Service",
-                      "serviceType": "Corporate Event Management",
-                      "provider": { "@type": "Organization", "name": "FANN" },
-                      "areaServed": "Dubai, UAE",
-                      "description": "Meticulous planning and creative production for high-profile product launches, elegant gala dinners, and global summits."
-                  },
-                  {
-                      "@context": "https://schema.org",
-                      "@type": "Service",
-                      "serviceType": "Commercial & Residential Interiors",
-                      "provider": { "@type": "Organization", "name": "FANN" },
-                      "areaServed": "Dubai, UAE",
-                      "description": "Designing inspiring and functional commercial environments and luxurious residential properties with a blend of timeless aesthetics and modern innovation."
-                  }
-              ])}
-          </script>
-      </SEO>
       <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
           <h1 className="text-5xl md:text-6xl font-serif font-bold text-fann-gold mb-4">Our Core Capabilities</h1>

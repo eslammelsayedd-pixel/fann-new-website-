@@ -8,6 +8,9 @@
     },
     "api/generate-insights.ts": {
       "maxDuration": 60
+    },
+    "api/generate-site-seo.ts": {
+      "maxDuration": 120
     }
   },
   "rewrites": [
