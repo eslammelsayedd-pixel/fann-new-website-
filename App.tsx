@@ -15,7 +15,6 @@ import EventsCalendarPage from './pages/EventsCalendarPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import InsightsPage from './pages/InsightsPage';
-import SEOStudioPage from './pages/SEOStudioPage'; // Import the new SEO Studio Page
 import { ApiKeyProvider } from './context/ApiKeyProvider';
 
 const App: React.FC = () => {
@@ -33,7 +32,6 @@ const App: React.FC = () => {
                         <Route path="/fann-studio/exhibition" element={<ExhibitionStudioPage />} />
                         <Route path="/fann-studio/event" element={<EventStudioPage />} />
                         <Route path="/fann-studio/interior" element={<InteriorStudioPage />} />
-                        <Route path="/fann-studio/seo-agent" element={<SEOStudioPage />} /> {/* Add new SEO Agent route */}
                         <Route path="/events-calendar" element={<EventsCalendarPage />} />
                         <Route path="/about" element={<AboutPage />} />
                         <Route path="/contact" element={<ContactPage />} />

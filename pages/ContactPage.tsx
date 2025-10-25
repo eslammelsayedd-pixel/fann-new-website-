@@ -1,5 +1,6 @@
 import React from 'react';
 import AnimatedPage from '../components/AnimatedPage';
+import SEO from '../components/SEO';
 import { Mail, Phone, MapPin } from 'lucide-react';
 
 const WhatsAppIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -12,6 +13,55 @@ const WhatsAppIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
 const ContactPage: React.FC = () => {
   return (
     <AnimatedPage>
+      <SEO
+        title="Contact FANN | Get a Quote for Your Project"
+        description="Reach out to FANN's team of design experts in Dubai. Contact us for a complimentary consultation on your next exhibition, event, or interior design project."
+      >
+        <script type="application/ld+json">
+            {JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "LocalBusiness",
+                "name": "FANN",
+                "image": "https://fann.ae/favicon.svg",
+                "@id": "https://fann.ae/",
+                "url": "https://fann.ae/contact",
+                "telephone": "+971505667502",
+                "email": "sales@fann.ae",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "Office 508, Dusseldorf Business Point, Al Barsha 1",
+                    "addressLocality": "Dubai",
+                    "addressCountry": "AE"
+                },
+                 "department": [
+                    {
+                        "@type": "ContactPoint",
+                        "contactType": "Warehouse",
+                        "areaServed": "AE",
+                        "address": {
+                            "@type": "PostalAddress",
+                            "streetAddress": "WH10-Umm Dera",
+                            "addressLocality": "Umm Al Quwain",
+                            "addressCountry": "AE"
+                        }
+                    }
+                ],
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Sunday"
+                    ],
+                    "opens": "09:00",
+                    "closes": "18:00"
+                }
+            })}
+        </script>
+      </SEO>
       <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">

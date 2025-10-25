@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, BookOpen, BrainCircuit, Building2, Globe, Lightbulb, Loader2, Rocket, ServerCrash, Sparkles, Store, TrendingUp } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
+import SEO from '../components/SEO';
 import { useApiKey } from '../context/ApiKeyProvider';
 
 interface InsightTopic {
@@ -221,6 +222,10 @@ const InsightsPage: React.FC = () => {
 
     return (
         <AnimatedPage>
+            <SEO
+                title="Intelligence Hub | Industry Trends & Analysis"
+                description="Access expert-driven analysis from the FANN Intelligence Hub. Stay ahead with the latest trends in exhibition design, event technology, and commercial interiors in the GCC."
+            />
             <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                    {selectedTopic ? renderArticle() : renderTopicSelection()}

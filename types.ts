@@ -1,10 +1,12 @@
+// FIX: Import React to ensure this file is treated as a module. This is crucial for
+// declaration merging to work correctly and augment the global JSX namespace
+// instead of overwriting it.
 import React from 'react';
 
-// This `declare global` block augments the existing global `JSX` namespace.
-// By defining `IntrinsicElements` as an `interface`, it merges with the
-// original definitions from `@types/react`, adding support for `<model-viewer>`
-// while preserving all standard HTML and SVG element types. This is now the
-// single source of truth for this augmentation.
+// FIX: Correctly augment the global JSX.IntrinsicElements interface to add support for the
+// 'model-viewer' custom element. Using an interface declaration merges with the existing
+// definitions from @types/react, preserving all standard HTML and SVG element types and
+// resolving the widespread "Property 'div' does not exist" errors.
 declare global {
     namespace JSX {
         interface IntrinsicElements {
