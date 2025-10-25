@@ -144,6 +144,9 @@ const InteriorStudioPage: React.FC = () => {
     const [localError, setLocalError] = useState<string | null>(null);
     const error = apiKeyError || localError;
 
+    // FIX: Moved moodboardRef to the top level of the component to avoid violating Rules of Hooks.
+    const moodboardRef = useRef<HTMLInputElement>(null);
+
     useEffect(() => {
         setSearchParams({ step: currentStep.toString() });
     }, [currentStep, setSearchParams]);
@@ -372,7 +375,6 @@ const InteriorStudioPage: React.FC = () => {
                     </div>
                 </>;
             case 1: // Style
-                const moodboardRef = useRef<HTMLInputElement>(null);
                 return <>
                     <h2 className="text-2xl font-serif text-white mb-6">Step 2: Describe Your Style</h2>
                     <div>
