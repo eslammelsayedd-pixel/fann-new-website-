@@ -1,12 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, Sparkles, Upload, ArrowLeft, Home, Palette, ListChecks, CheckCircle, AlertCircle, FileText } from 'lucide-react';
+import { Loader2, Sparkles, Upload, ArrowLeft, Home, Palette, ListChecks, User, CheckCircle, AlertCircle, MapPin, Square, PenLine, FileImage, FileText, Wallet, CalendarDays } from 'lucide-react';
 import { useApiKey } from '../context/ApiKeyProvider';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import AnimatedPage from '../components/AnimatedPage';
-import { useUser, UserDetails } from '../context/UserProvider';
-import UserDetailsModal from '../components/modals/UserDetailsModal';
-import WatermarkWrapper from '../components/WatermarkWrapper';
 
 // --- Helper Functions & Types ---
 interface MoodboardFile {
@@ -28,6 +25,10 @@ interface FormData {
     functionalZones: string[];
     customFeatures: string;
     floorPlan: File | null;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
 }
 
 type Angle = 'perspective' | 'topDown' | 'detail';
@@ -53,6 +54,10 @@ const initialFormData: FormData = {
     functionalZones: [],
     customFeatures: '',
     floorPlan: null,
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
 };
 
 const styles = [
@@ -75,7 +80,7 @@ const steps = [
     { name: 'Style', icon: Palette },
     { name: 'Function', icon: ListChecks },
     { name: 'Details', icon: FileText },
-    { name: 'Generate', icon: Sparkles },
+    { name: 'Generate', icon: User },
 ];
 
 const blobToBase64 = (blob: Blob): Promise<{base64: string, mimeType: string}> => {
@@ -113,10 +118,6 @@ const CustomFileInput: React.FC<{label: string; onFileSelect: (file: File | null
 
 const InteriorStudioPage: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const navigate = useNavigate();
-    const { currentUser, login, incrementGenerations, getGenerationsRemaining } = useUser();
-    const [showUserDetailsModal, setShowUserDetailsModal] = useState(false);
-
     const [currentStep, setCurrentStep] = useState(() => parseInt(searchParams.get('step') || '0', 10));
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const [isLoading, setIsLoading] = useState(false);
@@ -144,7 +145,7 @@ const InteriorStudioPage: React.FC = () => {
         setFormData(p => ({ ...p, [name]: value }));
     };
 
-    const handleFileChange = (name: 'floorPlan', file: File | null) => {
+    const handleFileChange = (name: keyof FormData, file: File | null) => {
         setFormData(p => ({...p, [name]: file}));
     };
     
@@ -183,14 +184,21 @@ const InteriorStudioPage: React.FC = () => {
                 if (!formData.timeline) { setError("Please select a desired completion date."); return false; }
                 if (!formData.floorPlan) { setError("A floor plan is required to generate accurate concepts."); return false; }
                 break;
+            case 4:
+                if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone) { setError("Please fill in all contact details."); return false; }
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) { setError("Please enter a valid email address."); return false; }
+                break;
         }
         return true;
     };
     
     const nextStep = () => validateStep(currentStep) && setCurrentStep(p => p + 1);
     const prevStep = () => setCurrentStep(p => p - 1);
-    
-    const handleActualGeneration = async () => {
+
+    const generateConcepts = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!validateStep(currentStep)) return;
+        
         clearError();
         if (!await ensureApiKey()) return;
 
@@ -224,7 +232,6 @@ const InteriorStudioPage: React.FC = () => {
             const data = await response.json();
             if (!data.concepts || data.concepts.length === 0) throw new Error("The model failed to generate any concepts.");
             
-            incrementGenerations();
             setGeneratedConcepts(data.concepts);
             setIsFinished(true);
 
@@ -234,39 +241,6 @@ const InteriorStudioPage: React.FC = () => {
             setIsLoading(false);
         }
     };
-
-    const generateConcepts = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!validateStep(currentStep)) return;
-
-        if (!currentUser) {
-            setShowUserDetailsModal(true);
-            return;
-        }
-        
-        const generationsUsed = currentUser.generationsUsed;
-
-        if (generationsUsed >= 2) {
-            navigate('/pricing');
-            return;
-        }
-
-        if (generationsUsed === 1) {
-             if (window.confirm("This is your last free generation. Are you sure you want to proceed?")) {
-                handleActualGeneration();
-            }
-            return;
-        }
-        
-        handleActualGeneration();
-    };
-
-     const handleUserDetailsSuccess = (details: UserDetails) => {
-        login(details);
-        setShowUserDetailsModal(false);
-        handleActualGeneration();
-    };
-
     
     const handleSendProposal = () => setIsProposalSent(true);
 
@@ -352,7 +326,7 @@ const InteriorStudioPage: React.FC = () => {
                         </div>
                          <div>
                              <label className="block text-sm font-medium text-fann-light-gray mb-2">Upload inspiration images (moodboard)</label>
-                            <div onClick={() => moodboardRef.current?.click()} className="p-4 bg-fann-charcoal border-2 border-dashed border-fann-border rounded-lg flex items-center justify-center cursor-pointer hover:border-fann-gold transition-colors"><Upload className="mr-2" size={16}/> Click to upload up to 5 images</div>
+                            <div onClick={() => moodboardRef.current?.click()} className="p-4 bg-fann-charcoal border-2 border-dashed border-fann-border rounded-lg flex items-center justify-center cursor-pointer hover:border-fann-gold transition-colors"><FileImage className="mr-2" size={16}/> Click to upload up to 5 images</div>
                             <input type="file" ref={moodboardRef} onChange={(e) => handleMoodboardChange(e.target.files)} multiple className="hidden" accept="image/*"/>
                             {formData.moodboards.length > 0 && <div className="flex flex-wrap gap-2 mt-3">{formData.moodboards.map((mb, i) => <img key={i} src={mb.preview} className="w-20 h-20 object-cover rounded-md"/>)}</div>}
                         </div>
@@ -385,14 +359,17 @@ const InteriorStudioPage: React.FC = () => {
                     </div>
                 </>;
             case 4: // Generate
-                 return (
-                    <div className="text-center min-h-[400px] flex flex-col items-center justify-center">
-                        <h2 className="text-3xl font-serif text-white mb-4">Your Brief is Complete!</h2>
-                        <p className="text-fann-light-gray max-w-md mx-auto mb-8">
-                            Ready to see your vision come to life? Click below to generate your bespoke 3D concepts.
-                        </p>
-                    </div>
-                );
+                return <>
+                     <h2 className="text-3xl font-serif text-white mb-6 text-center">Final Step: Your Details</h2>
+                     <div className="max-w-md mx-auto space-y-4">
+                         <div className="grid grid-cols-2 gap-4">
+                             <input type="text" name="firstName" placeholder="First Name" value={formData.firstName} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" />
+                             <input type="text" name="lastName" placeholder="Last Name" value={formData.lastName} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" />
+                         </div>
+                        <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" />
+                        <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" />
+                     </div>
+                </>
         }
         return null;
     }
@@ -400,26 +377,20 @@ const InteriorStudioPage: React.FC = () => {
     // --- Main Render Logic ---
     if (isLoading) return <div className="min-h-screen flex flex-col justify-center items-center text-center p-4"><Loader2 className="w-16 h-16 text-fann-gold animate-spin" /><h2 className="text-3xl font-serif text-white mt-6">Crafting Your Designs...</h2><p className="text-fann-light-gray mt-2 max-w-sm">Our AI is interpreting your brief and generating bespoke concepts. This may take up to a minute.</p></div>;
     
-    if (isFinished) return <AnimatedPage><div className="min-h-screen pt-32 pb-20 text-white"><div className="container mx-auto px-4 sm:px-6 lg:px-8">{isProposalSent ? <div className="min-h-[70vh] flex flex-col justify-center items-center text-center p-4"><CheckCircle className="w-20 h-20 text-fann-teal mb-6" /><h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Thank You, {currentUser?.firstName}!</h1><p className="text-xl text-fann-cream max-w-2xl mx-auto">Your request has been received. Our design team will contact you at <strong>{currentUser?.email}</strong> shortly.</p></div> : <> <div className="text-center mb-12"><Sparkles className="mx-auto h-16 w-16 text-fann-gold" /><h1 className="text-4xl font-serif font-bold text-fann-gold mt-4 mb-4">Your Bespoke Concepts</h1><p className="text-lg text-fann-cream max-w-3xl mx-auto">We've prepared these concepts based on your brief. Select your preferred direction to proceed.</p></div><div className="grid grid-cols-1 lg:grid-cols-3 gap-8">{generatedConcepts.map((concept, index) => (<motion.div key={index} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.15 }} onClick={() => setSelectedConcept(index)} className={`p-4 bg-fann-charcoal-light rounded-lg cursor-pointer border-2 transition-all duration-300 hover:border-fann-gold/50 ${selectedConcept === index ? 'border-fann-gold' : 'border-fann-border'}`}><div className="relative aspect-video mb-4 rounded-md overflow-hidden bg-fann-charcoal"><AnimatePresence mode="wait"><motion.img key={`${index}-${activeAngles[index] || 'perspective'}`} src={concept.images[activeAngles[index] || 'perspective']} alt={`${concept.title} - ${activeAngles[index] || 'perspective'}`} className="absolute inset-0 w-full h-full object-cover" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} /></AnimatePresence>{currentUser?.plan === 'free' && <WatermarkWrapper />}</div><div className="flex justify-center gap-2 mb-4">{(['perspective', 'topDown', 'detail'] as Angle[]).map(angle => (<button key={angle} onClick={(e) => { e.stopPropagation(); setActiveAngles(p => ({...p, [index]: angle}))}} className={`px-3 py-1 text-xs rounded-full transition-colors ${(activeAngles[index] || 'perspective') === angle ? 'bg-fann-teal text-white' : 'bg-fann-charcoal hover:bg-white/10'}`}>{angle === 'topDown' ? 'Floor Plan' : angle.charAt(0).toUpperCase() + angle.slice(1)}</button>))}</div><h3 className="text-xl font-serif font-bold text-white">{concept.title}</h3><p className="text-sm text-fann-light-gray mt-1">{concept.description}</p></motion.div>))}</div>{selectedConcept !== null && (<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mt-12 bg-fann-charcoal-light p-8 rounded-lg sticky bottom-6 border-2 border-fann-gold shadow-2xl max-w-4xl mx-auto"><div className="flex flex-col md:flex-row items-center justify-between gap-6"><div><h3 className="text-2xl font-serif font-bold text-fann-gold">You've Selected: "{generatedConcepts[selectedConcept].title}"</h3><p className="text-fann-cream mt-1">Ready to bring this vision to life? Let's start the conversation.</p></div><motion.button onClick={handleSendProposal} className="bg-fann-teal text-white font-bold py-3 px-8 rounded-full flex-shrink-0" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>Request Consultation</motion.button></div></motion.div>)}</>}</div></div></AnimatedPage>;
+    if (isFinished) return <AnimatedPage><div className="min-h-screen pt-32 pb-20 text-white"><div className="container mx-auto px-4 sm:px-6 lg:px-8">{isProposalSent ? <div className="min-h-[70vh] flex flex-col justify-center items-center text-center p-4"><CheckCircle className="w-20 h-20 text-fann-teal mb-6" /><h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Thank You, {formData.firstName}!</h1><p className="text-xl text-fann-cream max-w-2xl mx-auto">Your request has been received. Our design team will contact you at <strong>{formData.email}</strong> shortly.</p></div> : <> <div className="text-center mb-12"><Sparkles className="mx-auto h-16 w-16 text-fann-gold" /><h1 className="text-4xl font-serif font-bold text-fann-gold mt-4 mb-4">Your Bespoke Concepts</h1><p className="text-lg text-fann-cream max-w-3xl mx-auto">We've prepared these concepts based on your brief. Select your preferred direction to proceed.</p></div><div className="grid grid-cols-1 lg:grid-cols-3 gap-8">{generatedConcepts.map((concept, index) => (<motion.div key={index} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.15 }} onClick={() => setSelectedConcept(index)} className={`p-4 bg-fann-charcoal-light rounded-lg cursor-pointer border-2 transition-all duration-300 hover:border-fann-gold/50 ${selectedConcept === index ? 'border-fann-gold' : 'border-fann-border'}`}><div className="relative aspect-video mb-4 rounded-md overflow-hidden bg-fann-charcoal"><AnimatePresence mode="wait"><motion.img key={`${index}-${activeAngles[index] || 'perspective'}`} src={concept.images[activeAngles[index] || 'perspective']} alt={`${concept.title} - ${activeAngles[index] || 'perspective'}`} className="absolute inset-0 w-full h-full object-cover" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} /></AnimatePresence></div><div className="flex justify-center gap-2 mb-4">{(['perspective', 'topDown', 'detail'] as Angle[]).map(angle => (<button key={angle} onClick={(e) => { e.stopPropagation(); setActiveAngles(p => ({...p, [index]: angle}))}} className={`px-3 py-1 text-xs rounded-full transition-colors ${(activeAngles[index] || 'perspective') === angle ? 'bg-fann-teal text-white' : 'bg-fann-charcoal hover:bg-white/10'}`}>{angle === 'topDown' ? 'Floor Plan' : angle.charAt(0).toUpperCase() + angle.slice(1)}</button>))}</div><h3 className="text-xl font-serif font-bold text-white">{concept.title}</h3><p className="text-sm text-fann-light-gray mt-1">{concept.description}</p></motion.div>))}</div>{selectedConcept !== null && (<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mt-12 bg-fann-charcoal-light p-8 rounded-lg sticky bottom-6 border-2 border-fann-gold shadow-2xl max-w-4xl mx-auto"><div className="flex flex-col md:flex-row items-center justify-between gap-6"><div><h3 className="text-2xl font-serif font-bold text-fann-gold">You've Selected: "{generatedConcepts[selectedConcept].title}"</h3><p className="text-fann-cream mt-1">Ready to bring this vision to life? Let's start the conversation.</p></div><motion.button onClick={handleSendProposal} className="bg-fann-teal text-white font-bold py-3 px-8 rounded-full flex-shrink-0" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>Request Consultation</motion.button></div></motion.div>)}</>}</div></div></AnimatedPage>;
     
     return (
         <AnimatedPage>
-             {showUserDetailsModal && <UserDetailsModal designType="Interior" onSuccess={handleUserDetailsSuccess} />}
             <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
                  <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                     <div className="text-center mb-12 mt-4">
+                     <div className="text-center mb-12">
                         <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">Interior Design Studio</h1>
                         <p className="text-xl text-fann-cream max-w-3xl mx-auto">
                            As your Dubai-based design partner, we'll guide you through a detailed brief to capture your vision perfectly.
                         </p>
                     </div>
-                     {currentUser && currentUser.plan === 'free' && (
-                         <div className="bg-fann-gold/10 border border-fann-gold text-fann-gold p-3 rounded-lg text-center text-sm mb-6 max-w-5xl mx-auto">
-                             You have <span className="font-bold">{getGenerationsRemaining()} of 2</span> free generations remaining. <a href="/pricing" className="font-bold underline">Upgrade</a> to get more and remove watermarks.
-                        </div>
-                     )}
 
-                    <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto">
+                    <div className="flex flex-col lg:flex-row gap-8">
                         <div className="w-full lg:w-3/5">
                             <div className="mb-8">
                                 <div className="flex justify-between mb-2">{steps.map((step, index) => <div key={step.name} className="flex flex-col items-center" style={{ width: `${100 / steps.length}%` }}><div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors border-2 ${currentStep >= index ? 'bg-fann-gold border-fann-gold text-fann-charcoal' : 'bg-fann-charcoal-light border-fann-border text-fann-light-gray'}`}><step.icon size={20} /></div><span className={`text-xs mt-2 text-center font-semibold ${currentStep >= index ? 'text-white' : 'text-fann-light-gray'}`}>{step.name}</span></div>)}</div>

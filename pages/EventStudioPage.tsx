@@ -1,12 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Loader2, Sparkles, Upload, ArrowLeft, Users, Palette, ListChecks, Crown, CheckCircle, AlertCircle } from 'lucide-react';
+import { Loader2, Sparkles, Upload, ArrowLeft, Users, Palette, ListChecks, Crown, User, CheckCircle, AlertCircle } from 'lucide-react';
 import { useApiKey } from '../context/ApiKeyProvider';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import AnimatedPage from '../components/AnimatedPage';
-import { useUser, UserDetails } from '../context/UserProvider';
-import UserDetailsModal from '../components/modals/UserDetailsModal';
-import WatermarkWrapper from '../components/WatermarkWrapper';
 
 // --- Helper Functions & Types ---
 interface FormData {
@@ -18,6 +15,9 @@ interface FormData {
     logo: File | null;
     logoPreview: string;
     brandColors: string[];
+    userName: string;
+    userEmail: string;
+    userMobile: string;
 }
 
 const initialFormData: FormData = {
@@ -29,6 +29,9 @@ const initialFormData: FormData = {
     logo: null,
     logoPreview: '',
     brandColors: [],
+    userName: '',
+    userEmail: '',
+    userMobile: '',
 };
 
 const eventTypes = [
@@ -49,7 +52,7 @@ const steps = [
     { name: 'Scale', icon: Users },
     { name: 'Elements', icon: ListChecks },
     { name: 'Branding', icon: Palette },
-    { name: 'Generate', icon: Sparkles },
+    { name: 'Your Details', icon: User },
 ];
 
 const blobToBase64 = (blob: Blob): Promise<string> => {
@@ -70,9 +73,6 @@ const blobToBase64 = (blob: Blob): Promise<string> => {
 
 const EventStudioPage: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const navigate = useNavigate();
-    const { currentUser, login, incrementGenerations, getGenerationsRemaining } = useUser();
-    const [showUserDetailsModal, setShowUserDetailsModal] = useState(false);
     
     const [currentStep, setCurrentStep] = useState(() => {
         const stepParam = searchParams.get('step');
@@ -191,7 +191,8 @@ const EventStudioPage: React.FC = () => {
                 else if (formData.brandColors.length === 0) errorMessage = "Please provide your brand colors.";
                 break;
             case 4:
-                // Generate step, no validation here
+                if (!formData.userName.trim() || !formData.userEmail.trim() || !formData.userMobile.trim()) errorMessage = "Please fill in all your contact details.";
+                else if (!/\S+@\S+\.\S+/.test(formData.userEmail)) errorMessage = "Please enter a valid email address.";
                 break;
         }
 
@@ -205,7 +206,7 @@ const EventStudioPage: React.FC = () => {
     const nextStep = () => {
         clearAllErrors();
         if (validateStep(currentStep, true)) {
-            setCurrentStep(prev => Math.min(prev + 1, steps.length - 1));
+            setCurrentStep(prev => Math.min(prev + 1, steps.length));
         }
     };
 
@@ -214,7 +215,7 @@ const EventStudioPage: React.FC = () => {
         setCurrentStep(prev => Math.max(prev - 1, 0));
     };
 
-    const handleActualGeneration = async () => {
+    const generateDesign = async () => {
         clearAllErrors();
         if (!await ensureApiKey()) return;
 
@@ -260,7 +261,6 @@ const EventStudioPage: React.FC = () => {
                  throw new Error("The model failed to generate any images.");
             }
             
-            incrementGenerations();
             setGeneratedImages(data.imageUrls);
             setIsFinished(true);
             
@@ -271,35 +271,20 @@ const EventStudioPage: React.FC = () => {
         }
     };
     
-    const generateDesign = () => {
-        if (!validateStep(currentStep, true)) return;
-
-        if (!currentUser) {
-            setShowUserDetailsModal(true);
-            return;
-        }
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
         
-        const generationsUsed = currentUser.generationsUsed;
-        
-        if (generationsUsed >= 2) {
-            navigate('/pricing');
-            return;
-        }
+        if (apiKeyError) return;
+        clearAllErrors();
 
-        if (generationsUsed === 1) {
-             if (window.confirm("This is your last free generation. Are you sure you want to proceed?")) {
-                handleActualGeneration();
+        for (let i = 0; i < steps.length; i++) {
+            if (!validateStep(i, true)) {
+                setCurrentStep(i); 
+                return;
             }
-            return;
         }
         
-        handleActualGeneration();
-    };
-
-    const handleUserDetailsSuccess = (details: UserDetails) => {
-        login(details);
-        setShowUserDetailsModal(false);
-        handleActualGeneration();
+        generateDesign();
     };
 
     const sendProposalRequest = async () => {
@@ -438,13 +423,23 @@ const EventStudioPage: React.FC = () => {
                         </div>
                     </div>
                 );
-            case 4: // Generate
+            case 4: // Your Details
                  return (
-                    <div className="text-center min-h-[400px] flex flex-col items-center justify-center">
-                        <h2 className="text-3xl font-serif text-white mb-4">Your Brief is Complete!</h2>
-                        <p className="text-fann-light-gray max-w-md mx-auto mb-8">
-                            Ready to see your vision come to life? Click below to generate your bespoke concept images.
-                        </p>
+                    <div className="space-y-6 max-w-md mx-auto">
+                        <h2 className="text-2xl font-serif text-white text-center">Step 5: Your Details</h2>
+                        <p className="text-center text-fann-light-gray text-sm">We'll use this to send you the generated concepts and proposal.</p>
+                        <div>
+                            <label htmlFor="userName" className="block text-sm font-medium text-fann-light-gray mb-1">Full Name</label>
+                            <input type="text" id="userName" name="userName" value={formData.userName} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" />
+                        </div>
+                        <div>
+                            <label htmlFor="userEmail" className="block text-sm font-medium text-fann-light-gray mb-1">Email Address</label>
+                            <input type="email" id="userEmail" name="userEmail" value={formData.userEmail} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" />
+                        </div>
+                        <div>
+                            <label htmlFor="userMobile" className="block text-sm font-medium text-fann-light-gray mb-1">Mobile Number</label>
+                            <input type="tel" id="userMobile" name="userMobile" value={formData.userMobile} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" />
+                        </div>
                     </div>
                 );
             default: return null;
@@ -452,7 +447,7 @@ const EventStudioPage: React.FC = () => {
     };
     
     if (isLoading) return (
-        <div className="min-h-screen pt-32 flex flex-col justify-center items-center text-center p-4">
+        <div className="min-h-[70vh] flex flex-col justify-center items-center text-center p-4">
             <Loader2 className="w-16 h-16 text-fann-gold animate-spin" />
             <h2 className="text-3xl font-serif text-white mt-6">Imagining Your Event...</h2>
             <p className="text-fann-light-gray mt-2 max-w-sm">Our FANN technology is designing the decor, arranging the layout, and setting the mood. This may take a few moments.</p>
@@ -460,17 +455,17 @@ const EventStudioPage: React.FC = () => {
     );
     
     if (isFinished && isProposalRequested) return (
-        <div className="min-h-screen pt-32 flex flex-col justify-center items-center text-center p-4">
+        <div className="min-h-[70vh] flex flex-col justify-center items-center text-center p-4">
             <CheckCircle className="w-20 h-20 text-fann-teal mb-6" />
             <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Thank You!</h1>
-            <p className="text-xl text-fann-cream max-w-2xl mx-auto mb-8">Our team has received your concept selection and will prepare a detailed proposal, which will be sent to <strong>{currentUser?.email}</strong> shortly.</p>
+            <p className="text-xl text-fann-cream max-w-2xl mx-auto mb-8">Our team has received your concept selection and will prepare a detailed proposal, which will be sent to <strong>{formData.userEmail}</strong> shortly.</p>
             {selectedImage !== null && <img src={generatedImages[selectedImage]} alt="Selected" className="rounded-lg shadow-2xl w-full max-w-lg mt-8" />}
         </div>
     );
 
     if (isFinished) return (
         <AnimatedPage>
-            <div className="min-h-screen pt-32 pb-20 text-white">
+            <div className="pt-32 pb-20 text-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
                         <Sparkles className="mx-auto h-16 w-16 text-fann-gold" />
@@ -481,13 +476,7 @@ const EventStudioPage: React.FC = () => {
                         <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
                             {generatedImages.map((img, index) => (
                                 <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} onClick={() => setSelectedImage(index)} className={`rounded-lg overflow-hidden cursor-pointer border-4 transition-all duration-300 hover:border-fann-gold/50 ${selectedImage === index ? 'border-fann-gold' : 'border-transparent'}`}>
-                                    {currentUser?.plan === 'free' ? (
-                                        <WatermarkWrapper>
-                                            <img src={img} alt={`Concept ${index + 1}`} className="w-full h-auto object-cover" />
-                                        </WatermarkWrapper>
-                                    ) : (
-                                        <img src={img} alt={`Concept ${index + 1}`} className="w-full h-auto object-cover" />
-                                    )}
+                                    <img src={img} alt={`Concept ${index + 1}`} className="w-full h-auto object-cover" />
                                 </motion.div>
                             ))}
                         </div>
@@ -514,15 +503,9 @@ const EventStudioPage: React.FC = () => {
 
     return (
         <AnimatedPage>
-            {showUserDetailsModal && <UserDetailsModal designType="Event" onSuccess={handleUserDetailsSuccess} />}
             <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="max-w-4xl mx-auto">
-                        {currentUser && currentUser.plan === 'free' && (
-                             <div className="bg-fann-gold/10 border border-fann-gold text-fann-gold p-3 rounded-lg text-center text-sm mb-6">
-                                 You have <span className="font-bold">{getGenerationsRemaining()} of 2</span> free generations remaining. <a href="/pricing" className="font-bold underline">Upgrade</a> to get more and remove watermarks.
-                            </div>
-                         )}
                         <div className="mb-8">
                             <div className="flex justify-between mb-2">
                                 {steps.map((step, index) => (
@@ -536,34 +519,36 @@ const EventStudioPage: React.FC = () => {
                         </div>
 
                         <div className="bg-fann-charcoal-light p-8 rounded-lg">
-                            <motion.div key={currentStep} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.3 }}>
-                                {renderStepContent()}
-                            </motion.div>
-                            <div className="mt-8">
-                                {error && (
-                                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-start gap-3 mb-4">
-                                        <div className="flex-shrink-0 pt-0.5"><AlertCircle className="w-5 h-5" /></div>
-                                        <div className="flex-grow">
-                                            <span className="whitespace-pre-wrap">{error}</span>
-                                        </div>
-                                    </motion.div>
-                                )}
-                                <div className="flex justify-between items-center">
-                                    <motion.button type="button" onClick={prevStep} disabled={currentStep === 0} className="flex items-center gap-2 text-fann-gold disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: currentStep !== 0 ? 1.05 : 1}} whileTap={{scale: currentStep !== 0 ? 0.95 : 1}}>
-                                        <ArrowLeft size={16} /> Back
-                                    </motion.button>
-                                    
-                                    {currentStep < steps.length - 1 ? (
-                                        <motion.button type="button" onClick={nextStep} disabled={isNextButtonDisabled} className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full w-32 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: !isNextButtonDisabled ? 1.05 : 1}} whileTap={{scale: !isNextButtonDisabled ? 0.95 : 1}}>
-                                            {isNextButtonDisabled ? <Loader2 className="w-5 h-5 mx-auto animate-spin" /> : 'Next'}
-                                        </motion.button>
-                                    ) : (
-                                        <motion.button type="button" onClick={generateDesign} className="bg-fann-teal text-white font-bold py-2 px-6 rounded-full flex items-center gap-2" whileHover={{scale: 1.05}} whileTap={{scale: 0.95}}>
-                                            <Sparkles size={16} /> Generate My Concept
-                                        </motion.button>
+                            <form onSubmit={handleSubmit}>
+                                <motion.div key={currentStep} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.3 }}>
+                                    {renderStepContent()}
+                                </motion.div>
+                                <div className="mt-8">
+                                    {error && (
+                                        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-start gap-3 mb-4">
+                                            <div className="flex-shrink-0 pt-0.5"><AlertCircle className="w-5 h-5" /></div>
+                                            <div className="flex-grow">
+                                                <span className="whitespace-pre-wrap">{error}</span>
+                                            </div>
+                                        </motion.div>
                                     )}
+                                    <div className="flex justify-between items-center">
+                                        <motion.button type="button" onClick={prevStep} disabled={currentStep === 0} className="flex items-center gap-2 text-fann-gold disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: currentStep !== 0 ? 1.05 : 1}} whileTap={{scale: currentStep !== 0 ? 0.95 : 1}}>
+                                            <ArrowLeft size={16} /> Back
+                                        </motion.button>
+                                        
+                                        {currentStep < steps.length - 1 ? (
+                                            <motion.button type="button" onClick={nextStep} disabled={isNextButtonDisabled} className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full w-32 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: !isNextButtonDisabled ? 1.05 : 1}} whileTap={{scale: !isNextButtonDisabled ? 0.95 : 1}}>
+                                                {isNextButtonDisabled ? <Loader2 className="w-5 h-5 mx-auto animate-spin" /> : 'Next'}
+                                            </motion.button>
+                                        ) : (
+                                            <motion.button type="submit" className="bg-fann-teal text-white font-bold py-2 px-6 rounded-full flex items-center gap-2" whileHover={{scale: 1.05}} whileTap={{scale: 0.95}}>
+                                                <Sparkles size={16} /> Generate My Concept
+                                            </motion.button>
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>

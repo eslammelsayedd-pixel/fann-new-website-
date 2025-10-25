@@ -85,37 +85,6 @@
     body { 
         top: 0px !important; 
     }
-
-    /* Watermark Styles */
-    .watermark {
-        position: absolute;
-        font-family: Arial, Helvetica, sans-serif;
-        font-weight: bold;
-        color: white;
-        text-align: center;
-        pointer-events: none;
-        text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black; /* Simulates a 1px stroke */
-        white-space: nowrap;
-    }
-
-    .watermark-center {
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) rotate(-45deg);
-        font-size: 15vw; /* This will be overridden by inline style for better scaling */
-        opacity: 0.3;
-    }
-
-    .watermark-corner {
-        font-size: 10vw; /* This will be overridden by inline style for better scaling */
-        opacity: 0.15;
-        transform-origin: center;
-    }
-
-    .watermark-tl { top: 10%; left: 10%; transform: rotate(-30deg); }
-    .watermark-tr { top: 10%; right: 10%; transform: rotate(-30deg); }
-    .watermark-bl { bottom: 10%; left: 10%; transform: rotate(-30deg); }
-    .watermark-br { bottom: 10%; right: 10%; transform: rotate(-30deg); }
 </style>
 <script type="importmap">
 {

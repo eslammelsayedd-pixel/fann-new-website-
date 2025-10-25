@@ -2,7 +2,6 @@ import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import Chatbot from './Chatbot';
-import WhatsAppButton from './WhatsAppButton';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -14,7 +13,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Header />
       <main className="flex-grow">{children}</main>
       <Footer />
-      <WhatsAppButton />
       <Chatbot />
     </div>
   );

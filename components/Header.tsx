@@ -67,13 +67,13 @@ const Header: React.FC = () => {
 
                     <div className="hidden lg:flex items-center space-x-4">
                         <LanguageSwitcher />
-                        <Link to="/fann-studio">
+                        <Link to="/contact">
                           <motion.button 
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
                               className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full text-sm uppercase tracking-wider transition-transform duration-300"
                           >
-                              Start Designing
+                              Get Quote
                           </motion.button>
                         </Link>
                     </div>
@@ -143,14 +143,14 @@ const Header: React.FC = () => {
                         <div className="my-6 w-full px-8">
                             <LanguageSwitcher />
                         </div>
-                        <Link to="/fann-studio">
+                        <Link to="/contact">
                           <motion.button 
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => setIsOpen(false)}
                             className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider mt-4"
                           >
-                              Start Designing
+                              Get Quote
                           </motion.button>
                         </Link>
                     </nav>

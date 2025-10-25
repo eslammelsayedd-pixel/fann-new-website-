@@ -1,3 +1,33 @@
+// FIX: Import React to ensure this file is treated as a module. This is crucial for
+// declaration merging to work correctly and augment the global JSX namespace
+// instead of overwriting it.
+import React from 'react';
+
+// FIX: Correctly augment the global JSX.IntrinsicElements interface to add support for the
+// 'model-viewer' custom element. Using an interface declaration merges with the existing
+// definitions from @types/react, preserving all standard HTML and SVG element types and
+// resolving the widespread "Property 'div' does not exist" errors.
+//
+// This global declaration has been removed to resolve a conflict with an identical
+// declaration in 'src/types.ts'.
+/*
+declare global {
+    namespace JSX {
+        interface IntrinsicElements {
+            'model-viewer': React.ClassAttributes<HTMLElement> & React.HTMLAttributes<HTMLElement> & {
+                src?: string;
+                alt?: string;
+                'camera-controls'?: boolean;
+                'auto-rotate'?: boolean;
+                ar?: boolean;
+                'shadow-intensity'?: string;
+                exposure?: string;
+                'environment-image'?: string;
+            };
+        }
+    }
+}
+*/
 
 export interface NavLink {
   name: string;

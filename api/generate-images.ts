@@ -22,7 +22,7 @@ export default async function handler(req: any, res: any) {
     if (promptData) {
       if (!logo || !mimeType) return res.status(400).json({ error: 'Missing logo or mimeType for Exhibition' });
       
-      const baseTextGenPrompt = `Based on the following design brief for an exhibition stand, generate 4 distinct and creative concept proposals. For each proposal, provide a unique "title" and a short "description" (2-3 sentences that highlight a key feature or benefit).
+      const baseTextGenPrompt = `Based on the following design brief for an exhibition stand, generate 3 distinct and creative concept proposals. For each proposal, provide a unique "title" and a short "description" (2-3 sentences that highlight a key feature or benefit).
 **Design Brief:**
 - **Event:** ${promptData.event}
 - **Industry:** ${promptData.industry}
@@ -62,7 +62,7 @@ Return your response as a single, valid JSON array. Do not include any text or m
 
       let jsonText = textResponse.text.trim();
       const textData = JSON.parse(jsonText);
-      if (!Array.isArray(textData) || textData.length < 4) {
+      if (!Array.isArray(textData) || textData.length < 3) {
           throw new Error("The model failed to generate enough titles and descriptions.");
       }
 
