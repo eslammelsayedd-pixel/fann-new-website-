@@ -1,3 +1,10 @@
+// FIX: By importing 'react', we ensure that React's global JSX type definitions are
+// loaded before this file's augmentation of `JSX.IntrinsicElements`. This prevents
+// this file's declarations from overwriting React's default HTML element types,
+// resolving errors like "Property 'div' does not exist on type 'JSX.IntrinsicElements'"
+// throughout the application.
+import 'react';
+
 // The `declare global` block allows augmenting global types from within a module.
 // By redeclaring the `JSX.IntrinsicElements` interface, we can add custom elements
 // like `<model-viewer>` to TypeScript's known JSX elements. This is called

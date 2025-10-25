@@ -1,6 +1,6 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, Sparkles, Upload, ArrowLeft, Building, Scaling, ListChecks, User, CheckCircle, AlertCircle, Palette, View, FileText, Mail, Phone } from 'lucide-react';
+import { Loader2, Sparkles, Upload, ArrowLeft, Building, Scaling, ListChecks, User, CheckCircle, AlertCircle, Palette, View, FileText, Mail, Phone, Camera } from 'lucide-react';
 import { useApiKey } from '../context/ApiKeyProvider';
 // To resolve errors related to the custom `<model-viewer>` element, its type definition must be loaded.
 // The global JSX augmentations are defined in `../types.ts`, and importing it here makes them available to this file.
@@ -40,11 +40,14 @@ interface FormData {
     userMobileNumber: string;
 }
 
+type Angle = 'front' | 'top' | 'interior';
+
 interface GeneratedConcept {
-    imageUrl: string;
     title: string;
     description: string;
+    images: Record<Angle, string>;
 }
+
 
 const initialFormData: FormData = {
     standWidth: 10,
@@ -155,6 +158,8 @@ const ExhibitionStudioPage: React.FC = () => {
     const [isAnalyzingIndustry, setIsAnalyzingIndustry] = useState(false);
     const [isModelViewerOpen, setIsModelViewerOpen] = useState(false);
     const [formErrors, setFormErrors] = useState<Partial<Record<keyof FormData, string>>>({});
+    const [activeAngles, setActiveAngles] = useState<Record<number, Angle>>({});
+
 
     const { ensureApiKey, handleApiError, error: apiKeyError, clearError: clearApiKeyError } = useApiKey();
     const [localError, setLocalError] = useState<string | null>(null);
@@ -802,7 +807,7 @@ const ExhibitionStudioPage: React.FC = () => {
             <CheckCircle className="w-20 h-20 text-fann-teal mb-6" />
             <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Thank You!</h1>
             <p className="text-xl text-fann-cream max-w-2xl mx-auto mb-8">Our team has received your concept selection and will prepare a detailed proposal, which will be sent to <strong>{formData.userEmail}</strong> shortly.</p>
-            {selectedConcept !== null && <img src={generatedConcepts[selectedConcept].imageUrl} alt="Selected" className="rounded-lg shadow-2xl w-full max-w-lg mt-8" />}
+            {selectedConcept !== null && <img src={generatedConcepts[selectedConcept].images.front} alt="Selected" className="rounded-lg shadow-2xl w-full max-w-lg mt-8" />}
         </div>
     );
 
@@ -830,21 +835,59 @@ const ExhibitionStudioPage: React.FC = () => {
                 <div className="text-center mb-12">
                     <Sparkles className="mx-auto h-16 w-16 text-fann-gold" />
                     <h1 className="text-4xl font-serif font-bold text-fann-gold mt-4 mb-4">Your AI-Generated Concepts</h1>
-                    <p className="text-lg text-fann-cream max-w-3xl mx-auto">Click your preferred design. Our team will then prepare a detailed proposal and quotation for you.</p>
+                    <p className="text-lg text-fann-cream max-w-3xl mx-auto">Select your preferred design. Our team will then prepare a detailed proposal and quotation for you.</p>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {generatedConcepts.map((concept, index) => (
-                        <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.15 }} onClick={() => setSelectedConcept(index)} className={`rounded-lg overflow-hidden cursor-pointer border-4 bg-fann-charcoal-light transition-all duration-300 ${selectedConcept === index ? 'border-fann-gold' : 'border-transparent hover:border-fann-gold/50'}`}>
-                            <img src={concept.imageUrl} alt={concept.title} className="w-full h-auto object-cover aspect-video" />
-                            <div className="p-6">
-                                <h3 className="text-2xl font-serif font-bold text-fann-gold">{concept.title}</h3>
-                                <p className="text-fann-cream mt-2 text-sm">{concept.description}</p>
-                                <button onClick={(e) => { e.stopPropagation(); setIsModelViewerOpen(true); }} className="mt-4 text-sm font-semibold text-fann-teal flex items-center gap-2 hover:underline">
-                                    <View size={16} /> View in 3D
-                                </button>
-                            </div>
-                        </motion.div>
-                    ))}
+                    {generatedConcepts.map((concept, index) => {
+                        const currentAngle = activeAngles[index] || 'front';
+                        const imageUrl = concept.images[currentAngle];
+                        const angles: Angle[] = ['front', 'top', 'interior'];
+
+                        return (
+                            <motion.div 
+                                key={index} 
+                                initial={{ opacity: 0, y: 20 }} 
+                                animate={{ opacity: 1, y: 0 }} 
+                                transition={{ delay: index * 0.15 }} 
+                                onClick={() => setSelectedConcept(index)} 
+                                className={`rounded-lg overflow-hidden cursor-pointer border-4 bg-fann-charcoal-light transition-all duration-300 ${selectedConcept === index ? 'border-fann-gold' : 'border-transparent hover:border-fann-gold/50'}`}
+                            >
+                                <div className="relative aspect-video bg-fann-charcoal">
+                                    <AnimatePresence>
+                                        <motion.img 
+                                            key={imageUrl}
+                                            src={imageUrl} 
+                                            alt={`${concept.title} - ${currentAngle} view`} 
+                                            className="w-full h-full object-cover" 
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                        />
+                                    </AnimatePresence>
+                                </div>
+                                <div className="p-6">
+                                    <h3 className="text-2xl font-serif font-bold text-fann-gold">{concept.title}</h3>
+                                    <p className="text-fann-cream mt-2 text-sm">{concept.description}</p>
+                                    <div className="mt-4 flex items-center justify-between">
+                                        <div className="flex items-center gap-1 p-1 bg-fann-charcoal rounded-full border border-fann-border">
+                                            {(['front', 'top', 'interior'] as Angle[]).map(angle => (
+                                                <button 
+                                                    key={angle}
+                                                    onClick={(e) => { e.stopPropagation(); setActiveAngles(p => ({ ...p, [index]: angle })); }}
+                                                    className={`px-3 py-1 text-xs font-semibold rounded-full transition-colors ${currentAngle === angle ? 'bg-fann-gold text-fann-charcoal' : 'text-fann-light-gray hover:bg-white/10'}`}
+                                                >
+                                                    {angle.charAt(0).toUpperCase() + angle.slice(1)}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <button onClick={(e) => { e.stopPropagation(); setIsModelViewerOpen(true); }} className="text-sm font-semibold text-fann-teal flex items-center gap-2 hover:underline">
+                                            <View size={16} /> View in 3D
+                                        </button>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        );
+                    })}
                 </div>
                     <div className="text-center mt-12">
                     <motion.button onClick={sendProposalRequest} disabled={selectedConcept === null || isSending} className="bg-fann-teal text-white font-bold py-4 px-10 rounded-full text-lg uppercase tracking-wider flex items-center justify-center gap-2 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{ scale: selectedConcept !== null && !isSending ? 1.05 : 1 }} whileTap={{ scale: selectedConcept !== null && !isSending ? 0.95 : 1 }}>
