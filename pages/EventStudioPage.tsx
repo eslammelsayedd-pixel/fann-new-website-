@@ -290,10 +290,35 @@ const EventStudioPage: React.FC = () => {
     const sendProposalRequest = async () => {
         if (selectedImage === null) return;
         setIsSending(true);
-        console.log("--- EVENT PROPOSAL REQUEST (SIMULATED) ---", { ...formData, logo: formData.logo?.name, selectedConceptImageIndex: selectedImage });
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        setIsSending(false);
-        setIsProposalRequested(true);
+        clearAllErrors();
+    
+        try {
+            const response = await fetch('/api/send-proposal', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    studioType: 'Event',
+                    formData: { ...formData, userEmail: formData.userEmail, theme: formData.theme }, // Ensure required fields passed
+                    selectedConcept: {
+                        title: `Event Concept ${selectedImage + 1}`,
+                        description: `A visual concept for the ${formData.eventType} with the theme: "${formData.theme}".`,
+                        image: generatedImages[selectedImage]
+                    }
+                })
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to send proposal request.');
+            }
+    
+            setIsProposalRequested(true);
+    
+        } catch (e: any) {
+            setError(`Failed to send email. Please try again or contact us directly. Error: ${e.message}`);
+        } finally {
+            setIsSending(false);
+        }
     };
 
     const error = apiKeyError || localError;
@@ -492,6 +517,11 @@ const EventStudioPage: React.FC = () => {
                                         {isSending ? <><Loader2 className="w-5 h-5 animate-spin" /> Sending...</> : "Request Detailed Proposal"}
                                     </motion.button>
                                     {selectedImage === null && <p className="text-xs text-center text-fann-light-gray mt-2">Please select a design to proceed.</p>}
+                                     {error && (
+                                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-400 text-xs text-center mt-3">
+                                            {error}
+                                        </motion.div>
+                                    )}
                                 </div>
                             </div>
                         </div>

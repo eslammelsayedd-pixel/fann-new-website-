@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin, Loader2, CheckCircle } from 'lucide-react';
 
 const WhatsAppIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" {...props}>
@@ -11,6 +11,40 @@ const WhatsAppIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
 
 
 const ContactPage: React.FC = () => {
+  const [isSending, setIsSending] = useState(false);
+  const [isSent, setIsSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSending(true);
+    setError(null);
+
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const message = formData.get('message') as string;
+
+    try {
+        const response = await fetch('/api/send-contact-form', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, message })
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to send message.');
+        }
+
+        setIsSent(true);
+    } catch (err: any) {
+        setError(err.message);
+    } finally {
+        setIsSending(false);
+    }
+};
+
   return (
     <AnimatedPage>
       <SEO
@@ -103,23 +137,36 @@ const ContactPage: React.FC = () => {
             </div>
 
             <div className="bg-fann-charcoal-light p-8 rounded-lg">
-                 <h2 className="text-3xl font-serif text-white mb-8" style={{ fontWeight: 600}}>Send a Message</h2>
-                 <form className="space-y-6">
-                    <div>
-                        <input type="text" placeholder="Your Name" required className="w-full bg-fann-charcoal border border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-gold transition-shadow" />
+                {isSent ? (
+                     <div className="flex flex-col items-center justify-center h-full text-center">
+                        <CheckCircle className="w-16 h-16 text-fann-teal mx-auto mb-4" />
+                        <h2 className="text-3xl font-serif text-white mb-4">Message Sent!</h2>
+                        <p className="text-fann-light-gray">Thank you for reaching out. We will get back to you shortly.</p>
                     </div>
-                     <div>
-                        <input type="email" placeholder="Your Email" required className="w-full bg-fann-charcoal border border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-gold transition-shadow" />
-                    </div>
-                     <div>
-                        <textarea placeholder="Your Message" rows={5} required className="w-full bg-fann-charcoal border border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-gold transition-shadow"></textarea>
-                    </div>
-                    <div>
-                        <button type="submit" className="w-full bg-fann-gold text-fann-charcoal font-bold py-3 rounded-full uppercase tracking-wider hover:opacity-90 transition-opacity duration-300">
-                            Submit
-                        </button>
-                    </div>
-                 </form>
+                ) : (
+                    <>
+                        <h2 className="text-3xl font-serif text-white mb-8" style={{ fontWeight: 600}}>Send a Message</h2>
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                           <div>
+                               <input type="text" name="name" placeholder="Your Name" required className="w-full bg-fann-charcoal border border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-gold transition-shadow" />
+                           </div>
+                            <div>
+                               <input type="email" name="email" placeholder="Your Email" required className="w-full bg-fann-charcoal border border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-gold transition-shadow" />
+                           </div>
+                            <div>
+                               <textarea name="message" placeholder="Your Message" rows={5} required className="w-full bg-fann-charcoal border border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-gold transition-shadow"></textarea>
+                           </div>
+                           {error && (
+                               <div className="bg-red-900/50 text-red-300 text-sm p-3 rounded-md">{error}</div>
+                           )}
+                           <div>
+                               <button type="submit" disabled={isSending} className="w-full bg-fann-gold text-fann-charcoal font-bold py-3 rounded-full uppercase tracking-wider hover:opacity-90 transition-opacity duration-300 flex items-center justify-center disabled:opacity-50">
+                                   {isSending ? <Loader2 className="animate-spin" /> : 'Submit'}
+                               </button>
+                           </div>
+                        </form>
+                    </>
+                )}
             </div>
           </div>
 

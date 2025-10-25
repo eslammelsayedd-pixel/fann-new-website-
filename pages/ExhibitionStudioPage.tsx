@@ -429,20 +429,30 @@ const ExhibitionStudioPage: React.FC = () => {
     const sendProposalRequest = async () => {
         if (selectedConcept === null) return;
         setIsSending(true);
-        
-        const fullUserName = `${formData.userFirstName} ${formData.userLastName}`;
-        const fullMobileNumber = `${formData.userMobileCountryCode} ${formData.userMobileNumber}`;
-
-        console.log("--- PROPOSAL REQUEST (SIMULATED) ---", { 
-            ...formData, 
-            fullUserName,
-            fullMobileNumber,
-            logo: formData.logo?.name, 
-            selectedConcept: generatedConcepts[selectedConcept] 
-        });
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        setIsSending(false);
-        setIsProposalRequested(true);
+        clearAllErrors();
+    
+        try {
+            const response = await fetch('/api/send-proposal', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    studioType: 'Exhibition',
+                    formData: formData,
+                    selectedConcept: generatedConcepts[selectedConcept]
+                })
+            });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to send proposal request.');
+            }
+    
+            setIsProposalRequested(true);
+        } catch (e: any) {
+            setError(`Failed to send email. Please try again or contact us directly. Error: ${e.message}`);
+        } finally {
+            setIsSending(false);
+        }
     };
 
     const isNextButtonDisabled = currentStep === 3 && isExtractingColors || currentStep === 0 && (isAnalyzingStyle || isAnalyzingIndustry);
@@ -879,6 +889,11 @@ const ExhibitionStudioPage: React.FC = () => {
                                     {isSending ? <><Loader2 className="w-5 h-5 animate-spin" /> Sending...</> : "Request Detailed Proposal"}
                                 </motion.button>
                             </div>
+                            {error && (
+                                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-400 text-sm text-center mt-4">
+                                    {error}
+                                </motion.div>
+                            )}
                         </motion.div>
                     )}
                     </AnimatePresence>
