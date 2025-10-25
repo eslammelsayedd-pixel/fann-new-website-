@@ -94,7 +94,7 @@ const Chatbot: React.FC = () => {
         <>
             <motion.button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-6 right-6 bg-fann-gold text-fann-charcoal w-16 h-16 rounded-full shadow-lg flex items-center justify-center z-50"
+                className="fixed bottom-24 right-6 bg-fann-gold text-fann-charcoal w-16 h-16 rounded-full shadow-lg flex items-center justify-center z-50"
                 variants={fabVariants}
                 initial="hidden"
                 animate={isOpen ? 'hidden' : 'visible'}
@@ -112,7 +112,7 @@ const Chatbot: React.FC = () => {
                         initial="hidden"
                         animate="visible"
                         exit="hidden"
-                        className="fixed bottom-6 right-6 w-[calc(100vw-3rem)] max-w-sm h-[70vh] max-h-[600px] bg-fann-charcoal-light rounded-lg shadow-2xl flex flex-col z-50 border border-fann-border"
+                        className="fixed bottom-24 right-6 w-[calc(100vw-3rem)] max-w-sm h-[70vh] max-h-[600px] bg-fann-charcoal-light rounded-lg shadow-2xl flex flex-col z-50 border border-fann-border"
                     >
                         {/* Header */}
                         <header className="flex items-center justify-between p-4 border-b border-fann-border">
