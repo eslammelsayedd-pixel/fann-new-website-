@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
@@ -15,30 +16,35 @@ import EventsCalendarPage from './pages/EventsCalendarPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import InsightsPage from './pages/InsightsPage';
+import PricingPage from './pages/PricingPage';
 import { ApiKeyProvider } from './context/ApiKeyProvider';
+import { UserProvider } from './context/UserProvider';
 
 const App: React.FC = () => {
     const location = useLocation();
 
     return (
         <ApiKeyProvider>
-            <Layout>
-                <AnimatePresence mode="wait">
-                    <Routes location={location} key={location.pathname}>
-                        <Route path="/" element={<HomePage />} />
-                        <Route path="/services" element={<ServicesPage />} />
-                        <Route path="/portfolio" element={<PortfolioPage />} />
-                        <Route path="/fann-studio" element={<AIDesignStudioPage />} />
-                        <Route path="/fann-studio/exhibition" element={<ExhibitionStudioPage />} />
-                        <Route path="/fann-studio/event" element={<EventStudioPage />} />
-                        <Route path="/fann-studio/interior" element={<InteriorStudioPage />} />
-                        <Route path="/events-calendar" element={<EventsCalendarPage />} />
-                        <Route path="/about" element={<AboutPage />} />
-                        <Route path="/contact" element={<ContactPage />} />
-                        <Route path="/insights" element={<InsightsPage />} />
-                    </Routes>
-                </AnimatePresence>
-            </Layout>
+            <UserProvider>
+                <Layout>
+                    <AnimatePresence mode="wait">
+                        <Routes location={location} key={location.pathname}>
+                            <Route path="/" element={<HomePage />} />
+                            <Route path="/services" element={<ServicesPage />} />
+                            <Route path="/portfolio" element={<PortfolioPage />} />
+                            <Route path="/fann-studio" element={<AIDesignStudioPage />} />
+                            <Route path="/fann-studio/exhibition" element={<ExhibitionStudioPage />} />
+                            <Route path="/fann-studio/event" element={<EventStudioPage />} />
+                            <Route path="/fann-studio/interior" element={<InteriorStudioPage />} />
+                            <Route path="/events-calendar" element={<EventsCalendarPage />} />
+                            <Route path="/about" element={<AboutPage />} />
+                            <Route path="/contact" element={<ContactPage />} />
+                            <Route path="/insights" element={<InsightsPage />} />
+                            <Route path="/pricing" element={<PricingPage />} />
+                        </Routes>
+                    </AnimatePresence>
+                </Layout>
+            </UserProvider>
         </ApiKeyProvider>
     );
 };
