@@ -1,7 +1,8 @@
-// FIX: Changed to a full import to ensure global JSX namespace is correctly augmented.
-// The type-only import was causing the `IntrinsicElements` interface below to
-// overwrite React's default types, removing all standard HTML elements.
-import * as React from 'react';
+// FIX: Replaced the full 'React' namespace import with a type-only import for specific types.
+// The previous `import * as React from 'react';` was causing the `IntrinsicElements`
+// interface augmentation below to overwrite React's default types, removing all standard HTML elements.
+// Importing only the necessary types with `import type` resolves this module scope issue.
+import type { DetailedHTMLProps, HTMLAttributes } from 'react';
 
 // By defining custom element types in a global declaration, we can use them in JSX
 // without TypeScript errors.
@@ -42,7 +43,7 @@ export interface Testimonial {
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+            'model-viewer': DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> & {
                 src?: string;
                 alt?: string;
                 'camera-controls'?: boolean;
