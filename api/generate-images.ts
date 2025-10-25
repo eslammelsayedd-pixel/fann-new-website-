@@ -104,14 +104,15 @@ Return your response as a single, valid JSON array. Do not include any text or m
           throw new Error("The AI failed to return valid JSON for the concept descriptions. Please try generating again.");
       }
 
-      if (!textData || textData.length < 4) {
-          throw new Error("The AI model failed to generate enough titles and descriptions.");
+      if (!Array.isArray(textData) || textData.length < 4) {
+          console.error("AI response for descriptions was not a valid array of 4 items:", textData);
+          throw new Error("The AI model failed to generate enough titles and descriptions in the correct format.");
       }
       
       const concepts = imageUrls.map((url, index) => ({
           imageUrl: url,
-          title: textData[index].title,
-          description: textData[index].description,
+          title: textData[index]?.title || `Concept ${index + 1}`,
+          description: textData[index]?.description || "A stunning and creative concept for your event.",
       }));
 
       return new Response(JSON.stringify({ concepts }), { status: 200, headers: { 'Content-Type': 'application/json' } });

@@ -1,6 +1,7 @@
-// Using a type-only import for React to ensure this module's augmentations correctly
-// merge with the global JSX types provided by React, rather than overwriting them.
-import type * as React from 'react';
+// FIX: Changed to a full import to ensure global JSX namespace is correctly augmented.
+// The type-only import was causing the `IntrinsicElements` interface below to
+// overwrite React's default types, removing all standard HTML elements.
+import * as React from 'react';
 
 // By defining custom element types in a global declaration, we can use them in JSX
 // without TypeScript errors.
