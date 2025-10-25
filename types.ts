@@ -2,7 +2,7 @@ import React from 'react';
 
 // FIX: Corrected the global JSX type augmentation for the 'model-viewer' custom element.
 // The previous implementation was overwriting the IntrinsicElements interface, removing all standard HTML elements.
-// This fix ensures proper declaration merging by correctly extending HTMLAttributes within DetailedHTMLProps.
+// This corrected version ensures proper declaration merging by augmenting the global JSX namespace.
 declare global {
     namespace JSX {
         interface IntrinsicElements {
@@ -13,6 +13,8 @@ declare global {
                 'auto-rotate'?: boolean;
                 ar?: boolean;
                 'shadow-intensity'?: string;
+                exposure?: string;
+                'environment-image'?: string;
             }, HTMLElement>;
         }
     }

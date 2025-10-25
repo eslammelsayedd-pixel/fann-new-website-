@@ -1,40 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowDown, Layers, Calendar, Star, PenTool, Play, Pause, Volume2, VolumeX } from 'lucide-react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { ArrowDown, Layers, Calendar, Star, PenTool } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { portfolioProjects, testimonials } from '../constants';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 
-// Move this OUTSIDE the component to prevent re-creation on every render
 const dynamicContent = [
-    { 
-        headline: "Unforgettable Exhibitions", 
-        backgroundVideo: "https://videos.pexels.com/video-files/3254013/3254013-hd_1920_1080_25fps.mp4"
-    },
-    { 
-        headline: "Flawless Events", 
-        backgroundVideo: "https://videos.pexels.com/video-files/8788448/8788448-hd_1920_1080_24fps.mp4"
-    },
-    { 
-        headline: "Inspiring Interiors", 
-        backgroundVideo: "https://videos.pexels.com/video-files/8324311/8324311-hd_1920_1080_25fps.mp4"
-    }
+    { headline: "Unforgettable Exhibitions" },
+    { headline: "Flawless Events" },
+    { headline: "Inspiring Interiors" }
 ];
 
 const HeroSection: React.FC = () => {
     const [contentIndex, setContentIndex] = useState(0);
-    const videoRef = useRef<HTMLVideoElement>(null);
-    const [isPlaying, setIsPlaying] = useState(true);
-    const [isMuted, setIsMuted] = useState(true);
-    const heroRef = useRef<HTMLElement>(null);
-
-    const { scrollYProgress } = useScroll({
-        target: heroRef,
-        offset: ["start start", "end start"],
-    });
-
-    const videoY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -43,45 +22,40 @@ const HeroSection: React.FC = () => {
         return () => clearInterval(timer);
     }, []);
 
-    useEffect(() => {
-        if (videoRef.current) {
-            videoRef.current.muted = isMuted;
-            if (isPlaying) {
-                videoRef.current.play().catch(() => setIsPlaying(false));
-            } else {
-                videoRef.current.pause();
-            }
-        }
-    }, [isPlaying, isMuted, contentIndex]);
-    
-    const handlePlayPause = () => setIsPlaying(prev => !prev);
-    const handleMuteUnmute = () => setIsMuted(prev => !prev);
-
     return (
-        <section ref={heroRef} className="relative h-screen flex items-center justify-center text-center text-white overflow-hidden">
-            <AnimatePresence mode="wait">
-                <motion.video
-                    style={{ y: videoY }}
-                    key={contentIndex}
-                    ref={videoRef}
-                    src={dynamicContent[contentIndex].backgroundVideo}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    onPlay={() => setIsPlaying(true)}
-                    onPause={() => setIsPlaying(false)}
-                    className="absolute top-0 left-0 w-full h-full object-cover z-0"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 1.5, ease: 'easeInOut' }}
-                />
-            </AnimatePresence>
+        <section className="relative h-screen flex items-center justify-center text-center text-white overflow-hidden bg-fann-charcoal">
+            <model-viewer
+                src="https://cdn.glitch.global/e8040d12-4f3b-487c-87d2-069a72172777/exhibition_stand.glb?v=1718890003223"
+                alt="Interactive 3D model of a modern exhibition stand"
+                camera-controls
+                auto-rotate
+                ar
+                shadow-intensity="1.2"
+                exposure="0.9"
+                environment-image="neutral"
+                class="absolute top-0 left-0 w-full h-full"
+            >
+                <button class="hotspot" slot="hotspot-1" data-position="-1.6m 1m -1.5m" data-normal="0m 1m 0m">
+                    <div class="annotation">
+                        <h4 class="font-bold text-fann-gold">Lead Generation Hub</h4>
+                        <p class="text-xs text-fann-cream">Reception desks designed to attract and qualify leads efficiently.</p>
+                    </div>
+                </button>
+                 <button class="hotspot" slot="hotspot-2" data-position="2.5m 1.5m 1m" data-normal="0m 1m 0m">
+                    <div class="annotation">
+                         <h4 class="font-bold text-fann-gold">Private Meeting Space</h4>
+                        <p class="text-xs text-fann-cream">Integrated rooms for high-level discussions and closing deals.</p>
+                    </div>
+                </button>
+                <button class="hotspot" slot="hotspot-3" data-position="0m 2m 2.8m" data-normal="0m 0m -1m">
+                    <div class="annotation">
+                        <h4 class="font-bold text-fann-gold">Immersive AV</h4>
+                        <p class="text-xs text-fann-cream">State-of-the-art video walls for impactful brand storytelling.</p>
+                    </div>
+                </button>
+            </model-viewer>
 
-            <div className="absolute inset-0 bg-black/60 z-10"></div>
-            
-            <div className="relative z-20 p-4">
+            <div className="relative z-10 p-4" style={{ textShadow: '0 2px 8px rgba(0, 0, 0, 0.8)' }}>
                 <motion.h1 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -136,22 +110,13 @@ const HeroSection: React.FC = () => {
                     </Link>
                 </motion.div>
             </div>
-
-            <div className="absolute bottom-6 left-6 z-20 flex items-center gap-3">
-                <button onClick={handlePlayPause} className="bg-black/40 p-2 rounded-full text-white hover:bg-black/70 transition-colors" aria-label={isPlaying ? 'Pause video' : 'Play video'}>
-                    {isPlaying ? <Pause size={20} /> : <Play size={20} />}
-                </button>
-                <button onClick={handleMuteUnmute} className="bg-black/40 p-2 rounded-full text-white hover:bg-black/70 transition-colors" aria-label={isMuted ? 'Unmute video' : 'Mute video'}>
-                    {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
-                </button>
-            </div>
             
             <motion.div 
                 animate={{ y: [0, 10, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
                 className="absolute bottom-10 z-20"
             >
-                <ArrowDown className="w-8 h-8 text-fann-gold" />
+                <ArrowDown className="w-8 h-8 text-fann-gold" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.7))' }}/>
             </motion.div>
         </section>
     );
