@@ -1,18 +1,17 @@
 import { GoogleGenAI } from "@google/genai";
 
-export const config = {
-  runtime: 'edge',
-};
-
-export default async function handler(req: Request) {
+// This is a Vercel Serverless Function (Node.js runtime).
+// It has a longer timeout than Edge Functions, suitable for API calls that may take more time.
+export default async function handler(req: any, res: any) {
     if (req.method !== 'POST') {
-        return new Response(JSON.stringify({ error: 'Method Not Allowed' }), { status: 405, headers: { 'Content-Type': 'application/json' } });
+        res.setHeader('Allow', ['POST']);
+        return res.status(405).json({ error: 'Method Not Allowed' });
     }
 
     try {
-        const { prompt } = await req.json();
+        const { prompt } = req.body;
         if (!prompt) {
-             return new Response(JSON.stringify({ error: 'Prompt is required.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+             return res.status(400).json({ error: 'Prompt is required.' });
         }
         
         const apiKey = process.env.API_KEY || process.env.GOOGLE_CLOUD_API_KEY;
@@ -31,10 +30,10 @@ export default async function handler(req: Request) {
         const sources = response.candidates?.[0]?.groundingMetadata?.groundingChunks?.map(chunk => chunk.web) || [];
         const filteredSources = sources.filter(source => source && source.uri);
 
-        return new Response(JSON.stringify({ content, sources: filteredSources }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        return res.status(200).json({ content, sources: filteredSources });
 
     } catch (error: any) {
         console.error('Error in generate-insights API:', error);
-        return new Response(JSON.stringify({ error: error.message || 'An internal server error occurred.' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+        return res.status(500).json({ error: error.message || 'An internal server error occurred.' });
     }
 }

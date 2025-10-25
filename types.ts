@@ -1,20 +1,19 @@
 import React from 'react';
 
-// FIX: The global JSX.IntrinsicElements interface was being overwritten instead
-// of augmented. Augmenting the interface directly without `extends` ensures that
-// all standard HTML elements are preserved while adding our custom 'model-viewer' element,
-// resolving the widespread JSX type errors.
+// FIX: Corrected the global JSX type augmentation for the 'model-viewer' custom element.
+// The previous implementation was overwriting the IntrinsicElements interface, removing all standard HTML elements.
+// This fix ensures proper declaration merging by correctly extending HTMLAttributes within DetailedHTMLProps.
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+            'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & {
                 src?: string;
                 alt?: string;
                 'camera-controls'?: boolean;
                 'auto-rotate'?: boolean;
                 ar?: boolean;
                 'shadow-intensity'?: string;
-            };
+            }, HTMLElement>;
         }
     }
 }
