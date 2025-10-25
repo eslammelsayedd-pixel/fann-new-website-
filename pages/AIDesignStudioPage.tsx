@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import AnimatedPage from '../components/AnimatedPage';
-import { Building, Crown, PenTool, TrendingUp, Clapperboard } from 'lucide-react';
+import { Building, Crown, PenTool } from 'lucide-react';
 
 const studioOptions = [
     { 
@@ -29,22 +29,6 @@ const studioOptions = [
         link: '/fann-studio/interior',
         isComingSoon: false 
     },
-    { 
-        id: 'seo', 
-        name: 'SEO & LLMO Studio', 
-        icon: TrendingUp, 
-        description: 'Generate optimized metadata, structured data, and LLM summaries for any topic to improve search and AI ranking.',
-        link: '/fann-studio/seo',
-        isComingSoon: false 
-    },
-    { 
-        id: 'media', 
-        name: 'Media Studio', 
-        icon: Clapperboard, 
-        description: 'Your all-in-one suite for AI-powered video generation and image editing. Create promotional clips or transform your photos.',
-        link: '/fann-studio/media',
-        isComingSoon: false 
-    },
 ];
 
 interface StudioCardProps {
@@ -56,7 +40,7 @@ const StudioCard: React.FC<StudioCardProps> = ({ studio, index }) => (
     <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: index * 0.1 }}
+        transition={{ duration: 0.5, delay: index * 0.15 }}
         className="h-full"
     >
         <Link 
@@ -80,7 +64,7 @@ const StudioCard: React.FC<StudioCardProps> = ({ studio, index }) => (
             </div>
             {!studio.isComingSoon && (
                 <span className="font-semibold text-fann-gold mt-8 inline-block group-hover:underline">
-                    Launch Studio &rarr;
+                    Start Designing &rarr;
                 </span>
             )}
         </Link>
