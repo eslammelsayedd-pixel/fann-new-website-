@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowDown, Layers, Calendar, Star, PenTool } from 'lucide-react';
+import { ArrowDown, Layers, Calendar, Star, PenTool, Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { portfolioProjects, testimonials } from '../constants';
 import AnimatedPage from '../components/AnimatedPage';
@@ -23,24 +23,44 @@ const dynamicContent = [
 
 const HeroSection: React.FC = () => {
     const [contentIndex, setContentIndex] = useState(0);
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const [isPlaying, setIsPlaying] = useState(true);
+    const [isMuted, setIsMuted] = useState(true);
 
     useEffect(() => {
         const timer = setInterval(() => {
             setContentIndex(prevIndex => (prevIndex + 1) % dynamicContent.length);
         }, 5000);
         return () => clearInterval(timer);
-    }, []); // Empty dependency array - only run once on mount
+    }, []);
+
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.muted = isMuted;
+            if (isPlaying) {
+                videoRef.current.play().catch(() => setIsPlaying(false));
+            } else {
+                videoRef.current.pause();
+            }
+        }
+    }, [isPlaying, isMuted, contentIndex]);
+    
+    const handlePlayPause = () => setIsPlaying(prev => !prev);
+    const handleMuteUnmute = () => setIsMuted(prev => !prev);
 
     return (
         <section className="relative h-screen flex items-center justify-center text-center text-white overflow-hidden">
             <AnimatePresence mode="wait">
                 <motion.video
                     key={contentIndex}
+                    ref={videoRef}
                     src={dynamicContent[contentIndex].backgroundVideo}
                     autoPlay
                     loop
                     muted
                     playsInline
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
                     className="absolute top-0 left-0 w-full h-full object-cover z-0"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -106,6 +126,16 @@ const HeroSection: React.FC = () => {
                     </Link>
                 </motion.div>
             </div>
+
+            <div className="absolute bottom-6 left-6 z-20 flex items-center gap-3">
+                <button onClick={handlePlayPause} className="bg-black/40 p-2 rounded-full text-white hover:bg-black/70 transition-colors" aria-label={isPlaying ? 'Pause video' : 'Play video'}>
+                    {isPlaying ? <Pause size={20} /> : <Play size={20} />}
+                </button>
+                <button onClick={handleMuteUnmute} className="bg-black/40 p-2 rounded-full text-white hover:bg-black/70 transition-colors" aria-label={isMuted ? 'Unmute video' : 'Mute video'}>
+                    {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                </button>
+            </div>
+            
             <motion.div 
                 animate={{ y: [0, 10, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity }}

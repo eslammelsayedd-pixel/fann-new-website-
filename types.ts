@@ -1,6 +1,6 @@
-// FIX: Changed the React import to `import * as React from 'react'` to ensure module compatibility
-// for JSX augmentation, which resolves the "module 'react' cannot be found" error.
-import * as React from 'react';
+// Using a type-only import for React to ensure this module's augmentations correctly
+// merge with the global JSX types provided by React, rather than overwriting them.
+import type * as React from 'react';
 
 // By defining custom element types in a global declaration, we can use them in JSX
 // without TypeScript errors.
@@ -36,10 +36,8 @@ export interface Testimonial {
   projectType: string;
 }
 
-// FIX: The original JSX namespace augmentation was overwriting the default HTML element types,
-// causing compilation errors for standard tags like `div` and `p`.
-// This updated declaration correctly merges with React's intrinsic elements, preserving all
-// standard HTML tags while adding support for the custom `<model-viewer>` element.
+// This global declaration augments React's JSX namespace to add support for the custom
+// `<model-viewer>` element, allowing it to be used in TSX files without type errors.
 declare global {
     namespace JSX {
         interface IntrinsicElements {
