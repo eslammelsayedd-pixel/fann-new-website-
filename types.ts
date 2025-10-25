@@ -36,11 +36,10 @@ export interface Testimonial {
   projectType: string;
 }
 
-// FIX: The original JSX namespace augmentation was overwriting the default HTML element types,
-// causing compilation errors for standard tags like `div` and `p`.
-// This updated declaration merges with React's intrinsic elements, preserving all
-// standard HTML tags while adding support for the custom `<model-viewer>` element.
-declare module 'react' {
+// FIX: Changed from `declare module 'react'` to `declare global` to correctly augment the
+// global JSX namespace. This is the standard way to add custom elements like `<model-viewer>`
+// and resolves the "module 'react' cannot be found" error during module augmentation.
+declare global {
     namespace JSX {
         interface IntrinsicElements {
             'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
