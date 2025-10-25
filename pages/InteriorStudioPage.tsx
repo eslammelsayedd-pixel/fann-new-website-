@@ -246,7 +246,7 @@ const InteriorStudioPage: React.FC = () => {
 
     const renderLiveBrief = () => (
         <div className="w-full lg:w-2/5 lg:pl-8">
-            <div className="sticky top-24 bg-fann-charcoal-light p-6 rounded-lg border border-fann-border">
+            <div className="sticky top-32 bg-fann-charcoal-light p-6 rounded-lg border border-fann-border">
                 <h3 className="text-xl font-serif font-bold text-fann-gold mb-4 border-b border-fann-border pb-3">Your Design Brief</h3>
                 <AnimatePresence>
                 <div className="space-y-4 text-sm">
@@ -384,7 +384,7 @@ const InteriorStudioPage: React.FC = () => {
             <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
                  <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                      <div className="text-center mb-12">
-                        <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Interior Design Studio</h1>
+                        <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">Interior Design Studio</h1>
                         <p className="text-xl text-fann-cream max-w-3xl mx-auto">
                            As your Dubai-based design partner, we'll guide you through a detailed brief to capture your vision perfectly.
                         </p>

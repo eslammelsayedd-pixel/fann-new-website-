@@ -7,6 +7,10 @@ import React from 'react';
 // 'model-viewer' custom element. Using an interface declaration merges with the existing
 // definitions from @types/react, preserving all standard HTML and SVG element types and
 // resolving the widespread "Property 'div' does not exist" errors.
+//
+// This global declaration has been removed to resolve a conflict with an identical
+// declaration in 'src/types.ts'.
+/*
 declare global {
     namespace JSX {
         interface IntrinsicElements {
@@ -23,6 +27,7 @@ declare global {
         }
     }
 }
+*/
 
 export interface NavLink {
   name: string;

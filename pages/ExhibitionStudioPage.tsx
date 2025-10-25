@@ -812,128 +812,136 @@ const ExhibitionStudioPage: React.FC = () => {
     );
     
     if (isFinished) return (
-        <div className="pb-20 text-white">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-12">
-                    <Sparkles className="mx-auto h-16 w-16 text-fann-gold" />
-                    <h1 className="text-4xl font-serif font-bold text-fann-gold mt-4 mb-4">Your FANN-Generated Concepts</h1>
-                    <p className="text-lg text-fann-cream max-w-3xl mx-auto">Select your preferred design to receive a detailed proposal and quotation from our team.</p>
-                </div>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {generatedConcepts.map((concept, index) => (
+        <AnimatedPage>
+            <div className="pt-32 pb-20 text-white">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-12">
+                        <Sparkles className="mx-auto h-16 w-16 text-fann-gold" />
+                        <h1 className="text-4xl font-serif font-bold text-fann-gold mt-4 mb-4">Your FANN-Generated Concepts</h1>
+                        <p className="text-lg text-fann-cream max-w-3xl mx-auto">Select your preferred design to receive a detailed proposal and quotation from our team.</p>
+                    </div>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        {generatedConcepts.map((concept, index) => (
+                            <motion.div 
+                                key={index} 
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.15 }}
+                                onClick={() => setSelectedConcept(index)}
+                                className={`p-4 bg-fann-charcoal-light rounded-lg cursor-pointer border-2 transition-all duration-300 hover:border-fann-gold/50 ${selectedConcept === index ? 'border-fann-gold' : 'border-fann-border'}`}
+                            >
+                                <div className="relative aspect-video mb-4 rounded-md overflow-hidden bg-fann-charcoal">
+                                     <AnimatePresence mode="wait">
+                                         <motion.img 
+                                            key={`${index}-${activeAngles[index] || 'front'}`}
+                                            src={concept.images[activeAngles[index] || 'front']} 
+                                            alt={`${concept.title} - ${activeAngles[index] || 'front'}`} 
+                                            className="absolute inset-0 w-full h-full object-cover" 
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            transition={{ duration: 0.3 }}
+                                         />
+                                    </AnimatePresence>
+                                </div>
+                                <div className="flex justify-center gap-2 mb-4">
+                                    {(['front', 'top', 'interior'] as Angle[]).map(angle => (
+                                        <button 
+                                            key={angle}
+                                            onClick={(e) => { e.stopPropagation(); setActiveAngles(p => ({...p, [index]: angle}))}}
+                                            className={`px-3 py-1 text-xs rounded-full transition-colors ${(activeAngles[index] || 'front') === angle ? 'bg-fann-teal text-white' : 'bg-fann-charcoal hover:bg-white/10'}`}
+                                        >
+                                            {angle.charAt(0).toUpperCase() + angle.slice(1)} View
+                                        </button>
+                                    ))}
+                                </div>
+
+                                <h3 className="text-xl font-serif font-bold text-white">{concept.title}</h3>
+                                <p className="text-sm text-fann-light-gray mt-1">{concept.description}</p>
+                            </motion.div>
+                        ))}
+                    </div>
+
+                    <AnimatePresence>
+                    {selectedConcept !== null && (
                         <motion.div 
-                            key={index} 
-                            initial={{ opacity: 0, y: 30 }}
+                            initial={{ opacity: 0, y: 50 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.15 }}
-                            onClick={() => setSelectedConcept(index)}
-                            className={`p-4 bg-fann-charcoal-light rounded-lg cursor-pointer border-2 transition-all duration-300 hover:border-fann-gold/50 ${selectedConcept === index ? 'border-fann-gold' : 'border-fann-border'}`}
+                            exit={{ opacity: 0, y: 50 }}
+                            className="mt-12 bg-fann-charcoal-light p-8 rounded-lg sticky bottom-6 border-2 border-fann-gold shadow-2xl max-w-4xl mx-auto"
                         >
-                            <div className="relative aspect-video mb-4 rounded-md overflow-hidden bg-fann-charcoal">
-                                 <AnimatePresence mode="wait">
-                                     <motion.img 
-                                        key={`${index}-${activeAngles[index] || 'front'}`}
-                                        src={concept.images[activeAngles[index] || 'front']} 
-                                        alt={`${concept.title} - ${activeAngles[index] || 'front'}`} 
-                                        className="absolute inset-0 w-full h-full object-cover" 
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0 }}
-                                        transition={{ duration: 0.3 }}
-                                     />
-                                </AnimatePresence>
+                            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                                <div>
+                                    <h3 className="text-2xl font-serif font-bold text-fann-gold">You've Selected: "{generatedConcepts[selectedConcept].title}"</h3>
+                                    <p className="text-fann-cream mt-1">Ready for the next step? Request a detailed proposal to get pricing and a project timeline.</p>
+                                </div>
+                                 <motion.button onClick={sendProposalRequest} disabled={isSending} className="bg-fann-teal text-white font-bold py-3 px-8 rounded-full flex-shrink-0 flex items-center justify-center gap-2 w-full md:w-auto" whileHover={{ scale: !isSending ? 1.05 : 1 }} whileTap={{ scale: !isSending ? 0.95 : 1 }}>
+                                    {isSending ? <><Loader2 className="w-5 h-5 animate-spin" /> Sending...</> : "Request Detailed Proposal"}
+                                </motion.button>
                             </div>
-                            <div className="flex justify-center gap-2 mb-4">
-                                {(['front', 'top', 'interior'] as Angle[]).map(angle => (
-                                    <button 
-                                        key={angle}
-                                        onClick={(e) => { e.stopPropagation(); setActiveAngles(p => ({...p, [index]: angle}))}}
-                                        className={`px-3 py-1 text-xs rounded-full transition-colors ${(activeAngles[index] || 'front') === angle ? 'bg-fann-teal text-white' : 'bg-fann-charcoal hover:bg-white/10'}`}
-                                    >
-                                        {angle.charAt(0).toUpperCase() + angle.slice(1)} View
-                                    </button>
-                                ))}
-                            </div>
-
-                            <h3 className="text-xl font-serif font-bold text-white">{concept.title}</h3>
-                            <p className="text-sm text-fann-light-gray mt-1">{concept.description}</p>
                         </motion.div>
-                    ))}
+                    )}
+                    </AnimatePresence>
                 </div>
-
-                <AnimatePresence>
-                {selectedConcept !== null && (
-                    <motion.div 
-                        initial={{ opacity: 0, y: 50 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 50 }}
-                        className="mt-12 bg-fann-charcoal-light p-8 rounded-lg sticky bottom-6 border-2 border-fann-gold shadow-2xl max-w-4xl mx-auto"
-                    >
-                        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                            <div>
-                                <h3 className="text-2xl font-serif font-bold text-fann-gold">You've Selected: "{generatedConcepts[selectedConcept].title}"</h3>
-                                <p className="text-fann-cream mt-1">Ready for the next step? Request a detailed proposal to get pricing and a project timeline.</p>
-                            </div>
-                             <motion.button onClick={sendProposalRequest} disabled={isSending} className="bg-fann-teal text-white font-bold py-3 px-8 rounded-full flex-shrink-0 flex items-center justify-center gap-2 w-full md:w-auto" whileHover={{ scale: !isSending ? 1.05 : 1 }} whileTap={{ scale: !isSending ? 0.95 : 1 }}>
-                                {isSending ? <><Loader2 className="w-5 h-5 animate-spin" /> Sending...</> : "Request Detailed Proposal"}
-                            </motion.button>
-                        </div>
-                    </motion.div>
-                )}
-                </AnimatePresence>
             </div>
-        </div>
+        </AnimatedPage>
     );
 
     return (
-        <div className="max-w-4xl mx-auto">
-            <div className="mb-8">
-                <div className="flex justify-between mb-2">
-                    {steps.map((step, index) => (
-                        <div key={step.name} className="flex flex-col items-center" style={{ width: `${100 / steps.length}%` }}>
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${currentStep >= index ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-charcoal-light text-fann-light-gray'}`}><step.icon size={16} /></div>
-                            <span className={`text-xs mt-1 text-center ${currentStep >= index ? 'text-white' : 'text-fann-light-gray'}`}>{step.name}</span>
+        <AnimatedPage>
+            <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-4xl mx-auto">
+                        <div className="mb-8">
+                            <div className="flex justify-between mb-2">
+                                {steps.map((step, index) => (
+                                    <div key={step.name} className="flex flex-col items-center" style={{ width: `${100 / steps.length}%` }}>
+                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${currentStep >= index ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-charcoal-light text-fann-light-gray'}`}><step.icon size={16} /></div>
+                                        <span className={`text-xs mt-1 text-center ${currentStep >= index ? 'text-white' : 'text-fann-light-gray'}`}>{step.name}</span>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="bg-fann-charcoal-light rounded-full h-1.5"><motion.div className="bg-fann-gold h-1.5 rounded-full" initial={{ width: 0 }} animate={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }} transition={{ type: 'spring', stiffness: 50 }}/></div>
                         </div>
-                    ))}
-                </div>
-                <div className="bg-fann-charcoal-light rounded-full h-1.5"><motion.div className="bg-fann-gold h-1.5 rounded-full" initial={{ width: 0 }} animate={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }} transition={{ type: 'spring', stiffness: 50 }}/></div>
-            </div>
 
-            <div className="bg-fann-charcoal-light p-6 sm:p-8 rounded-lg">
-                <form onSubmit={handleSubmit} noValidate>
-                    <AnimatePresence mode="wait">
-                        <motion.div key={currentStep} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.3 }}>
-                            {renderStepContent()}
-                        </motion.div>
-                    </AnimatePresence>
-                    <div className="mt-8">
-                        {error && (
-                            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-start gap-3 mb-4">
-                                <div className="flex-shrink-0 pt-0.5"><AlertCircle className="w-5 h-5" /></div>
-                                <div className="flex-grow">
-                                    <span className="whitespace-pre-wrap">{error}</span>
+                        <div className="bg-fann-charcoal-light p-6 sm:p-8 rounded-lg">
+                            <form onSubmit={handleSubmit} noValidate>
+                                <AnimatePresence mode="wait">
+                                    <motion.div key={currentStep} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.3 }}>
+                                        {renderStepContent()}
+                                    </motion.div>
+                                </AnimatePresence>
+                                <div className="mt-8">
+                                    {error && (
+                                        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm flex items-start gap-3 mb-4">
+                                            <div className="flex-shrink-0 pt-0.5"><AlertCircle className="w-5 h-5" /></div>
+                                            <div className="flex-grow">
+                                                <span className="whitespace-pre-wrap">{error}</span>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                    <div className="flex justify-between items-center">
+                                        <motion.button type="button" onClick={prevStep} disabled={currentStep === 0} className="flex items-center gap-2 text-fann-gold disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: currentStep !== 0 ? 1.05 : 1}} whileTap={{scale: currentStep !== 0 ? 0.95 : 1}}>
+                                            <ArrowLeft size={16} /> Back
+                                        </motion.button>
+                                        
+                                        {currentStep < steps.length - 1 ? (
+                                            <motion.button type="button" onClick={nextStep} disabled={isNextButtonDisabled} className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full w-32 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: !isNextButtonDisabled ? 1.05 : 1}} whileTap={{scale: !isNextButtonDisabled ? 0.95 : 1}}>
+                                                {isNextButtonDisabled ? <Loader2 className="w-5 h-5 mx-auto animate-spin" /> : 'Next'}
+                                            </motion.button>
+                                        ) : (
+                                            <motion.button type="submit" className="bg-fann-teal text-white font-bold py-2 px-6 rounded-full flex items-center gap-2" whileHover={{scale: 1.05}} whileTap={{scale: 0.95}}>
+                                                <Sparkles size={16} /> Generate My Concepts
+                                            </motion.button>
+                                        )}
+                                    </div>
                                 </div>
-                            </motion.div>
-                        )}
-                        <div className="flex justify-between items-center">
-                            <motion.button type="button" onClick={prevStep} disabled={currentStep === 0} className="flex items-center gap-2 text-fann-gold disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: currentStep !== 0 ? 1.05 : 1}} whileTap={{scale: currentStep !== 0 ? 0.95 : 1}}>
-                                <ArrowLeft size={16} /> Back
-                            </motion.button>
-                            
-                            {currentStep < steps.length - 1 ? (
-                                <motion.button type="button" onClick={nextStep} disabled={isNextButtonDisabled} className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full w-32 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: !isNextButtonDisabled ? 1.05 : 1}} whileTap={{scale: !isNextButtonDisabled ? 0.95 : 1}}>
-                                    {isNextButtonDisabled ? <Loader2 className="w-5 h-5 mx-auto animate-spin" /> : 'Next'}
-                                </motion.button>
-                            ) : (
-                                <motion.button type="submit" className="bg-fann-teal text-white font-bold py-2 px-6 rounded-full flex items-center gap-2" whileHover={{scale: 1.05}} whileTap={{scale: 0.95}}>
-                                    <Sparkles size={16} /> Generate My Concepts
-                                </motion.button>
-                            )}
+                            </form>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
-        </div>
+        </AnimatedPage>
     );
 };
 
