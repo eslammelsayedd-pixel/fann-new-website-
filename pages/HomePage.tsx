@@ -4,41 +4,12 @@ import { ArrowDown, Layers, Calendar, Star, PenTool } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { portfolioProjects, testimonials } from '../constants';
 import AnimatedPage from '../components/AnimatedPage';
-import SEO from '../components/SEO';
 
 const dynamicContent = [
     { headline: "Unforgettable Exhibitions" },
     { headline: "Flawless Events" },
     { headline: "Inspiring Interiors" }
 ];
-
-const homePageSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "FANN",
-    "url": "https://fann.ae",
-    "logo": "https://fann.ae/favicon.svg",
-    "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Office 508, Dusseldorf Business Point, Al Barsha 1",
-        "addressLocality": "Dubai",
-        "addressCountry": "AE"
-    },
-    "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+971505667502",
-        "email": "sales@fann.ae",
-        "contactType": "customer service"
-    },
-    "description": "FANN is a premier exhibition, events, and interior design company in Dubai, transforming visions into unforgettable experiences.",
-    "sameAs": [
-        "https://www.facebook.com/fannuae/",
-        "https://www.instagram.com/fann_uae/",
-        "https://ae.linkedin.com/company/fannaedubai",
-        "https://fannae.quora.com/"
-    ]
-};
-
 
 const HeroSection: React.FC = () => {
     const [contentIndex, setContentIndex] = useState(0);
@@ -184,11 +155,6 @@ const ServiceCard: React.FC<{ icon: React.ReactNode; title: string; description:
 const HomePage: React.FC = () => {
     return (
         <AnimatedPage>
-            <SEO
-                title="Premier Exhibition, Events & Interior Design in Dubai"
-                description="FANN transforms visions into unforgettable experiences. Discover our world-class exhibition stand design, event management, and luxury interior design services in Dubai and the GCC."
-                schema={homePageSchema}
-            />
             <HeroSection />
 
             <div className="py-20 bg-fann-charcoal">

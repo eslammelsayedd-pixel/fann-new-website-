@@ -1,0 +1,28 @@
+/* eslint-disable */
+// THIS FILE IS A PLACEHOLDER. IT WILL BE POPULATED BY THE FANN AI SEO AGENT.
+// Run the agent in the FANN Studio to generate and replace the content of this file.
+
+interface SEOData {
+  title: string;
+  description: string;
+  schema: object;
+}
+
+export const seoMetadata: Record<string, SEOData> = {
+  "/": {
+    "title": "FANN | Premier Exhibition, Events & Interior Design in Dubai",
+    "description": "FANN transforms visions into unforgettable experiences. Discover our world-class exhibition stand design, event management, and luxury interior design services in Dubai and the GCC.",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "FANN",
+      "url": "https://fann.ae",
+      "logo": "https://fann.ae/favicon.svg",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+971-50-566-7502",
+        "contactType": "sales"
+      }
+    }
+  }
+};

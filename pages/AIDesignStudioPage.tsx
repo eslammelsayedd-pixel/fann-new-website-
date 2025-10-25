@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import AnimatedPage from '../components/AnimatedPage';
-import { Building, Crown, PenTool } from 'lucide-react';
+import { Building, Crown, PenTool, Bot } from 'lucide-react';
 
 const studioOptions = [
     { 
@@ -27,6 +27,14 @@ const studioOptions = [
         icon: PenTool, 
         description: 'Visualize commercial or residential interiors. Experiment with styles, materials, and layouts for your unique space.',
         link: '/fann-studio/interior',
+        isComingSoon: false 
+    },
+    { 
+        id: 'seo-agent', 
+        name: 'AI SEO Agent', 
+        icon: Bot, 
+        description: 'Automate your site-wide SEO. Run the agent to generate optimized metadata for every page, enhancing search visibility.',
+        link: '/fann-studio/seo-agent',
         isComingSoon: false 
     },
 ];
@@ -64,7 +72,7 @@ const StudioCard: React.FC<StudioCardProps> = ({ studio, index }) => (
             </div>
             {!studio.isComingSoon && (
                 <span className="font-semibold text-fann-gold mt-8 inline-block group-hover:underline">
-                    Start Designing &rarr;
+                    {studio.id === 'seo-agent' ? 'Run Agent' : 'Start Designing'} &rarr;
                 </span>
             )}
         </Link>
@@ -83,7 +91,7 @@ const AIDesignStudioPage: React.FC = () => {
                         </p>
                     </div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
                         {studioOptions.map((studio, index) => (
                            <StudioCard key={studio.id} studio={studio} index={index} />
                         ))}

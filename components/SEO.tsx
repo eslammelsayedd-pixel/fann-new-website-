@@ -1,50 +1,43 @@
 import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { seoMetadata } from '../src/seo-metadata';
 
-interface SEOProps {
-  title: string;
-  description: string;
-  schema?: object; // Add schema prop
-  children?: React.ReactNode;
-}
+const SEO: React.FC = () => {
+  const location = useLocation();
 
-const SEO: React.FC<SEOProps> = ({ title, description, schema, children }) => {
   useEffect(() => {
-    const fullTitle = `${title} | FANN`;
-    if (document.title !== fullTitle) {
-      document.title = fullTitle;
-    }
-    
-    let metaDescription = document.querySelector('meta[name="description"]');
-    if (!metaDescription) {
-      metaDescription = document.createElement('meta');
-      metaDescription.setAttribute('name', 'description');
-      document.head.appendChild(metaDescription);
-    }
-    metaDescription.setAttribute('content', description);
+    const currentPath = location.pathname;
+    // Fallback to the homepage SEO data if the current path is not found
+    const metadata = seoMetadata[currentPath] || seoMetadata['/'];
 
-    // Handle Schema Markup
-    const scriptId = 'json-ld-schema';
-    // FIX: Add type assertion to ensure TypeScript knows this is an HTMLScriptElement.
-    let scriptTag = document.getElementById(scriptId) as HTMLScriptElement | null;
-    
-    if (schema) {
+    if (metadata) {
+      // Update Title
+      document.title = metadata.title;
+
+      // Update Meta Description
+      let metaDescription = document.querySelector('meta[name="description"]');
+      if (!metaDescription) {
+        metaDescription = document.createElement('meta');
+        metaDescription.setAttribute('name', 'description');
+        document.head.appendChild(metaDescription);
+      }
+      metaDescription.setAttribute('content', metadata.description);
+
+      // Update or create JSON-LD Schema
+      const scriptId = 'json-ld-schema';
+      let scriptTag = document.getElementById(scriptId) as HTMLScriptElement | null;
       if (!scriptTag) {
         scriptTag = document.createElement('script');
         scriptTag.id = scriptId;
         scriptTag.type = 'application/ld+json';
         document.head.appendChild(scriptTag);
       }
-      scriptTag.innerHTML = JSON.stringify(schema);
-    } else if (scriptTag) {
-      // If no schema is provided on a page, remove the old one
-      scriptTag.remove();
+      scriptTag.innerHTML = JSON.stringify(metadata.schema);
     }
     
-  }, [title, description, schema]);
+  }, [location.pathname]);
 
-  // Children are passed through, but this component doesn't render them directly.
-  // It's used for injecting script tags into the document head.
-  return <>{children}</>; 
+  return null; // This component does not render anything to the DOM
 };
 
 export default SEO;
