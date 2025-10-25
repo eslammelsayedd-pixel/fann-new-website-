@@ -12,6 +12,34 @@ const dynamicContent = [
     { headline: "Inspiring Interiors" }
 ];
 
+const homePageSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "FANN",
+    "url": "https://fann.ae",
+    "logo": "https://fann.ae/favicon.svg",
+    "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Office 508, Dusseldorf Business Point, Al Barsha 1",
+        "addressLocality": "Dubai",
+        "addressCountry": "AE"
+    },
+    "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+971505667502",
+        "email": "sales@fann.ae",
+        "contactType": "customer service"
+    },
+    "description": "FANN is a premier exhibition, events, and interior design company in Dubai, transforming visions into unforgettable experiences.",
+    "sameAs": [
+        "https://www.facebook.com/fannuae/",
+        "https://www.instagram.com/fann_uae/",
+        "https://ae.linkedin.com/company/fannaedubai",
+        "https://fannae.quora.com/"
+    ]
+};
+
+
 const HeroSection: React.FC = () => {
     const [contentIndex, setContentIndex] = useState(0);
 
@@ -30,6 +58,11 @@ const HeroSection: React.FC = () => {
                 camera-controls
                 auto-rotate
                 ar
+                interaction-prompt="auto"
+                camera-orbit="15deg 75deg 10m"
+                min-camera-orbit="auto auto 5m"
+                max-camera-orbit="auto auto 15m"
+                field-of-view="30deg"
                 shadow-intensity="1.2"
                 exposure="0.9"
                 environment-image="neutral"
@@ -111,6 +144,16 @@ const HeroSection: React.FC = () => {
                 </motion.div>
             </div>
             
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0, 1, 1, 0] }}
+                transition={{ duration: 5, times: [0, 0.2, 0.8, 1], repeat: Infinity, repeatDelay: 5 }}
+                className="absolute bottom-24 z-20 text-white/90 bg-black/40 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold pointer-events-none"
+                style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}
+            >
+                Click & Drag to Explore
+            </motion.div>
+
             <motion.div 
                 animate={{ y: [0, 10, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
@@ -144,28 +187,8 @@ const HomePage: React.FC = () => {
             <SEO
                 title="Premier Exhibition, Events & Interior Design in Dubai"
                 description="FANN transforms visions into unforgettable experiences. Discover our world-class exhibition stand design, event management, and luxury interior design services in Dubai and the GCC."
-            >
-                <script type="application/ld+json">
-                    {JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "Organization",
-                        "name": "FANN",
-                        "url": "https://fann-new-website.web.app/",
-                        "logo": "https://fann-new-website.web.app/favicon.svg",
-                        "contactPoint": {
-                            "@type": "ContactPoint",
-                            "telephone": "+971-0-000-0000",
-                            "contactType": "customer service"
-                        },
-                        "address": {
-                            "@type": "PostalAddress",
-                            "streetAddress": "Dubai Design District",
-                            "addressLocality": "Dubai",
-                            "addressCountry": "AE"
-                        }
-                    })}
-                </script>
-            </SEO>
+                schema={homePageSchema}
+            />
             <HeroSection />
 
             <div className="py-20 bg-fann-charcoal">

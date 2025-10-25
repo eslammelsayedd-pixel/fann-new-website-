@@ -15,16 +15,30 @@ const ContactPage: React.FC = () => {
                 "@context": "https://schema.org",
                 "@type": "LocalBusiness",
                 "name": "FANN",
-                "image": "https://fann-new-website.web.app/favicon.svg",
-                "@id": "https://fann-new-website.web.app/",
-                "url": "https://fann-new-website.web.app/contact",
-                "telephone": "+971-0-000-0000",
+                "image": "https://fann.ae/favicon.svg",
+                "@id": "https://fann.ae/",
+                "url": "https://fann.ae/contact",
+                "telephone": "+971505667502",
+                "email": "sales@fann.ae",
                 "address": {
                     "@type": "PostalAddress",
-                    "streetAddress": "Building 7, Office A301, Dubai Design District",
+                    "streetAddress": "Office 508, Dusseldorf Business Point, Al Barsha 1",
                     "addressLocality": "Dubai",
                     "addressCountry": "AE"
                 },
+                 "department": [
+                    {
+                        "@type": "ContactPoint",
+                        "contactType": "Warehouse",
+                        "areaServed": "AE",
+                        "address": {
+                            "@type": "PostalAddress",
+                            "streetAddress": "WH10-Umm Dera",
+                            "addressLocality": "Umm Al Quwain",
+                            "addressCountry": "AE"
+                        }
+                    }
+                ],
                 "openingHoursSpecification": {
                     "@type": "OpeningHoursSpecification",
                     "dayOfWeek": [
@@ -54,15 +68,25 @@ const ContactPage: React.FC = () => {
                 <div className="space-y-6">
                     <div className="flex items-center space-x-4">
                         <Phone className="text-fann-gold" size={24} />
-                        <a href="tel:+971000000000" className="text-lg hover:text-fann-gold transition-colors">+971 (0) 0 000 0000</a>
+                        <a href="tel:+971505667502" className="text-lg hover:text-fann-gold transition-colors">+971 50 566 7502</a>
                     </div>
                     <div className="flex items-center space-x-4">
                         <Mail className="text-fann-gold" size={24} />
-                        <a href="mailto:info@fann.ae" className="text-lg hover:text-fann-gold transition-colors">info@fann.ae</a>
+                        <a href="mailto:sales@fann.ae" className="text-lg hover:text-fann-gold transition-colors">sales@fann.ae</a>
                     </div>
                      <div className="flex items-start space-x-4">
                         <MapPin className="text-fann-gold mt-1" size={24} />
-                        <p className="text-lg">Dubai Design District<br/>Building 7, Office A301<br/>Dubai, UAE</p>
+                        <div>
+                            <h3 className="text-lg font-semibold">Office Address</h3>
+                            <p className="text-lg text-fann-light-gray">Office 508, Dusseldorf Business Point, <br/>Al Barsha 1, Dubai, UAE</p>
+                        </div>
+                    </div>
+                     <div className="flex items-start space-x-4">
+                        <MapPin className="text-fann-gold mt-1" size={24} />
+                         <div>
+                            <h3 className="text-lg font-semibold">Warehouse Address</h3>
+                            <p className="text-lg text-fann-light-gray">WH10-Umm Dera, <br/>Umm Al Quwain, UAE</p>
+                        </div>
                     </div>
                 </div>
             </div>
