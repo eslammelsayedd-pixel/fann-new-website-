@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { seoMetadata } from '../src/seo-metadata';
+import { seoMetadata } from '../seo-metadata';
 
 const SEO: React.FC = () => {
   const location = useLocation();

@@ -1,5 +1,5 @@
-import React, 'react';
-import { motion } from 'framer-motion';
+import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2, Sparkles, AlertCircle, Bot, Copy } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import { useApiKey } from '../context/ApiKeyProvider';

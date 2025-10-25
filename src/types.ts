@@ -1,5 +1,10 @@
 import React from 'react';
 
+// FIX: This file's `declare global` block is a duplicate of the one in the root `types.ts`.
+// Such duplication can cause TypeScript to fail to merge JSX type definitions correctly,
+// leading to errors where standard HTML elements like 'div' are not recognized.
+// The block below is commented out to make the root `types.ts` the single source of truth.
+/*
 // This `declare global` block augments the existing global `JSX` namespace.
 // By defining `IntrinsicElements` as an `interface`, it merges with the
 // original definitions from `@types/react`, adding support for `<model-viewer>`
@@ -21,3 +26,4 @@ declare global {
         }
     }
 }
+*/
