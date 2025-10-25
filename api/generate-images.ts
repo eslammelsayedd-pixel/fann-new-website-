@@ -82,6 +82,13 @@ Return your response as a single, valid JSON array. Do not include any text or m
           }
       });
       
+      // FIX: Added a robust check to ensure a valid response was received before processing.
+      // This prevents a server crash if the AI fails to generate text (e.g., due to content safety).
+      if (!textResponse.candidates || textResponse.candidates.length === 0) {
+        console.error("Text generation failed: No candidates returned from the model.", textResponse);
+        throw new Error("The AI failed to generate text descriptions. This might be due to a content safety restriction on the text prompt or an internal model error. Please try modifying your brief or try again.");
+      }
+
       let jsonText = textResponse.text.trim();
       if (jsonText.startsWith('```json')) {
         jsonText = jsonText.substring(7, jsonText.lastIndexOf('```')).trim();

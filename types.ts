@@ -38,9 +38,8 @@ export interface Testimonial {
 
 // FIX: The original JSX namespace augmentation was overwriting the default HTML element types,
 // causing compilation errors for standard tags like `div` and `p`.
-// This updated declaration merges with React's intrinsic elements, preserving all
+// This updated declaration correctly merges with React's intrinsic elements, preserving all
 // standard HTML tags while adding support for the custom `<model-viewer>` element.
-// FIX: Wrapped the JSX namespace augmentation in `declare global` to correctly extend React's intrinsic elements. This resolves the "module 'react' cannot be found" TypeScript error by using a global augmentation instead of a module-specific one.
 declare global {
     namespace JSX {
         interface IntrinsicElements {
