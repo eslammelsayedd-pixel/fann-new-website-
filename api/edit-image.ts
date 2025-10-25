@@ -35,7 +35,7 @@ export default async function handler(req: Request) {
     const imagePart = response.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
 
     if (!imagePart || !imagePart.inlineData) {
-        throw new Error("The AI model failed to generate an edited image. This could be due to a content safety policy. Try a different prompt.");
+        throw new Error("The model failed to generate an edited image. This could be due to a content safety policy. Try a different prompt.");
     }
 
     const imageUrl = `data:${imagePart.inlineData.mimeType};base64,${imagePart.inlineData.data}`;

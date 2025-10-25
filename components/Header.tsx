@@ -21,7 +21,7 @@ const Header: React.FC = () => {
     const inactiveLinkClass = "hover:text-fann-gold transition-colors duration-300";
 
     return (
-        <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || isOpen ? 'bg-fann-charcoal/90 backdrop-blur-sm shadow-lg' : 'bg-transparent'}`}>
+        <header className={`top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || isOpen ? 'fixed bg-fann-charcoal/90 backdrop-blur-sm shadow-lg' : 'absolute bg-transparent'}`}>
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
                     <Link to="/" className="text-3xl font-serif font-bold text-fann-gold tracking-wider">

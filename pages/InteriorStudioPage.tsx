@@ -10,7 +10,7 @@ const InteriorStudioPage: React.FC = () => {
           <h1 className="text-4xl font-serif font-bold text-fann-gold mb-4">Interior Design Studio</h1>
           <p className="text-2xl text-gray-300 font-semibold">Coming Soon</p>
           <p className="text-lg text-gray-400 max-w-2xl mx-auto mt-4">
-              The future of interior design is on its way. Our AI Interior Design Studio will empower you to craft stunning concepts for commercial and residential spaces in minutes. Stay tuned.
+              The future of interior design is on its way. Our FANN Interior Design Studio will empower you to craft stunning concepts for commercial and residential spaces in minutes. Stay tuned.
           </p>
           <div className="mt-12">
                <Link to="/contact">

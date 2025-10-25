@@ -106,13 +106,13 @@ const HeroSection: React.FC = () => {
                     transition={{ duration: 0.8, delay: 0.4 }}
                     className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
                 >
-                    <Link to="/ai-design-studio">
+                    <Link to="/fann-studio">
                         <motion.button 
                             whileHover={{ scale: 1.05, boxShadow: "0px 0px 15px rgba(212, 175, 118, 0.5)" }}
                             whileTap={{ scale: 0.95 }}
                             className="bg-fann-gold text-fann-charcoal font-bold py-4 px-10 rounded-full text-lg uppercase tracking-wider transition-all duration-300 w-full sm:w-auto"
                         >
-                            Design with AI
+                            Design with FANN
                         </motion.button>
                     </Link>
                     <Link to="/portfolio">
@@ -181,14 +181,14 @@ const HomePage: React.FC = () => {
                         </div>
                     </section>
 
-                    {/* AI Design Studio Section */}
+                    {/* FANN Studio Section */}
                     <section className="mt-24 text-center bg-fann-charcoal-light rounded-lg py-16 px-8">
                         <h2 className="text-4xl md:text-5xl font-serif font-bold text-fann-gold mb-4">Visualize Your Vision in Minutes</h2>
-                        <p className="max-w-2xl mx-auto text-fann-cream mb-8">Our revolutionary AI Design Studio allows you to configure your exhibition stand, see it in 3D, and get instant pricing. Innovation at your fingertips.</p>
+                        <p className="max-w-2xl mx-auto text-fann-cream mb-8">Our revolutionary FANN Studio allows you to configure your exhibition stand, see it in 3D, and get instant pricing. Innovation at your fingertips.</p>
                         <div className="mb-8">
-                           <img src="https://images.unsplash.com/photo-1677708511494-1b157aa7a104?w=1000&q=80" alt="AI Design Studio Preview" className="rounded-lg shadow-2xl mx-auto" />
+                           <img src="https://images.unsplash.com/photo-1677708511494-1b157aa7a104?w=1000&q=80" alt="FANN Studio Preview" className="rounded-lg shadow-2xl mx-auto" />
                         </div>
-                         <Link to="/ai-design-studio">
+                         <Link to="/fann-studio">
                            <motion.button 
                                 whileHover={{ scale: 1.05, boxShadow: "0px 0px 15px rgba(212, 175, 118, 0.5)" }}
                                 whileTap={{ scale: 0.95 }}
@@ -255,7 +255,7 @@ const HomePage: React.FC = () => {
                                       Book Consultation
                                   </motion.button>
                                 </Link>
-                                <Link to="/ai-design-studio">
+                                <Link to="/fann-studio">
                                    <motion.button 
                                       whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                                       className="border-2 border-fann-gold text-fann-gold font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider w-full sm:w-auto"

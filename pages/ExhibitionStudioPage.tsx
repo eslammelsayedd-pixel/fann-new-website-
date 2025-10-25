@@ -699,7 +699,7 @@ const ExhibitionStudioPage: React.FC = () => {
                              </div>
                              {formData.eventStyleDescription && (
                                 <p className="text-xs text-fann-light-gray mt-2 bg-fann-charcoal p-2 rounded-md border border-fann-border">
-                                    <strong>AI Suggestion for {formData.eventName}:</strong> {formData.eventStyleDescription}
+                                    <strong>FANN Suggestion for {formData.eventName}:</strong> {formData.eventStyleDescription}
                                 </p>
                             )}
                         </div>
@@ -726,7 +726,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                     {isExtractingColors ? <div className="flex items-center gap-2 text-sm text-fann-light-gray"><Loader2 className="w-4 h-4 animate-spin"/>Analyzing...</div> : suggestedColors.length > 0 && suggestedColors[0] !== 'ERROR' ? (
                                         <div>
                                             <span className="flex items-center gap-1 text-green-400 mb-2 text-sm">
-                                                <CheckCircle className="w-4 h-4"/>AI suggestions are ready. Click to select/deselect.
+                                                <CheckCircle className="w-4 h-4"/>Suggestions are ready. Click to select/deselect.
                                             </span>
                                             <div className="flex flex-wrap gap-2">
                                                 {suggestedColors.map(color => {
@@ -797,7 +797,7 @@ const ExhibitionStudioPage: React.FC = () => {
         <div className="min-h-[70vh] flex flex-col justify-center items-center text-center p-4">
             <Loader2 className="w-16 h-16 text-fann-gold animate-spin" />
             <h2 className="text-3xl font-serif text-white mt-6">Generating Your Concepts...</h2>
-            <p className="text-fann-light-gray mt-2 max-w-sm">Our AI is drafting architectural plans and rendering photorealistic visuals. This may take up to a minute.</p>
+            <p className="text-fann-light-gray mt-2 max-w-sm">Our generative technology is drafting architectural plans and rendering photorealistic visuals. This may take up to a minute.</p>
         </div>
     );
 
@@ -815,7 +815,7 @@ const ExhibitionStudioPage: React.FC = () => {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
                     <Sparkles className="mx-auto h-16 w-16 text-fann-gold" />
-                    <h1 className="text-4xl font-serif font-bold text-fann-gold mt-4 mb-4">Your AI-Generated Concepts</h1>
+                    <h1 className="text-4xl font-serif font-bold text-fann-gold mt-4 mb-4">Your FANN-Generated Concepts</h1>
                     <p className="text-lg text-fann-cream max-w-3xl mx-auto">Select your preferred design to receive a detailed proposal and quotation from our team.</p>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

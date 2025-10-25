@@ -52,8 +52,8 @@ export default async function handler(req: Request) {
             const validatedColors = colors.filter((c: any) => typeof c === 'string' && /^#([0-9A-F]{3}){1,2}$/i.test(c));
             return new Response(JSON.stringify({ colors: validatedColors }), { status: 200, headers: { 'Content-Type': 'application/json' } });
         } catch (e) {
-            console.error("Failed to parse AI JSON response for colors:", rawText);
-            throw new Error("AI returned an invalid JSON response for color extraction.");
+            console.error("Failed to parse model's JSON response for colors:", rawText);
+            throw new Error("The model returned an invalid JSON response for color extraction.");
         }
 
     } catch (error: any) {

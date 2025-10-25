@@ -42,7 +42,7 @@ const Chatbot: React.FC = () => {
      useEffect(() => {
         if (isOpen && messages.length === 0) {
             setMessages([
-                { role: 'model', parts: [{ text: "Hello! I'm FANN AI, your virtual assistant. How can I help you with your exhibition, event, or interior design questions today?" }] }
+                { role: 'model', parts: [{ text: "Hello! I'm the FANN Assistant, your virtual guide. How can I help you with your exhibition, event, or interior design questions today?" }] }
             ]);
         }
     }, [isOpen]);
@@ -118,7 +118,7 @@ const Chatbot: React.FC = () => {
                         <header className="flex items-center justify-between p-4 border-b border-fann-border">
                             <div className="flex items-center gap-3">
                                 <Bot className="text-fann-gold" />
-                                <h2 className="font-bold text-lg text-white">FANN AI Assistant</h2>
+                                <h2 className="font-bold text-lg text-white">FANN Assistant</h2>
                             </div>
                             <button onClick={() => setIsOpen(false)} className="text-fann-light-gray hover:text-white" aria-label="Close Chat">
                                 <X />
@@ -179,7 +179,7 @@ const Chatbot: React.FC = () => {
                                     <Send size={20} />
                                 </button>
                             </div>
-                            <p className="text-xs text-fann-light-gray text-center mt-2">AI assistant powered by Gemini. May display inaccurate info.</p>
+                            <p className="text-xs text-fann-light-gray text-center mt-2">Assistant powered by Gemini. May display inaccurate info.</p>
                         </footer>
                     </motion.div>
                 )}

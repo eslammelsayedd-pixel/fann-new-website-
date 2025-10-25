@@ -257,7 +257,7 @@ const EventStudioPage: React.FC = () => {
             const data = await response.json();
             
             if (!data.imageUrls || data.imageUrls.length === 0) {
-                 throw new Error("The AI model failed to generate any images.");
+                 throw new Error("The model failed to generate any images.");
             }
             
             setGeneratedImages(data.imageUrls);
@@ -393,7 +393,7 @@ const EventStudioPage: React.FC = () => {
                                     {isExtractingColors ? <div className="flex items-center gap-2 text-sm text-fann-light-gray"><Loader2 className="w-4 h-4 animate-spin"/>Analyzing...</div> : suggestedColors.length > 0 && suggestedColors[0] !== 'ERROR' ? (
                                         <div>
                                             <span className="flex items-center gap-1 text-green-400 mb-2 text-sm">
-                                                <CheckCircle className="w-4 h-4"/>AI suggestions are ready. Click to select/deselect.
+                                                <CheckCircle className="w-4 h-4"/>Suggestions are ready. Click to select/deselect.
                                             </span>
                                             <div className="flex flex-wrap gap-2">
                                                 {suggestedColors.map(color => {
@@ -449,7 +449,7 @@ const EventStudioPage: React.FC = () => {
         <div className="min-h-[70vh] flex flex-col justify-center items-center text-center p-4">
             <Loader2 className="w-16 h-16 text-fann-gold animate-spin" />
             <h2 className="text-3xl font-serif text-white mt-6">Imagining Your Event...</h2>
-            <p className="text-fann-light-gray mt-2 max-w-sm">Our AI is designing the decor, arranging the layout, and setting the mood. This may take a few moments.</p>
+            <p className="text-fann-light-gray mt-2 max-w-sm">Our FANN technology is designing the decor, arranging the layout, and setting the mood. This may take a few moments.</p>
         </div>
     );
     
@@ -474,7 +474,7 @@ const EventStudioPage: React.FC = () => {
                     <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
                         {generatedImages.map((img, index) => (
                             <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} onClick={() => setSelectedImage(index)} className={`rounded-lg overflow-hidden cursor-pointer border-4 transition-all duration-300 hover:border-fann-gold/50 ${selectedImage === index ? 'border-fann-gold' : 'border-transparent'}`}>
-                                <img src={img} alt={`AI Concept ${index + 1}`} className="w-full h-auto object-cover" />
+                                <img src={img} alt={`Concept ${index + 1}`} className="w-full h-auto object-cover" />
                             </motion.div>
                         ))}
                     </div>

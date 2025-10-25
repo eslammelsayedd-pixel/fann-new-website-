@@ -51,8 +51,8 @@ The JSON object must contain two keys: "style" and "description".
             const result = JSON.parse(rawText);
             return new Response(JSON.stringify(result), { status: 200, headers: { 'Content-Type': 'application/json' } });
         } catch (e) {
-            console.error("Failed to parse AI response as JSON:", rawText);
-            throw new Error("AI returned an invalid JSON response.");
+            console.error("Failed to parse model response as JSON:", rawText);
+            throw new Error("The model returned an invalid JSON response.");
         }
 
     } catch (error: any) {

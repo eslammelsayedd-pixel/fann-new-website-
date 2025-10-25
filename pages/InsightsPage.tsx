@@ -27,7 +27,7 @@ const insightTopics: InsightTopic[] = [
     },
     {
         title: "Audience Engagement Tech at Dubai Events",
-        prompt: "As an expert event management agency, write a blog post detailing the most innovative audience engagement technologies being used at corporate events in Dubai. Discuss AR, VR, and AI-powered networking tools with examples from recent major UAE events. Focus on ROI for exhibitors.",
+        prompt: "As an expert event management agency, write a blog post detailing the most innovative audience engagement technologies being used at corporate events in Dubai. Discuss AR, VR, and FANN-powered networking tools with examples from recent major UAE events. Focus on ROI for exhibitors.",
         category: 'Events',
         icon: BrainCircuit,
         image: 'https://images.unsplash.com/photo-1558522195-e12713517148?w=800&q=80'
@@ -138,7 +138,7 @@ const InsightsPage: React.FC = () => {
 
     const renderTopicSelection = () => (
         <div className="text-center">
-            <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">AI Trendspotter</h1>
+            <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">FANN Trendspotter</h1>
             <p className="text-xl text-fann-cream max-w-3xl mx-auto mb-12">
                 Select a topic for a real-time analysis of key industry trends, with a focus on Dubai and Saudi Arabia.
             </p>
@@ -181,7 +181,7 @@ const InsightsPage: React.FC = () => {
                     <div className="flex flex-col items-center text-center p-8">
                         <Loader2 className="w-12 h-12 text-fann-gold animate-spin" />
                         <h2 className="text-3xl font-serif text-white mt-6">Generating Analysis...</h2>
-                        <p className="text-fann-light-gray mt-2">Our AI is analyzing real-time data from across the web. This might take a moment.</p>
+                        <p className="text-fann-light-gray mt-2">Our FANN technology is analyzing real-time data from across the web. This might take a moment.</p>
                     </div>
                 </motion.div>
             ) : error ? (

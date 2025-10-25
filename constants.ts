@@ -3,7 +3,7 @@ import { Project, Event, Testimonial, NavLink } from './types';
 export const navLinks: NavLink[] = [
     { name: 'Services', path: '/services' },
     { name: 'Portfolio', path: '/portfolio' },
-    { name: 'AI Studio', path: '/ai-design-studio' },
+    { name: 'FANN Studio', path: '/fann-studio' },
     { name: 'Calendar', path: '/events-calendar' },
     { 
         name: 'Company', 

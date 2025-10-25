@@ -62,7 +62,7 @@ const VideoStudioPage: React.FC = () => {
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
                     <div className="text-center mb-12">
                         <Video className="mx-auto h-16 w-16 text-fann-gold" />
-                        <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">AI Video Concept Studio</h1>
+                        <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">FANN Video Concept Studio</h1>
                         <p className="text-xl text-gray-300">
                             Generate short promotional video concepts for your event or brand.
                         </p>

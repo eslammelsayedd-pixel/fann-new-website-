@@ -10,7 +10,7 @@ const studioOptions = [
         name: 'Exhibition Studio', 
         icon: Building, 
         description: 'Generate photorealistic 3D concepts for your exhibition stand. Define your size, style, and features to visualize your presence.',
-        link: '/ai-design-studio/exhibition',
+        link: '/fann-studio/exhibition',
         isComingSoon: false
     },
     { 
@@ -18,15 +18,15 @@ const studioOptions = [
         name: 'Event Studio', 
         icon: Crown, 
         description: 'Create stunning mood boards and concept visuals for your next corporate event. From galas to launches, bring your theme to life.',
-        link: '/ai-design-studio/event',
+        link: '/fann-studio/event',
         isComingSoon: false
     },
     { 
         id: 'interior-design', 
         name: 'Interior Design Studio', 
         icon: PenTool, 
-        description: 'Visualize commercial or residential interiors with AI. Experiment with styles, materials, and layouts for your unique space.',
-        link: '/ai-design-studio/interior',
+        description: 'Visualize commercial or residential interiors. Experiment with styles, materials, and layouts for your unique space.',
+        link: '/fann-studio/interior',
         isComingSoon: true 
     },
 ];
@@ -77,9 +77,9 @@ const AIDesignStudioPage: React.FC = () => {
             <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
-                        <h1 className="text-5xl md:text-6xl font-serif font-bold text-fann-gold mb-4">AI Design Studio</h1>
+                        <h1 className="text-5xl md:text-6xl font-serif font-bold text-fann-gold mb-4">FANN Studio</h1>
                         <p className="text-xl text-fann-cream max-w-3xl mx-auto">
-                            Your vision, realized in minutes. Select a studio to begin creating with the power of generative AI.
+                            Your vision, realized in minutes. Select a studio to begin creating with the power of FANN's generative technology.
                         </p>
                     </div>
 

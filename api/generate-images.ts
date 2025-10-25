@@ -62,7 +62,7 @@ Return your response as a single, valid JSON array. Do not include any text or m
       });
 
       if (!textResponse.candidates || textResponse.candidates.length === 0) {
-        throw new Error("The AI failed to generate text descriptions. This might be due to a content safety restriction.");
+        throw new Error("The model failed to generate text descriptions. This might be due to a content safety restriction.");
       }
 
       let jsonText = textResponse.text.trim();
@@ -70,7 +70,7 @@ Return your response as a single, valid JSON array. Do not include any text or m
       
       const textData = JSON.parse(jsonText);
       if (!Array.isArray(textData) || textData.length < 4) {
-          throw new Error("The AI model failed to generate enough titles and descriptions.");
+          throw new Error("The model failed to generate enough titles and descriptions.");
       }
 
       const angles = [
@@ -153,7 +153,7 @@ Return your response as a single, valid JSON array. Do not include any text or m
             .map(data => `data:${data.mimeType};base64,${data.data}`);
 
         if (imageUrls.length < 2) {
-            throw new Error(`The AI model only generated ${imageUrls.length} out of 2 images. Please try again.`);
+            throw new Error(`The model only generated ${imageUrls.length} out of 2 images. Please try again.`);
         }
 
         return res.status(200).json({ imageUrls });
