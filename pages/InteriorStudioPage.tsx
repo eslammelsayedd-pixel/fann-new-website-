@@ -61,12 +61,12 @@ const initialFormData: FormData = {
 };
 
 const styles = [
-    { name: 'Modern Luxury', image: 'https://images.unsplash.com/photo-1618221195710-dd6b41fa2047?w=800&q=80' },
-    { name: 'Minimalist Zen', image: 'https://images.unsplash.com/photo-1505691938895-1758d7FEB511?w=800&q=80' },
-    { name: 'Contemporary Arabic', image: 'https://images.unsplash.com/photo-1613553474176-1891b3769903?w=800&q=80' },
-    { name: 'Scandinavian Comfort', image: 'https://images.unsplash.com/photo-151211831-63047271a396?w=800&q=80' },
-    { name: 'Industrial Loft', image: 'https://images.unsplash.com/photo-1567699337558-b072a44a1442?w=800&q=80' },
-    { name: 'Biophilic & Natural', image: 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=800&q=80' },
+    { name: 'Modern Luxury', image: 'https://images.pexels.com/photos/6284223/pexels-photo-6284223.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Minimalist Zen', image: 'https://images.pexels.com/photos/2082087/pexels-photo-2082087.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Contemporary Arabic', image: 'https://images.pexels.com/photos/8134937/pexels-photo-8134937.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Scandinavian Comfort', image: 'https://images.pexels.com/photos/4144422/pexels-photo-4144422.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Industrial Loft', image: 'https://images.pexels.com/photos/1643384/pexels-photo-1643384.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Biophilic & Natural', image: 'https://images.pexels.com/photos/2251247/pexels-photo-2251247.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
 ];
 
 const residentialZones = ['Living Area', 'Dining Area', 'Kitchen', 'Master Bedroom', 'Guest Bedroom', 'Home Office', 'Master Bathroom', 'Walk-in Closet', 'Prayer Room', 'Kids\' Play Area', 'Home Cinema', 'Private Gym', 'Majlis'];

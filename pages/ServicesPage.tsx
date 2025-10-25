@@ -115,7 +115,7 @@ const ServicesPage: React.FC = () => {
           icon={<Layers size={40} />}
           title="Exhibition Stand Design & Build"
           description="We transform exhibition spaces into powerful brand experiences. At major venues like the Dubai World Trade Centre and ADNEC, we manage every detail from the initial 3D concept to the final handover, ensuring your stand is not just seen, but remembered."
-          image="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&q=80"
+          image="https://images.pexels.com/photos/2335048/pexels-photo-2335048.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
           services={[
             "Conceptual Design & 3D Visualization",
             "Turnkey Project Management",
@@ -133,7 +133,7 @@ const ServicesPage: React.FC = () => {
             icon={<Calendar size={40} />}
             title="Corporate Event Management"
             description="We orchestrate flawless corporate events that resonate with your audience. Whether it's a high-profile product launch, an elegant gala dinner, or a global summit, our meticulous planning and creative production deliver unforgettable, stress-free experiences."
-            image="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=800&q=80"
+            image="https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
             services={[
               "Strategic Event Concept & Theming",
               "Venue Sourcing & Management",
@@ -151,7 +151,7 @@ const ServicesPage: React.FC = () => {
           icon={<PenTool size={40} />}
           title="Commercial & Residential Interiors"
           description="Our interior design philosophy centers on creating spaces that are both beautiful and functional. We specialize in designing inspiring commercial environments and luxurious residential properties, blending timeless aesthetics with modern innovation to reflect your unique identity."
-          image="https://images.unsplash.com/photo-16182211957_10-dd6b41fa2047?w=800&q=80"
+          image="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
           services={[
             "Comprehensive Space Planning",
             "Concept & Mood Board Development",

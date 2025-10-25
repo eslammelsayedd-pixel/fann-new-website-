@@ -24,7 +24,8 @@ const SEO: React.FC<SEOProps> = ({ title, description, schema, children }) => {
 
     // Handle Schema Markup
     const scriptId = 'json-ld-schema';
-    let scriptTag = document.getElementById(scriptId);
+    // FIX: Add type assertion to ensure TypeScript knows this is an HTMLScriptElement.
+    let scriptTag = document.getElementById(scriptId) as HTMLScriptElement | null;
     
     if (schema) {
       if (!scriptTag) {

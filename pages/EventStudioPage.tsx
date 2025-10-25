@@ -34,12 +34,12 @@ const initialFormData: FormData = {
 };
 
 const eventTypes = [
-    { name: 'Gala Dinner', image: 'https://images.unsplash.com/photo-1516475429286-465d815a0d72?w=800&q=80' },
-    { name: 'Product Launch', image: 'https://images.unsplash.com/photo-1555529124-7625a3c0e35e?w=800&q=80' },
-    { name: 'Conference', image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&q=80' },
-    { name: 'Awards Ceremony', image: 'https://images.unsplash.com/photo-1594125334482-192662e4d24c?w=800&q=80' },
-    { name: 'Brand Activation', image: 'https://images.unsplash.com/photo-1511578191439-6490dd523708?w=800&q=80' },
-    { name: 'Corporate Summit', image: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800&q=80' },
+    { name: 'Gala Dinner', image: 'https://images.pexels.com/photos/94843/pexels-photo-94843.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Product Launch', image: 'https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Conference', image: 'https://images.pexels.com/photos/236697/pexels-photo-236697.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Awards Ceremony', image: 'https://images.pexels.com/photos/11149726/pexels-photo-11149726.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Brand Activation', image: 'https://images.pexels.com/photos/8566427/pexels-photo-8566427.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Corporate Summit', image: 'https://images.pexels.com/photos/1181395/pexels-photo-1181395.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
 ];
 
 const eventElementsOptions = [

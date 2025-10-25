@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
@@ -15,7 +16,6 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import InsightsPage from './pages/InsightsPage';
 import { ApiKeyProvider } from './context/ApiKeyProvider';
-import MediaStudioPage from './pages/MediaStudioPage';
 
 const App: React.FC = () => {
     const location = useLocation();
@@ -32,7 +32,6 @@ const App: React.FC = () => {
                         <Route path="/fann-studio/exhibition" element={<ExhibitionStudioPage />} />
                         <Route path="/fann-studio/event" element={<EventStudioPage />} />
                         <Route path="/fann-studio/interior" element={<InteriorStudioPage />} />
-                        <Route path="/fann-studio/media" element={<MediaStudioPage />} />
                         <Route path="/events-calendar" element={<EventsCalendarPage />} />
                         <Route path="/about" element={<AboutPage />} />
                         <Route path="/contact" element={<ContactPage />} />
