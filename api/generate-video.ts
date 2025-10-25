@@ -1,7 +1,8 @@
 import { GoogleGenAI } from "@google/genai";
 
 // FIX: Add a type declaration for the Node.js `Buffer` global.
-// This resolves the TypeScript error "Cannot find name 'Buffer'" for this file.
+// This resolves the TypeScript error "Cannot find name 'Buffer'" because the build environment
+// for this serverless function does not seem to automatically include Node.js global types.
 declare const Buffer: {
     from(data: any): any;
 };

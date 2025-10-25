@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import AnimatedPage from '../components/AnimatedPage';
-import { Building, Crown, PenTool } from 'lucide-react';
+import { Building, Crown, PenTool, Film } from 'lucide-react';
 
 const studioOptions = [
     { 
@@ -28,6 +28,14 @@ const studioOptions = [
         description: 'Visualize commercial or residential interiors. Experiment with styles, materials, and layouts for your unique space.',
         link: '/fann-studio/interior',
         isComingSoon: false 
+    },
+    { 
+        id: 'media', 
+        name: 'Media Studio', 
+        icon: Film, 
+        description: 'Generate promotional video concepts or perform AI-powered edits on your project photos.',
+        link: '/fann-studio/media',
+        isComingSoon: false
     },
 ];
 
@@ -83,7 +91,7 @@ const AIDesignStudioPage: React.FC = () => {
                         </p>
                     </div>
 
-                    <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                    <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-8 max-w-7xl mx-auto">
                         {studioOptions.map((studio, index) => (
                            <StudioCard key={studio.id} studio={studio} index={index} />
                         ))}
