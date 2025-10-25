@@ -1,14 +1,13 @@
 import React from 'react';
 
 // FIX: Corrected the global type declaration for the custom `<model-viewer>` element.
-// The previous declaration was overwriting React's default JSX element types instead of augmenting them,
-// which caused TypeScript errors for all standard HTML tags (e.g., `div`, `p`).
-// By explicitly extending `React.JSX.IntrinsicElements`, we ensure that all built-in
-// element types are preserved while adding our custom `model-viewer` type,
-// resolving the widespread JSX errors across the application.
+// Using an `extends` clause here was incorrectly overwriting React's default JSX element types
+// instead of augmenting them. By simply redeclaring the interface, we leverage
+// TypeScript's declaration merging to add our custom `model-viewer` type while
+// preserving all built-in element types, resolving the widespread JSX errors across the application.
 declare global {
     namespace JSX {
-        interface IntrinsicElements extends React.JSX.IntrinsicElements {
+        interface IntrinsicElements {
             'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
                 src?: string;
                 alt?: string;

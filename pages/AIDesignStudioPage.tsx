@@ -27,7 +27,7 @@ const studioOptions = [
         icon: PenTool, 
         description: 'Visualize commercial or residential interiors. Experiment with styles, materials, and layouts for your unique space.',
         link: '/fann-studio/interior',
-        isComingSoon: true 
+        isComingSoon: false 
     },
 ];
 

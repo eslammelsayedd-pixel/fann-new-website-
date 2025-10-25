@@ -1,4 +1,4 @@
-import { GoogleGenAI, Modality, Type } from "@google/genai";
+import { GoogleGenAI, Modality, Type, Part } from "@google/genai";
 
 // This is a Vercel Serverless Function. It uses a Node.js-style request object.
 // The `req.body` is pre-parsed, so we don't use `req.json()`.
@@ -10,14 +10,7 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    const { logo, mimeType, promptData, prompt } = req.body;
-
-    if (!logo || !mimeType) {
-      return res.status(400).json({ error: 'Missing logo or mimeType' });
-    }
-    if (!promptData && !prompt) {
-      return res.status(400).json({ error: 'Missing promptData or prompt' });
-    }
+    const { logo, mimeType, promptData, prompt, promptDataInterior } = req.body;
 
     const apiKey = process.env.API_KEY || process.env.GOOGLE_CLOUD_API_KEY;
     if (!apiKey) {
@@ -27,7 +20,9 @@ export default async function handler(req: any, res: any) {
     
     // --- Branch for Exhibition Studio ---
     if (promptData) {
-      const baseTextGenPrompt = `Based on the following design brief for an exhibition stand, generate 4 distinct and creative concept proposals. For each proposal, provide a unique "title" and a short "description" (2-3 sentences that highlight a key feature or benefit).
+      if (!logo || !mimeType) return res.status(400).json({ error: 'Missing logo or mimeType for Exhibition' });
+      
+      const baseTextGenPrompt = `Based on the following design brief for an exhibition stand, generate 3 distinct and creative concept proposals. For each proposal, provide a unique "title" and a short "description" (2-3 sentences that highlight a key feature or benefit).
 **Design Brief:**
 - **Event:** ${promptData.event}
 - **Industry:** ${promptData.industry}
@@ -66,10 +61,8 @@ Return your response as a single, valid JSON array. Do not include any text or m
       }
 
       let jsonText = textResponse.text.trim();
-      if (jsonText.startsWith('```json')) jsonText = jsonText.substring(7, jsonText.lastIndexOf('```')).trim();
-      
       const textData = JSON.parse(jsonText);
-      if (!Array.isArray(textData) || textData.length < 4) {
+      if (!Array.isArray(textData) || textData.length < 3) {
           throw new Error("The model failed to generate enough titles and descriptions.");
       }
 
@@ -110,31 +103,100 @@ Return your response as a single, valid JSON array. Do not include any text or m
 
       const concepts = textData.map((concept: any, conceptIndex: number) => {
           const images: Record<string, string> = {};
-          
           angles.forEach((angle, angleIndex) => {
-              const responseIndex = conceptIndex * angles.length + angleIndex;
-              const res = imageResponses[responseIndex];
+              const res = imageResponses[conceptIndex * angles.length + angleIndex];
               const inlineData = res.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData;
-              if (inlineData) {
-                  images[angle.id] = `data:${inlineData.mimeType};base64,${inlineData.data}`;
-              } else {
-                  // Fallback in case one angle fails
-                  images[angle.id] = 'https://images.unsplash.com/photo-1594008137128-2041a7d65373?w=800&q=80';
-              }
+              images[angle.id] = inlineData ? `data:${inlineData.mimeType};base64,${inlineData.data}` : '';
           });
-          
-          return {
-              title: concept.title,
-              description: concept.description,
-              images: images
-          };
+          return { title: concept.title, description: concept.description, images };
       });
 
       return res.status(200).json({ concepts });
     }
+    
+    // --- NEW Branch for Interior Studio ---
+    else if (promptDataInterior) {
+        const pdi = promptDataInterior;
+        const isCommercial = ['Office', 'Retail space'].includes(pdi.spaceType);
+
+        const textGenPrompt = `As a senior interior designer in Dubai, generate 3 distinct concept proposals for the following client brief. For each, provide a "title" and a "description" (2-3 sentences capturing the essence of the design).
+**Client Brief:**
+- **Space Type:** ${pdi.spaceType}, ${pdi.area} sqm.
+- **Location:** ${pdi.location}.
+- **Objective:** ${pdi.designObjective}.
+- **Style:** ${pdi.style}.
+- **Color Palette:** ${pdi.colorPreferences}.
+- **Functional Zones:** ${pdi.functionalZones.join(', ')}.
+- **Custom Features:** ${pdi.customFeatures || 'None'}.
+- **Special Requests:** ${pdi.specialRequests || 'None'}.
+${isCommercial ? `- **Brand Keywords:** ${pdi.brandKeywords}` : ''}
+The user has provided a floor plan and moodboard images for inspiration.
+
+**Output Format:** Return a valid JSON array of 3 objects, each with a "title" and "description" key. No extra text or markdown.`;
+
+        const textResponse = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: textGenPrompt,
+            config: { responseMimeType: "application/json", responseSchema: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { title: { type: Type.STRING }, description: { type: Type.STRING }}, required: ['title', 'description']}}}
+        });
+
+        if (!textResponse.candidates || textResponse.candidates.length === 0) throw new Error("Model failed to generate text descriptions for interior design.");
+        const textData = JSON.parse(textResponse.text.trim());
+        if (!Array.isArray(textData) || textData.length < 3) throw new Error("Model failed to generate enough interior design titles/descriptions.");
+        
+        const angles = [
+            { id: 'perspective', prompt: 'Generate a photorealistic, magazine-quality **main perspective view** showing the primary living or working area.' },
+            { id: 'topDown', prompt: 'Generate a visually appealing, stylized **top-down floor plan view**. This should clearly show the layout of furniture and zones, rendered with textures and lighting.' },
+            { id: 'detail', prompt: 'Generate a beautifully composed **close-up detail shot** of a key feature, like custom joinery, a material transition, or a statement furniture piece.' }
+        ];
+
+        const imagePromises = textData.flatMap((concept: any) => {
+            const baseImagePrompt = `You are a world-class Dubai-based interior designer. Create a single, photorealistic image based on this specific concept and the user's detailed brief.
+- **Concept Title:** "${concept.title}"
+- **Concept Description:** "${concept.description}"
+**User Brief Adherence is CRITICAL:**
+- **Space:** ${pdi.spaceType}, ${pdi.area} sqm, located in ${pdi.location}.
+- **Style:** Strictly **${pdi.style}**.
+- **Layout and Function:** The layout must be informed by the attached floor plan and must include zones for: ${pdi.functionalZones.join(', ')}.
+- **Inspiration:** The aesthetic must be heavily inspired by the attached moodboard images.
+- **Colors:** The color scheme is: ${pdi.colorPreferences}.
+${isCommercial && pdi.brandGuidelinesData ? '- **Branding:** The space must reflect the corporate identity from the attached brand guidelines.' : ''}
+**Atmosphere:** High-end, luxurious, impeccable lighting, and extremely realistic. No people.`;
+
+            const parts: Part[] = [];
+            if (pdi.floorPlanData) parts.push({ inlineData: { data: pdi.floorPlanData.base64, mimeType: pdi.floorPlanData.mimeType } });
+            pdi.moodboardsData.forEach((mb: any) => parts.push({ inlineData: { data: mb.base64, mimeType: mb.mimeType } }));
+            if (isCommercial && pdi.brandGuidelinesData) parts.push({ inlineData: { data: pdi.brandGuidelinesData.base64, mimeType: pdi.brandGuidelinesData.mimeType } });
+
+            return angles.map(angle => {
+                const finalParts = [...parts, { text: `${baseImagePrompt}\n\n- **REQUIRED VIEW:** ${angle.prompt}` }];
+                return ai.models.generateContent({
+                    model: 'gemini-2.5-flash-image',
+                    contents: { parts: finalParts },
+                    config: { responseModalities: [Modality.IMAGE] }
+                });
+            });
+        });
+        
+        const imageResponses = await Promise.all(imagePromises);
+
+        const concepts = textData.map((concept: any, conceptIndex: number) => {
+            const images: Record<string, string> = {};
+            angles.forEach((angle, angleIndex) => {
+                const res = imageResponses[conceptIndex * angles.length + angleIndex];
+                const inlineData = res.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData;
+                images[angle.id] = inlineData ? `data:${inlineData.mimeType};base64,${inlineData.data}` : '';
+            });
+            return { title: concept.title, description: concept.description, images };
+        });
+
+        return res.status(200).json({ concepts });
+    }
 
     // --- Branch for Event Studio ---
-    if (prompt) {
+    else if (prompt) {
+        if (!logo || !mimeType) return res.status(400).json({ error: 'Missing logo or mimeType for Event' });
+
         const imagePromises = Array(2).fill(0).map(() => 
             ai.models.generateContent({
                 model: 'gemini-2.5-flash-image',
@@ -150,7 +212,7 @@ Return your response as a single, valid JSON array. Do not include any text or m
         const imageUrls = imageResponses
             .map(res => res.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData)
             .filter(Boolean)
-            .map(data => `data:${data.mimeType};base64,${data.data}`);
+            .map((data: any) => `data:${data.mimeType};base64,${data.data}`);
 
         if (imageUrls.length < 2) {
             throw new Error(`The model only generated ${imageUrls.length} out of 2 images. Please try again.`);
