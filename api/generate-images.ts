@@ -32,9 +32,7 @@ export default async function handler(req: Request) {
 - **Style:** The overall design aesthetic should be **${promptData.style}**.
 - **Key Mandate:** The stand must visibly include spaces/areas for all specified 'Functionality Requirements': ${promptData.functionality}. This is critical.
 - **Branding:** The stand is for a company whose logo is attached. The brand colors are **${promptData.colors}**. Integrate the logo and colors naturally into the design on walls, reception desks, or digital screens.
-${promptData.specialRequests ? `- **Additional Creative Mandate:** ${promptData.specialRequests}` : ''}
 - **Atmosphere:** The image should look high-end, professionally lit, and visually stunning. Do not include any people in the image.`;
-
 
     const imagePromises = Array(4).fill(0).map(() => 
         ai.models.generateContent({
@@ -65,7 +63,7 @@ ${imageGenPrompt.replace('The stand is for a company whose logo is attached.', '
 Return your response as a single, valid JSON array. Do not include any text or markdown formatting outside of the JSON structure. Each object in the array must have two keys: "title" (string) and "description" (string).`;
 
     const textResponse = await ai.models.generateContent({
-        model: 'gemini-2.5-pro',
+        model: 'gemini-2.5-flash',
         contents: textGenPrompt,
         config: {
             responseMimeType: "application/json",
@@ -79,8 +77,7 @@ Return your response as a single, valid JSON array. Do not include any text or m
                     },
                     required: ['title', 'description']
                 }
-            },
-            thinkingConfig: { thinkingBudget: 32768 }
+            }
         }
     });
 

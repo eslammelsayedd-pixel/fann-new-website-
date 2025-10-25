@@ -1,5 +1,4 @@
-// FIX: Changed `import type` to `import *` to ensure TypeScript can find the 'react' module for augmentation.
-import * as React from 'react';
+import type React from 'react';
 
 // By defining custom element types in a global declaration, we can use them in JSX
 // without TypeScript errors.
