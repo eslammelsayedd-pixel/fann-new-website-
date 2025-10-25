@@ -35,38 +35,35 @@ const LanguageSwitcher: React.FC = () => {
     }, [isDropdownOpen]);
     
     useEffect(() => {
-        // Periodically check for the Google Translate cookie to update the UI
-        // This is necessary because the widget can take time to initialize and set the cookie
+        // This effect runs on page load and keeps the UI in sync with the cookie
         const intervalId = setInterval(() => {
             const cookie = getCookie('googtrans');
             if (cookie) {
                 const langCode = cookie.split('/')[2];
-                if (langCode !== currentLanguageCode) {
+                if (langCode && langCode !== currentLanguageCode) {
                     setCurrentLanguageCode(langCode);
                 }
             } else if (currentLanguageCode !== 'en') {
-                // If cookie is removed (e.g., "Show Original" clicked), reset to English
                  setCurrentLanguageCode('en');
             }
-        }, 500); // Check every 500ms
+        }, 500);
 
-        return () => clearInterval(intervalId); // Cleanup on unmount
+        return () => clearInterval(intervalId);
     }, [currentLanguageCode]);
 
 
     const changeLanguage = (langCode: string) => {
-        const googleTranslateElement = document.getElementById('google_translate_element');
-        if (googleTranslateElement) {
-            const select = googleTranslateElement.querySelector('select.goog-te-combo');
-            if (select instanceof HTMLSelectElement) {
-                select.value = langCode;
-                select.dispatchEvent(new Event('change'));
-                
-                // Manually update UI for immediate feedback
-                setCurrentLanguageCode(langCode);
-            }
-        }
+        // Setting the Google Translate cookie and reloading is the most reliable
+        // way to apply the language change across the entire application,
+        // avoiding race conditions with the widget's initialization.
+        document.cookie = `googtrans=/en/${langCode}; path=/`;
+        
+        // Update state for optimistic UI update, though the reload handles the final state.
+        setCurrentLanguageCode(langCode);
         setIsDropdownOpen(false);
+
+        // Reload the page for the new language to take effect.
+        window.location.reload();
     };
 
     return (
