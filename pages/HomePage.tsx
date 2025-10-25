@@ -1,67 +1,48 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowDown, Layers, Calendar, Star, PenTool, Play, Pause, Volume2, VolumeX, Loader2 } from 'lucide-react';
+import { ArrowDown, Layers, Calendar, Star, PenTool, Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { portfolioProjects, testimonials } from '../constants';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 
+// Move this OUTSIDE the component to prevent re-creation on every render
+const dynamicContent = [
+    { 
+        headline: "Unforgettable Exhibitions", 
+        backgroundVideo: "https://videos.pexels.com/video-files/3254013/3254013-hd_1920_1080_25fps.mp4"
+    },
+    { 
+        headline: "Flawless Events", 
+        backgroundVideo: "https://videos.pexels.com/video-files/8788448/8788448-hd_1920_1080_24fps.mp4"
+    },
+    { 
+        headline: "Inspiring Interiors", 
+        backgroundVideo: "https://videos.pexels.com/video-files/8324311/8324311-hd_1920_1080_25fps.mp4"
+    }
+];
+
 const HeroSection: React.FC = () => {
-    // State for the vision board
-    const [userVision, setUserVision] = useState('');
-    const [generatedContent, setGeneratedContent] = useState<{
-        headline: string;
-        description: string;
-        videoUrl: string;
-    } | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    
-    // Video player state
+    const [contentIndex, setContentIndex] = useState(0);
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isPlaying, setIsPlaying] = useState(true);
     const [isMuted, setIsMuted] = useState(true);
     const heroRef = useRef<HTMLElement>(null);
 
-    // Parallax effect
     const { scrollYProgress } = useScroll({
         target: heroRef,
         offset: ["start start", "end start"],
     });
+
     const videoY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
 
-    const handleVisualize = async () => {
-        if (!userVision.trim()) {
-            setError('Please enter your vision to begin.');
-            return;
-        }
-        setError(null);
-        setIsLoading(true);
-        setGeneratedContent(null);
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setContentIndex(prevIndex => (prevIndex + 1) % dynamicContent.length);
+        }, 5000);
+        return () => clearInterval(timer);
+    }, []);
 
-        try {
-            const response = await fetch('/api/generate-hero-vision', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ vision: userVision })
-            });
-
-            if (!response.ok) {
-                const err = await response.json();
-                throw new Error(err.error || 'Failed to generate vision.');
-            }
-
-            const data = await response.json();
-            setGeneratedContent(data);
-
-        } catch (e: any) {
-            setError(e.message);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-    
-    // Video controls
     useEffect(() => {
         if (videoRef.current) {
             videoRef.current.muted = isMuted;
@@ -71,21 +52,19 @@ const HeroSection: React.FC = () => {
                 videoRef.current.pause();
             }
         }
-    }, [isPlaying, isMuted, generatedContent]);
+    }, [isPlaying, isMuted, contentIndex]);
     
     const handlePlayPause = () => setIsPlaying(prev => !prev);
     const handleMuteUnmute = () => setIsMuted(prev => !prev);
 
-    const currentVideo = generatedContent?.videoUrl || "https://videos.pexels.com/video-files/3254013/3254013-hd_1920_1080_25fps.mp4";
-
     return (
         <section ref={heroRef} className="relative h-screen flex items-center justify-center text-center text-white overflow-hidden">
-             <AnimatePresence>
+            <AnimatePresence mode="wait">
                 <motion.video
                     style={{ y: videoY }}
-                    key={currentVideo} // Key change will trigger animation
+                    key={contentIndex}
                     ref={videoRef}
-                    src={currentVideo}
+                    src={dynamicContent[contentIndex].backgroundVideo}
                     autoPlay
                     loop
                     muted
@@ -102,76 +81,62 @@ const HeroSection: React.FC = () => {
 
             <div className="absolute inset-0 bg-black/60 z-10"></div>
             
-            <div className="relative z-20 p-4 w-full max-w-4xl mx-auto">
-                <AnimatePresence mode="wait">
-                    {generatedContent ? (
-                        <motion.div
-                            key="generated"
+            <div className="relative z-20 p-4">
+                <motion.h1 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className="text-5xl md:text-7xl lg:text-8xl font-serif font-extrabold leading-tight md:leading-snug"
+                >
+                    <span className="block font-bold">Transforming Visions Into</span>
+                    <AnimatePresence mode="wait">
+                        <motion.span
+                            key={contentIndex}
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -30 }}
                             transition={{ duration: 0.7 }}
+                            className="text-fann-gold inline-block mt-2 md:mt-4"
                         >
-                            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-extrabold leading-tight md:leading-snug">
-                                <span className="block font-bold">Transforming Visions Into</span>
-                                <span className="text-fann-gold inline-block mt-2 md:mt-4">
-                                    {generatedContent.headline}
-                                </span>
-                            </h1>
-                            <p className="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-fann-cream">
-                                {generatedContent.description}
-                            </p>
-                            <motion.button
-                                onClick={() => { setGeneratedContent(null); setUserVision(''); setError(null); }}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="mt-10 border-2 border-fann-gold text-fann-gold font-bold py-3 px-8 rounded-full text-base uppercase tracking-wider transition-all duration-300"
-                            >
-                                Start a New Vision
-                            </motion.button>
-                        </motion.div>
-                    ) : (
-                         <motion.div
-                            key="input"
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -30 }}
-                            transition={{ duration: 0.7 }}
-                            className="w-full"
-                         >
-                            <h1 className="text-5xl md:text-6xl font-serif font-extrabold leading-tight">
-                                What Is Your Vision?
-                            </h1>
-                            <p className="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-fann-cream">
-                                Describe your ideal event, exhibition, or interior space, and watch it come to life.
-                            </p>
-                            <div className="mt-8 max-w-2xl mx-auto flex flex-col sm:flex-row items-center gap-4 bg-black/30 backdrop-blur-sm p-4 rounded-lg border border-fann-border">
-                                <input
-                                    type="text"
-                                    value={userVision}
-                                    onChange={(e) => setUserVision(e.target.value)}
-                                    onKeyPress={(e) => e.key === 'Enter' && handleVisualize()}
-                                    placeholder="e.g., An elegant art deco gala"
-                                    className="w-full bg-transparent text-white placeholder-fann-light-gray text-lg border-b-2 border-fann-gold focus:outline-none focus:border-white transition-colors duration-300 py-2 px-2"
-                                    disabled={isLoading}
-                                />
-                                <motion.button
-                                    onClick={handleVisualize}
-                                    disabled={isLoading}
-                                    whileHover={{ scale: !isLoading ? 1.05 : 1 }}
-                                    whileTap={{ scale: !isLoading ? 0.95 : 1 }}
-                                    className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider transition-all duration-300 w-full sm:w-auto flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                                >
-                                    {isLoading ? <Loader2 className="animate-spin" /> : 'Visualize'}
-                                </motion.button>
-                            </div>
-                            {error && <p className="text-red-400 mt-4">{error}</p>}
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+                            {dynamicContent[contentIndex].headline}
+                        </motion.span>
+                    </AnimatePresence>
+                </motion.h1>
+                <motion.p 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                    className="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-fann-cream"
+                >
+                    Premier Exhibition, Event & Interior Design Innovators
+                </motion.p>
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.4 }}
+                    className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+                >
+                    <Link to="/fann-studio">
+                        <motion.button 
+                            whileHover={{ scale: 1.05, boxShadow: "0px 0px 15px rgba(212, 175, 118, 0.5)" }}
+                            whileTap={{ scale: 0.95 }}
+                            className="bg-fann-gold text-fann-charcoal font-bold py-4 px-10 rounded-full text-lg uppercase tracking-wider transition-all duration-300 w-full sm:w-auto"
+                        >
+                            Design with FANN
+                        </motion.button>
+                    </Link>
+                    <Link to="/portfolio">
+                         <motion.button 
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="border-2 border-fann-gold text-fann-gold font-bold py-4 px-10 rounded-full text-lg uppercase tracking-wider transition-all duration-300 w-full sm:w-auto"
+                        >
+                            View Portfolio
+                        </motion.button>
+                    </Link>
+                </motion.div>
             </div>
-            
-            {/* Video controls and scroll indicator */}
+
             <div className="absolute bottom-6 left-6 z-20 flex items-center gap-3">
                 <button onClick={handlePlayPause} className="bg-black/40 p-2 rounded-full text-white hover:bg-black/70 transition-colors" aria-label={isPlaying ? 'Pause video' : 'Play video'}>
                     {isPlaying ? <Pause size={20} /> : <Play size={20} />}

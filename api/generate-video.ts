@@ -1,7 +1,10 @@
 import { GoogleGenAI } from "@google/genai";
 
-// FIX: The `Buffer` object, which is global in a Node.js environment, was not recognized by TypeScript, causing a "Cannot find name 'Buffer'" error. Declaring it as `var Buffer: any;` makes TypeScript aware of its existence at compile time, resolving the error while relying on the runtime to provide the actual implementation.
-declare var Buffer: any;
+// FIX: Add a type declaration for the Node.js `Buffer` global.
+// This resolves the TypeScript error "Cannot find name 'Buffer'" for this file.
+declare const Buffer: {
+    from(data: any): any;
+};
 
 // This is a Vercel Serverless Function, not an Edge Function, to allow for longer execution times.
 // It uses a Node.js-style request object (`req.body`) and response object (`res.status()...`).
