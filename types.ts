@@ -1,4 +1,5 @@
-import type React from 'react';
+// FIX: Changed to a non-type-only import to resolve module augmentation errors.
+import React from 'react';
 
 // By defining custom element types in a global declaration, we can use them in JSX
 // without TypeScript errors.
