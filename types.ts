@@ -1,5 +1,6 @@
-// FIX: Changed to a non-type-only import to resolve module augmentation errors.
-import React from 'react';
+// FIX: Changed the React import to `import * as React from 'react'` to ensure module compatibility
+// for JSX augmentation, which resolves the "module 'react' cannot be found" error.
+import * as React from 'react';
 
 // By defining custom element types in a global declaration, we can use them in JSX
 // without TypeScript errors.
@@ -39,7 +40,8 @@ export interface Testimonial {
 // causing compilation errors for standard tags like `div` and `p`.
 // This updated declaration merges with React's intrinsic elements, preserving all
 // standard HTML tags while adding support for the custom `<model-viewer>` element.
-declare module 'react' {
+// FIX: Wrapped the JSX namespace augmentation in `declare global` to correctly extend React's intrinsic elements. This resolves the "module 'react' cannot be found" TypeScript error by using a global augmentation instead of a module-specific one.
+declare global {
     namespace JSX {
         interface IntrinsicElements {
             'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {

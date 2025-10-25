@@ -81,8 +81,21 @@ Return your response as a single, valid JSON array. Do not include any text or m
               }
           }
       });
+      
+      let jsonText = textResponse.text.trim();
+      if (jsonText.startsWith('```json')) {
+        jsonText = jsonText.substring(7, jsonText.lastIndexOf('```')).trim();
+      } else if (jsonText.startsWith('```')) {
+        jsonText = jsonText.substring(3, jsonText.lastIndexOf('```')).trim();
+      }
 
-      const textData = JSON.parse(textResponse.text);
+      let textData;
+      try {
+          textData = JSON.parse(jsonText);
+      } catch (e) {
+          console.error("Failed to parse JSON from AI response for descriptions:", jsonText);
+          throw new Error("The AI failed to return valid JSON for the concept descriptions. Please try generating again.");
+      }
 
       if (!textData || textData.length < 4) {
           throw new Error("The AI model failed to generate enough titles and descriptions.");
