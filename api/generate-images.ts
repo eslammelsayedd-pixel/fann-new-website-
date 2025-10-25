@@ -1,19 +1,22 @@
 import { GoogleGenAI, Modality, Type } from "@google/genai";
 
-export default async function handler(req: Request) {
+// This is a Vercel Serverless Function. It uses a Node.js-style request object.
+// The `req.body` is pre-parsed, so we don't use `req.json()`.
+// We use `res.status().json()` to send back the response.
+export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405, headers: { 'Content-Type': 'application/json' } });
+    res.setHeader('Allow', ['POST']);
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const body = await req.json();
-    const { logo, mimeType, promptData, prompt } = body;
+    const { logo, mimeType, promptData, prompt } = req.body;
 
     if (!logo || !mimeType) {
-      return new Response(JSON.stringify({ error: 'Missing logo or mimeType' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+      return res.status(400).json({ error: 'Missing logo or mimeType' });
     }
     if (!promptData && !prompt) {
-      return new Response(JSON.stringify({ error: 'Missing promptData or prompt' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+      return res.status(400).json({ error: 'Missing promptData or prompt' });
     }
 
     const apiKey = process.env.API_KEY || process.env.GOOGLE_CLOUD_API_KEY;
@@ -36,7 +39,7 @@ export default async function handler(req: Request) {
 - **Branding:** The stand is for a company whose logo is attached. The brand colors are **${promptData.colors}**. Integrate the logo and colors naturally into the design on walls, reception desks, or digital screens.
 - **Atmosphere:** The image should look high-end, professionally lit, and visually stunning. Do not include any people in the image.`;
 
-      // OPTIMIZATION: Generate 2 images instead of 4 to improve reliability and avoid timeouts.
+      // OPTIMIZATION: Run image and text generation in parallel to avoid timeouts.
       const imagePromises = Array(2).fill(0).map(() => 
           ai.models.generateContent({
               model: 'gemini-2.5-flash-image',
@@ -48,23 +51,13 @@ export default async function handler(req: Request) {
           })
       );
 
-      const imageResponses = await Promise.all(imagePromises);
-      const imageUrls = imageResponses
-          .map(res => res.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData)
-          .filter(Boolean)
-          .map(data => `data:${data.mimeType};base64,${data.data}`);
-
-      if (imageUrls.length < 2) {
-          throw new Error(`The AI model only generated ${imageUrls.length} out of 2 images. Please try again.`);
-      }
-
       const textGenPrompt = `Based on the following design brief for an exhibition stand, generate 2 distinct and creative concept proposals. For each proposal, provide a unique "title" and a short "description" (2-3 sentences).
 **Design Brief:**
 ${imageGenPrompt.replace('The stand is for a company whose logo is attached.', '')}
 **Output Format:**
 Return your response as a single, valid JSON array. Do not include any text or markdown formatting outside of the JSON structure. Each object in the array must have two keys: "title" (string) and "description" (string).`;
-
-      const textResponse = await ai.models.generateContent({
+      
+      const textPromise = ai.models.generateContent({
           model: 'gemini-2.5-flash',
           contents: textGenPrompt,
           config: {
@@ -83,8 +76,20 @@ Return your response as a single, valid JSON array. Do not include any text or m
           }
       });
       
-      // FIX: Added a robust check to ensure a valid response was received before processing.
-      // This prevents a server crash if the AI fails to generate text (e.g., due to content safety).
+      const [imageResponses, textResponse] = await Promise.all([
+        Promise.all(imagePromises),
+        textPromise
+      ]);
+
+      const imageUrls = imageResponses
+          .map(res => res.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData)
+          .filter(Boolean)
+          .map(data => `data:${data.mimeType};base64,${data.data}`);
+
+      if (imageUrls.length < 2) {
+          throw new Error(`The AI model only generated ${imageUrls.length} out of 2 images. Please try again.`);
+      }
+
       if (!textResponse.candidates || textResponse.candidates.length === 0) {
         console.error("Text generation failed: No candidates returned from the model.", textResponse);
         throw new Error("The AI failed to generate text descriptions. This might be due to a content safety restriction on the text prompt or an internal model error. Please try modifying your brief or try again.");
@@ -116,7 +121,7 @@ Return your response as a single, valid JSON array. Do not include any text or m
           description: textData[index]?.description || "A stunning and creative concept for your event.",
       }));
 
-      return new Response(JSON.stringify({ concepts }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+      return res.status(200).json({ concepts });
     }
 
     // --- Branch for Event Studio ---
@@ -142,14 +147,13 @@ Return your response as a single, valid JSON array. Do not include any text or m
             throw new Error(`The AI model only generated ${imageUrls.length} out of 4 images. Please try again.`);
         }
 
-        return new Response(JSON.stringify({ imageUrls }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        return res.status(200).json({ imageUrls });
     }
 
-    // This should not be reached if validation is correct
-    return new Response(JSON.stringify({ error: 'Invalid request payload.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+    return res.status(400).json({ error: 'Invalid request payload.' });
 
   } catch (error: any) {
     console.error('Error in generate-images API:', error);
-    return new Response(JSON.stringify({ error: error.message || 'An internal server error occurred.' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+    return res.status(500).json({ error: error.message || 'An internal server error occurred.' });
   }
 }

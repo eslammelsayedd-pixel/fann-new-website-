@@ -1,16 +1,23 @@
 import { GoogleGenAI } from "@google/genai";
 
+// FIX: Add a type declaration for the Node.js `Buffer` global.
+// This resolves the TypeScript error "Cannot find name 'Buffer'" for this file.
+declare const Buffer: {
+    from(data: any): any;
+};
+
 // This is a Vercel Serverless Function, not an Edge Function, to allow for longer execution times.
-// Configure maxDuration in vercel.json for this function.
-export default async function handler(req: Request) {
+// It uses a Node.js-style request object (`req.body`) and response object (`res.status()...`).
+export default async function handler(req: any, res: any) {
     if (req.method !== 'POST') {
-        return new Response(JSON.stringify({ error: 'Method Not Allowed' }), { status: 405, headers: {'Content-Type': 'application/json'} });
+        res.setHeader('Allow', ['POST']);
+        return res.status(405).json({ error: 'Method Not Allowed' });
     }
 
     try {
-        const { prompt } = await req.json();
+        const { prompt } = req.body;
         if (!prompt) {
-            return new Response(JSON.stringify({ error: 'Prompt is required.' }), { status: 400, headers: {'Content-Type': 'application/json'} });
+            return res.status(400).json({ error: 'Prompt is required.' });
         }
 
         const apiKey = process.env.API_KEY || process.env.GOOGLE_CLOUD_API_KEY;
@@ -31,8 +38,6 @@ export default async function handler(req: Request) {
         }
 
         if (operation.error) {
-            // FIX: The operation error message can be of type `unknown`. Coercing to a string
-            // ensures it can be safely passed to the Error constructor.
             throw new Error(String(operation.error.message) || "An error occurred during video generation.");
         }
 
@@ -48,16 +53,16 @@ export default async function handler(req: Request) {
             throw new Error(`Failed to download video file from Google (status: ${videoResponse.status})`);
         }
 
-        // Return the video blob directly to the client.
+        // Read the response as a blob, then send it to the client as a buffer.
         const videoBlob = await videoResponse.blob();
+        const videoBuffer = await videoBlob.arrayBuffer();
         
-        return new Response(videoBlob, {
-            status: 200,
-            headers: { 'Content-Type': 'video/mp4' }
-        });
+        res.setHeader('Content-Type', 'video/mp4');
+        res.setHeader('Content-Length', videoBuffer.byteLength);
+        return res.status(200).send(Buffer.from(videoBuffer));
 
     } catch (error: any) {
         console.error('Error in generate-video API:', error);
-        return new Response(JSON.stringify({ error: error.message || 'An internal server error occurred.' }), { status: 500, headers: {'Content-Type': 'application/json'} });
+        return res.status(500).json({ error: error.message || 'An internal server error occurred.' });
     }
 }
