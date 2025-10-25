@@ -1,8 +1,8 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, Sparkles, Upload, ArrowLeft, Building, ListChecks, User, CheckCircle, AlertCircle, Palette } from 'lucide-react';
+import { Loader2, Sparkles, Upload, ArrowLeft, Building, ListChecks, User, CheckCircle, AlertCircle, Palette, RefreshCw } from 'lucide-react';
 import { useApiKey } from '../context/ApiKeyProvider';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import AnimatedPage from '../components/AnimatedPage';
 import { useUser } from '../context/UserProvider';
 import EmailCaptureModal from '../components/modals/EmailCaptureModal';
@@ -632,6 +632,28 @@ const ExhibitionStudioPage: React.FC = () => {
                         <Sparkles className="mx-auto h-16 w-16 text-fann-gold" />
                         <h1 className="text-4xl font-serif font-bold text-fann-gold mt-4 mb-4">Your FANN-Generated Concepts</h1>
                         <p className="text-lg text-fann-cream max-w-3xl mx-auto">Select your preferred design to receive a detailed proposal and quotation from our team.</p>
+                        <div className="mt-8">
+                            <motion.button
+                                onClick={generateDesign}
+                                disabled={!canGenerate()}
+                                className="border-2 border-fann-gold text-fann-gold font-bold py-2 px-6 rounded-full flex items-center gap-2 mx-auto disabled:opacity-50 disabled:cursor-not-allowed"
+                                whileHover={{ scale: canGenerate() ? 1.05 : 1 }}
+                                whileTap={{ scale: canGenerate() ? 0.95 : 1 }}
+                            >
+                                <RefreshCw size={16} />
+                                Regenerate Concepts
+                            </motion.button>
+                            
+                            {!canGenerate() ? (
+                                <p className="text-xs text-fann-light-gray mt-2">
+                                    You have no generations remaining. <Link to="/pricing" className="font-semibold underline text-fann-gold">Upgrade your plan</Link> to continue.
+                                </p>
+                            ) : currentUser?.plan === 'free' && (
+                                <p className="text-xs text-fann-light-gray mt-2">
+                                    This will use one of your remaining <strong>{getGenerationsRemaining()}</strong> free generations.
+                                </p>
+                            )}
+                        </div>
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         {generatedConcepts.map((concept, index) => (
