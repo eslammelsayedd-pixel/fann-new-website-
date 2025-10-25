@@ -1,3 +1,6 @@
+// FIX: Import React types to correctly augment JSX.IntrinsicElements and resolve widespread JSX type errors.
+import type React from 'react';
+
 // FIX: Corrected the global JSX type augmentation for the 'model-viewer' custom element.
 // An incorrect augmentation can replace the entire `JSX.IntrinsicElements` interface,
 // removing all standard HTML/SVG element types and causing widespread "Property 'div' does not exist" errors.

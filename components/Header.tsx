@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { navLinks } from '../constants';
-import { Menu, X, ChevronDown, Globe } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Header: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -65,18 +66,7 @@ const Header: React.FC = () => {
                     </nav>
 
                     <div className="hidden lg:flex items-center space-x-4">
-                        <div className="relative group">
-                            <button className="flex items-center space-x-1 text-sm font-medium hover:text-fann-gold transition-colors duration-300">
-                                <Globe size={16} />
-                                <span>EN</span>
-                                <ChevronDown size={16} />
-                            </button>
-                            <div className="absolute top-full right-0 mt-2 w-32 bg-fann-charcoal/90 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">
-                                <a href="#" className="block px-4 py-2 text-sm text-white hover:bg-fann-teal">English</a>
-                                <a href="#" className="block px-4 py-2 text-sm text-white hover:bg-fann-teal">العربية</a>
-                                <a href="#" className="block px-4 py-2 text-sm text-white hover:bg-fann-teal">Русский</a>
-                            </div>
-                        </div>
+                        <LanguageSwitcher />
                         <Link to="/contact">
                           <motion.button 
                               whileHover={{ scale: 1.05 }}
@@ -150,6 +140,9 @@ const Header: React.FC = () => {
                                 )}
                             </div>
                         ))}
+                        <div className="my-6 w-full px-8">
+                            <LanguageSwitcher />
+                        </div>
                         <Link to="/contact">
                           <motion.button 
                             whileHover={{ scale: 1.05 }}

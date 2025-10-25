@@ -15,6 +15,30 @@ export const navLinks: NavLink[] = [
     },
 ];
 
+export const supportedLanguages = [
+  { code: 'en', name: 'English' },
+  { code: 'zh-CN', name: 'Chinese (Simplified)' },
+  { code: 'hi', name: 'Hindi' },
+  { code: 'es', name: 'Spanish' },
+  { code: 'fr', name: 'French' },
+  { code: 'ar', name: 'Arabic' },
+  { code: 'bn', name: 'Bengali' },
+  { code: 'ru', name: 'Russian' },
+  { code: 'pt', name: 'Portuguese' },
+  { code: 'ur', name: 'Urdu' },
+  { code: 'id', name: 'Indonesian' },
+  { code: 'de', name: 'German' },
+  { code: 'ja', name: 'Japanese' },
+  { code: 'mr', name: 'Marathi' },
+  { code: 'te', name: 'Telugu' },
+  { code: 'tr', name: 'Turkish' },
+  { code: 'ko', name: 'Korean' },
+  { code: 'vi', name: 'Vietnamese' },
+  { code: 'ta', name: 'Tamil' },
+  { code: 'it', name: 'Italian' },
+];
+
+
 export const portfolioProjects: Project[] = [
   { id: 1, title: "TechVision AI", client: "GITEX 2024", service: "Exhibitions", industry: "Technology", scale: "Standard", year: 2024, image: "https://images.pexels.com/photos/8566472/pexels-photo-8566472.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", sqm: 250, location: "Dubai World Trade Centre", timeline: "Concept to Completion: 8 weeks", challenge: "Integrating interactive AI demos seamlessly into a luxury, minimalist aesthetic.", result: "Generated over 5,000 qualified leads, a 40% increase from the previous year." },
   { id: 2, title: "MediCorp International", client: "Arab Health 2024", service: "Exhibitions", industry: "Healthcare", scale: "Standard", year: 2024, image: "https://images.pexels.com/photos/7176036/pexels-photo-7176036.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", sqm: 180, location: "Dubai World Trade Centre", timeline: "Concept to Completion: 7 weeks", challenge: "Creating a sterile, high-tech environment that felt approachable and welcoming.", result: "Secured distribution deals in 5 new MENA markets." },

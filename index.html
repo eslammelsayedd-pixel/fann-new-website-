@@ -76,6 +76,14 @@
         transform: translate(20px, -50%) scale(1);
         opacity: 1;
     }
+
+    /* Hide Google Translate Default UI */
+    .goog-te-banner-frame.skiptranslate {
+        display: none !important;
+    } 
+    body { 
+        top: 0px !important; 
+    }
 </style>
 <script type="importmap">
 {
@@ -93,7 +101,14 @@
 <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 </head>
 <body class="bg-fann-charcoal text-white font-sans">
+    <div id="google_translate_element" style="display:none;"></div>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+          new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
