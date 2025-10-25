@@ -29,7 +29,6 @@ interface FormData {
     style: string;
     eventStyleDescription: string;
     functionality: string[];
-    hostess: boolean;
     logo: File | null;
     logoPreview: string;
     brandColors: string[];
@@ -63,7 +62,6 @@ const initialFormData: FormData = {
     style: '',
     eventStyleDescription: '',
     functionality: [],
-    hostess: false,
     logo: null,
     logoPreview: '',
     brandColors: [],
@@ -89,6 +87,7 @@ const functionalityGroups = {
     "Media & Presentation": ['LED Video Wall', 'Live Presentation Stage'],
     "Meeting & Operations": ['Private Meeting Room', 'Storage Room'],
     "Structural Elements": ['Raised Flooring'],
+    "Staffing & Services": ['Hostess'],
 };
 
 const layoutOptions = [

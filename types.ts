@@ -3,14 +3,13 @@
 // this file's declarations from overwriting React's default HTML element types,
 // resolving errors like "Property 'div' does not exist on type 'JSX.IntrinsicElements'"
 // throughout the application.
-import 'react';
+import * as React from 'react';
 
 // The `declare global` block allows augmenting global types from within a module.
 // By redeclaring the `JSX.IntrinsicElements` interface, we can add custom elements
 // like `<model-viewer>` to TypeScript's known JSX elements. This is called
 // "declaration merging" and it adds our type to the existing list of elements
 // from React, preventing type errors across the application.
-import type { DetailedHTMLProps, HTMLAttributes } from 'react';
 
 // By defining custom element types in a global declaration, we can use them in JSX
 // without TypeScript errors.
@@ -51,7 +50,7 @@ export interface Testimonial {
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'model-viewer': DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> & {
+            'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
                 src?: string;
                 alt?: string;
                 'camera-controls'?: boolean;
