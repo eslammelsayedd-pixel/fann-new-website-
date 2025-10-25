@@ -135,7 +135,7 @@ Return your response as a single, valid JSON array. Do not include any text or m
 
     // --- Branch for Event Studio ---
     if (prompt) {
-        const imagePromises = Array(4).fill(0).map(() => 
+        const imagePromises = Array(2).fill(0).map(() => 
             ai.models.generateContent({
                 model: 'gemini-2.5-flash-image',
                 contents: { parts: [
@@ -152,8 +152,8 @@ Return your response as a single, valid JSON array. Do not include any text or m
             .filter(Boolean)
             .map(data => `data:${data.mimeType};base64,${data.data}`);
 
-        if (imageUrls.length < 4) {
-            throw new Error(`The AI model only generated ${imageUrls.length} out of 4 images. Please try again.`);
+        if (imageUrls.length < 2) {
+            throw new Error(`The AI model only generated ${imageUrls.length} out of 2 images. Please try again.`);
         }
 
         return res.status(200).json({ imageUrls });

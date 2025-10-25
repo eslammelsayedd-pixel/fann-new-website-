@@ -230,7 +230,7 @@ const EventStudioPage: React.FC = () => {
         try {
             const logoBase64 = await blobToBase64(formData.logo);
             
-            const textPrompt = `Generate 4 photorealistic concept images for a corporate event.
+            const textPrompt = `Generate 2 photorealistic concept images for a corporate event.
 - **Event Type:** ${formData.eventType}
 - **Theme:** ${formData.theme}
 - **Venue Type:** A luxurious ${formData.venueType} in Dubai.
@@ -470,8 +470,8 @@ const EventStudioPage: React.FC = () => {
                     <h1 className="text-4xl font-serif font-bold text-fann-gold mt-4 mb-4">Select Your Favorite Concept</h1>
                     <p className="text-lg text-fann-cream max-w-3xl mx-auto">Click your preferred design. Our team will then prepare a detailed proposal and quotation for you.</p>
                 </div>
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                    <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
                         {generatedImages.map((img, index) => (
                             <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} onClick={() => setSelectedImage(index)} className={`rounded-lg overflow-hidden cursor-pointer border-4 transition-all duration-300 hover:border-fann-gold/50 ${selectedImage === index ? 'border-fann-gold' : 'border-transparent'}`}>
                                 <img src={img} alt={`AI Concept ${index + 1}`} className="w-full h-auto object-cover" />

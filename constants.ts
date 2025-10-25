@@ -1,13 +1,18 @@
-import { Project, Event, Testimonial } from './types';
+import { Project, Event, Testimonial, NavLink } from './types';
 
-export const navLinks = [
+export const navLinks: NavLink[] = [
     { name: 'Services', path: '/services' },
     { name: 'Portfolio', path: '/portfolio' },
-    { name: 'AI Design Studio', path: '/ai-design-studio' },
-    { name: 'Events Calendar', path: '/events-calendar' },
-    { name: 'About FANN', path: '/about' },
-    { name: 'Contact', path: '/contact' },
-    { name: 'Insights', path: '/insights' },
+    { name: 'AI Studio', path: '/ai-design-studio' },
+    { name: 'Calendar', path: '/events-calendar' },
+    { 
+        name: 'Company', 
+        children: [
+            { name: 'About FANN', path: '/about' },
+            { name: 'Insights', path: '/insights' },
+            { name: 'Contact Us', path: '/contact' },
+        ] 
+    },
 ];
 
 export const portfolioProjects: Project[] = [

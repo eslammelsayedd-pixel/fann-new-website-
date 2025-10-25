@@ -1,3 +1,13 @@
+import React from 'react';
+
+export interface NavLink {
+  name: string;
+  path?: string;
+  children?: {
+    name: string;
+    path: string;
+  }[];
+}
 
 export interface Project {
   id: number;

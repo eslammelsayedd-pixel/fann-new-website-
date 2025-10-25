@@ -5,23 +5,8 @@ import { useApiKey } from '../context/ApiKeyProvider';
 import { useSearchParams, Link } from 'react-router-dom';
 import AnimatedPage from '../components/AnimatedPage';
 
-// FIX: This global declaration augments React's JSX namespace to add support for the custom
-// `<model-viewer>` element, allowing it to be used in this TSX file without type errors.
-// It was moved here from types.ts to prevent it from affecting other files.
-declare global {
-    namespace JSX {
-        interface IntrinsicElements {
-            'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
-                src?: string;
-                alt?: string;
-                'camera-controls'?: boolean;
-                'auto-rotate'?: boolean;
-                ar?: boolean;
-                'shadow-intensity'?: string;
-            };
-        }
-    }
-}
+// The global declaration for <model-viewer> has been moved to types.ts to provide
+// a single, consistent source for global type augmentations and fix JSX type errors.
 
 
 // --- Data & Constants ---
