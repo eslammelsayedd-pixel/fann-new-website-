@@ -34,11 +34,12 @@ export default async function handler(req: Request) {
     }));
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-2.5-pro",
       contents: contents,
       config: { 
         systemInstruction: systemInstruction,
-        tools: [{ googleSearch: {} }] 
+        tools: [{ googleSearch: {} }],
+        thinkingConfig: { thinkingBudget: 32768 }
       },
     });
 

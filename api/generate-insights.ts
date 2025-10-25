@@ -22,9 +22,12 @@ export default async function handler(req: Request) {
         const ai = new GoogleGenAI({ apiKey });
 
         const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash",
+            model: "gemini-2.5-pro",
             contents: prompt,
-            config: { tools: [{ googleSearch: {} }] },
+            config: { 
+                tools: [{ googleSearch: {} }],
+                thinkingConfig: { thinkingBudget: 32768 }
+            },
         });
 
         const content = response.text;
