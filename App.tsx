@@ -7,6 +7,9 @@ import HomePage from './pages/HomePage';
 import ServicesPage from './pages/ServicesPage';
 import PortfolioPage from './pages/PortfolioPage';
 import AIDesignStudioPage from './pages/AIDesignStudioPage';
+import ExhibitionStudioPage from './pages/ExhibitionStudioPage';
+import EventStudioPage from './pages/EventStudioPage';
+import InteriorStudioPage from './pages/InteriorStudioPage';
 import EventsCalendarPage from './pages/EventsCalendarPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
@@ -25,6 +28,9 @@ const App: React.FC = () => {
                         <Route path="/services" element={<ServicesPage />} />
                         <Route path="/portfolio" element={<PortfolioPage />} />
                         <Route path="/ai-design-studio" element={<AIDesignStudioPage />} />
+                        <Route path="/ai-design-studio/exhibition" element={<ExhibitionStudioPage />} />
+                        <Route path="/ai-design-studio/event" element={<EventStudioPage />} />
+                        <Route path="/ai-design-studio/interior" element={<InteriorStudioPage />} />
                         <Route path="/events-calendar" element={<EventsCalendarPage />} />
                         <Route path="/about" element={<AboutPage />} />
                         <Route path="/contact" element={<ContactPage />} />
