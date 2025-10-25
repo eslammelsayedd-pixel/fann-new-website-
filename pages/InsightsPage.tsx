@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, BookOpen, BrainCircuit, Building2, Globe, Lightbulb, Loader2, Rocket, ServerCrash, Sparkles, Store, TrendingUp } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
+import SEO from '../components/SEO';
 import { useApiKey } from '../context/ApiKeyProvider';
 
 interface InsightTopic {
@@ -138,9 +139,9 @@ const InsightsPage: React.FC = () => {
 
     const renderTopicSelection = () => (
         <div className="text-center">
-            <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">FANN Trendspotter</h1>
+            <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">FANN Intelligence Hub</h1>
             <p className="text-xl text-fann-cream max-w-3xl mx-auto mb-12">
-                Select a topic for a real-time analysis of key industry trends, with a focus on Dubai and Saudi Arabia.
+                Select a topic for an expert-driven analysis of key industry trends, with a focus on Dubai and Saudi Arabia.
             </p>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
                 {insightTopics.map((topic, index) => (
@@ -181,7 +182,7 @@ const InsightsPage: React.FC = () => {
                     <div className="flex flex-col items-center text-center p-8">
                         <Loader2 className="w-12 h-12 text-fann-gold animate-spin" />
                         <h2 className="text-3xl font-serif text-white mt-6">Generating Analysis...</h2>
-                        <p className="text-fann-light-gray mt-2">Our FANN technology is analyzing real-time data from across the web. This might take a moment.</p>
+                        <p className="text-fann-light-gray mt-2">Our proprietary knowledge base is compiling insights from across the web. This might take a moment.</p>
                     </div>
                 </motion.div>
             ) : error ? (
@@ -221,6 +222,10 @@ const InsightsPage: React.FC = () => {
 
     return (
         <AnimatedPage>
+            <SEO
+                title="Intelligence Hub | Industry Trends & Analysis"
+                description="Access expert-driven analysis from the FANN Intelligence Hub. Stay ahead with the latest trends in exhibition design, event technology, and commercial interiors in the GCC."
+            />
             <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                    {selectedTopic ? renderArticle() : renderTopicSelection()}

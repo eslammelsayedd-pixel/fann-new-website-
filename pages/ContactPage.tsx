@@ -1,10 +1,46 @@
 import React from 'react';
 import AnimatedPage from '../components/AnimatedPage';
+import SEO from '../components/SEO';
 import { Mail, Phone, MapPin } from 'lucide-react';
 
 const ContactPage: React.FC = () => {
   return (
     <AnimatedPage>
+      <SEO
+        title="Contact FANN | Get a Quote for Your Project"
+        description="Reach out to FANN's team of design experts in Dubai. Contact us for a complimentary consultation on your next exhibition, event, or interior design project."
+      >
+        <script type="application/ld+json">
+            {JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "LocalBusiness",
+                "name": "FANN",
+                "image": "https://fann-new-website.web.app/favicon.svg",
+                "@id": "https://fann-new-website.web.app/",
+                "url": "https://fann-new-website.web.app/contact",
+                "telephone": "+971-0-000-0000",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "Building 7, Office A301, Dubai Design District",
+                    "addressLocality": "Dubai",
+                    "addressCountry": "AE"
+                },
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Sunday"
+                    ],
+                    "opens": "09:00",
+                    "closes": "18:00"
+                }
+            })}
+        </script>
+      </SEO>
       <div className="min-h-screen bg-fann-charcoal pt-32 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">

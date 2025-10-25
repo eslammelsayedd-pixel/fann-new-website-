@@ -36,10 +36,8 @@ const Header: React.FC = () => {
                                         <span>{link.name}</span>
                                         <ChevronDown size={16} />
                                     </button>
-                                    <motion.div 
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-fann-charcoal-light/95 backdrop-blur-sm rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto"
+                                    <div 
+                                        className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-fann-charcoal-light/95 backdrop-blur-sm rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto transform scale-95 group-hover:scale-100 origin-top"
                                     >
                                         <div className="py-1">
                                             {link.children.map(child => (
@@ -52,7 +50,7 @@ const Header: React.FC = () => {
                                                 </NavLink>
                                             ))}
                                         </div>
-                                    </motion.div>
+                                    </div>
                                 </div>
                             ) : (
                                 <NavLink
