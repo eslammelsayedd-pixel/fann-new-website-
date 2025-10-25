@@ -14,7 +14,7 @@ const countryCodes = [
 ];
 const aestheticStyles = ['Minimalist & Clean', 'Luxury & Elegant', 'High-Tech & Futuristic', 'Industrial & Raw', 'Biophilic & Natural', 'Bold & Colorful'];
 const functionalityOptions = [
-    'Reception / Welcome Desk', 'Hostess', 'Casual Meeting Area', 'Private Meeting Room', 'Product Display Zones', 'Live Demo Area', 'Hospitality / Bar', 'Storage Room', 'Video Wall / LED Screen', 'Interactive Station', 'Photo Booth Area'
+    'Reception / Welcome Desk', 'Casual Meeting Area', 'Private Meeting Room', 'Product Display Zones', 'Live Demo Area', 'Hospitality / Bar', 'Storage Room', 'Video Wall / LED Screen', 'Interactive Station', 'Photo Booth Area'
 ];
 
 interface FormData {
@@ -98,7 +98,6 @@ const ExhibitionStudioPage: React.FC = () => {
     const [isProposalRequested, setIsProposalRequested] = useState(false);
     const [isSending, setIsSending] = useState(false);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
-    const [isDragging, setIsDragging] = useState(false);
 
     const { ensureApiKey, handleApiError, error: apiKeyError, clearError: clearApiKeyError } = useApiKey();
     const debouncedEventName = useDebounce(formData.event, 1000);
@@ -150,6 +149,8 @@ const ExhibitionStudioPage: React.FC = () => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [localError, setLocalError] = useState<string | null>(null);
     
+    // FIX: The original `error` constant was declared after being used in a `useEffect` hook.
+    // It has been moved here to ensure it is defined before use.
     const error = apiKeyError || localError;
 
     useEffect(() => {
@@ -222,38 +223,13 @@ const ExhibitionStudioPage: React.FC = () => {
         }
     };
 
-    const handleFileUpload = (file: File) => {
-        if (file && file.type.startsWith('image/')) {
+    const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
             clearAllErrors();
+            const file = e.target.files[0];
             const logoPreview = URL.createObjectURL(file);
             setFormData(prev => ({ ...prev, logo: file, logoPreview, colors: [] }));
             extractColorsFromLogo(file);
-        } else {
-            setError("Please upload a valid image file (PNG, JPG, SVG, etc.).");
-        }
-    };
-
-    const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            handleFileUpload(e.target.files[0]);
-        }
-    };
-    
-    const onDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-        event.preventDefault();
-        setIsDragging(true);
-    };
-
-    const onDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
-        event.preventDefault();
-        setIsDragging(false);
-    };
-
-    const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
-        event.preventDefault();
-        setIsDragging(false);
-        if (event.dataTransfer.files && event.dataTransfer.files[0]) {
-            handleFileUpload(event.dataTransfer.files[0]);
         }
     };
 
@@ -489,30 +465,8 @@ const ExhibitionStudioPage: React.FC = () => {
                         <div className="grid md:grid-cols-2 gap-8 items-start">
                             <div>
                                 <label className="block text-sm font-medium text-fann-light-gray mb-2">Upload Your Logo (Vector Preferred)</label>
-                                <div className="relative">
-                                    <div 
-                                        onClick={() => fileInputRef.current?.click()}
-                                        onDrop={onDrop}
-                                        onDragOver={onDragOver}
-                                        onDragLeave={onDragLeave}
-                                        className={`h-48 w-full bg-fann-charcoal border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer transition-colors ${isDragging ? 'border-fann-gold bg-fann-gold/10' : 'border-fann-border hover:border-fann-gold'}`}
-                                    >
-                                        {formData.logoPreview ? (
-                                            <img src={formData.logoPreview} alt="Logo Preview" className={`max-h-full max-w-full object-contain p-4 transition-opacity ${isExtractingColors ? 'opacity-20' : ''}`} />
-                                        ) : (
-                                            <div className="text-center text-fann-light-gray">
-                                                <Upload className="mx-auto w-8 h-8 mb-2" />
-                                                <p className="font-semibold">Drop your logo here</p>
-                                                <p className="text-sm">or click to browse</p>
-                                            </div>
-                                        )}
-                                    </div>
-                                    {isExtractingColors && (
-                                        <div className="absolute inset-0 bg-fann-charcoal/80 rounded-lg flex flex-col items-center justify-center pointer-events-none">
-                                            <Loader2 className="w-10 h-10 text-fann-gold animate-spin" />
-                                            <p className="mt-3 font-semibold text-white">Extracting Colors...</p>
-                                        </div>
-                                    )}
+                                <div onClick={() => fileInputRef.current?.click()} className="h-48 w-full bg-fann-charcoal border-2 border-dashed border-fann-border rounded-lg flex items-center justify-center cursor-pointer hover:border-fann-gold transition-colors">
+                                    {formData.logoPreview ? <img src={formData.logoPreview} alt="Logo Preview" className="max-h-full max-w-full object-contain p-4" /> : <div className="text-center text-fann-light-gray"><Upload className="mx-auto w-8 h-8 mb-2" /><p>Click to upload</p></div>}
                                 </div>
                                 <input type="file" ref={fileInputRef} onChange={handleLogoChange} className="hidden" accept="image/png, image/jpeg, image/svg+xml, image/webp, image/gif, .svg" />
                             </div>
