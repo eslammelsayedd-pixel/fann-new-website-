@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Loader2, Sparkles, Upload, ArrowLeft, Users, Palette, ListChecks, Crown, User, CheckCircle, AlertCircle } from 'lucide-react';
+import { Loader2, Sparkles, Upload, ArrowLeft, Users, Palette, ListChecks, Crown, CheckCircle, AlertCircle } from 'lucide-react';
 import { useApiKey } from '../context/ApiKeyProvider';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import AnimatedPage from '../components/AnimatedPage';
-import { useUser } from '../context/UserProvider';
-import EmailCaptureModal from '../components/modals/EmailCaptureModal';
-import PaywallModal from '../components/modals/PaywallModal';
+import { useUser, UserDetails } from '../context/UserProvider';
+import UserDetailsModal from '../components/modals/UserDetailsModal';
 import WatermarkWrapper from '../components/WatermarkWrapper';
 
 // --- Helper Functions & Types ---
@@ -19,9 +18,6 @@ interface FormData {
     logo: File | null;
     logoPreview: string;
     brandColors: string[];
-    userName: string;
-    userEmail: string;
-    userMobile: string;
 }
 
 const initialFormData: FormData = {
@@ -33,9 +29,6 @@ const initialFormData: FormData = {
     logo: null,
     logoPreview: '',
     brandColors: [],
-    userName: '',
-    userEmail: '',
-    userMobile: '',
 };
 
 const eventTypes = [
@@ -77,9 +70,9 @@ const blobToBase64 = (blob: Blob): Promise<string> => {
 
 const EventStudioPage: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const { currentUser, login, incrementGenerations, canGenerate, getGenerationsRemaining } = useUser();
-    const [showEmailModal, setShowEmailModal] = useState(false);
-    const [showPaywallModal, setShowPaywallModal] = useState(false);
+    const navigate = useNavigate();
+    const { currentUser, login, incrementGenerations, getGenerationsRemaining } = useUser();
+    const [showUserDetailsModal, setShowUserDetailsModal] = useState(false);
     
     const [currentStep, setCurrentStep] = useState(() => {
         const stepParam = searchParams.get('step');
@@ -282,30 +275,31 @@ const EventStudioPage: React.FC = () => {
         if (!validateStep(currentStep, true)) return;
 
         if (!currentUser) {
-            setShowEmailModal(true);
+            setShowUserDetailsModal(true);
             return;
         }
-        if (!canGenerate()) {
-            setShowPaywallModal(true);
-            return;
-        }
-
-        const remaining = getGenerationsRemaining();
-        const message = remaining === 1 
-            ? "This is your last free generation. Are you sure you want to proceed?"
-            : `You are about to use a free generation. You have ${remaining} left. Continue?`;
         
-        if (currentUser.plan === 'free' && !window.confirm(message)) {
+        const generationsUsed = currentUser.generationsUsed;
+        
+        if (generationsUsed >= 2) {
+            navigate('/pricing');
             return;
         }
 
+        if (generationsUsed === 1) {
+             if (window.confirm("This is your last free generation. Are you sure you want to proceed?")) {
+                handleActualGeneration();
+            }
+            return;
+        }
+        
         handleActualGeneration();
     };
 
-    const handleEmailSuccess = (email: string) => {
-        login(email);
-        setShowEmailModal(false);
-        setTimeout(generateDesign, 100);
+    const handleUserDetailsSuccess = (details: UserDetails) => {
+        login(details);
+        setShowUserDetailsModal(false);
+        handleActualGeneration();
     };
 
     const sendProposalRequest = async () => {
@@ -520,8 +514,7 @@ const EventStudioPage: React.FC = () => {
 
     return (
         <AnimatedPage>
-            {showEmailModal && <EmailCaptureModal designType="Event" onSuccess={handleEmailSuccess} />}
-            {showPaywallModal && <PaywallModal onClose={() => setShowPaywallModal(false)} />}
+            {showUserDetailsModal && <UserDetailsModal designType="Event" onSuccess={handleUserDetailsSuccess} />}
             <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="max-w-4xl mx-auto">

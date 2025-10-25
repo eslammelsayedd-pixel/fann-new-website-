@@ -2,8 +2,15 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 
 type Plan = 'free' | 'one-time' | 'starter' | 'pro' | 'enterprise';
 
-interface User {
+export interface UserDetails {
     email: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+    countryCode: string;
+}
+
+interface User extends UserDetails {
     generationsUsed: number;
     plan: Plan;
     plan_expiry?: number; // Timestamp for one-time package
@@ -15,7 +22,7 @@ interface UserData {
 
 interface UserContextType {
     currentUser: User | null;
-    login: (email: string) => void;
+    login: (details: UserDetails) => void;
     logout: () => void;
     incrementGenerations: () => void;
     canGenerate: () => boolean;
@@ -65,17 +72,24 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, [currentUserEmail]);
 
 
-    const login = useCallback((email: string) => {
-        const normalizedEmail = email.toLowerCase().trim();
+    const login = useCallback((details: UserDetails) => {
+        const normalizedEmail = details.email.toLowerCase().trim();
         setUsers(prevUsers => {
             if (prevUsers[normalizedEmail]) {
-                // User exists, just log them in
-                return prevUsers;
+                // User exists, update details and log them in
+                return {
+                    ...prevUsers,
+                    [normalizedEmail]: {
+                        ...prevUsers[normalizedEmail],
+                        ...details,
+                    }
+                };
             }
             // New user, create a record
             return {
                 ...prevUsers,
                 [normalizedEmail]: {
+                    ...details,
                     email: normalizedEmail,
                     generationsUsed: 0,
                     plan: 'free',
@@ -93,7 +107,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (!currentUserEmail) return;
         setUsers(prevUsers => {
             const user = prevUsers[currentUserEmail];
-            if (user && user.plan === 'free') { // Only increment for free users for this simulation
+            if (user) {
                 return {
                     ...prevUsers,
                     [currentUserEmail]: {
