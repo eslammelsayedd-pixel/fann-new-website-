@@ -17,12 +17,13 @@ import * as React from 'react';
 // FIX: Changed `declare module 'react'` to `declare global` to fix module augmentation error. The `JSX` namespace is often available globally in modern React setups, and augmenting it directly is more robust.
 declare global {
     namespace JSX {
-        // FIX: Explicitly extend React's existing IntrinsicElements interface.
-        // The previous declaration was replacing the default interface, which removed type
-        // definitions for all standard HTML elements (like div, p, etc.) and caused widespread
-        // errors. By extending `React.JSX.IntrinsicElements`, we add our custom `model-viewer`
-        // element while preserving all the built-in HTML element types.
-        interface IntrinsicElements extends React.JSX.IntrinsicElements {
+        // FIX: Augment the existing IntrinsicElements interface to add 'model-viewer'.
+        // By redeclaring the interface within a `declare global` block, TypeScript's
+        // "declaration merging" feature adds our custom element type without overwriting
+        // the standard HTML element types. The `extends` clause was removed as it was
+        // incorrectly causing TypeScript to replace the interface instead of merging with it,
+        // which was the root cause of the widespread "Property does not exist" errors.
+        interface IntrinsicElements {
             'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & {
                 src?: string;
                 alt?: string;
