@@ -2,20 +2,27 @@
 // and was throwing a "Cannot find type definition file" error.
 
 // FIX: Changed `import React from 'react'` to `import * as React from 'react'`.
-// The latter is the correct way to import the React namespace and can resolve
-// module augmentation errors like "module 'react' cannot be found".
+// The `declare module 'react'` augmentation requires the module to be resolved.
+// In some TypeScript configurations, especially for `.ts` files that are not transpiled as JSX,
+// the namespace import (`* as React`) is required for the compiler to find the module for augmentation.
+// This resolves the "module 'react' cannot be found" error.
 import * as React from 'react';
 
 // By augmenting the 'react' module, we can extend React's built-in JSX types
 // without overwriting them, which avoids issues with standard HTML elements.
-declare module 'react' {
-    // Allow 'class' property on intrinsic elements to support custom element conventions and the existing codebase.
-    interface HTMLAttributes<T> {
-        class?: string;
-    }
-
+// FIX: Removed the `HTMLAttributes` augmentation for the `class` property.
+// Standard React practice is to use `className` for styling, which correctly
+// translates to the `class` attribute in the DOM for both standard and custom elements.
+// The custom `class` property might interfere with React's rendering logic.
+// FIX: Changed `declare module 'react'` to `declare global` to fix module augmentation error. The `JSX` namespace is often available globally in modern React setups, and augmenting it directly is more robust.
+declare global {
     namespace JSX {
-        interface IntrinsicElements {
+        // FIX: Explicitly extend React's existing IntrinsicElements interface.
+        // The previous declaration was replacing the default interface, which removed type
+        // definitions for all standard HTML elements (like div, p, etc.) and caused widespread
+        // errors. By extending `React.JSX.IntrinsicElements`, we add our custom `model-viewer`
+        // element while preserving all the built-in HTML element types.
+        interface IntrinsicElements extends React.JSX.IntrinsicElements {
             'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & {
                 src?: string;
                 alt?: string;

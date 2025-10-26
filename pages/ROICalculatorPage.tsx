@@ -178,15 +178,22 @@ const ROICalculatorPage: React.FC = () => {
                                             <Metric label="Cost Per Qualified Lead" value={formatCurrency(results.roi_metrics.cost_per_lead)} />
                                             <Metric label="Deals to Break-Even" value={results.roi_metrics.break_even_deals} />
                                         </ResultCard>
-                                         <ResultCard icon={FileText} title="Methodology" color="#B0B0B0">
-                                            <p className="text-sm text-fann-light-gray">
-                                                Projections are based on a proprietary model developed by FANN, analyzing industry benchmarks from leading authorities like CEIR and DWTC, combined with our internal data from over 150 successful regional exhibitions.
-                                            </p>
-                                        </ResultCard>
                                         <ResultCard icon={CheckCircle} title="FANN Recommendations" color="#5A8B8C">
                                             <ul className="text-sm text-fann-cream space-y-2 list-disc list-inside">
                                                 {results.personalized_recommendations.map((rec: string, i: number) => <li key={i}>{rec}</li>)}
                                             </ul>
+                                        </ResultCard>
+                                        {results.ai_driven_tips && results.ai_driven_tips.length > 0 && (
+                                            <ResultCard icon={Zap} title="AI-Powered Tips" color="#D4AF76">
+                                                <ul className="text-sm text-fann-cream space-y-2 list-disc list-inside">
+                                                    {results.ai_driven_tips.map((tip: string, i: number) => <li key={i}>{tip}</li>)}
+                                                </ul>
+                                            </ResultCard>
+                                        )}
+                                         <ResultCard icon={FileText} title="Methodology" color="#B0B0B0">
+                                            <p className="text-sm text-fann-light-gray">
+                                                Projections are based on a proprietary model developed by FANN, analyzing industry benchmarks from leading authorities like CEIR and DWTC, combined with our internal data from over 150 successful regional exhibitions.
+                                            </p>
                                         </ResultCard>
                                     </div>
                                 )}

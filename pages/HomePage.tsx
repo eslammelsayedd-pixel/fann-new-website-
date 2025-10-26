@@ -66,24 +66,24 @@ const HeroSection: React.FC = () => {
                 shadow-intensity="1.2"
                 exposure="0.9"
                 environment-image="neutral"
-                class="absolute top-0 left-0 w-full h-full"
+                className="absolute top-0 left-0 w-full h-full"
             >
-                <button class="hotspot" slot="hotspot-1" data-position="-1.6m 1m -1.5m" data-normal="0m 1m 0m">
-                    <div class="annotation">
-                        <h4 class="font-bold text-fann-gold">Lead Generation Hub</h4>
-                        <p class="text-xs text-fann-cream">Reception desks designed to attract and qualify leads efficiently.</p>
+                <button className="hotspot" slot="hotspot-1" data-position="-1.6m 1m -1.5m" data-normal="0m 1m 0m">
+                    <div className="annotation">
+                        <h4 className="font-bold text-fann-gold">Lead Generation Hub</h4>
+                        <p className="text-xs text-fann-cream">Reception desks designed to attract and qualify leads efficiently.</p>
                     </div>
                 </button>
-                 <button class="hotspot" slot="hotspot-2" data-position="2.5m 1.5m 1m" data-normal="0m 1m 0m">
-                    <div class="annotation">
-                         <h4 class="font-bold text-fann-gold">Private Meeting Space</h4>
-                        <p class="text-xs text-fann-cream">Integrated rooms for high-level discussions and closing deals.</p>
+                 <button className="hotspot" slot="hotspot-2" data-position="2.5m 1.5m 1m" data-normal="0m 1m 0m">
+                    <div className="annotation">
+                         <h4 className="font-bold text-fann-gold">Private Meeting Space</h4>
+                        <p className="text-xs text-fann-cream">Integrated rooms for high-level discussions and closing deals.</p>
                     </div>
                 </button>
-                <button class="hotspot" slot="hotspot-3" data-position="0m 2m 2.8m" data-normal="0m 0m -1m">
-                    <div class="annotation">
-                        <h4 class="font-bold text-fann-gold">Immersive AV</h4>
-                        <p class="text-xs text-fann-cream">State-of-the-art video walls for impactful brand storytelling.</p>
+                <button className="hotspot" slot="hotspot-3" data-position="0m 2m 2.8m" data-normal="0m 0m -1m">
+                    <div className="annotation">
+                        <h4 className="font-bold text-fann-gold">Immersive AV</h4>
+                        <p className="text-xs text-fann-cream">State-of-the-art video walls for impactful brand storytelling.</p>
                     </div>
                 </button>
             </model-viewer>

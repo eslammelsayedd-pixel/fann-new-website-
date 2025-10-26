@@ -1,5 +1,7 @@
+import { GoogleGenAI, Type } from "@google/genai";
+
 // Vercel Serverless Function (Node.js runtime)
-export default function handler(req: any, res: any) {
+export default async function handler(req: any, res: any) {
     if (req.method !== 'POST') {
         res.setHeader('Allow', ['POST']);
         return res.status(405).json({ error: 'Method Not Allowed' });
@@ -86,6 +88,55 @@ export default function handler(req: any, res: any) {
         if (average_deal_size > 100000) recommendations.push("With a high average deal size, investing in premium stand features like a private meeting room or a hospitality area is highly justified to impress key prospects.");
         if (recommendations.length < 2) recommendations.push("To maximize lead capture, ensure your staff are trained to use a lead scanning app and qualify visitors with 2-3 targeted questions.");
         if (recommendations.length < 3) recommendations.push("Launch a pre-show email and social media campaign 2-3 weeks before the event to book meetings in advance and drive traffic to your stand.");
+        
+        // --- AI-DRIVEN TIPS (NEW) ---
+        let ai_driven_tips: string[] = [];
+        try {
+            const apiKey = process.env.API_KEY || process.env.GOOGLE_CLOUD_API_KEY;
+            if (apiKey) {
+                const ai = new GoogleGenAI({ apiKey });
+
+                // 1. Get industry from event name
+                const industryPrompt = `You are an expert in the global events and exhibitions industry. Based on the event name provided, identify the primary industry it belongs to. Event Name: "${event_name}". Your response MUST be a single, valid JSON object with one key: "industry". The value should be a concise industry name (e.g., "Technology", "Healthcare", "Aviation"). Do not include any other text.`;
+                const industryResponse = await ai.models.generateContent({
+                    model: "gemini-2.5-flash",
+                    contents: industryPrompt,
+                    config: {
+                        responseMimeType: "application/json",
+                        responseSchema: {
+                            type: Type.OBJECT,
+                            properties: { industry: { type: Type.STRING } },
+                            required: ['industry']
+                        }
+                    }
+                });
+                const industryResult = JSON.parse(industryResponse.text.trim());
+                const industry = industryResult.industry;
+
+                // 2. Get tips based on industry and event
+                if (industry) {
+                    const tipsPrompt = `As an expert event strategist, generate 3 short, actionable tips for an exhibitor in the '${industry}' industry looking to maximize their ROI at a major trade show like '${event_name}'. Focus on strategies specific to that industry. Return your response as a valid JSON array of strings, with each string being a unique tip. Do not include any text outside of the JSON array.`;
+                    const tipsResponse = await ai.models.generateContent({
+                        model: "gemini-2.5-flash",
+                        contents: tipsPrompt,
+                        config: {
+                            responseMimeType: "application/json",
+                            responseSchema: {
+                                type: Type.ARRAY,
+                                items: { type: Type.STRING }
+                            }
+                        }
+                    });
+                    const tipsResult = JSON.parse(tipsResponse.text.trim());
+                    if (Array.isArray(tipsResult)) {
+                        ai_driven_tips = tipsResult;
+                    }
+                }
+            }
+        } catch (aiError: any) {
+            console.warn("AI Tips generation failed, returning ROI data without tips.", aiError.message);
+            // Don't throw an error, just proceed without the tips
+        }
 
         // --- Construct Final JSON ---
         const response = {
@@ -123,7 +174,8 @@ export default function handler(req: any, res: any) {
               "Pre-event marketing is crucial for driving targeted booth traffic."
             ]
           },
-          "personalized_recommendations": recommendations.slice(0, 3)
+          "personalized_recommendations": recommendations.slice(0, 3),
+          "ai_driven_tips": ai_driven_tips
         };
 
         return res.status(200).json(response);

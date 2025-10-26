@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, BookOpen, BrainCircuit, Building2, Globe, Lightbulb, Loader2, Rocket, ServerCrash, Sparkles, Store, TrendingUp } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
@@ -7,6 +8,7 @@ import { useApiKey } from '../context/ApiKeyProvider';
 
 interface InsightTopic {
     title: string;
+    slug: string;
     prompt: string;
     category: 'Exhibitions' | 'Events' | 'Interior Design';
     icon: React.ElementType;
@@ -18,9 +20,12 @@ interface Article {
     sources: Array<{ uri: string, title: string }>;
 }
 
+const slugify = (text: string) => text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+
 const insightTopics: InsightTopic[] = [
     {
         title: "Sustainable Exhibition Design in the GCC",
+        slug: slugify("Sustainable Exhibition Design in the GCC"),
         prompt: "Write an insightful blog post about the latest trends in sustainable and eco-friendly exhibition stand design, with a specific focus on the UAE and Saudi Arabia for 2024. Cover innovative materials, modularity for events like GITEX and LEAP, and energy efficiency standards at venues like DWTC and Riyadh Front.",
         category: 'Exhibitions',
         icon: Building2,
@@ -28,6 +33,7 @@ const insightTopics: InsightTopic[] = [
     },
     {
         title: "Audience Engagement Tech at Dubai Events",
+        slug: slugify("Audience Engagement Tech at Dubai Events"),
         prompt: "As an expert event management agency, write a blog post detailing the most innovative audience engagement technologies being used at corporate events in Dubai. Discuss AR, VR, and FANN-powered networking tools with examples from recent major UAE events. Focus on ROI for exhibitors.",
         category: 'Events',
         icon: BrainCircuit,
@@ -35,6 +41,7 @@ const insightTopics: InsightTopic[] = [
     },
     {
         title: "Biophilic Design in Dubai & Riyadh Workspaces",
+        slug: slugify("Biophilic Design in Dubai & Riyadh Workspaces"),
         prompt: "For an interior design firm's blog, write an article on the rise of Biophilic Design in modern workspaces and luxury commercial environments in Dubai and Riyadh. Explain the principles and highlight the benefits for employee well-being, citing examples from areas like DIFC and KAFD.",
         category: 'Interior Design',
         icon: Lightbulb,
@@ -42,6 +49,7 @@ const insightTopics: InsightTopic[] = [
     },
     {
         title: "Maximizing ROI at DWTC & Riyadh Front",
+        slug: slugify("Maximizing ROI at DWTC & Riyadh Front"),
         prompt: "Write a strategic guide for international exhibitors on maximizing their return on investment at premier Middle East venues: the Dubai World Trade Centre (DWTC) and the Riyadh Exhibition and Convention Center (Riyadh Front). Cover pre-show marketing, stand design strategies for high traffic, and lead capture tactics specific to these locations.",
         category: 'Exhibitions',
         icon: TrendingUp,
@@ -49,6 +57,7 @@ const insightTopics: InsightTopic[] = [
     },
     {
         title: "Luxury Retail Design: Dubai Mall vs. Via Riyadh",
+        slug: slugify("Luxury Retail Design: Dubai Mall vs. Via Riyadh"),
         prompt: "Write a comparative analysis for a luxury design blog on the prevailing interior design trends for flagship retail stores in Dubai Mall versus the new luxury destination, Via Riyadh. Discuss customer experience, material palettes, and technology integration in these two distinct luxury hubs.",
         category: 'Interior Design',
         icon: Store,
@@ -56,6 +65,7 @@ const insightTopics: InsightTopic[] = [
     },
     {
         title: "The Rise of 'Giga-Project' Launch Events in KSA",
+        slug: slugify("The Rise of 'Giga-Project' Launch Events in KSA"),
         prompt: "Write an article for an event industry magazine about the emerging trend of large-scale, immersive launch events for Saudi Arabia's 'Giga-Projects' (e.g., NEOM, Red Sea Project). Discuss the scale, production complexity, and global impact of these brand experiences.",
         category: 'Events',
         icon: Rocket,
@@ -63,6 +73,7 @@ const insightTopics: InsightTopic[] = [
     },
     {
         title: "Integrating Arabic Culture into Modern Design",
+        slug: slugify("Integrating Arabic Culture into Modern Design"),
         prompt: "For a design and architecture blog, write a piece on how to tastefully integrate traditional Arabic and Islamic design motifs (like geometry, calligraphy, and mashrabiya patterns) into modern, minimalist exhibition stands and corporate interiors for the Gulf market. Provide examples of successful fusion.",
         category: 'Exhibitions',
         icon: Globe,
@@ -70,6 +81,7 @@ const insightTopics: InsightTopic[] = [
     },
     {
         title: "The Future of Hybrid Events in the UAE",
+        slug: slugify("The Future of Hybrid Events in the UAE"),
         prompt: "Write a thought-leadership article for an events company on the future of hybrid events in the UAE. Discuss strategies for blending physical and virtual experiences for major Dubai-based conferences, and how to create equal value for in-person and remote attendees.",
         category: 'Events',
         icon: Sparkles,
@@ -95,17 +107,22 @@ const formatContent = (text: string) => {
 };
 
 const InsightsPage: React.FC = () => {
-    const [selectedTopic, setSelectedTopic] = useState<InsightTopic | null>(null);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const topicSlug = searchParams.get('topic');
+
+    const selectedTopic = useMemo(() => {
+        if (!topicSlug) return null;
+        return insightTopics.find(t => t.slug === topicSlug) || null;
+    }, [topicSlug]);
+
     const [generatedArticle, setGeneratedArticle] = useState<Article | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const { ensureApiKey, handleApiError, error, clearError } = useApiKey();
-
 
     const generateArticle = async (topic: InsightTopic) => {
         clearError();
         if (!await ensureApiKey()) return;
 
-        setSelectedTopic(topic);
         setIsLoading(true);
         setGeneratedArticle(null);
 
@@ -130,11 +147,23 @@ const InsightsPage: React.FC = () => {
             setIsLoading(false);
         }
     };
+
+    useEffect(() => {
+        if (selectedTopic && !generatedArticle && !isLoading && !error) {
+            generateArticle(selectedTopic);
+        }
+        if (!selectedTopic) {
+            setGeneratedArticle(null);
+            clearError();
+        }
+    }, [selectedTopic, generatedArticle, isLoading, error]);
+
+    const handleTopicSelect = (topic: InsightTopic) => {
+        setSearchParams({ topic: topic.slug });
+    };
     
     const handleBack = () => {
-        setSelectedTopic(null);
-        setGeneratedArticle(null);
-        clearError();
+        setSearchParams({});
     };
 
     const renderTopicSelection = () => (
@@ -150,7 +179,7 @@ const InsightsPage: React.FC = () => {
                         initial={{ opacity: 0, y: 50 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: index * 0.1 }}
-                        onClick={() => generateArticle(topic)}
+                        onClick={() => handleTopicSelect(topic)}
                         className="h-96 block relative group overflow-hidden rounded-lg cursor-pointer border-2 border-fann-gold/20 hover:border-fann-gold transition-all duration-300"
                     >
                         <img src={topic.image} alt={topic.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
@@ -219,12 +248,15 @@ const InsightsPage: React.FC = () => {
         </div>
     );
 
-
     return (
         <AnimatedPage>
             <SEO
-                title="Intelligence Hub | Industry Trends & Analysis"
-                description="Access expert-driven analysis from the FANN Intelligence Hub. Stay ahead with the latest trends in exhibition design, event technology, and commercial interiors in the GCC."
+                title={selectedTopic ? `${selectedTopic.title} | FANN Intelligence Hub` : "Intelligence Hub | Industry Trends & Analysis"}
+                description={
+                    selectedTopic
+                        ? `An AI-powered analysis on ${selectedTopic.title}. Discover the latest trends in the GCC's exhibition, events, and interior design industries with FANN.`
+                        : "Access expert-driven analysis from the FANN Intelligence Hub. Stay ahead with the latest trends in exhibition design, event technology, and commercial interiors in the GCC."
+                }
             />
             <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
