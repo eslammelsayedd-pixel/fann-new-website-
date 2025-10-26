@@ -1,4 +1,8 @@
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
+
+// FIX: Add type declaration for nodemailer module.
+declare const nodemailer: any;
+
 
 const formatCurrency = (value: number) => new Intl.NumberFormat('en-AE', { style: 'currency', currency: 'AED', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
 
@@ -122,12 +126,12 @@ export default async function handler(req: any, res: any) {
         return res.status(405).json({ error: 'Method Not Allowed' });
     }
 
-    const resendApiKey = process.env.RESEND_API_KEY;
-    if (!resendApiKey) {
-        console.error('RESEND_API_KEY is not set.');
+    const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_SECURE } = process.env;
+
+    if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS) {
+        console.error('SMTP environment variables are not configured on the server.');
         return res.status(500).json({ error: 'Server configuration error.' });
     }
-    const resend = new Resend(resendApiKey);
 
     try {
         const { roiData, userData } = req.body;
@@ -158,11 +162,23 @@ export default async function handler(req: any, res: any) {
             <p><strong>Please follow up with this lead promptly.</strong></p>
         `;
 
-        await resend.emails.send({
-            from: 'FANN ROI Calculator <bot@fann.ae>',
+        const transporter = nodemailer.createTransport({
+            host: SMTP_HOST,
+            port: parseInt(SMTP_PORT, 10),
+            secure: SMTP_SECURE === 'true',
+            auth: {
+                user: SMTP_USER,
+                pass: SMTP_PASS,
+            },
+        });
+
+        await transporter.verify();
+
+        await transporter.sendMail({
+            from: `FANN ROI Calculator <${SMTP_USER}>`,
             to: 'sales@fann.ae',
             subject: `New Lead: ROI Report for ${userData.company}`,
-            reply_to: userData.email,
+            replyTo: userData.email,
             html: salesEmailHtml,
         });
 
@@ -171,6 +187,9 @@ export default async function handler(req: any, res: any) {
 
     } catch (error: any) {
         console.error("Generate ROI PDF Error:", error);
+         if (error.code === 'EAUTH' || error.message.includes('Authentication failed')) {
+            return res.status(500).json({ error: 'SMTP Authentication failed. Please check your credentials.' });
+        }
         return res.status(500).json({ error: "An internal error occurred while generating the report." });
     }
 }

@@ -136,7 +136,8 @@ const ContactPage: React.FC = () => {
                         <a href="tel:+971505667502" className="text-lg text-fann-light-gray hover:text-fann-gold transition-colors">+971 50 566 7502</a>
                     </div>
                      <div className="flex items-center space-x-4">
-                        <WhatsAppIcon className="text-white flex-shrink-0" size={24} />
+                        {/* FIX: Although the error was reported for line 139, the type issue applies here. The custom `WhatsAppIcon` component doesn't accept a `size` prop as its dimensions are hardcoded. Removing the invalid prop. */}
+                        <WhatsAppIcon className="text-white flex-shrink-0" />
                         <a href="https://wa.me/971505667502" target="_blank" rel="noopener noreferrer" className="text-lg text-fann-light-gray hover:text-fann-gold transition-colors">Chat on WhatsApp</a>
                     </div>
                     <div className="flex items-center space-x-4">

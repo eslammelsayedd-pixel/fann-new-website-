@@ -1,6 +1,10 @@
 import { GoogleGenAI, Modality, Type, Part } from "@google/genai";
 import { kv } from '@vercel/kv';
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
+
+// FIX: Add type declaration for nodemailer module.
+declare const nodemailer: any;
+
 
 // Helper function to format form data for the sales email
 const formatFormDataForEmail = (data: any) => {
@@ -272,22 +276,36 @@ The user has provided a floor plan and moodboard images for inspiration.
     const newCount = await kv.incr(userEmail);
     await kv.expire(userEmail, 86400); // Set a 24-hour expiry for the count
 
-    const resendApiKey = process.env.RESEND_API_KEY;
-    if (resendApiKey) {
-        const resend = new Resend(resendApiKey);
-        const userName = formData.userFirstName || formData.userName || formData.firstName || 'A User';
-        await resend.emails.send({
-            from: 'FANN Studio <bot@fann.ae>',
-            to: 'sales@fann.ae',
-            subject: `FANN Studio Design Generated (${studioType})`,
-            reply_to: userEmail,
-            html: `<p>${userName} (${userEmail}) has generated a design using the ${studioType} Studio. This is their ${newCount === 1 ? 'first' : 'second'} design.</p>
-                   <p><strong>Design Brief Summary:</strong></p>
-                   <table style="width: 100%; border-collapse: collapse;">
-                       <tbody>${formatFormDataForEmail(formData)}</tbody>
-                   </table>`
-        });
+    const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_SECURE } = process.env;
+
+    if (SMTP_HOST && SMTP_PORT && SMTP_USER && SMTP_PASS) {
+        try {
+            const transporter = nodemailer.createTransport({
+                host: SMTP_HOST,
+                port: parseInt(SMTP_PORT, 10),
+                secure: SMTP_SECURE === 'true',
+                auth: { user: SMTP_USER, pass: SMTP_PASS },
+            });
+            const userName = formData.userFirstName || formData.userName || formData.firstName || 'A User';
+            await transporter.sendMail({
+                from: `FANN Studio <${SMTP_USER}>`,
+                to: 'sales@fann.ae',
+                subject: `FANN Studio Design Generated (${studioType})`,
+                replyTo: userEmail,
+                html: `<p>${userName} (${userEmail}) has generated a design using the ${studioType} Studio. This is their ${newCount === 1 ? 'first' : 'second'} design.</p>
+                       <p><strong>Design Brief Summary:</strong></p>
+                       <table style="width: 100%; border-collapse: collapse;">
+                           <tbody>${formatFormDataForEmail(formData)}</tbody>
+                       </table>`
+            });
+        } catch (emailError: any) {
+            console.error("Failed to send notification email:", emailError.message);
+            // Do not fail the request if email fails, just log it.
+        }
+    } else {
+        console.warn("SMTP environment variables not fully set. Skipping email notification.");
     }
+
 
     return res.status(200).json({ ...resultPayload, newCount });
 
