@@ -254,7 +254,7 @@ const InsightsPage: React.FC = () => {
                 title={selectedTopic ? `${selectedTopic.title} | FANN Intelligence Hub` : "Intelligence Hub | Industry Trends & Analysis"}
                 description={
                     selectedTopic
-                        ? `An AI-powered analysis on ${selectedTopic.title}. Discover the latest trends in the GCC's exhibition, events, and interior design industries with FANN.`
+                        ? `A FANN-powered analysis on ${selectedTopic.title}. Discover the latest trends in the GCC's exhibition, events, and interior design industries with FANN.`
                         : "Access expert-driven analysis from the FANN Intelligence Hub. Stay ahead with the latest trends in exhibition design, event technology, and commercial interiors in the GCC."
                 }
             />

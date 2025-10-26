@@ -89,8 +89,8 @@ export default async function handler(req: any, res: any) {
         if (recommendations.length < 2) recommendations.push("To maximize lead capture, ensure your staff are trained to use a lead scanning app and qualify visitors with 2-3 targeted questions.");
         if (recommendations.length < 3) recommendations.push("Launch a pre-show email and social media campaign 2-3 weeks before the event to book meetings in advance and drive traffic to your stand.");
         
-        // --- AI-DRIVEN TIPS (NEW) ---
-        let ai_driven_tips: string[] = [];
+        // --- FANN-DRIVEN TIPS (NEW) ---
+        let fann_driven_tips: string[] = [];
         try {
             const apiKey = process.env.API_KEY || process.env.GOOGLE_CLOUD_API_KEY;
             if (apiKey) {
@@ -129,12 +129,12 @@ export default async function handler(req: any, res: any) {
                     });
                     const tipsResult = JSON.parse(tipsResponse.text.trim());
                     if (Array.isArray(tipsResult)) {
-                        ai_driven_tips = tipsResult;
+                        fann_driven_tips = tipsResult;
                     }
                 }
             }
         } catch (aiError: any) {
-            console.warn("AI Tips generation failed, returning ROI data without tips.", aiError.message);
+            console.warn("FANN Tips generation failed, returning ROI data without tips.", aiError.message);
             // Don't throw an error, just proceed without the tips
         }
 
@@ -175,7 +175,7 @@ export default async function handler(req: any, res: any) {
             ]
           },
           "personalized_recommendations": recommendations.slice(0, 3),
-          "ai_driven_tips": ai_driven_tips
+          "fann_driven_tips": fann_driven_tips
         };
 
         return res.status(200).json(response);

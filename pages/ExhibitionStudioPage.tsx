@@ -831,7 +831,7 @@ const ExhibitionStudioPage: React.FC = () => {
         <div className="min-h-[70vh] flex flex-col justify-center items-center text-center p-4">
             <Loader2 className="w-16 h-16 text-fann-gold animate-spin" />
             <h2 className="text-3xl font-serif text-white mt-6">Generating Your Concepts...</h2>
-            <p className="text-fann-light-gray mt-2 max-w-sm">Our advanced design engine is drafting architectural plans and rendering photorealistic visuals. This may take up to a minute.</p>
+            <p className="text-fann-light-gray mt-2 max-w-sm">Our advanced design tools are drafting architectural plans and rendering photorealistic visuals. This may take up to a minute.</p>
         </div>
     );
 

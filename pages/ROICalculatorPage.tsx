@@ -183,10 +183,10 @@ const ROICalculatorPage: React.FC = () => {
                                                 {results.personalized_recommendations.map((rec: string, i: number) => <li key={i}>{rec}</li>)}
                                             </ul>
                                         </ResultCard>
-                                        {results.ai_driven_tips && results.ai_driven_tips.length > 0 && (
-                                            <ResultCard icon={Zap} title="AI-Powered Tips" color="#D4AF76">
+                                        {results.fann_driven_tips && results.fann_driven_tips.length > 0 && (
+                                            <ResultCard icon={Zap} title="FANN-Powered Tips" color="#D4AF76">
                                                 <ul className="text-sm text-fann-cream space-y-2 list-disc list-inside">
-                                                    {results.ai_driven_tips.map((tip: string, i: number) => <li key={i}>{tip}</li>)}
+                                                    {results.fann_driven_tips.map((tip: string, i: number) => <li key={i}>{tip}</li>)}
                                                 </ul>
                                             </ResultCard>
                                         )}

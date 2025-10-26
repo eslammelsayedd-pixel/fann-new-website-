@@ -23,19 +23,29 @@ const itemVariants = {
 const AboutPage: React.FC = () => {
   return (
     <AnimatedPage>
-      <div className="min-h-screen bg-fann-charcoal pt-32 text-white">
+      <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
         <motion.div 
-            className="container mx-auto px-4 sm:px-6 lg:px-8 text-center"
+            className="container mx-auto px-4 sm:px-6 lg:px-8"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
         >
-          <motion.h1 variants={itemVariants} className="text-5xl font-serif font-bold text-fann-gold mb-4">About FANN</motion.h1>
-          <motion.p variants={itemVariants} className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Founded on the principles of innovation and excellence, FANN is Dubai's leading force in creating spaces and events that tell a story. Our team of international experts brings global standards to local execution.
-          </motion.p>
-           <motion.div variants={itemVariants} className="mt-12">
-            <img src="https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="FANN Team in a modern design office" className="rounded-lg shadow-xl" />
+          <div className="text-center">
+            <motion.h1 variants={itemVariants} className="text-5xl font-serif font-bold text-fann-gold mb-4">About FANN</motion.h1>
+            <motion.p variants={itemVariants} className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              Founded in Dubai in 2019, FANN was born from a passion for transforming visions into tangible, unforgettable realities. We believe that a well-designed space or a flawlessly executed event has the power to inspire, connect, and drive success.
+            </motion.p>
+          </div>
+           <motion.div variants={itemVariants} className="mt-12 mb-16">
+            <img src="https://images.pexels.com/photos/8199563/pexels-photo-8199563.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="The diverse FANN team of Arab and Indian professionals collaborating in a modern Dubai office." className="rounded-lg shadow-xl mx-auto" />
+          </motion.div>
+          <motion.div variants={itemVariants} className="max-w-3xl mx-auto text-lg text-fann-cream space-y-6 text-left leading-loose">
+            <p>
+              Our philosophy is built on a dual commitment: relentless innovation and uncompromising excellence. We merge cutting-edge technology and global design trends with a deep understanding of the regional culture and market. This unique synthesis allows us to deliver experiences that are not only visually stunning but also strategically sound and culturally resonant.
+            </p>
+            <p>
+              At the heart of FANN is our diverse team of strategists, designers, architects, and project managers. Hailing from across the globe, our experts bring a wealth of international experience to every project, ensuring world-class standards are met with precise local execution. We are more than just designers; we are partners in our clients' success, dedicated to bringing their stories to life with creativity and precision.
+            </p>
           </motion.div>
         </motion.div>
       </div>

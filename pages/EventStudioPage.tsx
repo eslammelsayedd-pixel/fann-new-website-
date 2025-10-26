@@ -496,7 +496,7 @@ const EventStudioPage: React.FC = () => {
         <div className="min-h-[70vh] flex flex-col justify-center items-center text-center p-4">
             <Loader2 className="w-16 h-16 text-fann-gold animate-spin" />
             <h2 className="text-3xl font-serif text-white mt-6">Imagining Your Event...</h2>
-            <p className="text-fann-light-gray mt-2 max-w-sm">Our design technology is arranging the layout and setting the mood. This may take a few moments.</p>
+            <p className="text-fann-light-gray mt-2 max-w-sm">Our design tools are arranging the layout and setting the mood. This may take a few moments.</p>
         </div>
     );
     

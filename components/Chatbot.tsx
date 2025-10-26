@@ -179,7 +179,7 @@ const Chatbot: React.FC = () => {
                                     <Send size={20} />
                                 </button>
                             </div>
-                            <p className="text-xs text-fann-light-gray text-center mt-2">Assistant powered by Gemini. May display inaccurate info.</p>
+                            <p className="text-xs text-fann-light-gray text-center mt-2">Assistant powered by FANN's advanced technology. May display inaccurate info.</p>
                         </footer>
                     </motion.div>
                 )}

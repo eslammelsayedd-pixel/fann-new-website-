@@ -79,7 +79,7 @@ const AIDesignStudioPage: React.FC = () => {
                     <div className="text-center mb-12">
                         <h1 className="text-5xl md:text-6xl font-serif font-bold text-fann-gold mb-4">FANN Studio</h1>
                         <p className="text-xl text-fann-cream max-w-3xl mx-auto">
-                            Your vision, realized in minutes. Select a studio to begin creating with FANN's powerful design engine.
+                            Your vision, realized in minutes. Select a studio to begin creating with FANN's powerful design tools.
                         </p>
                     </div>
 

@@ -8,21 +8,14 @@
 // This resolves the "module 'react' cannot be found" error.
 import * as React from 'react';
 
-// By augmenting the 'react' module, we can extend React's built-in JSX types
-// without overwriting them, which avoids issues with standard HTML elements.
-// FIX: Removed the `HTMLAttributes` augmentation for the `class` property.
-// Standard React practice is to use `className` for styling, which correctly
-// translates to the `class` attribute in the DOM for both standard and custom elements.
-// The custom `class` property might interfere with React's rendering logic.
-// FIX: Changed `declare module 'react'` to `declare global` to fix module augmentation error. The `JSX` namespace is often available globally in modern React setups, and augmenting it directly is more robust.
-declare global {
+// FIX: Reverting to `declare module 'react'` for module augmentation.
+// The `declare global` approach was overwriting the global JSX types instead of merging with them,
+// causing all standard HTML elements to be unrecognized. Augmenting the 'react' module directly
+// is a more reliable way to add custom elements while preserving the standard ones.
+declare module 'react' {
     namespace JSX {
-        // FIX: Augment the existing IntrinsicElements interface to add 'model-viewer'.
-        // By redeclaring the interface within a `declare global` block, TypeScript's
-        // "declaration merging" feature adds our custom element type without overwriting
-        // the standard HTML element types. The `extends` clause was removed as it was
-        // incorrectly causing TypeScript to replace the interface instead of merging with it,
-        // which was the root cause of the widespread "Property does not exist" errors.
+        // This augmentation adds 'model-viewer' to the list of known JSX elements.
+        // It merges with React's existing IntrinsicElements definition, preserving all standard HTML tags.
         interface IntrinsicElements {
             'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & {
                 src?: string;
