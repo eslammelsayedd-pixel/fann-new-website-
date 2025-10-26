@@ -444,14 +444,14 @@ const ExhibitionStudioPage: React.FC = () => {
     
             if (!response.ok) {
                 let errorText = `Server responded with status ${response.status}`;
+                const responseText = await response.text(); // Read body ONCE
                 try {
-                    // Try to parse as JSON first, as that's the expected error format
-                    const errorData = await response.json();
-                    errorText = errorData.error || JSON.stringify(errorData);
+                    // Try to parse the text as JSON
+                    const errorData = JSON.parse(responseText);
+                    errorText = errorData.error || responseText; // Use parsed error or fall back to the full text
                 } catch (e) {
-                    // If JSON parsing fails, read the response as text.
-                    // This will capture Vercel's "Request Entity Too Large" or other HTML/text errors.
-                    errorText = await response.text();
+                    // If parsing fails, the error message is the raw text
+                    errorText = responseText;
                 }
                 throw new Error(errorText);
             }

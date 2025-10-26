@@ -2,12 +2,10 @@
 // and bring the 'React' namespace into scope for type definitions.
 import React from 'react';
 
-// FIX: Correctly augment the React module to add support for the
-// 'model-viewer' custom element. This method of module augmentation is more robust
-// and ensures that the custom element type is merged with the existing
-// definitions from @types/react, preserving all standard HTML and SVG element types and
-// resolving the widespread "Property 'div' does not exist" errors.
-declare module 'react' {
+// FIX: Switched from module augmentation of 'react' to augmenting the global JSX namespace.
+// This is a more stable approach for adding custom elements and resolves the
+// "module 'react' cannot be found" compilation error.
+declare global {
     namespace JSX {
         interface IntrinsicElements {
             'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & {

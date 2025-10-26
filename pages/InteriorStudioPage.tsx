@@ -262,11 +262,12 @@ const InteriorStudioPage: React.FC = () => {
     
             if (!response.ok) {
                 let errorText = `Server responded with status ${response.status}`;
+                const responseText = await response.text(); // Read body ONCE
                 try {
-                    const errorData = await response.json();
-                    errorText = errorData.error || 'An unknown error occurred.';
+                    const errorData = JSON.parse(responseText);
+                    errorText = errorData.error || responseText;
                 } catch (e) {
-                    errorText = await response.text();
+                    errorText = responseText;
                 }
                 throw new Error(errorText);
             }
