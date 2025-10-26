@@ -165,8 +165,30 @@ const HeroSection: React.FC = () => {
     );
 };
 
+const sectionVariants = {
+  offscreen: { y: 50, opacity: 0 },
+  onscreen: {
+    y: 0,
+    opacity: 1,
+    transition: { type: "spring", stiffness: 40, duration: 0.8 },
+  },
+};
+
+const cardContainerVariants = {
+  offscreen: {},
+  onscreen: {
+    transition: { staggerChildren: 0.15 },
+  },
+};
+
+const cardItemVariants = {
+  offscreen: { y: 50, opacity: 0 },
+  onscreen: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 40 } },
+};
+
 const ServiceCard: React.FC<{ icon: React.ReactNode; title: string; description: string; link: string; }> = ({ icon, title, description, link }) => (
     <motion.div 
+        variants={cardItemVariants}
         whileHover="hover"
         initial="rest"
         className="relative p-8 bg-fann-charcoal-light rounded-lg overflow-hidden border border-fann-border"
@@ -195,17 +217,31 @@ const HomePage: React.FC = () => {
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
 
                     {/* Services Section */}
-                    <section className="text-center">
-                        <h2 className="text-4xl md:text-5xl font-serif font-bold mb-12">Our Expertise</h2>
-                        <div className="grid md:grid-cols-3 gap-8">
+                    <motion.section 
+                        className="text-center"
+                        initial="offscreen"
+                        whileInView="onscreen"
+                        viewport={{ once: true, amount: 0.2 }}
+                    >
+                        <motion.h2 variants={sectionVariants} className="text-4xl md:text-5xl font-serif font-bold mb-12">Our Expertise</motion.h2>
+                        <motion.div 
+                            className="grid md:grid-cols-3 gap-8"
+                            variants={cardContainerVariants}
+                        >
                             <ServiceCard icon={<Layers size={40} />} title="Exhibitions" description="Crafting immersive brand pavilions that captivate audiences and drive business." link="/services" />
                             <ServiceCard icon={<Calendar size={40} />} title="Events" description="Executing flawless corporate events, from grand openings to global summits." link="/services" />
                             <ServiceCard icon={<PenTool size={40} />} title="Interior Design" description="Designing inspiring commercial and residential spaces with a touch of luxury." link="/services" />
-                        </div>
-                    </section>
+                        </motion.div>
+                    </motion.section>
 
                     {/* FANN Studio Section */}
-                    <section className="mt-24 text-center bg-fann-charcoal-light rounded-lg py-16 px-8">
+                    <motion.section 
+                        className="mt-24 text-center bg-fann-charcoal-light rounded-lg py-16 px-8"
+                        initial="offscreen"
+                        whileInView="onscreen"
+                        viewport={{ once: true, amount: 0.2 }}
+                        variants={sectionVariants}
+                    >
                         <h2 className="text-4xl md:text-5xl font-serif font-bold text-fann-gold mb-4">Visualize Your Vision in Minutes</h2>
                         <p className="max-w-2xl mx-auto text-fann-cream mb-8">Our revolutionary FANN Studio allows you to configure your exhibition stand, see it in 3D, and get instant pricing. Innovation at your fingertips.</p>
                         <div className="mb-8">
@@ -220,14 +256,26 @@ const HomePage: React.FC = () => {
                                 Try It Now - Free
                             </motion.button>
                         </Link>
-                    </section>
+                    </motion.section>
                     
                     {/* Featured Projects Section */}
-                    <section className="mt-24">
-                        <h2 className="text-4xl md:text-5xl font-serif font-bold text-center mb-12">Featured Projects</h2>
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <motion.section 
+                        className="mt-24"
+                        initial="offscreen"
+                        whileInView="onscreen"
+                        viewport={{ once: true, amount: 0.2 }}
+                    >
+                        <motion.h2 variants={sectionVariants} className="text-4xl md:text-5xl font-serif font-bold text-center mb-12">Featured Projects</motion.h2>
+                        <motion.div 
+                            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+                            variants={cardContainerVariants}
+                        >
                             {portfolioProjects.slice(0, 6).map(project => (
-                                <div key={project.id} className="group relative overflow-hidden rounded-lg">
+                                <motion.div 
+                                    key={project.id} 
+                                    className="group relative overflow-hidden rounded-lg"
+                                    variants={cardItemVariants}
+                                >
                                     <img src={project.image} alt={project.title} className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                                     <div className="absolute bottom-0 left-0 p-6">
@@ -235,9 +283,9 @@ const HomePage: React.FC = () => {
                                         <h3 className="text-xl font-bold mt-2 text-white">{project.title}</h3>
                                         <p className="text-fann-cream">{project.client}</p>
                                     </div>
-                                </div>
+                                </motion.div>
                             ))}
-                        </div>
+                        </motion.div>
                         <div className="text-center mt-12">
                              <Link to="/portfolio">
                                 <motion.button 
@@ -248,10 +296,16 @@ const HomePage: React.FC = () => {
                                 </motion.button>
                             </Link>
                         </div>
-                    </section>
+                    </motion.section>
                     
                     {/* Testimonials Section */}
-                    <section className="mt-24 text-center">
+                    <motion.section 
+                        className="mt-24 text-center"
+                        initial="offscreen"
+                        whileInView="onscreen"
+                        viewport={{ once: true, amount: 0.2 }}
+                        variants={sectionVariants}
+                    >
                         <h2 className="text-4xl md:text-5xl font-serif font-bold mb-12">What Our Clients Say</h2>
                         <div className="relative max-w-3xl mx-auto">
                             <div className="bg-fann-charcoal-light p-8 rounded-lg">
@@ -261,10 +315,16 @@ const HomePage: React.FC = () => {
                                 <p className="text-fann-light-gray">{testimonials[0].company}</p>
                             </div>
                         </div>
-                    </section>
+                    </motion.section>
 
                     {/* CTA Section */}
-                    <section className="mt-24 text-center bg-gradient-to-r from-fann-teal to-fann-gold p-1 rounded-lg">
+                    <motion.section 
+                        className="mt-24 text-center bg-gradient-to-r from-fann-teal to-fann-gold p-1 rounded-lg"
+                        initial="offscreen"
+                        whileInView="onscreen"
+                        viewport={{ once: true, amount: 0.2 }}
+                        variants={sectionVariants}
+                    >
                          <div className="bg-fann-charcoal rounded-lg py-16 px-8">
                             <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4">Ready to Create Something Extraordinary?</h2>
                             <p className="max-w-2xl mx-auto text-fann-cream mb-8">Let's discuss how we can bring your vision to life. Schedule a complimentary consultation with our experts today.</p>
@@ -288,7 +348,7 @@ const HomePage: React.FC = () => {
                                 </Link>
                             </div>
                          </div>
-                    </section>
+                    </motion.section>
                 </div>
             </div>
         </AnimatedPage>

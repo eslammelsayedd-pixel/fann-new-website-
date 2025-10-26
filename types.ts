@@ -1,4 +1,6 @@
-import 'react';
+// FIX: Changed `import 'react';` to `import React from 'react';` to resolve module augmentation errors
+// and bring the 'React' namespace into scope for type definitions.
+import React from 'react';
 
 // FIX: Correctly augment the React module to add support for the
 // 'model-viewer' custom element. This method of module augmentation is more robust

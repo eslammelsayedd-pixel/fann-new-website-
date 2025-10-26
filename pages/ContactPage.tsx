@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 import { Mail, Phone, MapPin, Loader2, CheckCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
+
 
 const WhatsAppIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" {...props}>
@@ -9,6 +11,15 @@ const WhatsAppIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     </svg>
 );
 
+const slideInFromLeft = {
+  hidden: { x: -50, opacity: 0 },
+  visible: { x: 0, opacity: 1, transition: { type: "spring", stiffness: 40, duration: 0.8 } },
+};
+
+const slideInFromRight = {
+  hidden: { x: 50, opacity: 0 },
+  visible: { x: 0, opacity: 1, transition: { type: "spring", stiffness: 40, duration: 0.8 } },
+};
 
 const ContactPage: React.FC = () => {
   const [isSending, setIsSending] = useState(false);
@@ -110,7 +121,13 @@ const ContactPage: React.FC = () => {
           </div>
           
           <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
-            <div className="bg-fann-charcoal-light p-8 rounded-lg">
+            <motion.div 
+              className="bg-fann-charcoal-light p-8 rounded-lg"
+              variants={slideInFromLeft}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+            >
                 <h2 className="text-3xl font-serif text-white mb-8" style={{ fontWeight: 600}}>Get in Touch</h2>
                 <div className="space-y-6">
                     <div className="flex items-center space-x-4">
@@ -140,9 +157,15 @@ const ContactPage: React.FC = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </motion.div>
 
-            <div className="bg-fann-charcoal-light p-8 rounded-lg">
+            <motion.div 
+              className="bg-fann-charcoal-light p-8 rounded-lg"
+              variants={slideInFromRight}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+            >
                 {isSent ? (
                      <div className="flex flex-col items-center justify-center h-full text-center">
                         <CheckCircle className="w-16 h-16 text-fann-teal mx-auto mb-4" />
@@ -173,7 +196,7 @@ const ContactPage: React.FC = () => {
                         </form>
                     </>
                 )}
-            </div>
+            </motion.div>
           </div>
 
         </div>

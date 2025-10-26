@@ -3,6 +3,21 @@ import { motion, AnimatePresence } from 'framer-motion';
 import AnimatedPage from '../components/AnimatedPage';
 import { portfolioProjects } from '../constants';
 
+const containerVariants = {
+  hidden: { },
+  visible: {
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
+
 const PortfolioPage: React.FC = () => {
   const [selectedService, setSelectedService] = useState('All');
   const [selectedIndustry, setSelectedIndustry] = useState('All');
@@ -52,15 +67,21 @@ const PortfolioPage: React.FC = () => {
             <FilterButtons title="Industry" options={industries} selected={selectedIndustry} setSelected={setSelectedIndustry} />
           </div>
 
-          <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.div 
+            layout 
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+          >
             <AnimatePresence>
               {filteredProjects.length > 0 ? (
                 filteredProjects.map(project => (
                   <motion.div 
                     key={project.id}
                     layout
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    variants={itemVariants}
                     exit={{ opacity: 0, scale: 0.8 }}
                     transition={{ duration: 0.3 }}
                     className="group relative overflow-hidden rounded-lg"

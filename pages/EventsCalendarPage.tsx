@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import AnimatedPage from '../components/AnimatedPage';
 import { regionalEvents } from '../constants';
 import { Event } from '../types';
+import { motion } from 'framer-motion';
 
 // --- Robust Date Parsing Logic ---
 
@@ -49,6 +50,16 @@ const parseDateRange = (dateStr: string): DateRange => {
     const invalidDate = new Date(0);
     return { start: invalidDate, end: invalidDate };
   }
+};
+
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.05 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -30 },
+  visible: { opacity: 1, x: 0 },
 };
 
 const EventsCalendarPage: React.FC = () => {
@@ -161,10 +172,19 @@ const EventsCalendarPage: React.FC = () => {
             </div>
 
             <div className="max-w-4xl mx-auto">
-                <div className="space-y-6">
+                <motion.div 
+                    className="space-y-6"
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                >
                     {filteredEvents.length > 0 ? (
-                      filteredEvents.map((event, index) => (
-                          <div key={index} className="bg-fann-charcoal-light p-6 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center border-l-4 border-fann-teal">
+                      filteredEvents.map((event) => (
+                          <motion.div 
+                            key={`${event.name}-${event.date}`}
+                            variants={itemVariants}
+                            className="bg-fann-charcoal-light p-6 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center border-l-4 border-fann-teal"
+                           >
                               <div>
                                   <h3 className="text-2xl font-bold text-white mb-1">{event.name}</h3>
                                   <p className="text-fann-light-gray">{event.venue}, {event.country}</p>
@@ -173,15 +193,19 @@ const EventsCalendarPage: React.FC = () => {
                                   <p className="text-lg font-semibold text-fann-gold">{event.date}</p>
                                   <p className="text-fann-cream">{event.industry}</p>
                               </div>
-                          </div>
+                          </motion.div>
                       ))
                     ) : (
-                      <div className="text-center py-16 bg-fann-charcoal-light rounded-lg">
+                      <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-center py-16 bg-fann-charcoal-light rounded-lg"
+                      >
                         <h3 className="text-2xl font-serif text-fann-gold">No Events Found</h3>
                         <p className="text-fann-light-gray mt-2">Try adjusting your filters to find more events.</p>
-                      </div>
+                      </motion.div>
                     )}
-                </div>
+                </motion.div>
             </div>
 
         </div>
