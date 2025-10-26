@@ -403,7 +403,7 @@ const ExhibitionStudioPage: React.FC = () => {
             const data = await response.json();
             
             if (!data.concepts || data.concepts.length === 0) {
-                 throw new Error("The AI model failed to generate any concepts.");
+                 throw new Error("The FANN design engine failed to generate any concepts.");
             }
             
             setGeneratedConcepts(data.concepts);
@@ -831,7 +831,7 @@ const ExhibitionStudioPage: React.FC = () => {
         <div className="min-h-[70vh] flex flex-col justify-center items-center text-center p-4">
             <Loader2 className="w-16 h-16 text-fann-gold animate-spin" />
             <h2 className="text-3xl font-serif text-white mt-6">Generating Your Concepts...</h2>
-            <p className="text-fann-light-gray mt-2 max-w-sm">Our generative technology is drafting architectural plans and rendering photorealistic visuals. This may take up to a minute.</p>
+            <p className="text-fann-light-gray mt-2 max-w-sm">Our advanced design engine is drafting architectural plans and rendering photorealistic visuals. This may take up to a minute.</p>
         </div>
     );
 
@@ -850,7 +850,7 @@ const ExhibitionStudioPage: React.FC = () => {
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
                         <Sparkles className="mx-auto h-16 w-16 text-fann-gold" />
-                        <h1 className="text-4xl font-serif font-bold text-fann-gold mt-4 mb-4">Your FANN-Generated Concepts</h1>
+                        <h1 className="text-4xl font-serif font-bold text-fann-gold mt-4 mb-4">Your Custom Concepts</h1>
                         <p className="text-lg text-fann-cream max-w-3xl mx-auto">Select your preferred design to receive a detailed proposal and quotation from our team.</p>
                          {generationStatus && <p className="text-lg font-semibold text-fann-teal mt-4 bg-fann-teal/10 px-4 py-2 rounded-md inline-block">{generationStatus}</p>}
                     </div>

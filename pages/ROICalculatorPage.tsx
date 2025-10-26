@@ -105,7 +105,7 @@ const ROICalculatorPage: React.FC = () => {
                         <BarChart2 className="mx-auto h-16 w-16 text-fann-gold" />
                         <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Exhibition ROI Calculator</h1>
                         <p className="text-xl text-fann-cream max-w-3xl mx-auto">
-                           Make data-driven decisions. Project your potential return on investment for your next exhibition in Dubai or KSA.
+                           Make data-driven decisions. Project your potential return on investment for your next exhibition.
                         </p>
                     </div>
 
@@ -135,9 +135,6 @@ const ROICalculatorPage: React.FC = () => {
                                     <label htmlFor="close_rate" className="block text-sm font-medium text-fann-light-gray mb-2">Sales Close Rate: <span className="text-fann-gold font-bold">{formData.close_rate}%</span></label>
                                     <input type="range" id="close_rate" name="close_rate" min="5" max="50" step="1" value={formData.close_rate} onChange={handleInputChange} className="w-full h-2 bg-fann-charcoal-light rounded-lg appearance-none cursor-pointer accent-fann-gold" />
                                 </div>
-                            </div>
-                            <div className="text-xs text-fann-light-gray text-center pt-4">
-                                Projections are based on industry benchmarks from CEIR, DWTC, and FANN's proprietary data from 150+ regional exhibitions.
                             </div>
                         </div>
 
@@ -176,12 +173,17 @@ const ROICalculatorPage: React.FC = () => {
                                                 <Metric label="Expected Revenue" value={<>{formatCurrency(results.financial_projections.expected_revenue_min)}<br/>- {formatCurrency(results.financial_projections.expected_revenue_max)}</>} />
                                             </ResultCard>
                                         </div>
-                                         <ResultCard icon={FileText} title="Investment & Metrics" color="#B0B0B0">
+                                         <ResultCard icon={TrendingUp} title="Investment & Metrics" color="#B0B0B0">
                                             <Metric label="Total Investment" value={formatCurrency(results.investment_breakdown.total_investment)} />
                                             <Metric label="Cost Per Qualified Lead" value={formatCurrency(results.roi_metrics.cost_per_lead)} />
                                             <Metric label="Deals to Break-Even" value={results.roi_metrics.break_even_deals} />
                                         </ResultCard>
-                                        <ResultCard icon={Zap} title="Personalized Recommendations" color="#5A8B8C">
+                                         <ResultCard icon={FileText} title="Methodology" color="#B0B0B0">
+                                            <p className="text-sm text-fann-light-gray">
+                                                Projections are based on a proprietary model developed by FANN, analyzing industry benchmarks from leading authorities like CEIR and DWTC, combined with our internal data from over 150 successful regional exhibitions.
+                                            </p>
+                                        </ResultCard>
+                                        <ResultCard icon={CheckCircle} title="FANN Recommendations" color="#5A8B8C">
                                             <ul className="text-sm text-fann-cream space-y-2 list-disc list-inside">
                                                 {results.personalized_recommendations.map((rec: string, i: number) => <li key={i}>{rec}</li>)}
                                             </ul>

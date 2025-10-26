@@ -5,12 +5,12 @@ export const navLinks: NavLink[] = [
     { name: 'Portfolio', path: '/portfolio' },
     { name: 'FANN Studio', path: '/fann-studio' },
     { name: 'Calendar', path: '/events-calendar' },
+    { name: 'ROI Calculator', path: '/roi-calculator' },
     { 
         name: 'About Us', 
         children: [
             { name: 'About FANN', path: '/about' },
             { name: 'Intelligence Hub', path: '/insights' },
-            { name: 'ROI Calculator', path: '/roi-calculator' },
             { name: 'Contact Us', path: '/contact' },
         ] 
     },

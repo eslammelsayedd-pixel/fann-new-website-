@@ -149,7 +149,7 @@ const VideoStudioPage: React.FC = () => {
                         >
                             <video controls autoPlay loop src={videoUrl} className="w-full rounded-lg shadow-2xl" />
                             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-                                <a href={videoUrl} download="fann-ai-video-concept.mp4" className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full flex items-center justify-center gap-2">
+                                <a href={videoUrl} download="fann-video-concept.mp4" className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full flex items-center justify-center gap-2">
                                     <Download size={20} /> Download Video
                                 </a>
                                 <button onClick={() => { setVideoUrl(null); setPrompt(''); clearError(); }} className="border-2 border-fann-gold text-fann-gold font-bold py-3 px-8 rounded-full">

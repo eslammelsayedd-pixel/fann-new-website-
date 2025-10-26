@@ -141,7 +141,7 @@ const InsightsPage: React.FC = () => {
         <div className="text-center">
             <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">FANN Intelligence Hub</h1>
             <p className="text-xl text-fann-cream max-w-3xl mx-auto mb-12">
-                Select a topic for an expert-driven analysis of key industry trends, with a focus on Dubai and Saudi Arabia.
+                Select a topic for an expert-driven analysis of key industry trends.
             </p>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
                 {insightTopics.map((topic, index) => (

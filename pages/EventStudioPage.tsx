@@ -496,7 +496,7 @@ const EventStudioPage: React.FC = () => {
         <div className="min-h-[70vh] flex flex-col justify-center items-center text-center p-4">
             <Loader2 className="w-16 h-16 text-fann-gold animate-spin" />
             <h2 className="text-3xl font-serif text-white mt-6">Imagining Your Event...</h2>
-            <p className="text-fann-light-gray mt-2 max-w-sm">Our FANN technology is designing the decor, arranging the layout, and setting the mood. This may take a few moments.</p>
+            <p className="text-fann-light-gray mt-2 max-w-sm">Our design technology is arranging the layout and setting the mood. This may take a few moments.</p>
         </div>
     );
     
@@ -505,7 +505,7 @@ const EventStudioPage: React.FC = () => {
             <CheckCircle className="w-20 h-20 text-fann-teal mb-6" />
             <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Thank You!</h1>
             <p className="text-xl text-fann-cream max-w-2xl mx-auto mb-8">Our team has received your concept selection and will prepare a detailed proposal, which will be sent to <strong>{formData.userEmail}</strong> shortly.</p>
-            {selectedImage !== null && <img src={generatedImages[selectedImage]} alt={`Selected AI-generated concept for the event theme: ${formData.theme}`} className="rounded-lg shadow-2xl w-full max-w-lg mt-8" />}
+            {selectedImage !== null && <img src={generatedImages[selectedImage]} alt={`Selected concept for the event theme: ${formData.theme}`} className="rounded-lg shadow-2xl w-full max-w-lg mt-8" />}
         </div>
     );
 
@@ -523,7 +523,7 @@ const EventStudioPage: React.FC = () => {
                         <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
                             {generatedImages.map((img, index) => (
                                 <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} onClick={() => setSelectedImage(index)} className={`rounded-lg overflow-hidden cursor-pointer border-4 transition-all duration-300 hover:border-fann-gold/50 ${selectedImage === index ? 'border-fann-gold' : 'border-transparent'}`}>
-                                    <img src={img} alt={`AI-generated concept number ${index + 1} for an event.`} className="w-full h-auto object-cover" />
+                                    <img src={img} alt={`Generated concept number ${index + 1} for an event.`} className="w-full h-auto object-cover" />
                                 </motion.div>
                             ))}
                         </div>

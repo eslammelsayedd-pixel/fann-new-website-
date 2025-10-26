@@ -1,17 +1,15 @@
-// FIX: Add a triple-slash directive to ensure React's types are loaded before module augmentation occurs.
-// This resolves the "module 'react' cannot be found" error.
-/// <reference types="react" />
+// FIX: Removed the triple-slash directive for react. It can cause issues in module files (files with imports/exports)
+// and was throwing a "Cannot find type definition file" error.
 
-// FIX: Changed `import 'react';` to `import React from 'react';` to resolve module augmentation errors
-// and bring the 'React' namespace into scope for type definitions.
-import React from 'react';
+// FIX: Changed `import React from 'react'` to `import * as React from 'react'`.
+// The latter is the correct way to import the React namespace and can resolve
+// module augmentation errors like "module 'react' cannot be found".
+import * as React from 'react';
 
-// FIX: Switched from `declare global` to module augmentation of 'react'.
-// This correctly extends React's built-in JSX types instead of overwriting them,
-// which resolves the widespread "Property 'div' does not exist on type 'JSX.IntrinsicElements'" errors.
+// By augmenting the 'react' module, we can extend React's built-in JSX types
+// without overwriting them, which avoids issues with standard HTML elements.
 declare module 'react' {
-    // FIX: Allow 'class' property on intrinsic elements to support custom element conventions and the existing codebase.
-    // This resolves potential type errors from using 'class' instead of 'className'.
+    // Allow 'class' property on intrinsic elements to support custom element conventions and the existing codebase.
     interface HTMLAttributes<T> {
         class?: string;
     }
@@ -27,7 +25,7 @@ declare module 'react' {
                 'shadow-intensity'?: string;
                 exposure?: string;
                 'environment-image'?: string;
-                // FIX: Add missing properties used in HomePage.tsx to prevent type errors.
+                // Add missing properties used in HomePage.tsx to prevent type errors.
                 'interaction-prompt'?: string;
                 'camera-orbit'?: string;
                 'min-camera-orbit'?: string;
