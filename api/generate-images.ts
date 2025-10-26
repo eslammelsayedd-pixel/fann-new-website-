@@ -1,4 +1,28 @@
 import { GoogleGenAI, Modality, Type, Part } from "@google/genai";
+import { kv } from '@vercel/kv';
+import { Resend } from 'resend';
+
+// Helper function to format form data for the sales email
+const formatFormDataForEmail = (data: any) => {
+    let detailsHtml = '';
+    for (const [key, value] of Object.entries(data)) {
+        if (['logo', 'logoPreview', 'floorPlan', 'moodboards', 'brandColors', 'functionality', 'eventElements'].includes(key) || typeof value === 'object' && value !== null && !Array.isArray(value)) continue;
+        let formattedValue = String(value);
+        if (!formattedValue) continue;
+        const formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+        detailsHtml += `<tr><td style="padding: 4px 8px; border: 1px solid #444; font-weight: bold; vertical-align: top;">${formattedKey}</td><td style="padding: 4px 8px; border: 1px solid #444;">${formattedValue}</td></tr>`;
+    }
+    // Add array values separately for better formatting
+    const arrayFields = ['brandColors', 'functionality', 'eventElements', 'functionalZones'];
+    arrayFields.forEach(key => {
+        if (data[key] && Array.isArray(data[key]) && data[key].length > 0) {
+            const formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+            detailsHtml += `<tr><td style="padding: 4px 8px; border: 1px solid #444; font-weight: bold; vertical-align: top;">${formattedKey}</td><td style="padding: 4px 8px; border: 1px solid #444;">${data[key].join(', ')}</td></tr>`;
+        }
+    });
+    return detailsHtml;
+};
+
 
 // This is a Vercel Serverless Function. It uses a Node.js-style request object.
 // The `req.body` is pre-parsed, so we don't use `req.json()`.
@@ -10,7 +34,21 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    const { logo, mimeType, promptData, prompt, promptDataInterior } = req.body;
+    const { logo, mimeType, promptData, prompt, promptDataInterior, formData } = req.body;
+
+    // --- Rate Limiting & User Info Extraction ---
+    const userEmail = formData?.userEmail || formData?.email;
+    if (!userEmail) {
+        return res.status(400).json({ error: 'User email is required to generate designs.' });
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
+        return res.status(400).json({ error: 'Invalid email format provided.' });
+    }
+
+    const generationCount = await kv.get<number>(userEmail) || 0;
+    if (generationCount >= 2) {
+        return res.status(429).json({ error: "You’ve reached your free design limit. Please talk to our agent for more assistance." });
+    }
 
     const apiKey = process.env.API_KEY || process.env.GOOGLE_CLOUD_API_KEY;
     if (!apiKey) {
@@ -18,8 +56,12 @@ export default async function handler(req: any, res: any) {
     }
     const ai = new GoogleGenAI({ apiKey });
     
+    let studioType = '';
+    let resultPayload: any = {};
+    
     // --- Branch for Exhibition Studio ---
     if (promptData) {
+      studioType = 'Exhibition';
       if (!logo || !mimeType) return res.status(400).json({ error: 'Missing logo or mimeType for Exhibition' });
       
       const baseTextGenPrompt = `Based on the following design brief for an exhibition stand, generate 3 distinct and creative concept proposals. For each proposal, provide a unique "title" and a short "description" (2-3 sentences that highlight a key feature or benefit).
@@ -111,11 +153,12 @@ Return your response as a single, valid JSON array. Do not include any text or m
           return { title: concept.title, description: concept.description, images };
       });
 
-      return res.status(200).json({ concepts });
+      resultPayload = { concepts };
     }
     
-    // --- NEW Branch for Interior Studio ---
+    // --- Branch for Interior Studio ---
     else if (promptDataInterior) {
+        studioType = 'Interior Design';
         const pdi = promptDataInterior;
         const isCommercial = ['Office', 'Retail space'].includes(pdi.spaceType);
 
@@ -190,11 +233,12 @@ ${isCommercial && pdi.brandGuidelinesData ? '- **Branding:** The space must refl
             return { title: concept.title, description: concept.description, images };
         });
 
-        return res.status(200).json({ concepts });
+        resultPayload = { concepts };
     }
 
     // --- Branch for Event Studio ---
     else if (prompt) {
+        studioType = 'Event';
         if (!logo || !mimeType) return res.status(400).json({ error: 'Missing logo or mimeType for Event' });
 
         const imagePromises = Array(2).fill(0).map(() => 
@@ -218,10 +262,42 @@ ${isCommercial && pdi.brandGuidelinesData ? '- **Branding:** The space must refl
             throw new Error(`The model only generated ${imageUrls.length} out of 2 images. Please try again.`);
         }
 
-        return res.status(200).json({ imageUrls });
+        resultPayload = { imageUrls };
+    } else {
+        return res.status(400).json({ error: 'Invalid request payload.' });
     }
 
-    return res.status(400).json({ error: 'Invalid request payload.' });
+    // --- Post-Generation Actions ---
+    const newCount = await kv.incr(userEmail);
+
+    const resendApiKey = process.env.RESEND_API_KEY;
+    if (resendApiKey) {
+        const resend = new Resend(resendApiKey);
+        const subject = `FANN Studio: Design Generation #${newCount} by ${userEmail}`;
+        const salesEmail = 'sales@fann.ae';
+        const fromEmail = 'FANN AI Studio <bot@fann.ae>';
+        const html = `
+            <div style="font-family: Arial, sans-serif; color: #f5f5dc; background-color: #1a1a1a; padding: 20px; border-radius: 8px; max-width: 600px; margin: auto; border: 1px solid #D4AF76;">
+                <h1 style="color: #D4AF76;">New AI Design Generation</h1>
+                <p>A user has generated a design concept. This is generation <strong>#${newCount}</strong> for this user.</p>
+                <ul>
+                    <li><strong>User Email:</strong> <a href="mailto:${userEmail}" style="color: #5A8B8C;">${userEmail}</a></li>
+                    <li><strong>Studio:</strong> ${studioType}</li>
+                    <li><strong>Timestamp:</strong> ${new Date().toUTCString()}</li>
+                </ul>
+                <h2 style="color: #D4AF76;">Project Brief Details</h2>
+                <table style="width: 100%; border-collapse: collapse; color: #f5f5dc; font-size: 14px;"><tbody>
+                    ${formatFormDataForEmail(formData)}
+                </tbody></table>
+            </div>`;
+
+        await resend.emails.send({ from: fromEmail, to: salesEmail, subject, html, reply_to: userEmail });
+    } else {
+        console.warn("RESEND_API_KEY not set. Skipping generation notification email.");
+    }
+
+    return res.status(200).json({ ...resultPayload, newCount });
+
 
   } catch (error: any) {
     console.error('Error in generate-images API:', error);

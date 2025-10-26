@@ -160,6 +160,7 @@ const ExhibitionStudioPage: React.FC = () => {
     const [isModelViewerOpen, setIsModelViewerOpen] = useState(false);
     const [formErrors, setFormErrors] = useState<Partial<Record<keyof FormData, string>>>({});
     const [activeAngles, setActiveAngles] = useState<Record<number, Angle>>({});
+    const [generationStatus, setGenerationStatus] = useState<string | null>(null);
 
 
     const { ensureApiKey, handleApiError, error: apiKeyError, clearError: clearApiKeyError } = useApiKey();
@@ -262,7 +263,7 @@ const ExhibitionStudioPage: React.FC = () => {
         } else if (error === doubleDeckerError) {
             clearAllErrors();
         }
-    }, [formData.doubleDecker, formData.standHeight, error, setError]);
+    }, [formData.doubleDecker, formData.standHeight, error]);
 
 
     const validateStep = (step: number): boolean => {
@@ -386,10 +387,15 @@ const ExhibitionStudioPage: React.FC = () => {
                     logo: logoBase64,
                     mimeType: formData.logo.type,
                     promptData: promptData,
+                    formData: formData,
                 })
             });
 
             if (!response.ok) {
+                if (response.status === 429) {
+                     const err = await response.json();
+                     throw new Error(err.error);
+                }
                 const err = await response.json();
                 throw new Error(err.error || 'Failed to generate images.');
             }
@@ -401,10 +407,18 @@ const ExhibitionStudioPage: React.FC = () => {
             }
             
             setGeneratedConcepts(data.concepts);
+            
+            if (data.newCount === 1) {
+                setGenerationStatus("Design 1/2 generated. You have one more free design generation.");
+            } else if (data.newCount >= 2) {
+                setGenerationStatus("Design 2/2 generated. You’ve used all free attempts. Contact our agent for more options.");
+            }
+
             setIsFinished(true);
             
         } catch (e: any) {
             handleApiError(e);
+            setError(e.message);
         } finally {
             setIsLoading(false);
         }
@@ -838,6 +852,7 @@ const ExhibitionStudioPage: React.FC = () => {
                         <Sparkles className="mx-auto h-16 w-16 text-fann-gold" />
                         <h1 className="text-4xl font-serif font-bold text-fann-gold mt-4 mb-4">Your FANN-Generated Concepts</h1>
                         <p className="text-lg text-fann-cream max-w-3xl mx-auto">Select your preferred design to receive a detailed proposal and quotation from our team.</p>
+                         {generationStatus && <p className="text-lg font-semibold text-fann-teal mt-4 bg-fann-teal/10 px-4 py-2 rounded-md inline-block">{generationStatus}</p>}
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         {generatedConcepts.map((concept, index) => (
@@ -941,6 +956,16 @@ const ExhibitionStudioPage: React.FC = () => {
                                             <div className="flex-shrink-0 pt-0.5"><AlertCircle className="w-5 h-5" /></div>
                                             <div className="flex-grow">
                                                 <span className="whitespace-pre-wrap">{error}</span>
+                                                 {error.includes("limit") && (
+                                                    <a 
+                                                        href={`https://wa.me/971505667502?text=${encodeURIComponent("Hello FANN, I've reached my design limit on the FANN Studio and would like to discuss my project further.")}`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="bg-green-500 text-white font-bold px-4 py-2 rounded-md mt-3 inline-block"
+                                                    >
+                                                        Chat on WhatsApp
+                                                    </a>
+                                                )}
                                             </div>
                                         </motion.div>
                                     )}

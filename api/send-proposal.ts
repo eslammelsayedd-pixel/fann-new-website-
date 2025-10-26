@@ -60,16 +60,14 @@ export default async function handler(req: any, res: any) {
                  <h1 style="font-family: 'Playfair Display', serif; color: #D4AF76; font-size: 36px; margin: 0;">FANN</h1>
             </div>
             <div style="padding: 20px 0;">
-                <h2 style="font-family: 'Playfair Display', serif; color: #1a1a1a; font-size: 24px;">Thank You, ${userName}!</h2>
-                <p>We've received your design concept selection from our ${studioType} Studio. We're excited to help bring your vision to life!</p>
-                <h3 style="color: #1a1a1a; border-bottom: 2px solid #D4AF76; padding-bottom: 5px; margin-top: 30px;">Your Selected Concept:</h3>
-                <p style="font-weight: bold; font-size: 18px;">${selectedConcept.title}</p>
-                <div style="text-align: center; margin: 20px 0;">
+                <h2 style="font-family: 'Playfair Display', serif; color: #1a1a1a; font-size: 24px;">Thank you for your request, ${userName}!</h2>
+                <p>Our team has received your details from the FANN Studio and will contact you within <strong>1 business day</strong> to discuss and finalize your design.</p>
+                 <p>If you need urgent assistance, please reply directly to this email or call us at +971 50 566 7502.</p>
+                <div style="text-align: center; margin: 20px 0; background-color: #f9f9f9; padding: 15px; border-radius: 8px;">
+                    <h3 style="color: #1a1a1a; margin-top:0;">Your Selected Concept:</h3>
+                    <p style="font-weight: bold; font-size: 18px; margin-bottom: 15px;">${selectedConcept.title}</p>
                     <img src="${selectedConcept.images?.front || selectedConcept.images?.perspective || selectedConcept.image}" alt="Your Selected Concept" style="max-width: 100%; border-radius: 8px; border: 1px solid #ccc;" />
                 </div>
-                <h3 style="color: #1a1a1a; border-bottom: 2px solid #D4AF76; padding-bottom: 5px; margin-top: 30px;">What Happens Next?</h3>
-                <p>Our expert design team is now reviewing your brief. We will prepare a detailed proposal, including a project timeline and quotation, and will contact you at <strong>${userEmail}</strong> within the next 1-2 business days.</p>
-                <p>If you have any immediate questions, please don't hesitate to contact us at <a href="mailto:sales@fann.ae" style="color: #5A8B8C;">sales@fann.ae</a> or call us at +971 50 566 7502.</p>
                 <p style="margin-top: 30px;">We look forward to creating something extraordinary with you.</p>
                 <p>Best regards,<br><strong>The FANN Team</strong></p>
             </div>
@@ -91,7 +89,7 @@ export default async function handler(req: any, res: any) {
       resend.emails.send({
         from: fromEmail,
         to: userEmail,
-        subject: `Your FANN Design Concept: "${selectedConcept.title}"`,
+        subject: `Thank you for your request | FANN Studio`,
         html: generateUserHtml(),
       })
     ]);

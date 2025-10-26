@@ -2,10 +2,10 @@
 // and bring the 'React' namespace into scope for type definitions.
 import React from 'react';
 
-// FIX: Switched from module augmentation of 'react' to augmenting the global JSX namespace.
-// This is a more stable approach for adding custom elements and resolves the
-// "module 'react' cannot be found" compilation error.
-declare global {
+// FIX: Switched from `declare global` to module augmentation of 'react'.
+// This correctly extends React's built-in JSX types instead of overwriting them,
+// which resolves the widespread "Property 'div' does not exist on type 'JSX.IntrinsicElements'" errors.
+declare module 'react' {
     namespace JSX {
         interface IntrinsicElements {
             'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & {

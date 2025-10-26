@@ -89,6 +89,7 @@ const EventStudioPage: React.FC = () => {
     const [selectedImage, setSelectedImage] = useState<number | null>(null);
     const [isProposalRequested, setIsProposalRequested] = useState(false);
     const [isSending, setIsSending] = useState(false);
+    const [generationStatus, setGenerationStatus] = useState<string | null>(null);
     
     const { ensureApiKey, handleApiError, error: apiKeyError, clearError: clearApiKeyError } = useApiKey();
     const [localError, setLocalError] = useState<string | null>(null);
@@ -247,10 +248,15 @@ const EventStudioPage: React.FC = () => {
                     logo: logoBase64,
                     mimeType: formData.logo.type,
                     prompt: textPrompt,
+                    formData: formData,
                 })
             });
 
             if (!response.ok) {
+                 if (response.status === 429) {
+                     const err = await response.json();
+                     throw new Error(err.error);
+                }
                 const err = await response.json();
                 throw new Error(err.error || 'Failed to generate images.');
             }
@@ -262,10 +268,18 @@ const EventStudioPage: React.FC = () => {
             }
             
             setGeneratedImages(data.imageUrls);
+            
+            if (data.newCount === 1) {
+                setGenerationStatus("Design 1/2 generated. You have one more free design generation.");
+            } else if (data.newCount >= 2) {
+                setGenerationStatus("Design 2/2 generated. You’ve used all free attempts. Contact our agent for more options.");
+            }
+            
             setIsFinished(true);
             
         } catch (e: any) {
             handleApiError(e);
+            setError(e.message);
         } finally {
             setIsLoading(false);
         }
@@ -503,6 +517,7 @@ const EventStudioPage: React.FC = () => {
                         <Sparkles className="mx-auto h-16 w-16 text-fann-gold" />
                         <h1 className="text-4xl font-serif font-bold text-fann-gold mt-4 mb-4">Select Your Favorite Concept</h1>
                         <p className="text-lg text-fann-cream max-w-3xl mx-auto">Click your preferred design. Our team will then prepare a detailed proposal and quotation for you.</p>
+                        {generationStatus && <p className="text-lg font-semibold text-fann-teal mt-4 bg-fann-teal/10 px-4 py-2 rounded-md inline-block">{generationStatus}</p>}
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -566,6 +581,16 @@ const EventStudioPage: React.FC = () => {
                                             <div className="flex-shrink-0 pt-0.5"><AlertCircle className="w-5 h-5" /></div>
                                             <div className="flex-grow">
                                                 <span className="whitespace-pre-wrap">{error}</span>
+                                                {error.includes("limit") && (
+                                                    <a 
+                                                        href={`https://wa.me/971505667502?text=${encodeURIComponent("Hello FANN, I've reached my design limit on the FANN Studio and would like to discuss my project further.")}`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="bg-green-500 text-white font-bold px-4 py-2 rounded-md mt-3 inline-block"
+                                                    >
+                                                        Chat on WhatsApp
+                                                    </a>
+                                                )}
                                             </div>
                                         </motion.div>
                                     )}
