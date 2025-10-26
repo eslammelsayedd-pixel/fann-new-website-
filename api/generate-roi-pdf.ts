@@ -1,9 +1,5 @@
 import nodemailer from 'nodemailer';
 
-// FIX: Add type declaration for nodemailer module.
-declare const nodemailer: any;
-
-
 const formatCurrency = (value: number) => new Intl.NumberFormat('en-AE', { style: 'currency', currency: 'AED', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
 
 const generateReportHtml = (roiData: any, userData: any) => {

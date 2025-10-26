@@ -2,10 +2,6 @@ import { GoogleGenAI, Modality, Type, Part } from "@google/genai";
 import { kv } from '@vercel/kv';
 import nodemailer from 'nodemailer';
 
-// FIX: Add type declaration for nodemailer module.
-declare const nodemailer: any;
-
-
 // Helper function to format form data for the sales email
 const formatFormDataForEmail = (data: any) => {
     let detailsHtml = '';

@@ -1,9 +1,5 @@
 import nodemailer from 'nodemailer';
 
-// FIX: Add type declaration for nodemailer module.
-declare const nodemailer: any;
-
-
 // This is a Vercel Serverless Function.
 // It is used by Exhibition, Event, and Interior studios.
 export default async function handler(req: any, res: any) {

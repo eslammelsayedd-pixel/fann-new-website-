@@ -1,9 +1,5 @@
 import nodemailer from 'nodemailer';
 
-// FIX: Add type declaration for nodemailer module.
-declare const nodemailer: any;
-
-
 // This is a Vercel Serverless Function.
 export default async function handler(req: any, res: any) {
     if (req.method !== 'POST') {
