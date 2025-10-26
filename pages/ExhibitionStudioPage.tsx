@@ -443,8 +443,17 @@ const ExhibitionStudioPage: React.FC = () => {
             });
     
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Failed to send proposal request.');
+                let errorText = `Server responded with status ${response.status}`;
+                try {
+                    // Try to parse as JSON first, as that's the expected error format
+                    const errorData = await response.json();
+                    errorText = errorData.error || JSON.stringify(errorData);
+                } catch (e) {
+                    // If JSON parsing fails, read the response as text.
+                    // This will capture Vercel's "Request Entity Too Large" or other HTML/text errors.
+                    errorText = await response.text();
+                }
+                throw new Error(errorText);
             }
     
             setIsProposalRequested(true);
@@ -701,7 +710,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                 <div className="grid grid-cols-3 gap-3">
                                     {styles.map(s => (
                                         <div key={s.name} onClick={() => setFormData(p => ({...p, style: s.name}))} className={`relative h-28 rounded-lg overflow-hidden cursor-pointer border-2 transition-all ${formData.style === s.name ? 'border-fann-gold' : 'border-transparent'}`}>
-                                            <img src={s.image} alt={s.name} className="w-full h-full object-cover"/>
+                                            <img src={s.image} alt={`An example of the ${s.name} exhibition stand style.`} className="w-full h-full object-cover"/>
                                             <div className="absolute inset-0 bg-black/50 hover:bg-black/30 transition-colors"></div>
                                             <p className="absolute bottom-2 left-2 text-xs font-bold">{s.name}</p>
                                         </div>
@@ -817,7 +826,7 @@ const ExhibitionStudioPage: React.FC = () => {
             <CheckCircle className="w-20 h-20 text-fann-teal mb-6" />
             <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Thank You!</h1>
             <p className="text-xl text-fann-cream max-w-2xl mx-auto mb-8">Your request has been sent. Our design team will contact you at <strong>{formData.userEmail}</strong> with a detailed proposal and quotation shortly.</p>
-            {selectedConcept !== null && <img src={generatedConcepts[selectedConcept].images.front} alt="Selected Concept" className="rounded-lg shadow-2xl w-full max-w-lg mt-8" />}
+            {selectedConcept !== null && <img src={generatedConcepts[selectedConcept].images.front} alt={generatedConcepts[selectedConcept].title} className="rounded-lg shadow-2xl w-full max-w-lg mt-8" />}
         </div>
     );
     
@@ -845,7 +854,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                          <motion.img 
                                             key={`${index}-${activeAngles[index] || 'front'}`}
                                             src={concept.images[activeAngles[index] || 'front']} 
-                                            alt={`${concept.title} - ${activeAngles[index] || 'front'}`} 
+                                            alt={`${concept.title} - ${activeAngles[index] || 'front'} view`}
                                             className="absolute inset-0 w-full h-full object-cover" 
                                             initial={{ opacity: 0 }}
                                             animate={{ opacity: 1 }}

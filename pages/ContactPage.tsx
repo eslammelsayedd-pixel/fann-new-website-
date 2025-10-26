@@ -33,8 +33,14 @@ const ContactPage: React.FC = () => {
         });
         
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to send message.');
+            let errorText = `Server responded with status ${response.status}`;
+            try {
+                const errorData = await response.json();
+                errorText = errorData.error || 'Failed to send message.';
+            } catch (e) {
+                errorText = await response.text();
+            }
+            throw new Error(errorText);
         }
 
         setIsSent(true);

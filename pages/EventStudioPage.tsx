@@ -308,8 +308,14 @@ const EventStudioPage: React.FC = () => {
             });
             
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Failed to send proposal request.');
+                let errorText = `Server responded with status ${response.status}`;
+                try {
+                    const errorData = await response.json();
+                    errorText = errorData.error || 'An unknown error occurred.';
+                } catch (e) {
+                    errorText = await response.text();
+                }
+                throw new Error(errorText);
             }
     
             setIsProposalRequested(true);
@@ -335,7 +341,7 @@ const EventStudioPage: React.FC = () => {
                             <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
                                 {eventTypes.map(type => (
                                     <div key={type.name} onClick={() => setFormData(p => ({...p, eventType: type.name}))} className={`relative h-24 rounded-lg overflow-hidden cursor-pointer border-2 ${formData.eventType === type.name ? 'border-fann-gold' : 'border-transparent'}`}>
-                                        <img src={type.image} alt={type.name} className="w-full h-full object-cover" />
+                                        <img src={type.image} alt={`An example of a ${type.name} event setup.`} className="w-full h-full object-cover" />
                                         <div className="absolute inset-0 bg-black/50"></div>
                                         <p className="absolute bottom-2 left-2 text-xs font-bold">{type.name}</p>
                                     </div>
@@ -484,7 +490,7 @@ const EventStudioPage: React.FC = () => {
             <CheckCircle className="w-20 h-20 text-fann-teal mb-6" />
             <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Thank You!</h1>
             <p className="text-xl text-fann-cream max-w-2xl mx-auto mb-8">Our team has received your concept selection and will prepare a detailed proposal, which will be sent to <strong>{formData.userEmail}</strong> shortly.</p>
-            {selectedImage !== null && <img src={generatedImages[selectedImage]} alt="Selected" className="rounded-lg shadow-2xl w-full max-w-lg mt-8" />}
+            {selectedImage !== null && <img src={generatedImages[selectedImage]} alt={`Selected AI-generated concept for the event theme: ${formData.theme}`} className="rounded-lg shadow-2xl w-full max-w-lg mt-8" />}
         </div>
     );
 
@@ -501,7 +507,7 @@ const EventStudioPage: React.FC = () => {
                         <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
                             {generatedImages.map((img, index) => (
                                 <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} onClick={() => setSelectedImage(index)} className={`rounded-lg overflow-hidden cursor-pointer border-4 transition-all duration-300 hover:border-fann-gold/50 ${selectedImage === index ? 'border-fann-gold' : 'border-transparent'}`}>
-                                    <img src={img} alt={`Concept ${index + 1}`} className="w-full h-auto object-cover" />
+                                    <img src={img} alt={`AI-generated concept number ${index + 1} for an event.`} className="w-full h-auto object-cover" />
                                 </motion.div>
                             ))}
                         </div>

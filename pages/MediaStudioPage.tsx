@@ -233,14 +233,14 @@ const ImageEditor = () => {
             <div className="grid md:grid-cols-2 gap-8">
                 <div className="text-center">
                     <h3 className="text-xl font-bold mb-3">Original</h3>
-                    <img src={originalImage.url} alt="Original" className="rounded-lg w-full h-auto object-contain max-h-96" />
+                    <img src={originalImage.url} alt="Original user-uploaded image ready for editing." className="rounded-lg w-full h-auto object-contain max-h-96" />
                 </div>
                 <div className="text-center relative">
                     <h3 className="text-xl font-bold mb-3">Edited</h3>
                     <div className="w-full aspect-square bg-fann-charcoal rounded-lg flex items-center justify-center">
                         {isLoading && <Loader2 className="w-16 h-16 text-fann-gold animate-spin" />}
                         {!isLoading && !editedImage && <ImageIcon className="w-16 h-16 text-fann-border" />}
-                        {editedImage && <img src={editedImage} alt="Edited" className="rounded-lg w-full h-full object-contain" />}
+                        {editedImage && <img src={editedImage} alt={`AI-edited image based on the prompt: "${prompt}"`} className="rounded-lg w-full h-full object-contain" />}
                     </div>
                 </div>
             </div>
