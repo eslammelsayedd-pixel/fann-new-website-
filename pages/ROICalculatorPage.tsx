@@ -29,6 +29,8 @@ const initialFormData: FormData = {
     close_rate: 20,
 };
 
+const formatCurrency = (value: number) => new Intl.NumberFormat('en-AE', { style: 'currency', currency: 'AED', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
+
 const ROICalculatorPage: React.FC = () => {
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const [leadData, setLeadData] = useState<LeadData>({ name: '', email: '', company: '' });
@@ -50,8 +52,15 @@ const ROICalculatorPage: React.FC = () => {
             });
 
             if (!response.ok) {
-                const err = await response.json();
-                throw new Error(err.error || 'Failed to calculate ROI.');
+                const errText = await response.text();
+                let errMessage = `Server responded with status ${response.status}`;
+                try {
+                    const err = JSON.parse(errText);
+                    errMessage = err.error || errText;
+                } catch(e) {
+                    errMessage = errText;
+                }
+                throw new Error(errMessage);
             }
             
             const resultData = await response.json();
@@ -63,10 +72,18 @@ const ROICalculatorPage: React.FC = () => {
             setIsLoading(false);
         }
     }, []);
+    
+    // Initial calculation on page load
+    useEffect(() => {
+        calculateRoi(formData);
+    }, []);
+
 
     useEffect(() => {
         const handler = setTimeout(() => {
-            calculateRoi(formData);
+            if (JSON.stringify(formData) !== JSON.stringify(initialFormData)) {
+                calculateRoi(formData);
+            }
         }, 800); // Debounce API calls
 
         return () => {
@@ -130,10 +147,20 @@ const ROICalculatorPage: React.FC = () => {
     };
 
     const ROIResultCard = () => (
-        <div className="bg-fann-charcoal-light p-6 rounded-lg text-center">
+        <div className="bg-fann-charcoal p-8 rounded-lg text-center">
             <p className="text-fann-light-gray uppercase tracking-wider text-sm">Projected ROI</p>
-            <p className="text-5xl lg:text-6xl font-bold text-fann-teal my-2">{results.roi_metrics.roi_percentage_min}% - {results.roi_metrics.roi_percentage_max}%</p>
-            <p className="text-fann-light-gray text-sm">({results.roi_metrics.roi_ratio_min} to {results.roi_metrics.roi_ratio_max} return on investment)</p>
+            <p className="text-5xl lg:text-7xl font-bold text-fann-teal my-2">{results.roi_metrics.roi_percentage_min}% - {results.roi_metrics.roi_percentage_max}%</p>
+            <p className="text-fann-light-gray text-base">({results.roi_metrics.roi_ratio_min} to {results.roi_metrics.roi_ratio_max} return on investment)</p>
+        </div>
+    );
+
+    const SnippetCard: React.FC<{icon: React.ElementType, title: string, value: string}> = ({ icon: Icon, title, value }) => (
+        <div className="bg-fann-charcoal p-4 rounded-lg flex items-center gap-4">
+            <Icon className="w-8 h-8 text-fann-gold flex-shrink-0" />
+            <div>
+                <p className="text-sm text-fann-light-gray">{title}</p>
+                <p className="text-xl font-bold text-white">{value}</p>
+            </div>
         </div>
     );
 
@@ -186,14 +213,14 @@ const ROICalculatorPage: React.FC = () => {
                         {/* Results Display */}
                         <div className="relative">
                              <AnimatePresence>
-                                {isLoading && !results && (
+                                {isLoading && (
                                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-fann-charcoal-light/80 backdrop-blur-sm flex flex-col justify-center items-center z-10 rounded-lg">
                                         <Loader2 className="w-12 h-12 text-fann-gold animate-spin"/>
                                         <p className="mt-4 font-semibold">Calculating Projections...</p>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
-                             <div className={`transition-opacity duration-300 ${isLoading && !results ? 'opacity-30' : 'opacity-100'} space-y-6`}>
+                             <div className="space-y-6">
                                 {error && (
                                      <div className="bg-red-900/50 border border-red-500 text-red-300 p-4 rounded-lg text-sm flex items-start gap-3 h-full">
                                         <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
@@ -201,13 +228,22 @@ const ROICalculatorPage: React.FC = () => {
                                     </div>
                                 )}
                                 {!results && !error && (
-                                    <div className="bg-fann-charcoal-light p-6 rounded-lg text-center h-full flex flex-col justify-center items-center">
+                                    <div className="bg-fann-charcoal-light p-6 rounded-lg text-center h-full flex flex-col justify-center items-center min-h-[400px]">
                                         <p className="text-fann-light-gray">Your ROI projections will appear here.</p>
                                     </div>
                                 )}
                                 {results && !error && (
-                                    <motion.div initial={{opacity: 0}} animate={{opacity: 1}}>
+                                    <motion.div initial={{opacity: 0}} animate={{opacity: 1}} className="space-y-6">
                                         <ROIResultCard />
+                                        
+                                        <div>
+                                            <h3 className="text-xl font-serif font-bold text-white mb-4">Key Projections Snippet</h3>
+                                            <div className="grid md:grid-cols-3 gap-4">
+                                                <SnippetCard icon={Users} title="Qualified Leads" value={`${results.visitor_projections.qualified_leads_min} - ${results.visitor_projections.qualified_leads_max}`} />
+                                                <SnippetCard icon={TrendingUp} title="Expected Revenue" value={`${formatCurrency(results.financial_projections.expected_revenue_min)}`} />
+                                                <SnippetCard icon={Target} title="Deals to Break-Even" value={`${results.roi_metrics.break_even_deals}`} />
+                                            </div>
+                                        </div>
                                         
                                         <AnimatePresence mode="wait">
                                         {isDownloaded ? (
@@ -215,7 +251,7 @@ const ROICalculatorPage: React.FC = () => {
                                                 key="thank-you"
                                                 initial={{ opacity: 0, y: 20 }}
                                                 animate={{ opacity: 1, y: 0 }}
-                                                className="bg-fann-charcoal-light p-6 rounded-lg mt-6 text-center border-2 border-fann-teal"
+                                                className="bg-fann-charcoal p-6 rounded-lg text-center border-2 border-fann-teal"
                                             >
                                                 <CheckCircle className="mx-auto h-12 w-12 text-fann-teal" />
                                                 <h3 className="text-2xl font-serif font-bold text-white mt-4">Thank You!</h3>
@@ -228,14 +264,14 @@ const ROICalculatorPage: React.FC = () => {
                                                 animate={{ opacity: 1, y: 0 }}
                                                 exit={{ opacity: 0, y: -20 }}
                                                 onSubmit={handleDownloadReport}
-                                                className="bg-fann-charcoal-light p-6 rounded-lg mt-6"
+                                                className="bg-fann-charcoal p-6 rounded-lg border border-fann-border"
                                             >
-                                                <h3 className="text-xl font-serif font-bold text-white mb-1">Unlock Your Full Report</h3>
+                                                <h3 className="text-xl font-serif font-bold text-white mb-1">Unlock the Full, Multi-Page Analysis</h3>
                                                 <p className="text-fann-light-gray text-sm mb-4">Enter your details to download the FANN Proprietary ROI Analysis, including visitor projections, financial modeling, and strategic recommendations.</p>
                                                 <div className="space-y-4">
-                                                    <input type="text" name="name" placeholder="Full Name" value={leadData.name} onChange={handleLeadInputChange} required className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" />
-                                                    <input type="email" name="email" placeholder="Business Email" value={leadData.email} onChange={handleLeadInputChange} required className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" />
-                                                    <input type="text" name="company" placeholder="Company Name" value={leadData.company} onChange={handleLeadInputChange} required className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" />
+                                                    <input type="text" name="name" placeholder="Full Name" value={leadData.name} onChange={handleLeadInputChange} required className="w-full bg-fann-charcoal-light border border-fann-border rounded-md px-3 py-2" />
+                                                    <input type="email" name="email" placeholder="Business Email" value={leadData.email} onChange={handleLeadInputChange} required className="w-full bg-fann-charcoal-light border border-fann-border rounded-md px-3 py-2" />
+                                                    <input type="text" name="company" placeholder="Company Name" value={leadData.company} onChange={handleLeadInputChange} required className="w-full bg-fann-charcoal-light border border-fann-border rounded-md px-3 py-2" />
                                                     <button type="submit" disabled={isDownloading} className="w-full bg-fann-gold text-fann-charcoal font-bold py-3 rounded-full flex items-center justify-center gap-2 disabled:opacity-50">
                                                         {isDownloading ? <><Loader2 className="animate-spin w-5 h-5"/> Generating...</> : <><Download size={18}/> Download Full Report</>}
                                                     </button>
