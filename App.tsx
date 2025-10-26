@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
@@ -16,6 +17,7 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import InsightsPage from './pages/InsightsPage';
 import { ApiKeyProvider } from './context/ApiKeyProvider';
+import ROICalculatorPage from './pages/ROICalculatorPage';
 
 const App: React.FC = () => {
     const location = useLocation();
@@ -36,6 +38,7 @@ const App: React.FC = () => {
                         <Route path="/about" element={<AboutPage />} />
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/insights" element={<InsightsPage />} />
+                        <Route path="/roi-calculator" element={<ROICalculatorPage />} />
                     </Routes>
                 </AnimatePresence>
             </Layout>

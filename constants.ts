@@ -10,6 +10,7 @@ export const navLinks: NavLink[] = [
         children: [
             { name: 'About FANN', path: '/about' },
             { name: 'Intelligence Hub', path: '/insights' },
+            { name: 'ROI Calculator', path: '/roi-calculator' },
             { name: 'Contact Us', path: '/contact' },
         ] 
     },
