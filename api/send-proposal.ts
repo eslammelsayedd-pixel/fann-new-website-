@@ -26,7 +26,7 @@ export default async function handler(req: any, res: any) {
     const userEmail = formData.userEmail || formData.email;
     const userName = formData.userFirstName || formData.userName || formData.firstName || 'Valued Client';
     const salesEmail = 'sales@fann.ae';
-    const fromEmail = 'FANN AI Studio <bot@fann.ae>';
+    const fromEmail = 'FANN Studio <bot@fann.ae>';
 
     // --- Email 1: Internal Notification to Sales Team ---
     const generateSalesHtml = () => {

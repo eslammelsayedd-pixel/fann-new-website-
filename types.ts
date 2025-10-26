@@ -1,12 +1,11 @@
 // FIX: Removed the triple-slash directive for react. It can cause issues in module files (files with imports/exports)
 // and was throwing a "Cannot find type definition file" error.
 
-// FIX: Changed `import React from 'react'` to `import * as React from 'react'`.
+// FIX: Changed `import * as React from 'react'` to `import React from 'react'`.
 // The `declare module 'react'` augmentation requires the module to be resolved.
-// In some TypeScript configurations, especially for `.ts` files that are not transpiled as JSX,
-// the namespace import (`* as React`) is required for the compiler to find the module for augmentation.
-// This resolves the "module 'react' cannot be found" error.
-import * as React from 'react';
+// While `import *` is sometimes needed for `.ts` files, the standard `import React`
+// is more common in modern setups and can resolve module augmentation issues.
+import React from 'react';
 
 // FIX: Reverting to `declare module 'react'` for module augmentation.
 // The `declare global` approach was overwriting the global JSX types instead of merging with them,

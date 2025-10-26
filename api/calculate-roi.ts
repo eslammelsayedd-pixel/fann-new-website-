@@ -82,12 +82,12 @@ export default async function handler(req: any, res: any) {
         
         // --- AI RECOMMENDATIONS ---
         const recommendations = [];
-        if (finalRoiMin < 50) recommendations.push("Your projected ROI is below the industry average. Consider adding interactive elements like a VR demo or a photobooth to increase visitor engagement and lead quality.");
-        if (booth_size_sqm < 20 && ['gitex', 'gulfood', 'big 5', 'adipec'].some(e => eventNameLower.includes(e))) recommendations.push(`For a major event like ${event_name}, consider upgrading your booth to 25-30 sqm for significantly better visibility and foot traffic.`);
-        if (close_rate > 30) recommendations.push(`Your ${close_rate}% close rate is well above the industry average! This indicates a strong sales process, which will maximize your event ROI.`);
-        if (average_deal_size > 100000) recommendations.push("With a high average deal size, investing in premium stand features like a private meeting room or a hospitality area is highly justified to impress key prospects.");
-        if (recommendations.length < 2) recommendations.push("To maximize lead capture, ensure your staff are trained to use a lead scanning app and qualify visitors with 2-3 targeted questions.");
-        if (recommendations.length < 3) recommendations.push("Launch a pre-show email and social media campaign 2-3 weeks before the event to book meetings in advance and drive traffic to your stand.");
+        if (finalRoiMin < 50) recommendations.push("Our analysis suggests a lower ROI range. To enhance this, FANN recommends incorporating interactive elements like a VR demo or a photobooth to increase visitor engagement and lead quality.");
+        if (booth_size_sqm < 20 && ['gitex', 'gulfood', 'big 5', 'adipec'].some(e => eventNameLower.includes(e))) recommendations.push(`To maximize impact at a major event like ${event_name}, our data suggests an upgrade to a 25-30 sqm booth for significantly better visibility.`);
+        if (close_rate > 30) recommendations.push(`A ${close_rate}% close rate is a strong indicator of an effective sales process, which will maximize your event ROI.`);
+        if (average_deal_size > 100000) recommendations.push("For a high average deal size, FANN advises investing in premium stand features like a private meeting room or a hospitality area to impress key prospects.");
+        if (recommendations.length < 2) recommendations.push("FANN's strategy for maximizing lead capture includes dedicated staff training on lead scanning and visitor qualification questions.");
+        if (recommendations.length < 3) recommendations.push("A key part of FANN's event strategy is a pre-show marketing campaign to book meetings and drive targeted traffic.");
         
         // --- FANN-DRIVEN TIPS (NEW) ---
         let fann_driven_tips: string[] = [];

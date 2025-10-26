@@ -92,7 +92,6 @@ Return your response as a single, valid JSON array. Do not include any text or m
                           title: { type: Type.STRING },
                           description: { type: Type.STRING }
                       },
-                      // FIX: Corrected a truncated required array which was causing a syntax error.
                       required: ['title', 'description']
                   }
               }
@@ -181,6 +180,119 @@ The user has provided a floor plan and moodboard images for inspiration.
         const textResponse = await ai.models.generateContent({
             model: 'gemini-2.5-flash',
             contents: textGenPrompt,
-            // FIX: Corrected a truncated required array and added missing closing braces, which was causing a syntax error.
             config: { responseMimeType: "application/json", responseSchema: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { title: { type: Type.STRING }, description: { type: Type.STRING }}, required: ['title', 'description'] } } }
         });
+
+        if (!textResponse.candidates || textResponse.candidates.length === 0) {
+            throw new Error("The model failed to generate text descriptions.");
+        }
+        const textData = JSON.parse(textResponse.text.trim());
+        if (!Array.isArray(textData) || textData.length < 3) {
+            throw new Error("The model failed to generate enough titles and descriptions.");
+        }
+
+        const angles = [
+            { id: 'perspective', prompt: 'a main **Perspective View** showing the overall look and feel of the space.' },
+            { id: 'topDown', prompt: 'a stylized, 3D **Top-Down Floor Plan View** showing the layout.' },
+            { id: 'detail', prompt: 'a **Detail or Vignette View** focusing on a key area like a reception desk or a custom joinery piece.' }
+        ];
+
+        const imagePromises = textData.flatMap((concept: any) => {
+            const imageGenPrompt = `You are a professional interior architectural visualizer. Generate a single, photorealistic 3D render for a luxury ${pdi.spaceType} based on the following:
+- **Concept Title:** "${concept.title}"
+- **Concept Description:** "${concept.description}"
+- **Base Style:** ${pdi.style}.
+- **Color Preferences:** ${pdi.colorPreferences}.
+- **Key Zones/Features to include:** ${pdi.functionalZones.join(', ')}.
+- **Inspiration:** The client provided moodboard images and a floor plan (attached). Draw inspiration from them for the layout, materials, and overall ambiance.
+- **Atmosphere:** The render must be high-end, beautifully lit, and exceptionally detailed.`;
+            
+            const contentParts: Part[] = [
+                ...pdi.moodboardsData.map((mb: any) => ({ inlineData: { data: mb.base64, mimeType: mb.mimeType } })),
+                ...(pdi.floorPlanData ? [{ inlineData: { data: pdi.floorPlanData.base64, mimeType: pdi.floorPlanData.mimeType } }] : []),
+            ];
+
+            return angles.map(angle => 
+                ai.models.generateContent({
+                    model: 'gemini-2.5-flash-image',
+                    contents: { parts: [
+                        ...contentParts,
+                        { text: `${imageGenPrompt}\n\n- **REQUIRED VIEW:** The render must be ${angle.prompt}` }
+                    ]},
+                    config: { responseModalities: [Modality.IMAGE] },
+                })
+            );
+        });
+
+        const imageResponses = await Promise.all(imagePromises);
+        
+        const concepts = textData.map((concept: any, conceptIndex: number) => {
+            const images: Record<string, string> = {};
+            angles.forEach((angle, angleIndex) => {
+                const res = imageResponses[conceptIndex * angles.length + angleIndex];
+                const inlineData = res.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData;
+                images[angle.id] = inlineData ? `data:${inlineData.mimeType};base64,${inlineData.data}` : '';
+            });
+            return { title: concept.title, description: concept.description, images };
+        });
+
+        resultPayload = { concepts };
+    } 
+    
+    // --- Branch for Event Studio ---
+    else if (prompt) { 
+        studioType = 'Event';
+        if (!logo || !mimeType) return res.status(400).json({ error: 'Missing logo or mimeType for Event' });
+
+        const imagePromises = Array(2).fill(0).map(() => 
+            ai.models.generateContent({
+                model: 'gemini-2.5-flash-image',
+                contents: { parts: [
+                    { inlineData: { mimeType, data: logo } }, 
+                    { text: prompt }
+                ]},
+                config: { responseModalities: [Modality.IMAGE] },
+            })
+        );
+        const imageResponses = await Promise.all(imagePromises);
+        const imageUrls = imageResponses.map(res => {
+            const inlineData = res.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData;
+            return inlineData ? `data:${inlineData.mimeType};base64,${inlineData.data}` : '';
+        }).filter(Boolean);
+
+        resultPayload = { imageUrls };
+    } 
+    
+    // --- Default / Error Case ---
+    else {
+        return res.status(400).json({ error: 'Invalid request. No valid prompt data provided.' });
+    }
+    
+    // --- Update user count and send notification ---
+    const newCount = await kv.incr(userEmail);
+    await kv.expire(userEmail, 86400); // Set a 24-hour expiry for the count
+
+    const resendApiKey = process.env.RESEND_API_KEY;
+    if (resendApiKey) {
+        const resend = new Resend(resendApiKey);
+        const userName = formData.userFirstName || formData.userName || formData.firstName || 'A User';
+        await resend.emails.send({
+            from: 'FANN Studio <bot@fann.ae>',
+            to: 'sales@fann.ae',
+            subject: `FANN Studio Design Generated (${studioType})`,
+            reply_to: userEmail,
+            html: `<p>${userName} (${userEmail}) has generated a design using the ${studioType} Studio. This is their ${newCount === 1 ? 'first' : 'second'} design.</p>
+                   <p><strong>Design Brief Summary:</strong></p>
+                   <table style="width: 100%; border-collapse: collapse;">
+                       <tbody>${formatFormDataForEmail(formData)}</tbody>
+                   </table>`
+        });
+    }
+
+    return res.status(200).json({ ...resultPayload, newCount });
+
+  } catch (error: any) {
+    console.error(`Error in generate-images API:`, error);
+    return res.status(500).json({ error: error.message || 'An internal server error occurred.' });
+  }
+}
