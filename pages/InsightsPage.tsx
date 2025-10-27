@@ -169,7 +169,7 @@ const InsightsPage: React.FC = () => {
     const renderTopicSelection = () => (
         <div className="text-center">
             <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">FANN Intelligence Hub</h1>
-            <p className="text-xl text-gray-700 dark:text-fann-cream max-w-3xl mx-auto mb-12">
+            <p className="text-xl text-fann-cream max-w-3xl mx-auto mb-12">
                 Select a topic for an expert-driven analysis of key industry trends.
             </p>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
@@ -210,8 +210,8 @@ const InsightsPage: React.FC = () => {
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                     <div className="flex flex-col items-center text-center p-8">
                         <Loader2 className="w-12 h-12 text-fann-gold animate-spin" />
-                        <h2 className="text-3xl font-serif text-fann-charcoal dark:text-white mt-6">Generating Analysis...</h2>
-                        <p className="text-gray-600 dark:text-fann-light-gray mt-2">Our proprietary knowledge base is compiling insights from across the web. This might take a moment.</p>
+                        <h2 className="text-3xl font-serif text-white mt-6">Generating Analysis...</h2>
+                        <p className="text-fann-light-gray mt-2">Our proprietary knowledge base is compiling insights from across the web. This might take a moment.</p>
                     </div>
                 </motion.div>
             ) : error ? (
@@ -221,20 +221,20 @@ const InsightsPage: React.FC = () => {
                     <p className="whitespace-pre-wrap">{error}</p>
                 </motion.div>
             ) : generatedArticle && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-white dark:bg-fann-charcoal-light p-8 sm:p-12 rounded-lg">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-fann-charcoal-light p-8 sm:p-12 rounded-lg">
                     <h1 className="text-4xl md:text-5xl font-serif font-bold text-fann-gold mb-6">{selectedTopic?.title}</h1>
                     <div
-                        className="prose prose-lg max-w-none text-fann-charcoal dark:text-fann-cream leading-relaxed space-y-4 prose-strong:text-fann-charcoal dark:prose-strong:text-white"
+                        className="prose prose-invert prose-lg max-w-none text-fann-cream leading-relaxed space-y-4"
                         dangerouslySetInnerHTML={{ __html: formatContent(generatedArticle.content) }}
                     />
 
                     {generatedArticle.sources && generatedArticle.sources.length > 0 && (
-                        <div className="mt-12 border-t border-gray-200 dark:border-fann-border pt-6">
+                        <div className="mt-12 border-t border-fann-border pt-6">
                             <h3 className="text-xl font-bold text-fann-teal mb-4 flex items-center gap-2"><BookOpen size={20} /> Sources</h3>
                              <ul className="space-y-2 list-disc list-inside">
                                 {generatedArticle.sources.map((source, index) => (
                                     <li key={index}>
-                                        <a href={source.uri} target="_blank" rel="noopener noreferrer" className="text-gray-500 dark:text-fann-light-gray hover:text-fann-gold hover:underline transition-colors" title={source.title}>
+                                        <a href={source.uri} target="_blank" rel="noopener noreferrer" className="text-fann-light-gray hover:text-fann-gold hover:underline transition-colors" title={source.title}>
                                             {source.title || new URL(source.uri).hostname}
                                         </a>
                                     </li>
@@ -258,7 +258,7 @@ const InsightsPage: React.FC = () => {
                         : "Access expert-driven analysis from the FANN Intelligence Hub. Stay ahead with the latest trends in exhibition design, event technology, and commercial interiors in the GCC."
                 }
             />
-            <div className="min-h-screen bg-fann-cream dark:bg-fann-charcoal pt-32 pb-20 text-fann-charcoal dark:text-white">
+            <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                    {selectedTopic ? renderArticle() : renderTopicSelection()}
                 </div>

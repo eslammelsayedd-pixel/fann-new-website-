@@ -4,7 +4,6 @@ import { navLinks } from '../constants';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import LanguageSwitcher from './LanguageSwitcher';
-import ThemeToggle from './ThemeToggle';
 
 const Header: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -20,10 +19,10 @@ const Header: React.FC = () => {
     }, []);
 
     const activeLinkClass = "text-fann-gold";
-    const inactiveLinkClass = "text-fann-charcoal dark:text-white hover:text-fann-gold transition-colors duration-300";
+    const inactiveLinkClass = "hover:text-fann-gold transition-colors duration-300";
 
     return (
-        <header className={`top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || isOpen ? 'fixed bg-fann-cream/90 dark:bg-fann-charcoal/90 backdrop-blur-sm shadow-lg' : 'absolute bg-transparent'}`}>
+        <header className={`top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || isOpen ? 'fixed bg-fann-charcoal/90 backdrop-blur-sm shadow-lg' : 'absolute bg-transparent'}`}>
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
                     <Link to="/" className="text-3xl font-serif font-bold text-fann-gold tracking-wider">
@@ -39,14 +38,14 @@ const Header: React.FC = () => {
                                         <ChevronDown size={16} />
                                     </button>
                                     <div 
-                                        className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-48 bg-white/95 dark:bg-fann-charcoal-light/95 backdrop-blur-sm rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto transform scale-95 group-hover:scale-100 origin-top"
+                                        className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-48 bg-fann-charcoal-light/95 backdrop-blur-sm rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto transform scale-95 group-hover:scale-100 origin-top"
                                     >
                                         <div className="py-1">
                                             {link.children.map(child => (
                                                 <NavLink
                                                     key={child.name}
                                                     to={child.path}
-                                                    className={({ isActive }) => `block w-full text-left px-4 py-2 text-sm text-fann-charcoal dark:text-white hover:bg-fann-teal/50 ${isActive ? activeLinkClass : ''}`}
+                                                    className={({ isActive }) => `block w-full text-left px-4 py-2 text-sm text-white hover:bg-fann-teal/50 ${isActive ? activeLinkClass : ''}`}
                                                 >
                                                     {child.name}
                                                 </NavLink>
@@ -67,7 +66,6 @@ const Header: React.FC = () => {
                     </nav>
 
                     <div className="hidden lg:flex items-center space-x-4">
-                        <ThemeToggle />
                         <LanguageSwitcher />
                         <Link to="/fann-studio">
                           <motion.button 
@@ -81,7 +79,7 @@ const Header: React.FC = () => {
                     </div>
 
                     <div className="lg:hidden">
-                        <button onClick={() => setIsOpen(!isOpen)} className="text-fann-charcoal dark:text-white">
+                        <button onClick={() => setIsOpen(!isOpen)} className="text-white">
                             {isOpen ? <X size={28} /> : <Menu size={28} />}
                         </button>
                     </div>
@@ -95,7 +93,7 @@ const Header: React.FC = () => {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="lg:hidden bg-fann-cream/95 dark:bg-fann-charcoal/95 absolute top-20 left-0 right-0"
+                    className="lg:hidden bg-fann-charcoal/95 absolute top-20 left-0 right-0"
                 >
                     <nav className="flex flex-col items-center space-y-6 py-8">
                         {navLinks.map((link) => (
@@ -142,9 +140,8 @@ const Header: React.FC = () => {
                                 )}
                             </div>
                         ))}
-                        <div className="my-6 w-full px-8 flex justify-center items-center gap-4">
+                        <div className="my-6 w-full px-8">
                             <LanguageSwitcher />
-                            <ThemeToggle />
                         </div>
                         <Link to="/fann-studio">
                           <motion.button 

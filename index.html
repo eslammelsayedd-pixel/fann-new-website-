@@ -12,7 +12,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
     tailwind.config = {
-        darkMode: 'class',
         theme: {
             extend: {
                 colors: {
@@ -20,9 +19,10 @@
                     'fann-gold': '#D4AF76',
                     'fann-charcoal': '#1a1a1a',
                     'fann-cream': '#F5F5DC',
-                    'fann-charcoal-light': '#2C2C2C',
-                    'fann-light-gray': '#B0B0B0',
-                    'fann-border': 'rgba(90, 139, 140, 0.3)',
+                    // New additions for a more consistent theme
+                    'fann-charcoal-light': '#2C2C2C', // For component backgrounds
+                    'fann-light-gray': '#B0B0B0',    // For secondary text
+                    'fann-border': 'rgba(90, 139, 140, 0.3)', // A transparent teal for borders
                 },
                 fontFamily: {
                     'serif': ['Playfair Display', 'serif'],
@@ -31,14 +31,6 @@
             }
         }
     }
-    </script>
-    <script>
-        // Prevents Flash of Unstyled Content (FOUC) for dark mode
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
     </script>
 <style>
     .hotspot {
@@ -63,11 +55,11 @@
     .annotation {
         transform: translate(20px, -50%) scale(0.8);
         transform-origin: left center;
-        background: #F5F5DC; /* fann-cream */
-        border: 1px solid rgba(0,0,0,0.1);
+        background: #1a1a1a; /* fann-charcoal */
+        border: 1px solid #D4AF76; /* fann-gold */
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0,0,0,0.35);
-        color: #1a1a1a; /* fann-charcoal */
+        color: white;
         font-family: 'Inter', sans-serif;
         font-size: 14px;
         font-weight: 500;
@@ -80,11 +72,6 @@
         pointer-events: none;
         opacity: 0;
         transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
-    }
-    .dark .annotation {
-        background: #1a1a1a; /* fann-charcoal */
-        border: 1px solid #D4AF76; /* fann-gold */
-        color: white;
     }
     .hotspot[data-visible]:hover .annotation {
         transform: translate(20px, -50%) scale(1);
@@ -117,7 +104,7 @@
 </script>
 <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 </head>
-<body class="bg-fann-cream text-fann-charcoal dark:bg-fann-charcoal dark:text-white font-sans">
+<body class="bg-fann-charcoal text-white font-sans">
     <div id="google_translate_element" style="display:none;"></div>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>

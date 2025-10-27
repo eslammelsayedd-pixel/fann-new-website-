@@ -23,7 +23,7 @@ const itemVariants = {
 const AboutPage: React.FC = () => {
   return (
     <AnimatedPage>
-      <div className="min-h-screen bg-fann-cream dark:bg-fann-charcoal pt-32 pb-20 text-fann-charcoal dark:text-white">
+      <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
         <motion.div 
             className="container mx-auto px-4 sm:px-6 lg:px-8"
             variants={containerVariants}
@@ -32,14 +32,14 @@ const AboutPage: React.FC = () => {
         >
           <div className="text-center">
             <motion.h1 variants={itemVariants} className="text-5xl font-serif font-bold text-fann-gold mb-4">About FANN</motion.h1>
-            <motion.p variants={itemVariants} className="text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            <motion.p variants={itemVariants} className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
               Founded in Dubai in 2019, FANN was born from a passion for transforming visions into tangible, unforgettable realities. As a full-service design and build company, we believe that a well-executed project—from initial concept to final construction—has the power to inspire, connect, and drive success.
             </motion.p>
           </div>
            <motion.div variants={itemVariants} className="mt-12 mb-16">
             <img src="https://images.pexels.com/photos/8199563/pexels-photo-8199563.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="The diverse FANN team of Arab and Indian professionals collaborating in a modern Dubai office." className="rounded-lg shadow-xl mx-auto" />
           </motion.div>
-          <motion.div variants={itemVariants} className="max-w-3xl mx-auto text-lg text-gray-800 dark:text-fann-cream space-y-6 text-left leading-loose">
+          <motion.div variants={itemVariants} className="max-w-3xl mx-auto text-lg text-fann-cream space-y-6 text-left leading-loose">
             <p>
               Our philosophy is built on a dual commitment: relentless innovation and uncompromising excellence. We merge cutting-edge technology and global design trends with a deep understanding of the regional culture and market. This unique synthesis allows us to deliver experiences that are not only visually stunning but also strategically sound and culturally resonant.
             </p>
