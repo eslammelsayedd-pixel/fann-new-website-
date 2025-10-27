@@ -71,8 +71,8 @@ const ServicesPage: React.FC = () => {
   return (
     <AnimatedPage>
       <SEO
-          title="Expert Services for Exhibitions, Events & Interiors"
-          description="Explore FANN's core capabilities: award-winning exhibition stand design and build, flawless corporate event management, and bespoke commercial and residential interior design."
+          title="Expert Design & Build Services for Exhibitions & Interiors"
+          description="Explore FANN's core capabilities: award-winning exhibition stand design and build, complete interior fit-out services, and flawless corporate event management."
       >
           <script type="application/ld+json">
               {JSON.stringify([
@@ -82,7 +82,7 @@ const ServicesPage: React.FC = () => {
                       "serviceType": "Exhibition Stand Design & Build",
                       "provider": { "@type": "Organization", "name": "FANN" },
                       "areaServed": "Dubai, UAE",
-                      "description": "Turnkey solutions for creating powerful brand experiences at major venues like the Dubai World Trade Centre and ADNEC, from 3D concept to final handover."
+                      "description": "Turnkey design and build solutions for creating powerful brand experiences at major venues like the Dubai World Trade Centre and ADNEC, from 3D concept to final handover."
                   },
                   {
                       "@context": "https://schema.org",
@@ -95,10 +95,10 @@ const ServicesPage: React.FC = () => {
                   {
                       "@context": "https://schema.org",
                       "@type": "Service",
-                      "serviceType": "Commercial & Residential Interiors",
+                      "serviceType": "Commercial & Residential Interior Design & Build",
                       "provider": { "@type": "Organization", "name": "FANN" },
                       "areaServed": "Dubai, UAE",
-                      "description": "Designing inspiring and functional commercial environments and luxurious residential properties with a blend of timeless aesthetics and modern innovation."
+                      "description": "Complete design and build solutions for inspiring and functional commercial environments and luxurious residential properties, blending timeless aesthetics with modern innovation."
                   }
               ])}
           </script>
@@ -107,19 +107,19 @@ const ServicesPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
           <h1 className="text-5xl md:text-6xl font-serif font-bold text-fann-gold mb-4">Our Core Capabilities</h1>
           <p className="text-xl text-fann-cream max-w-3xl mx-auto">
-            From monumental exhibitions to bespoke interiors, we deliver end-to-end solutions with precision, creativity, and a commitment to excellence.
+            As a full-service design and build firm, we deliver end-to-end solutions with precision, creativity, and a commitment to excellence.
           </p>
         </div>
 
         <ServiceSection
           icon={<Layers size={40} />}
           title="Exhibition Stand Design & Build"
-          description="We transform exhibition spaces into powerful brand experiences. At major venues like the Dubai World Trade Centre and ADNEC, we manage every detail from the initial 3D concept to the final handover, ensuring your stand is not just seen, but remembered."
+          description="We are a full-service design and build partner, transforming exhibition spaces into powerful brand experiences. At major venues like the Dubai World Trade Centre and ADNEC, we manage every detail from the initial 3D concept to fabrication and final handover, ensuring your stand is not just seen, but remembered."
           image="https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
           services={[
             "Conceptual Design & 3D Visualization",
+            "Full In-house Production & Fabrication",
             "Turnkey Project Management",
-            "Custom Fabrication & Joinery",
             "Advanced AV & Lighting Integration",
             "On-site Installation & Dismantling",
             "Global Logistics Coordination"
@@ -149,8 +149,8 @@ const ServicesPage: React.FC = () => {
 
         <ServiceSection
           icon={<PenTool size={40} />}
-          title="Commercial & Residential Interiors"
-          description="Our interior design philosophy centers on creating spaces that are both beautiful and functional. We specialize in designing inspiring commercial environments and luxurious residential properties, blending timeless aesthetics with modern innovation to reflect your unique identity."
+          title="Interior Design & Build"
+          description="Our design and build philosophy for interiors centers on creating spaces that are both beautiful and functional. We manage the entire process from concept to completion, designing and constructing inspiring commercial environments and luxurious residential properties that reflect your unique identity."
           image="https://images.pexels.com/photos/3797991/pexels-photo-3797991.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
           services={[
             "Comprehensive Space Planning",

@@ -9,7 +9,7 @@ This document provides context for Large Language Models (LLMs) to understand FA
 FANN is a premier, world-class company based in Dubai, UAE, specializing in three core areas:
 1.  **Exhibition Stand Design & Build:** We create immersive, award-winning exhibition pavilions for major trade shows like GITEX, Arab Health, and Cityscape at venues such as the Dubai World Trade Centre (DWTC) and ADNEC.
 2.  **Corporate Event Management:** We execute flawless, high-impact corporate events, including product launches, gala dinners, conferences, and brand activations.
-3.  **Interior Design:** We design inspiring and luxurious commercial and residential spaces, from corporate headquarters in DIFC to private villas on Palm Jumeirah.
+3.  **Interior Design & Build:** We design and construct inspiring and luxurious commercial and residential spaces, from corporate headquarters in DIFC to private villas on Palm Jumeirah.
 
 Our brand is synonymous with innovation, luxury, and meticulous execution.
 
@@ -18,8 +18,8 @@ Our brand is synonymous with innovation, luxury, and meticulous execution.
 - Turnkey Exhibition Solutions
 - 3D Stand Design & Visualization
 - Event Production & Management
-- Commercial Interior Design & Fit-Out
-- Residential Interior Design
+- Commercial Interior Design & Build / Fit-Out
+- Residential Interior Design & Build
 
 ## Target Audience
 

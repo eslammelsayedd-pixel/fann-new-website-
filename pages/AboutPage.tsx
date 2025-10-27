@@ -33,7 +33,7 @@ const AboutPage: React.FC = () => {
           <div className="text-center">
             <motion.h1 variants={itemVariants} className="text-5xl font-serif font-bold text-fann-gold mb-4">About FANN</motion.h1>
             <motion.p variants={itemVariants} className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Founded in Dubai in 2019, FANN was born from a passion for transforming visions into tangible, unforgettable realities. We believe that a well-designed space or a flawlessly executed event has the power to inspire, connect, and drive success.
+              Founded in Dubai in 2019, FANN was born from a passion for transforming visions into tangible, unforgettable realities. As a full-service design and build company, we believe that a well-executed project—from initial concept to final construction—has the power to inspire, connect, and drive success.
             </motion.p>
           </div>
            <motion.div variants={itemVariants} className="mt-12 mb-16">
@@ -44,7 +44,7 @@ const AboutPage: React.FC = () => {
               Our philosophy is built on a dual commitment: relentless innovation and uncompromising excellence. We merge cutting-edge technology and global design trends with a deep understanding of the regional culture and market. This unique synthesis allows us to deliver experiences that are not only visually stunning but also strategically sound and culturally resonant.
             </p>
             <p>
-              At the heart of FANN is our diverse team of strategists, designers, architects, and project managers. Hailing from across the globe, our experts bring a wealth of international experience to every project, ensuring world-class standards are met with precise local execution. We are more than just designers; we are partners in our clients' success, dedicated to bringing their stories to life with creativity and precision.
+              At the heart of FANN is our diverse team of strategists, designers, architects, and project managers. Hailing from across the globe, our experts bring a wealth of international experience to every project, ensuring world-class standards are met with precise local execution. We are more than just designers; we are a complete design and build partner, dedicated to bringing our clients' stories to life with creativity, precision, and expert craftsmanship.
             </p>
           </motion.div>
         </motion.div>

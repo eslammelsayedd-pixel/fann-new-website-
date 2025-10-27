@@ -115,7 +115,7 @@ const HeroSection: React.FC = () => {
                     transition={{ duration: 0.8, delay: 0.2 }}
                     className="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-fann-cream"
                 >
-                    Premier Exhibition, Event & Interior Design Innovators
+                    Your Premier Design and Build Partner for Exhibitions, Events & Interiors.
                 </motion.p>
                 <motion.div 
                     initial={{ opacity: 0, y: 20 }}
@@ -207,8 +207,8 @@ const HomePage: React.FC = () => {
     return (
         <AnimatedPage>
             <SEO
-                title="Premier Exhibition, Events & Interior Design in Dubai"
-                description="FANN transforms visions into unforgettable experiences. Discover our world-class exhibition stand design, event management, and luxury interior design services in Dubai and the GCC."
+                title="Premier Design & Build in Dubai for Exhibitions & Interiors"
+                description="FANN is a premier design and build company in Dubai. Discover our world-class exhibition stand construction, event management, and luxury interior fit-out services in the GCC."
                 schema={homePageSchema}
             />
             <HeroSection />
@@ -228,9 +228,9 @@ const HomePage: React.FC = () => {
                             className="grid md:grid-cols-3 gap-8"
                             variants={cardContainerVariants}
                         >
-                            <ServiceCard icon={<Layers size={40} />} title="Exhibitions" description="Crafting immersive brand pavilions that captivate audiences and drive business." link="/services" />
+                            <ServiceCard icon={<Layers size={40} />} title="Exhibitions" description="Designing and building immersive brand pavilions that captivate audiences and drive business." link="/services" />
                             <ServiceCard icon={<Calendar size={40} />} title="Events" description="Executing flawless corporate events, from grand openings to global summits." link="/services" />
-                            <ServiceCard icon={<PenTool size={40} />} title="Interior Design" description="Designing inspiring commercial and residential spaces with a touch of luxury." link="/services" />
+                            <ServiceCard icon={<PenTool size={40} />} title="Interior Design" description="Designing and building inspiring commercial and residential spaces with a touch of luxury." link="/services" />
                         </motion.div>
                     </motion.section>
 
@@ -327,7 +327,7 @@ const HomePage: React.FC = () => {
                     >
                          <div className="bg-fann-charcoal rounded-lg py-16 px-8">
                             <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4">Ready to Create Something Extraordinary?</h2>
-                            <p className="max-w-2xl mx-auto text-fann-cream mb-8">Let's discuss how we can bring your vision to life. Schedule a complimentary consultation with our experts today.</p>
+                            <p className="max-w-2xl mx-auto text-fann-cream mb-8">Let's discuss how our design and build expertise can bring your vision to life. Schedule a complimentary consultation with our experts today.</p>
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                                <Link to="/contact">
                                   <motion.button 

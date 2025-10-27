@@ -67,7 +67,7 @@ const ContactPage: React.FC = () => {
     <AnimatedPage>
       <SEO
         title="Contact FANN | Get a Quote for Your Project"
-        description="Reach out to FANN's team of design experts in Dubai. Contact us for a complimentary consultation on your next exhibition, event, or interior design project."
+        description="Reach out to FANN's team of design and build experts in Dubai. Contact us for a complimentary consultation on your next exhibition, event, or interior design project."
       >
         <script type="application/ld+json">
             {JSON.stringify({

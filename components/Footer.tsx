@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           <div className="md:col-span-12 lg:col-span-4">
             <h3 className="text-2xl font-serif font-bold text-fann-gold mb-4">FANN</h3>
-            <p className="text-sm text-fann-light-gray">Transforming visions into unforgettable experiences. Dubai's premier exhibition, event, and interior design innovators.</p>
+            <p className="text-sm text-fann-light-gray">Your full-service design and build partner. Transforming visions into unforgettable experiences across exhibitions, events, and interiors.</p>
           </div>
           <div className="md:col-span-6 lg:col-span-2">
             <h4 className="font-bold text-white uppercase tracking-wider mb-4">Quick Links</h4>
