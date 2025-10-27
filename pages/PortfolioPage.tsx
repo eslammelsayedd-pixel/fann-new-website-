@@ -38,13 +38,13 @@ const PortfolioPage: React.FC = () => {
 
   const FilterButtons: React.FC<{title: string, options: string[], selected: string, setSelected: (value: string) => void}> = ({ title, options, selected, setSelected }) => (
     <div className="mb-6">
-      <h3 className="text-lg font-semibold text-fann-light-gray mb-3">{title}</h3>
+      <h3 className="text-lg font-semibold text-gray-500 dark:text-fann-light-gray mb-3">{title}</h3>
       <div className="flex flex-wrap gap-2">
         {options.map(option => (
           <button
             key={option}
             onClick={() => setSelected(option)}
-            className={`px-4 py-1.5 text-sm rounded-full transition-colors duration-200 ${selected === option ? 'bg-fann-teal text-white font-bold' : 'bg-fann-charcoal hover:bg-white/10'}`}
+            className={`px-4 py-1.5 text-sm rounded-full transition-colors duration-200 ${selected === option ? 'bg-fann-teal text-white font-bold' : 'bg-gray-200 text-fann-charcoal dark:bg-fann-charcoal dark:text-white hover:bg-gray-300 dark:hover:bg-white/10'}`}
           >
             {option}
           </button>
@@ -55,14 +55,14 @@ const PortfolioPage: React.FC = () => {
 
   return (
     <AnimatedPage>
-      <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
+      <div className="min-h-screen bg-fann-cream dark:bg-fann-charcoal pt-32 pb-20 text-fann-charcoal dark:text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">Our Work</h1>
-            <p className="text-xl text-fann-cream">Explore a selection of our finest projects.</p>
+            <p className="text-xl text-gray-700 dark:text-fann-cream">Explore a selection of our finest projects.</p>
           </div>
           
-          <div className="max-w-4xl mx-auto bg-fann-charcoal-light p-6 rounded-lg mb-12">
+          <div className="max-w-4xl mx-auto bg-white dark:bg-fann-charcoal-light p-6 rounded-lg mb-12">
             <FilterButtons title="Service" options={services} selected={selectedService} setSelected={setSelectedService} />
             <FilterButtons title="Industry" options={industries} selected={selectedIndustry} setSelected={setSelectedIndustry} />
           </div>
@@ -99,10 +99,10 @@ const PortfolioPage: React.FC = () => {
                 <motion.div 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="md:col-span-2 lg:col-span-3 text-center py-16 bg-fann-charcoal-light rounded-lg"
+                  className="md:col-span-2 lg:col-span-3 text-center py-16 bg-white dark:bg-fann-charcoal-light rounded-lg"
                 >
                   <h3 className="text-2xl font-serif text-fann-gold">No Projects Found</h3>
-                  <p className="text-fann-light-gray mt-2">Try adjusting your filters to find a match.</p>
+                  <p className="text-gray-500 dark:text-fann-light-gray mt-2">Try adjusting your filters to find a match.</p>
                 </motion.div>
               )}
             </AnimatePresence>

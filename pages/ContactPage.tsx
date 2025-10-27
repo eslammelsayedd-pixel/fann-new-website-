@@ -114,55 +114,54 @@ const ContactPage: React.FC = () => {
             })}
         </script>
       </SEO>
-      <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
+      <div className="min-h-screen bg-fann-cream dark:bg-fann-charcoal pt-32 pb-20 text-fann-charcoal dark:text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h1 className="text-5xl md:text-6xl font-serif font-bold text-fann-gold mb-4">Contact Us</h1>
-            <p className="text-xl text-fann-cream max-w-3xl mx-auto">We'd love to hear about your next project. Reach out to us through any of the channels below.</p>
+            <p className="text-xl text-gray-700 dark:text-fann-cream max-w-3xl mx-auto">We'd love to hear about your next project. Reach out to us through any of the channels below.</p>
           </div>
           
           <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
             <motion.div 
-              className="bg-fann-charcoal-light p-8 rounded-lg"
+              className="bg-white dark:bg-fann-charcoal-light p-8 rounded-lg"
               variants={slideInFromLeft}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
             >
-                <h2 className="text-3xl font-serif text-white mb-8" style={{ fontWeight: 600}}>Get in Touch</h2>
+                <h2 className="text-3xl font-serif text-fann-charcoal dark:text-white mb-8" style={{ fontWeight: 600}}>Get in Touch</h2>
                 <div className="space-y-6">
                     <div className="flex items-center space-x-4">
-                        <Phone className="text-white flex-shrink-0" size={24} />
-                        <a href="tel:+971505667502" className="text-lg text-fann-light-gray hover:text-fann-gold transition-colors">+971 50 566 7502</a>
+                        <Phone className="text-fann-charcoal dark:text-white flex-shrink-0" size={24} />
+                        <a href="tel:+971505667502" className="text-lg text-gray-600 dark:text-fann-light-gray hover:text-fann-gold transition-colors">+971 50 566 7502</a>
                     </div>
                      <div className="flex items-center space-x-4">
-                        {/* FIX: Although the error was reported for line 139, the type issue applies here. The custom `WhatsAppIcon` component doesn't accept a `size` prop as its dimensions are hardcoded. Removing the invalid prop. */}
-                        <WhatsAppIcon className="text-white flex-shrink-0" />
-                        <a href="https://wa.me/971505667502" target="_blank" rel="noopener noreferrer" className="text-lg text-fann-light-gray hover:text-fann-gold transition-colors">Chat on WhatsApp</a>
+                        <WhatsAppIcon className="text-fann-charcoal dark:text-white flex-shrink-0" />
+                        <a href="https://wa.me/971505667502" target="_blank" rel="noopener noreferrer" className="text-lg text-gray-600 dark:text-fann-light-gray hover:text-fann-gold transition-colors">Chat on WhatsApp</a>
                     </div>
                     <div className="flex items-center space-x-4">
-                        <Mail className="text-white flex-shrink-0" size={24} />
-                        <a href="mailto:sales@fann.ae" className="text-lg text-fann-light-gray hover:text-fann-gold transition-colors">sales@fann.ae</a>
+                        <Mail className="text-fann-charcoal dark:text-white flex-shrink-0" size={24} />
+                        <a href="mailto:sales@fann.ae" className="text-lg text-gray-600 dark:text-fann-light-gray hover:text-fann-gold transition-colors">sales@fann.ae</a>
                     </div>
-                     <div className="flex items-start space-x-4 pt-4 mt-4 border-t border-fann-border">
-                        <MapPin className="text-white mt-1 flex-shrink-0" size={24} />
+                     <div className="flex items-start space-x-4 pt-4 mt-4 border-t border-gray-200 dark:border-fann-border">
+                        <MapPin className="text-fann-charcoal dark:text-white mt-1 flex-shrink-0" size={24} />
                         <div>
-                            <h3 className="text-lg font-bold text-white">Office Address</h3>
-                            <p className="text-lg text-fann-light-gray">Office 508, Dusseldorf Business Point, <br/>Al Barsha 1, Dubai, UAE</p>
+                            <h3 className="text-lg font-bold text-fann-charcoal dark:text-white">Office Address</h3>
+                            <p className="text-lg text-gray-600 dark:text-fann-light-gray">Office 508, Dusseldorf Business Point, <br/>Al Barsha 1, Dubai, UAE</p>
                         </div>
                     </div>
-                     <div className="flex items-start space-x-4 pt-4 mt-4 border-t border-fann-border">
-                        <MapPin className="text-white mt-1 flex-shrink-0" size={24} />
+                     <div className="flex items-start space-x-4 pt-4 mt-4 border-t border-gray-200 dark:border-fann-border">
+                        <MapPin className="text-fann-charcoal dark:text-white mt-1 flex-shrink-0" size={24} />
                          <div>
-                            <h3 className="text-lg font-bold text-white">Warehouse Address</h3>
-                            <p className="text-lg text-fann-light-gray">WH10-Umm Dera, <br/>Umm Al Quwain, UAE</p>
+                            <h3 className="text-lg font-bold text-fann-charcoal dark:text-white">Warehouse Address</h3>
+                            <p className="text-lg text-gray-600 dark:text-fann-light-gray">WH10-Umm Dera, <br/>Umm Al Quwain, UAE</p>
                         </div>
                     </div>
                 </div>
             </motion.div>
 
             <motion.div 
-              className="bg-fann-charcoal-light p-8 rounded-lg"
+              className="bg-white dark:bg-fann-charcoal-light p-8 rounded-lg"
               variants={slideInFromRight}
               initial="hidden"
               whileInView="visible"
@@ -171,21 +170,21 @@ const ContactPage: React.FC = () => {
                 {isSent ? (
                      <div className="flex flex-col items-center justify-center h-full text-center">
                         <CheckCircle className="w-16 h-16 text-fann-teal mx-auto mb-4" />
-                        <h2 className="text-3xl font-serif text-white mb-4">Message Sent!</h2>
-                        <p className="text-fann-light-gray">Thank you for reaching out. We will get back to you shortly.</p>
+                        <h2 className="text-3xl font-serif text-fann-charcoal dark:text-white mb-4">Message Sent!</h2>
+                        <p className="text-gray-600 dark:text-fann-light-gray">Thank you for reaching out. We will get back to you shortly.</p>
                     </div>
                 ) : (
                     <>
-                        <h2 className="text-3xl font-serif text-white mb-8" style={{ fontWeight: 600}}>Send a Message</h2>
+                        <h2 className="text-3xl font-serif text-fann-charcoal dark:text-white mb-8" style={{ fontWeight: 600}}>Send a Message</h2>
                         <form onSubmit={handleSubmit} className="space-y-6">
                            <div>
-                               <input type="text" name="name" placeholder="Your Name" required className="w-full bg-fann-charcoal border border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-gold transition-shadow" />
+                               <input type="text" name="name" placeholder="Your Name" required className="w-full bg-fann-cream dark:bg-fann-charcoal border border-gray-300 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-gold transition-shadow" />
                            </div>
                             <div>
-                               <input type="email" name="email" placeholder="Your Email" required className="w-full bg-fann-charcoal border border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-gold transition-shadow" />
+                               <input type="email" name="email" placeholder="Your Email" required className="w-full bg-fann-cream dark:bg-fann-charcoal border border-gray-300 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-gold transition-shadow" />
                            </div>
                             <div>
-                               <textarea name="message" placeholder="Your Message" rows={5} required className="w-full bg-fann-charcoal border border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-gold transition-shadow"></textarea>
+                               <textarea name="message" placeholder="Your Message" rows={5} required className="w-full bg-fann-cream dark:bg-fann-charcoal border border-gray-300 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-gold transition-shadow"></textarea>
                            </div>
                            {error && (
                                <div className="bg-red-900/50 text-red-300 text-sm p-3 rounded-md">{error}</div>

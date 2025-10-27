@@ -112,15 +112,15 @@ const Chatbot: React.FC = () => {
                         initial="hidden"
                         animate="visible"
                         exit="hidden"
-                        className="fixed bottom-24 right-6 w-[calc(100vw-3rem)] max-w-sm h-[70vh] max-h-[600px] bg-fann-charcoal-light rounded-lg shadow-2xl flex flex-col z-50 border border-fann-border"
+                        className="fixed bottom-24 right-6 w-[calc(100vw-3rem)] max-w-sm h-[70vh] max-h-[600px] bg-white dark:bg-fann-charcoal-light rounded-lg shadow-2xl flex flex-col z-50 border border-gray-200 dark:border-fann-border"
                     >
                         {/* Header */}
-                        <header className="flex items-center justify-between p-4 border-b border-fann-border">
+                        <header className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-fann-border">
                             <div className="flex items-center gap-3">
                                 <Bot className="text-fann-gold" />
-                                <h2 className="font-bold text-lg text-white">FANN Assistant</h2>
+                                <h2 className="font-bold text-lg text-fann-charcoal dark:text-white">FANN Assistant</h2>
                             </div>
-                            <button onClick={() => setIsOpen(false)} className="text-fann-light-gray hover:text-white" aria-label="Close Chat">
+                            <button onClick={() => setIsOpen(false)} className="text-gray-500 dark:text-fann-light-gray hover:text-fann-charcoal dark:hover:text-white" aria-label="Close Chat">
                                 <X />
                             </button>
                         </header>
@@ -129,15 +129,15 @@ const Chatbot: React.FC = () => {
                         <div className="flex-1 p-4 overflow-y-auto space-y-4">
                             {messages.map((msg, index) => (
                                 <div key={index} className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                    {msg.role === 'model' && <div className="w-8 h-8 rounded-full bg-fann-teal flex items-center justify-center flex-shrink-0"><Bot size={20} /></div>}
-                                    <div className={`max-w-[80%] rounded-lg px-4 py-2 ${msg.role === 'user' ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-charcoal'}`}>
+                                    {msg.role === 'model' && <div className="w-8 h-8 rounded-full bg-fann-teal flex items-center justify-center flex-shrink-0"><Bot size={20} className="text-white"/></div>}
+                                    <div className={`max-w-[80%] rounded-lg px-4 py-2 ${msg.role === 'user' ? 'bg-fann-gold text-fann-charcoal' : 'bg-gray-100 dark:bg-fann-charcoal text-fann-charcoal dark:text-white'}`}>
                                         <div 
-                                            className="prose prose-sm prose-invert text-white"
+                                            className="prose prose-sm prose-p:text-fann-charcoal prose-strong:text-fann-charcoal dark:prose-invert"
                                             dangerouslySetInnerHTML={{ __html: parseMarkdown(msg.parts[0].text) }}
                                         />
                                         {msg.sources && msg.sources.length > 0 && (
-                                            <div className="mt-3 border-t border-fann-border/50 pt-2">
-                                                 <h4 className="text-xs font-bold text-fann-light-gray mb-1 flex items-center gap-1"><BookOpen size={14}/> Sources</h4>
+                                            <div className="mt-3 border-t border-gray-200 dark:border-fann-border/50 pt-2">
+                                                 <h4 className="text-xs font-bold text-gray-500 dark:text-fann-light-gray mb-1 flex items-center gap-1"><BookOpen size={14}/> Sources</h4>
                                                  <ul className="space-y-1">
                                                     {msg.sources.map((source, i) => (
                                                         <li key={i}>
@@ -155,9 +155,9 @@ const Chatbot: React.FC = () => {
                             ))}
                              {isLoading && (
                                 <div className="flex gap-3 justify-start">
-                                    <div className="w-8 h-8 rounded-full bg-fann-teal flex items-center justify-center flex-shrink-0"><Bot size={20} /></div>
-                                    <div className="max-w-[80%] rounded-lg px-4 py-2 bg-fann-charcoal flex items-center">
-                                        <Loader2 className="w-5 h-5 animate-spin text-fann-light-gray" />
+                                    <div className="w-8 h-8 rounded-full bg-fann-teal flex items-center justify-center flex-shrink-0"><Bot size={20} className="text-white" /></div>
+                                    <div className="max-w-[80%] rounded-lg px-4 py-2 bg-gray-100 dark:bg-fann-charcoal flex items-center">
+                                        <Loader2 className="w-5 h-5 animate-spin text-gray-500 dark:text-fann-light-gray" />
                                     </div>
                                 </div>
                             )}
@@ -165,7 +165,7 @@ const Chatbot: React.FC = () => {
                         </div>
 
                         {/* Input */}
-                        <footer className="p-4 border-t border-fann-border">
+                        <footer className="p-4 border-t border-gray-200 dark:border-fann-border">
                             <div className="flex items-center gap-2">
                                 <input
                                     type="text"
@@ -173,13 +173,13 @@ const Chatbot: React.FC = () => {
                                     onChange={(e) => setInput(e.target.value)}
                                     onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                                     placeholder="Ask a question..."
-                                    className="w-full bg-fann-charcoal border border-fann-border rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fann-gold"
+                                    className="w-full bg-gray-100 dark:bg-fann-charcoal border border-gray-300 dark:border-fann-border rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fann-gold text-fann-charcoal dark:text-white"
                                 />
-                                <button onClick={handleSend} disabled={isLoading || !input.trim()} className="bg-fann-gold text-fann-charcoal rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 disabled:bg-fann-light-gray disabled:cursor-not-allowed">
+                                <button onClick={handleSend} disabled={isLoading || !input.trim()} className="bg-fann-gold text-fann-charcoal rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 disabled:bg-gray-300 dark:disabled:bg-fann-light-gray disabled:cursor-not-allowed">
                                     <Send size={20} />
                                 </button>
                             </div>
-                            <p className="text-xs text-fann-light-gray text-center mt-2">Assistant powered by FANN's advanced technology. May display inaccurate info.</p>
+                            <p className="text-xs text-gray-500 dark:text-fann-light-gray text-center mt-2">Assistant powered by FANN's advanced technology. May display inaccurate info.</p>
                         </footer>
                     </motion.div>
                 )}
