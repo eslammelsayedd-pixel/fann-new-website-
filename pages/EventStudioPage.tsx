@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+// FIX: Import `AnimatePresence` from `framer-motion` to resolve 'Cannot find name' errors.
+import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2, Sparkles, Upload, ArrowLeft, Users, Palette, ListChecks, Crown, User, CheckCircle, AlertCircle } from 'lucide-react';
 import { useApiKey } from '../context/ApiKeyProvider';
 import { useSearchParams } from 'react-router-dom';

@@ -50,6 +50,7 @@ const Footer: React.FC = () => {
         </div>
         <div className="border-t border-gray-200 dark:border-fann-charcoal mt-8 pt-6 text-center text-sm text-gray-500 dark:text-fann-light-gray">
           <p>&copy; {new Date().getFullYear()} FANN. All Rights Reserved. | <a href="#" className="hover:text-fann-gold">Privacy Policy</a></p>
+          <p className="mt-2">Created by <a href="https://www.ohhmyroi.com" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold font-semibold">www.ohhmyroi.com</a></p>
         </div>
       </div>
     </footer>
