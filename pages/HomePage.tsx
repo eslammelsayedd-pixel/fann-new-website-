@@ -71,19 +71,19 @@ const HeroSection: React.FC = () => {
                 <button className="hotspot" slot="hotspot-1" data-position="-1.6m 1m -1.5m" data-normal="0m 1m 0m">
                     <div className="annotation">
                         <h4 className="font-bold text-fann-gold">Lead Generation Hub</h4>
-                        <p className="text-xs text-fann-cream">Reception desks designed to attract and qualify leads efficiently.</p>
+                        <p className="text-xs text-fann-charcoal dark:text-fann-cream">Reception desks designed to attract and qualify leads efficiently.</p>
                     </div>
                 </button>
                  <button className="hotspot" slot="hotspot-2" data-position="2.5m 1.5m 1m" data-normal="0m 1m 0m">
                     <div className="annotation">
                          <h4 className="font-bold text-fann-gold">Private Meeting Space</h4>
-                        <p className="text-xs text-fann-cream">Integrated rooms for high-level discussions and closing deals.</p>
+                        <p className="text-xs text-fann-charcoal dark:text-fann-cream">Integrated rooms for high-level discussions and closing deals.</p>
                     </div>
                 </button>
                 <button className="hotspot" slot="hotspot-3" data-position="0m 2m 2.8m" data-normal="0m 0m -1m">
                     <div className="annotation">
                         <h4 className="font-bold text-fann-gold">Immersive AV</h4>
-                        <p className="text-xs text-fann-cream">State-of-the-art video walls for impactful brand storytelling.</p>
+                        <p className="text-xs text-fann-charcoal dark:text-fann-cream">State-of-the-art video walls for impactful brand storytelling.</p>
                     </div>
                 </button>
             </model-viewer>
@@ -191,13 +191,13 @@ const ServiceCard: React.FC<{ icon: React.ReactNode; title: string; description:
         variants={cardItemVariants}
         whileHover="hover"
         initial="rest"
-        className="relative p-8 bg-fann-charcoal-light rounded-lg overflow-hidden border border-fann-border"
+        className="relative p-8 bg-white dark:bg-fann-charcoal-light rounded-lg overflow-hidden border border-gray-200 dark:border-fann-border shadow-md"
     >
         <motion.div className="absolute inset-0 bg-gradient-to-br from-fann-teal/20 to-transparent opacity-0" variants={{ hover: { opacity: 1 }, rest: { opacity: 0 } }} transition={{ duration: 0.5 }} />
         <div className="relative z-10">
             <div className="text-fann-gold mb-4">{icon}</div>
-            <h3 className="text-2xl font-serif font-bold mb-2">{title}</h3>
-            <p className="text-fann-light-gray mb-6">{description}</p>
+            <h3 className="text-2xl font-serif font-bold mb-2 text-fann-charcoal dark:text-white">{title}</h3>
+            <p className="text-gray-600 dark:text-fann-light-gray mb-6">{description}</p>
             <Link to={link} className="font-semibold text-fann-gold hover:underline">Learn More &rarr;</Link>
         </div>
     </motion.div>
@@ -213,7 +213,7 @@ const HomePage: React.FC = () => {
             />
             <HeroSection />
 
-            <div className="py-20 bg-fann-charcoal">
+            <div className="py-20 bg-fann-cream dark:bg-fann-charcoal">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
 
                     {/* Services Section */}
@@ -236,14 +236,14 @@ const HomePage: React.FC = () => {
 
                     {/* FANN Studio Section */}
                     <motion.section 
-                        className="mt-24 text-center bg-fann-charcoal-light rounded-lg py-16 px-8"
+                        className="mt-24 text-center bg-white dark:bg-fann-charcoal-light rounded-lg py-16 px-8"
                         initial="offscreen"
                         whileInView="onscreen"
                         viewport={{ once: true, amount: 0.2 }}
                         variants={sectionVariants}
                     >
                         <h2 className="text-4xl md:text-5xl font-serif font-bold text-fann-gold mb-4">Visualize Your Vision in Minutes</h2>
-                        <p className="max-w-2xl mx-auto text-fann-cream mb-8">Our revolutionary FANN Studio allows you to configure your exhibition stand, see it in 3D, and get instant pricing. Innovation at your fingertips.</p>
+                        <p className="max-w-2xl mx-auto text-gray-700 dark:text-fann-cream mb-8">Our revolutionary FANN Studio allows you to configure your exhibition stand, see it in 3D, and get instant pricing. Innovation at your fingertips.</p>
                         <div className="mb-8">
                            <img src="https://images.pexels.com/photos/8112165/pexels-photo-8112165.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="A sleek, modern exhibition stand with integrated lighting and a hospitality bar, showcasing a 3D concept from FANN Studio." className="rounded-lg shadow-2xl mx-auto" />
                         </div>
@@ -308,11 +308,11 @@ const HomePage: React.FC = () => {
                     >
                         <h2 className="text-4xl md:text-5xl font-serif font-bold mb-12">What Our Clients Say</h2>
                         <div className="relative max-w-3xl mx-auto">
-                            <div className="bg-fann-charcoal-light p-8 rounded-lg">
+                            <div className="bg-white dark:bg-fann-charcoal-light p-8 rounded-lg">
                                 <Star className="text-fann-gold mx-auto mb-4" size={32} />
-                                <p className="text-xl italic text-fann-cream mb-6">"{testimonials[0].quote}"</p>
-                                <h4 className="font-bold text-white text-lg">{testimonials[0].client}</h4>
-                                <p className="text-fann-light-gray">{testimonials[0].company}</p>
+                                <p className="text-xl italic text-gray-700 dark:text-fann-cream mb-6">"{testimonials[0].quote}"</p>
+                                <h4 className="font-bold text-fann-charcoal dark:text-white text-lg">{testimonials[0].client}</h4>
+                                <p className="text-gray-500 dark:text-fann-light-gray">{testimonials[0].company}</p>
                             </div>
                         </div>
                     </motion.section>
@@ -325,9 +325,9 @@ const HomePage: React.FC = () => {
                         viewport={{ once: true, amount: 0.2 }}
                         variants={sectionVariants}
                     >
-                         <div className="bg-fann-charcoal rounded-lg py-16 px-8">
+                         <div className="bg-white dark:bg-fann-charcoal rounded-lg py-16 px-8">
                             <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4">Ready to Create Something Extraordinary?</h2>
-                            <p className="max-w-2xl mx-auto text-fann-cream mb-8">Let's discuss how our design and build expertise can bring your vision to life. Schedule a complimentary consultation with our experts today.</p>
+                            <p className="max-w-2xl mx-auto text-gray-700 dark:text-fann-cream mb-8">Let's discuss how our design and build expertise can bring your vision to life. Schedule a complimentary consultation with our experts today.</p>
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                                <Link to="/contact">
                                   <motion.button 

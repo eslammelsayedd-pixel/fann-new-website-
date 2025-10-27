@@ -93,10 +93,10 @@ const functionalityGroups = {
 };
 
 const layoutOptions = [
-    { name: 'Linear (1 side open / in-line)', visual: <div className="w-16 h-12 bg-fann-charcoal relative border-t-2 border-l-2 border-r-2 border-fann-light-gray"><div className="absolute inset-x-0 -bottom-px h-1 bg-fann-gold"></div></div>, description: 'One side open to the aisle.' },
-    { name: 'Corner (2 sides open)', visual: <div className="w-16 h-12 bg-fann-charcoal relative border-t-2 border-l-2 border-fann-light-gray"><div className="absolute inset-x-0 -bottom-px h-1 bg-fann-gold"></div><div className="absolute inset-y-0 -right-px w-1 bg-fann-gold"></div></div>, description: 'Two open sides, on a corner.' },
-    { name: 'Peninsula (3 sides open)', visual: <div className="w-16 h-12 bg-fann-charcoal relative border-t-2 border-fann-light-gray"><div className="absolute inset-x-0 -bottom-px h-1 bg-fann-gold"></div><div className="absolute inset-y-0 -right-px w-1 bg-fann-gold"></div><div className="absolute inset-y-0 -left-px w-1 bg-fann-gold"></div></div>, description: 'Three open sides into an aisle.' },
-    { name: 'Island (4 sides open / standalone)', visual: <div className="w-16 h-12 bg-fann-charcoal relative border-2 border-fann-gold"></div>, description: 'Fully standalone with four open sides.' },
+    { name: 'Linear (1 side open / in-line)', visual: <div className="w-16 h-12 bg-gray-200 dark:bg-fann-charcoal relative border-t-2 border-l-2 border-r-2 border-gray-400 dark:border-fann-light-gray"><div className="absolute inset-x-0 -bottom-px h-1 bg-fann-gold"></div></div>, description: 'One side open to the aisle.' },
+    { name: 'Corner (2 sides open)', visual: <div className="w-16 h-12 bg-gray-200 dark:bg-fann-charcoal relative border-t-2 border-l-2 border-gray-400 dark:border-fann-light-gray"><div className="absolute inset-x-0 -bottom-px h-1 bg-fann-gold"></div><div className="absolute inset-y-0 -right-px w-1 bg-fann-gold"></div></div>, description: 'Two open sides, on a corner.' },
+    { name: 'Peninsula (3 sides open)', visual: <div className="w-16 h-12 bg-gray-200 dark:bg-fann-charcoal relative border-t-2 border-gray-400 dark:border-fann-light-gray"><div className="absolute inset-x-0 -bottom-px h-1 bg-fann-gold"></div><div className="absolute inset-y-0 -right-px w-1 bg-fann-gold"></div><div className="absolute inset-y-0 -left-px w-1 bg-fann-gold"></div></div>, description: 'Three open sides into an aisle.' },
+    { name: 'Island (4 sides open / standalone)', visual: <div className="w-16 h-12 bg-gray-200 dark:bg-fann-charcoal relative border-2 border-fann-gold"></div>, description: 'Fully standalone with four open sides.' },
 ];
 
 const steps = [
@@ -150,9 +150,6 @@ const ExhibitionStudioPage: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [generatedConcepts, setGeneratedConcepts] = useState<GeneratedConcept[]>([]);
     const [isFinished, setIsFinished] = useState(false);
-    const [isExtractingColors, setIsExtractingColors] = useState(false);
-    const [suggestedColors, setSuggestedColors] = useState<string[]>([]);
-    const [selectedConcept, setSelectedConcept] = useState<number | null>(null);
     const [isProposalRequested, setIsProposalRequested] = useState(false);
     const [isSending, setIsSending] = useState(false);
     const [isAnalyzingStyle, setIsAnalyzingStyle] = useState(false);
@@ -161,6 +158,9 @@ const ExhibitionStudioPage: React.FC = () => {
     const [formErrors, setFormErrors] = useState<Partial<Record<keyof FormData, string>>>({});
     const [activeAngles, setActiveAngles] = useState<Record<number, Angle>>({});
     const [generationStatus, setGenerationStatus] = useState<string | null>(null);
+    const [isExtractingColors, setIsExtractingColors] = useState(false);
+    const [suggestedColors, setSuggestedColors] = useState<string[]>([]);
+    const [selectedConcept, setSelectedConcept] = useState<number | null>(null);
 
 
     const { ensureApiKey, handleApiError, error: apiKeyError, clearError: clearApiKeyError } = useApiKey();
@@ -560,10 +560,10 @@ const ExhibitionStudioPage: React.FC = () => {
             case 0: // Brief
                 return (
                     <div className="space-y-6">
-                        <h2 className="text-2xl font-serif text-white mb-4">Step 1: Project Brief</h2>
+                        <h2 className="text-2xl font-serif text-fann-charcoal dark:text-white mb-4">Step 1: Project Brief</h2>
                         <div className="grid md:grid-cols-2 gap-6">
                             <div>
-                                <label htmlFor="eventName" className="block text-sm font-medium text-fann-light-gray mb-2">Event Name</label>
+                                <label htmlFor="eventName" className="block text-sm font-medium text-gray-600 dark:text-fann-light-gray mb-2">Event Name</label>
                                 <input
                                     type="text"
                                     id="eventName"
@@ -572,11 +572,11 @@ const ExhibitionStudioPage: React.FC = () => {
                                     onChange={handleInputChange}
                                     onBlur={(e) => analyzeIndustry(e.target.value)}
                                     placeholder="e.g., GITEX Global"
-                                    className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2"
+                                    className="w-full bg-fann-cream dark:bg-fann-charcoal border border-gray-300 dark:border-fann-border rounded-md px-3 py-2"
                                 />
                             </div>
                             <div>
-                                <label htmlFor="location" className="block text-sm font-medium text-fann-light-gray mb-2">Event Location</label>
+                                <label htmlFor="location" className="block text-sm font-medium text-gray-600 dark:text-fann-light-gray mb-2">Event Location</label>
                                 <input
                                     type="text"
                                     id="location"
@@ -584,12 +584,12 @@ const ExhibitionStudioPage: React.FC = () => {
                                     value={formData.location}
                                     onChange={handleInputChange}
                                     placeholder="e.g., Dubai World Trade Centre"
-                                    className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2"
+                                    className="w-full bg-fann-cream dark:bg-fann-charcoal border border-gray-300 dark:border-fann-border rounded-md px-3 py-2"
                                 />
                             </div>
                         </div>
                         <div>
-                            <label htmlFor="industry" className="block text-sm font-medium text-fann-light-gray mb-2">Industry (Auto-detected)</label>
+                            <label htmlFor="industry" className="block text-sm font-medium text-gray-600 dark:text-fann-light-gray mb-2">Industry (Auto-detected)</label>
                             <div className="relative">
                                 <input
                                     type="text"
@@ -598,7 +598,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                     value={formData.industry}
                                     readOnly
                                     placeholder="Analyzed from event name..."
-                                    className="w-full bg-fann-charcoal-light/50 border border-fann-border rounded-md px-3 py-2 text-fann-light-gray"
+                                    className="w-full bg-gray-100 dark:bg-fann-charcoal-light/50 border border-gray-300 dark:border-fann-border rounded-md px-3 py-2 text-gray-500 dark:text-fann-light-gray"
                                 />
                                 {isAnalyzingIndustry && (
                                     <div className="absolute inset-y-0 right-0 flex items-center pr-3">
@@ -609,12 +609,12 @@ const ExhibitionStudioPage: React.FC = () => {
                         </div>
                         <div className="grid md:grid-cols-2 gap-6 pt-4">
                             <div>
-                                <label htmlFor="standWidth" className="block text-sm font-medium text-fann-light-gray mb-2">Stand Width (m): {formData.standWidth}</label>
-                                <input type="range" id="standWidth" name="standWidth" min="3" max="30" value={formData.standWidth} onChange={handleInputChange} className="w-full h-2 bg-fann-charcoal-light rounded-lg appearance-none cursor-pointer accent-fann-gold" />
+                                <label htmlFor="standWidth" className="block text-sm font-medium text-gray-600 dark:text-fann-light-gray mb-2">Stand Width (m): {formData.standWidth}</label>
+                                <input type="range" id="standWidth" name="standWidth" min="3" max="30" value={formData.standWidth} onChange={handleInputChange} className="w-full h-2 bg-gray-200 dark:bg-fann-charcoal-light rounded-lg appearance-none cursor-pointer accent-fann-gold" />
                             </div>
                             <div>
-                                <label htmlFor="standLength" className="block text-sm font-medium text-fann-light-gray mb-2">Stand Length (m): {formData.standLength}</label>
-                                <input type="range" id="standLength" name="standLength" min="3" max="30" value={formData.standLength} onChange={handleInputChange} className="w-full h-2 bg-fann-charcoal-light rounded-lg appearance-none cursor-pointer accent-fann-gold" />
+                                <label htmlFor="standLength" className="block text-sm font-medium text-gray-600 dark:text-fann-light-gray mb-2">Stand Length (m): {formData.standLength}</label>
+                                <input type="range" id="standLength" name="standLength" min="3" max="30" value={formData.standLength} onChange={handleInputChange} className="w-full h-2 bg-gray-200 dark:bg-fann-charcoal-light rounded-lg appearance-none cursor-pointer accent-fann-gold" />
                             </div>
                         </div>
                          <div className="text-center text-lg font-bold">Total Area: <span className="text-fann-gold">{formData.standWidth * formData.standLength} sqm</span></div>
@@ -623,28 +623,28 @@ const ExhibitionStudioPage: React.FC = () => {
             case 1: // Structure
                 return (
                     <div className="space-y-8">
-                        <h2 className="text-2xl font-serif text-white">Step 2: Structural Configuration</h2>
+                        <h2 className="text-2xl font-serif text-fann-charcoal dark:text-white">Step 2: Structural Configuration</h2>
                         
                         <div>
-                            <label className="block text-sm font-medium text-fann-light-gray mb-3">Stand Layout (Open Sides)</label>
+                            <label className="block text-sm font-medium text-gray-600 dark:text-fann-light-gray mb-3">Stand Layout (Open Sides)</label>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 {layoutOptions.map(opt => (
-                                    <div key={opt.name} onClick={() => setFormData(p => ({ ...p, standLayout: opt.name }))} className={`p-4 rounded-lg border-2 cursor-pointer transition-colors flex flex-col justify-between items-center h-full ${formData.standLayout === opt.name ? 'border-fann-gold bg-fann-gold/10' : 'border-fann-border hover:border-fann-gold/50'}`}>
+                                    <div key={opt.name} onClick={() => setFormData(p => ({ ...p, standLayout: opt.name }))} className={`p-4 rounded-lg border-2 cursor-pointer transition-colors flex flex-col justify-between items-center h-full ${formData.standLayout === opt.name ? 'border-fann-gold bg-fann-gold/10' : 'border-gray-300 dark:border-fann-border hover:border-fann-gold/50'}`}>
                                         <div className="flex justify-center items-center h-16">{opt.visual}</div>
                                         <div className="text-center">
                                             <p className="font-semibold text-sm mt-3">{opt.name.split(' (')[0]}</p>
-                                            <p className="text-xs text-fann-light-gray">{opt.description}</p>
+                                            <p className="text-xs text-gray-500 dark:text-fann-light-gray">{opt.description}</p>
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         </div>
 
-                        <div className="border-t border-fann-border pt-6">
+                        <div className="border-t border-gray-200 dark:border-fann-border pt-6">
                             <div className="grid md:grid-cols-2 gap-6">
                                 <div>
-                                    <label htmlFor="standType" className="block text-sm font-medium text-fann-light-gray mb-2">Stand Type</label>
-                                    <select id="standType" name="standType" value={formData.standType} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2">
+                                    <label htmlFor="standType" className="block text-sm font-medium text-gray-600 dark:text-fann-light-gray mb-2">Stand Type</label>
+                                    <select id="standType" name="standType" value={formData.standType} onChange={handleInputChange} className="w-full bg-fann-cream dark:bg-fann-charcoal border border-gray-300 dark:border-fann-border rounded-md px-3 py-2">
                                         <option value="" disabled>Select type...</option>
                                         <option>Shell Scheme</option>
                                         <option>Modular</option>
@@ -652,8 +652,8 @@ const ExhibitionStudioPage: React.FC = () => {
                                     </select>
                                 </div>
                                 <div>
-                                    <label htmlFor="standHeight" className="block text-sm font-medium text-fann-light-gray mb-2">Maximum Height</label>
-                                    <select id="standHeight" name="standHeight" value={formData.standHeight} onChange={handleInputChange} className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2">
+                                    <label htmlFor="standHeight" className="block text-sm font-medium text-gray-600 dark:text-fann-light-gray mb-2">Maximum Height</label>
+                                    <select id="standHeight" name="standHeight" value={formData.standHeight} onChange={handleInputChange} className="w-full bg-fann-cream dark:bg-fann-charcoal border border-gray-300 dark:border-fann-border rounded-md px-3 py-2">
                                         <option value="" disabled>Select height...</option>
                                         <option>2 meters</option>
                                         <option>3 meters</option>
@@ -666,14 +666,14 @@ const ExhibitionStudioPage: React.FC = () => {
                             </div>
                         </div>
                         
-                        <div className="border-t border-fann-border pt-6">
-                            <label className="block text-sm font-medium text-fann-light-gray mb-3">Structural Add-ons</label>
+                        <div className="border-t border-gray-200 dark:border-fann-border pt-6">
+                            <label className="block text-sm font-medium text-gray-600 dark:text-fann-light-gray mb-3">Structural Add-ons</label>
                             <div className="flex items-center space-x-8">
-                                <label htmlFor="doubleDecker" className="flex items-center space-x-3 cursor-pointer p-2 rounded-md hover:bg-white/5">
+                                <label htmlFor="doubleDecker" className="flex items-center space-x-3 cursor-pointer p-2 rounded-md hover:bg-black/5 dark:hover:bg-white/5">
                                     <input type="checkbox" id="doubleDecker" name="doubleDecker" checked={formData.doubleDecker} onChange={handleInputChange} className="h-4 w-4 rounded accent-fann-teal"/>
                                     <span>Double Decker (Two Story)</span>
                                 </label>
-                                <label htmlFor="hangingStructure" className="flex items-center space-x-3 cursor-pointer p-2 rounded-md hover:bg-white/5">
+                                <label htmlFor="hangingStructure" className="flex items-center space-x-3 cursor-pointer p-2 rounded-md hover:bg-black/5 dark:hover:bg-white/5">
                                     <input type="checkbox" id="hangingStructure" name="hangingStructure" checked={formData.hangingStructure} onChange={handleInputChange} className="h-4 w-4 rounded accent-fann-teal"/>
                                     <span>Hanging Structure</span>
                                 </label>
@@ -684,16 +684,16 @@ const ExhibitionStudioPage: React.FC = () => {
             case 2: // Functionality
                 return (
                     <div className="space-y-6">
-                        <h2 className="text-2xl font-serif text-white mb-4">Step 3: Functional Zones & Features</h2>
-                        <p className="text-fann-light-gray text-sm">Select all the features you require for your stand.</p>
+                        <h2 className="text-2xl font-serif text-fann-charcoal dark:text-white mb-4">Step 3: Functional Zones & Features</h2>
+                        <p className="text-gray-600 dark:text-fann-light-gray text-sm">Select all the features you require for your stand.</p>
                         <div className="space-y-4">
                         {Object.entries(functionalityGroups).map(([groupName, items]) => (
                             <div key={groupName}>
-                                <h3 className="font-semibold text-fann-light-gray mb-2">{groupName}</h3>
+                                <h3 className="font-semibold text-gray-600 dark:text-fann-light-gray mb-2">{groupName}</h3>
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                                 {items.map(item => (
-                                    <button type="button" key={item} onClick={() => handleFunctionalityChange(item)} className={`p-3 rounded-lg border-2 text-left text-sm transition-colors flex items-center gap-2 ${formData.functionality.includes(item) ? 'border-fann-teal bg-fann-teal/10' : 'border-fann-border hover:border-fann-teal/50'}`}>
-                                        <div className={`w-4 h-4 rounded-sm flex-shrink-0 border-2 flex items-center justify-center ${formData.functionality.includes(item) ? 'bg-fann-teal border-fann-teal' : 'border-fann-light-gray'}`}>
+                                    <button type="button" key={item} onClick={() => handleFunctionalityChange(item)} className={`p-3 rounded-lg border-2 text-left text-sm transition-colors flex items-center gap-2 ${formData.functionality.includes(item) ? 'border-fann-teal bg-fann-teal/10' : 'border-gray-300 dark:border-fann-border hover:border-fann-teal/50'}`}>
+                                        <div className={`w-4 h-4 rounded-sm flex-shrink-0 border-2 flex items-center justify-center ${formData.functionality.includes(item) ? 'bg-fann-teal border-fann-teal' : 'border-gray-500 dark:border-fann-light-gray'}`}>
                                             {formData.functionality.includes(item) && <CheckCircle size={12} className="text-white"/>}
                                         </div>
                                         <span>{item}</span>
@@ -716,50 +716,50 @@ const ExhibitionStudioPage: React.FC = () => {
                 };
                 return (
                     <div className="space-y-6">
-                        <h2 className="text-2xl font-serif text-white mb-4">Step 4: Aesthetics & Branding</h2>
+                        <h2 className="text-2xl font-serif text-fann-charcoal dark:text-white mb-4">Step 4: Aesthetics & Branding</h2>
                          <div>
-                            <label className="block text-sm font-medium text-fann-light-gray mb-3">Design Style</label>
+                            <label className="block text-sm font-medium text-gray-600 dark:text-fann-light-gray mb-3">Design Style</label>
                              <div className="relative">
-                                {isAnalyzingStyle && <div className="absolute -top-2 -right-2 z-10 p-1 bg-fann-charcoal rounded-full"><Loader2 className="w-5 h-5 animate-spin text-fann-gold" /></div>}
+                                {isAnalyzingStyle && <div className="absolute -top-2 -right-2 z-10 p-1 bg-white dark:bg-fann-charcoal rounded-full"><Loader2 className="w-5 h-5 animate-spin text-fann-gold" /></div>}
                                 <div className="grid grid-cols-3 gap-3">
                                     {styles.map(s => (
                                         <div key={s.name} onClick={() => setFormData(p => ({...p, style: s.name}))} className={`relative h-28 rounded-lg overflow-hidden cursor-pointer border-2 transition-all ${formData.style === s.name ? 'border-fann-gold' : 'border-transparent'}`}>
                                             <img src={s.image} alt={`An example of the ${s.name} exhibition stand style.`} className="w-full h-full object-cover"/>
                                             <div className="absolute inset-0 bg-black/50 hover:bg-black/30 transition-colors"></div>
-                                            <p className="absolute bottom-2 left-2 text-xs font-bold">{s.name}</p>
+                                            <p className="absolute bottom-2 left-2 text-xs font-bold text-white">{s.name}</p>
                                         </div>
                                     ))}
                                 </div>
                              </div>
                              {formData.eventStyleDescription && (
-                                <p className="text-xs text-fann-light-gray mt-2 bg-fann-charcoal p-2 rounded-md border border-fann-border">
+                                <p className="text-xs text-gray-500 dark:text-fann-light-gray mt-2 bg-gray-100 dark:bg-fann-charcoal p-2 rounded-md border border-gray-200 dark:border-fann-border">
                                     <strong>FANN Suggestion for {formData.eventName}:</strong> {formData.eventStyleDescription}
                                 </p>
                             )}
                         </div>
                         <div className="grid md:grid-cols-2 gap-8 items-start pt-4">
                             <div>
-                                <label className="block text-sm font-medium text-fann-light-gray mb-2">Upload Your Logo (Vector Preferred)</label>
-                                <div onClick={() => fileInputRef.current?.click()} className="h-48 w-full bg-fann-charcoal border-2 border-dashed border-fann-border rounded-lg flex items-center justify-center cursor-pointer hover:border-fann-gold transition-colors">
-                                    {formData.logoPreview ? <img src={formData.logoPreview} alt="Logo Preview" className="max-h-full max-w-full object-contain p-4" /> : <div className="text-center text-fann-light-gray"><Upload className="mx-auto w-8 h-8 mb-2" /><p>Click to upload</p></div>}
+                                <label className="block text-sm font-medium text-gray-600 dark:text-fann-light-gray mb-2">Upload Your Logo (Vector Preferred)</label>
+                                <div onClick={() => fileInputRef.current?.click()} className="h-48 w-full bg-fann-cream dark:bg-fann-charcoal border-2 border-dashed border-gray-300 dark:border-fann-border rounded-lg flex items-center justify-center cursor-pointer hover:border-fann-gold transition-colors">
+                                    {formData.logoPreview ? <img src={formData.logoPreview} alt="Logo Preview" className="max-h-full max-w-full object-contain p-4" /> : <div className="text-center text-gray-500 dark:text-fann-light-gray"><Upload className="mx-auto w-8 h-8 mb-2" /><p>Click to upload</p></div>}
                                 </div>
                                 <input type="file" ref={fileInputRef} onChange={handleLogoChange} className="hidden" accept="image/png, image/jpeg, image/svg+xml, image/webp, image/gif, .svg" />
                             </div>
                             <div>
-                                <label htmlFor="brandColors" className="block text-sm font-medium text-fann-light-gray mb-2">Primary Brand Colors</label>
+                                <label htmlFor="brandColors" className="block text-sm font-medium text-gray-600 dark:text-fann-light-gray mb-2">Primary Brand Colors</label>
                                 <input 
                                     type="text" 
                                     id="brandColors" 
                                     name="brandColors" 
                                     value={formData.brandColors.join(', ')} 
                                     onChange={(e) => setFormData(p => ({...p, brandColors: e.target.value.split(',').map(c => c.trim()).filter(Boolean)}))}
-                                    className="w-full bg-fann-charcoal border border-fann-border rounded-md px-3 py-2" 
+                                    className="w-full bg-fann-cream dark:bg-fann-charcoal border border-gray-300 dark:border-fann-border rounded-md px-3 py-2" 
                                     placeholder="e.g., #0A192F, Fann Gold, White" 
                                 />
                                 <div className="mt-2 min-h-[4rem]">
-                                    {isExtractingColors ? <div className="flex items-center gap-2 text-sm text-fann-light-gray"><Loader2 className="w-4 h-4 animate-spin"/>Analyzing...</div> : suggestedColors.length > 0 && suggestedColors[0] !== 'ERROR' ? (
+                                    {isExtractingColors ? <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-fann-light-gray"><Loader2 className="w-4 h-4 animate-spin"/>Analyzing...</div> : suggestedColors.length > 0 && suggestedColors[0] !== 'ERROR' ? (
                                         <div>
-                                            <span className="flex items-center gap-1 text-green-400 mb-2 text-sm">
+                                            <span className="flex items-center gap-1 text-green-600 dark:text-green-400 mb-2 text-sm">
                                                 <CheckCircle className="w-4 h-4"/>Suggestions are ready. Click to select/deselect.
                                             </span>
                                             <div className="flex flex-wrap gap-2">
@@ -770,20 +770,20 @@ const ExhibitionStudioPage: React.FC = () => {
                                                           type="button"
                                                           key={color}
                                                           onClick={() => handleColorToggle(color)}
-                                                          className={`flex items-center text-xs gap-1.5 p-1.5 rounded-md transition-all border ${isSelected ? 'border-fann-gold bg-fann-gold/10' : 'border-fann-border bg-fann-charcoal hover:border-fann-gold/50'}`}
+                                                          className={`flex items-center text-xs gap-1.5 p-1.5 rounded-md transition-all border ${isSelected ? 'border-fann-gold bg-fann-gold/10' : 'border-gray-300 dark:border-fann-border bg-fann-cream dark:bg-fann-charcoal hover:border-fann-gold/50'}`}
                                                         >
-                                                            <div className="w-5 h-5 rounded border border-white/20" style={{ backgroundColor: color }}></div>
-                                                            <span className="font-mono text-fann-light-gray">{color}</span>
+                                                            <div className="w-5 h-5 rounded border border-black/20 dark:border-white/20" style={{ backgroundColor: color }}></div>
+                                                            <span className="font-mono text-gray-500 dark:text-fann-light-gray">{color}</span>
                                                         </button>
                                                     );
                                                 })}
                                             </div>
                                         </div>
                                     ) : suggestedColors[0] === 'ERROR' ? (
-                                         <span className="flex items-center gap-1 text-red-400 text-sm">
+                                         <span className="flex items-center gap-1 text-red-500 dark:text-red-400 text-sm">
                                             <AlertCircle className="w-4 h-4"/>Could not extract colors. Please enter them manually.
                                         </span>
-                                    ) : <p className="text-sm text-fann-light-gray">Upload a logo to see suggestions.</p>}
+                                    ) : <p className="text-sm text-gray-600 dark:text-fann-light-gray">Upload a logo to see suggestions.</p>}
                                 </div>
                             </div>
                         </div>
@@ -792,8 +792,8 @@ const ExhibitionStudioPage: React.FC = () => {
             case 4: // Review & Contact
                 return (
                     <div>
-                        <h2 className="text-2xl font-serif text-white mb-6 text-center">Step 5: Review & Generate</h2>
-                        <div className="grid md:grid-cols-2 gap-8 bg-fann-charcoal p-6 rounded-lg border border-fann-border">
+                        <h2 className="text-2xl font-serif text-fann-charcoal dark:text-white mb-6 text-center">Step 5: Review & Generate</h2>
+                        <div className="grid md:grid-cols-2 gap-8 bg-fann-cream dark:bg-fann-charcoal p-6 rounded-lg border border-gray-200 dark:border-fann-border">
                             <div>
                                 <h3 className="text-lg font-bold text-fann-gold mb-3">Project Summary</h3>
                                 <div className="space-y-2 text-sm">
@@ -808,15 +808,15 @@ const ExhibitionStudioPage: React.FC = () => {
                                 <h3 className="text-lg font-bold text-fann-gold mb-3">Your Contact Details</h3>
                                  <div className="space-y-3">
                                      <div className="grid grid-cols-2 gap-3">
-                                         <input type="text" name="userFirstName" placeholder="First Name" value={formData.userFirstName} onChange={handleInputChange} className="w-full bg-fann-charcoal-light/50 border border-fann-border rounded-md px-3 py-2" />
-                                         <input type="text" name="userLastName" placeholder="Last Name" value={formData.userLastName} onChange={handleInputChange} className="w-full bg-fann-charcoal-light/50 border border-fann-border rounded-md px-3 py-2" />
+                                         <input type="text" name="userFirstName" placeholder="First Name" value={formData.userFirstName} onChange={handleInputChange} className="w-full bg-gray-100 dark:bg-fann-charcoal-light/50 border border-gray-300 dark:border-fann-border rounded-md px-3 py-2" />
+                                         <input type="text" name="userLastName" placeholder="Last Name" value={formData.userLastName} onChange={handleInputChange} className="w-full bg-gray-100 dark:bg-fann-charcoal-light/50 border border-gray-300 dark:border-fann-border rounded-md px-3 py-2" />
                                      </div>
-                                    <input type="email" name="userEmail" placeholder="Email Address" value={formData.userEmail} onChange={handleInputChange} className="w-full bg-fann-charcoal-light/50 border border-fann-border rounded-md px-3 py-2" />
+                                    <input type="email" name="userEmail" placeholder="Email Address" value={formData.userEmail} onChange={handleInputChange} className="w-full bg-gray-100 dark:bg-fann-charcoal-light/50 border border-gray-300 dark:border-fann-border rounded-md px-3 py-2" />
                                      <div className="flex gap-2">
-                                         <select name="userMobileCountryCode" value={formData.userMobileCountryCode} onChange={handleInputChange} className="bg-fann-charcoal-light/50 border border-fann-border rounded-md px-2 py-2">
+                                         <select name="userMobileCountryCode" value={formData.userMobileCountryCode} onChange={handleInputChange} className="bg-gray-100 dark:bg-fann-charcoal-light/50 border border-gray-300 dark:border-fann-border rounded-md px-2 py-2">
                                              {countryCodes.map(c => <option key={c.code} value={c.dial_code}>{c.code} ({c.dial_code})</option>)}
                                          </select>
-                                         <input type="tel" name="userMobileNumber" placeholder="Mobile Number" value={formData.userMobileNumber} onChange={handleInputChange} className="w-full bg-fann-charcoal-light/50 border border-fann-border rounded-md px-3 py-2" />
+                                         <input type="tel" name="userMobileNumber" placeholder="Mobile Number" value={formData.userMobileNumber} onChange={handleInputChange} className="w-full bg-gray-100 dark:bg-fann-charcoal-light/50 border border-gray-300 dark:border-fann-border rounded-md px-3 py-2" />
                                      </div>
                                 </div>
                             </div>
@@ -830,8 +830,8 @@ const ExhibitionStudioPage: React.FC = () => {
     if (isLoading) return (
         <div className="min-h-[70vh] flex flex-col justify-center items-center text-center p-4">
             <Loader2 className="w-16 h-16 text-fann-gold animate-spin" />
-            <h2 className="text-3xl font-serif text-white mt-6">Generating Your Concepts...</h2>
-            <p className="text-fann-light-gray mt-2 max-w-sm">Our advanced design tools are drafting architectural plans and rendering photorealistic visuals. This may take up to a minute.</p>
+            <h2 className="text-3xl font-serif text-fann-charcoal dark:text-white mt-6">Generating Your Concepts...</h2>
+            <p className="text-gray-600 dark:text-fann-light-gray mt-2 max-w-sm">Our advanced design tools are drafting architectural plans and rendering photorealistic visuals. This may take up to a minute.</p>
         </div>
     );
 
@@ -839,19 +839,19 @@ const ExhibitionStudioPage: React.FC = () => {
         <div className="min-h-[70vh] flex flex-col justify-center items-center text-center p-4">
             <CheckCircle className="w-20 h-20 text-fann-teal mb-6" />
             <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Thank You!</h1>
-            <p className="text-xl text-fann-cream max-w-2xl mx-auto mb-8">Your request has been sent. Our design team will contact you at <strong>{formData.userEmail}</strong> with a detailed proposal and quotation shortly.</p>
+            <p className="text-xl text-gray-700 dark:text-fann-cream max-w-2xl mx-auto mb-8">Your request has been sent. Our design team will contact you at <strong>{formData.userEmail}</strong> with a detailed proposal and quotation shortly.</p>
             {selectedConcept !== null && <img src={generatedConcepts[selectedConcept].images.front} alt={generatedConcepts[selectedConcept].title} className="rounded-lg shadow-2xl w-full max-w-lg mt-8" />}
         </div>
     );
     
     if (isFinished) return (
         <AnimatedPage>
-            <div className="pt-32 pb-20 text-white">
+            <div className="pt-32 pb-20 bg-fann-cream dark:bg-fann-charcoal text-fann-charcoal dark:text-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
                         <Sparkles className="mx-auto h-16 w-16 text-fann-gold" />
                         <h1 className="text-4xl font-serif font-bold text-fann-gold mt-4 mb-4">Your Custom Concepts</h1>
-                        <p className="text-lg text-fann-cream max-w-3xl mx-auto">Select your preferred design to receive a detailed proposal and quotation from our team.</p>
+                        <p className="text-lg text-gray-700 dark:text-fann-cream max-w-3xl mx-auto">Select your preferred design to receive a detailed proposal and quotation from our team.</p>
                          {generationStatus && <p className="text-lg font-semibold text-fann-teal mt-4 bg-fann-teal/10 px-4 py-2 rounded-md inline-block">{generationStatus}</p>}
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -862,9 +862,9 @@ const ExhibitionStudioPage: React.FC = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.15 }}
                                 onClick={() => setSelectedConcept(index)}
-                                className={`p-4 bg-fann-charcoal-light rounded-lg cursor-pointer border-2 transition-all duration-300 hover:border-fann-gold/50 ${selectedConcept === index ? 'border-fann-gold' : 'border-fann-border'}`}
+                                className={`p-4 bg-white dark:bg-fann-charcoal-light rounded-lg cursor-pointer border-2 transition-all duration-300 hover:border-fann-gold/50 ${selectedConcept === index ? 'border-fann-gold' : 'border-gray-200 dark:border-fann-border'}`}
                             >
-                                <div className="relative aspect-video mb-4 rounded-md overflow-hidden bg-fann-charcoal">
+                                <div className="relative aspect-video mb-4 rounded-md overflow-hidden bg-gray-200 dark:bg-fann-charcoal">
                                      <AnimatePresence mode="wait">
                                          <motion.img 
                                             key={`${index}-${activeAngles[index] || 'front'}`}
@@ -883,15 +883,15 @@ const ExhibitionStudioPage: React.FC = () => {
                                         <button 
                                             key={angle}
                                             onClick={(e) => { e.stopPropagation(); setActiveAngles(p => ({...p, [index]: angle}))}}
-                                            className={`px-3 py-1 text-xs rounded-full transition-colors ${(activeAngles[index] || 'front') === angle ? 'bg-fann-teal text-white' : 'bg-fann-charcoal hover:bg-white/10'}`}
+                                            className={`px-3 py-1 text-xs rounded-full transition-colors ${(activeAngles[index] || 'front') === angle ? 'bg-fann-teal text-white' : 'bg-gray-200 dark:bg-fann-charcoal hover:bg-gray-300 dark:hover:bg-white/10'}`}
                                         >
                                             {angle.charAt(0).toUpperCase() + angle.slice(1)} View
                                         </button>
                                     ))}
                                 </div>
 
-                                <h3 className="text-xl font-serif font-bold text-white">{concept.title}</h3>
-                                <p className="text-sm text-fann-light-gray mt-1">{concept.description}</p>
+                                <h3 className="text-xl font-serif font-bold text-fann-charcoal dark:text-white">{concept.title}</h3>
+                                <p className="text-sm text-gray-600 dark:text-fann-light-gray mt-1">{concept.description}</p>
                             </motion.div>
                         ))}
                     </div>
@@ -902,12 +902,12 @@ const ExhibitionStudioPage: React.FC = () => {
                             initial={{ opacity: 0, y: 50 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 50 }}
-                            className="mt-12 bg-fann-charcoal-light p-8 rounded-lg sticky bottom-6 border-2 border-fann-gold shadow-2xl max-w-4xl mx-auto"
+                            className="mt-12 bg-white dark:bg-fann-charcoal-light p-8 rounded-lg sticky bottom-6 border-2 border-fann-gold shadow-2xl max-w-4xl mx-auto"
                         >
                             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                                 <div>
                                     <h3 className="text-2xl font-serif font-bold text-fann-gold">You've Selected: "{generatedConcepts[selectedConcept].title}"</h3>
-                                    <p className="text-fann-cream mt-1">Ready for the next step? Request a detailed proposal to get pricing and a project timeline.</p>
+                                    <p className="text-fann-charcoal dark:text-fann-cream mt-1">Ready for the next step? Request a detailed proposal to get pricing and a project timeline.</p>
                                 </div>
                                  <motion.button onClick={sendProposalRequest} disabled={isSending} className="bg-fann-teal text-white font-bold py-3 px-8 rounded-full flex-shrink-0 flex items-center justify-center gap-2 w-full md:w-auto" whileHover={{ scale: !isSending ? 1.05 : 1 }} whileTap={{ scale: !isSending ? 0.95 : 1 }}>
                                     {isSending ? <><Loader2 className="w-5 h-5 animate-spin" /> Sending...</> : "Request Detailed Proposal"}
@@ -928,22 +928,22 @@ const ExhibitionStudioPage: React.FC = () => {
 
     return (
         <AnimatedPage>
-            <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
+            <div className="min-h-screen bg-fann-cream dark:bg-fann-charcoal pt-32 pb-20 text-fann-charcoal dark:text-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="max-w-4xl mx-auto">
                         <div className="mb-8">
                             <div className="flex justify-between mb-2">
                                 {steps.map((step, index) => (
                                     <div key={step.name} className="flex flex-col items-center" style={{ width: `${100 / steps.length}%` }}>
-                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${currentStep >= index ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-charcoal-light text-fann-light-gray'}`}><step.icon size={16} /></div>
-                                        <span className={`text-xs mt-1 text-center ${currentStep >= index ? 'text-white' : 'text-fann-light-gray'}`}>{step.name}</span>
+                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${currentStep >= index ? 'bg-fann-gold text-fann-charcoal' : 'bg-gray-200 dark:bg-fann-charcoal-light text-gray-500 dark:text-fann-light-gray'}`}><step.icon size={16} /></div>
+                                        <span className={`text-xs mt-1 text-center ${currentStep >= index ? 'text-fann-charcoal dark:text-white' : 'text-gray-500 dark:text-fann-light-gray'}`}>{step.name}</span>
                                     </div>
                                 ))}
                             </div>
-                            <div className="bg-fann-charcoal-light rounded-full h-1.5"><motion.div className="bg-fann-gold h-1.5 rounded-full" initial={{ width: 0 }} animate={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }} transition={{ type: 'spring', stiffness: 50 }}/></div>
+                            <div className="bg-gray-200 dark:bg-fann-charcoal-light rounded-full h-1.5"><motion.div className="bg-fann-gold h-1.5 rounded-full" initial={{ width: 0 }} animate={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }} transition={{ type: 'spring', stiffness: 50 }}/></div>
                         </div>
 
-                        <div className="bg-fann-charcoal-light p-6 sm:p-8 rounded-lg">
+                        <div className="bg-white dark:bg-fann-charcoal-light p-6 sm:p-8 rounded-lg">
                             <form onSubmit={handleSubmit} noValidate>
                                 <AnimatePresence mode="wait">
                                     <motion.div key={currentStep} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.3 }}>
@@ -970,12 +970,12 @@ const ExhibitionStudioPage: React.FC = () => {
                                         </motion.div>
                                     )}
                                     <div className="flex justify-between items-center">
-                                        <motion.button type="button" onClick={prevStep} disabled={currentStep === 0} className="flex items-center gap-2 text-fann-gold disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: currentStep !== 0 ? 1.05 : 1}} whileTap={{scale: currentStep !== 0 ? 0.95 : 1}}>
+                                        <motion.button type="button" onClick={prevStep} disabled={currentStep === 0} className="flex items-center gap-2 text-fann-gold disabled:text-gray-400 dark:disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: currentStep !== 0 ? 1.05 : 1}} whileTap={{scale: currentStep !== 0 ? 0.95 : 1}}>
                                             <ArrowLeft size={16} /> Back
                                         </motion.button>
                                         
                                         {currentStep < steps.length - 1 ? (
-                                            <motion.button type="button" onClick={nextStep} disabled={isNextButtonDisabled} className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full w-32 disabled:bg-fann-charcoal-light disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: !isNextButtonDisabled ? 1.05 : 1}} whileTap={{scale: !isNextButtonDisabled ? 0.95 : 1}}>
+                                            <motion.button type="button" onClick={nextStep} disabled={isNextButtonDisabled} className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full w-32 disabled:bg-gray-200 dark:disabled:bg-fann-charcoal-light disabled:text-gray-500 dark:disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{scale: !isNextButtonDisabled ? 1.05 : 1}} whileTap={{scale: !isNextButtonDisabled ? 0.95 : 1}}>
                                                 {isNextButtonDisabled ? <Loader2 className="w-5 h-5 mx-auto animate-spin" /> : 'Next'}
                                             </motion.button>
                                         ) : (
