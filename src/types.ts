@@ -1,5 +1,5 @@
-// FIX: Import React to provide types for JSX and to ensure this file is treated as a module.
-import type React from 'react';
+// FIX: Changed 'import type React' to 'import React' to ensure this file is treated as a module and JSX types are correctly loaded.
+import React from 'react';
 
 // This file contains shared type definitions for the application.
 
