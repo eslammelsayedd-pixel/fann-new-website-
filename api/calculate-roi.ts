@@ -45,21 +45,18 @@ Example for a large tech company at a major tech show:
                 contents: prompt,
                 config: {
                     tools: [{ googleSearch: {} }],
-                    responseMimeType: "application/json",
-                    responseSchema: {
-                        type: Type.OBJECT,
-                        properties: {
-                            booth_size_sqm: { type: Type.INTEGER },
-                            stand_cost: { type: Type.INTEGER },
-                            average_deal_size: { type: Type.INTEGER },
-                            close_rate: { type: Type.INTEGER }
-                        },
-                        required: ['booth_size_sqm', 'stand_cost', 'average_deal_size', 'close_rate']
-                    }
                 }
             });
             
-            suggestions = JSON.parse(response.text.trim());
+            let jsonText = response.text.trim();
+            // Clean up potential markdown fences from the response
+            if (jsonText.startsWith('```json')) {
+                jsonText = jsonText.slice(7, -3).trim();
+            } else if (jsonText.startsWith('```')) {
+                 jsonText = jsonText.slice(3, -3).trim();
+            }
+
+            suggestions = JSON.parse(jsonText);
             finalFormData = { ...req.body, ...suggestions };
         }
 

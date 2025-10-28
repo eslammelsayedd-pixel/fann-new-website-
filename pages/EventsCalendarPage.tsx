@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import AnimatedPage from '../components/AnimatedPage';
 import { regionalEvents } from '../constants';
-import { Event } from '../types';
+// FIX: Corrected the import path for the Event type.
+import { Event } from '../src/types';
 import { motion } from 'framer-motion';
 
 // --- Robust Date Parsing Logic ---
