@@ -1,13 +1,52 @@
-// This file uses module augmentation to add the 'model-viewer' custom element to React's JSX types.
-// This logic is placed here to ensure it's picked up by the TypeScript compiler,
-// resolving module resolution issues for the augmentation.
-// FIX: Switched from module augmentation of 'react' to 'declare global' for JSX intrinsic elements. 
-// This is the correct approach for adding custom elements to JSX with modern React/TypeScript configurations 
-// and resolves the 'module not found' error during augmentation.
+// FIX: Import React to provide types for JSX and to ensure this file is treated as a module.
+import type React from 'react';
+
+// This file contains shared type definitions for the application.
+
+export interface NavLink {
+  name: string;
+  path?: string;
+  children?: {
+    name: string;
+    path: string;
+  }[];
+}
+
+export interface Project {
+  id: number;
+  title: string;
+  client: string;
+  service: 'Exhibitions' | 'Events' | 'Interior Design';
+  industry: 'Technology' | 'Healthcare' | 'Aviation' | 'Hospitality' | 'Real Estate' | 'Luxury' | 'Corporate' | 'Retail' | 'Residential' | 'Automotive' | 'Energy' | 'Finance';
+  scale: 'Boutique' | 'Standard' | 'Large' | 'Mega';
+  year: number;
+  image: string;
+  sqm: number;
+  location: string;
+  timeline: string;
+  challenge: string;
+  result: string;
+}
+
+export interface Event {
+  name: string;
+  date: string;
+  venue: string;
+  country: 'UAE' | 'KSA';
+  industry: string;
+}
+
+export interface Testimonial {
+  quote: string;
+  client: string;
+  company: string;
+  projectType: string;
+}
+
+
+// This augmentation adds the 'model-viewer' custom element to React's JSX types.
 declare global {
     namespace JSX {
-        // This augmentation adds 'model-viewer' to the list of known JSX elements.
-        // It merges with React's existing IntrinsicElements definition, preserving all standard HTML tags.
         interface IntrinsicElements {
             'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & {
                 src?: string;
@@ -18,7 +57,6 @@ declare global {
                 'shadow-intensity'?: string;
                 exposure?: string;
                 'environment-image'?: string;
-                // Add missing properties used in HomePage.tsx to prevent type errors.
                 'interaction-prompt'?: string;
                 'camera-orbit'?: string;
                 'min-camera-orbit'?: string;
