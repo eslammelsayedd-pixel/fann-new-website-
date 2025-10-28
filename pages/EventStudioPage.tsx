@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 // FIX: Import `AnimatePresence` from `framer-motion` to resolve 'Cannot find name' errors.
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, Sparkles, Upload, ArrowLeft, Users, Palette, ListChecks, Crown, User, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
+import { Loader2, Sparkles, Upload, ArrowLeft, Users, Palette, ListChecks, Crown, User, CheckCircle, AlertCircle, RefreshCw, Camera, BarChart2, BookOpen } from 'lucide-react';
 import { useApiKey } from '../context/ApiKeyProvider';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import AnimatedPage from '../components/AnimatedPage';
 
 // --- Helper Functions & Types ---
@@ -87,7 +87,7 @@ const EventStudioPage: React.FC = () => {
     const [isFinished, setIsFinished] = useState(false);
     const [isExtractingColors, setIsExtractingColors] = useState(false);
     const [suggestedColors, setSuggestedColors] = useState<string[]>([]);
-    const [selectedImage, setSelectedImage] = useState<number | null>(null);
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [isProposalRequested, setIsProposalRequested] = useState(false);
     const [isSending, setIsSending] = useState(false);
     const [generationStatus, setGenerationStatus] = useState<string | null>(null);
@@ -209,7 +209,7 @@ const EventStudioPage: React.FC = () => {
     const nextStep = () => {
         clearAllErrors();
         if (validateStep(currentStep, true)) {
-            setCurrentStep(prev => Math.min(prev + 1, steps.length));
+            setCurrentStep(prev => Math.min(prev + 1, steps.length - 1));
         }
     };
 
@@ -318,9 +318,9 @@ const EventStudioPage: React.FC = () => {
                     studioType: 'Event',
                     formData: { ...formData, userEmail: formData.userEmail, theme: formData.theme }, // Ensure required fields passed
                     selectedConcept: {
-                        title: `Event Concept ${selectedImage + 1}`,
+                        title: `Event Concept Moodboard`,
                         description: `A visual concept for the ${formData.eventType} with the theme: "${formData.theme}".`,
-                        image: generatedImages[selectedImage]
+                        image: selectedImage
                     }
                 })
             });
@@ -345,6 +345,16 @@ const EventStudioPage: React.FC = () => {
             setIsSending(false);
         }
     };
+
+    const handleSelectImage = (image: string) => {
+        setSelectedImage(image);
+    }
+
+    useEffect(() => {
+        if(selectedImage && !isProposalRequested) {
+            sendProposalRequest();
+        }
+    }, [selectedImage]);
 
     const error = apiKeyError || localError;
     const isNextButtonDisabled = currentStep === 3 && isExtractingColors;
@@ -504,12 +514,19 @@ const EventStudioPage: React.FC = () => {
         </div>
     );
     
-    if (isFinished && isProposalRequested) return (
+    if (isProposalRequested) return (
         <div className="min-h-[70vh] flex flex-col justify-center items-center text-center p-4">
             <CheckCircle className="w-20 h-20 text-fann-teal mb-6" />
             <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Thank You!</h1>
             <p className="text-xl text-gray-700 dark:text-fann-cream max-w-2xl mx-auto mb-8">Our team has received your concept selection and will prepare a detailed proposal, which will be sent to <strong>{formData.userEmail}</strong> shortly.</p>
-            {selectedImage !== null && <img src={generatedImages[selectedImage]} alt={`Selected concept for the event theme: ${formData.theme}`} className="rounded-lg shadow-2xl w-full max-w-lg mt-8" />}
+             <div className="space-y-4">
+                <p className="font-semibold text-white">While you wait, why not explore more?</p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                    <Link to="/portfolio" className="bg-fann-gold text-fann-charcoal font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2"><Camera size={18}/> View Portfolio</Link>
+                    <Link to="/roi-calculator" className="bg-fann-gold text-fann-charcoal font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2"><BarChart2 size={18}/> Calculate Your ROI</Link>
+                    <Link to="/insights" className="bg-fann-gold text-fann-charcoal font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2"><BookOpen size={18}/> Read Our Insights</Link>
+                </div>
+            </div>
         </div>
     );
 
@@ -523,46 +540,30 @@ const EventStudioPage: React.FC = () => {
                         <p className="text-lg text-gray-700 dark:text-fann-cream max-w-3xl mx-auto">Click your preferred design. Our team will then prepare a detailed proposal and quotation for you.</p>
                         {generationStatus && <p className="text-lg font-semibold text-fann-teal mt-4 bg-fann-teal/10 px-4 py-2 rounded-md inline-block">{generationStatus}</p>}
                     </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            {generatedImages.map((img, index) => (
-                                <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} onClick={() => setSelectedImage(index)} className={`rounded-lg overflow-hidden cursor-pointer border-4 transition-all duration-300 hover:border-fann-gold/50 ${selectedImage === index ? 'border-fann-gold' : 'border-transparent'}`}>
-                                    <img src={img} alt={`Generated concept number ${index + 1} for an event.`} className="w-full h-auto object-cover" />
-                                </motion.div>
-                            ))}
-                        </div>
-                        <div className="lg:col-span-1 bg-white dark:bg-fann-charcoal-light p-6 rounded-lg self-start sticky top-24">
-                            <h3 className="text-2xl font-serif text-fann-gold mb-4">Event Summary</h3>
-                            <div className="space-y-3 text-sm">
-                                <p><strong>Type:</strong> {formData.eventType}</p>
-                                <p><strong>Theme:</strong> {formData.theme}</p>
-                                <p><strong>Venue:</strong> {formData.venueType}</p>
-                                <p><strong>Guests:</strong> ~{formData.guestCount}</p>
-                                <div className="pt-4 mt-4 border-t border-gray-200 dark:border-fann-border">
-                                    <motion.button onClick={sendProposalRequest} disabled={selectedImage === null || isSending} className="w-full bg-fann-teal text-white font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 disabled:bg-gray-200 dark:disabled:bg-fann-charcoal-light disabled:text-gray-500 dark:disabled:text-fann-light-gray disabled:cursor-not-allowed" whileHover={{ scale: selectedImage !== null && !isSending ? 1.05 : 1 }} whileTap={{ scale: selectedImage !== null && !isSending ? 0.95 : 1 }}>
-                                        {isSending ? <><Loader2 className="w-5 h-5 animate-spin" /> Sending...</> : "Request Detailed Proposal"}
-                                    </motion.button>
-                                    {selectedImage === null && <p className="text-xs text-center text-gray-500 dark:text-fann-light-gray mt-2">Please select a design to proceed.</p>}
-                                     {error && (
-                                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-400 text-xs text-center mt-3">
-                                            {error}
-                                        </motion.div>
-                                    )}
-                                </div>
-                                {generationCount < 2 && !isLoading && (
-                                    <div className="mt-6 text-center">
-                                        <button 
-                                            onClick={generateDesign} 
-                                            className="w-full border-2 border-fann-gold text-fann-gold font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 hover:bg-fann-gold/10 transition-colors"
-                                        >
-                                            <RefreshCw size={18}/>
-                                            Generate More
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {generatedImages.map((img, index) => (
+                            <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} onClick={() => handleSelectImage(img)} className="rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-300 hover:border-fann-gold/50 border-gray-200 dark:border-fann-border">
+                                <img src={img} alt={`Generated concept number ${index + 1} for an event.`} className="w-full h-auto object-cover" />
+                                <button className="w-full mt-2 bg-fann-teal text-white font-bold py-2 rounded-b-lg">Select & Request Proposal</button>
+                            </motion.div>
+                        ))}
                     </div>
+                    {generationCount < 2 && !isLoading && (
+                        <div className="mt-8 text-center">
+                            <button 
+                                onClick={generateDesign} 
+                                className="border-2 border-fann-gold text-fann-gold font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 hover:bg-fann-gold/10 transition-colors mx-auto"
+                            >
+                                <RefreshCw size={18}/>
+                                Generate More
+                            </button>
+                        </div>
+                    )}
+                     {error && (
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-400 text-sm text-center mt-4 bg-red-900/50 p-3 rounded-lg max-w-2xl mx-auto">
+                            {error}
+                        </motion.div>
+                    )}
                 </div>
             </div>
         </AnimatedPage>
@@ -576,7 +577,7 @@ const EventStudioPage: React.FC = () => {
                         <div className="mb-8">
                             <div className="flex justify-between mb-2">
                                 {steps.map((step, index) => (
-                                    <div key={step.name} className="flex flex-col items-center" style={{ width: `${100 / steps.length}%` }}>
+                                    <div key={step.name} onClick={() => setCurrentStep(index)} className="flex flex-col items-center cursor-pointer" style={{ width: `${100 / steps.length}%` }}>
                                         <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors border-2 ${currentStep >= index ? 'bg-fann-gold border-fann-gold text-fann-charcoal' : 'bg-gray-200 dark:bg-fann-charcoal-light border-gray-300 dark:border-fann-border text-gray-500 dark:text-fann-light-gray'}`}>
                                             <step.icon size={20} />
                                         </div>
