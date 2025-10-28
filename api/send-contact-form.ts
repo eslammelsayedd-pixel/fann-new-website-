@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 // This is a Vercel Serverless Function.
 export default async function handler(req: any, res: any) {
@@ -7,10 +7,10 @@ export default async function handler(req: any, res: any) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_SECURE } = process.env;
+    const resendApiKey = process.env.RESEND_API_KEY;
 
-    if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS) {
-        console.error('SMTP environment variables are not configured on the server.');
+    if (!resendApiKey) {
+        console.error('RESEND_API_KEY is not configured on the server.');
         return res.status(500).json({ error: 'Server configuration error: Email service is not set up.' });
     }
 
@@ -21,21 +21,11 @@ export default async function handler(req: any, res: any) {
             return res.status(400).json({ error: 'All fields are required.' });
         }
         
-        const transporter = nodemailer.createTransport({
-            host: SMTP_HOST,
-            port: parseInt(SMTP_PORT, 10),
-            secure: SMTP_SECURE === 'true', // false for 587 (STARTTLS)
-            auth: {
-                user: SMTP_USER,
-                pass: SMTP_PASS,
-            },
-        });
-        
-        await transporter.verify();
+        const resend = new Resend(resendApiKey);
 
         const subject = `New Contact Form Submission from ${name}`;
         const toEmail = 'sales@fann.ae';
-        const fromEmail = `FANN Contact Form <${SMTP_USER}>`;
+        const fromEmail = 'FANN Contact Form <noreply@fann.ae>'; // Assumes noreply@fann.ae is a verified domain in Resend
 
         const html = `
             <div style="font-family: Arial, sans-serif; color: #f5f5dc; background-color: #1a1a1a; padding: 20px; border-radius: 8px; max-width: 600px; margin: auto; border: 1px solid #D4AF76;">
@@ -48,11 +38,11 @@ export default async function handler(req: any, res: any) {
             </div>
         `;
 
-        await transporter.sendMail({
+        await resend.emails.send({
             from: fromEmail,
             to: toEmail,
             subject: subject,
-            replyTo: email,
+            reply_to: email,
             html: html,
         });
 
@@ -60,9 +50,6 @@ export default async function handler(req: any, res: any) {
 
     } catch (error: any) {
         console.error('Error in send-contact-form API:', error);
-        if (error.code === 'EAUTH' || error.message.includes('Authentication failed')) {
-            return res.status(500).json({ error: 'SMTP Authentication failed. Please check your credentials.' });
-        }
-        return res.status(500).json({ error: 'Failed to send message.' });
+        return res.status(500).json({ error: error.response?.body?.message || error.message || 'Failed to send message.' });
     }
 }

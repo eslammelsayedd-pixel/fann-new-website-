@@ -4,7 +4,6 @@ import { navLinks } from '../constants';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import LanguageSwitcher from './LanguageSwitcher';
-import ThemeToggle from './ThemeToggle';
 
 const Header: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -67,7 +66,6 @@ const Header: React.FC = () => {
                     </nav>
 
                     <div className="hidden lg:flex items-center space-x-4">
-                        <ThemeToggle />
                         <LanguageSwitcher />
                         <Link to="/fann-studio">
                           <motion.button 
@@ -144,7 +142,6 @@ const Header: React.FC = () => {
                         ))}
                         <div className="my-6 w-full px-8 flex justify-center items-center gap-4">
                             <LanguageSwitcher />
-                            <ThemeToggle />
                         </div>
                         <Link to="/fann-studio">
                           <motion.button 

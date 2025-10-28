@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 // This is a Vercel Serverless Function.
 // It is used by Exhibition, Event, and Interior studios.
@@ -8,10 +8,10 @@ export default async function handler(req: any, res: any) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_SECURE } = process.env;
+  const resendApiKey = process.env.RESEND_API_KEY;
 
-  if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS) {
-      console.error('SMTP environment variables are not configured on the server.');
+  if (!resendApiKey) {
+      console.error('RESEND_API_KEY is not configured on the server.');
       return res.status(500).json({ error: 'Server configuration error: Email service is not set up.' });
   }
 
@@ -22,22 +22,12 @@ export default async function handler(req: any, res: any) {
       return res.status(400).json({ error: 'Missing required data in request.' });
     }
     
-    const transporter = nodemailer.createTransport({
-        host: SMTP_HOST,
-        port: parseInt(SMTP_PORT, 10),
-        secure: SMTP_SECURE === 'true', // false for 587 (STARTTLS)
-        auth: {
-            user: SMTP_USER,
-            pass: SMTP_PASS,
-        },
-    });
-
-    await transporter.verify();
+    const resend = new Resend(resendApiKey);
     
     const userEmail = formData.userEmail || formData.email;
     const userName = formData.userFirstName || formData.userName || formData.firstName || 'Valued Client';
     const salesEmail = 'sales@fann.ae';
-    const fromEmail = `FANN Studio <${SMTP_USER}>`;
+    const fromEmail = 'FANN Studio <noreply@fann.ae>'; // Assumes noreply@fann.ae is a verified domain in Resend
 
     // --- Email 1: Internal Notification to Sales Team ---
     const generateSalesHtml = () => {
@@ -90,14 +80,14 @@ export default async function handler(req: any, res: any) {
 
     // Send both emails concurrently
     await Promise.all([
-      transporter.sendMail({
+      resend.emails.send({
         from: fromEmail,
         to: salesEmail,
         subject: `New ${studioType} Studio Lead: ${formData.eventName || formData.spaceSubType || formData.theme || 'N/A'}`,
-        replyTo: userEmail,
+        reply_to: userEmail,
         html: generateSalesHtml(),
       }),
-      transporter.sendMail({
+      resend.emails.send({
         from: fromEmail,
         to: userEmail,
         subject: `Thank you for your request | FANN Studio`,
@@ -109,9 +99,6 @@ export default async function handler(req: any, res: any) {
 
   } catch (error: any) {
     console.error('Error in send-proposal API:', error);
-    if (error.code === 'EAUTH' || error.message.includes('Authentication failed')) {
-        return res.status(500).json({ error: 'SMTP Authentication failed. Please check your credentials.' });
-    }
-    return res.status(500).json({ error: error.message || 'An internal server error occurred.' });
+    return res.status(500).json({ error: error.response?.body?.message || error.message || 'An internal server error occurred.' });
   }
 }

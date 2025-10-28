@@ -1,6 +1,6 @@
 import { GoogleGenAI, Modality, Type, Part } from "@google/genai";
 import { kv } from '@vercel/kv';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 // Helper function to format form data for the sales email
 const formatFormDataForEmail = (data: any) => {
@@ -272,22 +272,16 @@ The user has provided a floor plan and moodboard images for inspiration.
     const newCount = await kv.incr(userEmail);
     await kv.expire(userEmail, 86400); // Set a 24-hour expiry for the count
 
-    const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_SECURE } = process.env;
-
-    if (SMTP_HOST && SMTP_PORT && SMTP_USER && SMTP_PASS) {
+    const resendApiKey = process.env.RESEND_API_KEY;
+    if (resendApiKey) {
         try {
-            const transporter = nodemailer.createTransport({
-                host: SMTP_HOST,
-                port: parseInt(SMTP_PORT, 10),
-                secure: SMTP_SECURE === 'true',
-                auth: { user: SMTP_USER, pass: SMTP_PASS },
-            });
+            const resend = new Resend(resendApiKey);
             const userName = formData.userFirstName || formData.userName || formData.firstName || 'A User';
-            await transporter.sendMail({
-                from: `FANN Studio <${SMTP_USER}>`,
+            await resend.emails.send({
+                from: `FANN Studio <noreply@fann.ae>`, // Assumes verified domain
                 to: 'sales@fann.ae',
                 subject: `FANN Studio Design Generated (${studioType})`,
-                replyTo: userEmail,
+                reply_to: userEmail,
                 html: `<p>${userName} (${userEmail}) has generated a design using the ${studioType} Studio. This is their ${newCount === 1 ? 'first' : 'second'} design.</p>
                        <p><strong>Design Brief Summary:</strong></p>
                        <table style="width: 100%; border-collapse: collapse;">
@@ -295,11 +289,11 @@ The user has provided a floor plan and moodboard images for inspiration.
                        </table>`
             });
         } catch (emailError: any) {
-            console.error("Failed to send notification email:", emailError.message);
+            console.error("Failed to send notification email via Resend:", emailError.message);
             // Do not fail the request if email fails, just log it.
         }
     } else {
-        console.warn("SMTP environment variables not fully set. Skipping email notification.");
+        console.warn("RESEND_API_KEY not set. Skipping email notification.");
     }
 
 
