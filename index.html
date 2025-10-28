@@ -16,13 +16,13 @@
         theme: {
             extend: {
                 colors: {
-                    'fann-teal': '#5A8B8C',
-                    'fann-gold': '#D4AF76',
-                    'fann-charcoal': '#1a1a1a',
-                    'fann-cream': '#F5F5DC',
-                    'fann-charcoal-light': '#2C2C2C',
-                    'fann-light-gray': '#B0B0B0',
-                    'fann-border': 'rgba(90, 139, 140, 0.3)',
+                    'fann-teal': '#1E565A',
+                    'fann-peach': '#FCE5D4',
+                    'fann-accent-teal': '#2D767F',
+                    'fann-accent-peach': '#F9DDC8',
+                    'fann-teal-dark': '#1A4A4F',
+                    'fann-light-gray': '#A99E96',
+                    'fann-border': 'rgba(249, 221, 200, 0.2)',
                 },
                 fontFamily: {
                     'serif': ['Playfair Display', 'serif'],
@@ -55,11 +55,11 @@
     .annotation {
         transform: translate(20px, -50%) scale(0.8);
         transform-origin: left center;
-        background: #F5F5DC; /* fann-cream */
+        background: #FCE5D4; /* fann-peach */
         border: 1px solid rgba(0,0,0,0.1);
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0,0,0,0.35);
-        color: #1a1a1a; /* fann-charcoal */
+        color: #1E565A; /* fann-teal */
         font-family: 'Inter', sans-serif;
         font-size: 14px;
         font-weight: 500;
@@ -74,9 +74,9 @@
         transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
     }
     .dark .annotation {
-        background: #1a1a1a; /* fann-charcoal */
-        border: 1px solid #D4AF76; /* fann-gold */
-        color: white;
+        background: #1A4A4F; /* fann-teal-dark */
+        border: 1px solid #F9DDC8; /* fann-accent-peach */
+        color: #FCE5D4; /* fann-peach */
     }
     .hotspot[data-visible]:hover .annotation {
         transform: translate(20px, -50%) scale(1);
@@ -109,7 +109,7 @@
 </script>
 <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 </head>
-<body class="bg-fann-cream text-fann-charcoal dark:bg-fann-charcoal dark:text-white font-sans">
+<body class="bg-fann-peach text-fann-teal dark:bg-fann-teal dark:text-fann-peach font-sans">
     <div id="google_translate_element" style="display:none;"></div>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
