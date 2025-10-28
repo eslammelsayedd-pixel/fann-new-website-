@@ -36,15 +36,15 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, descriptio
       <div className={`grid md:grid-cols-2 gap-12 items-center`}>
         <motion.div className={`order-2 ${imagePosition === 'left' ? 'md:order-2' : 'md:order-1'}`} variants={textVariants}>
           <div className="flex items-center gap-4 mb-4">
-            <div className="text-fann-gold">{icon}</div>
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-fann-gold">{title}</h2>
+            <div className="text-fann-accent-teal dark:text-fann-accent-peach">{icon}</div>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-fann-accent-teal dark:text-fann-accent-peach">{title}</h2>
           </div>
-          <p className="text-gray-700 dark:text-fann-cream mb-6 leading-relaxed">{description}</p>
+          <p className="text-fann-teal/90 dark:text-fann-peach/90 mb-6 leading-relaxed">{description}</p>
           <ul className="space-y-3 mb-8">
             {services.map((service, index) => (
               <li key={index} className="flex items-center gap-3">
-                <CheckCircle className="text-fann-teal w-5 h-5 flex-shrink-0" />
-                <span className="text-fann-charcoal dark:text-white">{service}</span>
+                <CheckCircle className="text-fann-accent-teal w-5 h-5 flex-shrink-0" />
+                <span className="text-fann-teal dark:text-fann-peach">{service}</span>
               </li>
             ))}
           </ul>
@@ -52,7 +52,7 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, descriptio
               <motion.button 
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="border-2 border-fann-gold text-fann-gold font-bold py-3 px-8 rounded-full text-base uppercase tracking-wider flex items-center gap-2 group"
+                  className="border-2 border-fann-accent-teal dark:border-fann-accent-peach text-fann-accent-teal dark:text-fann-accent-peach font-bold py-3 px-8 rounded-full text-base uppercase tracking-wider flex items-center gap-2 group"
               >
                   View Projects
                   <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
@@ -103,10 +103,10 @@ const ServicesPage: React.FC = () => {
               ])}
           </script>
       </SEO>
-      <div className="bg-fann-cream dark:bg-fann-charcoal pt-32 pb-20 text-fann-charcoal dark:text-white">
+      <div className="bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
-          <h1 className="text-5xl md:text-6xl font-serif font-bold text-fann-gold mb-4">Our Core Capabilities</h1>
-          <p className="text-xl text-gray-700 dark:text-fann-cream max-w-3xl mx-auto">
+          <h1 className="text-5xl md:text-6xl font-serif font-bold text-fann-accent-teal dark:text-fann-accent-peach mb-4">Our Core Capabilities</h1>
+          <p className="text-xl text-fann-teal/90 dark:text-fann-peach/90 max-w-3xl mx-auto">
             As a full-service design and build firm, we deliver end-to-end solutions with precision, creativity, and a commitment to excellence.
           </p>
         </div>
@@ -128,7 +128,7 @@ const ServicesPage: React.FC = () => {
           link="/portfolio"
         />
 
-        <div className="bg-white dark:bg-fann-charcoal-light">
+        <div className="bg-white dark:bg-fann-teal-dark">
           <ServiceSection
             icon={<Calendar size={40} />}
             title="Corporate Event Management"
@@ -166,15 +166,15 @@ const ServicesPage: React.FC = () => {
         
          {/* CTA Section */}
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-            <div className="text-center bg-gradient-to-r from-fann-teal to-fann-gold p-1 rounded-lg">
-                 <div className="bg-white dark:bg-fann-charcoal rounded-lg py-16 px-8">
-                    <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4">Have a Project in Mind?</h2>
-                    <p className="max-w-2xl mx-auto text-gray-700 dark:text-fann-cream mb-8">Let's turn your vision into a reality. Contact us today for a complimentary consultation with our design experts.</p>
+            <div className="text-center bg-gradient-to-r from-fann-accent-teal to-fann-accent-peach p-1 rounded-lg">
+                 <div className="bg-white dark:bg-fann-teal rounded-lg py-16 px-8">
+                    <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4 text-fann-teal dark:text-fann-peach">Have a Project in Mind?</h2>
+                    <p className="max-w-2xl mx-auto text-fann-teal/90 dark:text-fann-peach/90 mb-8">Let's turn your vision into a reality. Contact us today for a complimentary consultation with our design experts.</p>
                     <Link to="/contact">
                         <motion.button 
-                            whileHover={{ scale: 1.05, boxShadow: "0px 0px 15px rgba(212, 175, 118, 0.5)" }}
+                            whileHover={{ scale: 1.05, boxShadow: "0px 0px 15px rgba(249, 221, 200, 0.5)" }}
                             whileTap={{ scale: 0.95 }}
-                            className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider"
+                            className="bg-fann-accent-peach text-fann-teal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider"
                         >
                             Get a Free Quote
                         </motion.button>

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, Sparkles, Upload, ArrowLeft, Building, Scaling, ListChecks, User, CheckCircle, AlertCircle, Palette, View, FileText, Mail, Phone, Camera } from 'lucide-react';
+import { Loader2, Sparkles, Upload, ArrowLeft, Building, Scaling, ListChecks, User, CheckCircle, AlertCircle, Palette, View, FileText, Mail, Phone, Camera, RefreshCw, BarChart2, BookOpen } from 'lucide-react';
 import { useApiKey } from '../context/ApiKeyProvider';
 import { useSearchParams, Link } from 'react-router-dom';
 import AnimatedPage from '../components/AnimatedPage';
@@ -41,12 +41,10 @@ interface FormData {
     userMobileNumber: string;
 }
 
-type Angle = 'front' | 'top' | 'interior';
-
 interface GeneratedConcept {
     title: string;
     description: string;
-    images: Record<Angle, string>;
+    image: string;
 }
 
 
@@ -104,7 +102,7 @@ const steps = [
     { name: 'Structure', icon: Building },
     { name: 'Functionality', icon: ListChecks },
     { name: 'Aesthetics', icon: Palette },
-    { name: 'Review & Contact', icon: User },
+    { name: 'Your Details', icon: User },
 ];
 
 const blobToBase64 = (blob: Blob): Promise<string> => {
@@ -154,13 +152,12 @@ const ExhibitionStudioPage: React.FC = () => {
     const [isSending, setIsSending] = useState(false);
     const [isAnalyzingStyle, setIsAnalyzingStyle] = useState(false);
     const [isAnalyzingIndustry, setIsAnalyzingIndustry] = useState(false);
-    const [isModelViewerOpen, setIsModelViewerOpen] = useState(false);
     const [formErrors, setFormErrors] = useState<Partial<Record<keyof FormData, string>>>({});
-    const [activeAngles, setActiveAngles] = useState<Record<number, Angle>>({});
     const [generationStatus, setGenerationStatus] = useState<string | null>(null);
+    const [generationCount, setGenerationCount] = useState(0);
     const [isExtractingColors, setIsExtractingColors] = useState(false);
     const [suggestedColors, setSuggestedColors] = useState<string[]>([]);
-    const [selectedConcept, setSelectedConcept] = useState<number | null>(null);
+    const [selectedConcept, setSelectedConcept] = useState<GeneratedConcept | null>(null);
 
 
     const { ensureApiKey, handleApiError, error: apiKeyError, clearError: clearApiKeyError } = useApiKey();
@@ -333,7 +330,11 @@ const ExhibitionStudioPage: React.FC = () => {
                 }
                 
                 setFormErrors(newErrors);
-                return Object.keys(newErrors).length === 0;
+                if (Object.keys(newErrors).length > 0) {
+                    setError("Please fill in all required contact fields correctly.");
+                    return false;
+                }
+                break;
         }
         return true;
     };
@@ -341,7 +342,7 @@ const ExhibitionStudioPage: React.FC = () => {
     const nextStep = () => {
         setFormErrors({});
         if (validateStep(currentStep)) {
-            setCurrentStep(prev => Math.min(prev + 1, steps.length));
+            setCurrentStep(prev => Math.min(prev + 1, steps.length - 1));
         }
     };
 
@@ -357,6 +358,7 @@ const ExhibitionStudioPage: React.FC = () => {
 
         setIsLoading(true);
         setGeneratedConcepts([]);
+        setIsFinished(false);
 
         if (!formData.logo) {
             setError("Logo is missing. Please go back and upload it.");
@@ -406,12 +408,13 @@ const ExhibitionStudioPage: React.FC = () => {
                  throw new Error("The FANN design engine failed to generate any concepts.");
             }
             
+            setGenerationCount(data.newCount || 0);
             setGeneratedConcepts(data.concepts);
             
             if (data.newCount === 1) {
-                setGenerationStatus("Design 1/2 generated. You have one more free design generation.");
+                setGenerationStatus("Design set 1 of 2 generated. You can generate one more set.");
             } else if (data.newCount >= 2) {
-                setGenerationStatus("Design 2/2 generated. You’ve used all free attempts. Contact our agent for more options.");
+                setGenerationStatus("Design set 2 of 2 generated. You’ve used all free attempts. Contact our agent for more options.");
             }
 
             setIsFinished(true);
@@ -441,30 +444,31 @@ const ExhibitionStudioPage: React.FC = () => {
 
 
     const sendProposalRequest = async () => {
-        if (selectedConcept === null) return;
+        if (!selectedConcept) return;
         setIsSending(true);
         clearAllErrors();
     
         try {
+            const { logo, logoPreview, ...restOfFormData } = formData;
+            const { image, ...restOfSelectedConcept } = selectedConcept;
+            
             const response = await fetch('/api/send-proposal', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     studioType: 'Exhibition',
-                    formData: formData,
-                    selectedConcept: generatedConcepts[selectedConcept]
+                    formData: restOfFormData,
+                    selectedConcept: restOfSelectedConcept
                 })
             });
     
             if (!response.ok) {
                 let errorText = `Server responded with status ${response.status}`;
-                const responseText = await response.text(); // Read body ONCE
+                const responseText = await response.text();
                 try {
-                    // Try to parse the text as JSON
                     const errorData = JSON.parse(responseText);
-                    errorText = errorData.error || responseText; // Use parsed error or fall back to the full text
+                    errorText = errorData.error || responseText;
                 } catch (e) {
-                    // If parsing fails, the error message is the raw text
                     errorText = responseText;
                 }
                 throw new Error(errorText);
@@ -477,6 +481,16 @@ const ExhibitionStudioPage: React.FC = () => {
             setIsSending(false);
         }
     };
+
+    const handleSelectConcept = (concept: GeneratedConcept) => {
+        setSelectedConcept(concept);
+    };
+
+    useEffect(() => {
+        if(selectedConcept && !isProposalRequested) {
+            sendProposalRequest();
+        }
+    }, [selectedConcept]);
 
     const isNextButtonDisabled = currentStep === 3 && isExtractingColors || currentStep === 0 && (isAnalyzingStyle || isAnalyzingIndustry);
     
@@ -789,35 +803,32 @@ const ExhibitionStudioPage: React.FC = () => {
                         </div>
                     </div>
                 );
-            case 4: // Review & Contact
+            case 4: // Your Details
                 return (
                     <div>
-                        <h2 className="text-2xl font-serif text-fann-charcoal dark:text-white mb-6 text-center">Step 5: Review & Generate</h2>
-                        <div className="grid md:grid-cols-2 gap-8 bg-fann-cream dark:bg-fann-charcoal p-6 rounded-lg border border-gray-200 dark:border-fann-border">
-                            <div>
-                                <h3 className="text-lg font-bold text-fann-gold mb-3">Project Summary</h3>
-                                <div className="space-y-2 text-sm">
-                                    <p><strong>Event:</strong> {formData.eventName}</p>
-                                    <p><strong>Size:</strong> {formData.standWidth}m x {formData.standLength}m ({formData.standWidth * formData.standLength} sqm)</p>
-                                    <p><strong>Layout:</strong> {formData.standLayout}</p>
-                                    <p><strong>Style:</strong> {formData.style}</p>
-                                    <p><strong>Features:</strong> {formData.functionality.slice(0, 3).join(', ')}{formData.functionality.length > 3 ? `, +${formData.functionality.length - 3} more` : ''}</p>
+                        <h2 className="text-2xl font-serif text-fann-charcoal dark:text-white mb-6 text-center">Final Step: Your Details</h2>
+                        <div className="max-w-md mx-auto space-y-4">
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <input type="text" name="userFirstName" placeholder="First Name" value={formData.userFirstName} onChange={handleInputChange} className="w-full bg-fann-cream dark:bg-fann-charcoal border border-gray-300 dark:border-fann-border rounded-md px-3 py-2" />
+                                     {formErrors.userFirstName && <p className="text-red-400 text-xs mt-1">{formErrors.userFirstName}</p>}
+                                </div>
+                                <div>
+                                    <input type="text" name="userLastName" placeholder="Last Name" value={formData.userLastName} onChange={handleInputChange} className="w-full bg-fann-cream dark:bg-fann-charcoal border border-gray-300 dark:border-fann-border rounded-md px-3 py-2" />
+                                    {formErrors.userLastName && <p className="text-red-400 text-xs mt-1">{formErrors.userLastName}</p>}
                                 </div>
                             </div>
-                             <div>
-                                <h3 className="text-lg font-bold text-fann-gold mb-3">Your Contact Details</h3>
-                                 <div className="space-y-3">
-                                     <div className="grid grid-cols-2 gap-3">
-                                         <input type="text" name="userFirstName" placeholder="First Name" value={formData.userFirstName} onChange={handleInputChange} className="w-full bg-gray-100 dark:bg-fann-charcoal-light/50 border border-gray-300 dark:border-fann-border rounded-md px-3 py-2" />
-                                         <input type="text" name="userLastName" placeholder="Last Name" value={formData.userLastName} onChange={handleInputChange} className="w-full bg-gray-100 dark:bg-fann-charcoal-light/50 border border-gray-300 dark:border-fann-border rounded-md px-3 py-2" />
-                                     </div>
-                                    <input type="email" name="userEmail" placeholder="Email Address" value={formData.userEmail} onChange={handleInputChange} className="w-full bg-gray-100 dark:bg-fann-charcoal-light/50 border border-gray-300 dark:border-fann-border rounded-md px-3 py-2" />
-                                     <div className="flex gap-2">
-                                         <select name="userMobileCountryCode" value={formData.userMobileCountryCode} onChange={handleInputChange} className="bg-gray-100 dark:bg-fann-charcoal-light/50 border border-gray-300 dark:border-fann-border rounded-md px-2 py-2">
-                                             {countryCodes.map(c => <option key={c.code} value={c.dial_code}>{c.code} ({c.dial_code})</option>)}
-                                         </select>
-                                         <input type="tel" name="userMobileNumber" placeholder="Mobile Number" value={formData.userMobileNumber} onChange={handleInputChange} className="w-full bg-gray-100 dark:bg-fann-charcoal-light/50 border border-gray-300 dark:border-fann-border rounded-md px-3 py-2" />
-                                     </div>
+                            <div>
+                                <input type="email" name="userEmail" placeholder="Email Address" value={formData.userEmail} onChange={handleInputChange} className="w-full bg-fann-cream dark:bg-fann-charcoal border border-gray-300 dark:border-fann-border rounded-md px-3 py-2" />
+                                {formErrors.userEmail && <p className="text-red-400 text-xs mt-1">{formErrors.userEmail}</p>}
+                            </div>
+                            <div className="flex gap-2">
+                                <select name="userMobileCountryCode" value={formData.userMobileCountryCode} onChange={handleInputChange} className="bg-fann-cream dark:bg-fann-charcoal border border-gray-300 dark:border-fann-border rounded-md px-2 py-2">
+                                    {countryCodes.map(c => <option key={c.code} value={c.dial_code}>{c.code} ({c.dial_code})</option>)}
+                                </select>
+                                <div className="w-full">
+                                    <input type="tel" name="userMobileNumber" placeholder="Mobile Number" value={formData.userMobileNumber} onChange={handleInputChange} className="w-full bg-fann-cream dark:bg-fann-charcoal border border-gray-300 dark:border-fann-border rounded-md px-3 py-2" />
+                                    {formErrors.userMobileNumber && <p className="text-red-400 text-xs mt-1">{formErrors.userMobileNumber}</p>}
                                 </div>
                             </div>
                         </div>
@@ -835,12 +846,19 @@ const ExhibitionStudioPage: React.FC = () => {
         </div>
     );
 
-    if (isFinished && isProposalRequested) return (
+    if (isProposalRequested) return (
         <div className="min-h-[70vh] flex flex-col justify-center items-center text-center p-4">
             <CheckCircle className="w-20 h-20 text-fann-teal mb-6" />
             <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Thank You!</h1>
-            <p className="text-xl text-gray-700 dark:text-fann-cream max-w-2xl mx-auto mb-8">Your request has been sent. Our design team will contact you at <strong>{formData.userEmail}</strong> with a detailed proposal and quotation shortly.</p>
-            {selectedConcept !== null && <img src={generatedConcepts[selectedConcept].images.front} alt={generatedConcepts[selectedConcept].title} className="rounded-lg shadow-2xl w-full max-w-lg mt-8" />}
+            <p className="text-xl text-gray-700 dark:text-fann-cream max-w-2xl mx-auto mb-8">Our design team has received your request and will contact you at <strong>{formData.userEmail}</strong> within one business day.</p>
+            <div className="space-y-4">
+                <p className="font-semibold">While you wait, why not explore more?</p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                    <Link to="/portfolio" className="bg-fann-gold text-fann-charcoal font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2"><Camera size={18}/> View Portfolio</Link>
+                    <Link to="/roi-calculator" className="bg-fann-gold text-fann-charcoal font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2"><BarChart2 size={18}/> Calculate Your ROI</Link>
+                    <Link to="/insights" className="bg-fann-gold text-fann-charcoal font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2"><BookOpen size={18}/> Read Our Insights</Link>
+                </div>
+            </div>
         </div>
     );
     
@@ -851,7 +869,7 @@ const ExhibitionStudioPage: React.FC = () => {
                     <div className="text-center mb-12">
                         <Sparkles className="mx-auto h-16 w-16 text-fann-gold" />
                         <h1 className="text-4xl font-serif font-bold text-fann-gold mt-4 mb-4">Your Custom Concepts</h1>
-                        <p className="text-lg text-gray-700 dark:text-fann-cream max-w-3xl mx-auto">Select your preferred design to receive a detailed proposal and quotation from our team.</p>
+                        <p className="text-lg text-gray-700 dark:text-fann-cream max-w-3xl mx-auto">Select your preferred design to request a detailed proposal. Our team will then contact you to finalize the details.</p>
                          {generationStatus && <p className="text-lg font-semibold text-fann-teal mt-4 bg-fann-teal/10 px-4 py-2 rounded-md inline-block">{generationStatus}</p>}
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -861,66 +879,41 @@ const ExhibitionStudioPage: React.FC = () => {
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.15 }}
-                                onClick={() => setSelectedConcept(index)}
-                                className={`p-4 bg-white dark:bg-fann-charcoal-light rounded-lg cursor-pointer border-2 transition-all duration-300 hover:border-fann-gold/50 ${selectedConcept === index ? 'border-fann-gold' : 'border-gray-200 dark:border-fann-border'}`}
+                                onClick={() => handleSelectConcept(concept)}
+                                className="p-4 bg-white dark:bg-fann-charcoal-light rounded-lg cursor-pointer border-2 transition-all duration-300 hover:border-fann-gold/50 border-gray-200 dark:border-fann-border"
                             >
                                 <div className="relative aspect-video mb-4 rounded-md overflow-hidden bg-gray-200 dark:bg-fann-charcoal">
-                                     <AnimatePresence mode="wait">
-                                         <motion.img 
-                                            key={`${index}-${activeAngles[index] || 'front'}`}
-                                            src={concept.images[activeAngles[index] || 'front']} 
-                                            alt={`${concept.title} - ${activeAngles[index] || 'front'} view`}
-                                            className="absolute inset-0 w-full h-full object-cover" 
-                                            initial={{ opacity: 0 }}
-                                            animate={{ opacity: 1 }}
-                                            exit={{ opacity: 0 }}
-                                            transition={{ duration: 0.3 }}
-                                         />
-                                    </AnimatePresence>
+                                     <img 
+                                        src={concept.image} 
+                                        alt={concept.title}
+                                        className="absolute inset-0 w-full h-full object-cover" 
+                                     />
                                 </div>
-                                <div className="flex justify-center gap-2 mb-4">
-                                    {(['front', 'top', 'interior'] as Angle[]).map(angle => (
-                                        <button 
-                                            key={angle}
-                                            onClick={(e) => { e.stopPropagation(); setActiveAngles(p => ({...p, [index]: angle}))}}
-                                            className={`px-3 py-1 text-xs rounded-full transition-colors ${(activeAngles[index] || 'front') === angle ? 'bg-fann-teal text-white' : 'bg-gray-200 dark:bg-fann-charcoal hover:bg-gray-300 dark:hover:bg-white/10'}`}
-                                        >
-                                            {angle.charAt(0).toUpperCase() + angle.slice(1)} View
-                                        </button>
-                                    ))}
-                                </div>
-
                                 <h3 className="text-xl font-serif font-bold text-fann-charcoal dark:text-white">{concept.title}</h3>
                                 <p className="text-sm text-gray-600 dark:text-fann-light-gray mt-1">{concept.description}</p>
+                                <button className="w-full mt-4 bg-fann-teal text-white font-bold py-2 rounded-full">Select & Request Proposal</button>
                             </motion.div>
                         ))}
                     </div>
 
-                    <AnimatePresence>
-                    {selectedConcept !== null && (
-                        <motion.div 
-                            initial={{ opacity: 0, y: 50 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 50 }}
-                            className="mt-12 bg-white dark:bg-fann-charcoal-light p-8 rounded-lg sticky bottom-6 border-2 border-fann-gold shadow-2xl max-w-4xl mx-auto"
-                        >
-                            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                                <div>
-                                    <h3 className="text-2xl font-serif font-bold text-fann-gold">You've Selected: "{generatedConcepts[selectedConcept].title}"</h3>
-                                    <p className="text-fann-charcoal dark:text-fann-cream mt-1">Ready for the next step? Request a detailed proposal to get pricing and a project timeline.</p>
-                                </div>
-                                 <motion.button onClick={sendProposalRequest} disabled={isSending} className="bg-fann-teal text-white font-bold py-3 px-8 rounded-full flex-shrink-0 flex items-center justify-center gap-2 w-full md:w-auto" whileHover={{ scale: !isSending ? 1.05 : 1 }} whileTap={{ scale: !isSending ? 0.95 : 1 }}>
-                                    {isSending ? <><Loader2 className="w-5 h-5 animate-spin" /> Sending...</> : "Request Detailed Proposal"}
-                                </motion.button>
-                            </div>
-                            {error && (
-                                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-400 text-sm text-center mt-4">
-                                    {error}
-                                </motion.div>
-                            )}
+                    {generationCount < 2 && !isLoading && (
+                        <div className="text-center mt-12">
+                            <motion.button 
+                                onClick={generateDesign} 
+                                className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider flex items-center justify-center gap-2 mx-auto"
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                <RefreshCw size={20}/>
+                                Generate More Designs
+                            </motion.button>
+                        </div>
+                    )}
+                    {error && (
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-400 text-sm text-center mt-4 bg-red-900/50 p-3 rounded-lg max-w-2xl mx-auto">
+                            {error}
                         </motion.div>
                     )}
-                    </AnimatePresence>
                 </div>
             </div>
         </AnimatedPage>
@@ -934,7 +927,7 @@ const ExhibitionStudioPage: React.FC = () => {
                         <div className="mb-8">
                             <div className="flex justify-between mb-2">
                                 {steps.map((step, index) => (
-                                    <div key={step.name} className="flex flex-col items-center" style={{ width: `${100 / steps.length}%` }}>
+                                    <div key={step.name} onClick={() => setCurrentStep(index)} className="flex flex-col items-center cursor-pointer" style={{ width: `${100 / steps.length}%` }}>
                                         <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${currentStep >= index ? 'bg-fann-gold text-fann-charcoal' : 'bg-gray-200 dark:bg-fann-charcoal-light text-gray-500 dark:text-fann-light-gray'}`}><step.icon size={16} /></div>
                                         <span className={`text-xs mt-1 text-center ${currentStep >= index ? 'text-fann-charcoal dark:text-white' : 'text-gray-500 dark:text-fann-light-gray'}`}>{step.name}</span>
                                     </div>

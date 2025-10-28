@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import AnimatedPage from '../components/AnimatedPage';
 import { regionalEvents } from '../constants';
-import { Event } from '../types';
+// FIX: Corrected the import path for the Event type.
+import { Event } from '../src/types';
 import { motion } from 'framer-motion';
 
 // --- Robust Date Parsing Logic ---
@@ -120,22 +121,22 @@ const EventsCalendarPage: React.FC = () => {
 
   return (
     <AnimatedPage>
-      <div className="min-h-screen bg-fann-cream dark:bg-fann-charcoal pt-32 pb-20 text-fann-charcoal dark:text-white">
+      <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-                <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">Events Calendar</h1>
-                <p className="text-xl text-gray-700 dark:text-fann-cream">Your guide to the most important exhibitions and trade shows in the UAE & KSA.</p>
+                <h1 className="text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-accent-peach mb-4">Events Calendar</h1>
+                <p className="text-xl text-fann-teal/90 dark:text-fann-peach/90">Your guide to the most important exhibitions and trade shows in the UAE & KSA.</p>
             </div>
             
-            <div className="max-w-6xl mx-auto bg-white dark:bg-fann-charcoal-light p-4 rounded-lg mb-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="max-w-6xl mx-auto bg-white dark:bg-fann-teal-dark p-4 rounded-lg mb-8 grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                    <label className="block text-sm font-medium text-gray-500 dark:text-fann-light-gray mb-2">Country</label>
+                    <label className="block text-sm font-medium text-fann-light-gray mb-2">Country</label>
                     <div className="grid grid-cols-3 gap-2">
                          {countries.map(country => (
                             <button
                                 key={country}
                                 onClick={() => setSelectedCountry(country)}
-                                className={`w-full text-sm py-2 px-1 rounded-md transition-colors ${selectedCountry === country ? 'bg-fann-teal text-white font-bold' : 'bg-gray-200 text-fann-charcoal dark:bg-fann-charcoal dark:text-white hover:bg-gray-300 dark:hover:bg-white/10'}`}
+                                className={`w-full text-sm py-2 px-1 rounded-md transition-colors ${selectedCountry === country ? 'bg-fann-accent-teal text-white' : 'bg-fann-peach/50 text-fann-teal dark:bg-fann-teal dark:text-fann-peach hover:bg-fann-peach dark:hover:bg-fann-peach/10'}`}
                             >
                                 {country}
                             </button>
@@ -143,12 +144,12 @@ const EventsCalendarPage: React.FC = () => {
                     </div>
                 </div>
                  <div>
-                    <label htmlFor="industry-filter" className="block text-sm font-medium text-gray-500 dark:text-fann-light-gray mb-2">Industry</label>
+                    <label htmlFor="industry-filter" className="block text-sm font-medium text-fann-light-gray mb-2">Industry</label>
                     <select
                         id="industry-filter"
                         value={selectedIndustry}
                         onChange={(e) => setSelectedIndustry(e.target.value)}
-                        className="w-full bg-gray-200 dark:bg-fann-charcoal border border-gray-300 dark:border-fann-border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fann-gold"
+                        className="w-full bg-fann-peach/50 dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-accent-peach"
                     >
                         {industries.map(industry => (
                             <option key={industry} value={industry}>{industry}</option>
@@ -156,13 +157,13 @@ const EventsCalendarPage: React.FC = () => {
                     </select>
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-gray-500 dark:text-fann-light-gray mb-2">Date Range</label>
+                    <label className="block text-sm font-medium text-fann-light-gray mb-2">Date Range</label>
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
                          {dateRanges.map(range => (
                             <button
                                 key={range}
                                 onClick={() => setSelectedDateRange(range)}
-                                className={`w-full text-sm py-2 px-1 rounded-md transition-colors ${selectedDateRange === range ? 'bg-fann-teal text-white font-bold' : 'bg-gray-200 text-fann-charcoal dark:bg-fann-charcoal dark:text-white hover:bg-gray-300 dark:hover:bg-white/10'}`}
+                                className={`w-full text-sm py-2 px-1 rounded-md transition-colors ${selectedDateRange === range ? 'bg-fann-accent-teal text-white' : 'bg-fann-peach/50 text-fann-teal dark:bg-fann-teal dark:text-fann-peach hover:bg-fann-peach dark:hover:bg-fann-peach/10'}`}
                             >
                                 {range}
                             </button>
@@ -183,15 +184,15 @@ const EventsCalendarPage: React.FC = () => {
                           <motion.div 
                             key={`${event.name}-${event.date}`}
                             variants={itemVariants}
-                            className="bg-white dark:bg-fann-charcoal-light p-6 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center border-l-4 border-fann-teal"
+                            className="bg-white dark:bg-fann-teal-dark p-6 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center border-l-4 border-fann-accent-teal"
                            >
                               <div>
-                                  <h3 className="text-2xl font-bold text-fann-charcoal dark:text-white mb-1">{event.name}</h3>
-                                  <p className="text-gray-600 dark:text-fann-light-gray">{event.venue}, {event.country}</p>
+                                  <h3 className="text-2xl font-bold text-fann-teal dark:text-fann-peach mb-1">{event.name}</h3>
+                                  <p className="text-fann-light-gray">{event.venue}, {event.country}</p>
                               </div>
                               <div className="mt-4 sm:mt-0 text-left sm:text-right flex-shrink-0 sm:pl-4">
-                                  <p className="text-lg font-semibold text-fann-gold">{event.date}</p>
-                                  <p className="text-fann-charcoal dark:text-fann-cream">{event.industry}</p>
+                                  <p className="text-lg font-semibold text-fann-accent-teal dark:text-fann-accent-peach">{event.date}</p>
+                                  <p className="text-fann-teal dark:text-fann-peach">{event.industry}</p>
                               </div>
                           </motion.div>
                       ))
@@ -199,10 +200,10 @@ const EventsCalendarPage: React.FC = () => {
                       <motion.div 
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="text-center py-16 bg-white dark:bg-fann-charcoal-light rounded-lg"
+                        className="text-center py-16 bg-white dark:bg-fann-teal-dark rounded-lg"
                       >
-                        <h3 className="text-2xl font-serif text-fann-gold">No Events Found</h3>
-                        <p className="text-gray-500 dark:text-fann-light-gray mt-2">Try adjusting your filters to find more events.</p>
+                        <h3 className="text-2xl font-serif text-fann-accent-teal dark:text-fann-accent-peach">No Events Found</h3>
+                        <p className="text-fann-light-gray mt-2">Try adjusting your filters to find more events.</p>
                       </motion.div>
                     )}
                 </motion.div>

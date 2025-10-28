@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Linkedin } from 'lucide-react';
-import Logo from './Logo';
 
 const QuoraIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" {...props}>
@@ -12,48 +11,46 @@ const QuoraIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-gray-100 text-fann-charcoal dark:bg-fann-charcoal-light dark:text-fann-cream py-12">
+    <footer className="bg-fann-peach/50 text-fann-teal dark:bg-fann-teal-dark dark:text-fann-peach py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           <div className="md:col-span-12 lg:col-span-4">
-            <Link to="/" aria-label="FANN Home">
-                <Logo className="h-10 w-auto text-fann-teal mb-4" />
-            </Link>
-            <p className="text-sm text-gray-600 dark:text-fann-light-gray">Your full-service design and build partner. Transforming visions into unforgettable experiences across exhibitions, events, and interiors.</p>
+            <h3 className="text-2xl font-serif font-bold text-fann-accent-teal dark:text-fann-accent-peach mb-4">FANN</h3>
+            <p className="text-sm text-fann-teal/80 dark:text-fann-light-gray">Your full-service design and build partner. Transforming visions into unforgettable experiences across exhibitions, events, and interiors.</p>
           </div>
           <div className="md:col-span-6 lg:col-span-2">
-            <h4 className="font-bold text-fann-charcoal dark:text-white uppercase tracking-wider mb-4">Quick Links</h4>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-              <li><Link to="/about" className="hover:text-fann-gold transition-colors text-sm">About FANN</Link></li>
-              <li><Link to="/portfolio" className="hover:text-fann-gold transition-colors text-sm">Portfolio</Link></li>
-              <li><Link to="/services" className="hover:text-fann-gold transition-colors text-sm">Services</Link></li>
-              <li><Link to="/contact" className="hover:text-fann-gold transition-colors text-sm">Contact</Link></li>
+            <h4 className="font-bold text-fann-teal dark:text-fann-peach uppercase tracking-wider mb-4">Quick Links</h4>
+            <ul className="space-y-2 text-fann-teal/90 dark:text-fann-peach/90">
+              <li><Link to="/about" className="hover:text-fann-accent-teal dark:hover:text-fann-accent-peach transition-colors text-sm">About FANN</Link></li>
+              <li><Link to="/portfolio" className="hover:text-fann-accent-teal dark:hover:text-fann-accent-peach transition-colors text-sm">Portfolio</Link></li>
+              <li><Link to="/services" className="hover:text-fann-accent-teal dark:hover:text-fann-accent-peach transition-colors text-sm">Services</Link></li>
+              <li><Link to="/contact" className="hover:text-fann-accent-teal dark:hover:text-fann-accent-peach transition-colors text-sm">Contact</Link></li>
             </ul>
           </div>
           <div className="md:col-span-6 lg:col-span-3">
-            <h4 className="font-bold text-fann-charcoal dark:text-white uppercase tracking-wider mb-4">Contact Us</h4>
-            <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
-              <li><a href="mailto:sales@fann.ae" className="hover:text-fann-gold transition-colors">sales@fann.ae</a></li>
-              <li><a href="tel:+971505667502" className="hover:text-fann-gold transition-colors">+971 50 566 7502</a></li>
-              <li className="font-semibold mt-2 pt-2 border-t border-gray-300 dark:border-fann-border">Office:</li>
+            <h4 className="font-bold text-fann-teal dark:text-fann-peach uppercase tracking-wider mb-4">Contact Us</h4>
+            <ul className="space-y-2 text-sm text-fann-teal/90 dark:text-fann-peach/90">
+              <li><a href="mailto:sales@fann.ae" className="hover:text-fann-accent-teal dark:hover:text-fann-accent-peach transition-colors">sales@fann.ae</a></li>
+              <li><a href="tel:+971505667502" className="hover:text-fann-accent-teal dark:hover:text-fann-accent-peach transition-colors">+971 50 566 7502</a></li>
+              <li className="font-semibold mt-2 pt-2 border-t border-fann-teal/20 dark:border-fann-border">Office:</li>
               <li>Office 508, Dusseldorf Business Point, Al Barsha 1, Dubai, UAE</li>
-              <li className="font-semibold mt-2 pt-2 border-t border-gray-300 dark:border-fann-border">Warehouse:</li>
+              <li className="font-semibold mt-2 pt-2 border-t border-fann-teal/20 dark:border-fann-border">Warehouse:</li>
               <li>WH10-Umm Dera, Umm Al Quwain, UAE</li>
             </ul>
           </div>
           <div className="md:col-span-12 lg:col-span-3">
-            <h4 className="font-bold text-fann-charcoal dark:text-white uppercase tracking-wider mb-4">Follow Us</h4>
-            <div className="flex space-x-4 text-gray-500 dark:text-fann-light-gray">
-              <a href="https://www.facebook.com/fannuae/reels/" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold transition-colors"><Facebook /></a>
-              <a href="https://www.instagram.com/fann_uae/" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold transition-colors"><Instagram /></a>
-              <a href="https://ae.linkedin.com/company/fannaedubai" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold transition-colors"><Linkedin /></a>
-              <a href="https://fannae.quora.com/" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold transition-colors"><QuoraIcon /></a>
+            <h4 className="font-bold text-fann-teal dark:text-fann-peach uppercase tracking-wider mb-4">Follow Us</h4>
+            <div className="flex space-x-4 text-fann-teal/70 dark:text-fann-light-gray">
+              <a href="https://www.facebook.com/fannuae/reels/" target="_blank" rel="noopener noreferrer" className="hover:text-fann-accent-teal dark:hover:text-fann-accent-peach transition-colors"><Facebook /></a>
+              <a href="https://www.instagram.com/fann_uae/" target="_blank" rel="noopener noreferrer" className="hover:text-fann-accent-teal dark:hover:text-fann-accent-peach transition-colors"><Instagram /></a>
+              <a href="https://ae.linkedin.com/company/fannaedubai" target="_blank" rel="noopener noreferrer" className="hover:text-fann-accent-teal dark:hover:text-fann-accent-peach transition-colors"><Linkedin /></a>
+              <a href="https://fannae.quora.com/" target="_blank" rel="noopener noreferrer" className="hover:text-fann-accent-teal dark:hover:text-fann-accent-peach transition-colors"><QuoraIcon /></a>
             </div>
           </div>
         </div>
-        <div className="border-t border-gray-200 dark:border-fann-charcoal mt-8 pt-6 text-center text-sm text-gray-500 dark:text-fann-light-gray">
-          <p>&copy; {new Date().getFullYear()} FANN. All Rights Reserved. | <a href="#" className="hover:text-fann-gold">Privacy Policy</a></p>
-          <p className="mt-2">Created by <a href="https://www.ohhmyroi.com" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold font-semibold">www.ohhmyroi.com</a></p>
+        <div className="border-t border-fann-teal/20 dark:border-fann-border mt-8 pt-6 text-center text-sm text-fann-teal/70 dark:text-fann-light-gray">
+          <p>&copy; {new Date().getFullYear()} FANN. All Rights Reserved. | <a href="#" className="hover:text-fann-accent-teal dark:hover:text-fann-accent-peach">Privacy Policy</a></p>
+          <p className="mt-2">Created by <a href="https://www.ohhmyroi.com" target="_blank" rel="noopener noreferrer" className="hover:text-fann-accent-teal dark:hover:text-fann-accent-peach font-semibold">www.ohhmyroi.com</a></p>
         </div>
       </div>
     </footer>
