@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, Sparkles, Upload, ArrowLeft, Home, Palette, ListChecks, User, CheckCircle, AlertCircle, MapPin, Square, PenLine, FileImage, FileText, Wallet, CalendarDays } from 'lucide-react';
+import { Loader2, Sparkles, Upload, ArrowLeft, Home, Palette, ListChecks, User, CheckCircle, AlertCircle, MapPin, Square, PenLine, FileImage, FileText, Wallet, CalendarDays, RefreshCw } from 'lucide-react';
 import { useApiKey } from '../context/ApiKeyProvider';
 import { useSearchParams } from 'react-router-dom';
 import AnimatedPage from '../components/AnimatedPage';
@@ -128,6 +128,7 @@ const InteriorStudioPage: React.FC = () => {
     const [isSending, setIsSending] = useState(false);
     const [activeAngles, setActiveAngles] = useState<Record<number, Angle>>({});
     const [generationStatus, setGenerationStatus] = useState<string | null>(null);
+    const [generationCount, setGenerationCount] = useState(0);
     const { ensureApiKey, handleApiError, error: apiKeyError, clearError } = useApiKey();
     const [localError, setLocalError] = useState<string | null>(null);
     const error = apiKeyError || localError;
@@ -197,15 +198,22 @@ const InteriorStudioPage: React.FC = () => {
     const nextStep = () => validateStep(currentStep) && setCurrentStep(p => p + 1);
     const prevStep = () => setCurrentStep(p => p - 1);
 
-    const generateConcepts = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!validateStep(currentStep)) return;
+    const generateConcepts = async (e?: React.FormEvent) => {
+        if(e) e.preventDefault();
+        
+        for (let i = 0; i < steps.length; i++) {
+            if (!validateStep(i)) {
+                setCurrentStep(i);
+                return;
+            }
+        }
         
         clearError();
         if (!await ensureApiKey()) return;
 
         setIsLoading(true);
         setGeneratedConcepts([]);
+        setIsFinished(false);
 
         try {
             const floorPlanData = formData.floorPlan ? await blobToBase64(formData.floorPlan) : null;
@@ -239,11 +247,12 @@ const InteriorStudioPage: React.FC = () => {
             if (!data.concepts || data.concepts.length === 0) throw new Error("The model failed to generate any concepts.");
             
             setGeneratedConcepts(data.concepts);
+            setGenerationCount(data.newCount || 0);
 
             if (data.newCount === 1) {
-                setGenerationStatus("Design 1/2 generated. You have one more free design generation.");
+                setGenerationStatus("Design set 1 of 2 generated. You can generate one more set.");
             } else if (data.newCount >= 2) {
-                setGenerationStatus("Design 2/2 generated. You’ve used all free attempts. Contact our agent for more options.");
+                setGenerationStatus("Design set 2 of 2 generated. You’ve used all free attempts. Contact our agent for more options.");
             }
 
             setIsFinished(true);
@@ -426,7 +435,7 @@ const InteriorStudioPage: React.FC = () => {
     // --- Main Render Logic ---
     if (isLoading) return <div className="min-h-screen flex flex-col justify-center items-center text-center p-4"><Loader2 className="w-16 h-16 text-fann-gold animate-spin" /><h2 className="text-3xl font-serif text-white mt-6">Crafting Your Designs...</h2><p className="text-fann-light-gray mt-2 max-w-sm">Our design tools are interpreting your brief and generating bespoke concepts. This may take up to a minute.</p></div>;
     
-    if (isFinished) return <AnimatedPage><div className="min-h-screen pt-32 pb-20 text-white"><div className="container mx-auto px-4 sm:px-6 lg:px-8">{isProposalSent ? <div className="min-h-[70vh] flex flex-col justify-center items-center text-center p-4"><CheckCircle className="w-20 h-20 text-fann-teal mb-6" /><h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Thank You, {formData.firstName}!</h1><p className="text-xl text-fann-cream max-w-2xl mx-auto">Your request has been received. Our design team will contact you at <strong>{formData.email}</strong> shortly.</p></div> : <> <div className="text-center mb-12"><Sparkles className="mx-auto h-16 w-16 text-fann-gold" /><h1 className="text-4xl font-serif font-bold text-fann-gold mt-4 mb-4">Your Bespoke Concepts</h1><p className="text-lg text-fann-cream max-w-3xl mx-auto">We've prepared these concepts based on your brief. Select your preferred direction to proceed.</p>{generationStatus && <p className="text-lg font-semibold text-fann-teal mt-4 bg-fann-teal/10 px-4 py-2 rounded-md inline-block">{generationStatus}</p>}</div><div className="grid grid-cols-1 lg:grid-cols-3 gap-8">{generatedConcepts.map((concept, index) => (<motion.div key={index} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.15 }} onClick={() => setSelectedConcept(index)} className={`p-4 bg-fann-charcoal-light rounded-lg cursor-pointer border-2 transition-all duration-300 hover:border-fann-gold/50 ${selectedConcept === index ? 'border-fann-gold' : 'border-fann-border'}`}><div className="relative aspect-video mb-4 rounded-md overflow-hidden bg-fann-charcoal"><AnimatePresence mode="wait"><motion.img key={`${index}-${activeAngles[index] || 'perspective'}`} src={concept.images[activeAngles[index] || 'perspective']} alt={`${concept.title} - ${activeAngles[index] || 'perspective'} view`} className="absolute inset-0 w-full h-full object-cover" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} /></AnimatePresence></div><div className="flex justify-center gap-2 mb-4">{(['perspective', 'topDown', 'detail'] as Angle[]).map(angle => (<button key={angle} onClick={(e) => { e.stopPropagation(); setActiveAngles(p => ({...p, [index]: angle}))}} className={`px-3 py-1 text-xs rounded-full transition-colors ${(activeAngles[index] || 'perspective') === angle ? 'bg-fann-teal text-white' : 'bg-fann-charcoal hover:bg-white/10'}`}>{angle === 'topDown' ? 'Floor Plan' : angle.charAt(0).toUpperCase() + angle.slice(1)}</button>))}</div><h3 className="text-xl font-serif font-bold text-white">{concept.title}</h3><p className="text-sm text-fann-light-gray mt-1">{concept.description}</p></motion.div>))}</div>{selectedConcept !== null && (<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mt-12 bg-fann-charcoal-light p-8 rounded-lg sticky bottom-6 border-2 border-fann-gold shadow-2xl max-w-4xl mx-auto"><div className="flex flex-col md:flex-row items-center justify-between gap-6"><div><h3 className="text-2xl font-serif font-bold text-fann-gold">You've Selected: "{generatedConcepts[selectedConcept].title}"</h3><p className="text-fann-cream mt-1">Ready to bring this vision to life? Let's start the conversation.</p></div><motion.button onClick={handleSendProposal} disabled={isSending} className="bg-fann-teal text-white font-bold py-3 px-8 rounded-full flex-shrink-0 flex items-center gap-2" whileHover={{ scale: !isSending ? 1.05 : 1 }} whileTap={{ scale: !isSending ? 0.95 : 1 }}>{isSending ? <><Loader2 className="w-5 h-5 animate-spin"/> Sending...</> : 'Request Consultation'}</motion.button></div>{error && <p className="text-red-400 text-sm text-center mt-4">{error}</p>}</motion.div>)}</>}</div></div></AnimatedPage>;
+    if (isFinished) return <AnimatedPage><div className="min-h-screen pt-32 pb-20 text-white"><div className="container mx-auto px-4 sm:px-6 lg:px-8">{isProposalSent ? <div className="min-h-[70vh] flex flex-col justify-center items-center text-center p-4"><CheckCircle className="w-20 h-20 text-fann-teal mb-6" /><h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Thank You, {formData.firstName}!</h1><p className="text-xl text-fann-cream max-w-2xl mx-auto">Your request has been received. Our design team will contact you at <strong>{formData.email}</strong> shortly.</p></div> : <> <div className="text-center mb-12"><Sparkles className="mx-auto h-16 w-16 text-fann-gold" /><h1 className="text-4xl font-serif font-bold text-fann-gold mt-4 mb-4">Your Bespoke Concepts</h1><p className="text-lg text-fann-cream max-w-3xl mx-auto">We've prepared these concepts based on your brief. Select your preferred direction to proceed.</p>{generationStatus && <p className="text-lg font-semibold text-fann-teal mt-4 bg-fann-teal/10 px-4 py-2 rounded-md inline-block">{generationStatus}</p>}</div><div className="grid grid-cols-1 lg:grid-cols-2 gap-8">{generatedConcepts.map((concept, index) => (<motion.div key={index} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.15 }} onClick={() => setSelectedConcept(index)} className={`p-4 bg-fann-charcoal-light rounded-lg cursor-pointer border-2 transition-all duration-300 hover:border-fann-gold/50 ${selectedConcept === index ? 'border-fann-gold' : 'border-fann-border'}`}><div className="relative aspect-video mb-4 rounded-md overflow-hidden bg-fann-charcoal"><AnimatePresence mode="wait"><motion.img key={`${index}-${activeAngles[index] || 'perspective'}`} src={concept.images[activeAngles[index] || 'perspective']} alt={`${concept.title} - ${activeAngles[index] || 'perspective'} view`} className="absolute inset-0 w-full h-full object-cover" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} /></AnimatePresence></div><div className="flex justify-center gap-2 mb-4">{(['perspective', 'topDown', 'detail'] as Angle[]).map(angle => (<button key={angle} onClick={(e) => { e.stopPropagation(); setActiveAngles(p => ({...p, [index]: angle}))}} className={`px-3 py-1 text-xs rounded-full transition-colors ${(activeAngles[index] || 'perspective') === angle ? 'bg-fann-teal text-white' : 'bg-fann-charcoal hover:bg-white/10'}`}>{angle === 'topDown' ? 'Floor Plan' : angle.charAt(0).toUpperCase() + angle.slice(1)}</button>))}</div><h3 className="text-xl font-serif font-bold text-white">{concept.title}</h3><p className="text-sm text-fann-light-gray mt-1">{concept.description}</p></motion.div>))}</div> {generationCount < 2 && !isLoading && (<div className="text-center mt-12"> <motion.button onClick={() => generateConcepts()} className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider flex items-center justify-center gap-2 mx-auto" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} > <RefreshCw size={20}/> Generate More Concepts </motion.button> </div>)} {selectedConcept !== null && (<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mt-12 bg-fann-charcoal-light p-8 rounded-lg sticky bottom-6 border-2 border-fann-gold shadow-2xl max-w-4xl mx-auto"><div className="flex flex-col md:flex-row items-center justify-between gap-6"><div><h3 className="text-2xl font-serif font-bold text-fann-gold">You've Selected: "{generatedConcepts[selectedConcept].title}"</h3><p className="text-fann-cream mt-1">Ready to bring this vision to life? Let's start the conversation.</p></div><motion.button onClick={handleSendProposal} disabled={isSending} className="bg-fann-teal text-white font-bold py-3 px-8 rounded-full flex-shrink-0 flex items-center gap-2" whileHover={{ scale: !isSending ? 1.05 : 1 }} whileTap={{ scale: !isSending ? 0.95 : 1 }}>{isSending ? <><Loader2 className="w-5 h-5 animate-spin"/> Sending...</> : 'Request Consultation'}</motion.button></div>{error && <p className="text-red-400 text-sm text-center mt-4">{error}</p>}</motion.div>)}</>}</div></div></AnimatedPage>;
     
     return (
         <AnimatedPage>

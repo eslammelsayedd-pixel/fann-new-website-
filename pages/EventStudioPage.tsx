@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 // FIX: Import `AnimatePresence` from `framer-motion` to resolve 'Cannot find name' errors.
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, Sparkles, Upload, ArrowLeft, Users, Palette, ListChecks, Crown, User, CheckCircle, AlertCircle } from 'lucide-react';
+import { Loader2, Sparkles, Upload, ArrowLeft, Users, Palette, ListChecks, Crown, User, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
 import { useApiKey } from '../context/ApiKeyProvider';
 import { useSearchParams } from 'react-router-dom';
 import AnimatedPage from '../components/AnimatedPage';
@@ -91,6 +91,7 @@ const EventStudioPage: React.FC = () => {
     const [isProposalRequested, setIsProposalRequested] = useState(false);
     const [isSending, setIsSending] = useState(false);
     const [generationStatus, setGenerationStatus] = useState<string | null>(null);
+    const [generationCount, setGenerationCount] = useState(0);
     
     const { ensureApiKey, handleApiError, error: apiKeyError, clearError: clearApiKeyError } = useApiKey();
     const [localError, setLocalError] = useState<string | null>(null);
@@ -223,6 +224,7 @@ const EventStudioPage: React.FC = () => {
 
         setIsLoading(true);
         setGeneratedImages([]);
+        setIsFinished(false);
 
         if (!formData.logo) {
             setError("Logo is missing. Please go back and upload it.");
@@ -233,7 +235,7 @@ const EventStudioPage: React.FC = () => {
         try {
             const logoBase64 = await blobToBase64(formData.logo);
             
-            const textPrompt = `Generate 2 photorealistic concept images for a corporate event.
+            const textPrompt = `Generate 4 photorealistic concept images for a corporate event.
 - **Event Type:** ${formData.eventType}
 - **Theme:** ${formData.theme}
 - **Venue Type:** A luxurious ${formData.venueType} in Dubai.
@@ -269,11 +271,12 @@ const EventStudioPage: React.FC = () => {
             }
             
             setGeneratedImages(data.imageUrls);
+            setGenerationCount(data.newCount || 0);
             
             if (data.newCount === 1) {
-                setGenerationStatus("Design 1/2 generated. You have one more free design generation.");
+                setGenerationStatus("Design set 1 of 2 generated. You can generate one more set.");
             } else if (data.newCount >= 2) {
-                setGenerationStatus("Design 2/2 generated. You’ve used all free attempts. Contact our agent for more options.");
+                setGenerationStatus("Design set 2 of 2 generated. You’ve used all free attempts. Contact our agent for more options.");
             }
             
             setIsFinished(true);
@@ -546,6 +549,17 @@ const EventStudioPage: React.FC = () => {
                                         </motion.div>
                                     )}
                                 </div>
+                                {generationCount < 2 && !isLoading && (
+                                    <div className="mt-6 text-center">
+                                        <button 
+                                            onClick={generateDesign} 
+                                            className="w-full border-2 border-fann-gold text-fann-gold font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 hover:bg-fann-gold/10 transition-colors"
+                                        >
+                                            <RefreshCw size={18}/>
+                                            Generate More
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

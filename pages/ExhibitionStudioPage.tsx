@@ -1,6 +1,6 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, Sparkles, Upload, ArrowLeft, Building, Scaling, ListChecks, User, CheckCircle, AlertCircle, Palette, View, FileText, Mail, Phone, Camera } from 'lucide-react';
+import { Loader2, Sparkles, Upload, ArrowLeft, Building, Scaling, ListChecks, User, CheckCircle, AlertCircle, Palette, View, FileText, Mail, Phone, Camera, RefreshCw } from 'lucide-react';
 import { useApiKey } from '../context/ApiKeyProvider';
 import { useSearchParams, Link } from 'react-router-dom';
 import AnimatedPage from '../components/AnimatedPage';
@@ -158,6 +158,7 @@ const ExhibitionStudioPage: React.FC = () => {
     const [formErrors, setFormErrors] = useState<Partial<Record<keyof FormData, string>>>({});
     const [activeAngles, setActiveAngles] = useState<Record<number, Angle>>({});
     const [generationStatus, setGenerationStatus] = useState<string | null>(null);
+    const [generationCount, setGenerationCount] = useState(0);
     const [isExtractingColors, setIsExtractingColors] = useState(false);
     const [suggestedColors, setSuggestedColors] = useState<string[]>([]);
     const [selectedConcept, setSelectedConcept] = useState<number | null>(null);
@@ -357,6 +358,7 @@ const ExhibitionStudioPage: React.FC = () => {
 
         setIsLoading(true);
         setGeneratedConcepts([]);
+        setIsFinished(false);
 
         if (!formData.logo) {
             setError("Logo is missing. Please go back and upload it.");
@@ -406,12 +408,13 @@ const ExhibitionStudioPage: React.FC = () => {
                  throw new Error("The FANN design engine failed to generate any concepts.");
             }
             
+            setGenerationCount(data.newCount || 0);
             setGeneratedConcepts(data.concepts);
             
             if (data.newCount === 1) {
-                setGenerationStatus("Design 1/2 generated. You have one more free design generation.");
+                setGenerationStatus("Design set 1 of 2 generated. You can generate one more set.");
             } else if (data.newCount >= 2) {
-                setGenerationStatus("Design 2/2 generated. You’ve used all free attempts. Contact our agent for more options.");
+                setGenerationStatus("Design set 2 of 2 generated. You’ve used all free attempts. Contact our agent for more options.");
             }
 
             setIsFinished(true);
@@ -896,6 +899,21 @@ const ExhibitionStudioPage: React.FC = () => {
                         ))}
                     </div>
 
+                    {generationCount < 2 && !isLoading && (
+                        <div className="text-center mt-12">
+                            <motion.button 
+                                onClick={generateDesign} 
+                                className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider flex items-center justify-center gap-2 mx-auto"
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                <RefreshCw size={20}/>
+                                Generate More Designs
+                            </motion.button>
+                        </div>
+                    )}
+
+
                     <AnimatePresence>
                     {selectedConcept !== null && (
                         <motion.div 
@@ -911,7 +929,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                 </div>
                                  <motion.button onClick={sendProposalRequest} disabled={isSending} className="bg-fann-teal text-white font-bold py-3 px-8 rounded-full flex-shrink-0 flex items-center justify-center gap-2 w-full md:w-auto" whileHover={{ scale: !isSending ? 1.05 : 1 }} whileTap={{ scale: !isSending ? 0.95 : 1 }}>
                                     {isSending ? <><Loader2 className="w-5 h-5 animate-spin" /> Sending...</> : "Request Detailed Proposal"}
-                                </motion.button>
+                                 </motion.button>
                             </div>
                             {error && (
                                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-400 text-sm text-center mt-4">

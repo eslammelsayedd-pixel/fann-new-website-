@@ -64,7 +64,7 @@ export default async function handler(req: any, res: any) {
       studioType = 'Exhibition';
       if (!logo || !mimeType) return res.status(400).json({ error: 'Missing logo or mimeType for Exhibition' });
       
-      const baseTextGenPrompt = `Based on the following design brief for an exhibition stand, generate 3 distinct and creative concept proposals. For each proposal, provide a unique "title" and a short "description" (2-3 sentences that highlight a key feature or benefit).
+      const baseTextGenPrompt = `Based on the following design brief for an exhibition stand, generate 4 distinct and creative concept proposals. For each proposal, provide a unique "title" and a short "description" (2-3 sentences that highlight a key feature or benefit).
 **Design Brief:**
 - **Event:** ${promptData.event}
 - **Industry:** ${promptData.industry}
@@ -104,7 +104,7 @@ Return your response as a single, valid JSON array. Do not include any text or m
 
       let jsonText = textResponse.text.trim();
       const textData = JSON.parse(jsonText);
-      if (!Array.isArray(textData) || textData.length < 3) {
+      if (!Array.isArray(textData) || textData.length < 4) {
           throw new Error("The model failed to generate enough titles and descriptions.");
       }
 
@@ -162,7 +162,7 @@ Return your response as a single, valid JSON array. Do not include any text or m
         const pdi = promptDataInterior;
         const isCommercial = ['Office', 'Retail space'].includes(pdi.spaceType);
 
-        const textGenPrompt = `As a senior interior designer in Dubai, generate 3 distinct concept proposals for the following client brief. For each, provide a "title" and a "description" (2-3 sentences capturing the essence of the design).
+        const textGenPrompt = `As a senior interior designer in Dubai, generate 4 distinct concept proposals for the following client brief. For each, provide a "title" and a "description" (2-3 sentences capturing the essence of the design).
 **Client Brief:**
 - **Space Type:** ${pdi.spaceType}, ${pdi.area} sqm.
 - **Location:** ${pdi.location}.
@@ -175,7 +175,7 @@ Return your response as a single, valid JSON array. Do not include any text or m
 ${isCommercial ? `- **Brand Keywords:** ${pdi.brandKeywords}` : ''}
 The user has provided a floor plan and moodboard images for inspiration.
 
-**Output Format:** Return a valid JSON array of 3 objects, each with a "title" and "description" key. No extra text or markdown.`;
+**Output Format:** Return a valid JSON array of 4 objects, each with a "title" and "description" key. No extra text or markdown.`;
 
         const textResponse = await ai.models.generateContent({
             model: 'gemini-2.5-flash',
@@ -187,7 +187,7 @@ The user has provided a floor plan and moodboard images for inspiration.
             throw new Error("The model failed to generate text descriptions.");
         }
         const textData = JSON.parse(textResponse.text.trim());
-        if (!Array.isArray(textData) || textData.length < 3) {
+        if (!Array.isArray(textData) || textData.length < 4) {
             throw new Error("The model failed to generate enough titles and descriptions.");
         }
 
@@ -244,7 +244,7 @@ The user has provided a floor plan and moodboard images for inspiration.
         studioType = 'Event';
         if (!logo || !mimeType) return res.status(400).json({ error: 'Missing logo or mimeType for Event' });
 
-        const imagePromises = Array(2).fill(0).map(() => 
+        const imagePromises = Array(4).fill(0).map(() => 
             ai.models.generateContent({
                 model: 'gemini-2.5-flash-image',
                 contents: { parts: [

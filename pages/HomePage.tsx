@@ -88,7 +88,7 @@ const HeroSection: React.FC = () => {
                 </button>
             </model-viewer>
 
-            <div className="relative z-10 p-4" style={{ textShadow: '0 2px 8px rgba(0, 0, 0, 0.8)' }}>
+            <div className="relative z-10 p-4 w-full" style={{ textShadow: '0 2px 8px rgba(0, 0, 0, 0.8)' }}>
                 <motion.h1 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
