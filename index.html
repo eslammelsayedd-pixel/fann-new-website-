@@ -33,56 +33,6 @@
     }
     </script>
 <style>
-    .hotspot {
-        background: rgba(255, 255, 255, 0.9);
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        border-radius: 50%;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
-        box-sizing: border-box;
-        cursor: pointer;
-        height: 24px;
-        width: 24px;
-        transition: opacity 0.3s, transform 0.3s;
-        transform: scale(0.75);
-    }
-    .hotspot:hover {
-        transform: scale(1);
-    }
-    .hotspot:not([data-visible]) {
-        opacity: 0;
-        pointer-events: none;
-    }
-    .annotation {
-        transform: translate(20px, -50%) scale(0.8);
-        transform-origin: left center;
-        background: #FCE5D4; /* fann-peach */
-        border: 1px solid rgba(0,0,0,0.1);
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.35);
-        color: #1E565A; /* fann-teal */
-        font-family: 'Inter', sans-serif;
-        font-size: 14px;
-        font-weight: 500;
-        left: 100%;
-        max-width: 220px;
-        padding: 0.75em 1.25em;
-        position: absolute;
-        top: 50%;
-        width: max-content;
-        pointer-events: none;
-        opacity: 0;
-        transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
-    }
-    .dark .annotation {
-        background: #1A4A4F; /* fann-teal-dark */
-        border: 1px solid #F9DDC8; /* fann-accent-peach */
-        color: #FCE5D4; /* fann-peach */
-    }
-    .hotspot[data-visible]:hover .annotation {
-        transform: translate(20px, -50%) scale(1);
-        opacity: 1;
-    }
-
     /* Hide Google Translate Default UI */
     .goog-te-banner-frame.skiptranslate {
         display: none !important;
@@ -107,7 +57,6 @@
   }
 }
 </script>
-<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 </head>
 <body class="bg-fann-peach text-fann-teal dark:bg-fann-teal dark:text-fann-peach font-sans">
     <div id="google_translate_element" style="display:none;"></div>

@@ -51,44 +51,13 @@ const HeroSection: React.FC = () => {
     }, []);
 
     return (
-        <section className="relative h-screen flex items-center justify-center text-center text-white overflow-hidden bg-fann-teal">
-            <model-viewer
-                src="https://cdn.glitch.global/e8040d12-4f3b-487c-87d2-069a72172777/exhibition_stand.glb?v=1718890003223"
-                alt="Interactive 3D model of a modern exhibition stand"
-                camera-controls
-                auto-rotate
-                ar
-                interaction-prompt="auto"
-                camera-orbit="15deg 75deg 10m"
-                min-camera-orbit="auto auto 5m"
-                max-camera-orbit="auto auto 15m"
-                field-of-view="30deg"
-                shadow-intensity="1.2"
-                exposure="0.9"
-                environment-image="neutral"
-                className="absolute top-0 left-0 w-full h-full"
-            >
-                <button className="hotspot" slot="hotspot-1" data-position="-1.6m 1m -1.5m" data-normal="0m 1m 0m">
-                    <div className="annotation">
-                        <h4 className="font-bold text-fann-accent-teal dark:text-fann-accent-peach">Lead Generation Hub</h4>
-                        <p className="text-xs text-fann-teal dark:text-fann-peach">Reception desks designed to attract and qualify leads efficiently.</p>
-                    </div>
-                </button>
-                 <button className="hotspot" slot="hotspot-2" data-position="2.5m 1.5m 1m" data-normal="0m 1m 0m">
-                    <div className="annotation">
-                         <h4 className="font-bold text-fann-accent-teal dark:text-fann-accent-peach">Private Meeting Space</h4>
-                        <p className="text-xs text-fann-teal dark:text-fann-peach">Integrated rooms for high-level discussions and closing deals.</p>
-                    </div>
-                </button>
-                <button className="hotspot" slot="hotspot-3" data-position="0m 2m 2.8m" data-normal="0m 0m -1m">
-                    <div className="annotation">
-                        <h4 className="font-bold text-fann-accent-teal dark:text-fann-accent-peach">Immersive AV</h4>
-                        <p className="text-xs text-fann-teal dark:text-fann-peach">State-of-the-art video walls for impactful brand storytelling.</p>
-                    </div>
-                </button>
-            </model-viewer>
+        <section 
+            className="relative h-screen flex items-center justify-center text-center text-white overflow-hidden bg-cover bg-center"
+            style={{ backgroundImage: "url('https://images.pexels.com/photos/1267696/pexels-photo-1267696.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')" }}
+        >
+            <div className="absolute inset-0 bg-fann-teal/80 backdrop-blur-sm"></div>
 
-            <div className="relative z-10 p-4 w-full" style={{ textShadow: '0 2px 8px rgba(0, 0, 0, 0.8)' }}>
+            <div className="relative z-10 p-4 w-full" style={{ textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)' }}>
                 <motion.h1 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -143,16 +112,6 @@ const HeroSection: React.FC = () => {
                     </Link>
                 </motion.div>
             </div>
-            
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: [0, 1, 1, 0] }}
-                transition={{ duration: 5, times: [0, 0.2, 0.8, 1], repeat: Infinity, repeatDelay: 5 }}
-                className="absolute bottom-24 z-20 text-fann-peach/90 bg-black/40 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold pointer-events-none"
-                style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}
-            >
-                Click & Drag to Explore
-            </motion.div>
 
             <motion.div 
                 animate={{ y: [0, 10, 0] }}
