@@ -449,13 +449,16 @@ const ExhibitionStudioPage: React.FC = () => {
         clearAllErrors();
     
         try {
+            const { logo, logoPreview, ...restOfFormData } = formData;
+            const { image, ...restOfSelectedConcept } = selectedConcept;
+            
             const response = await fetch('/api/send-proposal', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     studioType: 'Exhibition',
-                    formData: formData,
-                    selectedConcept: selectedConcept
+                    formData: restOfFormData,
+                    selectedConcept: restOfSelectedConcept
                 })
             });
     

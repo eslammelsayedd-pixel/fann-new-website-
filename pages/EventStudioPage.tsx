@@ -311,16 +311,16 @@ const EventStudioPage: React.FC = () => {
         clearAllErrors();
     
         try {
+            const { logo, logoPreview, ...restOfFormData } = formData;
             const response = await fetch('/api/send-proposal', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     studioType: 'Event',
-                    formData: { ...formData, userEmail: formData.userEmail, theme: formData.theme }, // Ensure required fields passed
+                    formData: { ...restOfFormData, userEmail: formData.userEmail, theme: formData.theme },
                     selectedConcept: {
                         title: `Event Concept Moodboard`,
-                        description: `A visual concept for the ${formData.eventType} with the theme: "${formData.theme}".`,
-                        image: selectedImage
+                        description: `A visual concept for the ${formData.eventType} with the theme: "${formData.theme}".`
                     }
                 })
             });

@@ -1,5 +1,3 @@
-import React from 'react';
-
 // This file uses module augmentation to add the 'model-viewer' custom element to React's JSX types.
 // This logic is placed here to ensure it's picked up by the TypeScript compiler,
 // resolving module resolution issues for the augmentation.

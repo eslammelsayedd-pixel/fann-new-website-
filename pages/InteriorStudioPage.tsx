@@ -269,13 +269,16 @@ const InteriorStudioPage: React.FC = () => {
         setLocalError(null);
     
         try {
+            const { moodboards, floorPlan, ...restOfFormData } = formData;
+            const { image, ...restOfSelectedConcept } = selectedConcept;
+            
             const response = await fetch('/api/send-proposal', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     studioType: 'Interior Design',
-                    formData: { ...formData, userEmail: formData.email }, // Pass email for reply_to
-                    selectedConcept: selectedConcept
+                    formData: { ...restOfFormData, userEmail: formData.email },
+                    selectedConcept: restOfSelectedConcept
                 })
             });
     

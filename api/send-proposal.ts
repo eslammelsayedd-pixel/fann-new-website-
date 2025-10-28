@@ -59,7 +59,7 @@ export default async function handler(req: any, res: any) {
                 <h2 style="color: #D4AF76; margin-top: 20px;">Selected Concept</h2>
                 <h3 style="color: #f5f5dc;">${selectedConcept.title}</h3>
                 <p style="font-style: italic;">${selectedConcept.description || ''}</p>
-                <img src="${selectedConcept.image}" alt="Selected Concept" style="max-width: 100%; border-radius: 8px; border: 2px solid #D4AF76; margin-top: 10px;" />
+                <p style="font-size: 12px; color: #B0B0B0;">(The visual concept was selected by the user in the FANN Studio but is not attached to this email to reduce size. Please refer to the brief details to understand the user's requirements.)</p>
             </div>
         `;
     };
@@ -76,8 +76,9 @@ export default async function handler(req: any, res: any) {
                 
                 <div style="text-align: center; margin: 30px 0; background-color: #f9f9f9; padding: 15px; border-radius: 8px;">
                     <h3 style="color: #1a1a1a; margin-top:0;">Your Selected Concept:</h3>
-                    <p style="font-weight: bold; font-size: 18px; margin-bottom: 15px;">${selectedConcept.title}</p>
-                    <img src="${selectedConcept.image}" alt="Your Selected Concept" style="max-width: 100%; border-radius: 8px; border: 1px solid #ccc;" />
+                    <p style="font-weight: bold; font-size: 18px; margin-bottom: 5px;">${selectedConcept.title}</p>
+                    <p style="font-style: italic; color: #555; font-size: 14px; padding: 0 10px; margin-bottom: 15px;">${selectedConcept.description || ''}</p>
+                    <p style="font-size: 12px; color: #777; margin-top: 15px;">Our team has received the visual you selected and will refer to it when we contact you.</p>
                 </div>
 
                 <h3 style="font-family: 'Playfair Display', serif; color: #1a1a1a; font-size: 20px; text-align: center; margin-top: 40px;">While you wait, why not...</h3>
