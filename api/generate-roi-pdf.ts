@@ -12,7 +12,7 @@ const generateReportHtml = (roiData: any, userData: any) => {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>FANN Proprietary ROI Analysis for ${userData.company}</title>
+        <title>FANN Proprietary ROI Analysis for ${event_analysis.event_name}</title>
         <style>
             @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
             body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #1a1a1a; color: #F5F5DC; }
@@ -40,7 +40,7 @@ const generateReportHtml = (roiData: any, userData: any) => {
     <body>
         <div class="container">
             <h1>FANN Proprietary ROI Analysis</h1>
-            <p style="text-align:center;">Prepared for: <strong>${userData.company}</strong><br>For Event: <strong>${event_analysis.event_name}</strong><br>Date: ${today}</p>
+            <p style="text-align:center;">Prepared for: ${userData.company}<br>Date: ${today}</p>
             
             <div class="summary-card">
                 <p class="label">Projected Return on Investment (ROI)</p>

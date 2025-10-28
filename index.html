@@ -16,13 +16,13 @@
         theme: {
             extend: {
                 colors: {
-                    'fann-teal': '#1E565A',
-                    'fann-peach': '#FCE5D4',
-                    'fann-accent-teal': '#2D767F',
-                    'fann-accent-peach': '#F9DDC8',
-                    'fann-teal-dark': '#1A4A4F',
-                    'fann-light-gray': '#A99E96',
-                    'fann-border': 'rgba(249, 221, 200, 0.2)',
+                    'fann-teal': '#5A8B8C',
+                    'fann-gold': '#D4AF76',
+                    'fann-charcoal': '#1a1a1a',
+                    'fann-cream': '#F5F5DC',
+                    'fann-charcoal-light': '#2C2C2C',
+                    'fann-light-gray': '#B0B0B0',
+                    'fann-border': 'rgba(90, 139, 140, 0.3)',
                 },
                 fontFamily: {
                     'serif': ['Playfair Display', 'serif'],
@@ -33,6 +33,56 @@
     }
     </script>
 <style>
+    .hotspot {
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+        box-sizing: border-box;
+        cursor: pointer;
+        height: 24px;
+        width: 24px;
+        transition: opacity 0.3s, transform 0.3s;
+        transform: scale(0.75);
+    }
+    .hotspot:hover {
+        transform: scale(1);
+    }
+    .hotspot:not([data-visible]) {
+        opacity: 0;
+        pointer-events: none;
+    }
+    .annotation {
+        transform: translate(20px, -50%) scale(0.8);
+        transform-origin: left center;
+        background: #F5F5DC; /* fann-cream */
+        border: 1px solid rgba(0,0,0,0.1);
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.35);
+        color: #1a1a1a; /* fann-charcoal */
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        left: 100%;
+        max-width: 220px;
+        padding: 0.75em 1.25em;
+        position: absolute;
+        top: 50%;
+        width: max-content;
+        pointer-events: none;
+        opacity: 0;
+        transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    }
+    .dark .annotation {
+        background: #1a1a1a; /* fann-charcoal */
+        border: 1px solid #D4AF76; /* fann-gold */
+        color: white;
+    }
+    .hotspot[data-visible]:hover .annotation {
+        transform: translate(20px, -50%) scale(1);
+        opacity: 1;
+    }
+
     /* Hide Google Translate Default UI */
     .goog-te-banner-frame.skiptranslate {
         display: none !important;
@@ -57,8 +107,9 @@
   }
 }
 </script>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 </head>
-<body class="bg-fann-peach text-fann-teal dark:bg-fann-teal dark:text-fann-peach font-sans">
+<body class="bg-fann-cream text-fann-charcoal dark:bg-fann-charcoal dark:text-white font-sans">
     <div id="google_translate_element" style="display:none;"></div>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>

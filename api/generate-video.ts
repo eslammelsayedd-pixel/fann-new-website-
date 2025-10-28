@@ -3,12 +3,9 @@ import { GoogleGenAI } from "@google/genai";
 // FIX: Add a type declaration for the Node.js `Buffer` global.
 // This resolves the TypeScript error "Cannot find name 'Buffer'" because the build environment
 // for this serverless function does not seem to automatically include Node.js global types.
-// Since this file is a module, we must use `declare global` to augment the global scope.
-declare global {
-    const Buffer: {
-        from(data: any): any;
-    };
-}
+declare const Buffer: {
+    from(data: any): any;
+};
 
 // This is a Vercel Serverless Function, not an Edge Function, to allow for longer execution times.
 // It uses a Node.js-style request object (`req.body`) and response object (`res.status()...`).

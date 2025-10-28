@@ -59,7 +59,7 @@ export default async function handler(req: any, res: any) {
                 <h2 style="color: #D4AF76; margin-top: 20px;">Selected Concept</h2>
                 <h3 style="color: #f5f5dc;">${selectedConcept.title}</h3>
                 <p style="font-style: italic;">${selectedConcept.description || ''}</p>
-                <p style="font-size: 12px; color: #B0B0B0;">(The visual concept was selected by the user in the FANN Studio but is not attached to this email to reduce size. Please refer to the brief details to understand the user's requirements.)</p>
+                <img src="${selectedConcept.images?.front || selectedConcept.images?.perspective || selectedConcept.image}" alt="Selected Concept" style="max-width: 100%; border-radius: 8px; border: 2px solid #D4AF76; margin-top: 10px;" />
             </div>
         `;
     };
@@ -72,23 +72,13 @@ export default async function handler(req: any, res: any) {
             </div>
             <div style="padding: 20px 0;">
                 <h2 style="font-family: 'Playfair Display', serif; color: #1a1a1a; font-size: 24px;">Thank you for your request, ${userName}!</h2>
-                <p>Our team has received your details from the FANN Studio and will contact you within <strong>1 business day</strong> to discuss your project in detail.</p>
-                
-                <div style="text-align: center; margin: 30px 0; background-color: #f9f9f9; padding: 15px; border-radius: 8px;">
+                <p>Our team has received your details from the FANN Studio and will contact you within <strong>1 business day</strong> to discuss and finalize your design.</p>
+                 <p>If you need urgent assistance, please reply directly to this email or call us at +971 50 566 7502.</p>
+                <div style="text-align: center; margin: 20px 0; background-color: #f9f9f9; padding: 15px; border-radius: 8px;">
                     <h3 style="color: #1a1a1a; margin-top:0;">Your Selected Concept:</h3>
-                    <p style="font-weight: bold; font-size: 18px; margin-bottom: 5px;">${selectedConcept.title}</p>
-                    <p style="font-style: italic; color: #555; font-size: 14px; padding: 0 10px; margin-bottom: 15px;">${selectedConcept.description || ''}</p>
-                    <p style="font-size: 12px; color: #777; margin-top: 15px;">Our team has received the visual you selected and will refer to it when we contact you.</p>
+                    <p style="font-weight: bold; font-size: 18px; margin-bottom: 15px;">${selectedConcept.title}</p>
+                    <img src="${selectedConcept.images?.front || selectedConcept.images?.perspective || selectedConcept.image}" alt="Your Selected Concept" style="max-width: 100%; border-radius: 8px; border: 1px solid #ccc;" />
                 </div>
-
-                <h3 style="font-family: 'Playfair Display', serif; color: #1a1a1a; font-size: 20px; text-align: center; margin-top: 40px;">While you wait, why not...</h3>
-                <table style="width: 100%; text-align: center; margin-top: 20px; border-spacing: 10px;">
-                    <tr>
-                        <td style="padding: 10px; border: 1px solid #ddd; border-radius: 8px; width: 50%;"><a href="https://fann.ae/portfolio" style="text-decoration: none; color: #5A8B8C; font-weight: bold;">Explore Our Portfolio</a></td>
-                        <td style="padding: 10px; border: 1px solid #ddd; border-radius: 8px; width: 50%;"><a href="https://fann.ae/roi-calculator" style="text-decoration: none; color: #5A8B8C; font-weight: bold;">Calculate Your ROI</a></td>
-                    </tr>
-                </table>
-
                 <p style="margin-top: 30px;">We look forward to creating something extraordinary with you.</p>
                 <p>Best regards,<br><strong>The FANN Team</strong></p>
             </div>
