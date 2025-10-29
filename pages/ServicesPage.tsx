@@ -47,6 +47,7 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, descriptio
                 <span className="text-fann-teal dark:text-fann-peach">{service}</span>
               </li>
             ))}
+          </ul>
            <Link to={link}>
               <motion.button 
                   whileHover={{ scale: 1.05 }}
