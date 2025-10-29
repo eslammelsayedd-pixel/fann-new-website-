@@ -1,5 +1,4 @@
-// Fix: Changed to a namespace import to ensure proper JSX type resolution.
-import * as React from 'react';
+import React from 'react';
 
 // This file contains shared type definitions for the application.
 
