@@ -1,4 +1,3 @@
-// FIX: Updated import to point directly to src/types.ts, resolving a project-wide type resolution issue.
 import { Project, Event, Testimonial, NavLink } from './src/types';
 
 export const navLinks: NavLink[] = [
@@ -19,25 +18,16 @@ export const navLinks: NavLink[] = [
 
 export const supportedLanguages = [
   { code: 'en', name: 'English' },
-  { code: 'zh-CN', name: 'Chinese (Simplified)' },
+  { code: 'ar', name: 'Arabic' },
+  { code: 'zh-CN', name: 'Chinese (Simp.)' },
   { code: 'hi', name: 'Hindi' },
   { code: 'es', name: 'Spanish' },
   { code: 'fr', name: 'French' },
-  { code: 'ar', name: 'Arabic' },
-  { code: 'bn', name: 'Bengali' },
   { code: 'ru', name: 'Russian' },
-  { code: 'pt', name: 'Portuguese' },
-  { code: 'ur', name: 'Urdu' },
-  { code: 'id', name: 'Indonesian' },
   { code: 'de', name: 'German' },
   { code: 'ja', name: 'Japanese' },
-  { code: 'mr', name: 'Marathi' },
-  { code: 'te', name: 'Telugu' },
+  { code: 'pt', name: 'Portuguese' },
   { code: 'tr', name: 'Turkish' },
-  { code: 'ko', name: 'Korean' },
-  { code: 'vi', name: 'Vietnamese' },
-  { code: 'ta', name: 'Tamil' },
-  { code: 'it', name: 'Italian' },
 ];
 
 
@@ -45,7 +35,7 @@ export const portfolioProjects: Project[] = [
   { id: 1, title: "TechVision AI", client: "GITEX 2024", service: "Exhibitions", industry: "Technology", scale: "Standard", year: 2024, image: "https://images.pexels.com/photos/8566427/pexels-photo-8566427.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", sqm: 250, location: "Dubai World Trade Centre", timeline: "Concept to Completion: 8 weeks", challenge: "Integrating interactive AI demos seamlessly into a luxury, minimalist aesthetic.", result: "Generated over 5,000 qualified leads, a 40% increase from the previous year." },
   { id: 2, title: "MediCorp International", client: "Arab Health 2024", service: "Exhibitions", industry: "Healthcare", scale: "Standard", year: 2024, image: "https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", sqm: 180, location: "Dubai World Trade Centre", timeline: "Concept to Completion: 7 weeks", challenge: "Creating a sterile, high-tech environment that felt approachable and welcoming.", result: "Secured distribution deals in 5 new MENA markets." },
   { id: 3, title: "AeroDefense Systems", client: "Dubai Air Show 2023", service: "Exhibitions", industry: "Aviation", scale: "Large", year: 2023, image: "https://images.pexels.com/photos/8297478/pexels-photo-8297478.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", sqm: 400, location: "DWC, Dubai Airshow Site", timeline: "Concept to Completion: 12 weeks", challenge: "Building a secure, double-deck structure to host high-level government delegations.", result: "Facilitated over $50M in preliminary agreements." },
-  { id: 4, title: "Artisan Delights", client: "Gulfood 2024", service: "Exhibitions", industry: "Hospitality", scale: "Standard", year: 2024, image: "https://images.pexels.com/photos/6647037/pexels-photo-6647037.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", sqm: 120, location: "Dubai World Trade Centre", timeline: "Concept to Completion: 6 weeks", challenge: "Designing an open-concept stand with live cooking stations and high foot traffic.", result: "Increased brand visibility by 200% on social media during the event." },
+  { id: 4, title: "Artisan Delights", client: "Gulfood 2024", service: "Exhibitions", industry: "Food & Beverage", scale: "Standard", year: 2024, image: "https://images.pexels.com/photos/6647037/pexels-photo-6647037.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", sqm: 120, location: "Dubai World Trade Centre", timeline: "Concept to Completion: 6 weeks", challenge: "Designing an open-concept stand with live cooking stations and high foot traffic.", result: "Increased brand visibility by 200% on social media during the event." },
   { id: 5, title: "Skyline Developers", client: "Cityscape 2024", service: "Exhibitions", industry: "Real Estate", scale: "Large", year: 2024, image: "https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", sqm: 300, location: "Dubai World Trade Centre", timeline: "Concept to Completion: 10 weeks", challenge: "Showcasing multiple large-scale architectural models in an immersive, elegant setting.", result: "Achieved record-breaking off-plan sales during the 3-day event." },
   { id: 6, title: "Chronos Luxury", client: "Dubai Watch Week 2023", service: "Exhibitions", industry: "Luxury", scale: "Boutique", year: 2023, image: "https://images.pexels.com/photos/2804327/pexels-photo-2804327.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", sqm: 80, location: "DIFC", timeline: "Concept to Completion: 9 weeks", challenge: "Creating museum-grade lighting and security for high-value timepieces.", result: "Attracted top-tier collectors and media, featured in 3 international luxury magazines." },
   { id: 7, title: "Annual Leadership Summit", client: "Global Leaders Org", service: "Events", industry: "Corporate", scale: "Large", year: 2024, image: "https://images.pexels.com/photos/2422290/pexels-photo-2422290.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", sqm: 1000, location: "Dubai World Trade Centre", timeline: "Full-service planning: 6 months", challenge: "Managing logistics for 500+ international delegates and 50 keynote speakers.", result: "Achieved a 98% attendee satisfaction rate." },

@@ -8,12 +8,14 @@ export default function handler(req: any, res: any) {
     '/fann-studio/exhibition',
     '/fann-studio/event',
     '/fann-studio/interior',
+    '/fann-studio/media',
     '/events-calendar',
     '/about',
     '/contact',
     '/insights',
+    '/roi-calculator',
   ];
-  const baseUrl = 'https://fann.ae'; // As specified in the prompt
+  const baseUrl = 'https://fann.ae';
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

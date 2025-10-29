@@ -1,5 +1,4 @@
-// FIX: Changed 'import React' back to 'import type React'. The value import was likely causing a global JSX namespace collision. This file is a module due to its exports, and a type-only import is sufficient and safer for accessing React's type definitions.
-import type React from 'react';
+import React from 'react';
 
 // This file contains shared type definitions for the application.
 
@@ -17,7 +16,7 @@ export interface Project {
   title: string;
   client: string;
   service: 'Exhibitions' | 'Events' | 'Interior Design';
-  industry: 'Technology' | 'Healthcare' | 'Aviation' | 'Hospitality' | 'Real Estate' | 'Luxury' | 'Corporate' | 'Retail' | 'Residential' | 'Automotive' | 'Energy' | 'Finance';
+  industry: 'Technology' | 'Healthcare' | 'Aviation' | 'Hospitality' | 'Real Estate' | 'Luxury' | 'Corporate' | 'Retail' | 'Residential' | 'Automotive' | 'Energy' | 'Finance' | 'Food & Beverage' | 'Culture' | 'Art & Design' | 'Construction' | 'Entertainment' | 'Security' | 'Manufacturing' | 'Education' | 'Logistics' | 'Defence' | 'Equestrian' | 'Media' | 'Fitness' | 'Beauty';
   scale: 'Boutique' | 'Standard' | 'Large' | 'Mega';
   year: number;
   image: string;

@@ -26,7 +26,7 @@ const ThemeToggle: React.FC = () => {
         {theme === 'dark' ? (
           <Sun className="text-fann-gold" />
         ) : (
-          <Moon className="text-fann-gold" />
+          <Moon className="text-fann-teal" />
         )}
       </motion.div>
     </button>

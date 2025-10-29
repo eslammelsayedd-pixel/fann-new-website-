@@ -1,6 +1,7 @@
 import React from 'react';
 import AnimatedPage from '../components/AnimatedPage';
 import { motion } from 'framer-motion';
+import SEO from '../components/SEO';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -23,7 +24,11 @@ const itemVariants = {
 const AboutPage: React.FC = () => {
   return (
     <AnimatedPage>
-      <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
+        <SEO
+            title="About FANN | Dubai's Premier Design & Build Partner"
+            description="Founded in 2019, FANN is a full-service design and build company in Dubai, dedicated to transforming visions into unforgettable realities with innovation and excellence."
+        />
+      <div className="min-h-screen bg-fann-peach dark:bg-fann-charcoal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
         <motion.div 
             className="container mx-auto px-4 sm:px-6 lg:px-8"
             variants={containerVariants}
@@ -31,7 +36,7 @@ const AboutPage: React.FC = () => {
             animate="visible"
         >
           <div className="text-center">
-            <motion.h1 variants={itemVariants} className="text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-accent-peach mb-4">About FANN</motion.h1>
+            <motion.h1 variants={itemVariants} className="text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mb-4">About FANN</motion.h1>
             <motion.p variants={itemVariants} className="text-xl text-fann-teal/90 dark:text-fann-peach/90 max-w-3xl mx-auto leading-relaxed">
               Founded in Dubai in 2019, FANN was born from a passion for transforming visions into tangible, unforgettable realities. As a full-service design and build company, we believe that a well-executed project—from initial concept to final construction—has the power to inspire, connect, and drive success.
             </motion.p>

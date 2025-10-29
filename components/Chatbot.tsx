@@ -94,7 +94,7 @@ const Chatbot: React.FC = () => {
         <>
             <motion.button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-24 right-6 bg-fann-accent-peach text-fann-teal w-16 h-16 rounded-full shadow-lg flex items-center justify-center z-50"
+                className="fixed bottom-24 right-6 bg-fann-gold text-fann-charcoal w-16 h-16 rounded-full shadow-lg flex items-center justify-center z-50"
                 variants={fabVariants}
                 initial="hidden"
                 animate={isOpen ? 'hidden' : 'visible'}
@@ -112,12 +112,12 @@ const Chatbot: React.FC = () => {
                         initial="hidden"
                         animate="visible"
                         exit="hidden"
-                        className="fixed bottom-24 right-6 w-[calc(100vw-3rem)] max-w-sm h-[70vh] max-h-[600px] bg-white dark:bg-fann-teal-dark rounded-lg shadow-2xl flex flex-col z-50 border border-gray-200 dark:border-fann-border"
+                        className="fixed bottom-24 right-6 w-[calc(100vw-3rem)] max-w-sm h-[70vh] max-h-[600px] bg-white dark:bg-fann-charcoal-dark rounded-lg shadow-2xl flex flex-col z-50 border border-gray-200 dark:border-fann-border"
                     >
                         {/* Header */}
                         <header className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-fann-border">
                             <div className="flex items-center gap-3">
-                                <Bot className="text-fann-accent-teal dark:text-fann-accent-peach" />
+                                <Bot className="text-fann-accent-teal dark:text-fann-gold" />
                                 <h2 className="font-bold text-lg text-fann-teal dark:text-fann-peach">FANN Assistant</h2>
                             </div>
                             <button onClick={() => setIsOpen(false)} className="text-gray-500 dark:text-fann-light-gray hover:text-fann-teal dark:hover:text-fann-peach" aria-label="Close Chat">
@@ -129,8 +129,8 @@ const Chatbot: React.FC = () => {
                         <div className="flex-1 p-4 overflow-y-auto space-y-4">
                             {messages.map((msg, index) => (
                                 <div key={index} className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                    {msg.role === 'model' && <div className="w-8 h-8 rounded-full bg-fann-accent-teal flex items-center justify-center flex-shrink-0"><Bot size={20} className="text-white"/></div>}
-                                    <div className={`max-w-[80%] rounded-lg px-4 py-2 ${msg.role === 'user' ? 'bg-fann-accent-peach text-fann-teal' : 'bg-gray-100 dark:bg-fann-teal text-fann-teal dark:text-fann-peach'}`}>
+                                    {msg.role === 'model' && <div className="w-8 h-8 rounded-full bg-fann-accent-teal dark:bg-fann-gold flex items-center justify-center flex-shrink-0"><Bot size={20} className="text-white dark:text-fann-charcoal"/></div>}
+                                    <div className={`max-w-[80%] rounded-lg px-4 py-2 ${msg.role === 'user' ? 'bg-fann-accent-peach text-fann-teal' : 'bg-gray-100 dark:bg-fann-charcoal text-fann-teal dark:text-fann-peach'}`}>
                                         <div 
                                             className="prose prose-sm prose-p:text-fann-teal prose-strong:text-fann-teal dark:prose-invert"
                                             dangerouslySetInnerHTML={{ __html: parseMarkdown(msg.parts[0].text) }}
@@ -155,8 +155,8 @@ const Chatbot: React.FC = () => {
                             ))}
                              {isLoading && (
                                 <div className="flex gap-3 justify-start">
-                                    <div className="w-8 h-8 rounded-full bg-fann-accent-teal flex items-center justify-center flex-shrink-0"><Bot size={20} className="text-white" /></div>
-                                    <div className="max-w-[80%] rounded-lg px-4 py-2 bg-gray-100 dark:bg-fann-teal flex items-center">
+                                    <div className="w-8 h-8 rounded-full bg-fann-accent-teal dark:bg-fann-gold flex items-center justify-center flex-shrink-0"><Bot size={20} className="text-white dark:text-fann-charcoal" /></div>
+                                    <div className="max-w-[80%] rounded-lg px-4 py-2 bg-gray-100 dark:bg-fann-charcoal flex items-center">
                                         <Loader2 className="w-5 h-5 animate-spin text-gray-500 dark:text-fann-light-gray" />
                                     </div>
                                 </div>
@@ -173,7 +173,7 @@ const Chatbot: React.FC = () => {
                                     onChange={(e) => setInput(e.target.value)}
                                     onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                                     placeholder="Ask a question..."
-                                    className="w-full bg-gray-100 dark:bg-fann-teal border border-gray-300 dark:border-fann-border rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-accent-peach text-fann-teal dark:text-fann-peach"
+                                    className="w-full bg-gray-100 dark:bg-fann-charcoal border border-gray-300 dark:border-fann-border rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold text-fann-teal dark:text-fann-peach"
                                 />
                                 <button onClick={handleSend} disabled={isLoading || !input.trim()} className="bg-fann-accent-peach text-fann-teal rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 disabled:bg-gray-300 dark:disabled:bg-fann-light-gray disabled:cursor-not-allowed">
                                     <Send size={20} />

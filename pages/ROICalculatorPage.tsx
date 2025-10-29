@@ -158,8 +158,8 @@ const ROICalculatorPage: React.FC = () => {
             <div className="min-h-screen bg-fann-teal pt-32 pb-20 text-fann-peach">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
-                        <BarChart2 className="mx-auto h-16 w-16 text-fann-accent-peach" />
-                        <h1 className="text-5xl font-serif font-bold text-fann-accent-peach mt-4 mb-4">Exhibition ROI Calculator</h1>
+                        <BarChart2 className="mx-auto h-16 w-16 text-fann-gold" />
+                        <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Exhibition ROI Calculator</h1>
                         <p className="text-xl text-fann-peach/90 max-w-3xl mx-auto">
                            From generic estimates to hyper-personalized forecasts. Tell us who you are and where you're going.
                         </p>
@@ -185,8 +185,8 @@ const ROICalculatorPage: React.FC = () => {
                             
                             <div className="border-t border-fann-border pt-6 space-y-6">
                                 <div>
-                                    <label htmlFor="booth_size_sqm" className="block text-sm font-medium text-fann-light-gray mb-2">Booth Size (sqm): <span className="text-fann-accent-peach font-bold">{formData.booth_size_sqm}</span></label>
-                                    <input type="range" id="booth_size_sqm" name="booth_size_sqm" min="9" max="500" step="1" value={formData.booth_size_sqm} onChange={handleInputChange} className="w-full h-2 bg-fann-teal-dark rounded-lg appearance-none cursor-pointer accent-fann-accent-peach" />
+                                    <label htmlFor="booth_size_sqm" className="block text-sm font-medium text-fann-light-gray mb-2">Booth Size (sqm): <span className="text-fann-gold font-bold">{formData.booth_size_sqm}</span></label>
+                                    <input type="range" id="booth_size_sqm" name="booth_size_sqm" min="9" max="500" step="1" value={formData.booth_size_sqm} onChange={handleInputChange} className="w-full h-2 bg-fann-teal-dark rounded-lg appearance-none cursor-pointer accent-fann-gold" />
                                 </div>
                                 <div>
                                     <label htmlFor="stand_cost" className="block text-sm font-medium text-fann-light-gray mb-2">Stand Design & Build Cost (AED)</label>
@@ -198,13 +198,13 @@ const ROICalculatorPage: React.FC = () => {
                                         <input type="number" step="1000" id="average_deal_size" name="average_deal_size" value={formData.average_deal_size} onChange={handleInputChange} className="w-full bg-fann-teal border border-fann-border rounded-md px-3 py-2" />
                                     </div>
                                     <div>
-                                        <label htmlFor="close_rate" className="block text-sm font-medium text-fann-light-gray mb-2">Sales Close Rate: <span className="text-fann-accent-peach font-bold">{formData.close_rate}%</span></label>
-                                        <input type="range" id="close_rate" name="close_rate" min="1" max="80" step="1" value={formData.close_rate} onChange={handleInputChange} className="w-full h-2 bg-fann-teal-dark rounded-lg appearance-none cursor-pointer accent-fann-accent-peach" />
+                                        <label htmlFor="close_rate" className="block text-sm font-medium text-fann-light-gray mb-2">Sales Close Rate: <span className="text-fann-gold font-bold">{formData.close_rate}%</span></label>
+                                        <input type="range" id="close_rate" name="close_rate" min="1" max="80" step="1" value={formData.close_rate} onChange={handleInputChange} className="w-full h-2 bg-fann-teal-dark rounded-lg appearance-none cursor-pointer accent-fann-gold" />
                                     </div>
                                 </div>
                             </div>
                             <div className="border-t border-fann-border pt-6">
-                                <button type="submit" disabled={isLoading || !formData.company_name || !formData.event_name} className="w-full bg-fann-accent-peach text-fann-teal font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                                <button type="submit" disabled={isLoading || !formData.company_name || !formData.event_name} className="w-full bg-fann-gold text-fann-charcoal font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
                                     {isLoading ? <><Loader2 className="animate-spin" />Calculating...</> : results ? 'Recalculate Projections' : 'Calculate Projections'}
                                 </button>
                             </div>
@@ -215,7 +215,7 @@ const ROICalculatorPage: React.FC = () => {
                              <AnimatePresence>
                                 {isLoading && (
                                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-fann-teal-dark/80 backdrop-blur-sm flex flex-col justify-center items-center z-10 rounded-lg">
-                                        <Loader2 className="w-12 h-12 text-fann-accent-peach animate-spin"/>
+                                        <Loader2 className="w-12 h-12 text-fann-gold animate-spin"/>
                                         <p className="mt-4 font-semibold">Calculating Projections...</p>
                                     </motion.div>
                                 )}
@@ -229,7 +229,7 @@ const ROICalculatorPage: React.FC = () => {
                                 )}
                                 {!results && !error && !isLoading && (
                                     <div className="bg-fann-teal-dark p-6 rounded-lg text-center h-full flex flex-col justify-center items-center min-h-[400px]">
-                                        <Sparkles className="w-12 h-12 text-fann-accent-peach mb-4" />
+                                        <Sparkles className="w-12 h-12 text-fann-gold mb-4" />
                                         <p className="text-fann-light-gray">Your personalized ROI projections will appear here.</p>
                                         <p className="text-sm text-fann-light-gray/70 mt-2">Fill in your details and click "Calculate" to begin.</p>
                                     </div>
@@ -245,16 +245,16 @@ const ROICalculatorPage: React.FC = () => {
                                         <div>
                                             <h3 className="text-xl font-serif font-bold text-fann-peach mb-4">Key Projections Snippet</h3>
                                             <div className="grid md:grid-cols-3 gap-4">
-                                                <div className="bg-fann-teal p-4 rounded-lg flex items-center gap-4"><Users className="w-8 h-8 text-fann-accent-peach flex-shrink-0" /><div><p className="text-sm text-fann-light-gray">Qualified Leads</p><p className="text-xl font-bold text-fann-peach">{`${results.visitor_projections.qualified_leads_min} - ${results.visitor_projections.qualified_leads_max}`}</p></div></div>
-                                                <div className="bg-fann-teal p-4 rounded-lg flex items-center gap-4"><TrendingUp className="w-8 h-8 text-fann-accent-peach flex-shrink-0" /><div><p className="text-sm text-fann-light-gray">Expected Revenue</p><p className="text-xl font-bold text-fann-peach">{`${formatCurrency(results.financial_projections.expected_revenue_min)}`}</p></div></div>
-                                                <div className="bg-fann-teal p-4 rounded-lg flex items-center gap-4"><Target className="w-8 h-8 text-fann-accent-peach flex-shrink-0" /><div><p className="text-sm text-fann-light-gray">Deals to Break-Even</p><p className="text-xl font-bold text-fann-peach">{`${results.roi_metrics.break_even_deals}`}</p></div></div>
+                                                <div className="bg-fann-teal p-4 rounded-lg flex items-center gap-4"><Users className="w-8 h-8 text-fann-gold flex-shrink-0" /><div><p className="text-sm text-fann-light-gray">Qualified Leads</p><p className="text-xl font-bold text-fann-peach">{`${results.visitor_projections.qualified_leads_min} - ${results.visitor_projections.qualified_leads_max}`}</p></div></div>
+                                                <div className="bg-fann-teal p-4 rounded-lg flex items-center gap-4"><TrendingUp className="w-8 h-8 text-fann-gold flex-shrink-0" /><div><p className="text-sm text-fann-light-gray">Expected Revenue</p><p className="text-xl font-bold text-fann-peach">{`${formatCurrency(results.financial_projections.expected_revenue_min)}`}</p></div></div>
+                                                <div className="bg-fann-teal p-4 rounded-lg flex items-center gap-4"><Target className="w-8 h-8 text-fann-gold flex-shrink-0" /><div><p className="text-sm text-fann-light-gray">Deals to Break-Even</p><p className="text-xl font-bold text-fann-peach">{`${results.roi_metrics.break_even_deals}`}</p></div></div>
                                             </div>
                                         </div>
                                         
                                         <AnimatePresence mode="wait">
                                         {isDownloaded ? (
-                                            <motion.div key="thank-you" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-fann-teal p-6 rounded-lg text-center border-2 border-fann-accent-teal">
-                                                <CheckCircle className="mx-auto h-12 w-12 text-fann-accent-teal" />
+                                            <motion.div key="thank-you" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-fann-teal p-6 rounded-lg text-center border-2 border-fann-gold">
+                                                <CheckCircle className="mx-auto h-12 w-12 text-fann-gold" />
                                                 <h3 className="text-2xl font-serif font-bold text-fann-peach mt-4">Thank You!</h3>
                                                 <p className="text-fann-light-gray mt-2">Your report has been downloaded. Our team will be in touch shortly to discuss your project.</p>
                                             </motion.div>
@@ -266,7 +266,7 @@ const ROICalculatorPage: React.FC = () => {
                                                     <input type="text" name="name" placeholder="Full Name" value={leadData.name} onChange={handleLeadInputChange} required className="w-full bg-fann-teal-dark border border-fann-border rounded-md px-3 py-2" />
                                                     <input type="email" name="email" placeholder="Business Email" value={leadData.email} onChange={handleLeadInputChange} required className="w-full bg-fann-teal-dark border border-fann-border rounded-md px-3 py-2" />
                                                     <input type="text" name="company" placeholder="Company Name" value={leadData.company} onChange={handleLeadInputChange} required className="w-full bg-fann-teal-dark border border-fann-border rounded-md px-3 py-2" />
-                                                    <button type="submit" disabled={isDownloading} className="w-full bg-fann-accent-peach text-fann-teal font-bold py-3 rounded-full flex items-center justify-center gap-2 disabled:opacity-50">
+                                                    <button type="submit" disabled={isDownloading} className="w-full bg-fann-gold text-fann-charcoal font-bold py-3 rounded-full flex items-center justify-center gap-2 disabled:opacity-50">
                                                         {isDownloading ? <><Loader2 className="animate-spin w-5 h-5"/> Generating...</> : <><Download size={18}/> Download Full Report</>}
                                                     </button>
                                                 </div>

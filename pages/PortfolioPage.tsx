@@ -13,8 +13,8 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: { opacity: 1, scale: 1 },
 };
 
 
@@ -44,7 +44,7 @@ const PortfolioPage: React.FC = () => {
           <button
             key={option}
             onClick={() => setSelected(option)}
-            className={`px-4 py-1.5 text-sm rounded-full transition-colors duration-200 ${selected === option ? 'bg-fann-accent-teal text-white' : 'bg-fann-peach/50 text-fann-teal dark:bg-fann-teal dark:text-fann-peach hover:bg-fann-peach dark:hover:bg-fann-peach/10'}`}
+            className={`px-4 py-1.5 text-sm rounded-full transition-colors duration-200 ${selected === option ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-peach/50 text-fann-teal dark:bg-fann-charcoal dark:text-fann-peach hover:bg-fann-peach dark:hover:bg-white/10'}`}
           >
             {option}
           </button>
@@ -55,14 +55,14 @@ const PortfolioPage: React.FC = () => {
 
   return (
     <AnimatedPage>
-      <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
+      <div className="min-h-screen bg-fann-peach dark:bg-fann-charcoal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h1 className="text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-accent-peach mb-4">Our Work</h1>
+            <h1 className="text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mb-4">Our Work</h1>
             <p className="text-xl text-fann-teal/90 dark:text-fann-peach/90">Explore a selection of our finest projects.</p>
           </div>
           
-          <div className="max-w-4xl mx-auto bg-white dark:bg-fann-teal-dark p-6 rounded-lg mb-12">
+          <div className="max-w-4xl mx-auto bg-white dark:bg-fann-charcoal-light p-6 rounded-lg mb-12 shadow-md">
             <FilterButtons title="Service" options={services} selected={selectedService} setSelected={setSelectedService} />
             <FilterButtons title="Industry" options={industries} selected={selectedIndustry} setSelected={setSelectedIndustry} />
           </div>
@@ -72,8 +72,7 @@ const PortfolioPage: React.FC = () => {
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
             variants={containerVariants}
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
+            animate="visible"
           >
             <AnimatePresence>
               {filteredProjects.length > 0 ? (
@@ -82,14 +81,16 @@ const PortfolioPage: React.FC = () => {
                     key={project.id}
                     layout
                     variants={itemVariants}
+                    initial="hidden"
+                    animate="visible"
                     exit={{ opacity: 0, scale: 0.8 }}
                     transition={{ duration: 0.3 }}
-                    className="group relative overflow-hidden rounded-lg"
+                    className="group relative overflow-hidden rounded-lg shadow-lg"
                   >
                     <img src={project.image} alt={project.title} className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                     <div className="absolute bottom-0 left-0 p-6">
-                      <span className="text-sm bg-fann-accent-peach text-fann-teal font-bold py-1 px-2 rounded">{project.service}</span>
+                      <span className="text-sm bg-fann-gold text-fann-charcoal font-bold py-1 px-2 rounded">{project.service}</span>
                       <h3 className="text-xl font-bold mt-2 text-white">{project.title}</h3>
                       <p className="text-fann-peach">{project.client}</p>
                     </div>
@@ -99,9 +100,9 @@ const PortfolioPage: React.FC = () => {
                 <motion.div 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="md:col-span-2 lg:col-span-3 text-center py-16 bg-white dark:bg-fann-teal-dark rounded-lg"
+                  className="md:col-span-2 lg:col-span-3 text-center py-16 bg-white dark:bg-fann-charcoal-light rounded-lg"
                 >
-                  <h3 className="text-2xl font-serif text-fann-accent-teal dark:text-fann-accent-peach">No Projects Found</h3>
+                  <h3 className="text-2xl font-serif text-fann-accent-teal dark:text-fann-gold">No Projects Found</h3>
                   <p className="text-fann-light-gray mt-2">Try adjusting your filters to find a match.</p>
                 </motion.div>
               )}

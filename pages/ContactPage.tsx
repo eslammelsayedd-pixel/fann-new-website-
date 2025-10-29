@@ -45,7 +45,7 @@ const ContactPage: React.FC = () => {
         
         if (!response.ok) {
             let errorText = `Server responded with status ${response.status}`;
-            const responseText = await response.text(); // Read body ONCE
+            const responseText = await response.text();
             try {
                 const errorData = JSON.parse(responseText);
                 errorText = errorData.error || responseText;
@@ -114,16 +114,16 @@ const ContactPage: React.FC = () => {
             })}
         </script>
       </SEO>
-      <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
+      <div className="min-h-screen bg-fann-peach dark:bg-fann-charcoal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h1 className="text-5xl md:text-6xl font-serif font-bold text-fann-accent-teal dark:text-fann-accent-peach mb-4">Contact Us</h1>
+            <h1 className="text-5xl md:text-6xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mb-4">Contact Us</h1>
             <p className="text-xl text-fann-teal/90 dark:text-fann-peach/90 max-w-3xl mx-auto">We'd love to hear about your next project. Reach out to us through any of the channels below.</p>
           </div>
           
           <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
             <motion.div 
-              className="bg-white dark:bg-fann-teal-dark p-8 rounded-lg"
+              className="bg-white dark:bg-fann-charcoal-light p-8 rounded-lg"
               variants={slideInFromLeft}
               initial="hidden"
               whileInView="visible"
@@ -133,15 +133,15 @@ const ContactPage: React.FC = () => {
                 <div className="space-y-6">
                     <div className="flex items-center space-x-4">
                         <Phone className="text-fann-teal dark:text-fann-peach flex-shrink-0" size={24} />
-                        <a href="tel:+971505667502" className="text-lg text-fann-teal/80 dark:text-fann-light-gray hover:text-fann-accent-teal dark:hover:text-fann-accent-peach transition-colors">+971 50 566 7502</a>
+                        <a href="tel:+971505667502" className="text-lg text-fann-teal/80 dark:text-fann-light-gray hover:text-fann-gold dark:hover:text-fann-gold transition-colors">+971 50 566 7502</a>
                     </div>
                      <div className="flex items-center space-x-4">
                         <WhatsAppIcon className="text-fann-teal dark:text-fann-peach flex-shrink-0" />
-                        <a href="https://wa.me/971505667502" target="_blank" rel="noopener noreferrer" className="text-lg text-fann-teal/80 dark:text-fann-light-gray hover:text-fann-accent-teal dark:hover:text-fann-accent-peach transition-colors">Chat on WhatsApp</a>
+                        <a href="https://wa.me/971505667502" target="_blank" rel="noopener noreferrer" className="text-lg text-fann-teal/80 dark:text-fann-light-gray hover:text-fann-gold dark:hover:text-fann-gold transition-colors">Chat on WhatsApp</a>
                     </div>
                     <div className="flex items-center space-x-4">
                         <Mail className="text-fann-teal dark:text-fann-peach flex-shrink-0" size={24} />
-                        <a href="mailto:sales@fann.ae" className="text-lg text-fann-teal/80 dark:text-fann-light-gray hover:text-fann-accent-teal dark:hover:text-fann-accent-peach transition-colors">sales@fann.ae</a>
+                        <a href="mailto:sales@fann.ae" className="text-lg text-fann-teal/80 dark:text-fann-light-gray hover:text-fann-gold dark:hover:text-fann-gold transition-colors">sales@fann.ae</a>
                     </div>
                      <div className="flex items-start space-x-4 pt-4 mt-4 border-t border-fann-teal/10 dark:border-fann-border">
                         <MapPin className="text-fann-teal dark:text-fann-peach mt-1 flex-shrink-0" size={24} />
@@ -161,7 +161,7 @@ const ContactPage: React.FC = () => {
             </motion.div>
 
             <motion.div 
-              className="bg-white dark:bg-fann-teal-dark p-8 rounded-lg"
+              className="bg-white dark:bg-fann-charcoal-light p-8 rounded-lg"
               variants={slideInFromRight}
               initial="hidden"
               whileInView="visible"
@@ -178,19 +178,19 @@ const ContactPage: React.FC = () => {
                         <h2 className="text-3xl font-serif text-fann-teal dark:text-fann-peach mb-8" style={{ fontWeight: 600}}>Send a Message</h2>
                         <form onSubmit={handleSubmit} className="space-y-6">
                            <div>
-                               <input type="text" name="name" placeholder="Your Name" required className="w-full bg-fann-peach dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-accent-peach transition-shadow" />
+                               <input type="text" name="name" placeholder="Your Name" required className="w-full bg-fann-peach dark:bg-fann-charcoal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold transition-shadow" />
                            </div>
                             <div>
-                               <input type="email" name="email" placeholder="Your Email" required className="w-full bg-fann-peach dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-accent-peach transition-shadow" />
+                               <input type="email" name="email" placeholder="Your Email" required className="w-full bg-fann-peach dark:bg-fann-charcoal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold transition-shadow" />
                            </div>
                             <div>
-                               <textarea name="message" placeholder="Your Message" rows={5} required className="w-full bg-fann-peach dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-accent-peach transition-shadow"></textarea>
+                               <textarea name="message" placeholder="Your Message" rows={5} required className="w-full bg-fann-peach dark:bg-fann-charcoal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold transition-shadow"></textarea>
                            </div>
                            {error && (
                                <div className="bg-red-900/50 text-red-300 text-sm p-3 rounded-md">{error}</div>
                            )}
                            <div>
-                               <button type="submit" disabled={isSending} className="w-full bg-fann-accent-peach text-fann-teal font-bold py-3 rounded-full uppercase tracking-wider hover:opacity-90 transition-opacity duration-300 flex items-center justify-center disabled:opacity-50">
+                               <button type="submit" disabled={isSending} className="w-full bg-fann-gold text-fann-charcoal font-bold py-3 rounded-full uppercase tracking-wider hover:opacity-90 transition-opacity duration-300 flex items-center justify-center disabled:opacity-50">
                                    {isSending ? <Loader2 className="animate-spin" /> : 'Submit'}
                                </button>
                            </div>

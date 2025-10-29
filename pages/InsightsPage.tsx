@@ -34,7 +34,7 @@ const insightTopics: InsightTopic[] = [
     {
         title: "Audience Engagement Tech at Dubai Events",
         slug: slugify("Audience Engagement Tech at Dubai Events"),
-        prompt: "As an expert event management agency, write a blog post detailing the most innovative audience engagement technologies being used at corporate events in Dubai. Discuss AR, VR, and FANN-powered networking tools with examples from recent major UAE events. Focus on ROI for exhibitors.",
+        prompt: "As an expert event management agency, write a blog post detailing the most innovative audience engagement technologies being used at corporate events in Dubai. Discuss AR, VR, and AI-powered networking tools with examples from recent major UAE events. Focus on ROI for exhibitors.",
         category: 'Events',
         icon: BrainCircuit,
         image: 'https://images.pexels.com/photos/6187640/pexels-photo-6187640.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
@@ -92,7 +92,12 @@ const insightTopics: InsightTopic[] = [
 // Simple markdown-to-HTML parser
 const formatContent = (text: string) => {
     let html = text
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\n(\s*#+\s.*)/g, (match, p1) => { // Headers
+            const level = p1.match(/#+/)[0].length;
+            const content = p1.replace(/#+\s/, '');
+            return `</p><h${level}>${content}</h${level}><p>`;
+        })
         .replace(/\n\s*\n/g, '</p><p>') // Paragraphs
         .replace(/\n\s*-\s/g, '</li><li>') // List items
         .replace(/<li>/g, '<ul><li>')
@@ -156,7 +161,7 @@ const InsightsPage: React.FC = () => {
             setGeneratedArticle(null);
             clearError();
         }
-    }, [selectedTopic, generatedArticle, isLoading, error]);
+    }, [selectedTopic]);
 
     const handleTopicSelect = (topic: InsightTopic) => {
         setSearchParams({ topic: topic.slug });
@@ -168,7 +173,7 @@ const InsightsPage: React.FC = () => {
 
     const renderTopicSelection = () => (
         <div className="text-center">
-            <h1 className="text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-accent-peach mb-4">FANN Intelligence Hub</h1>
+            <h1 className="text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mb-4">FANN Intelligence Hub</h1>
             <p className="text-xl text-fann-teal/90 dark:text-fann-peach/90 max-w-3xl mx-auto mb-12">
                 Select a topic for an expert-driven analysis of key industry trends.
             </p>
@@ -180,7 +185,7 @@ const InsightsPage: React.FC = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: index * 0.1 }}
                         onClick={() => handleTopicSelect(topic)}
-                        className="h-96 block relative group overflow-hidden rounded-lg cursor-pointer border-2 border-fann-accent-peach/20 hover:border-fann-accent-peach transition-all duration-300"
+                        className="h-96 block relative group overflow-hidden rounded-lg cursor-pointer border-2 border-fann-gold/20 hover:border-fann-gold transition-all duration-300"
                     >
                         <img src={topic.image} alt={topic.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent"></div>
@@ -189,9 +194,9 @@ const InsightsPage: React.FC = () => {
                                 <span className="text-xs font-bold uppercase tracking-wider bg-fann-teal/80 px-3 py-1 rounded-full">{topic.category}</span>
                             </div>
                             <div>
-                                <topic.icon size={32} className="text-fann-accent-peach mb-3" />
+                                <topic.icon size={32} className="text-fann-gold mb-3" />
                                 <h2 className="text-xl font-serif font-bold mb-4 leading-tight">{topic.title}</h2>
-                                <span className="font-semibold text-fann-accent-peach group-hover:underline">Read the Analysis &rarr;</span>
+                                <span className="font-semibold text-fann-gold group-hover:underline">Read the Analysis &rarr;</span>
                             </div>
                         </div>
                     </motion.div>
@@ -202,14 +207,14 @@ const InsightsPage: React.FC = () => {
     
     const renderArticle = () => (
         <div className="max-w-4xl mx-auto">
-             <button onClick={handleBack} className="flex items-center gap-2 text-fann-accent-teal dark:text-fann-accent-peach mb-8 font-semibold hover:underline">
+             <button onClick={handleBack} className="flex items-center gap-2 text-fann-accent-teal dark:text-fann-gold mb-8 font-semibold hover:underline">
                 <ArrowLeft size={16} /> Back to Topics
             </button>
             <AnimatePresence>
             {isLoading ? (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                     <div className="flex flex-col items-center text-center p-8">
-                        <Loader2 className="w-12 h-12 text-fann-accent-peach animate-spin" />
+                        <Loader2 className="w-12 h-12 text-fann-gold animate-spin" />
                         <h2 className="text-3xl font-serif text-fann-teal dark:text-fann-peach mt-6">Generating Analysis...</h2>
                         <p className="text-fann-light-gray mt-2">Our proprietary knowledge base is compiling insights from across the web. This might take a moment.</p>
                     </div>
@@ -221,20 +226,20 @@ const InsightsPage: React.FC = () => {
                     <p className="whitespace-pre-wrap">{error}</p>
                 </motion.div>
             ) : generatedArticle && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-white dark:bg-fann-teal-dark p-8 sm:p-12 rounded-lg">
-                    <h1 className="text-4xl md:text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-accent-peach mb-6">{selectedTopic?.title}</h1>
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-white dark:bg-fann-charcoal-light p-8 sm:p-12 rounded-lg">
+                    <h1 className="text-4xl md:text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mb-6">{selectedTopic?.title}</h1>
                     <div
-                        className="prose prose-lg max-w-none text-fann-teal dark:text-fann-peach leading-relaxed space-y-4 prose-strong:text-fann-teal dark:prose-strong:text-fann-peach"
+                        className="prose prose-lg max-w-none text-fann-teal dark:text-fann-peach leading-relaxed space-y-4 prose-strong:text-fann-teal dark:prose-strong:text-fann-peach prose-headings:text-fann-accent-teal dark:prose-headings:text-fann-gold"
                         dangerouslySetInnerHTML={{ __html: formatContent(generatedArticle.content) }}
                     />
 
                     {generatedArticle.sources && generatedArticle.sources.length > 0 && (
                         <div className="mt-12 border-t border-fann-teal/10 dark:border-fann-border pt-6">
-                            <h3 className="text-xl font-bold text-fann-accent-teal dark:text-fann-accent-peach mb-4 flex items-center gap-2"><BookOpen size={20} /> Sources</h3>
+                            <h3 className="text-xl font-bold text-fann-accent-teal dark:text-fann-gold mb-4 flex items-center gap-2"><BookOpen size={20} /> Sources</h3>
                              <ul className="space-y-2 list-disc list-inside">
                                 {generatedArticle.sources.map((source, index) => (
                                     <li key={index}>
-                                        <a href={source.uri} target="_blank" rel="noopener noreferrer" className="text-fann-light-gray hover:text-fann-accent-teal dark:hover:text-fann-accent-peach hover:underline transition-colors" title={source.title}>
+                                        <a href={source.uri} target="_blank" rel="noopener noreferrer" className="text-fann-light-gray hover:text-fann-gold dark:hover:text-fann-gold hover:underline transition-colors" title={source.title}>
                                             {source.title || new URL(source.uri).hostname}
                                         </a>
                                     </li>
@@ -258,7 +263,7 @@ const InsightsPage: React.FC = () => {
                         : "Access expert-driven analysis from the FANN Intelligence Hub. Stay ahead with the latest trends in exhibition design, event technology, and commercial interiors in the GCC."
                 }
             />
-            <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
+            <div className="min-h-screen bg-fann-peach dark:bg-fann-charcoal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                    {selectedTopic ? renderArticle() : renderTopicSelection()}
                 </div>

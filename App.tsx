@@ -1,7 +1,3 @@
-
-
-
-
 import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
@@ -14,6 +10,7 @@ import AIDesignStudioPage from './pages/AIDesignStudioPage';
 import ExhibitionStudioPage from './pages/ExhibitionStudioPage';
 import EventStudioPage from './pages/EventStudioPage';
 import InteriorStudioPage from './pages/InteriorStudioPage';
+import MediaStudioPage from './pages/MediaStudioPage';
 import EventsCalendarPage from './pages/EventsCalendarPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
@@ -36,6 +33,7 @@ const App: React.FC = () => {
                         <Route path="/fann-studio/exhibition" element={<ExhibitionStudioPage />} />
                         <Route path="/fann-studio/event" element={<EventStudioPage />} />
                         <Route path="/fann-studio/interior" element={<InteriorStudioPage />} />
+                        <Route path="/fann-studio/media" element={<MediaStudioPage />} />
                         <Route path="/events-calendar" element={<EventsCalendarPage />} />
                         <Route path="/about" element={<AboutPage />} />
                         <Route path="/contact" element={<ContactPage />} />

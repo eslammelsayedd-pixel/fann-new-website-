@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 interface SEOProps {
   title: string;
   description: string;
-  schema?: object; // Add schema prop
+  schema?: object;
   children?: React.ReactNode;
 }
 
@@ -24,7 +24,6 @@ const SEO: React.FC<SEOProps> = ({ title, description, schema, children }) => {
 
     // Handle Schema Markup
     const scriptId = 'json-ld-schema';
-    // FIX: Add type assertion to ensure TypeScript knows this is an HTMLScriptElement.
     let scriptTag = document.getElementById(scriptId) as HTMLScriptElement | null;
     
     if (schema) {
@@ -42,8 +41,6 @@ const SEO: React.FC<SEOProps> = ({ title, description, schema, children }) => {
     
   }, [title, description, schema]);
 
-  // Children are passed through, but this component doesn't render them directly.
-  // It's used for injecting script tags into the document head.
   return <>{children}</>; 
 };
 

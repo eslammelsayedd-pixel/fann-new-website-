@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import AnimatedPage from '../components/AnimatedPage';
 import { regionalEvents } from '../constants';
-// FIX: Corrected the import path for the Event type.
 import { Event } from '../src/types';
 import { motion } from 'framer-motion';
-
-// --- Robust Date Parsing Logic ---
+import SEO from '../components/SEO';
 
 interface DateRange {
   start: Date;
@@ -68,8 +66,10 @@ const EventsCalendarPage: React.FC = () => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     return regionalEvents
-      .filter(event => parseDateRange(event.date).end >= today)
-      .sort((a, b) => parseDateRange(a.date).start.getTime() - parseDateRange(b.date).start.getTime());
+      .map(event => ({ event, parsedDate: parseDateRange(event.date) }))
+      .filter(({ parsedDate }) => parsedDate.end >= today && parsedDate.start.getTime() !== 0)
+      .sort((a, b) => a.parsedDate.start.getTime() - b.parsedDate.start.getTime())
+      .map(({ event }) => event);
   }, []);
 
   const [filteredEvents, setFilteredEvents] = useState<Event[]>(displayableEvents);
@@ -121,14 +121,18 @@ const EventsCalendarPage: React.FC = () => {
 
   return (
     <AnimatedPage>
-      <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
+        <SEO 
+            title="UAE & KSA Events Calendar | FANN"
+            description="Your complete guide to upcoming exhibitions and trade shows in Dubai, Abu Dhabi, and Saudi Arabia. Filter by industry, country, and date to plan your next event with FANN."
+        />
+      <div className="min-h-screen bg-fann-peach dark:bg-fann-charcoal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-                <h1 className="text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-accent-peach mb-4">Events Calendar</h1>
+                <h1 className="text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mb-4">Events Calendar</h1>
                 <p className="text-xl text-fann-teal/90 dark:text-fann-peach/90">Your guide to the most important exhibitions and trade shows in the UAE & KSA.</p>
             </div>
             
-            <div className="max-w-6xl mx-auto bg-white dark:bg-fann-teal-dark p-4 rounded-lg mb-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="max-w-6xl mx-auto bg-white dark:bg-fann-charcoal-light p-4 rounded-lg mb-8 grid grid-cols-1 md:grid-cols-3 gap-6 shadow-md">
                 <div>
                     <label className="block text-sm font-medium text-fann-light-gray mb-2">Country</label>
                     <div className="grid grid-cols-3 gap-2">
@@ -136,7 +140,7 @@ const EventsCalendarPage: React.FC = () => {
                             <button
                                 key={country}
                                 onClick={() => setSelectedCountry(country)}
-                                className={`w-full text-sm py-2 px-1 rounded-md transition-colors ${selectedCountry === country ? 'bg-fann-accent-teal text-white' : 'bg-fann-peach/50 text-fann-teal dark:bg-fann-teal dark:text-fann-peach hover:bg-fann-peach dark:hover:bg-fann-peach/10'}`}
+                                className={`w-full text-sm py-2 px-1 rounded-md transition-colors ${selectedCountry === country ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-peach/50 text-fann-teal dark:bg-fann-charcoal dark:text-fann-peach hover:bg-fann-peach dark:hover:bg-white/10'}`}
                             >
                                 {country}
                             </button>
@@ -149,7 +153,7 @@ const EventsCalendarPage: React.FC = () => {
                         id="industry-filter"
                         value={selectedIndustry}
                         onChange={(e) => setSelectedIndustry(e.target.value)}
-                        className="w-full bg-fann-peach/50 dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-accent-peach"
+                        className="w-full bg-fann-peach/50 dark:bg-fann-charcoal border border-fann-teal/20 dark:border-fann-border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold"
                     >
                         {industries.map(industry => (
                             <option key={industry} value={industry}>{industry}</option>
@@ -163,7 +167,7 @@ const EventsCalendarPage: React.FC = () => {
                             <button
                                 key={range}
                                 onClick={() => setSelectedDateRange(range)}
-                                className={`w-full text-sm py-2 px-1 rounded-md transition-colors ${selectedDateRange === range ? 'bg-fann-accent-teal text-white' : 'bg-fann-peach/50 text-fann-teal dark:bg-fann-teal dark:text-fann-peach hover:bg-fann-peach dark:hover:bg-fann-peach/10'}`}
+                                className={`w-full text-sm py-2 px-1 rounded-md transition-colors ${selectedDateRange === range ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-peach/50 text-fann-teal dark:bg-fann-charcoal dark:text-fann-peach hover:bg-fann-peach dark:hover:bg-white/10'}`}
                             >
                                 {range}
                             </button>
@@ -184,14 +188,14 @@ const EventsCalendarPage: React.FC = () => {
                           <motion.div 
                             key={`${event.name}-${event.date}`}
                             variants={itemVariants}
-                            className="bg-white dark:bg-fann-teal-dark p-6 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center border-l-4 border-fann-accent-teal"
+                            className="bg-white dark:bg-fann-charcoal-light p-6 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center border-l-4 border-fann-accent-teal dark:border-fann-gold"
                            >
                               <div>
                                   <h3 className="text-2xl font-bold text-fann-teal dark:text-fann-peach mb-1">{event.name}</h3>
                                   <p className="text-fann-light-gray">{event.venue}, {event.country}</p>
                               </div>
                               <div className="mt-4 sm:mt-0 text-left sm:text-right flex-shrink-0 sm:pl-4">
-                                  <p className="text-lg font-semibold text-fann-accent-teal dark:text-fann-accent-peach">{event.date}</p>
+                                  <p className="text-lg font-semibold text-fann-accent-teal dark:text-fann-gold">{event.date}</p>
                                   <p className="text-fann-teal dark:text-fann-peach">{event.industry}</p>
                               </div>
                           </motion.div>
@@ -200,9 +204,9 @@ const EventsCalendarPage: React.FC = () => {
                       <motion.div 
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="text-center py-16 bg-white dark:bg-fann-teal-dark rounded-lg"
+                        className="text-center py-16 bg-white dark:bg-fann-charcoal-light rounded-lg"
                       >
-                        <h3 className="text-2xl font-serif text-fann-accent-teal dark:text-fann-accent-peach">No Events Found</h3>
+                        <h3 className="text-2xl font-serif text-fann-accent-teal dark:text-fann-gold">No Events Found</h3>
                         <p className="text-fann-light-gray mt-2">Try adjusting your filters to find more events.</p>
                       </motion.div>
                     )}
