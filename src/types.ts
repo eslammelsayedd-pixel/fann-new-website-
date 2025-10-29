@@ -1,5 +1,6 @@
 // FIX: Add reference to React's types to ensure JSX intrinsics are available for augmentation.
-/// <reference types="react" />
+// In a module-based project, importing React is the correct way to achieve this.
+// The triple-slash directive below was causing type resolution conflicts.
 import React from 'react';
 
 // This file contains shared type definitions for the application.
