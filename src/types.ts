@@ -1,3 +1,5 @@
+// FIX: Add reference to React's types to ensure JSX intrinsics are available for augmentation.
+/// <reference types="react" />
 import React from 'react';
 
 // This file contains shared type definitions for the application.
