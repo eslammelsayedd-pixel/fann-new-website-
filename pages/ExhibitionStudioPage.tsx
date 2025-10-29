@@ -94,7 +94,7 @@ const ExhibitionStudioPage: React.FC = () => {
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="w-full max-w-4xl bg-fann-peach dark:bg-fann-charcoal-light text-fann-teal-dark dark:text-fann-peach p-8 md:p-12 rounded-lg shadow-2xl"
+                    className="w-full max-w-4xl bg-white dark:bg-fann-charcoal-light text-fann-teal-dark dark:text-fann-peach p-8 md:p-12 rounded-lg shadow-2xl"
                 >
                     <div className="grid md:grid-cols-2 gap-x-8 gap-y-10">
                         {/* Event Name */}
@@ -106,7 +106,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                 value={eventName}
                                 onChange={(e) => setEventName(e.target.value)}
                                 placeholder="e.g., GITEX Global"
-                                className="w-full bg-white/80 dark:bg-fann-charcoal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold transition-shadow"
+                                className="w-full bg-fann-peach/50 dark:bg-fann-charcoal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold transition-shadow"
                             />
                         </div>
 
@@ -119,7 +119,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                 value={eventLocation}
                                 onChange={(e) => setEventLocation(e.target.value)}
                                 placeholder="e.g., Dubai World Trade Centre"
-                                className="w-full bg-white/80 dark:bg-fann-charcoal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold transition-shadow"
+                                className="w-full bg-fann-peach/50 dark:bg-fann-charcoal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold transition-shadow"
                             />
                         </div>
 
@@ -133,7 +133,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                     value={industry}
                                     readOnly
                                     placeholder={isAnalyzing ? "Analyzing..." : "Analyzed from event name..."}
-                                    className="w-full bg-gray-200/50 dark:bg-fann-charcoal border-none rounded-md px-4 py-2 italic cursor-not-allowed"
+                                    className="w-full bg-gray-100 dark:bg-fann-charcoal border-none rounded-md px-4 py-2 italic cursor-not-allowed"
                                 />
                                 {isAnalyzing && <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 animate-spin text-fann-light-gray" />}
                              </div>
