@@ -6,25 +6,26 @@ import { motion, AnimatePresence } from 'framer-motion';
 import LanguageSwitcher from './LanguageSwitcher';
 
 const FannLogo = () => (
-    <svg width="100" height="42" viewBox="0 0 138 55" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0.858398 5.69873H29.1722V0.858398H0.858398V5.69873Z" />
-        <path d="M0.858398 54.1416H5.69873V0.858398H0.858398V54.1416Z" />
-        <path d="M0.858398 29.1721H18.8471V24.3318H0.858398V29.1721Z" />
-        <path d="M34.793 54.1416H39.6333V0.858398H34.793V54.1416Z" />
-        <path d="M34.793 5.69873H60.2866V0.858398H34.793V5.69873Z" />
-        <path d="M60.2861 54.1416H65.1265V0.858398H60.2861V54.1416Z" />
-        <path d="M60.2861 5.69873H85.7798V0.858398H60.2861V5.69873Z" />
-        <path d="M91.4043 54.1416H96.2446V0.858398H91.4043V54.1416Z" />
-        <path d="M101.903 54.1416H106.743V0.858398H101.903V54.1416Z" />
-        <path d="M112.528 54.1416H117.368V0.858398H112.528V54.1416Z" />
-        <path d="M123.152 54.1416H127.993V0.858398H123.152V54.1416Z" />
-        <path d="M132.834 54.1416H137.674V0.858398H132.834V54.1416Z" />
-        <path d="M37.1045 42.1416H51.4882L51.4883 37.3013H41.9448V26.6768H50.5204V21.8364H41.9448V11.2119H51.4883L51.4882 6.37158H37.1045V42.1416Z" />
-        <path d="M62.5977 42.1416H71.291L80.043 24.3318H79.8867L71.4473 42.1416H68.3242L60.041 24.3318H59.8848L62.5977 42.1416Z" />
-        <path d="M82.8584 42.1416H97.1245V37.3013H87.6987V6.37158H82.8584V42.1416Z" />
-        <path d="M104.214 42.1416H118.48V37.3013H109.055V26.6768H117.494V21.8364H109.055V11.2119H118.48V6.37158H104.214V42.1416Z" />
-        <path d="M120.792 42.1416H125.632V11.2119L131.55 26.6768H132.41L138.328 11.2119V42.1416H143.168V6.37158H137.25L131.979 20.3552L126.708 6.37158H120.792V42.1416Z" />
-        <text x="0" y="52" font-family="Inter, sans-serif" font-size="6" font-weight="500" letter-spacing="0.1em">EXHIBITIONS & INTERIORS</text>
+    <svg width="74" height="42" viewBox="0 0 100 57" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-label="FANN Logo">
+        {/* Icon */}
+        <g>
+            <path d="M0 0H51.4286V4.28571H0V0Z"/>
+            <path d="M0 4.28571V34.2857H4.28571V4.28571H0Z"/>
+            <path d="M0 17.1429H25.7143V21.4286H0V17.1429Z"/>
+            <path d="M0 34.2857H47.1429V38.5714H0V34.2857Z"/>
+            <path d="M47.1429 4.28571V38.5714H51.4286V4.28571H47.1429Z"/>
+            <path d="M8.57143 21.4286H12.8571V34.2857H8.57143V21.4286Z"/>
+            <path d="M15.4286 21.4286H19.7143V34.2857H15.4286V21.4286Z"/>
+            <path d="M22.2857 21.4286H26.5714V34.2857H22.2857V21.4286Z"/>
+            <path d="M51.4286 21.4286L64.2857 8.57143L77.1429 21.4286V38.5714H51.4286V21.4286ZM55.7143 23.3371V34.2857H72.8571V23.3371L64.2857 14.7657L55.7143 23.3371Z"/>
+        </g>
+        {/* Text "FANN" */}
+        <g transform="translate(1, 44)">
+            <path d="M0 13H3.5V8.5H10.5V13H14V0H0V13ZM3.5 4.5H10.5V0H3.5V4.5Z"/>
+            <path d="M17 13H20.5L25.25 0H28.75L33.5 13H37L27.5 0H26.5L17 13ZM23.3 8.5H30.6L27 2.9L23.3 8.5Z"/>
+            <path d="M40.25 13H43.75V4.5L50.75 13H54.25L47.25 4.5V0H40.25V13Z"/>
+            <path d="M57 13H60.5V4.5L67.5 13H71L64 4.5V0H57V13Z"/>
+        </g>
     </svg>
 );
 
@@ -50,7 +51,7 @@ const Header: React.FC = () => {
         <header className={`top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || isOpen ? 'fixed bg-fann-peach/90 dark:bg-fann-teal/90 backdrop-blur-sm shadow-lg' : 'absolute bg-transparent'}`}>
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
-                    <Link to="/" className="text-fann-accent-teal dark:text-fann-accent-peach">
+                    <Link to="/" className="text-fann-teal dark:text-fann-peach">
                         <FannLogo />
                     </Link>
 

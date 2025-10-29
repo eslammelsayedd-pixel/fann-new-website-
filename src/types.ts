@@ -1,5 +1,5 @@
-// FIX: Changed 'import type React' to 'import React' to ensure this file is treated as a module and JSX types are correctly loaded.
-import React from 'react';
+// FIX: Changed 'import React' back to 'import type React'. The value import was likely causing a global JSX namespace collision. This file is a module due to its exports, and a type-only import is sufficient and safer for accessing React's type definitions.
+import type React from 'react';
 
 // This file contains shared type definitions for the application.
 

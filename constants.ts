@@ -1,4 +1,5 @@
-import { Project, Event, Testimonial, NavLink } from './types';
+// FIX: Updated import to point directly to src/types.ts, resolving a project-wide type resolution issue.
+import { Project, Event, Testimonial, NavLink } from './src/types';
 
 export const navLinks: NavLink[] = [
     { name: 'Services', path: '/services' },
