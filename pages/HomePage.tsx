@@ -52,9 +52,19 @@ const HeroSection: React.FC = () => {
 
     return (
         <section 
-            className="relative h-screen flex items-center justify-center text-center text-white overflow-hidden bg-cover bg-center"
-            style={{ backgroundImage: "url('https://images.pexels.com/photos/1267696/pexels-photo-1267696.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')" }}
+            className="relative h-screen flex items-center justify-center text-center text-white overflow-hidden"
         >
+             <video 
+                autoPlay 
+                loop 
+                muted 
+                playsInline
+                className="absolute top-1/2 left-1/2 w-full h-full min-w-full min-h-full object-cover transform -translate-x-1/2 -translate-y-1/2 z-0"
+                poster="https://images.pexels.com/photos/1267696/pexels-photo-1267696.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+            >
+                <source src="https://videos.pexels.com/video/people-inside-a-building-5495861/mp4-hd" type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
             <div className="absolute inset-0 bg-fann-charcoal/80 backdrop-blur-sm"></div>
 
             <div className="relative z-10 p-4 w-full" style={{ textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)' }}>

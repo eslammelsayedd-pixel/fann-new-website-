@@ -1,4 +1,5 @@
-import React from 'react';
+// Fix: Changed to a namespace import to ensure proper JSX type resolution.
+import * as React from 'react';
 
 // This file contains shared type definitions for the application.
 
@@ -44,10 +45,7 @@ export interface Testimonial {
 
 
 // This augmentation adds the 'model-viewer' custom element to React's JSX types.
-// FIX: Switched from `declare global` to `declare module 'react'` to correctly augment
-// React's JSX types instead of overwriting them. This resolves errors for all
-// standard HTML elements not being found in JSX.IntrinsicElements.
-declare module 'react' {
+declare global {
     namespace JSX {
         interface IntrinsicElements {
             'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & {
