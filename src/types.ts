@@ -41,3 +41,27 @@ export interface Testimonial {
   company: string;
   projectType: string;
 }
+
+
+// This augmentation adds the 'model-viewer' custom element to React's JSX types.
+declare global {
+    namespace JSX {
+        interface IntrinsicElements {
+            'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & {
+                src?: string;
+                alt?: string;
+                'camera-controls'?: boolean;
+                'auto-rotate'?: boolean;
+                ar?: boolean;
+                'shadow-intensity'?: string;
+                exposure?: string;
+                'environment-image'?: string;
+                'interaction-prompt'?: string;
+                'camera-orbit'?: string;
+                'min-camera-orbit'?: string;
+                'max-camera-orbit'?: string;
+                'field-of-view'?: string;
+            }, HTMLElement>;
+        }
+    }
+}

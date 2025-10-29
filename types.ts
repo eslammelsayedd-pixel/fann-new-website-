@@ -1,1 +1,2 @@
-export {}; // This file is intentionally left empty but exported as a module to prevent global scope issues.
+// This file is deprecated. All types should be imported directly from './src/types.ts'.
+export {};
