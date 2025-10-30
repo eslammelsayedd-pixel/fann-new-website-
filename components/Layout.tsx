@@ -1,7 +1,8 @@
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import Chatbot from './Chatbot';
+// FIX: Changed to a named import to match the updated export in Chatbot.tsx.
+import { Chatbot } from './Chatbot';
 import WhatsAppButton from './WhatsAppButton';
 
 interface LayoutProps {

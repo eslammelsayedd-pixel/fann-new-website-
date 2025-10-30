@@ -24,7 +24,8 @@ const parseMarkdown = (text: string) => {
 };
 
 
-const Chatbot: React.FC = () => {
+// FIX: Changed to a named export to resolve import issues.
+export const Chatbot: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
@@ -116,4 +117,74 @@ const Chatbot: React.FC = () => {
                     >
                         {/* Header */}
                         <header className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-fann-border">
-                            <div className="flex items-center gap
+                            <div className="flex items-center gap-3">
+                                <Bot className="text-fann-gold" size={24} />
+                                <div className="flex flex-col">
+                                    <h3 className="font-bold text-fann-teal dark:text-fann-peach">FANN Assistant</h3>
+                                    <p className="text-xs text-fann-light-gray flex items-center gap-1.5">
+                                        <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                                        Online
+                                    </p>
+                                </div>
+                            </div>
+                            <button onClick={() => setIsOpen(false)} className="text-fann-light-gray hover:text-fann-teal dark:hover:text-fann-peach">
+                                <X size={24} />
+                            </button>
+                        </header>
+
+                        {/* Messages */}
+                        <div className="flex-1 p-4 overflow-y-auto bg-fann-peach/20 dark:bg-fann-accent-teal/50">
+                            {messages.map((message, index) => (
+                                <div key={index} className={`flex gap-3 my-4 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                    {message.role === 'model' && <div className="w-8 h-8 rounded-full bg-fann-gold flex items-center justify-center flex-shrink-0"><Bot size={18} className="text-fann-charcoal" /></div>}
+                                    <div className={`max-w-[80%] rounded-lg px-4 py-2 ${message.role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-fann-teal-dark text-fann-teal dark:text-fann-peach'}`}>
+                                        <div dangerouslySetInnerHTML={{ __html: parseMarkdown(message.parts[0].text) }} className="prose prose-sm dark:prose-invert max-w-none prose-p:my-1" />
+                                        {message.sources && message.sources.length > 0 && (
+                                            <div className="mt-3 border-t border-gray-300 dark:border-fann-border pt-2">
+                                                <h4 className="text-xs font-bold flex items-center gap-1 text-fann-light-gray mb-1"><BookOpen size={12}/> Sources:</h4>
+                                                <ul className="text-xs space-y-1">
+                                                    {message.sources.map((source, i) => (
+                                                        <li key={i}>
+                                                            <a href={source.uri} target="_blank" rel="noopener noreferrer" className="hover:underline text-blue-500 dark:text-blue-400 break-all" title={source.title}>{source.title || new URL(source.uri).hostname}</a>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+                                    </div>
+                                    {message.role === 'user' && <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0"><User size={18} className="text-gray-600" /></div>}
+                                </div>
+                            ))}
+                            {isLoading && (
+                                <div className="flex gap-3 my-4 justify-start">
+                                    <div className="w-8 h-8 rounded-full bg-fann-gold flex items-center justify-center flex-shrink-0"><Bot size={18} className="text-fann-charcoal" /></div>
+                                    <div className="max-w-[80%] rounded-lg px-4 py-3 bg-gray-200 dark:bg-fann-teal-dark">
+                                        <Loader2 className="animate-spin text-fann-light-gray" />
+                                    </div>
+                                </div>
+                            )}
+                            <div ref={messagesEndRef} />
+                        </div>
+
+                        {/* Input */}
+                        <footer className="p-4 border-t border-gray-200 dark:border-fann-border">
+                            <div className="flex items-center gap-2">
+                                <input
+                                    type="text"
+                                    value={input}
+                                    onChange={(e) => setInput(e.target.value)}
+                                    onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                                    placeholder="Ask about our services..."
+                                    className="flex-1 bg-fann-peach/50 dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold text-fann-teal dark:text-fann-peach"
+                                />
+                                <button onClick={handleSend} disabled={isLoading || !input.trim()} className="bg-fann-gold text-fann-charcoal w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 disabled:opacity-50">
+                                    <Send size={20} />
+                                </button>
+                            </div>
+                        </footer>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </>
+    );
+};
