@@ -11,11 +11,11 @@ const QuoraIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-fann-peach/50 text-fann-teal dark:bg-fann-charcoal-light dark:text-fann-peach py-12">
+    <footer className="bg-fann-peach/50 text-fann-teal dark:bg-fann-accent-teal dark:text-fann-peach py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           <div className="md:col-span-12 lg:col-span-4">
-            <h3 className="text-2xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mb-4">FANN</h3>
+            <h3 className="text-2xl font-serif font-bold text-fann-teal dark:text-fann-gold mb-4">FANN</h3>
             <p className="text-sm text-fann-teal/80 dark:text-fann-light-gray">Your full-service design and build partner. Transforming visions into unforgettable experiences across exhibitions, events, and interiors.</p>
           </div>
           <div className="md:col-span-6 lg:col-span-2">

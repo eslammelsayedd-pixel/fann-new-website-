@@ -226,7 +226,7 @@ const InsightsPage: React.FC = () => {
                     <p className="whitespace-pre-wrap">{error}</p>
                 </motion.div>
             ) : generatedArticle && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-white dark:bg-fann-charcoal-light p-8 sm:p-12 rounded-lg">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-white dark:bg-fann-accent-teal p-8 sm:p-12 rounded-lg">
                     <h1 className="text-4xl md:text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mb-6">{selectedTopic?.title}</h1>
                     <div
                         className="prose prose-lg max-w-none text-fann-teal dark:text-fann-peach leading-relaxed space-y-4 prose-strong:text-fann-teal dark:prose-strong:text-fann-peach prose-headings:text-fann-accent-teal dark:prose-headings:text-fann-gold"
@@ -263,7 +263,7 @@ const InsightsPage: React.FC = () => {
                         : "Access expert-driven analysis from the FANN Intelligence Hub. Stay ahead with the latest trends in exhibition design, event technology, and commercial interiors in the GCC."
                 }
             />
-            <div className="min-h-screen bg-fann-peach dark:bg-fann-charcoal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
+            <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                    {selectedTopic ? renderArticle() : renderTopicSelection()}
                 </div>

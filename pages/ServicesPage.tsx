@@ -103,7 +103,7 @@ const ServicesPage: React.FC = () => {
               ])}
           </script>
       </SEO>
-      <div className="bg-fann-peach dark:bg-fann-charcoal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
+      <div className="bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
           <h1 className="text-5xl md:text-6xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mb-4">Our Core Capabilities</h1>
           <p className="text-xl text-fann-teal/90 dark:text-fann-peach/90 max-w-3xl mx-auto">
@@ -128,7 +128,7 @@ const ServicesPage: React.FC = () => {
           link="/portfolio"
         />
 
-        <div className="bg-white dark:bg-fann-charcoal-light">
+        <div className="bg-white dark:bg-fann-accent-teal">
           <ServiceSection
             icon={<Calendar size={40} />}
             title="Corporate Event Management"
@@ -167,7 +167,7 @@ const ServicesPage: React.FC = () => {
          {/* CTA Section */}
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 mt-16">
             <div className="text-center bg-gradient-to-r from-fann-accent-teal to-fann-gold p-1 rounded-lg">
-                 <div className="bg-white dark:bg-fann-charcoal-light rounded-lg py-16 px-8">
+                 <div className="bg-white dark:bg-fann-accent-teal rounded-lg py-16 px-8">
                     <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4 text-fann-teal dark:text-fann-peach">Have a Project in Mind?</h2>
                     <p className="max-w-2xl mx-auto text-fann-teal/90 dark:text-fann-peach/90 mb-8">Let's turn your vision into a reality. Contact us today for a complimentary consultation with our design experts.</p>
                     <Link to="/contact">

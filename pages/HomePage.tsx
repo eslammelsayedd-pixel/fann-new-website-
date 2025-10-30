@@ -55,7 +55,7 @@ const HeroSection: React.FC = () => {
             className="relative h-screen flex items-center justify-center text-center text-white overflow-hidden bg-cover bg-center"
             style={{ backgroundImage: "url('https://images.pexels.com/photos/1267696/pexels-photo-1267696.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')" }}
         >
-            <div className="absolute inset-0 bg-fann-charcoal/80 backdrop-blur-sm"></div>
+            <div className="absolute inset-0 bg-fann-teal/80 backdrop-blur-sm"></div>
 
             <div className="relative z-10 p-4 w-full" style={{ textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)' }}>
                 <motion.h1 
@@ -148,7 +148,7 @@ const cardItemVariants = {
 const ServiceCard: React.FC<{ icon: React.ReactNode; title: string; description: string; link: string; }> = ({ icon, title, description, link }) => (
     <motion.div 
         variants={cardItemVariants}
-        className="relative p-8 bg-white dark:bg-fann-charcoal-light rounded-lg overflow-hidden border border-fann-teal/10 dark:border-fann-border shadow-md"
+        className="relative p-8 bg-white dark:bg-fann-accent-teal rounded-lg overflow-hidden border border-fann-teal/10 dark:border-fann-border shadow-md"
     >
         <div className="relative z-10">
             <div className="text-fann-accent-teal dark:text-fann-gold mb-4">{icon}</div>
@@ -169,7 +169,7 @@ const HomePage: React.FC = () => {
             />
             <HeroSection />
 
-            <div className="py-20 bg-fann-peach dark:bg-fann-charcoal">
+            <div className="py-20 bg-fann-peach dark:bg-fann-teal">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
 
                     {/* Services Section */}
@@ -192,7 +192,7 @@ const HomePage: React.FC = () => {
 
                     {/* FANN Studio Section */}
                     <motion.section 
-                        className="mt-24 text-center bg-white dark:bg-fann-charcoal-light rounded-lg py-16 px-8"
+                        className="mt-24 text-center bg-white dark:bg-fann-accent-teal rounded-lg py-16 px-8"
                         initial="offscreen"
                         whileInView="onscreen"
                         viewport={{ once: true, amount: 0.2 }}
@@ -264,7 +264,7 @@ const HomePage: React.FC = () => {
                     >
                         <h2 className="text-4xl md:text-5xl font-serif font-bold mb-12">What Our Clients Say</h2>
                         <div className="relative max-w-3xl mx-auto">
-                            <div className="bg-white dark:bg-fann-charcoal-light p-8 rounded-lg">
+                            <div className="bg-white dark:bg-fann-accent-teal p-8 rounded-lg">
                                 <Star className="text-fann-gold mx-auto mb-4" size={32} />
                                 <p className="text-xl italic text-fann-teal/90 dark:text-fann-peach mb-6">"{testimonials[0].quote}"</p>
                                 <h4 className="font-bold text-fann-teal dark:text-fann-peach text-lg">{testimonials[0].client}</h4>
@@ -281,7 +281,7 @@ const HomePage: React.FC = () => {
                         viewport={{ once: true, amount: 0.2 }}
                         variants={sectionVariants}
                     >
-                         <div className="bg-white dark:bg-fann-charcoal-light rounded-lg py-16 px-8">
+                         <div className="bg-white dark:bg-fann-accent-teal rounded-lg py-16 px-8">
                             <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4 text-fann-teal dark:text-fann-peach">Ready to Create Something Extraordinary?</h2>
                             <p className="max-w-2xl mx-auto text-fann-teal/90 dark:text-fann-peach/90 mb-8">Let's discuss how our design and build expertise can bring your vision to life. Schedule a complimentary consultation with our experts today.</p>
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

@@ -28,7 +28,7 @@ const AboutPage: React.FC = () => {
             title="About FANN | Dubai's Premier Design & Build Partner"
             description="Founded in 2019, FANN is a full-service design and build company in Dubai, dedicated to transforming visions into unforgettable realities with innovation and excellence."
         />
-      <div className="min-h-screen bg-fann-peach dark:bg-fann-charcoal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
+      <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
         <motion.div 
             className="container mx-auto px-4 sm:px-6 lg:px-8"
             variants={containerVariants}

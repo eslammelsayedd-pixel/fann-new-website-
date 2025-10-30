@@ -114,7 +114,7 @@ const ContactPage: React.FC = () => {
             })}
         </script>
       </SEO>
-      <div className="min-h-screen bg-fann-peach dark:bg-fann-charcoal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
+      <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h1 className="text-5xl md:text-6xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mb-4">Contact Us</h1>
@@ -123,7 +123,7 @@ const ContactPage: React.FC = () => {
           
           <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
             <motion.div 
-              className="bg-white dark:bg-fann-charcoal-light p-8 rounded-lg"
+              className="bg-white dark:bg-fann-accent-teal p-8 rounded-lg"
               variants={slideInFromLeft}
               initial="hidden"
               whileInView="visible"
@@ -161,7 +161,7 @@ const ContactPage: React.FC = () => {
             </motion.div>
 
             <motion.div 
-              className="bg-white dark:bg-fann-charcoal-light p-8 rounded-lg"
+              className="bg-white dark:bg-fann-accent-teal p-8 rounded-lg"
               variants={slideInFromRight}
               initial="hidden"
               whileInView="visible"
@@ -178,13 +178,13 @@ const ContactPage: React.FC = () => {
                         <h2 className="text-3xl font-serif text-fann-teal dark:text-fann-peach mb-8" style={{ fontWeight: 600}}>Send a Message</h2>
                         <form onSubmit={handleSubmit} className="space-y-6">
                            <div>
-                               <input type="text" name="name" placeholder="Your Name" required className="w-full bg-fann-peach dark:bg-fann-charcoal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold transition-shadow" />
+                               <input type="text" name="name" placeholder="Your Name" required className="w-full bg-fann-peach dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold transition-shadow" />
                            </div>
                             <div>
-                               <input type="email" name="email" placeholder="Your Email" required className="w-full bg-fann-peach dark:bg-fann-charcoal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold transition-shadow" />
+                               <input type="email" name="email" placeholder="Your Email" required className="w-full bg-fann-peach dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold transition-shadow" />
                            </div>
                             <div>
-                               <textarea name="message" placeholder="Your Message" rows={5} required className="w-full bg-fann-peach dark:bg-fann-charcoal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold transition-shadow"></textarea>
+                               <textarea name="message" placeholder="Your Message" rows={5} required className="w-full bg-fann-peach dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold transition-shadow"></textarea>
                            </div>
                            {error && (
                                <div className="bg-red-900/50 text-red-300 text-sm p-3 rounded-md">{error}</div>

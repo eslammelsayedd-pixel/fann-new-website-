@@ -54,7 +54,7 @@ const StudioCard: React.FC<StudioCardProps> = ({ studio, index }) => (
         <Link 
             to={studio.isComingSoon ? '#' : studio.link} 
             className={`
-                h-full flex flex-col justify-between p-8 bg-white dark:bg-fann-charcoal-light rounded-lg 
+                h-full flex flex-col justify-between p-8 bg-white dark:bg-fann-accent-teal rounded-lg 
                 border-2 border-fann-teal/10 dark:border-fann-border group transition-all duration-300
                 ${studio.isComingSoon 
                     ? 'cursor-not-allowed opacity-60' 
@@ -82,7 +82,7 @@ const StudioCard: React.FC<StudioCardProps> = ({ studio, index }) => (
 const AIDesignStudioPage: React.FC = () => {
     return (
         <AnimatedPage>
-            <div className="min-h-screen bg-fann-peach dark:bg-fann-charcoal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
+            <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
                         <h1 className="text-5xl md:text-6xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mb-4">FANN Studio</h1>

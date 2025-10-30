@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const EventStudioPage: React.FC = () => {
     return (
         <AnimatedPage>
-             <div className="min-h-screen bg-fann-peach dark:bg-fann-charcoal pt-32 pb-20 text-fann-teal dark:text-fann-peach flex items-center justify-center">
+             <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach flex items-center justify-center">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <Crown className="mx-auto h-20 w-20 text-fann-accent-teal dark:text-fann-gold" />
                     <h1 className="text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mt-6 mb-4">Event Studio</h1>

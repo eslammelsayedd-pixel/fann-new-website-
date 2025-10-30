@@ -44,7 +44,7 @@ const PortfolioPage: React.FC = () => {
           <button
             key={option}
             onClick={() => setSelected(option)}
-            className={`px-4 py-1.5 text-sm rounded-full transition-colors duration-200 ${selected === option ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-peach/50 text-fann-teal dark:bg-fann-charcoal dark:text-fann-peach hover:bg-fann-peach dark:hover:bg-white/10'}`}
+            className={`px-4 py-1.5 text-sm rounded-full transition-colors duration-200 ${selected === option ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-peach/50 text-fann-teal dark:bg-fann-accent-teal dark:text-fann-peach hover:bg-fann-peach dark:hover:bg-white/10'}`}
           >
             {option}
           </button>
@@ -55,14 +55,14 @@ const PortfolioPage: React.FC = () => {
 
   return (
     <AnimatedPage>
-      <div className="min-h-screen bg-fann-peach dark:bg-fann-charcoal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
+      <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h1 className="text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mb-4">Our Work</h1>
             <p className="text-xl text-fann-teal/90 dark:text-fann-peach/90">Explore a selection of our finest projects.</p>
           </div>
           
-          <div className="max-w-4xl mx-auto bg-white dark:bg-fann-charcoal-light p-6 rounded-lg mb-12 shadow-md">
+          <div className="max-w-4xl mx-auto bg-white dark:bg-fann-accent-teal p-6 rounded-lg mb-12 shadow-md">
             <FilterButtons title="Service" options={services} selected={selectedService} setSelected={setSelectedService} />
             <FilterButtons title="Industry" options={industries} selected={selectedIndustry} setSelected={setSelectedIndustry} />
           </div>
@@ -100,7 +100,7 @@ const PortfolioPage: React.FC = () => {
                 <motion.div 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="md:col-span-2 lg:col-span-3 text-center py-16 bg-white dark:bg-fann-charcoal-light rounded-lg"
+                  className="md:col-span-2 lg:col-span-3 text-center py-16 bg-white dark:bg-fann-accent-teal rounded-lg"
                 >
                   <h3 className="text-2xl font-serif text-fann-accent-teal dark:text-fann-gold">No Projects Found</h3>
                   <p className="text-fann-light-gray mt-2">Try adjusting your filters to find a match.</p>

@@ -7,27 +7,26 @@ import LanguageSwitcher from './LanguageSwitcher';
 import ThemeToggle from './ThemeToggle';
 
 const FannLogo = () => (
-    <svg width="74" height="42" viewBox="0 0 100 57" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-label="FANN Logo">
-        {/* Icon */}
-        <g>
-            <path d="M0 0H51.4286V4.28571H0V0Z"/>
-            <path d="M0 4.28571V34.2857H4.28571V4.28571H0Z"/>
-            <path d="M0 17.1429H25.7143V21.4286H0V17.1429Z"/>
-            <path d="M0 34.2857H47.1429V38.5714H0V34.2857Z"/>
-            <path d="M47.1429 4.28571V38.5714H51.4286V4.28571H47.1429Z"/>
-            <path d="M8.57143 21.4286H12.8571V34.2857H8.57143V21.4286Z"/>
-            <path d="M15.4286 21.4286H19.7143V34.2857H15.4286V21.4286Z"/>
-            <path d="M22.2857 21.4286H26.5714V34.2857H22.2857V21.4286Z"/>
-            <path d="M51.4286 21.4286L64.2857 8.57143L77.1429 21.4286V38.5714H51.4286V21.4286ZM55.7143 23.3371V34.2857H72.8571V23.3371L64.2857 14.7657L55.7143 23.3371Z"/>
-        </g>
-        {/* Text "FANN" */}
-        <g transform="translate(1, 44)">
-            <path d="M0 13H3.5V8.5H10.5V13H14V0H0V13ZM3.5 4.5H10.5V0H3.5V4.5Z"/>
-            <path d="M17 13H20.5L25.25 0H28.75L33.5 13H37L27.5 0H26.5L17 13ZM23.3 8.5H30.6L27 2.9L23.3 8.5Z"/>
-            <path d="M40.25 13H43.75V4.5L50.75 13H54.25L47.25 4.5V0H40.25V13Z"/>
-            <path d="M57 13H60.5V4.5L67.5 13H71L64 4.5V0H57V13Z"/>
-        </g>
-    </svg>
+    <div className="flex items-center space-x-2.5" aria-label="FANN Exhibitions & Interiors Logo">
+        <svg width="50" height="42" viewBox="0 0 54 42" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+            <path d="M1 1H21V8H1V1Z" stroke="currentColor" strokeWidth="2"/>
+            <path d="M1 8V24H6V8" stroke="currentColor" strokeWidth="2"/>
+            <path d="M6 16H16V24H6V16Z" stroke="currentColor" strokeWidth="2"/>
+            <path d="M8.5 18.5H10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M12.5 18.5H14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M8.5 21.5H10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M12.5 21.5H14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M1 24H26V41H1V24Z" stroke="currentColor" strokeWidth="2"/>
+            <path d="M21 8V41" stroke="currentColor" strokeWidth="2"/>
+            <path d="M28.5 12L33.5 7L38.5 12V41H28.5V12Z" stroke="currentColor" strokeWidth="2"/>
+            <path d="M41 22L46 17L51 22V41H41V22Z" stroke="currentColor" strokeWidth="2"/>
+            <line x1="0" y1="41" x2="54" y2="41" stroke="currentColor" strokeWidth="2"/>
+        </svg>
+        <div className="flex flex-col">
+            <span className="font-sans text-2xl font-bold tracking-[0.25em] leading-none">FANN</span>
+            <span className="font-sans text-[7px] font-medium tracking-[0.1em] text-fann-light-gray uppercase">Exhibitions & Interiors</span>
+        </div>
+    </div>
 );
 
 
@@ -49,7 +48,7 @@ const Header: React.FC = () => {
     const lightInactiveLinkClass = "text-fann-teal hover:text-fann-gold";
 
     return (
-        <header className={`top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || isOpen ? 'fixed bg-fann-peach/90 dark:bg-fann-charcoal/90 backdrop-blur-sm shadow-lg' : 'absolute bg-transparent'}`}>
+        <header className={`top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || isOpen ? 'fixed bg-fann-peach/90 dark:bg-fann-teal/90 backdrop-blur-sm shadow-lg' : 'absolute bg-transparent'}`}>
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
                     <Link to="/" className="text-fann-teal dark:text-fann-peach">
@@ -65,7 +64,7 @@ const Header: React.FC = () => {
                                         <ChevronDown size={16} />
                                     </button>
                                     <div 
-                                        className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-48 bg-white/95 dark:bg-fann-charcoal-light/95 backdrop-blur-sm rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto transform scale-95 group-hover:scale-100 origin-top"
+                                        className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-48 bg-white/95 dark:bg-fann-accent-teal/95 backdrop-blur-sm rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto transform scale-95 group-hover:scale-100 origin-top"
                                     >
                                         <div className="py-1">
                                             {link.children.map(child => (
@@ -122,7 +121,7 @@ const Header: React.FC = () => {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="lg:hidden bg-fann-peach/95 dark:bg-fann-charcoal/95 absolute top-20 left-0 right-0"
+                    className="lg:hidden bg-fann-peach/95 dark:bg-fann-teal/95 absolute top-20 left-0 right-0"
                 >
                     <nav className="flex flex-col items-center space-y-6 py-8">
                         {navLinks.map((link) => (

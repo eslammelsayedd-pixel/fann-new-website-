@@ -90,7 +90,7 @@ const ExhibitionStudioPage: React.FC = () => {
                 title="AI Exhibition Stand Designer | FANN Studio"
                 description="Visualize your exhibition stand in minutes. Use FANN's AI-powered studio to configure your booth size, style, and features, and receive an instant 3D concept and design proposal."
             />
-            <div className="min-h-screen bg-fann-peach dark:bg-fann-charcoal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
+            <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
                         <Building className="mx-auto h-16 w-16 text-fann-accent-teal dark:text-fann-gold" />
@@ -102,16 +102,16 @@ const ExhibitionStudioPage: React.FC = () => {
 
                     <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
                         {/* CONTROLS */}
-                        <div className="bg-white dark:bg-fann-charcoal-light p-6 rounded-lg space-y-6 self-start shadow-lg">
+                        <div className="bg-white dark:bg-fann-accent-teal p-6 rounded-lg space-y-6 self-start shadow-lg">
                             <h2 className="text-2xl font-serif font-bold text-fann-teal dark:text-fann-peach border-b border-fann-teal/10 dark:border-fann-border pb-3">1. Your Brand & Booth</h2>
                              <div>
                                 <label className="block text-sm font-medium text-fann-light-gray mb-2">Company Name</label>
-                                <input type="text" value={companyName} onChange={e => setCompanyName(e.target.value)} placeholder="e.g., Apex Innovations" className="w-full bg-fann-peach/50 dark:bg-fann-charcoal border border-fann-teal/20 dark:border-fann-border rounded-md px-3 py-2" />
+                                <input type="text" value={companyName} onChange={e => setCompanyName(e.target.value)} placeholder="e.g., Apex Innovations" className="w-full bg-fann-peach/50 dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-3 py-2" />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-fann-light-gray mb-2">Upload Your Logo</label>
                                 <div className="flex items-center gap-4">
-                                    <label htmlFor="logo-upload" className="cursor-pointer bg-fann-peach/50 dark:bg-fann-charcoal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-2 flex items-center gap-2 hover:border-fann-gold dark:hover:border-fann-gold transition-colors">
+                                    <label htmlFor="logo-upload" className="cursor-pointer bg-fann-peach/50 dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-2 flex items-center gap-2 hover:border-fann-gold dark:hover:border-fann-gold transition-colors">
                                         <ImageIcon size={18} /> Choose File
                                     </label>
                                     <input id="logo-upload" type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
@@ -126,7 +126,7 @@ const ExhibitionStudioPage: React.FC = () => {
                             </div>
                              <div>
                                 <label className="block text-sm font-medium text-fann-light-gray mb-2">Booth Size (sqm): <span className="font-bold text-fann-accent-teal dark:text-fann-gold">{boothSize} sqm</span></label>
-                                <input type="range" min="9" max="400" value={boothSize} onChange={e => setBoothSize(parseInt(e.target.value))} className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-fann-peach dark:bg-fann-charcoal accent-fann-gold" />
+                                <input type="range" min="9" max="400" value={boothSize} onChange={e => setBoothSize(parseInt(e.target.value))} className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-fann-peach dark:bg-fann-teal-dark accent-fann-gold" />
                             </div>
 
                              <h2 className="text-2xl font-serif font-bold text-fann-teal dark:text-fann-peach border-b border-fann-teal/10 dark:border-fann-border pb-3 pt-4">2. Design & Style</h2>
@@ -134,7 +134,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                 <label className="block text-sm font-medium text-fann-light-gray mb-3">Booth Type</label>
                                 <div className="grid grid-cols-3 gap-2">
                                     {['Inline', 'Corner', 'Island'].map(type => (
-                                        <button key={type} onClick={() => setBoothType(type)} className={`py-2 text-sm rounded-md ${boothType === type ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-peach/50 dark:bg-fann-charcoal'}`}>{type}</button>
+                                        <button key={type} onClick={() => setBoothType(type)} className={`py-2 text-sm rounded-md ${boothType === type ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-peach/50 dark:bg-fann-teal'}`}>{type}</button>
                                     ))}
                                 </div>
                             </div>
@@ -142,7 +142,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                 <label className="block text-sm font-medium text-fann-light-gray mb-3">Overall Style</label>
                                 <div className="space-y-2">
                                     {['Luxury & Elegant', 'Modern & Minimalist', 'High-Tech & Interactive'].map(s => (
-                                        <button key={s} onClick={() => setStyle(s)} className={`w-full text-left p-3 rounded-md flex items-center gap-3 ${style === s ? 'bg-fann-accent-teal/20 dark:bg-fann-gold/20' : 'bg-fann-peach/50 dark:bg-fann-charcoal'}`}>
+                                        <button key={s} onClick={() => setStyle(s)} className={`w-full text-left p-3 rounded-md flex items-center gap-3 ${style === s ? 'bg-fann-accent-teal/20 dark:bg-fann-gold/20' : 'bg-fann-peach/50 dark:bg-fann-teal'}`}>
                                             <div className={`w-5 h-5 rounded-full flex items-center justify-center border-2 ${style === s ? 'border-fann-accent-teal dark:border-fann-gold' : 'border-fann-light-gray'}`}>{style === s && <Check size={12} className="text-fann-accent-teal dark:text-fann-gold" />}</div>
                                             {s}
                                         </button>
@@ -153,7 +153,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                 <label className="block text-sm font-medium text-fann-light-gray mb-3">Key Features</label>
                                  <div className="grid grid-cols-2 gap-2">
                                      {['Double Deck', 'Hospitality Area', 'Private Meeting Room', 'Interactive LED Wall'].map(feature => (
-                                        <button key={feature} onClick={() => handleFeatureChange(feature)} className={`p-3 text-sm rounded-md flex items-center gap-2 ${features.includes(feature) ? 'bg-fann-accent-teal/20 dark:bg-fann-gold/20' : 'bg-fann-peach/50 dark:bg-fann-charcoal'}`}>
+                                        <button key={feature} onClick={() => handleFeatureChange(feature)} className={`p-3 text-sm rounded-md flex items-center gap-2 ${features.includes(feature) ? 'bg-fann-accent-teal/20 dark:bg-fann-gold/20' : 'bg-fann-peach/50 dark:bg-fann-teal'}`}>
                                              <div className={`w-5 h-5 rounded-sm flex items-center justify-center border-2 ${features.includes(feature) ? 'border-fann-accent-teal dark:border-fann-gold' : 'border-fann-light-gray'}`}>{features.includes(feature) && <Check size={12} className="text-fann-accent-teal dark:text-fann-gold" />}</div>
                                              {feature}
                                          </button>
@@ -178,13 +178,13 @@ const ExhibitionStudioPage: React.FC = () => {
                         <div className="relative">
                             <AnimatePresence>
                                 {isLoading && (
-                                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-white/80 dark:bg-fann-charcoal/80 backdrop-blur-sm flex flex-col justify-center items-center z-10 rounded-lg">
+                                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-white/80 dark:bg-fann-teal/80 backdrop-blur-sm flex flex-col justify-center items-center z-10 rounded-lg">
                                         <Loader2 className="w-12 h-12 text-fann-accent-teal dark:text-fann-gold animate-spin"/>
                                         <p className="mt-4 font-semibold text-lg">Generating Your Custom Design...</p>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
-                            <div className="bg-white dark:bg-fann-charcoal-light rounded-lg shadow-lg sticky top-24">
+                            <div className="bg-white dark:bg-fann-accent-teal rounded-lg shadow-lg sticky top-24">
                                 <model-viewer
                                     src="https://cdn.glitch.global/6a86e971-40b4-436f-8700-61d151048b61/exhibition_stand.glb?v=1716409890924"
                                     alt="3D model of an exhibition stand"
