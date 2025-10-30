@@ -6,30 +6,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import LanguageSwitcher from './LanguageSwitcher';
 import ThemeToggle from './ThemeToggle';
 
-const FannLogo = () => (
-    <div className="flex items-center space-x-2.5" aria-label="FANN Exhibitions & Interiors Logo">
-        <svg width="50" height="42" viewBox="0 0 54 42" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
-            <path d="M1 1H21V8H1V1Z" stroke="currentColor" strokeWidth="2"/>
-            <path d="M1 8V24H6V8" stroke="currentColor" strokeWidth="2"/>
-            <path d="M6 16H16V24H6V16Z" stroke="currentColor" strokeWidth="2"/>
-            <path d="M8.5 18.5H10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-            <path d="M12.5 18.5H14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-            <path d="M8.5 21.5H10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-            <path d="M12.5 21.5H14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-            <path d="M1 24H26V41H1V24Z" stroke="currentColor" strokeWidth="2"/>
-            <path d="M21 8V41" stroke="currentColor" strokeWidth="2"/>
-            <path d="M28.5 12L33.5 7L38.5 12V41H28.5V12Z" stroke="currentColor" strokeWidth="2"/>
-            <path d="M41 22L46 17L51 22V41H41V22Z" stroke="currentColor" strokeWidth="2"/>
-            <line x1="0" y1="41" x2="54" y2="41" stroke="currentColor" strokeWidth="2"/>
-        </svg>
-        <div className="flex flex-col">
-            <span className="font-sans text-2xl font-bold tracking-[0.25em] leading-none">FANN</span>
-            <span className="font-sans text-[7px] font-medium tracking-[0.1em] text-fann-light-gray uppercase">Exhibitions & Interiors</span>
-        </div>
-    </div>
-);
-
-
 const Header: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
@@ -52,10 +28,10 @@ const Header: React.FC = () => {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
                     <Link to="/" className="text-fann-teal dark:text-fann-peach">
-                        <FannLogo />
+                        <div className="font-sans text-4xl font-extrabold tracking-[0.2em]">FANN</div>
                     </Link>
 
-                    <nav className="hidden lg:flex items-center space-x-6">
+                    <nav className="hidden lg:flex items-center space-x-8">
                         {navLinks.map((link) => (
                             link.children ? (
                                 <div key={link.name} className="relative group">

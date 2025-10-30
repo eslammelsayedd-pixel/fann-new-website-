@@ -52,11 +52,8 @@ const HeroSection: React.FC = () => {
 
     return (
         <section 
-            className="relative h-screen flex items-center justify-center text-center text-white overflow-hidden bg-cover bg-center"
-            style={{ backgroundImage: "url('https://images.pexels.com/photos/1267696/pexels-photo-1267696.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')" }}
+            className="relative h-screen flex items-center justify-center text-center text-fann-peach overflow-hidden bg-fann-teal"
         >
-            <div className="absolute inset-0 bg-fann-teal/80 backdrop-blur-sm"></div>
-
             <div className="relative z-10 p-4 w-full" style={{ textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)' }}>
                 <motion.h1 
                     initial={{ opacity: 0, y: 20 }}

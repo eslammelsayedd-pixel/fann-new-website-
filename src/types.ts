@@ -1,3 +1,7 @@
+// FIX: The project was missing React's JSX type definitions for standard HTML elements.
+// Explicitly importing 'react' and extending its JSX types to make them available globally.
+import 'react';
+
 // This file contains shared type definitions for the application.
 
 export interface NavLink {
@@ -60,9 +64,10 @@ export interface GeneratedDesign {
 
 
 // This augmentation adds the 'model-viewer' custom element to React's JSX types.
+// It now also extends React's intrinsic elements to fix missing HTML element types.
 declare global {
     namespace JSX {
-        interface IntrinsicElements {
+        interface IntrinsicElements extends React.JSX.IntrinsicElements {
             'model-viewer': any;
         }
     }
