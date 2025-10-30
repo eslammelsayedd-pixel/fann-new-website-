@@ -44,7 +44,7 @@ const PortfolioPage: React.FC = () => {
           <button
             key={option}
             onClick={() => setSelected(option)}
-            className={`px-4 py-1.5 text-sm rounded-full transition-colors duration-200 ${selected === option ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-peach/50 text-fann-teal dark:bg-fann-accent-teal dark:text-fann-peach hover:bg-fann-peach dark:hover:bg-white/10'}`}
+            className={`px-4 py-2 text-sm font-semibold rounded-full transition-all duration-300 transform hover:scale-105 ${selected === option ? 'bg-fann-gold text-fann-charcoal shadow-md' : 'bg-fann-peach/50 text-fann-teal dark:bg-fann-accent-teal/50 dark:text-fann-peach hover:bg-fann-peach/80 dark:hover:bg-fann-accent-teal'}`}
           >
             {option}
           </button>

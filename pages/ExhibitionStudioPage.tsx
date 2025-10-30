@@ -176,7 +176,7 @@ const ExhibitionStudioPage: React.FC = () => {
                         <div className="mt-12 flex justify-between items-center">
                            <motion.button
                                 onClick={prevStep}
-                                className="flex items-center gap-2 text-fann-teal/80 dark:text-fann-light-gray font-semibold disabled:opacity-50"
+                                className="flex items-center gap-2 text-fann-teal/80 dark:text-fann-light-gray font-semibold disabled:opacity-50 hover:text-fann-teal dark:hover:text-fann-peach"
                                 disabled={step === 1}
                                 whileHover={{ x: -2 }}
                                 whileTap={{ x: 1 }}
@@ -187,7 +187,7 @@ const ExhibitionStudioPage: React.FC = () => {
                             {step < steps.length ? (
                                 <motion.button
                                     onClick={nextStep}
-                                    className="bg-fann-accent-teal dark:bg-fann-gold text-white dark:text-fann-charcoal font-bold py-3 px-8 rounded-full flex items-center gap-2"
+                                    className="bg-fann-accent-teal dark:bg-fann-gold text-white dark:text-fann-charcoal font-bold py-3 px-8 rounded-full flex items-center gap-2 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5"
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
                                 >
@@ -195,7 +195,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                 </motion.button>
                             ) : (
                                 <motion.button
-                                    className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full"
+                                    className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-fann-gold/40 hover:-translate-y-0.5"
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
                                 >

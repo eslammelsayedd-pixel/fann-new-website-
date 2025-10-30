@@ -72,9 +72,9 @@ const Header: React.FC = () => {
                         <ThemeToggle />
                         <Link to="/fann-studio">
                           <motion.button 
-                              whileHover={{ scale: 1.05 }}
+                              whileHover={{ scale: 1.05, y: -2 }}
                               whileTap={{ scale: 0.95 }}
-                              className="bg-fann-gold text-fann-charcoal font-bold py-2 px-6 rounded-full text-sm uppercase tracking-wider transition-transform duration-300"
+                              className="bg-fann-gold text-fann-charcoal font-bold py-3 px-6 rounded-full text-sm uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-fann-gold/40"
                           >
                               Start Designing
                           </motion.button>
@@ -149,10 +149,10 @@ const Header: React.FC = () => {
                         </div>
                         <Link to="/fann-studio">
                           <motion.button 
-                            whileHover={{ scale: 1.05 }}
+                            whileHover={{ scale: 1.05, y: -2 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => setIsOpen(false)}
-                            className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider mt-4"
+                            className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider mt-4 shadow-md hover:shadow-lg hover:shadow-fann-gold/40"
                           >
                               Start Designing
                           </motion.button>

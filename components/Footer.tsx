@@ -11,7 +11,7 @@ const QuoraIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-fann-peach/50 text-fann-teal dark:bg-fann-accent-teal dark:text-fann-peach py-12">
+    <footer className="bg-fann-accent-peach/50 text-fann-teal dark:bg-fann-teal-dark dark:text-fann-peach py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           <div className="md:col-span-12 lg:col-span-4">

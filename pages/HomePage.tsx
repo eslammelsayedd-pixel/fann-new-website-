@@ -91,18 +91,18 @@ const HeroSection: React.FC = () => {
                 >
                     <Link to="/fann-studio">
                         <motion.button 
-                            whileHover={{ scale: 1.05, boxShadow: "0px 0px 15px rgba(212, 175, 118, 0.5)" }}
+                            whileHover={{ scale: 1.05, y: -4 }}
                             whileTap={{ scale: 0.95 }}
-                            className="bg-fann-gold text-fann-charcoal font-bold py-4 px-10 rounded-full text-lg uppercase tracking-wider transition-all duration-300 w-full sm:w-auto"
+                            className="bg-fann-gold text-fann-charcoal font-bold py-4 px-10 rounded-full text-lg uppercase tracking-wider transition-all duration-300 w-full sm:w-auto shadow-lg shadow-fann-gold/30 hover:shadow-xl hover:shadow-fann-gold/50"
                         >
                             Design with FANN
                         </motion.button>
                     </Link>
                     <Link to="/portfolio">
                          <motion.button 
-                            whileHover={{ scale: 1.05 }}
+                            whileHover={{ scale: 1.05, y: -4 }}
                             whileTap={{ scale: 0.95 }}
-                            className="border-2 border-fann-gold text-fann-gold font-bold py-4 px-10 rounded-full text-lg uppercase tracking-wider transition-all duration-300 w-full sm:w-auto"
+                            className="border-2 border-fann-gold text-fann-gold font-bold py-4 px-10 rounded-full text-lg uppercase tracking-wider transition-all duration-300 w-full sm:w-auto hover:bg-fann-gold/10"
                         >
                             View Portfolio
                         </motion.button>
@@ -151,7 +151,7 @@ const ServiceCard: React.FC<{ icon: React.ReactNode; title: string; description:
             <div className="text-fann-accent-teal dark:text-fann-gold mb-4">{icon}</div>
             <h3 className="text-2xl font-serif font-bold mb-2 text-fann-teal dark:text-fann-peach">{title}</h3>
             <p className="text-fann-teal/80 dark:text-fann-light-gray mb-6">{description}</p>
-            <Link to={link} className="font-semibold text-fann-accent-teal dark:text-fann-gold hover:underline">Learn More &rarr;</Link>
+            <Link to={link} className="font-bold text-fann-accent-teal dark:text-fann-gold hover:underline underline-offset-4">Learn More &rarr;</Link>
         </div>
     </motion.div>
 );
@@ -202,9 +202,9 @@ const HomePage: React.FC = () => {
                         </div>
                          <Link to="/fann-studio">
                            <motion.button 
-                                whileHover={{ scale: 1.05, boxShadow: "0px 0px 15px rgba(212, 175, 118, 0.5)" }}
+                                whileHover={{ scale: 1.05, y: -2 }}
                                 whileTap={{ scale: 0.95 }}
-                                className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider"
+                                className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-fann-gold/40"
                             >
                                 Try It Now - Free
                             </motion.button>
@@ -242,8 +242,8 @@ const HomePage: React.FC = () => {
                         <div className="text-center mt-12">
                              <Link to="/portfolio">
                                 <motion.button 
-                                    whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                                    className="border-2 border-fann-accent-teal dark:border-fann-gold text-fann-accent-teal dark:text-fann-gold font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider"
+                                    whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}
+                                    className="border-2 border-fann-accent-teal dark:border-fann-gold text-fann-accent-teal dark:text-fann-gold font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider transition-all duration-300 hover:bg-fann-accent-teal/10 dark:hover:bg-fann-gold/10"
                                 >
                                     View Full Portfolio
                                 </motion.button>
@@ -284,17 +284,17 @@ const HomePage: React.FC = () => {
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                                <Link to="/contact">
                                   <motion.button 
-                                      whileHover={{ scale: 1.05, boxShadow: "0px 0px 15px rgba(212, 175, 118, 0.5)" }}
+                                      whileHover={{ scale: 1.05, y: -2 }}
                                       whileTap={{ scale: 0.95 }}
-                                      className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider w-full sm:w-auto"
+                                      className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider w-full sm:w-auto transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-fann-gold/40"
                                   >
                                       Book Consultation
                                   </motion.button>
                                 </Link>
                                 <Link to="/fann-studio">
                                    <motion.button 
-                                      whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                                      className="border-2 border-fann-accent-teal dark:border-fann-gold text-fann-accent-teal dark:text-fann-gold font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider w-full sm:w-auto"
+                                      whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}
+                                      className="border-2 border-fann-accent-teal dark:border-fann-gold text-fann-accent-teal dark:text-fann-gold font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider w-full sm:w-auto transition-all duration-300 hover:bg-fann-accent-teal/10 dark:hover:bg-fann-gold/10"
                                   >
                                       Start Designing
                                   </motion.button>

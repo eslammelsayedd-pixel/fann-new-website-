@@ -190,9 +190,15 @@ const ContactPage: React.FC = () => {
                                <div className="bg-red-900/50 text-red-300 text-sm p-3 rounded-md">{error}</div>
                            )}
                            <div>
-                               <button type="submit" disabled={isSending} className="w-full bg-fann-gold text-fann-charcoal font-bold py-3 rounded-full uppercase tracking-wider hover:opacity-90 transition-opacity duration-300 flex items-center justify-center disabled:opacity-50">
+                               <motion.button 
+                                    whileHover={{ scale: 1.05, y: -2 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    type="submit" 
+                                    disabled={isSending} 
+                                    className="w-full bg-fann-gold text-fann-charcoal font-bold py-3 rounded-full uppercase tracking-wider transition-all duration-300 flex items-center justify-center disabled:opacity-50 shadow-md hover:shadow-lg hover:shadow-fann-gold/40"
+                                >
                                    {isSending ? <Loader2 className="animate-spin" /> : 'Submit'}
-                               </button>
+                               </motion.button>
                            </div>
                         </form>
                     </>

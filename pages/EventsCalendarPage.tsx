@@ -140,7 +140,7 @@ const EventsCalendarPage: React.FC = () => {
                             <button
                                 key={country}
                                 onClick={() => setSelectedCountry(country)}
-                                className={`w-full text-sm py-2 px-1 rounded-md transition-colors ${selectedCountry === country ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-peach/50 text-fann-teal dark:bg-fann-accent-teal/50 dark:text-fann-peach hover:bg-fann-peach dark:hover:bg-white/10'}`}
+                                className={`w-full text-sm font-semibold py-2 px-1 rounded-md transition-colors ${selectedCountry === country ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-peach/50 text-fann-teal dark:bg-fann-accent-teal/50 dark:text-fann-peach hover:bg-fann-peach dark:hover:bg-white/10'}`}
                             >
                                 {country}
                             </button>
@@ -167,7 +167,7 @@ const EventsCalendarPage: React.FC = () => {
                             <button
                                 key={range}
                                 onClick={() => setSelectedDateRange(range)}
-                                className={`w-full text-sm py-2 px-1 rounded-md transition-colors ${selectedDateRange === range ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-peach/50 text-fann-teal dark:bg-fann-accent-teal/50 dark:text-fann-peach hover:bg-fann-peach dark:hover:bg-white/10'}`}
+                                className={`w-full text-sm font-semibold py-2 px-1 rounded-md transition-colors ${selectedDateRange === range ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-peach/50 text-fann-teal dark:bg-fann-accent-teal/50 dark:text-fann-peach hover:bg-fann-peach dark:hover:bg-white/10'}`}
                             >
                                 {range}
                             </button>

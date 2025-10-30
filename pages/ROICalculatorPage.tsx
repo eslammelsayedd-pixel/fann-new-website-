@@ -204,9 +204,15 @@ const ROICalculatorPage: React.FC = () => {
                                 </div>
                             </div>
                             <div className="border-t border-fann-border pt-6">
-                                <button type="submit" disabled={isLoading || !formData.company_name || !formData.event_name} className="w-full bg-fann-gold text-fann-charcoal font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                                <motion.button 
+                                    whileHover={{ scale: 1.05, y: -2 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    type="submit" 
+                                    disabled={isLoading || !formData.company_name || !formData.event_name} 
+                                    className="w-full bg-fann-gold text-fann-charcoal font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-fann-gold/40"
+                                >
                                     {isLoading ? <><Loader2 className="animate-spin" />Calculating...</> : results ? 'Recalculate Projections' : 'Calculate Projections'}
-                                </button>
+                                </motion.button>
                             </div>
                         </form>
 
@@ -266,9 +272,15 @@ const ROICalculatorPage: React.FC = () => {
                                                     <input type="text" name="name" placeholder="Full Name" value={leadData.name} onChange={handleLeadInputChange} required className="w-full bg-fann-teal-dark border border-fann-border rounded-md px-3 py-2" />
                                                     <input type="email" name="email" placeholder="Business Email" value={leadData.email} onChange={handleLeadInputChange} required className="w-full bg-fann-teal-dark border border-fann-border rounded-md px-3 py-2" />
                                                     <input type="text" name="company" placeholder="Company Name" value={leadData.company} onChange={handleLeadInputChange} required className="w-full bg-fann-teal-dark border border-fann-border rounded-md px-3 py-2" />
-                                                    <button type="submit" disabled={isDownloading} className="w-full bg-fann-gold text-fann-charcoal font-bold py-3 rounded-full flex items-center justify-center gap-2 disabled:opacity-50">
+                                                    <motion.button 
+                                                        whileHover={{ scale: 1.05, y: -2 }}
+                                                        whileTap={{ scale: 0.95 }}
+                                                        type="submit" 
+                                                        disabled={isDownloading} 
+                                                        className="w-full bg-fann-gold text-fann-charcoal font-bold py-3 rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-fann-gold/40"
+                                                    >
                                                         {isDownloading ? <><Loader2 className="animate-spin w-5 h-5"/> Generating...</> : <><Download size={18}/> Download Full Report</>}
-                                                    </button>
+                                                    </motion.button>
                                                 </div>
                                             </motion.form>
                                         )}
