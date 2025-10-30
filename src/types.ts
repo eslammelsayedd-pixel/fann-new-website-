@@ -1,3 +1,8 @@
+// FIX: Add a static import for React to ensure its JSX types are loaded correctly.
+// This resolves errors where standard HTML tags were not recognized by TypeScript
+// by ensuring the global JSX namespace is correctly augmented rather than replaced.
+import React from 'react';
+
 // This file contains shared type definitions for the application.
 
 export interface NavLink {
@@ -40,14 +45,30 @@ export interface Testimonial {
   projectType: string;
 }
 
+export interface DesignConfiguration {
+  companyName: string;
+  boothSize: number;
+  boothType: string;
+  style: string;
+  features: string[];
+  brandColors: string[];
+  logoUrl?: string;
+}
+
+export interface GeneratedDesign {
+  conceptName: string;
+  detailedDescription: string;
+  materials: string[];
+  lighting: string;
+  technologyFeatures: string[];
+}
+
 
 // This augmentation adds the 'model-viewer' custom element to React's JSX types.
-// We use inline `import('react')` to avoid a top-level import that can interfere
-// with global type resolution for JSX.
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'model-viewer': import('react').DetailedHTMLProps<import('react').HTMLAttributes<HTMLElement> & {
+            'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & {
                 src?: string;
                 alt?: string;
                 'camera-controls'?: boolean;
