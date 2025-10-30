@@ -54,7 +54,7 @@ const HeroSection: React.FC = () => {
         <section 
             className="relative h-screen flex items-center justify-center text-center text-fann-peach overflow-hidden bg-fann-teal"
         >
-            <div className="relative z-10 p-4 w-full" style={{ textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)' }}>
+            <div className="relative z-10 p-4 w-full">
                 <motion.h1 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -115,7 +115,7 @@ const HeroSection: React.FC = () => {
                 transition={{ duration: 1.5, repeat: Infinity }}
                 className="absolute bottom-10 z-20"
             >
-                <ArrowDown className="w-8 h-8 text-fann-gold" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.7))' }}/>
+                <ArrowDown className="w-8 h-8 text-fann-gold" />
             </motion.div>
         </section>
     );

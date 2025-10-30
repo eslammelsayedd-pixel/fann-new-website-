@@ -63,11 +63,12 @@ export interface GeneratedDesign {
 }
 
 
-// This augmentation adds the 'model-viewer' custom element to React's JSX types.
-// It now also extends React's intrinsic elements to fix missing HTML element types.
+// FIX: This augmentation adds the 'model-viewer' custom element to React's JSX types.
+// By simply augmenting the global namespace (and not using `extends`), we allow the
+// standard HTML element types loaded via `import React` to be correctly recognized.
 declare global {
     namespace JSX {
-        interface IntrinsicElements extends React.JSX.IntrinsicElements {
+        interface IntrinsicElements {
             'model-viewer': any;
         }
     }
