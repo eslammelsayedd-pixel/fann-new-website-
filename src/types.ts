@@ -1,8 +1,3 @@
-// FIX: Add a static import for React to ensure its JSX types are loaded correctly.
-// This resolves errors where standard HTML tags were not recognized by TypeScript
-// by ensuring the global JSX namespace is correctly augmented rather than replaced.
-import React from 'react';
-
 // This file contains shared type definitions for the application.
 
 export interface NavLink {
@@ -68,21 +63,7 @@ export interface GeneratedDesign {
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & {
-                src?: string;
-                alt?: string;
-                'camera-controls'?: boolean;
-                'auto-rotate'?: boolean;
-                ar?: boolean;
-                'shadow-intensity'?: string;
-                exposure?: string;
-                'environment-image'?: string;
-                'interaction-prompt'?: string;
-                'camera-orbit'?: string;
-                'min-camera-orbit'?: string;
-                'max-camera-orbit'?: string;
-                'field-of-view'?: string;
-            }, HTMLElement>;
+            'model-viewer': any;
         }
     }
 }
