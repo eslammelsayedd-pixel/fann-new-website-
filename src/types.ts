@@ -1,8 +1,3 @@
-// FIX: Add reference to React's types to ensure JSX intrinsics are available for augmentation.
-// In a module-based project, importing React is the correct way to achieve this.
-// The triple-slash directive below was causing type resolution conflicts.
-import React from 'react';
-
 // This file contains shared type definitions for the application.
 
 export interface NavLink {
@@ -47,10 +42,12 @@ export interface Testimonial {
 
 
 // This augmentation adds the 'model-viewer' custom element to React's JSX types.
+// We use inline `import('react')` to avoid a top-level import that can interfere
+// with global type resolution for JSX.
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & {
+            'model-viewer': import('react').DetailedHTMLProps<import('react').HTMLAttributes<HTMLElement> & {
                 src?: string;
                 alt?: string;
                 'camera-controls'?: boolean;

@@ -8,6 +8,12 @@
     },
     "api/generate-insights.ts": {
       "maxDuration": 60
+    },
+    "api/calculate-roi.ts": {
+      "maxDuration": 60
+    },
+    "api/generate-roi-pdf.ts": {
+      "maxDuration": 60
     }
   },
   "rewrites": [
