@@ -8,6 +8,7 @@ import ServicesPage from './pages/ServicesPage';
 import PortfolioPage from './pages/PortfolioPage';
 import AIDesignStudioPage from './pages/AIDesignStudioPage';
 import ExhibitionStudioPage from './pages/ExhibitionStudioPage';
+import DesignResultPage from './pages/DesignResultPage';
 import EventStudioPage from './pages/EventStudioPage';
 import InteriorStudioPage from './pages/InteriorStudioPage';
 import MediaStudioPage from './pages/MediaStudioPage';
@@ -31,6 +32,7 @@ const App: React.FC = () => {
                         <Route path="/portfolio" element={<PortfolioPage />} />
                         <Route path="/fann-studio" element={<AIDesignStudioPage />} />
                         <Route path="/fann-studio/exhibition" element={<ExhibitionStudioPage />} />
+                        <Route path="/fann-studio/exhibition/result" element={<DesignResultPage />} />
                         <Route path="/fann-studio/event" element={<EventStudioPage />} />
                         <Route path="/fann-studio/interior" element={<InteriorStudioPage />} />
                         <Route path="/fann-studio/media" element={<MediaStudioPage />} />

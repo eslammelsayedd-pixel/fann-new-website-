@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AnimatedPage from '../components/AnimatedPage';
 import { portfolioProjects } from '../constants';
+import SEO from '../components/SEO';
 
 const containerVariants = {
   hidden: { },
@@ -21,6 +22,7 @@ const itemVariants = {
 const PortfolioPage: React.FC = () => {
   const [selectedService, setSelectedService] = useState('All');
   const [selectedIndustry, setSelectedIndustry] = useState('All');
+  const [metaInfo, setMetaInfo] = useState({ title: '', description: '' });
 
   const services = ['All', 'Exhibitions', 'Events', 'Interior Design'];
   const industries = useMemo(() => {
@@ -35,6 +37,40 @@ const PortfolioPage: React.FC = () => {
         return serviceMatch && industryMatch;
     });
   }, [selectedService, selectedIndustry]);
+
+  useEffect(() => {
+    const baseTitle = "FANN Portfolio";
+    let dynamicTitle = baseTitle;
+    let dynamicDescription = "";
+
+    const serviceText = selectedService !== 'All' ? selectedService : '';
+    const industryText = selectedIndustry !== 'All' ? selectedIndustry : '';
+
+    if (serviceText && industryText) {
+      dynamicTitle = `${baseTitle} | ${serviceText} for ${industryText}`;
+      dynamicDescription = `Explore FANN's portfolio of ${serviceText.toLowerCase()} projects for the ${industryText} industry. Discover our work with leading brands in the GCC.`;
+    } else if (serviceText) {
+      dynamicTitle = `${baseTitle} | ${serviceText} Projects`;
+      dynamicDescription = `Browse our portfolio of exceptional ${serviceText.toLowerCase()} projects. See how FANN creates unforgettable experiences for clients across various industries.`;
+    } else if (industryText) {
+      dynamicTitle = `${baseTitle} | ${industryText} Industry Projects`;
+      dynamicDescription = `View FANN's specialized projects for the ${industryText} industry. Discover our expertise in creating bespoke exhibitions, events, and interiors.`;
+    } else {
+      dynamicTitle = `Our Work | FANN Portfolio`;
+      dynamicDescription = 'Explore the diverse portfolio of FANN. View our successful projects in exhibitions, events, and interior design across various industries in Dubai and the GCC.';
+    }
+    
+    if (filteredProjects.length > 0) {
+        const projectTitles = filteredProjects.slice(0, 2).map(p => p.title).join(', ');
+        if(projectTitles) {
+            dynamicDescription += ` Featuring projects like ${projectTitles}.`;
+        }
+    }
+
+    setMetaInfo({ title: dynamicTitle, description: dynamicDescription });
+
+  }, [selectedService, selectedIndustry, filteredProjects]);
+
 
   const FilterButtons: React.FC<{title: string, options: string[], selected: string, setSelected: (value: string) => void}> = ({ title, options, selected, setSelected }) => (
     <div className="mb-6">
@@ -55,6 +91,10 @@ const PortfolioPage: React.FC = () => {
 
   return (
     <AnimatedPage>
+      <SEO
+        title={metaInfo.title}
+        description={metaInfo.description}
+      />
       <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">

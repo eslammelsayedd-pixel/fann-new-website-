@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+// FIX: Added Variants type to correctly type framer-motion animation variants.
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { MessageSquare, X, Send, Loader2, Bot, User, BookOpen } from 'lucide-react';
 
 interface Message {
@@ -81,12 +82,14 @@ export const Chatbot: React.FC = () => {
         }
     };
 
-    const fabVariants = {
+    // FIX: Explicitly typed with Variants to prevent TypeScript from widening the transition 'type' property.
+    const fabVariants: Variants = {
         hidden: { scale: 0, opacity: 0 },
         visible: { scale: 1, opacity: 1, transition: { delay: 0.5, type: 'spring' } },
     };
 
-    const chatWindowVariants = {
+    // FIX: Explicitly typed with Variants for consistency and type safety.
+    const chatWindowVariants: Variants = {
         hidden: { opacity: 0, y: 50, scale: 0.9 },
         visible: { opacity: 1, y: 0, scale: 1 },
     };

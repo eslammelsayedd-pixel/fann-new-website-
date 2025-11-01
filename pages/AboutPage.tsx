@@ -1,9 +1,11 @@
 import React from 'react';
 import AnimatedPage from '../components/AnimatedPage';
-import { motion } from 'framer-motion';
+// FIX: Added Variants type to correctly type framer-motion animation variants.
+import { motion, Variants } from 'framer-motion';
 import SEO from '../components/SEO';
 
-const containerVariants = {
+// FIX: Explicitly typed with Variants to prevent TypeScript from widening the transition 'type' property.
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -11,7 +13,8 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
+// FIX: Explicitly typed with Variants to prevent TypeScript from widening the transition 'type' property.
+const itemVariants: Variants = {
   hidden: { y: 30, opacity: 0 },
   visible: {
     y: 0,

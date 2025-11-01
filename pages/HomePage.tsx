@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowDown, Layers, Calendar, Star, PenTool } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+// FIX: Added Variants type to correctly type framer-motion animation variants.
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { portfolioProjects, testimonials } from '../constants';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
@@ -121,7 +122,8 @@ const HeroSection: React.FC = () => {
     );
 };
 
-const sectionVariants = {
+// FIX: Explicitly typed with Variants to prevent TypeScript from widening the transition 'type' property.
+const sectionVariants: Variants = {
   offscreen: { y: 50, opacity: 0 },
   onscreen: {
     y: 0,
@@ -137,7 +139,8 @@ const cardContainerVariants = {
   },
 };
 
-const cardItemVariants = {
+// FIX: Explicitly typed with Variants to prevent TypeScript from widening the transition 'type' property.
+const cardItemVariants: Variants = {
   offscreen: { y: 50, opacity: 0 },
   onscreen: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 40 } },
 };
