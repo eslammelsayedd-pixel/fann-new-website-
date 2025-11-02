@@ -17,6 +17,12 @@
     },
     "api/generate-exhibition-design.ts": {
       "maxDuration": 60
+    },
+    "api/generate-event-design.ts": {
+      "maxDuration": 60
+    },
+    "api/generate-interior-design.ts": {
+      "maxDuration": 60
     }
   },
   "rewrites": [
