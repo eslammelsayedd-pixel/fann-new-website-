@@ -12,13 +12,13 @@ const WhatsAppIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     </svg>
 );
 
-// FIX: Removed the explicit 'Variants' type annotation to resolve type errors.
+// FIX: Removed the explicit 'Variants' type annotation from 'slideInFromLeft' to resolve type errors.
 const slideInFromLeft = {
   hidden: { x: -50, opacity: 0 },
   visible: { x: 0, opacity: 1, transition: { type: "spring", stiffness: 40, duration: 0.8 } },
 };
 
-// FIX: Removed the explicit 'Variants' type annotation to resolve type errors.
+// FIX: Removed the explicit 'Variants' type annotation from 'slideInFromRight' to resolve type errors.
 const slideInFromRight = {
   hidden: { x: 50, opacity: 0 },
   visible: { x: 0, opacity: 1, transition: { type: "spring", stiffness: 40, duration: 0.8 } },

@@ -1,5 +1,5 @@
 import React from 'react';
-// FIX: Removed the 'Transition' type from the import as it was causing type errors.
+// FIX: Removed the 'Transition' type import as it was causing type errors.
 import { motion } from 'framer-motion';
 
 const pageVariants = {

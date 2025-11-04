@@ -123,9 +123,10 @@ const HeroSection: React.FC = () => {
     );
 };
 
-// FIX: Removed the explicit 'Variants' type annotation.
-// This allows TypeScript to correctly infer the literal types (e.g., type: 'spring')
-// and resolves the type compatibility error with framer-motion.
+// FIX: Removed the explicit 'Variants' type annotation from several constants
+// (sectionVariants, cardContainerVariants, cardItemVariants). This allows
+// TypeScript to correctly infer the literal types for transition properties
+// (e.g., type: 'spring') and resolves the compatibility errors with framer-motion.
 const sectionVariants = {
   offscreen: { y: 50, opacity: 0 },
   onscreen: {
@@ -135,7 +136,6 @@ const sectionVariants = {
   },
 };
 
-// FIX: Removed the explicit 'Variants' type annotation to resolve type errors.
 const cardContainerVariants = {
   offscreen: {},
   onscreen: {
@@ -143,7 +143,6 @@ const cardContainerVariants = {
   },
 };
 
-// FIX: Removed the explicit 'Variants' type annotation to resolve type errors.
 const cardItemVariants = {
   offscreen: { y: 50, opacity: 0 },
   onscreen: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 40 } },

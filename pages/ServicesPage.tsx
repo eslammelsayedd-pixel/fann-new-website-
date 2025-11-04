@@ -17,13 +17,13 @@ interface ServiceSectionProps {
 }
 
 const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, description, image, services, imagePosition = 'right', link }) => {
-  // FIX: Removed the explicit 'Variants' type annotation to resolve type errors.
+  // FIX: Removed the explicit 'Variants' type annotation from 'imageVariants' to resolve type errors.
   const imageVariants = {
     offscreen: { opacity: 0, x: imagePosition === 'right' ? 100 : -100 },
     onscreen: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 50, duration: 0.8 } }
   };
   
-  // FIX: Removed the explicit 'Variants' type annotation to resolve type errors.
+  // FIX: Removed the explicit 'Variants' type annotation from 'textVariants' to resolve type errors.
   const textVariants = {
     offscreen: { opacity: 0, y: 50 },
     onscreen: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 50, duration: 0.8, delay: 0.2 } }

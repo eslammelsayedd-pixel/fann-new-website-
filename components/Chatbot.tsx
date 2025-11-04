@@ -82,13 +82,13 @@ export const Chatbot: React.FC = () => {
         }
     };
 
-    // FIX: Removed the explicit 'Variants' type annotation to resolve type errors.
+    // FIX: Removed the explicit 'Variants' type annotation from 'fabVariants' to resolve type errors.
     const fabVariants = {
         hidden: { scale: 0, opacity: 0 },
         visible: { scale: 1, opacity: 1, transition: { delay: 0.5, type: 'spring' } },
     };
 
-    // FIX: Removed the explicit 'Variants' type annotation to resolve type errors.
+    // FIX: Removed the explicit 'Variants' type annotation from 'chatWindowVariants' to resolve type errors.
     const chatWindowVariants = {
         hidden: { opacity: 0, y: 50, scale: 0.9 },
         visible: { opacity: 1, y: 0, scale: 1 },

@@ -4,7 +4,7 @@ import AnimatedPage from '../components/AnimatedPage';
 import { motion } from 'framer-motion';
 import SEO from '../components/SEO';
 
-// FIX: Removed the explicit 'Variants' type annotation to resolve type errors.
+// FIX: Removed the explicit 'Variants' type annotation from 'containerVariants' to resolve type errors.
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -13,7 +13,7 @@ const containerVariants = {
   },
 };
 
-// FIX: Removed the explicit 'Variants' type annotation to resolve type errors.
+// FIX: Removed the explicit 'Variants' type annotation from 'itemVariants' to resolve type errors.
 const itemVariants = {
   hidden: { y: 30, opacity: 0 },
   visible: {
