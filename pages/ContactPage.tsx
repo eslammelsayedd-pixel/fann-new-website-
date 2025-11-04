@@ -99,7 +99,7 @@ const ContactPage: React.FC = () => {
                         "address": {
                             "@type": "PostalAddress",
                             "streetAddress": "WH10-Umm Dera",
-                            "addressLocality": "Umm Al Quwain",
+                            "addressLocality": "Umm Al Quain",
                             "addressCountry": "AE"
                         }
                     }
@@ -160,7 +160,7 @@ const ContactPage: React.FC = () => {
                         <MapPin className="text-fann-teal dark:text-fann-peach mt-1 flex-shrink-0" size={24} />
                          <div>
                             <h3 className="text-lg font-bold text-fann-teal dark:text-fann-peach">Warehouse Address</h3>
-                            <p className="text-lg text-fann-teal/80 dark:text-fann-light-gray">WH10-Umm Dera, <br/>Umm Al Quwain, UAE</p>
+                            <p className="text-lg text-fann-teal/80 dark:text-fann-light-gray">WH10-Umm Dera, <br/>Umm Al Quain, UAE</p>
                         </div>
                     </div>
                 </div>
