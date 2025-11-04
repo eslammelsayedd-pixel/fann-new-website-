@@ -1,18 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowDown, Layers, Calendar, Star, PenTool } from 'lucide-react';
-// FIX: Removed 'Variants' from framer-motion import as it was causing type errors.
-// TypeScript can infer the types correctly without the explicit import.
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { portfolioProjects, testimonials } from '../constants';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
-
-const dynamicContent = [
-    { headline: "Unforgettable Exhibitions" },
-    { headline: "Flawless Events" },
-    { headline: "Inspiring Interiors" }
-];
 
 const homePageSchema = {
     "@context": "https://schema.org",
@@ -43,15 +35,6 @@ const homePageSchema = {
 
 
 const HeroSection: React.FC = () => {
-    const [contentIndex, setContentIndex] = useState(0);
-
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setContentIndex(prevIndex => (prevIndex + 1) % dynamicContent.length);
-        }, 5000);
-        return () => clearInterval(timer);
-    }, []);
-
     return (
         <section 
             className="relative h-screen flex items-center justify-center text-center text-fann-peach overflow-hidden bg-fann-teal"
@@ -64,18 +47,9 @@ const HeroSection: React.FC = () => {
                     className="text-5xl md:text-7xl lg:text-8xl font-serif font-extrabold leading-tight md:leading-snug text-fann-peach"
                 >
                     <span className="block font-bold">Transforming Visions Into</span>
-                    <AnimatePresence mode="wait">
-                        <motion.span
-                            key={contentIndex}
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -30 }}
-                            transition={{ duration: 0.7 }}
-                            className="text-fann-gold inline-block mt-2 md:mt-4"
-                        >
-                            {dynamicContent[contentIndex].headline}
-                        </motion.span>
-                    </AnimatePresence>
+                    <span className="text-fann-gold inline-block mt-2 md:mt-4">
+                      Unforgettable Experiences
+                    </span>
                 </motion.h1>
                 <motion.p 
                     initial={{ opacity: 0, y: 20 }}
@@ -123,10 +97,9 @@ const HeroSection: React.FC = () => {
     );
 };
 
-// FIX: Removed the explicit 'Variants' type annotation from several constants
-// (sectionVariants, cardContainerVariants, cardItemVariants). This allows
-// TypeScript to correctly infer the literal types for transition properties
-// (e.g., type: 'spring') and resolves the compatibility errors with framer-motion.
+// FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
+// annotation was removed. This allows TypeScript to correctly infer literal 
+// types for transition properties (e.g., type: 'spring').
 const sectionVariants = {
   offscreen: { y: 50, opacity: 0 },
   onscreen: {
@@ -136,6 +109,9 @@ const sectionVariants = {
   },
 };
 
+// FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
+// annotation was removed. This allows TypeScript to correctly infer literal 
+// types for transition properties.
 const cardContainerVariants = {
   offscreen: {},
   onscreen: {
@@ -143,6 +119,9 @@ const cardContainerVariants = {
   },
 };
 
+// FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
+// annotation was removed. This allows TypeScript to correctly infer literal 
+// types for transition properties (e.g., type: 'spring').
 const cardItemVariants = {
   offscreen: { y: 50, opacity: 0 },
   onscreen: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 40 } },

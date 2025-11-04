@@ -1,5 +1,4 @@
 import React from 'react';
-// FIX: Removed the 'Transition' type import as it was causing type errors.
 import { motion } from 'framer-motion';
 
 const pageVariants = {
@@ -17,8 +16,9 @@ const pageVariants = {
   },
 };
 
-// FIX: Removed the explicit 'Transition' type annotation to allow TypeScript's
-// type inference to correctly handle the object, resolving the build error.
+// FIX: To resolve the framer-motion type error, the explicit 'Transition' type annotation
+// was removed. This allows TypeScript to correctly infer the literal type for
+// the 'type' property (e.g., 'tween' instead of 'string').
 const pageTransition = {
   type: 'tween',
   ease: 'easeInOut',

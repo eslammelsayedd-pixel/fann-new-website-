@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-// FIX: Removed 'Variants' from framer-motion import as it was causing type errors.
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, X, Send, Loader2, Bot, User, BookOpen } from 'lucide-react';
 
@@ -25,7 +24,6 @@ const parseMarkdown = (text: string) => {
 };
 
 
-// FIX: Changed to a named export to resolve import issues.
 export const Chatbot: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState<Message[]>([]);
@@ -82,13 +80,17 @@ export const Chatbot: React.FC = () => {
         }
     };
 
-    // FIX: Removed the explicit 'Variants' type annotation from 'fabVariants' to resolve type errors.
+    // FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
+    // annotation was removed. This allows TypeScript to correctly infer literal 
+    // types for transition properties (e.g., type: 'spring').
     const fabVariants = {
         hidden: { scale: 0, opacity: 0 },
         visible: { scale: 1, opacity: 1, transition: { delay: 0.5, type: 'spring' } },
     };
 
-    // FIX: Removed the explicit 'Variants' type annotation from 'chatWindowVariants' to resolve type errors.
+    // FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
+    // annotation was removed. This allows TypeScript to correctly infer literal 
+    // types for transition properties.
     const chatWindowVariants = {
         hidden: { opacity: 0, y: 50, scale: 0.9 },
         visible: { opacity: 1, y: 0, scale: 1 },
