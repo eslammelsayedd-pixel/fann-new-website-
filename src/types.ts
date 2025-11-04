@@ -1,6 +1,5 @@
 // FIX: The project was missing React's JSX type definitions for standard HTML elements.
 // Explicitly importing 'react' and extending its JSX types to make them available globally.
-import React from 'react';
 
 // This file contains shared type definitions for the application.
 
@@ -65,7 +64,7 @@ export interface GeneratedDesign {
 
 // FIX: This augmentation adds the 'model-viewer' custom element to React's JSX types.
 // By simply augmenting the global namespace (and not using `extends`), we allow the
-// standard HTML element types loaded via `import React` to be correctly recognized.
+// standard HTML element types loaded via import React to be correctly recognized.
 declare global {
     namespace JSX {
         interface IntrinsicElements {
