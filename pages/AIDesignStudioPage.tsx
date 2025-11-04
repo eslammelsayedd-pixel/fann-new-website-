@@ -35,7 +35,7 @@ const studioOptions = [
         icon: Clapperboard, 
         description: 'Instantly generate video concepts or perform AI-powered edits on your existing images for marketing and social media.',
         link: '/fann-studio/media',
-        isComingSoon: false 
+        isComingSoon: true 
     },
 ];
 

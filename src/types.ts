@@ -1,7 +1,6 @@
-import React from 'react';
-
-// FIX: The project was missing React's JSX type definitions for standard HTML elements.
-// Explicitly importing 'react' and extending its JSX types to make them available globally.
+// FIX: Removed the unused 'React' import. Its presence was turning this file into
+// a module in a way that overwrote the global JSX types, causing widespread
+// compilation errors for standard HTML elements.
 
 // This file contains shared type definitions for the application.
 

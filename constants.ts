@@ -1,4 +1,4 @@
-import { Project, Event, Testimonial, NavLink } from './src/types';
+import { Project, Event, Testimonial, NavLink } from './types';
 
 export const navLinks: NavLink[] = [
     { name: 'Services', path: '/services' },
