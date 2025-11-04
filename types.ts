@@ -1,4 +1,9 @@
+// FIX: Added 'import 'react';' to ensure JSX intrinsic types are loaded
+// before augmentation, preventing the global types from being overwritten.
+import 'react';
 // This file contains shared type definitions for the application.
+// NOTE: An unused 'React' import was removed. Its presence turned this file into
+// a module that overwrote global JSX types, causing widespread compilation errors.
 
 export interface NavLink {
   name: string;
@@ -60,6 +65,8 @@ export interface GeneratedDesign {
 
 
 // This augmentation adds the 'model-viewer' custom element to React's JSX types.
+// By simply augmenting the global namespace, we allow standard HTML element types
+// to be correctly recognized across the application.
 declare global {
     namespace JSX {
         interface IntrinsicElements {

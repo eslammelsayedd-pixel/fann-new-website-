@@ -1,3 +1,7 @@
+// FIX: Added 'import 'react';' to ensure JSX intrinsic types are loaded
+// before augmentation, preventing the global types from being overwritten.
+import 'react';
+
 // FIX: Removed the unused 'React' import. Its presence was turning this file into
 // a module in a way that overwrote the global JSX types, causing widespread
 // compilation errors for standard HTML elements.

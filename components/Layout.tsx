@@ -4,6 +4,7 @@ import Footer from './Footer';
 // FIX: Changed to a named import to match the updated export in Chatbot.tsx.
 import { Chatbot } from './Chatbot';
 import WhatsAppButton from './WhatsAppButton';
+import MetaPixelTracker from './MetaPixelTracker';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -13,6 +14,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen bg-fann-peach dark:bg-fann-teal">
       <Header />
+      <MetaPixelTracker />
       <main className="flex-grow">{children}</main>
       <Footer />
       <WhatsAppButton />

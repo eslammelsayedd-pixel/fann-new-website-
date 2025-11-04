@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import AnimatedPage from '../components/AnimatedPage';
 import { regionalEvents } from '../constants';
-import { Event } from '../src/types';
+import { Event } from '../types';
 import { motion } from 'framer-motion';
 import SEO from '../components/SEO';
 
