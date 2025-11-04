@@ -1,5 +1,6 @@
 import React from 'react';
-import { motion, Variants } from 'framer-motion';
+// FIX: Removed 'Variants' import from framer-motion as it was causing type errors.
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
@@ -16,12 +17,14 @@ interface ServiceSectionProps {
 }
 
 const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, description, image, services, imagePosition = 'right', link }) => {
-  const imageVariants: Variants = {
+  // FIX: Removed the explicit 'Variants' type annotation to resolve type errors.
+  const imageVariants = {
     offscreen: { opacity: 0, x: imagePosition === 'right' ? 100 : -100 },
     onscreen: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 50, duration: 0.8 } }
   };
   
-  const textVariants: Variants = {
+  // FIX: Removed the explicit 'Variants' type annotation to resolve type errors.
+  const textVariants = {
     offscreen: { opacity: 0, y: 50 },
     onscreen: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 50, duration: 0.8, delay: 0.2 } }
   };

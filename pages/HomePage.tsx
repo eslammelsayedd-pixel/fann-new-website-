@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowDown, Layers, Calendar, Star, PenTool } from 'lucide-react';
-// FIX: Added Variants type to correctly type framer-motion animation variants.
-import { motion, AnimatePresence, Variants } from 'framer-motion';
+// FIX: Removed 'Variants' from framer-motion import as it was causing type errors.
+// TypeScript can infer the types correctly without the explicit import.
+import { motion, AnimatePresence } from 'framer-motion';
 import { portfolioProjects, testimonials } from '../constants';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
@@ -122,8 +123,10 @@ const HeroSection: React.FC = () => {
     );
 };
 
-// FIX: Explicitly typed with Variants to prevent TypeScript from widening the transition 'type' property.
-const sectionVariants: Variants = {
+// FIX: Removed the explicit 'Variants' type annotation.
+// This allows TypeScript to correctly infer the literal types (e.g., type: 'spring')
+// and resolves the type compatibility error with framer-motion.
+const sectionVariants = {
   offscreen: { y: 50, opacity: 0 },
   onscreen: {
     y: 0,
@@ -132,6 +135,7 @@ const sectionVariants: Variants = {
   },
 };
 
+// FIX: Removed the explicit 'Variants' type annotation to resolve type errors.
 const cardContainerVariants = {
   offscreen: {},
   onscreen: {
@@ -139,8 +143,8 @@ const cardContainerVariants = {
   },
 };
 
-// FIX: Explicitly typed with Variants to prevent TypeScript from widening the transition 'type' property.
-const cardItemVariants: Variants = {
+// FIX: Removed the explicit 'Variants' type annotation to resolve type errors.
+const cardItemVariants = {
   offscreen: { y: 50, opacity: 0 },
   onscreen: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 40 } },
 };

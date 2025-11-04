@@ -1,115 +1,15 @@
-<!DOCTYPE html>
-<html lang="en" class="dark">
-<head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="google-site-verification" content="HV_nmWZkjW9oYDDWCSYb6WgGl8n_Xc9qhxXif8AyLPo" />
-    <title>FANN | Exhibition, Events & Interior Design</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-    tailwind.config = {
-        darkMode: 'class',
-        theme: {
-            extend: {
-                colors: {
-                    'fann-teal': '#184D51',
-                    'fann-peach': '#FFF2E6',
-                    'fann-accent-teal': '#3AA1AD',
-                    'fann-accent-peach': '#F9DDC8',
-                    'fann-teal-dark': '#154145',
-                    'fann-light-gray': '#A99E96',
-                    'fann-border': 'rgba(230, 184, 115, 0.2)',
-                    'fann-charcoal': '#101010',
-                    'fann-charcoal-light': '#1A1A1A',
-                    'fann-gold': '#E6B873',
-                    'fann-cream': '#F5F5DC',
-                },
-                fontFamily: {
-                    'serif': ['Playfair Display', 'serif'],
-                    'sans': ['Inter', 'sans-serif'],
-                },
-            }
-        }
-    }
-    </script>
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
-<style>
-    /* Hide Google Translate Default UI */
-    .goog-te-banner-frame.skiptranslate {
-        display: none !important;
-    } 
-    body { 
-        top: 0px !important; 
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        line-height: 1.7;
-    }
-    h1, h2, h3, h4, h5, h6 {
-        line-height: 1.3;
-    }
-    /* Custom scrollbar for webkit browsers */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #154145; /* fann-teal-dark */
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #3AA1AD; /* fann-accent-teal */
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #E6B873; /* fann-gold */
-    }
-</style>
 <script type="importmap">
 {
   "imports": {
-    "react/": "https://aistudiocdn.com/react@^18.2.0/",
-    "react": "https://aistudiocdn.com/react@^18.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^18.2.0/",
-    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^6.23.0",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.378.0",
-    "framer-motion": "https://aistudiocdn.com/framer-motion@^11.1.0",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^0.12.0",
-    "resend": "https://aistudiocdn.com/resend@^6.2.2",
-    "@vercel/kv": "https://aistudiocdn.com/@vercel/kv@^3.0.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.28.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.5",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.552.0",
+    "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.24",
     "nodemailer": "https://aistudiocdn.com/nodemailer@^7.0.10",
-    "@vercel/node": "https://aistudiocdn.com/@vercel/node@^5.5.1"
+    "@vercel/node": "https://aistudiocdn.com/@vercel/node@^5.5.4"
   }
 }
 </script>
-<!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '635468482480345');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=635468482480345&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
-</head>
-<body class="bg-fann-peach text-fann-teal dark:bg-fann-teal dark:text-fann-peach font-sans">
-    <div id="google_translate_element" style="display:none;"></div>
-    <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-          new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
-        }
-    </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-</body>
-</html>

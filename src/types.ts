@@ -1,3 +1,5 @@
+import React from 'react';
+
 // FIX: The project was missing React's JSX type definitions for standard HTML elements.
 // Explicitly importing 'react' and extending its JSX types to make them available globally.
 

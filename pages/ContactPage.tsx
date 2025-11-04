@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 import { Mail, Phone, MapPin, Loader2, CheckCircle } from 'lucide-react';
-// FIX: Added Variants type to correctly type framer-motion animation variants.
-import { motion, Variants } from 'framer-motion';
+// FIX: Removed 'Variants' from framer-motion import as it was causing type errors.
+import { motion } from 'framer-motion';
 
 
 const WhatsAppIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -12,14 +12,14 @@ const WhatsAppIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     </svg>
 );
 
-// FIX: Explicitly typed with Variants to prevent TypeScript from widening the transition 'type' property.
-const slideInFromLeft: Variants = {
+// FIX: Removed the explicit 'Variants' type annotation to resolve type errors.
+const slideInFromLeft = {
   hidden: { x: -50, opacity: 0 },
   visible: { x: 0, opacity: 1, transition: { type: "spring", stiffness: 40, duration: 0.8 } },
 };
 
-// FIX: Explicitly typed with Variants to prevent TypeScript from widening the transition 'type' property.
-const slideInFromRight: Variants = {
+// FIX: Removed the explicit 'Variants' type annotation to resolve type errors.
+const slideInFromRight = {
   hidden: { x: 50, opacity: 0 },
   visible: { x: 0, opacity: 1, transition: { type: "spring", stiffness: 40, duration: 0.8 } },
 };

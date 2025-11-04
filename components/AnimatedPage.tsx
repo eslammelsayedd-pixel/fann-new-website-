@@ -1,5 +1,6 @@
 import React from 'react';
-import { motion, Transition } from 'framer-motion';
+// FIX: Removed the 'Transition' type from the import as it was causing type errors.
+import { motion } from 'framer-motion';
 
 const pageVariants = {
   initial: {
@@ -16,7 +17,9 @@ const pageVariants = {
   },
 };
 
-const pageTransition: Transition = {
+// FIX: Removed the explicit 'Transition' type annotation to allow TypeScript's
+// type inference to correctly handle the object, resolving the build error.
+const pageTransition = {
   type: 'tween',
   ease: 'easeInOut',
   duration: 0.5,
