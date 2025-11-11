@@ -17,7 +17,7 @@ const WhatsAppButton: React.FC = () => {
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="fixed bottom-6 right-6 bg-[#25D366] text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center z-40"
+            className="fixed bottom-6 left-6 bg-[#25D366] text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center z-40"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 1, type: 'spring' }}

@@ -112,6 +112,7 @@ const EventStudioPage: React.FC = () => {
                     <div className="bg-white dark:bg-fann-accent-teal p-6 sm:p-10 rounded-lg shadow-xl">
                         <ProgressIndicator />
                         <form onSubmit={handleSubmit} className="space-y-0">
+                            {/* FIX: Use FormSection as a wrapper component */}
                             <FormSection step={1} title="The Brief" icon={FileText} description="Tell us about your company and event.">
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <input type="text" name="companyName" placeholder="Your Company Name" value={formData.companyName} onChange={handleInputChange} required className="w-full bg-fann-peach/50 dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold" />
@@ -119,6 +120,7 @@ const EventStudioPage: React.FC = () => {
                                 </div>
                             </FormSection>
 
+                            {/* FIX: Use FormSection as a wrapper component */}
                             <FormSection step={2} title="Event Scale" icon={Users} description="Specify the size and type of your event.">
                                 <div>
                                     <div className="flex justify-between items-center mb-2">
@@ -141,6 +143,7 @@ const EventStudioPage: React.FC = () => {
                                 </div>
                             </FormSection>
 
+                            {/* FIX: Use FormSection as a wrapper component */}
                             <FormSection step={3} title="Aesthetics" icon={Palette} description="Choose the overall visual style for the event.">
                                 <label className="block text-sm font-medium mb-3">Design Style</label>
                                 <div className="flex flex-wrap gap-2">
@@ -153,6 +156,7 @@ const EventStudioPage: React.FC = () => {
                                 </div>
                             </FormSection>
 
+                            {/* FIX: Use FormSection as a wrapper component */}
                             <FormSection step={4} title="Functionality" icon={SlidersHorizontal} description="Select the key functional zones and features.">
                                 <label className="block text-sm font-medium mb-3">Key Features</label>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">

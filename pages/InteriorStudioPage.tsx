@@ -112,6 +112,7 @@ const InteriorStudioPage: React.FC = () => {
                     <div className="bg-white dark:bg-fann-accent-teal p-6 sm:p-10 rounded-lg shadow-xl">
                         <ProgressIndicator />
                         <form onSubmit={handleSubmit} className="space-y-0">
+                            {/* FIX: Use FormSection as a wrapper component */}
                             <FormSection step={1} title="The Brief" icon={FileText} description="Let's start with the project basics.">
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <input type="text" name="projectName" placeholder="Project Name (e.g., Downtown HQ)" value={formData.projectName} onChange={handleInputChange} required className="w-full bg-fann-peach/50 dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold" />
@@ -119,6 +120,7 @@ const InteriorStudioPage: React.FC = () => {
                                 </div>
                             </FormSection>
 
+                            {/* FIX: Use FormSection as a wrapper component */}
                             <FormSection step={2} title="Space Definition" icon={Square} description="Define the area and purpose of the space.">
                                 <div>
                                     <div className="flex justify-between items-center mb-2">
@@ -141,6 +143,7 @@ const InteriorStudioPage: React.FC = () => {
                                 </div>
                             </FormSection>
 
+                            {/* FIX: Use FormSection as a wrapper component */}
                             <FormSection step={3} title="Aesthetics" icon={Palette} description="Choose the design style that best fits your vision.">
                                 <label className="block text-sm font-medium mb-3">Design Style</label>
                                 <div className="flex flex-wrap gap-2">
@@ -153,6 +156,7 @@ const InteriorStudioPage: React.FC = () => {
                                 </div>
                             </FormSection>
 
+                            {/* FIX: Use FormSection as a wrapper component */}
                             <FormSection step={4} title="Functionality" icon={SlidersHorizontal} description="Select the key areas or features for the space.">
                                 <label className="block text-sm font-medium mb-3">Key Features</label>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">

@@ -64,45 +64,57 @@ const homePageSchema = {
 
 const HeroSection: React.FC = () => {
     return (
-        <section 
-            className="relative h-screen flex items-center justify-center text-center text-fann-peach overflow-hidden bg-fann-teal"
-        >
-            <div className="relative z-10 p-4 w-full">
+        <section className="relative h-screen flex items-center justify-center text-center text-fann-peach overflow-hidden bg-fann-teal">
+            <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute z-0 w-auto min-w-full min-h-full max-w-none object-cover"
+                style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
+            >
+                <source src="https://videos.pexels.com/video-files/852402/852402-hd_1920_1080_25fps.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+            <div className="absolute inset-0 bg-fann-teal/70"></div>
+
+            <motion.div 
+                className="relative z-10 p-4 w-full"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+            >
                 <h1 
-                    className="text-5xl md:text-7xl lg:text-8xl font-serif font-extrabold leading-tight md:leading-snug text-fann-peach"
+                    className="text-5xl md:text-7xl font-serif font-bold leading-tight text-fann-peach drop-shadow-md"
                 >
-                    <span className="block font-bold">Transforming Visions Into</span>
-                    <span className="text-fann-gold inline-block mt-2 md:mt-4">
+                    Transforming Visions Into
+                    <span className="block text-fann-gold mt-2 md:mt-4">
                       Unforgettable Experiences
                     </span>
                 </h1>
                 <p 
-                    className="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-fann-peach/90"
+                    className="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-fann-peach/90 drop-shadow"
                 >
-                    Your Premier Design and Build Partner for Exhibitions, Events & Interiors.
+                    Dubai's Premier Partner in Exhibitions, Events & Interiors.
                 </p>
                 <div 
-                    className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+                    className="mt-10"
                 >
-                    <Link to="/fann-studio">
-                        <button 
-                            className="bg-fann-gold text-fann-charcoal font-bold py-4 px-10 rounded-full text-lg uppercase tracking-wider transition-all duration-300 w-full sm:w-auto shadow-lg shadow-fann-gold/30 hover:shadow-xl hover:shadow-fann-gold/50"
-                        >
-                            Design with FANN
-                        </button>
-                    </Link>
                     <Link to="/portfolio">
-                         <button 
-                            className="border-2 border-fann-gold text-fann-gold font-bold py-4 px-10 rounded-full text-lg uppercase tracking-wider transition-all duration-300 w-full sm:w-auto hover:bg-fann-gold/10"
+                        <motion.button 
+                            whileHover={{ scale: 1.05, y: -2 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="bg-fann-gold text-fann-charcoal font-bold py-4 px-10 rounded-full text-lg uppercase tracking-wider transition-all duration-300 shadow-lg shadow-fann-gold/30 hover:shadow-xl hover:shadow-fann-gold/50"
                         >
-                            View Portfolio
-                        </button>
+                            Explore Our Work
+                        </motion.button>
                     </Link>
                 </div>
-            </div>
+            </motion.div>
         </section>
     );
 };
+
 
 // FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
 // annotation was removed. This allows TypeScript to correctly infer literal 
@@ -158,7 +170,7 @@ const HomePage: React.FC = () => {
             />
             <HeroSection />
 
-            <div className="py-20 bg-fann-peach dark:bg-fann-teal">
+            <div className="py-24 md:py-32 bg-fann-peach dark:bg-fann-teal">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
 
                     {/* Services Section */}
@@ -181,7 +193,7 @@ const HomePage: React.FC = () => {
 
                     {/* FANN Studio Section */}
                     <motion.section 
-                        className="mt-24 text-center bg-white dark:bg-fann-accent-teal rounded-lg py-16 px-8"
+                        className="mt-32 text-center bg-white dark:bg-fann-accent-teal rounded-lg py-16 px-8"
                         initial="offscreen"
                         whileInView="onscreen"
                         viewport={{ once: true, amount: 0.2 }}
@@ -205,7 +217,7 @@ const HomePage: React.FC = () => {
                     
                     {/* Featured Projects Section */}
                     <motion.section 
-                        className="mt-24"
+                        className="mt-32"
                         initial="offscreen"
                         whileInView="onscreen"
                         viewport={{ once: true, amount: 0.2 }}
@@ -218,7 +230,7 @@ const HomePage: React.FC = () => {
                             {portfolioProjects.slice(0, 6).map(project => (
                                 <motion.div 
                                     key={project.id} 
-                                    className="group relative overflow-hidden rounded-lg"
+                                    className="group relative overflow-hidden rounded-lg shadow-lg"
                                     variants={cardItemVariants}
                                 >
                                     <img src={project.image} alt={project.title} className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" />
@@ -226,7 +238,7 @@ const HomePage: React.FC = () => {
                                     <div className="absolute bottom-0 left-0 p-6">
                                         <span className="text-sm bg-fann-gold text-fann-charcoal font-bold py-1 px-2 rounded">{project.service}</span>
                                         <h3 className="text-xl font-bold mt-2 text-white">{project.title}</h3>
-                                        <p className="text-fann-peach">{project.client}</p>
+                                        <p className="text-fann-peach/90">{project.client}</p>
                                     </div>
                                 </motion.div>
                             ))}
@@ -245,26 +257,26 @@ const HomePage: React.FC = () => {
                     
                     {/* Testimonials Section */}
                     <motion.section 
-                        className="mt-24 text-center"
+                        className="mt-32 text-center"
                         initial="offscreen"
                         whileInView="onscreen"
                         viewport={{ once: true, amount: 0.2 }}
                         variants={sectionVariants}
                     >
                         <h2 className="text-4xl md:text-5xl font-serif font-bold mb-12">What Our Clients Say</h2>
-                        <div className="relative max-w-3xl mx-auto">
-                            <div className="bg-white dark:bg-fann-accent-teal p-8 rounded-lg">
-                                <Star className="text-fann-gold mx-auto mb-4" size={32} />
-                                <p className="text-xl italic text-fann-teal/90 dark:text-fann-peach mb-6">"{testimonials[0].quote}"</p>
-                                <h4 className="font-bold text-fann-teal dark:text-fann-peach text-lg">{testimonials[0].client}</h4>
-                                <p className="text-fann-light-gray">{testimonials[0].company}</p>
+                        <div className="relative max-w-4xl mx-auto">
+                           <div className="p-8">
+                                <Star className="text-fann-gold mx-auto mb-6" size={40} />
+                                <p className="text-2xl md:text-3xl font-serif italic text-fann-teal/90 dark:text-fann-peach mb-8 leading-relaxed">"{testimonials[0].quote}"</p>
+                                <h4 className="font-bold text-fann-teal dark:text-fann-peach text-xl uppercase tracking-wider">{testimonials[0].client}</h4>
+                                <p className="text-fann-light-gray mt-1">{testimonials[0].company}</p>
                             </div>
                         </div>
                     </motion.section>
 
                     {/* CTA Section */}
                     <motion.section 
-                        className="mt-24 text-center bg-gradient-to-r from-fann-accent-teal to-fann-gold p-1 rounded-lg"
+                        className="mt-32 text-center bg-gradient-to-r from-fann-accent-teal to-fann-gold p-1 rounded-lg"
                         initial="offscreen"
                         whileInView="onscreen"
                         viewport={{ once: true, amount: 0.2 }}

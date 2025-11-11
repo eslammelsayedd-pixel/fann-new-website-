@@ -70,13 +70,13 @@ const Header: React.FC = () => {
                     <div className="hidden lg:flex items-center space-x-4">
                         <LanguageSwitcher />
                         <ThemeToggle />
-                        <Link to="/fann-studio">
+                        <Link to="/contact">
                           <motion.button 
-                              whileHover={{ scale: 1.05, y: -2 }}
+                              whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
-                              className="bg-fann-gold text-fann-charcoal font-bold py-3 px-6 rounded-full text-sm uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-fann-gold/40"
+                              className="border-2 border-fann-teal dark:border-fann-gold text-fann-teal dark:text-fann-gold font-bold py-2 px-5 rounded-full text-sm uppercase tracking-wider transition-all duration-300 hover:bg-fann-gold hover:text-fann-charcoal dark:hover:bg-fann-gold dark:hover:text-fann-charcoal"
                           >
-                              Start Designing
+                              Get a Quote
                           </motion.button>
                         </Link>
                     </div>
@@ -147,14 +147,14 @@ const Header: React.FC = () => {
                         <div className="my-6 w-full px-8 flex justify-center items-center gap-4">
                             <LanguageSwitcher />
                         </div>
-                        <Link to="/fann-studio">
+                        <Link to="/portfolio">
                           <motion.button 
                             whileHover={{ scale: 1.05, y: -2 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => setIsOpen(false)}
                             className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider mt-4 shadow-md hover:shadow-lg hover:shadow-fann-gold/40"
                           >
-                              Start Designing
+                              Explore Our Work
                           </motion.button>
                         </Link>
                     </nav>
