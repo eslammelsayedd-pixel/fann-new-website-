@@ -28,7 +28,15 @@ const ProgressIndicator: React.FC = () => (
     </div>
 );
 
-const FormSection = ({ step, title, icon: Icon, description, children }: { step: number, title: string, icon: React.ElementType, description: string, children: React.ReactNode }) => (
+// FIX: Refactored to use a typed interface for props to correctly handle children.
+interface FormSectionProps {
+  step: number;
+  title: string;
+  icon: React.ElementType;
+  description: string;
+  children: React.ReactNode;
+}
+const FormSection: React.FC<FormSectionProps> = ({ step, title, icon: Icon, description, children }) => (
     <div className="border-t border-fann-teal/10 dark:border-fann-border pt-8 mt-8 first:mt-0 first:border-t-0 first:pt-0">
         <div className="flex items-start md:items-center gap-4">
             <div className="w-12 h-12 rounded-full bg-fann-peach dark:bg-fann-teal flex-shrink-0 flex items-center justify-center border border-fann-teal/10 dark:border-fann-border">
@@ -45,7 +53,13 @@ const FormSection = ({ step, title, icon: Icon, description, children }: { step:
     </div>
 );
 
-const FeatureCheckbox = ({ label, isChecked, onChange }: { label: string, isChecked: boolean, onChange: () => void }) => (
+// FIX: Refactored to use a typed interface and React.FC to correctly handle React's special `key` prop during iteration.
+interface FeatureCheckboxProps {
+  label: string;
+  isChecked: boolean;
+  onChange: () => void;
+}
+const FeatureCheckbox: React.FC<FeatureCheckboxProps> = ({ label, isChecked, onChange }) => (
     <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg transition-colors duration-200 hover:bg-fann-peach/50 dark:hover:bg-fann-teal-dark/50">
         <div className={`w-6 h-6 rounded-md border-2 flex-shrink-0 flex items-center justify-center transition-all duration-200 ${isChecked ? 'bg-fann-gold border-fann-gold' : 'bg-transparent border-fann-light-gray group-hover:border-fann-gold/50'}`}>
             {isChecked && <Check size={16} className="text-fann-charcoal" />}
@@ -112,7 +126,6 @@ const InteriorStudioPage: React.FC = () => {
                     <div className="bg-white dark:bg-fann-accent-teal p-6 sm:p-10 rounded-lg shadow-xl">
                         <ProgressIndicator />
                         <form onSubmit={handleSubmit} className="space-y-0">
-                            {/* FIX: Use FormSection as a wrapper component */}
                             <FormSection step={1} title="The Brief" icon={FileText} description="Let's start with the project basics.">
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <input type="text" name="projectName" placeholder="Project Name (e.g., Downtown HQ)" value={formData.projectName} onChange={handleInputChange} required className="w-full bg-fann-peach/50 dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold" />
@@ -120,7 +133,6 @@ const InteriorStudioPage: React.FC = () => {
                                 </div>
                             </FormSection>
 
-                            {/* FIX: Use FormSection as a wrapper component */}
                             <FormSection step={2} title="Space Definition" icon={Square} description="Define the area and purpose of the space.">
                                 <div>
                                     <div className="flex justify-between items-center mb-2">
@@ -143,7 +155,6 @@ const InteriorStudioPage: React.FC = () => {
                                 </div>
                             </FormSection>
 
-                            {/* FIX: Use FormSection as a wrapper component */}
                             <FormSection step={3} title="Aesthetics" icon={Palette} description="Choose the design style that best fits your vision.">
                                 <label className="block text-sm font-medium mb-3">Design Style</label>
                                 <div className="flex flex-wrap gap-2">
@@ -156,7 +167,6 @@ const InteriorStudioPage: React.FC = () => {
                                 </div>
                             </FormSection>
 
-                            {/* FIX: Use FormSection as a wrapper component */}
                             <FormSection step={4} title="Functionality" icon={SlidersHorizontal} description="Select the key areas or features for the space.">
                                 <label className="block text-sm font-medium mb-3">Key Features</label>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">

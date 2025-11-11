@@ -65,19 +65,6 @@ const homePageSchema = {
 const HeroSection: React.FC = () => {
     return (
         <section className="relative h-screen flex items-center justify-center text-center text-fann-peach overflow-hidden bg-fann-teal">
-            <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="absolute z-0 w-auto min-w-full min-h-full max-w-none object-cover"
-                style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
-            >
-                <source src="https://videos.pexels.com/video-files/852402/852402-hd_1920_1080_25fps.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-            </video>
-            <div className="absolute inset-0 bg-fann-teal/70"></div>
-
             <motion.div 
                 className="relative z-10 p-4 w-full"
                 initial={{ opacity: 0, y: 20 }}
