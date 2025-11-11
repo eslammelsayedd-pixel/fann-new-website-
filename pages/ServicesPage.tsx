@@ -103,42 +103,66 @@ const servicesData = [
     }
 ];
 
+const servicesSchema = [
+    {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "serviceType": servicesData[0].title,
+        "provider": { "@type": "LocalBusiness", "name": "FANN", "url": "https://fann.ae" },
+        "areaServed": { "@type": "Country", "name": "United Arab Emirates" },
+        "description": servicesData[0].description,
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Exhibition Services",
+            "itemListElement": servicesData[0].services.map(serviceName => ({
+                "@type": "Offer",
+                "itemOffered": { "@type": "Service", "name": serviceName }
+            }))
+        }
+    },
+    {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "serviceType": servicesData[1].title,
+        "provider": { "@type": "LocalBusiness", "name": "FANN", "url": "https://fann.ae" },
+        "areaServed": { "@type": "Country", "name": "United Arab Emirates" },
+        "description": servicesData[1].description,
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Event Management Services",
+            "itemListElement": servicesData[1].services.map(serviceName => ({
+                "@type": "Offer",
+                "itemOffered": { "@type": "Service", "name": serviceName }
+            }))
+        }
+    },
+    {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "serviceType": servicesData[2].title,
+        "provider": { "@type": "LocalBusiness", "name": "FANN", "url": "https://fann.ae" },
+        "areaServed": { "@type": "Country", "name": "United Arab Emirates" },
+        "description": servicesData[2].description,
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Interior Design Services",
+            "itemListElement": servicesData[2].services.map(serviceName => ({
+                "@type": "Offer",
+                "itemOffered": { "@type": "Service", "name": serviceName }
+            }))
+        }
+    }
+];
+
 const ServicesPage: React.FC = () => {
-    const dynamicDescription = `Discover FANN's expert services in Dubai, specializing in ${servicesData.map(s => s.title).join(', ')}. We deliver end-to-end solutions with precision, creativity, and a commitment to excellence.`;
-    
   return (
     <AnimatedPage>
       <SEO
-          title="Expert Design & Build Services for Exhibitions & Interiors"
-          description={dynamicDescription}
+          title="Exhibition, Event & Interior Design Services in Dubai | FANN"
+          description="FANN offers premier design & build services for exhibitions, corporate events, and luxury interiors in Dubai & UAE. Get a free quote for your next project today."
       >
           <script type="application/ld+json">
-              {JSON.stringify([
-                  {
-                      "@context": "https://schema.org",
-                      "@type": "Service",
-                      "serviceType": "Exhibition Stand Design & Build",
-                      "provider": { "@type": "Organization", "name": "FANN" },
-                      "areaServed": "Dubai, UAE",
-                      "description": "Turnkey design and build solutions for creating powerful brand experiences at major venues like the Dubai World Trade Centre and ADNEC, from 3D concept to final handover."
-                  },
-                  {
-                      "@context": "https://schema.org",
-                      "@type": "Service",
-                      "serviceType": "Corporate Event Management",
-                      "provider": { "@type": "Organization", "name": "FANN" },
-                      "areaServed": "Dubai, UAE",
-                      "description": "Meticulous planning and creative production for high-profile product launches, elegant gala dinners, and global summits."
-                  },
-                  {
-                      "@context": "https://schema.org",
-                      "@type": "Service",
-                      "serviceType": "Commercial & Residential Interior Design & Build",
-                      "provider": { "@type": "Organization", "name": "FANN" },
-                      "areaServed": "Dubai, UAE",
-                      "description": "Complete design and build solutions for inspiring and functional commercial environments and luxurious residential properties, blending timeless aesthetics with modern innovation."
-                  }
-              ])}
+              {JSON.stringify(servicesSchema)}
           </script>
       </SEO>
       <div className="bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">

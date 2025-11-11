@@ -41,7 +41,7 @@ const Footer: React.FC = () => {
           <div className="md:col-span-12 lg:col-span-3">
             <h4 className="font-bold text-fann-teal dark:text-fann-peach uppercase tracking-wider mb-4">Follow Us</h4>
             <div className="flex space-x-4 text-fann-teal/70 dark:text-fann-light-gray">
-              <a href="https://www.facebook.com/fannuae/reels/" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold dark:hover:text-fann-gold transition-colors"><Facebook /></a>
+              <a href="https://www.facebook.com/fannuae/" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold dark:hover:text-fann-gold transition-colors"><Facebook /></a>
               <a href="https://www.instagram.com/fann_uae/" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold dark:hover:text-fann-gold transition-colors"><Instagram /></a>
               <a href="https://ae.linkedin.com/company/fannaedubai" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold dark:hover:text-fann-gold transition-colors"><Linkedin /></a>
               <a href="https://fannae.quora.com/" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold dark:hover:text-fann-gold transition-colors"><QuoraIcon /></a>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowDown, Layers, Calendar, Star, PenTool } from 'lucide-react';
+import { Layers, Calendar, Star, PenTool } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { portfolioProjects, testimonials } from '../constants';
 import AnimatedPage from '../components/AnimatedPage';
@@ -8,29 +8,57 @@ import SEO from '../components/SEO';
 
 const homePageSchema = {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": "LocalBusiness",
     "name": "FANN",
+    "image": "https://images.pexels.com/photos/8112165/pexels-photo-8112165.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    "@id": "https://fann.ae",
     "url": "https://fann.ae",
-    "logo": "https://fann.ae/favicon.svg",
+    "telephone": "+971505667502",
+    "priceRange": "$$$",
     "address": {
         "@type": "PostalAddress",
         "streetAddress": "Office 508, Dusseldorf Business Point, Al Barsha 1",
         "addressLocality": "Dubai",
         "addressCountry": "AE"
     },
-    "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+971505667502",
-        "email": "sales@fann.ae",
-        "contactType": "customer service"
+    "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 25.1173,
+        "longitude": 55.2036
     },
-    "description": "FANN is a premier exhibition, events, and interior design company in Dubai, transforming visions into unforgettable experiences.",
+    "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday"
+        ],
+        "opens": "09:00",
+        "closes": "18:00"
+    },
     "sameAs": [
         "https://www.facebook.com/fannuae/",
         "https://www.instagram.com/fann_uae/",
         "https://ae.linkedin.com/company/fannaedubai",
         "https://fannae.quora.com/"
-    ]
+    ],
+    "areaServed": [
+        {
+            "@type": "City",
+            "name": "Dubai"
+        },
+        {
+            "@type": "City",
+            "name": "Abu Dhabi"
+        },
+        {
+            "@type": "City",
+            "name": "Sharjah"
+        }
+    ],
+    "description": "FANN is a premier exhibition, events, and interior design company in Dubai, transforming visions into unforgettable experiences."
 };
 
 
@@ -40,59 +68,38 @@ const HeroSection: React.FC = () => {
             className="relative h-screen flex items-center justify-center text-center text-fann-peach overflow-hidden bg-fann-teal"
         >
             <div className="relative z-10 p-4 w-full">
-                <motion.h1 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
+                <h1 
                     className="text-5xl md:text-7xl lg:text-8xl font-serif font-extrabold leading-tight md:leading-snug text-fann-peach"
                 >
                     <span className="block font-bold">Transforming Visions Into</span>
                     <span className="text-fann-gold inline-block mt-2 md:mt-4">
                       Unforgettable Experiences
                     </span>
-                </motion.h1>
-                <motion.p 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
+                </h1>
+                <p 
                     className="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-fann-peach/90"
                 >
                     Your Premier Design and Build Partner for Exhibitions, Events & Interiors.
-                </motion.p>
-                <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.4 }}
+                </p>
+                <div 
                     className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
                 >
                     <Link to="/fann-studio">
-                        <motion.button 
-                            whileHover={{ scale: 1.05, y: -4 }}
-                            whileTap={{ scale: 0.95 }}
+                        <button 
                             className="bg-fann-gold text-fann-charcoal font-bold py-4 px-10 rounded-full text-lg uppercase tracking-wider transition-all duration-300 w-full sm:w-auto shadow-lg shadow-fann-gold/30 hover:shadow-xl hover:shadow-fann-gold/50"
                         >
                             Design with FANN
-                        </motion.button>
+                        </button>
                     </Link>
                     <Link to="/portfolio">
-                         <motion.button 
-                            whileHover={{ scale: 1.05, y: -4 }}
-                            whileTap={{ scale: 0.95 }}
+                         <button 
                             className="border-2 border-fann-gold text-fann-gold font-bold py-4 px-10 rounded-full text-lg uppercase tracking-wider transition-all duration-300 w-full sm:w-auto hover:bg-fann-gold/10"
                         >
                             View Portfolio
-                        </motion.button>
+                        </button>
                     </Link>
-                </motion.div>
+                </div>
             </div>
-
-            <motion.div 
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="absolute bottom-10 z-20"
-            >
-                <ArrowDown className="w-8 h-8 text-fann-gold" />
-            </motion.div>
         </section>
     );
 };
@@ -145,8 +152,8 @@ const HomePage: React.FC = () => {
     return (
         <AnimatedPage>
             <SEO
-                title="Premier Design & Build in Dubai for Exhibitions & Interiors"
-                description="FANN is a premier design and build company in Dubai. Discover our world-class exhibition stand construction, event management, and luxury interior fit-out services in the GCC."
+                title="FANN: Expert Exhibition Stand Design & Build in Dubai"
+                description="Transform your vision with Dubai's leading exhibition stand contractor. FANN offers award-winning design, build, and event services. Experience our 3D Studio today!"
                 schema={homePageSchema}
             />
             <HeroSection />

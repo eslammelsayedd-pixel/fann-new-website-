@@ -1,6 +1,10 @@
 // FIX: This file is now the single source of truth for types to resolve
 // module resolution issues that were causing global JSX type conflicts.
 import 'react';
+// FIX: Import framer-motion to ensure its global JSX namespace augmentations
+// are loaded, which resolves errors where motion props (e.g., initial, animate)
+// were not being recognized on motion components.
+import 'framer-motion';
 
 // This file contains shared type definitions for the application.
 // By including an 'export', this file becomes a module, which allows the
