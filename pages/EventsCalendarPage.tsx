@@ -80,6 +80,44 @@ const EventsCalendarPage: React.FC = () => {
   const industries = useMemo(() => ['All', ...Array.from(new Set(displayableEvents.map(event => event.industry)))].sort(), [displayableEvents]);
   const countries = ['All', 'UAE', 'KSA'];
   const dateRanges = ['All', 'Next 3 Months', 'Next 6 Months', 'This Year'];
+  
+  const calendarPageSchema = useMemo(() => {
+    const validEvents = displayableEvents.filter(e => parseDateRange(e.date).start.getTime() !== 0);
+    return {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "UAE & KSA Events Calendar | FANN",
+        "description": "Your complete guide to upcoming exhibitions and trade shows in Dubai, Abu Dhabi, and Saudi Arabia. Filter by industry, country, and date to plan your next event with FANN.",
+        "url": "https://fann.ae/events-calendar",
+        "mainEntity": {
+            "@type": "ItemList",
+            "numberOfItems": validEvents.length,
+            "itemListElement": validEvents.map((event, index) => {
+                const { start, end } = parseDateRange(event.date);
+                return {
+                    "@type": "ListItem",
+                    "position": index + 1,
+                    "item": {
+                        "@type": "Event",
+                        "name": event.name,
+                        "startDate": start.toISOString().split('T')[0],
+                        "endDate": end.toISOString().split('T')[0],
+                        "location": {
+                            "@type": "Place",
+                            "name": event.venue,
+                            "address": {
+                                "@type": "PostalAddress",
+                                "addressCountry": event.country
+                            }
+                        },
+                        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+                        "description": `A leading ${event.industry} event held at ${event.venue}.`
+                    }
+                };
+            })
+        }
+    };
+  }, [displayableEvents]);
 
   useEffect(() => {
     let events = [...displayableEvents];
@@ -124,6 +162,7 @@ const EventsCalendarPage: React.FC = () => {
         <SEO 
             title="UAE & KSA Events Calendar | FANN"
             description="Your complete guide to upcoming exhibitions and trade shows in Dubai, Abu Dhabi, and Saudi Arabia. Filter by industry, country, and date to plan your next event with FANN."
+            schema={calendarPageSchema}
         />
       <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">

@@ -33,6 +33,33 @@ const initialFormData: FormData = {
 
 const formatCurrency = (value: number) => new Intl.NumberFormat('en-AE', { style: 'currency', currency: 'AED', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
 
+const roiCalculatorSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Personalized Exhibition ROI Calculator",
+    "description": "Get hyper-personalized ROI projections for major Dubai & KSA exhibitions. Our AI-powered calculator analyzes your company and event to provide a data-driven forecast.",
+    "url": "https://fann.ae/roi-calculator",
+    "mainEntity": {
+        "@type": "Service",
+        "name": "Exhibition ROI Calculation",
+        "serviceType": "FinancialService",
+        "provider": {
+            "@type": "Organization",
+            "@id": "https://fann.ae"
+        },
+        "description": "An AI-powered tool to forecast the potential Return on Investment for exhibiting at major trade shows in the UAE and KSA.",
+        "areaServed": {
+            "@type": "AdministrativeArea",
+            "name": "Middle East"
+        },
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "AED"
+        }
+    }
+};
+
 
 const ROICalculatorPage: React.FC = () => {
     const [formData, setFormData] = useState<FormData>(initialFormData);
@@ -154,6 +181,7 @@ const ROICalculatorPage: React.FC = () => {
             <SEO
                 title="Personalized Exhibition ROI Calculator"
                 description="Get hyper-personalized ROI projections for major Dubai & KSA exhibitions. Our AI-powered calculator analyzes your company and event to provide a data-driven forecast."
+                schema={roiCalculatorSchema}
             />
             <div className="min-h-screen bg-fann-teal pt-32 pb-20 text-fann-peach">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">

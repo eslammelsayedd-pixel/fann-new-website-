@@ -18,6 +18,29 @@ const itemVariants = {
   visible: { opacity: 1, scale: 1 },
 };
 
+const portfolioPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "FANN Portfolio | Exhibitions, Events & Interior Design Projects",
+    "description": "Explore FANN's diverse portfolio of successful projects in exhibitions, events, and interior design across various industries in Dubai and the GCC.",
+    "url": "https://fann.ae/portfolio",
+    "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": portfolioProjects.length,
+        "itemListElement": portfolioProjects.map((project, index) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "item": {
+                "@type": "CreativeWork",
+                "name": project.title,
+                "url": `https://fann.ae/portfolio#${project.id}`,
+                "image": project.image,
+                "disambiguatingDescription": `${project.service} for ${project.client} (${project.year}) - ${project.industry} industry.`
+            }
+        }))
+    }
+};
+
 
 const PortfolioPage: React.FC = () => {
   const [selectedService, setSelectedService] = useState('All');
@@ -94,6 +117,7 @@ const PortfolioPage: React.FC = () => {
       <SEO
         title={metaInfo.title}
         description={metaInfo.description}
+        schema={portfolioPageSchema}
       />
       <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">

@@ -15,6 +15,8 @@ interface ServiceSectionProps {
   link: string;
 }
 
+const buttonTransition = { type: 'spring', stiffness: 400, damping: 17 };
+
 const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, description, image, services, imagePosition = 'right', link }) => {
   // FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
   // annotation was removed. This allows TypeScript to correctly infer literal 
@@ -58,6 +60,7 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, descriptio
               <motion.button 
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
+                  transition={buttonTransition}
                   className="border-2 border-fann-accent-teal dark:border-fann-gold text-fann-accent-teal dark:text-fann-gold font-bold py-3 px-8 rounded-full text-base uppercase tracking-wider flex items-center gap-2 group transition-all duration-300 hover:bg-fann-accent-teal/10 dark:hover:bg-fann-gold/10"
               >
                   View Projects
@@ -103,56 +106,25 @@ const servicesData = [
     }
 ];
 
-const servicesSchema = [
-    {
-        "@context": "https://schema.org",
-        "@type": "Service",
-        "serviceType": servicesData[0].title,
-        "provider": { "@type": "LocalBusiness", "name": "FANN", "url": "https://fann.ae" },
-        "areaServed": { "@type": "Country", "name": "United Arab Emirates" },
-        "description": servicesData[0].description,
-        "hasOfferCatalog": {
-            "@type": "OfferCatalog",
-            "name": "Exhibition Services",
-            "itemListElement": servicesData[0].services.map(serviceName => ({
-                "@type": "Offer",
-                "itemOffered": { "@type": "Service", "name": serviceName }
-            }))
-        }
-    },
-    {
-        "@context": "https://schema.org",
-        "@type": "Service",
-        "serviceType": servicesData[1].title,
-        "provider": { "@type": "LocalBusiness", "name": "FANN", "url": "https://fann.ae" },
-        "areaServed": { "@type": "Country", "name": "United Arab Emirates" },
-        "description": servicesData[1].description,
-        "hasOfferCatalog": {
-            "@type": "OfferCatalog",
-            "name": "Event Management Services",
-            "itemListElement": servicesData[1].services.map(serviceName => ({
-                "@type": "Offer",
-                "itemOffered": { "@type": "Service", "name": serviceName }
-            }))
-        }
-    },
-    {
-        "@context": "https://schema.org",
-        "@type": "Service",
-        "serviceType": servicesData[2].title,
-        "provider": { "@type": "LocalBusiness", "name": "FANN", "url": "https://fann.ae" },
-        "areaServed": { "@type": "Country", "name": "United Arab Emirates" },
-        "description": servicesData[2].description,
-        "hasOfferCatalog": {
-            "@type": "OfferCatalog",
-            "name": "Interior Design Services",
-            "itemListElement": servicesData[2].services.map(serviceName => ({
-                "@type": "Offer",
-                "itemOffered": { "@type": "Service", "name": serviceName }
-            }))
-        }
+const servicesSchema = servicesData.map(service => ({
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": service.title,
+    "name": service.title,
+    "url": "https://fann.ae/services",
+    "provider": { "@type": "Organization", "@id": "https://fann.ae" },
+    "areaServed": { "@type": "Country", "name": "United Arab Emirates" },
+    "description": service.description,
+    "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": `${service.title} Offerings`,
+        "itemListElement": service.services.map(serviceName => ({
+            "@type": "Offer",
+            "itemOffered": { "@type": "Service", "name": serviceName }
+        }))
     }
-];
+}));
+
 
 const ServicesPage: React.FC = () => {
   return (
@@ -189,6 +161,7 @@ const ServicesPage: React.FC = () => {
                         <motion.button 
                             whileHover={{ scale: 1.05, y: -2 }}
                             whileTap={{ scale: 0.95 }}
+                            transition={buttonTransition}
                             className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-fann-gold/40"
                         >
                             Get a Free Quote

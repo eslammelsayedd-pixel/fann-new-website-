@@ -61,6 +61,7 @@ const homePageSchema = {
     "description": "FANN is a premier exhibition, events, and interior design company in Dubai, transforming visions into unforgettable experiences."
 };
 
+const buttonTransition = { type: 'spring', stiffness: 400, damping: 17 };
 
 const HeroSection: React.FC = () => {
     return (
@@ -72,10 +73,11 @@ const HeroSection: React.FC = () => {
                 transition={{ duration: 0.8, ease: "easeOut" }}
             >
                 <h1 
-                    className="text-5xl md:text-7xl font-serif font-bold leading-tight text-fann-peach drop-shadow-md"
+                    className="text-4xl md:text-6xl font-serif font-bold leading-snug text-fann-peach drop-shadow-md"
                 >
                     Transforming Visions Into
-                    <span className="block text-fann-gold mt-2 md:mt-4">
+                    <br />
+                    <span className="text-fann-gold">
                       Unforgettable Experiences
                     </span>
                 </h1>
@@ -91,6 +93,7 @@ const HeroSection: React.FC = () => {
                         <motion.button 
                             whileHover={{ scale: 1.05, y: -2 }}
                             whileTap={{ scale: 0.95 }}
+                            transition={buttonTransition}
                             className="bg-fann-gold text-fann-charcoal font-bold py-4 px-10 rounded-full text-lg uppercase tracking-wider transition-all duration-300 shadow-lg shadow-fann-gold/30 hover:shadow-xl hover:shadow-fann-gold/50"
                         >
                             Explore Our Work
@@ -195,6 +198,7 @@ const HomePage: React.FC = () => {
                            <motion.button 
                                 whileHover={{ scale: 1.05, y: -2 }}
                                 whileTap={{ scale: 0.95 }}
+                                transition={buttonTransition}
                                 className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-fann-gold/40"
                             >
                                 Try It Now - Free
@@ -234,6 +238,7 @@ const HomePage: React.FC = () => {
                              <Link to="/portfolio">
                                 <motion.button 
                                     whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}
+                                    transition={buttonTransition}
                                     className="border-2 border-fann-accent-teal dark:border-fann-gold text-fann-accent-teal dark:text-fann-gold font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider transition-all duration-300 hover:bg-fann-accent-teal/10 dark:hover:bg-fann-gold/10"
                                 >
                                     View Full Portfolio
@@ -277,6 +282,7 @@ const HomePage: React.FC = () => {
                                   <motion.button 
                                       whileHover={{ scale: 1.05, y: -2 }}
                                       whileTap={{ scale: 0.95 }}
+                                      transition={buttonTransition}
                                       className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider w-full sm:w-auto transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-fann-gold/40"
                                   >
                                       Book Consultation
@@ -285,6 +291,7 @@ const HomePage: React.FC = () => {
                                 <Link to="/fann-studio">
                                    <motion.button 
                                       whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}
+                                      transition={buttonTransition}
                                       className="border-2 border-fann-accent-teal dark:border-fann-gold text-fann-accent-teal dark:text-fann-gold font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider w-full sm:w-auto transition-all duration-300 hover:bg-fann-accent-teal/10 dark:hover:bg-fann-gold/10"
                                   >
                                       Start Designing

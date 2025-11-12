@@ -89,6 +89,21 @@ const insightTopics: InsightTopic[] = [
     },
 ];
 
+const blogSchema = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "FANN Intelligence Hub",
+    "description": "Access expert-driven analysis from the FANN Intelligence Hub. Stay ahead with the latest trends in exhibition design, event technology, and commercial interiors in the GCC.",
+    "publisher": {
+        "@type": "Organization",
+        "name": "FANN",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://fann.ae/favicon.svg"
+        }
+    }
+};
+
 // Simple markdown-to-HTML parser
 const formatContent = (text: string) => {
     let html = text
@@ -123,6 +138,7 @@ const InsightsPage: React.FC = () => {
     const [generatedArticle, setGeneratedArticle] = useState<Article | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const { ensureApiKey, handleApiError, error, clearError } = useApiKey();
+    const [schema, setSchema] = useState<object>(blogSchema);
 
     const generateArticle = async (topic: InsightTopic) => {
         clearError();
@@ -145,6 +161,22 @@ const InsightsPage: React.FC = () => {
 
             const data = await response.json();
             setGeneratedArticle(data);
+            setSchema({
+                "@context": "https://schema.org",
+                "@type": "Article",
+                "headline": topic.title,
+                "description": `A FANN-powered analysis on ${topic.title}. Discover the latest trends in the GCC's exhibition, events, and interior design industries with FANN.`,
+                "image": topic.image,
+                "author": { "@type": "Organization", "name": "FANN" },
+                "publisher": {
+                    "@type": "Organization",
+                    "name": "FANN",
+                    "logo": { "@type": "ImageObject", "url": "https://fann.ae/favicon.svg" }
+                },
+                "mainEntityOfPage": `https://fann.ae/insights?topic=${topic.slug}`,
+                "datePublished": new Date().toISOString(),
+                "articleBody": data.content
+            });
 
         } catch (e: any) {
             handleApiError(e);
@@ -160,6 +192,7 @@ const InsightsPage: React.FC = () => {
         if (!selectedTopic) {
             setGeneratedArticle(null);
             clearError();
+            setSchema(blogSchema);
         }
     }, [selectedTopic]);
 
@@ -262,6 +295,7 @@ const InsightsPage: React.FC = () => {
                         ? `A FANN-powered analysis on ${selectedTopic.title}. Discover the latest trends in the GCC's exhibition, events, and interior design industries with FANN.`
                         : "Access expert-driven analysis from the FANN Intelligence Hub. Stay ahead with the latest trends in exhibition design, event technology, and commercial interiors in the GCC."
                 }
+                schema={schema}
             />
             <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">

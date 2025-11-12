@@ -22,6 +22,7 @@ const Header: React.FC = () => {
     const activeLinkClass = "text-fann-gold";
     const inactiveLinkClass = "text-fann-peach hover:text-fann-gold transition-colors duration-300";
     const lightInactiveLinkClass = "text-fann-teal hover:text-fann-gold";
+    const buttonTransition = { type: 'spring', stiffness: 400, damping: 17 };
 
     return (
         <header className={`top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || isOpen ? 'fixed bg-fann-peach/90 dark:bg-fann-teal/90 backdrop-blur-sm shadow-lg' : 'absolute bg-transparent'}`}>
@@ -72,8 +73,9 @@ const Header: React.FC = () => {
                         <ThemeToggle />
                         <Link to="/contact">
                           <motion.button 
-                              whileHover={{ scale: 1.05 }}
+                              whileHover={{ scale: 1.05, y: -2 }}
                               whileTap={{ scale: 0.95 }}
+                              transition={buttonTransition}
                               className="border-2 border-fann-teal dark:border-fann-gold text-fann-teal dark:text-fann-gold font-bold py-2 px-5 rounded-full text-sm uppercase tracking-wider transition-all duration-300 hover:bg-fann-gold hover:text-fann-charcoal dark:hover:bg-fann-gold dark:hover:text-fann-charcoal"
                           >
                               Get a Quote
@@ -151,6 +153,7 @@ const Header: React.FC = () => {
                           <motion.button 
                             whileHover={{ scale: 1.05, y: -2 }}
                             whileTap={{ scale: 0.95 }}
+                            transition={buttonTransition}
                             onClick={() => setIsOpen(false)}
                             className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider mt-4 shadow-md hover:shadow-lg hover:shadow-fann-gold/40"
                           >

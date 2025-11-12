@@ -186,32 +186,29 @@ const ContactPage: React.FC = () => {
                            <div>
                                <input type="text" name="name" placeholder="Your Name" required className="w-full bg-fann-peach dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold transition-shadow" />
                            </div>
-                            <div>
+                           <div>
                                <input type="email" name="email" placeholder="Your Email" required className="w-full bg-fann-peach dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold transition-shadow" />
                            </div>
-                            <div>
+                           <div>
                                <textarea name="message" placeholder="Your Message" rows={5} required className="w-full bg-fann-peach dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold transition-shadow"></textarea>
                            </div>
-                           {error && (
-                               <div className="bg-red-900/50 text-red-300 text-sm p-3 rounded-md">{error}</div>
-                           )}
+                            {error && <p className="text-red-500 text-sm">{error}</p>}
                            <div>
                                <motion.button 
-                                    whileHover={{ scale: 1.05, y: -2 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    type="submit" 
-                                    disabled={isSending} 
-                                    className="w-full bg-fann-gold text-fann-charcoal font-bold py-3 rounded-full uppercase tracking-wider transition-all duration-300 flex items-center justify-center disabled:opacity-50 shadow-md hover:shadow-lg hover:shadow-fann-gold/40"
+                                whileHover={{ scale: 1.05, y: -2 }}
+                                whileTap={{ scale: 0.95 }}
+                                type="submit" 
+                                disabled={isSending}
+                                className="w-full bg-fann-gold text-fann-charcoal font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 disabled:opacity-70"
                                 >
-                                   {isSending ? <Loader2 className="animate-spin" /> : 'Submit'}
-                               </motion.button>
+                                   {isSending ? <Loader2 className="animate-spin" /> : 'Send Message'}
+                                </motion.button>
                            </div>
                         </form>
                     </>
                 )}
             </motion.div>
           </div>
-
         </div>
       </div>
     </AnimatedPage>

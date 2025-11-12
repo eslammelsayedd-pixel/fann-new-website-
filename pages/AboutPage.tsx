@@ -3,6 +3,20 @@ import AnimatedPage from '../components/AnimatedPage';
 import { motion } from 'framer-motion';
 import SEO from '../components/SEO';
 
+const aboutPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "url": "https://fann.ae/about",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://fann.ae/about"
+    },
+    "about": {
+        "@type": "Organization",
+        "@id": "https://fann.ae"
+    }
+};
+
 // FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
 // annotation was removed. This allows TypeScript to correctly infer literal 
 // types for transition properties.
@@ -33,6 +47,7 @@ const AboutPage: React.FC = () => {
         <SEO
             title="About FANN | Dubai's Premier Design & Build Partner"
             description="Founded in 2019, FANN is a full-service design and build company in Dubai, dedicated to transforming visions into unforgettable realities with innovation and excellence."
+            schema={aboutPageSchema}
         />
       <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
         <motion.div 

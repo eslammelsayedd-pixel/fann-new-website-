@@ -16,6 +16,7 @@ import InteriorResultPage from './pages/InteriorResultPage';
 import MediaStudioPage from './pages/MediaStudioPage';
 import EventsCalendarPage from './pages/EventsCalendarPage';
 import AboutPage from './pages/AboutPage';
+// FIX: Changed to a default import since ContactPage now has a default export.
 import ContactPage from './pages/ContactPage';
 import InsightsPage from './pages/InsightsPage';
 import { ApiKeyProvider } from './context/ApiKeyProvider';

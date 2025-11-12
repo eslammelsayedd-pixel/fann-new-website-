@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import AnimatedPage from '../components/AnimatedPage';
 import { Building, Crown, PenTool, Clapperboard } from 'lucide-react';
+import SEO from '../components/SEO';
 
 const studioOptions = [
     { 
@@ -38,6 +39,36 @@ const studioOptions = [
         isComingSoon: true 
     },
 ];
+
+const studioPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "AI-Powered Design Studio",
+    "name": "FANN Studio",
+    "description": "Your vision, realized in minutes. Select a studio to begin creating with FANN's powerful design tools for exhibitions, events, and interiors.",
+    "url": "https://fann.ae/fann-studio",
+    "provider": {
+        "@type": "Organization",
+        "@id": "https://fann.ae"
+    },
+    "areaServed": {
+        "@type": "Country",
+        "name": "AE"
+    },
+    "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Design Studios",
+        "itemListElement": studioOptions.filter(s => !s.isComingSoon).map(studio => ({
+            "@type": "Offer",
+            "itemOffered": {
+                "@type": "Service",
+                "name": studio.name,
+                "url": `https://fann.ae${studio.link}`,
+                "description": studio.description
+            }
+        }))
+    }
+};
 
 interface StudioCardProps {
   studio: typeof studioOptions[0];
@@ -82,6 +113,11 @@ const StudioCard: React.FC<StudioCardProps> = ({ studio, index }) => (
 const AIDesignStudioPage: React.FC = () => {
     return (
         <AnimatedPage>
+            <SEO
+                title="FANN Studio | AI-Powered Design Concepts"
+                description="Generate bespoke design concepts for exhibitions, events, and interiors in minutes with FANN's AI-powered design studio. Visualize your project today."
+                schema={studioPageSchema}
+            />
             <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
