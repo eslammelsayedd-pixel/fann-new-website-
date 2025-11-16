@@ -3,7 +3,6 @@ import { Link, NavLink } from 'react-router-dom';
 import { navLinks } from '../constants';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import LanguageSwitcher from './LanguageSwitcher';
 import ThemeToggle from './ThemeToggle';
 
 const Header: React.FC = () => {
@@ -30,14 +29,14 @@ const Header: React.FC = () => {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
                     <Link to="/" className="text-fann-teal dark:text-fann-peach">
-                        <div className="font-sans text-4xl font-extrabold tracking-[0.2em]">FANN</div>
+                        <div className="font-sans text-4xl font-bold tracking-[0.2em]">FANN</div>
                     </Link>
 
                     <nav className="hidden lg:flex items-center space-x-8">
                         {navLinks.map((link) => (
                             link.children ? (
                                 <div key={link.name} className="relative group">
-                                    <button className={`flex items-center space-x-1 text-sm font-medium uppercase tracking-wider ${lightInactiveLinkClass} dark:${inactiveLinkClass}`}>
+                                    <button className={`flex items-center space-x-1 text-sm font-semibold uppercase tracking-wider ${lightInactiveLinkClass} dark:${inactiveLinkClass}`}>
                                         <span>{link.name}</span>
                                         <ChevronDown size={16} />
                                     </button>
@@ -61,7 +60,7 @@ const Header: React.FC = () => {
                                 <NavLink
                                     key={link.name}
                                     to={link.path!}
-                                    className={({ isActive }) => `${isActive ? `text-fann-gold dark:${activeLinkClass}` : `${lightInactiveLinkClass} dark:${inactiveLinkClass}`} text-sm font-medium uppercase tracking-wider`}
+                                    className={({ isActive }) => `${isActive ? `text-fann-gold dark:${activeLinkClass}` : `${lightInactiveLinkClass} dark:${inactiveLinkClass}`} text-sm font-semibold uppercase tracking-wider`}
                                 >
                                     {link.name}
                                 </NavLink>
@@ -70,7 +69,7 @@ const Header: React.FC = () => {
                     </nav>
 
                     <div className="hidden lg:flex items-center space-x-4">
-                        <LanguageSwitcher />
+                        <div id="google_translate_element"></div>
                         <ThemeToggle />
                         <Link to="/contact">
                           <motion.button 
@@ -109,7 +108,7 @@ const Header: React.FC = () => {
                                     <>
                                         <button 
                                             onClick={() => setOpenDropdown(openDropdown === link.name ? null : link.name)}
-                                            className={`flex items-center justify-center w-full text-lg font-medium uppercase tracking-wider ${lightInactiveLinkClass} dark:${inactiveLinkClass}`}
+                                            className={`flex items-center justify-center w-full text-lg font-semibold uppercase tracking-wider ${lightInactiveLinkClass} dark:${inactiveLinkClass}`}
                                         >
                                             {link.name}
                                             <ChevronDown size={20} className={`ml-2 transition-transform ${openDropdown === link.name ? 'rotate-180' : ''}`} />
@@ -127,7 +126,7 @@ const Header: React.FC = () => {
                                                             key={child.name}
                                                             to={child.path}
                                                             onClick={() => setIsOpen(false)}
-                                                            className={({ isActive }) => `${isActive ? `text-fann-gold dark:${activeLinkClass}` : `${lightInactiveLinkClass} dark:${inactiveLinkClass}`} text-base font-medium uppercase tracking-wider`}
+                                                            className={({ isActive }) => `${isActive ? `text-fann-gold dark:${activeLinkClass}` : `${lightInactiveLinkClass} dark:${inactiveLinkClass}`} text-base font-semibold uppercase tracking-wider`}
                                                         >
                                                             {child.name}
                                                         </NavLink>
@@ -140,7 +139,7 @@ const Header: React.FC = () => {
                                     <NavLink
                                         to={link.path!}
                                         onClick={() => setIsOpen(false)}
-                                        className={({ isActive }) => `${isActive ? `text-fann-gold dark:${activeLinkClass}` : `${lightInactiveLinkClass} dark:${inactiveLinkClass}`} text-lg font-medium uppercase tracking-wider`}
+                                        className={({ isActive }) => `${isActive ? `text-fann-gold dark:${activeLinkClass}` : `${lightInactiveLinkClass} dark:${inactiveLinkClass}`} text-lg font-semibold uppercase tracking-wider`}
                                     >
                                         {link.name}
                                     </NavLink>
@@ -148,7 +147,7 @@ const Header: React.FC = () => {
                             </div>
                         ))}
                         <div className="my-6 w-full px-8 flex justify-center items-center gap-4">
-                            <LanguageSwitcher />
+                            <div id="google_translate_element_mobile"></div>
                         </div>
                         <Link to="/portfolio">
                           <motion.button 

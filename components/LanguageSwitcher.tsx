@@ -59,7 +59,7 @@ const LanguageSwitcher: React.FC = () => {
         <div ref={dropdownRef} className="relative">
             <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center space-x-1 text-sm font-medium text-fann-teal dark:text-fann-peach hover:text-fann-gold transition-colors duration-300 w-full justify-center lg:w-auto"
+                className="flex items-center space-x-1 text-sm font-semibold text-fann-teal dark:text-fann-peach hover:text-fann-gold transition-colors duration-300 w-full justify-center lg:w-auto"
                  aria-haspopup="true"
                  aria-expanded={isDropdownOpen}
             >

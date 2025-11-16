@@ -173,7 +173,7 @@ const EventsCalendarPage: React.FC = () => {
             
             <div className="max-w-6xl mx-auto bg-white dark:bg-fann-accent-teal p-4 rounded-lg mb-8 grid grid-cols-1 md:grid-cols-3 gap-6 shadow-md">
                 <div>
-                    <label className="block text-sm font-medium text-fann-light-gray mb-2">Country</label>
+                    <label className="block text-sm font-normal text-fann-light-gray mb-2">Country</label>
                     <div className="grid grid-cols-3 gap-2">
                          {countries.map(country => (
                             <button
@@ -187,7 +187,7 @@ const EventsCalendarPage: React.FC = () => {
                     </div>
                 </div>
                  <div>
-                    <label htmlFor="industry-filter" className="block text-sm font-medium text-fann-light-gray mb-2">Industry</label>
+                    <label htmlFor="industry-filter" className="block text-sm font-normal text-fann-light-gray mb-2">Industry</label>
                     <select
                         id="industry-filter"
                         value={selectedIndustry}
@@ -200,7 +200,7 @@ const EventsCalendarPage: React.FC = () => {
                     </select>
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-fann-light-gray mb-2">Date Range</label>
+                    <label className="block text-sm font-normal text-fann-light-gray mb-2">Date Range</label>
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
                          {dateRanges.map(range => (
                             <button

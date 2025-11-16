@@ -199,11 +199,11 @@ const ROICalculatorPage: React.FC = () => {
                             <h2 className="text-2xl font-serif font-bold text-fann-peach border-b border-fann-border pb-3">Your Event Details</h2>
                             <div className="grid md:grid-cols-2 gap-6">
                                 <div>
-                                    <label htmlFor="company_name" className="block text-sm font-medium text-fann-light-gray mb-2">Company Name</label>
+                                    <label htmlFor="company_name" className="block text-sm font-normal text-fann-light-gray mb-2">Company Name</label>
                                     <input type="text" id="company_name" name="company_name" placeholder="Your Company Name" value={formData.company_name} onChange={handleInputChange} required className="w-full bg-fann-teal border border-fann-border rounded-md px-3 py-2" />
                                 </div>
                                 <div>
-                                    <label htmlFor="event_name" className="block text-sm font-medium text-fann-light-gray mb-2">Event Name</label>
+                                    <label htmlFor="event_name" className="block text-sm font-normal text-fann-light-gray mb-2">Event Name</label>
                                     <input type="text" id="event_name" name="event_name" list="event-options" placeholder="e.g., GITEX Global" value={formData.event_name} onChange={handleInputChange} required className="w-full bg-fann-teal border border-fann-border rounded-md px-3 py-2" />
                                     <datalist id="event-options">
                                         {eventOptions.map(name => <option key={name} value={name} />)}
@@ -213,20 +213,20 @@ const ROICalculatorPage: React.FC = () => {
                             
                             <div className="border-t border-fann-border pt-6 space-y-6">
                                 <div>
-                                    <label htmlFor="booth_size_sqm" className="block text-sm font-medium text-fann-light-gray mb-2">Booth Size (sqm): <span className="text-fann-gold font-bold">{formData.booth_size_sqm}</span></label>
+                                    <label htmlFor="booth_size_sqm" className="block text-sm font-normal text-fann-light-gray mb-2">Booth Size (sqm): <span className="text-fann-gold font-bold">{formData.booth_size_sqm}</span></label>
                                     <input type="range" id="booth_size_sqm" name="booth_size_sqm" min="9" max="500" step="1" value={formData.booth_size_sqm} onChange={handleInputChange} className="w-full h-2 bg-fann-teal-dark rounded-lg appearance-none cursor-pointer accent-fann-gold" />
                                 </div>
                                 <div>
-                                    <label htmlFor="stand_cost" className="block text-sm font-medium text-fann-light-gray mb-2">Stand Design & Build Cost (AED)</label>
+                                    <label htmlFor="stand_cost" className="block text-sm font-normal text-fann-light-gray mb-2">Stand Design & Build Cost (AED)</label>
                                     <input type="number" step="1000" id="stand_cost" name="stand_cost" value={formData.stand_cost} onChange={handleInputChange} className="w-full bg-fann-teal border border-fann-border rounded-md px-3 py-2" />
                                 </div>
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div>
-                                        <label htmlFor="average_deal_size" className="block text-sm font-medium text-fann-light-gray mb-2">Avg. Deal Size (AED)</label>
+                                        <label htmlFor="average_deal_size" className="block text-sm font-normal text-fann-light-gray mb-2">Avg. Deal Size (AED)</label>
                                         <input type="number" step="1000" id="average_deal_size" name="average_deal_size" value={formData.average_deal_size} onChange={handleInputChange} className="w-full bg-fann-teal border border-fann-border rounded-md px-3 py-2" />
                                     </div>
                                     <div>
-                                        <label htmlFor="close_rate" className="block text-sm font-medium text-fann-light-gray mb-2">Sales Close Rate: <span className="text-fann-gold font-bold">{formData.close_rate}%</span></label>
+                                        <label htmlFor="close_rate" className="block text-sm font-normal text-fann-light-gray mb-2">Sales Close Rate: <span className="text-fann-gold font-bold">{formData.close_rate}%</span></label>
                                         <input type="range" id="close_rate" name="close_rate" min="1" max="80" step="1" value={formData.close_rate} onChange={handleInputChange} className="w-full h-2 bg-fann-teal-dark rounded-lg appearance-none cursor-pointer accent-fann-gold" />
                                     </div>
                                 </div>
