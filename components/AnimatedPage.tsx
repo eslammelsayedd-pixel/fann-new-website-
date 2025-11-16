@@ -19,11 +19,12 @@ const pageVariants = {
 // FIX: To resolve the framer-motion type error, the explicit 'Transition' type annotation
 // was removed. This allows TypeScript to correctly infer the literal type for
 // the 'type' property (e.g., 'tween' instead of 'string').
+// FIX: Add 'as const' to ensure TypeScript infers a literal type for 'type'.
 const pageTransition = {
   type: 'tween',
   ease: 'easeInOut',
   duration: 0.5,
-};
+} as const;
 
 interface AnimatedPageProps {
   children: React.ReactNode;

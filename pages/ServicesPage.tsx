@@ -15,24 +15,27 @@ interface ServiceSectionProps {
   link: string;
 }
 
-const buttonTransition = { type: 'spring', stiffness: 400, damping: 17 };
+// FIX: Add 'as const' to ensure TypeScript infers a literal type for 'type'.
+const buttonTransition = { type: 'spring', stiffness: 400, damping: 17 } as const;
 
 const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, description, image, services, imagePosition = 'right', link }) => {
   // FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
   // annotation was removed. This allows TypeScript to correctly infer literal 
   // types for transition properties (e.g., type: 'spring').
+  // FIX: Add 'as const' to ensure TypeScript infers literal animation types.
   const imageVariants = {
     offscreen: { opacity: 0, x: imagePosition === 'right' ? 100 : -100 },
     onscreen: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 50, duration: 0.8 } }
-  };
+  } as const;
   
   // FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
   // annotation was removed. This allows TypeScript to correctly infer literal 
   // types for transition properties (e.g., type: 'spring').
+  // FIX: Add 'as const' to ensure TypeScript infers literal animation types.
   const textVariants = {
     offscreen: { opacity: 0, y: 50 },
     onscreen: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 50, duration: 0.8, delay: 0.2 } }
-  };
+  } as const;
 
   return (
     <motion.section 

@@ -22,7 +22,8 @@ const Header: React.FC = () => {
     const activeLinkClass = "text-fann-gold";
     const inactiveLinkClass = "text-fann-peach hover:text-fann-gold transition-colors duration-300";
     const lightInactiveLinkClass = "text-fann-teal hover:text-fann-gold";
-    const buttonTransition = { type: 'spring', stiffness: 400, damping: 17 };
+    // FIX: Add 'as const' to the transition object to ensure TypeScript infers a literal type for 'type', resolving the framer-motion error.
+    const buttonTransition = { type: 'spring', stiffness: 400, damping: 17 } as const;
 
     return (
         <header className={`top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || isOpen ? 'fixed bg-fann-peach/90 dark:bg-fann-teal/90 backdrop-blur-sm shadow-lg' : 'absolute bg-transparent'}`}>

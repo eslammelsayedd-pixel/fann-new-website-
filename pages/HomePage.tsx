@@ -1,9 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Layers, Calendar, Star, PenTool } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { portfolioProjects, testimonials } from '../constants';
-import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 
 const homePageSchema = {
@@ -61,16 +59,11 @@ const homePageSchema = {
     "description": "FANN is a premier exhibition, events, and interior design company in Dubai, transforming visions into unforgettable experiences."
 };
 
-const buttonTransition = { type: 'spring', stiffness: 400, damping: 17 };
-
 const HeroSection: React.FC = () => {
     return (
         <section className="relative h-screen flex items-center justify-center text-center text-fann-peach overflow-hidden bg-fann-teal">
-            <motion.div 
+            <div 
                 className="relative z-10 p-4 w-full"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
             >
                 <h1 
                     className="text-4xl md:text-6xl font-serif font-bold leading-snug text-fann-peach drop-shadow-md"
@@ -90,55 +83,20 @@ const HeroSection: React.FC = () => {
                     className="mt-10"
                 >
                     <Link to="/portfolio">
-                        <motion.button 
-                            whileHover={{ scale: 1.05, y: -2 }}
-                            whileTap={{ scale: 0.95 }}
-                            transition={buttonTransition}
+                        <button 
                             className="bg-fann-gold text-fann-charcoal font-bold py-4 px-10 rounded-full text-lg uppercase tracking-wider transition-all duration-300 shadow-lg shadow-fann-gold/30 hover:shadow-xl hover:shadow-fann-gold/50"
                         >
                             Explore Our Work
-                        </motion.button>
+                        </button>
                     </Link>
                 </div>
-            </motion.div>
+            </div>
         </section>
     );
 };
 
-
-// FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
-// annotation was removed. This allows TypeScript to correctly infer literal 
-// types for transition properties (e.g., type: 'spring').
-const sectionVariants = {
-  offscreen: { y: 50, opacity: 0 },
-  onscreen: {
-    y: 0,
-    opacity: 1,
-    transition: { type: "spring", stiffness: 40, duration: 0.8 },
-  },
-};
-
-// FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
-// annotation was removed. This allows TypeScript to correctly infer literal 
-// types for transition properties.
-const cardContainerVariants = {
-  offscreen: {},
-  onscreen: {
-    transition: { staggerChildren: 0.15 },
-  },
-};
-
-// FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
-// annotation was removed. This allows TypeScript to correctly infer literal 
-// types for transition properties (e.g., type: 'spring').
-const cardItemVariants = {
-  offscreen: { y: 50, opacity: 0 },
-  onscreen: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 40 } },
-};
-
 const ServiceCard: React.FC<{ icon: React.ReactNode; title: string; description: string; link: string; }> = ({ icon, title, description, link }) => (
-    <motion.div 
-        variants={cardItemVariants}
+    <div 
         className="relative p-8 bg-white dark:bg-fann-accent-teal rounded-lg overflow-hidden border border-fann-teal/10 dark:border-fann-border shadow-md"
     >
         <div className="relative z-10">
@@ -147,12 +105,12 @@ const ServiceCard: React.FC<{ icon: React.ReactNode; title: string; description:
             <p className="text-fann-teal/80 dark:text-fann-light-gray mb-6">{description}</p>
             <Link to={link} className="font-bold text-fann-accent-teal dark:text-fann-gold hover:underline underline-offset-4">Learn More &rarr;</Link>
         </div>
-    </motion.div>
+    </div>
 );
 
 const HomePage: React.FC = () => {
     return (
-        <AnimatedPage>
+        <div>
             <SEO
                 title="FANN: Expert Exhibition Stand Design & Build in Dubai"
                 description="Transform your vision with Dubai's leading exhibition stand contractor. FANN offers award-winning design, build, and event services. Experience our 3D Studio today!"
@@ -164,65 +122,49 @@ const HomePage: React.FC = () => {
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
 
                     {/* Services Section */}
-                    <motion.section 
+                    <section 
                         className="text-center"
-                        initial="offscreen"
-                        whileInView="onscreen"
-                        viewport={{ once: true, amount: 0.2 }}
                     >
-                        <motion.h2 variants={sectionVariants} className="text-4xl md:text-5xl font-serif font-bold mb-12">Our Expertise</motion.h2>
-                        <motion.div 
+                        <h2 className="text-4xl md:text-5xl font-serif font-bold mb-12">Our Expertise</h2>
+                        <div 
                             className="grid md:grid-cols-3 gap-8"
-                            variants={cardContainerVariants}
                         >
                             <ServiceCard icon={<Layers size={40} />} title="Exhibitions" description="Designing and building immersive brand pavilions that captivate audiences and drive business." link="/services" />
                             <ServiceCard icon={<Calendar size={40} />} title="Events" description="Executing flawless corporate events, from grand openings to global summits." link="/services" />
                             <ServiceCard icon={<PenTool size={40} />} title="Interior Design" description="Designing and building inspiring commercial and residential spaces with a touch of luxury." link="/services" />
-                        </motion.div>
-                    </motion.section>
+                        </div>
+                    </section>
 
                     {/* FANN Studio Section */}
-                    <motion.section 
+                    <section 
                         className="mt-32 text-center bg-white dark:bg-fann-accent-teal rounded-lg py-16 px-8"
-                        initial="offscreen"
-                        whileInView="onscreen"
-                        viewport={{ once: true, amount: 0.2 }}
-                        variants={sectionVariants}
                     >
                         <h2 className="text-4xl md:text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mb-4">Visualize Your Vision in Minutes</h2>
                         <p className="max-w-2xl mx-auto text-fann-teal/90 dark:text-fann-peach mb-8">Our revolutionary FANN Studio allows you to configure your exhibition stand, see it in 3D, and get instant pricing. Innovation at your fingertips.</p>
                         <div className="mb-8">
-                           <img src="https://images.pexels.com/photos/8112165/pexels-photo-8112165.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="A sleek, modern exhibition stand with integrated lighting and a hospitality bar, showcasing a 3D concept from FANN Studio." className="rounded-lg shadow-2xl mx-auto" />
+                           <img src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="A sleek, modern exhibition stand with integrated lighting and a hospitality bar, showcasing a 3D concept from FANN Studio." className="rounded-lg shadow-2xl mx-auto" />
                         </div>
                          <Link to="/fann-studio">
-                           <motion.button 
-                                whileHover={{ scale: 1.05, y: -2 }}
-                                whileTap={{ scale: 0.95 }}
-                                transition={buttonTransition}
+                           <button 
                                 className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-fann-gold/40"
                             >
                                 Try It Now - Free
-                            </motion.button>
+                            </button>
                         </Link>
-                    </motion.section>
+                    </section>
                     
                     {/* Featured Projects Section */}
-                    <motion.section 
+                    <section 
                         className="mt-32"
-                        initial="offscreen"
-                        whileInView="onscreen"
-                        viewport={{ once: true, amount: 0.2 }}
                     >
-                        <motion.h2 variants={sectionVariants} className="text-4xl md:text-5xl font-serif font-bold text-center mb-12">Featured Projects</motion.h2>
-                        <motion.div 
+                        <h2 className="text-4xl md:text-5xl font-serif font-bold text-center mb-12">Featured Projects</h2>
+                        <div 
                             className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-                            variants={cardContainerVariants}
                         >
                             {portfolioProjects.slice(0, 6).map(project => (
-                                <motion.div 
+                                <div 
                                     key={project.id} 
                                     className="group relative overflow-hidden rounded-lg shadow-lg"
-                                    variants={cardItemVariants}
                                 >
                                     <img src={project.image} alt={project.title} className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
@@ -231,29 +173,23 @@ const HomePage: React.FC = () => {
                                         <h3 className="text-xl font-bold mt-2 text-white">{project.title}</h3>
                                         <p className="text-fann-peach/90">{project.client}</p>
                                     </div>
-                                </motion.div>
+                                </div>
                             ))}
-                        </motion.div>
+                        </div>
                         <div className="text-center mt-12">
                              <Link to="/portfolio">
-                                <motion.button 
-                                    whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}
-                                    transition={buttonTransition}
+                                <button 
                                     className="border-2 border-fann-accent-teal dark:border-fann-gold text-fann-accent-teal dark:text-fann-gold font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider transition-all duration-300 hover:bg-fann-accent-teal/10 dark:hover:bg-fann-gold/10"
                                 >
                                     View Full Portfolio
-                                </motion.button>
+                                </button>
                             </Link>
                         </div>
-                    </motion.section>
+                    </section>
                     
                     {/* Testimonials Section */}
-                    <motion.section 
+                    <section 
                         className="mt-32 text-center"
-                        initial="offscreen"
-                        whileInView="onscreen"
-                        viewport={{ once: true, amount: 0.2 }}
-                        variants={sectionVariants}
                     >
                         <h2 className="text-4xl md:text-5xl font-serif font-bold mb-12">What Our Clients Say</h2>
                         <div className="relative max-w-4xl mx-auto">
@@ -264,45 +200,36 @@ const HomePage: React.FC = () => {
                                 <p className="text-fann-light-gray mt-1">{testimonials[0].company}</p>
                             </div>
                         </div>
-                    </motion.section>
+                    </section>
 
                     {/* CTA Section */}
-                    <motion.section 
+                    <section 
                         className="mt-32 text-center bg-gradient-to-r from-fann-accent-teal to-fann-gold p-1 rounded-lg"
-                        initial="offscreen"
-                        whileInView="onscreen"
-                        viewport={{ once: true, amount: 0.2 }}
-                        variants={sectionVariants}
                     >
                          <div className="bg-white dark:bg-fann-accent-teal rounded-lg py-16 px-8">
                             <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4 text-fann-teal dark:text-fann-peach">Ready to Create Something Extraordinary?</h2>
                             <p className="max-w-2xl mx-auto text-fann-teal/90 dark:text-fann-peach/90 mb-8">Let's discuss how our design and build expertise can bring your vision to life. Schedule a complimentary consultation with our experts today.</p>
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                                <Link to="/contact">
-                                  <motion.button 
-                                      whileHover={{ scale: 1.05, y: -2 }}
-                                      whileTap={{ scale: 0.95 }}
-                                      transition={buttonTransition}
+                                  <button 
                                       className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider w-full sm:w-auto transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-fann-gold/40"
                                   >
                                       Book Consultation
-                                  </motion.button>
+                                  </button>
                                 </Link>
                                 <Link to="/fann-studio">
-                                   <motion.button 
-                                      whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}
-                                      transition={buttonTransition}
+                                   <button 
                                       className="border-2 border-fann-accent-teal dark:border-fann-gold text-fann-accent-teal dark:text-fann-gold font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider w-full sm:w-auto transition-all duration-300 hover:bg-fann-accent-teal/10 dark:hover:bg-fann-gold/10"
                                   >
                                       Start Designing
-                                  </motion.button>
+                                  </button>
                                 </Link>
                             </div>
                          </div>
-                    </motion.section>
+                    </section>
                 </div>
             </div>
-        </AnimatedPage>
+        </div>
     );
 };
 

@@ -83,18 +83,20 @@ export const Chatbot: React.FC = () => {
     // FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
     // annotation was removed. This allows TypeScript to correctly infer literal 
     // types for transition properties (e.g., type: 'spring').
+    // FIX: Add 'as const' to ensure TypeScript infers a literal type for 'type'.
     const fabVariants = {
         hidden: { scale: 0, opacity: 0 },
         visible: { scale: 1, opacity: 1, transition: { delay: 0.5, type: 'spring' } },
-    };
+    } as const;
 
     // FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
     // annotation was removed. This allows TypeScript to correctly infer literal 
     // types for transition properties.
+    // FIX: Add 'as const' to ensure TypeScript infers a literal type for 'type'.
     const chatWindowVariants = {
         hidden: { opacity: 0, y: 50, scale: 0.9 },
         visible: { opacity: 1, y: 0, scale: 1 },
-    };
+    } as const;
 
     return (
         <>

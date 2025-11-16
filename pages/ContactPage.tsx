@@ -14,18 +14,20 @@ const WhatsAppIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
 // FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
 // annotation was removed. This allows TypeScript to correctly infer literal 
 // types for transition properties (e.g., type: 'spring').
+// FIX: Add 'as const' to ensure TypeScript infers a literal type for 'type'.
 const slideInFromLeft = {
   hidden: { x: -50, opacity: 0 },
   visible: { x: 0, opacity: 1, transition: { type: "spring", stiffness: 40, duration: 0.8 } },
-};
+} as const;
 
 // FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
 // annotation was removed. This allows TypeScript to correctly infer literal 
 // types for transition properties (e.g., type: 'spring').
+// FIX: Add 'as const' to ensure TypeScript infers a literal type for 'type'.
 const slideInFromRight = {
   hidden: { x: 50, opacity: 0 },
   visible: { x: 0, opacity: 1, transition: { type: "spring", stiffness: 40, duration: 0.8 } },
-};
+} as const;
 
 const ContactPage: React.FC = () => {
   const [isSending, setIsSending] = useState(false);

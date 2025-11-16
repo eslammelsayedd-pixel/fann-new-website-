@@ -20,17 +20,19 @@ const aboutPageSchema = {
 // FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
 // annotation was removed. This allows TypeScript to correctly infer literal 
 // types for transition properties.
+// FIX: Add 'as const' to ensure TypeScript infers literal animation types.
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: { staggerChildren: 0.2, delayChildren: 0.2 },
   },
-};
+} as const;
 
 // FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
 // annotation was removed. This allows TypeScript to correctly infer literal 
 // types for transition properties (e.g., type: 'spring').
+// FIX: Add 'as const' to ensure TypeScript infers literal animation types.
 const itemVariants = {
   hidden: { y: 30, opacity: 0 },
   visible: {
@@ -38,7 +40,7 @@ const itemVariants = {
     opacity: 1,
     transition: { type: 'spring', stiffness: 50 },
   },
-};
+} as const;
 
 
 const AboutPage: React.FC = () => {

@@ -6,7 +6,8 @@ import { ThemeProvider } from './context/ThemeProvider';
 // FIX: Import the global types file at the root to ensure type augmentations
 // are applied consistently across the application. This resolves issues with
 // libraries like framer-motion where component props were not being recognized.
-import './types';
+// FIX: Changed import to use the consolidated types file in `src` which correctly loads global definitions.
+import './src/types';
 
 const rootElement = document.getElementById('root');
 
