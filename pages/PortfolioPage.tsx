@@ -151,7 +151,18 @@ const PortfolioPage: React.FC = () => {
                     transition={{ duration: 0.3 }}
                     className="group relative overflow-hidden rounded-lg shadow-lg"
                   >
-                    <img src={project.image} alt={project.title} className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" />
+                    <picture>
+                        <source srcSet={`${project.image}&fm=webp`} type="image/webp" />
+                        <source srcSet={project.image} type="image/jpeg" />
+                        <img 
+                            src={project.image} 
+                            alt={project.title} 
+                            className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" 
+                            loading="lazy"
+                            width="400"
+                            height="320"
+                        />
+                    </picture>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                     <div className="absolute bottom-0 left-0 p-6">
                       <span className="text-sm bg-fann-gold text-fann-charcoal font-bold py-1 px-2 rounded">{project.service}</span>

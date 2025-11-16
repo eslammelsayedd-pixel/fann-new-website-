@@ -72,7 +72,18 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, descriptio
           </Link>
         </motion.div>
         <motion.div className={`order-1 ${imagePosition === 'left' ? 'md:order-1' : 'md:order-2'}`} variants={imageVariants}>
-          <img src={image} alt={title} className="rounded-lg shadow-2xl w-full h-auto object-cover" />
+          <picture>
+            <source srcSet={`${image}&fm=webp`} type="image/webp" />
+            <source srcSet={image} type="image/jpeg" />
+            <img 
+              src={image} 
+              alt={title} 
+              className="rounded-lg shadow-2xl w-full h-auto object-cover" 
+              loading="lazy"
+              width="532"
+              height="299"
+            />
+          </picture>
         </motion.div>
       </div>
     </motion.section>
@@ -84,7 +95,7 @@ const servicesData = [
         icon: <Layers size={40} />,
         title: "Exhibition Stand Design & Build",
         description: "We are a full-service design and build partner, transforming exhibition spaces into powerful brand experiences. At major venues like the Dubai World Trade Centre and ADNEC, we manage every detail from the initial 3D concept to fabrication and final handover, ensuring your stand is not just seen, but remembered.",
-        image: "https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        image: "https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=800&q=75",
         services: [ "Conceptual Design & 3D Visualization", "Full In-house Production & Fabrication", "Turnkey Project Management", "Advanced AV & Lighting Integration", "On-site Installation & Dismantling", "Global Logistics Coordination" ],
         imagePosition: "right" as "right",
         link: "/portfolio"
@@ -93,7 +104,7 @@ const servicesData = [
         icon: <Calendar size={40} />,
         title: "Corporate Event Management",
         description: "We orchestrate flawless corporate events that resonate with your audience. Whether it's a high-profile product launch, an elegant gala dinner, or a global summit, our meticulous planning and creative production deliver unforgettable, stress-free experiences.",
-        image: "https://images.pexels.com/photos/11149726/pexels-photo-11149726.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        image: "https://images.pexels.com/photos/11149726/pexels-photo-11149726.jpeg?auto=compress&cs=tinysrgb&w=800&q=75",
         services: [ "Strategic Event Concept & Theming", "Venue Sourcing & Management", "Stage Design & Technical Production", "Delegate & VIP Management", "Entertainment & Speaker Sourcing", "Full-Service Event Execution" ],
         imagePosition: "left" as "left",
         link: "/portfolio"
@@ -102,7 +113,7 @@ const servicesData = [
         icon: <PenTool size={40} />,
         title: "Interior Design & Build",
         description: "Our design and build philosophy for interiors centers on creating spaces that are both beautiful and functional. We manage the entire process from concept to completion, designing and constructing inspiring commercial environments and luxurious residential properties that reflect your unique identity.",
-        image: "https://images.pexels.com/photos/3797991/pexels-photo-3797991.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        image: "https://images.pexels.com/photos/3797991/pexels-photo-3797991.jpeg?auto=compress&cs=tinysrgb&w=800&q=75",
         services: [ "Comprehensive Space Planning", "Concept & Mood Board Development", "FF&E Sourcing & Procurement", "Custom Furniture & Joinery Design", "Complete Fit-Out & Project Management", "Turnkey Design & Build Solutions" ],
         imagePosition: "right" as "right",
         link: "/portfolio"

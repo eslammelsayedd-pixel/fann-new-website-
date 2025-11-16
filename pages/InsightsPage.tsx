@@ -29,7 +29,7 @@ const insightTopics: InsightTopic[] = [
         prompt: "Write an insightful blog post about the latest trends in sustainable and eco-friendly exhibition stand design, with a specific focus on the UAE and Saudi Arabia for 2024. Cover innovative materials, modularity for events like GITEX and LEAP, and energy efficiency standards at venues like DWTC and Riyadh Front.",
         category: 'Exhibitions',
         icon: Building2,
-        image: 'https://images.pexels.com/photos/7437488/pexels-photo-7437488.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+        image: 'https://images.pexels.com/photos/7437488/pexels-photo-7437488.jpeg?auto=compress&cs=tinysrgb&w=600&q=75'
     },
     {
         title: "Audience Engagement Tech at Dubai Events",
@@ -37,7 +37,7 @@ const insightTopics: InsightTopic[] = [
         prompt: "As an expert event management agency, write a blog post detailing the most innovative audience engagement technologies being used at corporate events in Dubai. Discuss AR, VR, and AI-powered networking tools with examples from recent major UAE events. Focus on ROI for exhibitors.",
         category: 'Events',
         icon: BrainCircuit,
-        image: 'https://images.pexels.com/photos/6187640/pexels-photo-6187640.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+        image: 'https://images.pexels.com/photos/6187640/pexels-photo-6187640.jpeg?auto=compress&cs=tinysrgb&w=600&q=75'
     },
     {
         title: "Biophilic Design in Dubai & Riyadh Workspaces",
@@ -45,7 +45,7 @@ const insightTopics: InsightTopic[] = [
         prompt: "For an interior design firm's blog, write an article on the rise of Biophilic Design in modern workspaces and luxury commercial environments in Dubai and Riyadh. Explain the principles and highlight the benefits for employee well-being, citing examples from areas like DIFC and KAFD.",
         category: 'Interior Design',
         icon: Lightbulb,
-        image: 'https://images.pexels.com/photos/1918291/pexels-photo-1918291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+        image: 'https://images.pexels.com/photos/1918291/pexels-photo-1918291.jpeg?auto=compress&cs=tinysrgb&w=600&q=75'
     },
     {
         title: "Maximizing ROI at DWTC & Riyadh Front",
@@ -53,7 +53,7 @@ const insightTopics: InsightTopic[] = [
         prompt: "Write a strategic guide for international exhibitors on maximizing their return on investment at premier Middle East venues: the Dubai World Trade Centre (DWTC) and the Riyadh Exhibition and Convention Center (Riyadh Front). Cover pre-show marketing, stand design strategies for high traffic, and lead capture tactics specific to these locations.",
         category: 'Exhibitions',
         icon: TrendingUp,
-        image: 'https://images.pexels.com/photos/8111364/pexels-photo-8111364.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+        image: 'https://images.pexels.com/photos/8111364/pexels-photo-8111364.jpeg?auto=compress&cs=tinysrgb&w=600&q=75'
     },
     {
         title: "Luxury Retail Design: Dubai Mall vs. Via Riyadh",
@@ -61,7 +61,7 @@ const insightTopics: InsightTopic[] = [
         prompt: "Write a comparative analysis for a luxury design blog on the prevailing interior design trends for flagship retail stores in Dubai Mall versus the new luxury destination, Via Riyadh. Discuss customer experience, material palettes, and technology integration in these two distinct luxury hubs.",
         category: 'Interior Design',
         icon: Store,
-        image: 'https://images.pexels.com/photos/1321943/pexels-photo-1321943.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+        image: 'https://images.pexels.com/photos/1321943/pexels-photo-1321943.jpeg?auto=compress&cs=tinysrgb&w=600&q=75'
     },
     {
         title: "The Rise of 'Giga-Project' Launch Events in KSA",
@@ -69,7 +69,7 @@ const insightTopics: InsightTopic[] = [
         prompt: "Write an article for an event industry magazine about the emerging trend of large-scale, immersive launch events for Saudi Arabia's 'Giga-Projects' (e.g., NEOM, Red Sea Project). Discuss the scale, production complexity, and global impact of these brand experiences.",
         category: 'Events',
         icon: Rocket,
-        image: 'https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+        image: 'https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=600&q=75'
     },
     {
         title: "Integrating Arabic Culture into Modern Design",
@@ -77,7 +77,7 @@ const insightTopics: InsightTopic[] = [
         prompt: "For a design and architecture blog, write a piece on how to tastefully integrate traditional Arabic and Islamic design motifs (like geometry, calligraphy, and mashrabiya patterns) into modern, minimalist exhibition stands and corporate interiors for the Gulf market. Provide examples of successful fusion.",
         category: 'Exhibitions',
         icon: Globe,
-        image: 'https://images.pexels.com/photos/8134937/pexels-photo-8134937.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+        image: 'https://images.pexels.com/photos/8134937/pexels-photo-8134937.jpeg?auto=compress&cs=tinysrgb&w=600&q=75'
     },
     {
         title: "The Future of Hybrid Events in the UAE",
@@ -85,7 +85,7 @@ const insightTopics: InsightTopic[] = [
         prompt: "Write a thought-leadership article for an events company on the future of hybrid events in the UAE. Discuss strategies for blending physical and virtual experiences for major Dubai-based conferences, and how to create equal value for in-person and remote attendees.",
         category: 'Events',
         icon: Sparkles,
-        image: 'https://images.pexels.com/photos/7680128/pexels-photo-7680128.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+        image: 'https://images.pexels.com/photos/7680128/pexels-photo-7680128.jpeg?auto=compress&cs=tinysrgb&w=600&q=75'
     },
 ];
 
@@ -220,7 +220,18 @@ const InsightsPage: React.FC = () => {
                         onClick={() => handleTopicSelect(topic)}
                         className="h-96 block relative group overflow-hidden rounded-lg cursor-pointer border-2 border-fann-gold/20 hover:border-fann-gold transition-all duration-300"
                     >
-                        <img src={topic.image} alt={topic.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                        <picture>
+                            <source srcSet={`${topic.image}&fm=webp`} type="image/webp" />
+                            <source srcSet={topic.image} type="image/jpeg" />
+                            <img 
+                                src={topic.image} 
+                                alt={topic.title} 
+                                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                                loading="lazy"
+                                width="300"
+                                height="384"
+                            />
+                        </picture>
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent"></div>
                         <div className="relative h-full flex flex-col justify-between p-6 text-white text-left">
                             <div>

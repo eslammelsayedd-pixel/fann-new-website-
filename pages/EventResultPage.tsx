@@ -112,7 +112,14 @@ const EventResultPage: React.FC = () => {
                                     <p className="text-xl text-fann-light-gray">Your AI-Generated Mood Board for {formData.eventName}</p>
                                 </div>
                                 <div className="bg-fann-teal p-2 rounded-lg shadow-2xl mb-12">
-                                    <img src={`data:image/jpeg;base64,${design.image}`} alt={design.designConcept.conceptName} className="w-full rounded-md" />
+                                    <img 
+                                        src={`data:image/jpeg;base64,${design.image}`} 
+                                        alt={design.designConcept.conceptName} 
+                                        className="w-full rounded-md" 
+                                        width="1136"
+                                        height="639"
+                                        loading="lazy"
+                                    />
                                 </div>
                                 
                                 <div className="max-w-4xl mx-auto text-center mb-12">

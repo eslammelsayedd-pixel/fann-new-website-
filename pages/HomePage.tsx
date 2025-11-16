@@ -109,6 +109,8 @@ const ServiceCard: React.FC<{ icon: React.ReactNode; title: string; description:
 );
 
 const HomePage: React.FC = () => {
+    const studioImageUrl = "https://images.pexels.com/photos/8927043/pexels-photo-8927043.jpeg?auto=compress&cs=tinysrgb&w=1024&q=75";
+
     return (
         <div>
             <SEO
@@ -142,7 +144,18 @@ const HomePage: React.FC = () => {
                         <h2 className="text-4xl md:text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mb-4">Visualize Your Vision in Minutes</h2>
                         <p className="max-w-2xl mx-auto text-fann-teal/90 dark:text-fann-peach mb-8">Our revolutionary FANN Studio allows you to configure your exhibition stand, see it in 3D, and get instant pricing. Innovation at your fingertips.</p>
                         <div className="mb-8">
-                           <img src="https://images.pexels.com/photos/8927043/pexels-photo-8927043.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="A sleek, modern exhibition stand with integrated lighting and a hospitality bar, showcasing a 3D concept from FANN Studio." className="rounded-lg shadow-2xl mx-auto" />
+                           <picture>
+                                <source srcSet={`${studioImageUrl}&fm=webp`} type="image/webp" />
+                                <source srcSet={studioImageUrl} type="image/jpeg" />
+                                <img 
+                                    src={studioImageUrl} 
+                                    alt="A sleek, modern exhibition stand with integrated lighting and a hospitality bar, showcasing a 3D concept from FANN Studio." 
+                                    className="rounded-lg shadow-2xl mx-auto" 
+                                    loading="lazy"
+                                    width="1024"
+                                    height="576"
+                                />
+                           </picture>
                         </div>
                          <Link to="/fann-studio">
                            <button 
@@ -166,7 +179,18 @@ const HomePage: React.FC = () => {
                                     key={project.id} 
                                     className="group relative overflow-hidden rounded-lg shadow-lg"
                                 >
-                                    <img src={project.image} alt={project.title} className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    <picture>
+                                        <source srcSet={`${project.image}&fm=webp`} type="image/webp" />
+                                        <source srcSet={project.image} type="image/jpeg" />
+                                        <img 
+                                            src={project.image} 
+                                            alt={project.title} 
+                                            className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" 
+                                            loading="lazy"
+                                            width="400"
+                                            height="320"
+                                        />
+                                    </picture>
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                                     <div className="absolute bottom-0 left-0 p-6">
                                         <span className="text-sm bg-fann-gold text-fann-charcoal font-bold py-1 px-2 rounded">{project.service}</span>

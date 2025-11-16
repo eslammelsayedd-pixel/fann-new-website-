@@ -44,6 +44,7 @@ const itemVariants = {
 
 
 const AboutPage: React.FC = () => {
+    const aboutImageUrl = "https://images.pexels.com/photos/8199563/pexels-photo-8199563.jpeg?auto=compress&cs=tinysrgb&w=1260&q=75";
   return (
     <AnimatedPage>
         <SEO
@@ -65,7 +66,18 @@ const AboutPage: React.FC = () => {
             </motion.p>
           </div>
            <motion.div variants={itemVariants} className="mt-12 mb-16">
-            <img src="https://images.pexels.com/photos/8199563/pexels-photo-8199563.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="The diverse FANN team of Arab and Indian professionals collaborating in a modern Dubai office." className="rounded-lg shadow-xl mx-auto" />
+            <picture>
+                <source srcSet={`${aboutImageUrl}&fm=webp`} type="image/webp" />
+                <source srcSet={aboutImageUrl} type="image/jpeg" />
+                <img 
+                    src={aboutImageUrl} 
+                    alt="The diverse FANN team of Arab and Indian professionals collaborating in a modern Dubai office." 
+                    className="rounded-lg shadow-xl mx-auto" 
+                    loading="lazy"
+                    width="1260"
+                    height="840"
+                />
+            </picture>
           </motion.div>
           <motion.div variants={itemVariants} className="max-w-3xl mx-auto text-lg text-fann-teal dark:text-fann-peach/95 space-y-6 text-left leading-loose">
             <p>
