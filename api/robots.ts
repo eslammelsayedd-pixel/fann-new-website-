@@ -2,18 +2,17 @@
 export default function handler(req: any, res: any) {
     const robotsTxt = `User-agent: *
 Allow: /
-
-User-agent: Google-Extended
-Disallow:
-
-User-agent: GPTBot
-Disallow:
-
-User-agent: ClaudeBot
-Disallow:
-
-User-agent: PerplexityBot
-Disallow:
+Allow: /services/
+Allow: /events/
+Allow: /portfolio/
+Allow: /blog/
+Disallow: /admin/
+Disallow: /api/
+Disallow: /thank-you/
+Disallow: /*?utm_*
+Disallow: /*?fbclid=*
+Disallow: /*?gclid=*
+Crawl-delay: 1
 
 Sitemap: https://fann.ae/sitemap.xml`;
 
