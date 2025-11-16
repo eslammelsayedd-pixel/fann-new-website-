@@ -15,23 +15,14 @@ interface ServiceSectionProps {
   link: string;
 }
 
-// FIX: Add 'as const' to ensure TypeScript infers a literal type for 'type'.
 const buttonTransition = { type: 'spring', stiffness: 400, damping: 17 } as const;
 
 const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, description, image, services, imagePosition = 'right', link }) => {
-  // FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
-  // annotation was removed. This allows TypeScript to correctly infer literal 
-  // types for transition properties (e.g., type: 'spring').
-  // FIX: Add 'as const' to ensure TypeScript infers literal animation types.
   const imageVariants = {
     offscreen: { opacity: 0, x: imagePosition === 'right' ? 100 : -100 },
     onscreen: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 50, duration: 0.8 } }
   } as const;
   
-  // FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
-  // annotation was removed. This allows TypeScript to correctly infer literal 
-  // types for transition properties (e.g., type: 'spring').
-  // FIX: Add 'as const' to ensure TypeScript infers literal animation types.
   const textVariants = {
     offscreen: { opacity: 0, y: 50 },
     onscreen: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 50, duration: 0.8, delay: 0.2 } }
@@ -66,7 +57,7 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, descriptio
                   transition={buttonTransition}
                   className="border-2 border-fann-accent-teal dark:border-fann-gold text-fann-accent-teal dark:text-fann-gold font-bold py-3 px-8 rounded-full text-base uppercase tracking-wider flex items-center gap-2 group transition-all duration-300 hover:bg-fann-accent-teal/10 dark:hover:bg-fann-gold/10"
               >
-                  View Projects
+                  Learn More
                   <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
               </motion.button>
           </Link>
@@ -93,30 +84,30 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, descriptio
 const servicesData = [
     {
         icon: <Layers size={40} />,
-        title: "Exhibition Stand Design & Build",
-        description: "We are a full-service design and build partner, transforming exhibition spaces into powerful brand experiences. At major venues like the Dubai World Trade Centre and ADNEC, we manage every detail from the initial 3D concept to fabrication and final handover, ensuring your stand is not just seen, but remembered.",
+        title: "Exhibition Services",
+        description: "From award-winning custom stands to versatile modular systems, our exhibition services are comprehensive. We offer turnkey solutions, managing everything from design and in-house fabrication to logistics and on-site installation, ensuring a powerful and stress-free presence at any trade show.",
         image: "https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=800&q=75",
-        services: [ "Conceptual Design & 3D Visualization", "Full In-house Production & Fabrication", "Turnkey Project Management", "Advanced AV & Lighting Integration", "On-site Installation & Dismantling", "Global Logistics Coordination" ],
+        services: [ "Custom Stand Design & Build", "Modular & Reusable Systems", "Turnkey Project Management", "In-House Fabrication & Production", "Premium Interior Fit-Out" ],
         imagePosition: "right" as "right",
-        link: "/portfolio"
+        link: "/services/custom-exhibition-stands-dubai"
     },
     {
         icon: <Calendar size={40} />,
         title: "Corporate Event Management",
         description: "We orchestrate flawless corporate events that resonate with your audience. Whether it's a high-profile product launch, an elegant gala dinner, or a global summit, our meticulous planning and creative production deliver unforgettable, stress-free experiences.",
         image: "https://images.pexels.com/photos/11149726/pexels-photo-11149726.jpeg?auto=compress&cs=tinysrgb&w=800&q=75",
-        services: [ "Strategic Event Concept & Theming", "Venue Sourcing & Management", "Stage Design & Technical Production", "Delegate & VIP Management", "Entertainment & Speaker Sourcing", "Full-Service Event Execution" ],
+        services: [ "Strategic Event Concept & Theming", "Venue Sourcing & Management", "Stage Design & Technical Production", "Delegate & VIP Management", "Entertainment & Speaker Sourcing" ],
         imagePosition: "left" as "left",
-        link: "/portfolio"
+        link: "/portfolio" // Assuming no detailed page for this yet
     },
     {
         icon: <PenTool size={40} />,
         title: "Interior Design & Build",
         description: "Our design and build philosophy for interiors centers on creating spaces that are both beautiful and functional. We manage the entire process from concept to completion, designing and constructing inspiring commercial environments and luxurious residential properties that reflect your unique identity.",
         image: "https://images.pexels.com/photos/3797991/pexels-photo-3797991.jpeg?auto=compress&cs=tinysrgb&w=800&q=75",
-        services: [ "Comprehensive Space Planning", "Concept & Mood Board Development", "FF&E Sourcing & Procurement", "Custom Furniture & Joinery Design", "Complete Fit-Out & Project Management", "Turnkey Design & Build Solutions" ],
+        services: [ "Comprehensive Space Planning", "Concept & Mood Board Development", "Custom Furniture & Joinery Design", "Complete Fit-Out & Project Management", "Turnkey Design & Build Solutions" ],
         imagePosition: "right" as "right",
-        link: "/portfolio"
+        link: "/portfolio" // Assuming no detailed page for this yet
     }
 ];
 
@@ -125,7 +116,7 @@ const servicesSchema = servicesData.map(service => ({
     "@type": "Service",
     "serviceType": service.title,
     "name": service.title,
-    "url": "https://fann.ae/services",
+    "url": `https://fann.ae${service.link}`,
     "provider": { "@type": "Organization", "@id": "https://fann.ae" },
     "areaServed": { "@type": "Country", "name": "United Arab Emirates" },
     "description": service.description,
@@ -160,7 +151,7 @@ const ServicesPage: React.FC = () => {
         </div>
 
         {servicesData.map((service, index) => (
-            <div key={index} className={index === 1 ? 'bg-white dark:bg-fann-accent-teal' : ''}>
+            <div key={index} className={index % 2 !== 0 ? 'bg-white dark:bg-fann-accent-teal' : ''}>
                 <ServiceSection {...service} />
             </div>
         ))}

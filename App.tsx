@@ -21,6 +21,11 @@ import ContactPage from './pages/ContactPage';
 import InsightsPage from './pages/InsightsPage';
 import { ApiKeyProvider } from './context/ApiKeyProvider';
 import ROICalculatorPage from './pages/ROICalculatorPage';
+import CustomStandsPage from './pages/services/CustomStandsPage';
+import ModularSystemsPage from './pages/services/ModularSystemsPage';
+import TurnkeyServicesPage from './pages/services/TurnkeyServicesPage';
+import FabricationPage from './pages/services/FabricationPage';
+import FitOutPage from './pages/services/FitOutPage';
 
 const App: React.FC = () => {
     const location = useLocation();
@@ -32,6 +37,13 @@ const App: React.FC = () => {
                     <Routes location={location} key={location.pathname}>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/services" element={<ServicesPage />} />
+                        {/* Service Detail Pages */}
+                        <Route path="/services/custom-exhibition-stands-dubai" element={<CustomStandsPage />} />
+                        <Route path="/services/modular-exhibition-systems-dubai" element={<ModularSystemsPage />} />
+                        <Route path="/services/turnkey-exhibition-services-uae" element={<TurnkeyServicesPage />} />
+                        <Route path="/services/exhibition-stand-fabrication-dubai" element={<FabricationPage />} />
+                        <Route path="/services/interior-fitout-exhibition-spaces-dubai" element={<FitOutPage />} />
+                        
                         <Route path="/portfolio" element={<PortfolioPage />} />
                         <Route path="/fann-studio" element={<AIDesignStudioPage />} />
                         <Route path="/fann-studio/exhibition" element={<ExhibitionStudioPage />} />
