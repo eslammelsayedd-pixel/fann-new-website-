@@ -48,22 +48,34 @@ const HeroSection: React.FC = () => {
     // Countdown Logic
     useEffect(() => {
         const today = new Date();
-        // Find the next upcoming event
+        
         const upcoming = regionalEvents
             .map(e => {
                 try {
-                    // Simple parser for formats like "Oct 14-18, 2024" or "Sep 26 - Oct 5, 2024"
-                    const yearMatch = e.date.match(/\d{4}/);
+                    // Robust parsing for formats like "Oct 14-18, 2024" or "Sep 26 - Oct 5, 2024"
+                    // We extract the Year and the First Date part (Month + Day)
+                    
+                    const cleanDate = e.date.replace('(TBC)', '').trim();
+                    const yearMatch = cleanDate.match(/\d{4}/);
                     const year = yearMatch ? parseInt(yearMatch[0]) : today.getFullYear();
-                    const datePart = e.date.split(',')[0]; 
-                    // Extract first month and day part (e.g. "Oct 14" from "Oct 14-18")
-                    const startStr = datePart.split('-')[0].trim(); 
-                    const startDate = new Date(`${startStr}, ${year}`);
+                    
+                    // Get the part before the comma (e.g., "Oct 14-18" or "Sep 26 - Oct 5")
+                    const dateRangePart = cleanDate.split(',')[0]; 
+                    
+                    // Get the very first segment (e.g., "Oct 14")
+                    // If "Sep 26 - Oct 5", splitting by '-' gives "Sep 26 "
+                    const startPart = dateRangePart.split('-')[0].trim();
+                    
+                    // Construct a date string that works reliably across browsers (Month Day Year)
+                    // e.g., "Oct 14 2024"
+                    const dateString = `${startPart} ${year}`;
+                    const startDate = new Date(dateString);
                     
                     if (isNaN(startDate.getTime())) return null;
                     
                     return { ...e, startDate };
-                } catch {
+                } catch (err) {
+                    console.warn("Error parsing event date:", e.date);
                     return null;
                 }
             })
@@ -83,7 +95,8 @@ const HeroSection: React.FC = () => {
             const distance = nextEvent.startDate.getTime() - now;
 
             if (distance < 0) {
-                clearInterval(timer);
+                // Event has started/passed
+                setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
                 return;
             }
 

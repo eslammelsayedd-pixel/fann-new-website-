@@ -3,11 +3,9 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { ThemeProvider } from './context/ThemeProvider';
-// FIX: Import the global types file at the root to ensure type augmentations
-// are applied consistently across the application. This resolves issues with
-// libraries like framer-motion where component props were not being recognized.
-// FIX: Changed import to use the consolidated types file in `src` which correctly loads global definitions.
-import './src/types';
+// FIX: Import the global types file. 
+// Changed from './src/types' to './types' to match the flat file structure provided.
+import './types';
 
 const rootElement = document.getElementById('root');
 

@@ -1,11 +1,8 @@
+import React from 'react';
 
-// FIX: This file is now the single source of truth for types to resolve
-// module resolution issues that were causing global JSX type conflicts.
-
-// This file contains shared type definitions for the application.
-// By including an 'export', this file becomes a module, which allows the
-// 'declare global' block to correctly augment the global JSX namespace
-// instead of overwriting it.
+// This file is the single source of truth for types.
+// By including an 'export', this file becomes a module.
+// The 'declare global' block augments the global JSX namespace.
 
 export interface NavLink {
   name: string;
@@ -63,4 +60,12 @@ export interface GeneratedDesign {
   materials: string[];
   lighting: string;
   technologyFeatures: string[];
+}
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+    }
+  }
 }
