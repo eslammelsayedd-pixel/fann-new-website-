@@ -2,7 +2,6 @@ import React from 'react';
 
 // This file is the single source of truth for types.
 // By including an 'export', this file becomes a module.
-// The 'declare global' block augments the global JSX namespace.
 
 export interface NavLink {
   name: string;
@@ -60,12 +59,4 @@ export interface GeneratedDesign {
   materials: string[];
   lighting: string;
   technologyFeatures: string[];
-}
-
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
-    }
-  }
 }
