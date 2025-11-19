@@ -1,3 +1,4 @@
+
 // FIX: This file is now the single source of truth for types to resolve
 // module resolution issues that were causing global JSX type conflicts.
 
@@ -62,16 +63,4 @@ export interface GeneratedDesign {
   materials: string[];
   lighting: string;
   technologyFeatures: string[];
-}
-
-
-// This augmentation adds the 'model-viewer' custom element to React's JSX types.
-// By augmenting the global namespace within a module, we add to the existing
-// intrinsic elements without losing the standard ones like 'div', 'p', etc.
-declare global {
-    namespace JSX {
-        interface IntrinsicElements {
-            'model-viewer': any;
-        }
-    }
 }
