@@ -1,8 +1,8 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Building2, Sparkles, Check, ArrowRight, ArrowLeft, Ruler, AlertCircle, Globe, Mail, Phone, User, Upload, Loader2, LayoutGrid, Box, PenTool, Scan } from 'lucide-react';
+import { Building2, Sparkles, Check, ArrowRight, ArrowLeft, Ruler, AlertCircle, Globe, Mail, Phone, User, Upload, Loader2, LayoutGrid, Box, PenTool, Scan, Palette, Plus, X, RefreshCcw } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 
@@ -88,7 +88,12 @@ const ExhibitionStudioPage: React.FC = () => {
     const [currentStep, setCurrentStep] = useState(1);
     const [errors, setErrors] = useState<{[key: string]: boolean | string}>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [scannedData, setScannedData] = useState({ colors: false, industry: false });
+    
+    // AI Analysis States
+    const [isAnalyzingColors, setIsAnalyzingColors] = useState(false);
+    const [isAnalyzingIndustry, setIsAnalyzingIndustry] = useState(false);
+    const [detectedIndustry, setDetectedIndustry] = useState<string>('');
+    const [brandColors, setBrandColors] = useState<string[]>([]);
 
     const [formData, setFormData] = useState({
         // Step 1
@@ -96,6 +101,7 @@ const ExhibitionStudioPage: React.FC = () => {
         websiteUrl: '',
         eventName: '',
         logo: null as string | null,
+        logoMimeType: null as string | null,
         brief: '',
         // Step 2 (Specs)
         standWidth: 6,
@@ -111,20 +117,31 @@ const ExhibitionStudioPage: React.FC = () => {
         phone: '',
     });
 
-    // Simulation of AI scanning
+    // Debounced Event Name Analysis
     useEffect(() => {
-        if (formData.websiteUrl && formData.websiteUrl.length > 8 && !scannedData.industry) {
-            const timer = setTimeout(() => setScannedData(prev => ({ ...prev, industry: true })), 2000);
-            return () => clearTimeout(timer);
-        }
-    }, [formData.websiteUrl]);
+        const timer = setTimeout(async () => {
+            if (formData.eventName.length > 3) {
+                setIsAnalyzingIndustry(true);
+                try {
+                    const response = await fetch('/api/detect-industry', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ eventName: formData.eventName })
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        setDetectedIndustry(data.industry);
+                    }
+                } catch (e) {
+                    console.error("Industry detection failed", e);
+                } finally {
+                    setIsAnalyzingIndustry(false);
+                }
+            }
+        }, 1000); // 1 second debounce
 
-    useEffect(() => {
-        if (formData.logo && !scannedData.colors) {
-            const timer = setTimeout(() => setScannedData(prev => ({ ...prev, colors: true })), 1500);
-            return () => clearTimeout(timer);
-        }
-    }, [formData.logo]);
+        return () => clearTimeout(timer);
+    }, [formData.eventName]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -137,14 +154,65 @@ const ExhibitionStudioPage: React.FC = () => {
         }
     };
 
-    const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
+            // Basic client-side validation for size/type
+            if (file.size > 5 * 1024 * 1024) {
+                alert("File size must be under 5MB");
+                return;
+            }
+
             const reader = new FileReader();
-            reader.onloadend = () => {
-                setFormData(prev => ({ ...prev, logo: reader.result as string }));
+            reader.onloadend = async () => {
+                const base64Data = reader.result as string;
+                // Extract raw base64 without prefix for API
+                const rawBase64 = base64Data.split(',')[1];
+                
+                setFormData(prev => ({ 
+                    ...prev, 
+                    logo: base64Data,
+                    logoMimeType: file.type
+                }));
+
+                // Trigger Color Extraction
+                setIsAnalyzingColors(true);
+                try {
+                    const response = await fetch('/api/extract-colors', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ image: rawBase64, mimeType: file.type })
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.colors && Array.isArray(data.colors)) {
+                            setBrandColors(data.colors);
+                        }
+                    }
+                } catch (error) {
+                    console.error("Color extraction failed:", error);
+                } finally {
+                    setIsAnalyzingColors(false);
+                }
             };
             reader.readAsDataURL(file);
+        }
+    };
+
+    const updateBrandColor = (index: number, newColor: string) => {
+        const newColors = [...brandColors];
+        newColors[index] = newColor;
+        setBrandColors(newColors);
+    };
+
+    const removeBrandColor = (index: number) => {
+        setBrandColors(brandColors.filter((_, i) => i !== index));
+    };
+
+    const addBrandColor = () => {
+        if (brandColors.length < 6) {
+            setBrandColors([...brandColors, '#000000']);
         }
     };
 
@@ -175,8 +243,6 @@ const ExhibitionStudioPage: React.FC = () => {
             if (!formData.companyName) newErrors.companyName = true;
             if (!formData.websiteUrl) newErrors.websiteUrl = true;
             if (!formData.eventName) newErrors.eventName = true;
-        } else if (step === 2) {
-            // Sliders and radio buttons always have values, check features if needed? No, optional.
         } else if (step === 3) {
             if (!formData.firstName) newErrors.firstName = true;
             if (!formData.lastName) newErrors.lastName = true;
@@ -218,7 +284,9 @@ const ExhibitionStudioPage: React.FC = () => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         type: 'Exhibition Studio Design Request',
-                        ...formData
+                        ...formData,
+                        brandColors,
+                        detectedIndustry
                     })
                 });
 
@@ -227,7 +295,9 @@ const ExhibitionStudioPage: React.FC = () => {
                     state: { 
                         formData: {
                             ...formData,
-                            boothSize: formData.standWidth * formData.standLength
+                            boothSize: formData.standWidth * formData.standLength,
+                            brandColors,
+                            industry: detectedIndustry
                         }
                     } 
                 });
@@ -282,40 +352,25 @@ const ExhibitionStudioPage: React.FC = () => {
                                                     <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Company Name</label>
                                                     <input type="text" name="companyName" value={formData.companyName} onChange={handleInputChange} className={getInputClass('companyName')} placeholder="e.g. TechGlobal" />
                                                 </div>
-                                                <div className="relative">
-                                                    <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center justify-between">
-                                                        Website
-                                                        {scannedData.industry && <span className="text-green-400 flex items-center gap-1 lowercase normal-case"><Check size={10}/> info collected</span>}
-                                                    </label>
-                                                    <input type="url" name="websiteUrl" value={formData.websiteUrl} onChange={handleInputChange} className={getInputClass('websiteUrl')} placeholder="https://..." />
-                                                    {formData.websiteUrl.length > 5 && !scannedData.industry && (
-                                                        <span className="absolute right-0 bottom-4 text-xs text-fann-gold animate-pulse flex items-center gap-1"><Scan size={10}/> scanning...</span>
-                                                    )}
-                                                </div>
+                                                
                                                 <div>
-                                                    <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Event Name</label>
+                                                    <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Website</label>
+                                                    <input type="url" name="websiteUrl" value={formData.websiteUrl} onChange={handleInputChange} className={getInputClass('websiteUrl')} placeholder="https://..." />
+                                                </div>
+
+                                                <div className="relative">
+                                                    <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex justify-between items-center">
+                                                        Event Name
+                                                        {isAnalyzingIndustry && <span className="text-gray-500 text-[10px] flex items-center gap-1"><Loader2 size={10} className="animate-spin"/> Analyzing...</span>}
+                                                        {!isAnalyzingIndustry && detectedIndustry && (
+                                                            <span className="text-green-400 text-[10px] flex items-center gap-1 uppercase border border-green-400/30 px-2 py-0.5 rounded-full bg-green-900/10">
+                                                                <Scan size={10}/> {detectedIndustry}
+                                                            </span>
+                                                        )}
+                                                    </label>
                                                     <input type="text" name="eventName" value={formData.eventName} onChange={handleInputChange} className={getInputClass('eventName')} placeholder="e.g. GITEX 2025" />
                                                 </div>
-                                            </div>
-
-                                            <div className="space-y-6">
-                                                <div>
-                                                    <label className="text-xs font-bold text-fann-gold uppercase tracking-widest mb-2 block flex justify-between">
-                                                        Logo
-                                                        {scannedData.colors && <span className="text-green-400 flex items-center gap-1 lowercase normal-case"><Check size={10}/> colors extracted</span>}
-                                                    </label>
-                                                    <div className="border border-dashed border-white/20 rounded-sm h-32 flex items-center justify-center relative group hover:border-fann-gold transition-colors bg-white/5">
-                                                        <input type="file" accept="image/*" onChange={handleLogoUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
-                                                        {formData.logo ? (
-                                                            <img src={formData.logo} alt="Uploaded" className="h-20 object-contain" />
-                                                        ) : (
-                                                            <div className="text-center text-gray-500 group-hover:text-fann-gold">
-                                                                <Upload className="mx-auto mb-2" size={20}/>
-                                                                <span className="text-xs uppercase tracking-widest">Upload Logo</span>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
+                                                
                                                 <div>
                                                     <label className="text-xs font-bold text-fann-gold uppercase tracking-widest mb-2 block">Your Vision (Brief)</label>
                                                     <textarea 
@@ -327,6 +382,76 @@ const ExhibitionStudioPage: React.FC = () => {
                                                         placeholder="Describe your goals, vibe, or specific requirements..."
                                                     ></textarea>
                                                 </div>
+                                            </div>
+
+                                            <div className="space-y-6">
+                                                <div>
+                                                    <label className="text-xs font-bold text-fann-gold uppercase tracking-widest mb-2 block flex justify-between">
+                                                        Logo Analysis
+                                                        {isAnalyzingColors && <span className="text-fann-gold text-[10px] flex items-center gap-1"><Loader2 size={10} className="animate-spin"/> Extracting Colors...</span>}
+                                                    </label>
+                                                    
+                                                    <div className="border border-dashed border-white/20 rounded-sm h-32 flex items-center justify-center relative group hover:border-fann-gold transition-colors bg-white/5 overflow-hidden">
+                                                        <input type="file" accept="image/*" onChange={handleLogoUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                                                        {formData.logo ? (
+                                                            <div className="relative w-full h-full p-4 flex items-center justify-center">
+                                                                <img src={formData.logo} alt="Uploaded" className="max-h-full max-w-full object-contain" />
+                                                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                                    <span className="text-xs uppercase tracking-widest text-white flex items-center gap-2"><RefreshCcw size={12}/> Change</span>
+                                                                </div>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="text-center text-gray-500 group-hover:text-fann-gold">
+                                                                <Upload className="mx-auto mb-2" size={20}/>
+                                                                <span className="text-xs uppercase tracking-widest">Upload Logo</span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+
+                                                {/* Brand Colors Section */}
+                                                <AnimatePresence>
+                                                    {brandColors.length > 0 && (
+                                                        <motion.div 
+                                                            initial={{ opacity: 0, height: 0 }} 
+                                                            animate={{ opacity: 1, height: 'auto' }}
+                                                            className="bg-white/5 p-4 rounded-sm border border-white/10"
+                                                        >
+                                                            <div className="flex justify-between items-center mb-3">
+                                                                <label className="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                                                                    <Palette size={12} /> Brand Colors
+                                                                </label>
+                                                                <button type="button" onClick={addBrandColor} className="text-[10px] text-gray-500 hover:text-fann-gold uppercase tracking-wider flex items-center gap-1">
+                                                                    <Plus size={10} /> Add Color
+                                                                </button>
+                                                            </div>
+                                                            <div className="flex flex-wrap gap-3">
+                                                                {brandColors.map((color, index) => (
+                                                                    <div key={index} className="relative group">
+                                                                        <div 
+                                                                            className="w-8 h-8 rounded-full border border-white/20 cursor-pointer shadow-lg transition-transform hover:scale-110" 
+                                                                            style={{ backgroundColor: color }}
+                                                                        >
+                                                                            <input 
+                                                                                type="color" 
+                                                                                value={color}
+                                                                                onChange={(e) => updateBrandColor(index, e.target.value)}
+                                                                                className="opacity-0 w-full h-full cursor-pointer absolute inset-0"
+                                                                            />
+                                                                        </div>
+                                                                        <button 
+                                                                            type="button"
+                                                                            onClick={() => removeBrandColor(index)}
+                                                                            className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity transform scale-75"
+                                                                        >
+                                                                            <X size={8} />
+                                                                        </button>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </motion.div>
+                                                    )}
+                                                </AnimatePresence>
                                             </div>
                                         </div>
                                     </motion.div>

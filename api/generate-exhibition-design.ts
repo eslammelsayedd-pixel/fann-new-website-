@@ -12,7 +12,7 @@ export default async function handler(req: Request) {
 
     try {
         const config = await req.json();
-        const { companyName, websiteUrl, eventName, boothSize, boothType, features, standWidth, standLength, standHeight, brief, logo } = config;
+        const { companyName, websiteUrl, eventName, boothSize, boothType, features, standWidth, standLength, standHeight, brief, logo, brandColors, industry } = config;
 
         if (!boothSize || !boothType) {
             return new Response(JSON.stringify({ error: 'Missing required design parameters.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
@@ -54,10 +54,12 @@ export default async function handler(req: Request) {
         You are a world-class exhibition stand designer.
         
         Context:
-        - Event: "${eventName}" (Infer the industry).
+        - Event: "${eventName}"
         - Company: "${companyName}"
         - Website: "${websiteUrl}"
         - Client Brief: "${brief || 'No specific instructions.'}"
+        - Detected Industry: "${industry || 'General'}"
+        - Brand Colors: ${brandColors && brandColors.length > 0 ? brandColors.join(', ') : 'Infer from brand/logo'}.
         
         Constraints:
         - Orientation: ${boothType} (${standWidth}m x ${standLength}m).
@@ -65,11 +67,13 @@ export default async function handler(req: Request) {
         - Must include: ${features.join(', ') || 'Standard exhibition features'}.
         
         Task:
-        Create FOUR distinct design concepts:
+        Create FOUR distinct design concepts suitable for the ${industry || 'identified'} industry.
         1. Concept A: "Modern & Tech-Forward" (Innovation focus).
         2. Concept B: "Luxury & Hospitality" (Premium materials, lounge focus).
         3. Concept C: "Interactive & Engaging" (Gamification/Demo focus).
         4. Concept D: "Sustainable & Organic" (Greenery, wood, eco-friendly focus).
+
+        Ensure the 'brandColors' are mentioned in the material/description where appropriate.
 
         OUTPUT INSTRUCTION:
         Return ONLY a raw valid JSON object matching the following structure. Do not include markdown code blocks (like \`\`\`json).
@@ -120,6 +124,7 @@ export default async function handler(req: Request) {
             Layout: ${boothType} Stand (${standWidth}m x ${standLength}m).
             Key Feature: ${concept.keyFeature}.
             Materials: ${concept.materials.join(', ')}.
+            Brand Colors: ${brandColors && brandColors.length > 0 ? brandColors.join(', ') : 'Brand standard'}.
             Industry: ${designData.industryDetected}.
             Lighting: Cinematic studio lighting, high resolution 8k.`;
 
