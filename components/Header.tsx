@@ -25,17 +25,19 @@ const Header: React.FC = () => {
         <header 
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
                 scrolled || isOpen 
-                ? 'bg-fann-teal/95 backdrop-blur-md shadow-xl py-3' 
+                ? 'bg-[#1a1a1a]/95 backdrop-blur-md shadow-xl py-3' 
                 : 'bg-gradient-to-b from-black/60 to-transparent py-6'
             }`}
         >
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between">
-                    {/* LOGO: Text-based as requested */}
+                    {/* LOGO: Original Image Logo */}
                     <Link to="/" className="group relative z-50">
-                        <div className="font-serif text-3xl md:text-4xl font-extrabold tracking-[0.2em] text-fann-gold transition-transform duration-300 group-hover:scale-105 drop-shadow-md">
-                            FANN
-                        </div>
+                        <img 
+                            src="/favicon.svg" 
+                            alt="FANN" 
+                            className="h-10 w-auto transition-transform duration-300 group-hover:scale-105" 
+                        />
                     </Link>
 
                     {/* DESKTOP NAVIGATION */}
@@ -43,14 +45,14 @@ const Header: React.FC = () => {
                         {navLinks.map((link) => (
                             link.children ? (
                                 <div key={link.name} className="relative group h-full">
-                                    <button className="flex items-center space-x-1 text-sm font-bold uppercase tracking-wider text-fann-peach hover:text-fann-gold transition-colors duration-300 py-2">
+                                    <button className="flex items-center space-x-1 text-sm font-bold uppercase tracking-wider text-white hover:text-fann-gold transition-colors duration-300 py-2">
                                         <span>{link.name}</span>
                                         <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-300" />
                                     </button>
                                     
                                     {/* Dropdown */}
                                     <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-60 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                                        <div className="bg-fann-teal border border-fann-gold/20 rounded-lg shadow-2xl overflow-hidden py-2">
+                                        <div className="bg-[#1a1a1a] border border-white/10 rounded-lg shadow-2xl overflow-hidden py-2">
                                             {link.children.map(child => (
                                                 <NavLink
                                                     key={child.name}
@@ -58,7 +60,7 @@ const Header: React.FC = () => {
                                                     className={({ isActive }) => `block px-6 py-3 text-sm font-medium transition-all duration-200 ${
                                                         isActive 
                                                         ? 'text-fann-charcoal bg-fann-gold' 
-                                                        : 'text-fann-peach hover:text-fann-gold hover:bg-white/5'
+                                                        : 'text-gray-200 hover:text-fann-gold hover:bg-white/5'
                                                     }`}
                                                 >
                                                     {child.name}
@@ -72,7 +74,7 @@ const Header: React.FC = () => {
                                     key={link.name}
                                     to={link.path!}
                                     className={({ isActive }) => `text-sm font-bold uppercase tracking-wider transition-all duration-300 relative group py-2 ${
-                                        isActive ? 'text-fann-gold' : 'text-fann-peach hover:text-fann-gold'
+                                        isActive ? 'text-fann-gold' : 'text-white hover:text-fann-gold'
                                     }`}
                                 >
                                     {link.name}
@@ -93,7 +95,7 @@ const Header: React.FC = () => {
                               transition={buttonTransition}
                               className="bg-fann-gold text-fann-charcoal border border-fann-gold font-bold py-2.5 px-6 rounded-full text-xs uppercase tracking-widest shadow-lg shadow-fann-gold/20 hover:shadow-fann-gold/40 hover:bg-white transition-all duration-300"
                           >
-                              Start Project
+                              Start Designing
                           </motion.button>
                         </Link>
                     </div>
@@ -119,7 +121,7 @@ const Header: React.FC = () => {
                     animate={{ opacity: 1, height: '100vh' }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="lg:hidden fixed inset-0 bg-fann-teal/98 backdrop-blur-xl z-40 overflow-y-auto pt-24"
+                    className="lg:hidden fixed inset-0 bg-[#1a1a1a]/98 backdrop-blur-xl z-40 overflow-y-auto pt-24"
                 >
                     <nav className="flex flex-col items-center space-y-6 px-6 pb-12">
                         {navLinks.map((link) => (
@@ -128,7 +130,7 @@ const Header: React.FC = () => {
                                     <div className="flex flex-col items-center">
                                         <button 
                                             onClick={() => setOpenDropdown(openDropdown === link.name ? null : link.name)}
-                                            className={`flex items-center justify-center w-full text-xl font-bold uppercase tracking-widest mb-4 transition-colors ${openDropdown === link.name ? 'text-fann-gold' : 'text-fann-peach'}`}
+                                            className={`flex items-center justify-center w-full text-xl font-bold uppercase tracking-widest mb-4 transition-colors ${openDropdown === link.name ? 'text-fann-gold' : 'text-white'}`}
                                         >
                                             {link.name}
                                             <ChevronDown size={20} className={`ml-2 transition-transform duration-300 ${openDropdown === link.name ? 'rotate-180 text-fann-gold' : ''}`} />
@@ -146,7 +148,7 @@ const Header: React.FC = () => {
                                                             key={child.name}
                                                             to={child.path}
                                                             onClick={() => setIsOpen(false)}
-                                                            className={({ isActive }) => `${isActive ? 'text-fann-gold' : 'text-fann-light-gray'} text-sm font-medium uppercase tracking-wider hover:text-white transition-colors`}
+                                                            className={({ isActive }) => `${isActive ? 'text-fann-gold' : 'text-gray-300'} text-sm font-medium uppercase tracking-wider hover:text-white transition-colors`}
                                                         >
                                                             {child.name}
                                                         </NavLink>
@@ -159,7 +161,7 @@ const Header: React.FC = () => {
                                     <NavLink
                                         to={link.path!}
                                         onClick={() => setIsOpen(false)}
-                                        className={({ isActive }) => `${isActive ? 'text-fann-gold scale-105' : 'text-fann-peach'} block text-xl font-bold uppercase tracking-widest hover:text-fann-gold transition-all`}
+                                        className={({ isActive }) => `${isActive ? 'text-fann-gold scale-105' : 'text-white'} block text-xl font-bold uppercase tracking-widest hover:text-fann-gold transition-all`}
                                     >
                                         {link.name}
                                     </NavLink>
@@ -177,7 +179,7 @@ const Header: React.FC = () => {
                                 onClick={() => setIsOpen(false)}
                                 className="w-full bg-fann-gold text-fann-charcoal font-bold py-4 px-8 rounded-full text-lg uppercase tracking-wider shadow-lg hover:bg-white transition-colors"
                               >
-                                  Get a Quote
+                                  Start Designing
                               </motion.button>
                             </Link>
                         </div>
