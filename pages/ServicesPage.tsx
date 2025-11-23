@@ -30,7 +30,7 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, descriptio
 
   return (
     <motion.section 
-      className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
+      className="container mx-auto px-4 sm:px-6 lg:px-8 py-20"
       initial="offscreen"
       whileInView="onscreen"
       viewport={{ once: true, amount: 0.3 }}
@@ -38,15 +38,15 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, descriptio
       <div className={`grid md:grid-cols-2 gap-12 items-center`}>
         <motion.div className={`order-2 ${imagePosition === 'left' ? 'md:order-2' : 'md:order-1'}`} variants={textVariants}>
           <div className="flex items-center gap-4 mb-4">
-            <div className="text-fann-accent-teal dark:text-fann-gold">{icon}</div>
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold">{title}</h2>
+            <div className="text-fann-gold">{icon}</div>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-fann-gold">{title}</h2>
           </div>
-          <p className="text-fann-teal/90 dark:text-fann-peach/90 mb-6 leading-relaxed">{description}</p>
+          <p className="text-gray-300 mb-6 leading-relaxed">{description}</p>
           <ul className="space-y-3 mb-8">
             {services.map((service, index) => (
               <li key={index} className="flex items-center gap-3">
-                <CheckCircle className="text-fann-accent-teal dark:text-fann-gold w-5 h-5 flex-shrink-0" />
-                <span className="text-fann-teal dark:text-fann-peach">{service}</span>
+                <CheckCircle className="text-fann-gold w-5 h-5 flex-shrink-0" />
+                <span className="text-gray-300">{service}</span>
               </li>
             ))}
           </ul>
@@ -55,7 +55,7 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, descriptio
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   transition={buttonTransition}
-                  className="border-2 border-fann-accent-teal dark:border-fann-gold text-fann-accent-teal dark:text-fann-gold font-bold py-3 px-8 rounded-full text-base uppercase tracking-wider flex items-center gap-2 group transition-all duration-300 hover:bg-fann-accent-teal/10 dark:hover:bg-fann-gold/10"
+                  className="border-2 border-fann-gold text-fann-gold font-bold py-3 px-8 rounded-full text-base uppercase tracking-wider flex items-center gap-2 group transition-all duration-300 hover:bg-fann-gold/10"
               >
                   Learn More
                   <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
@@ -69,7 +69,7 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, descriptio
             <img 
               src={image} 
               alt={title} 
-              className="rounded-lg shadow-2xl w-full h-auto object-cover" 
+              className="rounded-sm shadow-2xl w-full h-auto object-cover grayscale hover:grayscale-0 transition-all duration-700 border border-white/10" 
               loading="lazy"
               width="532"
               height="299"
@@ -142,26 +142,26 @@ const ServicesPage: React.FC = () => {
               {JSON.stringify(servicesSchema)}
           </script>
       </SEO>
-      <div className="bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
+      <div className="bg-fann-charcoal pt-32 pb-20 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
-          <h1 className="text-5xl md:text-6xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mb-4">Our Core Capabilities</h1>
-          <p className="text-xl text-fann-teal/90 dark:text-fann-peach/90 max-w-3xl mx-auto">
+          <h1 className="text-5xl md:text-6xl font-serif font-bold text-fann-gold mb-4">Our Core Capabilities</h1>
+          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
             As a full-service design and build firm, we deliver end-to-end solutions with precision, creativity, and a commitment to excellence.
           </p>
         </div>
 
         {servicesData.map((service, index) => (
-            <div key={index} className={index % 2 !== 0 ? 'bg-white dark:bg-fann-accent-teal' : ''}>
+            <div key={index} className={index % 2 !== 0 ? 'bg-fann-charcoal-light border-y border-white/5' : ''}>
                 <ServiceSection {...service} />
             </div>
         ))}
         
          {/* CTA Section */}
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-            <div className="text-center bg-gradient-to-r from-fann-accent-teal to-fann-gold p-1 rounded-lg">
-                 <div className="bg-white dark:bg-fann-accent-teal rounded-lg py-16 px-8">
-                    <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4 text-fann-teal dark:text-fann-peach">Have a Project in Mind?</h2>
-                    <p className="max-w-2xl mx-auto text-fann-teal/90 dark:text-fann-peach/90 mb-8">Let's turn your vision into a reality. Contact us today for a complimentary consultation with our design experts.</p>
+            <div className="text-center bg-gradient-to-r from-fann-gold/20 to-transparent p-1 rounded-lg border border-fann-gold/20">
+                 <div className="bg-black/40 rounded-lg py-16 px-8">
+                    <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4 text-white">Have a Project in Mind?</h2>
+                    <p className="max-w-2xl mx-auto text-gray-400 mb-8">Let's turn your vision into a reality. Contact us today for a complimentary consultation with our design experts.</p>
                     <Link to="/contact">
                         <motion.button 
                             whileHover={{ scale: 1.05, y: -2 }}

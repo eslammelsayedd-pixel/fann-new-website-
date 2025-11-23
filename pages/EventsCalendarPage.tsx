@@ -164,22 +164,22 @@ const EventsCalendarPage: React.FC = () => {
             description="Your complete guide to upcoming exhibitions and trade shows in Dubai, Abu Dhabi, and Saudi Arabia. Filter by industry, country, and date to plan your next event with FANN."
             schema={calendarPageSchema}
         />
-      <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
+      <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-                <h1 className="text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mb-4">Events Calendar</h1>
-                <p className="text-xl text-fann-teal/90 dark:text-fann-peach/90">Your guide to the most important exhibitions and trade shows in the UAE & KSA.</p>
+                <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">Events Calendar</h1>
+                <p className="text-xl text-gray-400">Your guide to the most important exhibitions and trade shows in the UAE & KSA.</p>
             </div>
             
-            <div className="max-w-6xl mx-auto bg-white dark:bg-fann-accent-teal p-4 rounded-lg mb-8 grid grid-cols-1 md:grid-cols-3 gap-6 shadow-md">
+            <div className="max-w-6xl mx-auto bg-fann-charcoal-light border border-white/10 p-4 rounded-lg mb-8 grid grid-cols-1 md:grid-cols-3 gap-6 shadow-2xl">
                 <div>
-                    <label className="block text-sm font-normal text-fann-light-gray mb-2">Country</label>
+                    <label className="block text-sm font-normal text-gray-400 mb-2">Country</label>
                     <div className="grid grid-cols-3 gap-2">
                          {countries.map(country => (
                             <button
                                 key={country}
                                 onClick={() => setSelectedCountry(country)}
-                                className={`w-full text-sm font-semibold py-2 px-1 rounded-md transition-colors ${selectedCountry === country ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-peach/50 text-fann-teal dark:bg-fann-accent-teal/50 dark:text-fann-peach hover:bg-fann-peach dark:hover:bg-white/10'}`}
+                                className={`w-full text-sm font-semibold py-2 px-1 rounded-md transition-colors ${selectedCountry === country ? 'bg-fann-gold text-fann-charcoal' : 'bg-black/30 text-gray-300 hover:bg-white/5'}`}
                             >
                                 {country}
                             </button>
@@ -187,12 +187,12 @@ const EventsCalendarPage: React.FC = () => {
                     </div>
                 </div>
                  <div>
-                    <label htmlFor="industry-filter" className="block text-sm font-normal text-fann-light-gray mb-2">Industry</label>
+                    <label htmlFor="industry-filter" className="block text-sm font-normal text-gray-400 mb-2">Industry</label>
                     <select
                         id="industry-filter"
                         value={selectedIndustry}
                         onChange={(e) => setSelectedIndustry(e.target.value)}
-                        className="w-full bg-fann-peach/50 dark:bg-fann-teal-dark border border-fann-teal/20 dark:border-fann-border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold"
+                        className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fann-gold text-white"
                     >
                         {industries.map(industry => (
                             <option key={industry} value={industry}>{industry}</option>
@@ -200,13 +200,13 @@ const EventsCalendarPage: React.FC = () => {
                     </select>
                 </div>
                 <div>
-                    <label className="block text-sm font-normal text-fann-light-gray mb-2">Date Range</label>
+                    <label className="block text-sm font-normal text-gray-400 mb-2">Date Range</label>
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
                          {dateRanges.map(range => (
                             <button
                                 key={range}
                                 onClick={() => setSelectedDateRange(range)}
-                                className={`w-full text-sm font-semibold py-2 px-1 rounded-md transition-colors ${selectedDateRange === range ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-peach/50 text-fann-teal dark:bg-fann-accent-teal/50 dark:text-fann-peach hover:bg-fann-peach dark:hover:bg-white/10'}`}
+                                className={`w-full text-sm font-semibold py-2 px-1 rounded-md transition-colors ${selectedDateRange === range ? 'bg-fann-gold text-fann-charcoal' : 'bg-black/30 text-gray-300 hover:bg-white/5'}`}
                             >
                                 {range}
                             </button>
@@ -227,15 +227,15 @@ const EventsCalendarPage: React.FC = () => {
                           <motion.div 
                             key={`${event.name}-${event.date}`}
                             variants={itemVariants}
-                            className="bg-white dark:bg-fann-accent-teal p-6 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center border-l-4 border-fann-accent-teal dark:border-fann-gold"
+                            className="bg-fann-charcoal-light border border-white/5 p-6 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center border-l-4 border-l-fann-gold"
                            >
                               <div>
-                                  <h3 className="text-2xl font-bold text-fann-teal dark:text-fann-peach mb-1">{event.name}</h3>
-                                  <p className="text-fann-light-gray">{event.venue}, {event.country}</p>
+                                  <h3 className="text-2xl font-bold text-white mb-1">{event.name}</h3>
+                                  <p className="text-gray-400">{event.venue}, {event.country}</p>
                               </div>
                               <div className="mt-4 sm:mt-0 text-left sm:text-right flex-shrink-0 sm:pl-4">
-                                  <p className="text-lg font-semibold text-fann-accent-teal dark:text-fann-gold">{event.date}</p>
-                                  <p className="text-fann-teal dark:text-fann-peach">{event.industry}</p>
+                                  <p className="text-lg font-semibold text-fann-gold">{event.date}</p>
+                                  <p className="text-gray-300">{event.industry}</p>
                               </div>
                           </motion.div>
                       ))
@@ -243,10 +243,10 @@ const EventsCalendarPage: React.FC = () => {
                       <motion.div 
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="text-center py-16 bg-white dark:bg-fann-accent-teal rounded-lg"
+                        className="text-center py-16 bg-fann-charcoal-light rounded-lg border border-white/10"
                       >
-                        <h3 className="text-2xl font-serif text-fann-accent-teal dark:text-fann-gold">No Events Found</h3>
-                        <p className="text-fann-light-gray mt-2">Try adjusting your filters to find more events.</p>
+                        <h3 className="text-2xl font-serif text-fann-gold">No Events Found</h3>
+                        <p className="text-gray-400 mt-2">Try adjusting your filters to find more events.</p>
                       </motion.div>
                     )}
                 </motion.div>

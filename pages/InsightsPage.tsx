@@ -206,8 +206,8 @@ const InsightsPage: React.FC = () => {
 
     const renderTopicSelection = () => (
         <div className="text-center">
-            <h1 className="text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mb-4">FANN Intelligence Hub</h1>
-            <p className="text-xl text-fann-teal/90 dark:text-fann-peach/90 max-w-3xl mx-auto mb-12">
+            <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">FANN Intelligence Hub</h1>
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-12">
                 Select a topic for an expert-driven analysis of key industry trends.
             </p>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
@@ -235,7 +235,7 @@ const InsightsPage: React.FC = () => {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent"></div>
                         <div className="relative h-full flex flex-col justify-between p-6 text-white text-left">
                             <div>
-                                <span className="text-xs font-bold uppercase tracking-wider bg-fann-teal/80 px-3 py-1 rounded-full">{topic.category}</span>
+                                <span className="text-xs font-bold uppercase tracking-wider bg-fann-charcoal/80 px-3 py-1 rounded-full border border-white/10">{topic.category}</span>
                             </div>
                             <div>
                                 <topic.icon size={32} className="text-fann-gold mb-3" />
@@ -251,7 +251,7 @@ const InsightsPage: React.FC = () => {
     
     const renderArticle = () => (
         <div className="max-w-4xl mx-auto">
-             <button onClick={handleBack} className="flex items-center gap-2 text-fann-accent-teal dark:text-fann-gold mb-8 font-semibold hover:underline">
+             <button onClick={handleBack} className="flex items-center gap-2 text-fann-gold mb-8 font-semibold hover:underline">
                 <ArrowLeft size={16} /> Back to Topics
             </button>
             <AnimatePresence>
@@ -259,8 +259,8 @@ const InsightsPage: React.FC = () => {
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                     <div className="flex flex-col items-center text-center p-8">
                         <Loader2 className="w-12 h-12 text-fann-gold animate-spin" />
-                        <h2 className="text-3xl font-serif text-fann-teal dark:text-fann-peach mt-6">Generating Analysis...</h2>
-                        <p className="text-fann-light-gray mt-2">Our proprietary knowledge base is compiling insights from across the web. This might take a moment.</p>
+                        <h2 className="text-3xl font-serif text-white mt-6">Generating Analysis...</h2>
+                        <p className="text-gray-400 mt-2">Our proprietary knowledge base is compiling insights from across the web. This might take a moment.</p>
                     </div>
                 </motion.div>
             ) : error ? (
@@ -270,20 +270,20 @@ const InsightsPage: React.FC = () => {
                     <p className="whitespace-pre-wrap">{error}</p>
                 </motion.div>
             ) : generatedArticle && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-white dark:bg-fann-accent-teal p-8 sm:p-12 rounded-lg">
-                    <h1 className="text-4xl md:text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mb-6">{selectedTopic?.title}</h1>
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-fann-charcoal-light border border-white/10 p-8 sm:p-12 rounded-lg">
+                    <h1 className="text-4xl md:text-5xl font-serif font-bold text-fann-gold mb-6">{selectedTopic?.title}</h1>
                     <div
-                        className="prose prose-lg max-w-none text-fann-teal dark:text-fann-peach leading-relaxed space-y-4 prose-strong:text-fann-teal dark:prose-strong:text-fann-peach prose-headings:text-fann-accent-teal dark:prose-headings:text-fann-gold"
+                        className="prose prose-lg max-w-none text-gray-300 leading-relaxed space-y-4 prose-strong:text-white prose-headings:text-fann-gold prose-a:text-fann-gold prose-blockquote:text-white prose-blockquote:border-fann-gold"
                         dangerouslySetInnerHTML={{ __html: formatContent(generatedArticle.content) }}
                     />
 
                     {generatedArticle.sources && generatedArticle.sources.length > 0 && (
-                        <div className="mt-12 border-t border-fann-teal/10 dark:border-fann-border pt-6">
-                            <h3 className="text-xl font-bold text-fann-accent-teal dark:text-fann-gold mb-4 flex items-center gap-2"><BookOpen size={20} /> Sources</h3>
+                        <div className="mt-12 border-t border-white/10 pt-6">
+                            <h3 className="text-xl font-bold text-fann-gold mb-4 flex items-center gap-2"><BookOpen size={20} /> Sources</h3>
                              <ul className="space-y-2 list-disc list-inside">
                                 {generatedArticle.sources.map((source, index) => (
                                     <li key={index}>
-                                        <a href={source.uri} target="_blank" rel="noopener noreferrer" className="text-fann-light-gray hover:text-fann-gold dark:hover:text-fann-gold hover:underline transition-colors" title={source.title}>
+                                        <a href={source.uri} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white hover:underline transition-colors" title={source.title}>
                                             {source.title || new URL(source.uri).hostname}
                                         </a>
                                     </li>
@@ -308,7 +308,7 @@ const InsightsPage: React.FC = () => {
                 }
                 schema={schema}
             />
-            <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
+            <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                    {selectedTopic ? renderArticle() : renderTopicSelection()}
                 </div>

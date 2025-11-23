@@ -93,13 +93,13 @@ const PortfolioPage: React.FC = () => {
 
   const FilterButtons: React.FC<{title: string, options: string[], selected: string, setSelected: (value: string) => void}> = ({ title, options, selected, setSelected }) => (
     <div className="mb-6">
-      <h3 className="text-lg font-semibold text-fann-light-gray mb-3">{title}</h3>
+      <h3 className="text-lg font-semibold text-gray-400 mb-3">{title}</h3>
       <div className="flex flex-wrap gap-2">
         {options.map(option => (
           <button
             key={option}
             onClick={() => setSelected(option)}
-            className={`px-4 py-2 text-sm font-semibold rounded-full transition-all duration-300 transform hover:scale-105 ${selected === option ? 'bg-fann-gold text-fann-charcoal shadow-md' : 'bg-fann-peach/50 text-fann-teal dark:bg-fann-accent-teal/50 dark:text-fann-peach hover:bg-fann-peach/80 dark:hover:bg-fann-accent-teal'}`}
+            className={`px-4 py-2 text-sm font-semibold rounded-full transition-all duration-300 transform hover:scale-105 ${selected === option ? 'bg-fann-gold text-fann-charcoal shadow-md' : 'bg-white/5 text-gray-300 border border-white/10 hover:bg-white/10 hover:text-white'}`}
           >
             {option}
           </button>
@@ -115,14 +115,14 @@ const PortfolioPage: React.FC = () => {
         description={metaInfo.description}
         schema={portfolioPageSchema}
       />
-      <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
+      <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h1 className="text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mb-4">Our Work</h1>
-            <p className="text-xl text-fann-teal/90 dark:text-fann-peach/90">Explore a selection of our finest projects.</p>
+            <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">Our Work</h1>
+            <p className="text-xl text-gray-400">Explore a selection of our finest projects.</p>
           </div>
           
-          <div className="max-w-4xl mx-auto bg-white dark:bg-fann-accent-teal p-6 rounded-lg mb-12 shadow-md">
+          <div className="max-w-4xl mx-auto bg-fann-charcoal-light border border-white/10 p-6 rounded-lg mb-12 shadow-2xl">
             <FilterButtons title="Service" options={services} selected={selectedService} setSelected={setSelectedService} />
             <FilterButtons title="Industry" options={industries} selected={selectedIndustry} setSelected={setSelectedIndustry} />
             <FilterButtons title="Project Scale" options={scales} selected={selectedScale} setSelected={setSelectedScale} />
@@ -146,7 +146,7 @@ const PortfolioPage: React.FC = () => {
                     animate="visible"
                     exit={{ opacity: 0, scale: 0.8 }}
                     transition={{ duration: 0.3 }}
-                    className="group relative overflow-hidden rounded-lg shadow-lg"
+                    className="group relative overflow-hidden rounded-sm shadow-lg border border-white/5"
                   >
                     <picture>
                         <source srcSet={`${project.image}&fm=webp`} type="image/webp" />
@@ -160,14 +160,14 @@ const PortfolioPage: React.FC = () => {
                             height="320"
                         />
                     </picture>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
                     <div className="absolute bottom-0 left-0 p-6 w-full">
                       <div className="flex gap-2 mb-2 flex-wrap">
                         <span className="text-xs bg-fann-gold text-fann-charcoal font-bold py-1 px-2 rounded">{project.service}</span>
                         <span className="text-xs bg-black/50 text-white font-bold py-1 px-2 rounded backdrop-blur-md border border-white/10">{project.scale}</span>
                       </div>
                       <h3 className="text-xl font-bold mt-2 text-white">{project.title}</h3>
-                      <p className="text-fann-peach">{project.client}</p>
+                      <p className="text-gray-300">{project.client}</p>
                     </div>
                   </motion.div>
                 ))
@@ -175,10 +175,10 @@ const PortfolioPage: React.FC = () => {
                 <motion.div 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="md:col-span-2 lg:col-span-3 text-center py-16 bg-white dark:bg-fann-accent-teal rounded-lg"
+                  className="md:col-span-2 lg:col-span-3 text-center py-16 bg-fann-charcoal-light rounded-lg border border-white/10"
                 >
-                  <h3 className="text-2xl font-serif text-fann-accent-teal dark:text-fann-gold">No Projects Found</h3>
-                  <p className="text-fann-light-gray mt-2">Try adjusting your filters to find a match.</p>
+                  <h3 className="text-2xl font-serif text-fann-gold">No Projects Found</h3>
+                  <p className="text-gray-400 mt-2">Try adjusting your filters to find a match.</p>
                 </motion.div>
               )}
             </AnimatePresence>

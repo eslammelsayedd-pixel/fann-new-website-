@@ -17,10 +17,6 @@ const aboutPageSchema = {
     }
 };
 
-// FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
-// annotation was removed. This allows TypeScript to correctly infer literal 
-// types for transition properties.
-// FIX: Add 'as const' to ensure TypeScript infers literal animation types.
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -29,10 +25,6 @@ const containerVariants = {
   },
 } as const;
 
-// FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
-// annotation was removed. This allows TypeScript to correctly infer literal 
-// types for transition properties (e.g., type: 'spring').
-// FIX: Add 'as const' to ensure TypeScript infers literal animation types.
 const itemVariants = {
   hidden: { y: 30, opacity: 0 },
   visible: {
@@ -52,7 +44,7 @@ const AboutPage: React.FC = () => {
             description="Founded in 2019, FANN is a full-service design and build company in Dubai, dedicated to transforming visions into unforgettable realities with innovation and excellence."
             schema={aboutPageSchema}
         />
-      <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
+      <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
         <motion.div 
             className="container mx-auto px-4 sm:px-6 lg:px-8"
             variants={containerVariants}
@@ -60,8 +52,8 @@ const AboutPage: React.FC = () => {
             animate="visible"
         >
           <div className="text-center">
-            <motion.h1 variants={itemVariants} className="text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mb-4">About FANN</motion.h1>
-            <motion.p variants={itemVariants} className="text-xl text-fann-teal/90 dark:text-fann-peach/90 max-w-3xl mx-auto leading-relaxed">
+            <motion.h1 variants={itemVariants} className="text-5xl font-serif font-bold text-fann-gold mb-4">About FANN</motion.h1>
+            <motion.p variants={itemVariants} className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
               Founded in Dubai in 2019, FANN was born from a passion for transforming visions into tangible, unforgettable realities. As a full-service design and build company, we believe that a well-executed project—from initial concept to final construction—has the power to inspire, connect, and drive success.
             </motion.p>
           </div>
@@ -72,14 +64,14 @@ const AboutPage: React.FC = () => {
                 <img 
                     src={aboutImageUrl} 
                     alt="The diverse FANN team of Arab and Indian professionals collaborating in a modern Dubai office." 
-                    className="rounded-lg shadow-xl mx-auto" 
+                    className="rounded-lg shadow-2xl mx-auto opacity-90" 
                     loading="lazy"
                     width="1260"
                     height="840"
                 />
             </picture>
           </motion.div>
-          <motion.div variants={itemVariants} className="max-w-3xl mx-auto text-lg text-fann-teal dark:text-fann-peach/95 space-y-6 text-left leading-loose">
+          <motion.div variants={itemVariants} className="max-w-3xl mx-auto text-lg text-gray-300 space-y-6 text-left leading-loose">
             <p>
               Our philosophy is built on a dual commitment: relentless innovation and uncompromising excellence. We merge cutting-edge technology and global design trends with a deep understanding of the regional culture and market. This unique synthesis allows us to deliver experiences that are not only visually stunning but also strategically sound and culturally resonant.
             </p>

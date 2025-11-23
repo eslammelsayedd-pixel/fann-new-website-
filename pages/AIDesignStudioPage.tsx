@@ -85,24 +85,24 @@ const StudioCard: React.FC<StudioCardProps> = ({ studio, index }) => (
         <Link 
             to={studio.isComingSoon ? '#' : studio.link} 
             className={`
-                h-full flex flex-col justify-between p-8 bg-white dark:bg-fann-accent-teal rounded-lg 
-                border-2 border-fann-teal/10 dark:border-fann-border group transition-all duration-300
+                h-full flex flex-col justify-between p-8 bg-[#111] rounded-sm
+                border-2 border-white/10 group transition-all duration-300
                 ${studio.isComingSoon 
                     ? 'cursor-not-allowed opacity-60' 
-                    : 'hover:border-fann-gold dark:hover:border-fann-gold hover:bg-fann-accent-teal/5 dark:hover:bg-fann-gold/5'
+                    : 'hover:border-fann-gold hover:bg-white/5'
                 }
             `}
         >
             <div>
                 <div className="flex items-center justify-between">
-                    <studio.icon className="w-12 h-12 text-fann-accent-teal dark:text-fann-gold" />
-                    {studio.isComingSoon && <span className="text-xs bg-fann-light-gray text-fann-teal font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">Soon</span>}
+                    <studio.icon className="w-12 h-12 text-fann-gold" />
+                    {studio.isComingSoon && <span className="text-xs bg-white/10 text-gray-300 font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border border-white/20">Soon</span>}
                 </div>
-                <h3 className="text-3xl font-serif font-bold text-fann-teal dark:text-fann-peach mt-6">{studio.name}</h3>
-                <p className="text-fann-teal/80 dark:text-fann-light-gray mt-3 text-base">{studio.description}</p>
+                <h3 className="text-3xl font-serif font-bold text-white mt-6">{studio.name}</h3>
+                <p className="text-gray-400 mt-3 text-base">{studio.description}</p>
             </div>
             {!studio.isComingSoon && (
-                <span className="font-semibold text-fann-accent-teal dark:text-fann-gold mt-8 inline-block group-hover:underline">
+                <span className="font-semibold text-fann-gold mt-8 inline-block group-hover:underline">
                     Start Designing &rarr;
                 </span>
             )}
@@ -118,11 +118,11 @@ const AIDesignStudioPage: React.FC = () => {
                 description="Generate bespoke design concepts for exhibitions, events, and interiors in minutes with FANN's intelligent design studio. Visualize your project today."
                 schema={studioPageSchema}
             />
-            <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
+            <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
-                        <h1 className="text-5xl md:text-6xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mb-4">FANN Studio</h1>
-                        <p className="text-xl text-fann-teal/90 dark:text-fann-peach/90 max-w-3xl mx-auto">
+                        <h1 className="text-5xl md:text-6xl font-serif font-bold text-white mb-4">FANN Studio</h1>
+                        <p className="text-xl text-gray-400 max-w-3xl mx-auto">
                             Your vision, realized in minutes. Select a studio to begin creating with FANN's powerful design tools.
                         </p>
                     </div>

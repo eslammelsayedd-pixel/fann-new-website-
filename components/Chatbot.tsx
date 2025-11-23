@@ -80,19 +80,11 @@ export const Chatbot: React.FC = () => {
         }
     };
 
-    // FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
-    // annotation was removed. This allows TypeScript to correctly infer literal 
-    // types for transition properties (e.g., type: 'spring').
-    // FIX: Add 'as const' to ensure TypeScript infers a literal type for 'type'.
     const fabVariants = {
         hidden: { scale: 0, opacity: 0 },
         visible: { scale: 1, opacity: 1, transition: { delay: 0.5, type: 'spring' } },
     } as const;
 
-    // FIX: To resolve framer-motion type errors, the explicit 'Variants' type 
-    // annotation was removed. This allows TypeScript to correctly infer literal 
-    // types for transition properties.
-    // FIX: Add 'as const' to ensure TypeScript infers a literal type for 'type'.
     const chatWindowVariants = {
         hidden: { opacity: 0, y: 50, scale: 0.9 },
         visible: { opacity: 1, y: 0, scale: 1 },
@@ -102,7 +94,7 @@ export const Chatbot: React.FC = () => {
         <>
             <motion.button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-24 left-6 bg-fann-gold text-fann-charcoal w-16 h-16 rounded-full shadow-lg flex items-center justify-center z-50"
+                className="fixed bottom-24 left-6 bg-fann-gold text-fann-charcoal w-16 h-16 rounded-full shadow-lg flex items-center justify-center z-50 hover:shadow-fann-gold/20"
                 variants={fabVariants}
                 initial="hidden"
                 animate={isOpen ? 'hidden' : 'visible'}
@@ -120,53 +112,53 @@ export const Chatbot: React.FC = () => {
                         initial="hidden"
                         animate="visible"
                         exit="hidden"
-                        className="fixed bottom-24 left-6 w-[calc(100vw-3rem)] max-w-sm h-[70vh] max-h-[600px] bg-white dark:bg-fann-teal rounded-lg shadow-2xl flex flex-col z-50 border border-gray-200 dark:border-fann-border"
+                        className="fixed bottom-24 left-6 w-[calc(100vw-3rem)] max-w-sm h-[70vh] max-h-[600px] bg-fann-charcoal border border-white/10 rounded-lg shadow-2xl flex flex-col z-50"
                     >
                         {/* Header */}
-                        <header className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-fann-border">
+                        <header className="flex items-center justify-between p-4 border-b border-white/10 bg-fann-charcoal-light rounded-t-lg">
                             <div className="flex items-center gap-3">
                                 <Bot className="text-fann-gold" size={24} />
                                 <div className="flex flex-col">
-                                    <h3 className="font-bold text-fann-teal dark:text-fann-peach">FANN Assistant</h3>
-                                    <p className="text-xs text-fann-light-gray flex items-center gap-1.5">
+                                    <h3 className="font-bold text-white">FANN Assistant</h3>
+                                    <p className="text-xs text-gray-400 flex items-center gap-1.5">
                                         <span className="w-2 h-2 rounded-full bg-green-500"></span>
                                         Online
                                     </p>
                                 </div>
                             </div>
-                            <button onClick={() => setIsOpen(false)} className="text-fann-light-gray hover:text-fann-teal dark:hover:text-fann-peach">
+                            <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-white">
                                 <X size={24} />
                             </button>
                         </header>
 
                         {/* Messages */}
-                        <div className="flex-1 p-4 overflow-y-auto bg-fann-peach/20 dark:bg-fann-accent-teal/50">
+                        <div className="flex-1 p-4 overflow-y-auto bg-black/30">
                             {messages.map((message, index) => (
                                 <div key={index} className={`flex gap-3 my-4 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                     {message.role === 'model' && <div className="w-8 h-8 rounded-full bg-fann-gold flex items-center justify-center flex-shrink-0"><Bot size={18} className="text-fann-charcoal" /></div>}
-                                    <div className={`max-w-[80%] rounded-lg px-4 py-2 ${message.role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-fann-teal-dark text-fann-teal dark:text-fann-peach'}`}>
-                                        <div dangerouslySetInnerHTML={{ __html: parseMarkdown(message.parts[0].text) }} className="prose prose-sm dark:prose-invert max-w-none prose-p:my-1" />
+                                    <div className={`max-w-[80%] rounded-lg px-4 py-2 ${message.role === 'user' ? 'bg-fann-gold text-fann-charcoal font-medium' : 'bg-fann-charcoal-light border border-white/10 text-gray-200'}`}>
+                                        <div dangerouslySetInnerHTML={{ __html: parseMarkdown(message.parts[0].text) }} className="prose prose-sm prose-invert max-w-none prose-p:my-1" />
                                         {message.sources && message.sources.length > 0 && (
-                                            <div className="mt-3 border-t border-gray-300 dark:border-fann-border pt-2">
-                                                <h4 className="text-xs font-bold flex items-center gap-1 text-fann-light-gray mb-1"><BookOpen size={12}/> Sources:</h4>
+                                            <div className="mt-3 border-t border-white/10 pt-2">
+                                                <h4 className="text-xs font-bold flex items-center gap-1 text-gray-400 mb-1"><BookOpen size={12}/> Sources:</h4>
                                                 <ul className="text-xs space-y-1">
                                                     {message.sources.map((source, i) => (
                                                         <li key={i}>
-                                                            <a href={source.uri} target="_blank" rel="noopener noreferrer" className="hover:underline text-blue-500 dark:text-blue-400 break-all" title={source.title}>{source.title || new URL(source.uri).hostname}</a>
+                                                            <a href={source.uri} target="_blank" rel="noopener noreferrer" className="hover:underline text-fann-gold break-all" title={source.title}>{source.title || new URL(source.uri).hostname}</a>
                                                         </li>
                                                     ))}
                                                 </ul>
                                             </div>
                                         )}
                                     </div>
-                                    {message.role === 'user' && <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0"><User size={18} className="text-gray-600" /></div>}
+                                    {message.role === 'user' && <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center flex-shrink-0"><User size={18} className="text-gray-300" /></div>}
                                 </div>
                             ))}
                             {isLoading && (
                                 <div className="flex gap-3 my-4 justify-start">
                                     <div className="w-8 h-8 rounded-full bg-fann-gold flex items-center justify-center flex-shrink-0"><Bot size={18} className="text-fann-charcoal" /></div>
-                                    <div className="max-w-[80%] rounded-lg px-4 py-3 bg-gray-200 dark:bg-fann-teal-dark">
-                                        <Loader2 className="animate-spin text-fann-light-gray" />
+                                    <div className="max-w-[80%] rounded-lg px-4 py-3 bg-fann-charcoal-light border border-white/10">
+                                        <Loader2 className="animate-spin text-fann-gold" />
                                     </div>
                                 </div>
                             )}
@@ -174,7 +166,7 @@ export const Chatbot: React.FC = () => {
                         </div>
 
                         {/* Input */}
-                        <footer className="p-4 border-t border-gray-200 dark:border-fann-border">
+                        <footer className="p-4 border-t border-white/10 bg-fann-charcoal-light rounded-b-lg">
                             <div className="flex items-center gap-2">
                                 <input
                                     type="text"
@@ -182,9 +174,9 @@ export const Chatbot: React.FC = () => {
                                     onChange={(e) => setInput(e.target.value)}
                                     onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                                     placeholder="Ask about our services..."
-                                    className="flex-1 bg-fann-peach/50 dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold text-fann-teal dark:text-fann-peach"
+                                    className="flex-1 bg-black/30 border border-white/10 rounded-full px-4 py-2 focus:outline-none focus:border-fann-gold text-white placeholder-gray-500"
                                 />
-                                <button onClick={handleSend} disabled={isLoading || !input.trim()} className="bg-fann-gold text-fann-charcoal w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 disabled:opacity-50">
+                                <button onClick={handleSend} disabled={isLoading || !input.trim()} className="bg-fann-gold text-fann-charcoal w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 disabled:opacity-50 hover:bg-white transition-colors">
                                     <Send size={20} />
                                 </button>
                             </div>

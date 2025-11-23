@@ -280,16 +280,16 @@ const ServicesSection: React.FC = () => (
 );
 
 const WhyChooseUs: React.FC = () => (
-    <section className="py-32 bg-white text-fann-charcoal">
+    <section className="py-32 bg-fann-charcoal text-white border-b border-white/5">
         <div className="container">
             <div className="grid lg:grid-cols-12 gap-16">
                 <div className="lg:col-span-4">
                     <ScrollReveal>
                         <h2 className="text-4xl md:text-5xl font-serif mb-8">The FANN Standard</h2>
-                        <p className="text-gray-600 text-lg leading-relaxed mb-8">
+                        <p className="text-gray-400 text-lg leading-relaxed mb-8">
                             We don't just build stands; we build reputation. Our commitment to quality and reliability sets us apart in the competitive UAE market.
                         </p>
-                        <Link to="/about" className="text-fann-charcoal font-bold uppercase tracking-widest text-xs border-b border-fann-charcoal pb-1 hover:text-fann-gold hover:border-fann-gold transition-colors">
+                        <Link to="/about" className="text-white font-bold uppercase tracking-widest text-xs border-b border-white pb-1 hover:text-fann-gold hover:border-fann-gold transition-colors">
                             Learn More About Us
                         </Link>
                     </ScrollReveal>
@@ -302,9 +302,9 @@ const WhyChooseUs: React.FC = () => (
                             { title: "Turnkey Management", desc: "A single point of contact for design, build, logistics, and approvals." },
                             { title: "Strategic Design", desc: "Concepts rooted in marketing strategy to maximize your ROI." }
                         ].map((item, i) => (
-                            <ScrollReveal key={i} delay={i * 0.1} className="border-l border-gray-200 pl-8">
-                                <h3 className="text-xl font-bold mb-3 font-serif">{item.title}</h3>
-                                <p className="text-gray-600 leading-relaxed">{item.desc}</p>
+                            <ScrollReveal key={i} delay={i * 0.1} className="border-l border-white/10 pl-8">
+                                <h3 className="text-xl font-bold mb-3 font-serif text-white">{item.title}</h3>
+                                <p className="text-gray-400 leading-relaxed">{item.desc}</p>
                             </ScrollReveal>
                         ))}
                     </div>
@@ -353,7 +353,7 @@ const SelectedWork: React.FC = () => (
 
 const FeaturedResource: React.FC = () => (
     <ScrollReveal>
-        <section className="py-24 bg-fann-charcoal-light relative overflow-hidden">
+        <section className="py-24 bg-fann-charcoal-light relative overflow-hidden border-y border-white/5">
             <div className="absolute top-0 right-0 w-96 h-96 bg-purple-900/20 rounded-full blur-[120px]"></div>
             <div className="container relative z-10">
                 <div className="flex flex-col md:flex-row items-center gap-12">
@@ -386,8 +386,8 @@ const FeaturedResource: React.FC = () => (
 );
 
 const CtaSection: React.FC = () => (
-    <section className="py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-fann-charcoal-light"></div>
+    <section className="py-32 relative overflow-hidden bg-fann-charcoal">
+        <div className="absolute inset-0 bg-black/30"></div>
         <div className="container relative z-10 text-center">
             <ScrollReveal>
                 <h2 className="text-4xl md:text-6xl font-serif text-white mb-8">Ready to elevate your brand?</h2>

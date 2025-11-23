@@ -146,6 +146,8 @@ const ExhibitionStudioPage: React.FC = () => {
     
     // Background analysis state
     const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
+    const [isLoadingAnalysis, setIsLoadingAnalysis] = useState(false);
+    const [showAnalysisResults, setShowAnalysisResults] = useState(false);
 
     const [formData, setFormData] = useState({
         companyName: '',
@@ -199,9 +201,8 @@ const ExhibitionStudioPage: React.FC = () => {
         }
     };
 
-    // Triggered silently when moving from Step 1
     const performBackgroundAnalysis = async () => {
-        if (!formData.websiteUrl && !formData.logo) return;
+        if (!formData.websiteUrl && !formData.logo) return null;
         
         try {
             const response = await fetch('/api/analyze-brand', {
@@ -220,11 +221,12 @@ const ExhibitionStudioPage: React.FC = () => {
                 if (data.industry) {
                     setFormData(prev => ({...prev, eventIndustry: data.industry}));
                 }
+                return data;
             }
         } catch (e) {
             console.error("Background analysis failed", e);
-            // Fail silently, defaults will be used in generation
         }
+        return null;
     };
 
     const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -286,13 +288,26 @@ const ExhibitionStudioPage: React.FC = () => {
         return isValid;
     };
 
-    const nextStep = () => {
+    const nextStep = async () => {
         if (validateStep(currentStep)) {
-            if (currentStep === 1 && !analysisResult) {
-                performBackgroundAnalysis();
+            if (currentStep === 1) {
+                if (!analysisResult) {
+                    setIsLoadingAnalysis(true);
+                    const result = await performBackgroundAnalysis();
+                    setIsLoadingAnalysis(false);
+                    if (result) {
+                        setShowAnalysisResults(true);
+                        return; // Pause to show findings
+                    }
+                }
             }
             setCurrentStep(prev => Math.min(prev + 1, steps.length));
         }
+    };
+
+    const confirmAnalysisAndProceed = () => {
+        setShowAnalysisResults(false);
+        setCurrentStep(2);
     };
 
     const prevStep = () => {
@@ -305,7 +320,6 @@ const ExhibitionStudioPage: React.FC = () => {
         if (validateStep(currentStep)) {
             setIsSubmitting(true);
             
-            // 1. Send email inquiry to sales
             try {
                 await fetch('/api/send-inquiry', {
                     method: 'POST',
@@ -318,10 +332,8 @@ const ExhibitionStudioPage: React.FC = () => {
                 });
             } catch (error) {
                 console.error("Failed to send inquiry email", error);
-                // Proceed anyway to show results
             }
 
-            // 2. Navigate to result page
             navigate('/fann-studio/exhibition/result', { 
                 state: { 
                     formData: {
@@ -334,7 +346,6 @@ const ExhibitionStudioPage: React.FC = () => {
         }
     };
 
-    // Updated seamless input class - transparent background
     const getInputClass = (fieldName: string) => `w-full bg-transparent border-b border-white/20 py-4 text-white placeholder-gray-600 transition-all duration-300 focus:outline-none focus:border-fann-gold rounded-none font-light ${errors[fieldName] ? 'border-red-500' : ''}`;
 
     const renderStepContent = () => {
@@ -387,7 +398,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                         name="countryCode" 
                                         value={formData.countryCode} 
                                         onChange={handleInputChange}
-                                        className="bg-transparent border-b border-white/20 text-white py-4 w-24 focus:border-fann-gold focus:outline-none"
+                                        className="bg-transparent border-b border-white/20 text-white py-4 w-24 focus:border-fann-gold focus:outline-none cursor-pointer"
                                     >
                                         {countryCodes.map(c => <option key={c.country} value={c.code} className="bg-gray-900">{c.code} ({c.country})</option>)}
                                     </select>
@@ -442,7 +453,6 @@ const ExhibitionStudioPage: React.FC = () => {
                                         value={formData.eventName} 
                                         onChange={(e) => {
                                             handleInputChange(e);
-                                            // Simple heuristic for immediate industry detection
                                             const val = e.target.value.toLowerCase();
                                             if(val.includes('tech') || val.includes('gitex')) setFormData(prev => ({...prev, eventIndustry: 'Technology'}));
                                             else if(val.includes('food') || val.includes('gulfood')) setFormData(prev => ({...prev, eventIndustry: 'Food & Beverage'}));
@@ -626,9 +636,10 @@ const ExhibitionStudioPage: React.FC = () => {
                                     <button
                                         type="button"
                                         onClick={nextStep}
+                                        disabled={isLoadingAnalysis}
                                         className="btn-secondary flex items-center gap-3"
                                     >
-                                        Next <ArrowRight size={16} />
+                                        {isLoadingAnalysis ? <Loader2 className="animate-spin" size={16} /> : <>Next <ArrowRight size={16} /></>}
                                     </button>
                                 ) : (
                                     <button
@@ -645,6 +656,62 @@ const ExhibitionStudioPage: React.FC = () => {
                     </motion.div>
                 </div>
             </div>
+
+            {/* Findings Modal */}
+            <AnimatePresence>
+                {showAnalysisResults && analysisResult && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
+                        <motion.div 
+                            initial={{scale:0.9, opacity: 0}} 
+                            animate={{scale:1, opacity: 1}} 
+                            exit={{scale:0.9, opacity: 0}}
+                            className="bg-[#151515] border border-fann-gold/30 p-8 rounded-2xl max-w-md w-full text-center shadow-[0_0_50px_rgba(201,169,98,0.15)] relative overflow-hidden"
+                        >
+                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-fann-gold to-transparent"></div>
+                            
+                            <div className="w-16 h-16 bg-fann-gold/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-fann-gold/20">
+                                <Sparkles className="w-8 h-8 text-fann-gold" />
+                            </div>
+                            
+                            <h3 className="text-3xl font-serif text-white mb-2">Identity Detected</h3>
+                            <p className="text-gray-400 text-sm mb-8">Our AI has analyzed your digital presence.</p>
+                            
+                            <div className="space-y-4 text-left bg-white/5 p-6 rounded-lg mb-8 border border-white/10">
+                                <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
+                                    <div>
+                                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest block mb-1">Industry</span>
+                                        <span className="text-white font-medium text-lg">{analysisResult.industry || 'General'}</span>
+                                    </div>
+                                    <Briefcase className="text-fann-gold opacity-50" size={20} />
+                                </div>
+                                <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
+                                    <div>
+                                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest block mb-1">Brand Vibe</span>
+                                        <span className="text-white font-medium text-lg">{analysisResult.vibe || 'Modern'}</span>
+                                    </div>
+                                    <ScanSearch className="text-fann-gold opacity-50" size={20} />
+                                </div>
+                                <div>
+                                    <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest block mb-3">Color Palette</span>
+                                    <div className="flex gap-3">
+                                        {analysisResult.colors.map((color, i) => (
+                                            <div key={i} className="w-10 h-10 rounded-full shadow-lg border border-white/20 relative group" style={{ backgroundColor: color }} title={color}>
+                                                <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                                                    {color}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button onClick={confirmAnalysisAndProceed} className="btn-gold w-full flex items-center justify-center gap-2">
+                                Proceed with this Identity <ArrowRight size={16} />
+                            </button>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
         </AnimatedPage>
     );
 };

@@ -14,12 +14,19 @@ export default {
     extend: {
       colors: {
         'fann-charcoal': '#1A1A1A', // Primary Dark
-        'fann-charcoal-light': '#2A2A2A',
-        'fann-grey': '#F5F5F5', // Primary Light
+        'fann-charcoal-light': '#262626', // Lighter Dark for cards
+        'fann-charcoal-dark': '#111111', // Deepest Dark
+        'fann-grey': '#F5F5F5', // Primary Light Text
         'fann-gold': '#C9A962', // Refined Gold Accent
         'fann-gold-light': '#E5C580',
         'fann-white': '#FFFFFF',
         'fann-border': 'rgba(255, 255, 255, 0.1)',
+        // Preserving existing variable names but mapping to dark theme palette or accents
+        'fann-peach': '#1A1A1A', // Re-mapped to dark for safety
+        'fann-teal': '#F5F5F5', // Re-mapped to light text for safety
+        'fann-teal-dark': '#111111',
+        'fann-accent-teal': '#C9A962', // Map accent teal to gold for consistency
+        'fann-light-gray': '#A3A3A3',
       },
       fontFamily: {
         sans: ['Manrope', 'Inter', 'system-ui', 'sans-serif'],
@@ -39,6 +46,7 @@ export default {
       animation: {
         'fade-in': 'fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards',
         'slide-up': 'slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards',
+        'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
       },
       keyframes: {
         fadeIn: {
@@ -48,6 +56,12 @@ export default {
         slideUp: {
           '0%': { transform: 'translateY(20px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        shake: {
+          '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' },
+          '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
+          '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' },
+          '40%, 60%': { transform: 'translate3d(4px, 0, 0)' }
         }
       },
       backgroundImage: {
