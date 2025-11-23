@@ -1,3 +1,4 @@
+
 {
   "functions": {
     "api/generate-images.ts": {
@@ -23,6 +24,9 @@
     },
     "api/generate-interior-design.ts": {
       "maxDuration": 60
+    },
+    "api/analyze-brand.ts": {
+      "maxDuration": 30
     }
   },
   "rewrites": [

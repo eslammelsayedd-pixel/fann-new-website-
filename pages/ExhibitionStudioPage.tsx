@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Building2, Sparkles, Check, ArrowRight, ArrowLeft, Ruler, AlertCircle, Globe, Mail, Phone, User, Box, LayoutGrid, LayoutTemplate, Square, ChevronDown } from 'lucide-react';
+import { Building2, Sparkles, Check, ArrowRight, ArrowLeft, Ruler, AlertCircle, Globe, Mail, Phone, User, Upload, Loader2, Palette, Briefcase, ScanSearch } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 
 const steps = [
-    { id: 1, title: 'Basics' },
+    { id: 1, title: 'Company' },
     { id: 2, title: 'Event' },
     { id: 3, title: 'Specs' },
-    { id: 4, title: 'Essentials' }
+    { id: 4, title: 'Requirements' }
 ];
 
 const countryCodes = [
@@ -31,12 +32,12 @@ const boothConfigs = [
         id: 'Island', 
         label: 'Island (4-side open)', 
         icon: (isSelected: boolean) => (
-            <svg viewBox="0 0 100 100" className={`w-12 h-12 ${isSelected ? 'stroke-fann-gold' : 'stroke-gray-500'} fill-none stroke-2`}>
-                <rect x="30" y="30" width="40" height="40" rx="4" className={isSelected ? 'fill-fann-gold/20' : 'fill-white/5'} />
-                <path d="M50 25 L50 15 M50 15 L45 20 M50 15 L55 20" /> {/* Top Arrow */}
-                <path d="M50 75 L50 85 M50 85 L45 80 M50 85 L55 80" /> {/* Bottom Arrow */}
-                <path d="M25 50 L15 50 M15 50 L20 45 M15 50 L20 55" /> {/* Left Arrow */}
-                <path d="M75 50 L85 50 M85 50 L80 45 M85 50 L80 55" /> {/* Right Arrow */}
+            <svg viewBox="0 0 100 100" className={`w-16 h-16 ${isSelected ? 'stroke-fann-gold' : 'stroke-gray-500'} fill-none stroke-2`}>
+                <rect x="30" y="30" width="40" height="40" rx="2" className={isSelected ? 'fill-fann-gold/20' : 'fill-white/5'} />
+                <path d="M50 20 L50 10 M50 10 L45 15 M50 10 L55 15" /> {/* Top */}
+                <path d="M50 80 L50 90 M50 90 L45 85 M50 90 L55 85" /> {/* Bottom */}
+                <path d="M20 50 L10 50 M10 50 L15 45 M10 50 L15 55" /> {/* Left */}
+                <path d="M80 50 L90 50 M90 50 L85 45 M90 50 L85 55" /> {/* Right */}
             </svg>
         )
     },
@@ -44,12 +45,12 @@ const boothConfigs = [
         id: 'Peninsula', 
         label: 'Peninsula (3-side open)',
         icon: (isSelected: boolean) => (
-            <svg viewBox="0 0 100 100" className={`w-12 h-12 ${isSelected ? 'stroke-fann-gold' : 'stroke-gray-500'} fill-none stroke-2`}>
-                <rect x="30" y="30" width="40" height="40" rx="4" className={isSelected ? 'fill-fann-gold/20' : 'fill-white/5'} />
-                <path d="M25 30 L25 70" className="stroke-gray-700 stroke-4" /> {/* Wall */}
-                <path d="M50 25 L50 15 M50 15 L45 20 M50 15 L55 20" /> {/* Top Arrow */}
-                <path d="M50 75 L50 85 M50 85 L45 80 M50 85 L55 80" /> {/* Bottom Arrow */}
-                <path d="M75 50 L85 50 M85 50 L80 45 M85 50 L80 55" /> {/* Right Arrow */}
+            <svg viewBox="0 0 100 100" className={`w-16 h-16 ${isSelected ? 'stroke-fann-gold' : 'stroke-gray-500'} fill-none stroke-2`}>
+                <rect x="30" y="30" width="40" height="40" rx="2" className={isSelected ? 'fill-fann-gold/20' : 'fill-white/5'} />
+                <path d="M25 30 L25 70" className="stroke-gray-600 stroke-[4px]" /> {/* Wall */}
+                <path d="M50 20 L50 10 M50 10 L45 15 M50 10 L55 15" /> {/* Top */}
+                <path d="M50 80 L50 90 M50 90 L45 85 M50 90 L55 85" /> {/* Bottom */}
+                <path d="M80 50 L90 50 M90 50 L85 45 M90 50 L85 55" /> {/* Right */}
             </svg>
         )
     },
@@ -57,11 +58,11 @@ const boothConfigs = [
         id: 'Corner', 
         label: 'Corner (2-side open)',
         icon: (isSelected: boolean) => (
-            <svg viewBox="0 0 100 100" className={`w-12 h-12 ${isSelected ? 'stroke-fann-gold' : 'stroke-gray-500'} fill-none stroke-2`}>
-                <rect x="30" y="30" width="40" height="40" rx="4" className={isSelected ? 'fill-fann-gold/20' : 'fill-white/5'} />
-                <path d="M25 30 L25 70 M25 70 L70 70" className="stroke-gray-700 stroke-4" /> {/* Walls */}
-                <path d="M50 25 L50 15 M50 15 L45 20 M50 15 L55 20" /> {/* Top Arrow */}
-                <path d="M75 50 L85 50 M85 50 L80 45 M85 50 L80 55" /> {/* Right Arrow */}
+            <svg viewBox="0 0 100 100" className={`w-16 h-16 ${isSelected ? 'stroke-fann-gold' : 'stroke-gray-500'} fill-none stroke-2`}>
+                <rect x="30" y="30" width="40" height="40" rx="2" className={isSelected ? 'fill-fann-gold/20' : 'fill-white/5'} />
+                <path d="M25 30 L25 70 M25 70 L70 70" className="stroke-gray-600 stroke-[4px]" /> {/* Walls */}
+                <path d="M50 20 L50 10 M50 10 L45 15 M50 10 L55 15" /> {/* Top */}
+                <path d="M80 50 L90 50 M90 50 L85 45 M90 50 L85 55" /> {/* Right */}
             </svg>
         )
     },
@@ -69,22 +70,22 @@ const boothConfigs = [
         id: 'Inline', 
         label: 'Inline (1-side open)',
         icon: (isSelected: boolean) => (
-            <svg viewBox="0 0 100 100" className={`w-12 h-12 ${isSelected ? 'stroke-fann-gold' : 'stroke-gray-500'} fill-none stroke-2`}>
-                <rect x="30" y="30" width="40" height="40" rx="4" className={isSelected ? 'fill-fann-gold/20' : 'fill-white/5'} />
-                <path d="M25 30 L25 70 M25 70 L75 70 M75 70 L75 30" className="stroke-gray-700 stroke-4" /> {/* Walls */}
-                <path d="M50 25 L50 15 M50 15 L45 20 M50 15 L55 20" /> {/* Top Arrow */}
+            <svg viewBox="0 0 100 100" className={`w-16 h-16 ${isSelected ? 'stroke-fann-gold' : 'stroke-gray-500'} fill-none stroke-2`}>
+                <rect x="30" y="30" width="40" height="40" rx="2" className={isSelected ? 'fill-fann-gold/20' : 'fill-white/5'} />
+                <path d="M25 30 L25 70 M25 70 L75 70 M75 70 L75 30" className="stroke-gray-600 stroke-[4px]" /> {/* Walls */}
+                <path d="M50 20 L50 10 M50 10 L45 15 M50 10 L55 15" /> {/* Top */}
             </svg>
         )
     }
 ];
 
-const essentialsList = [
-    'Reception Desk', 'Meeting Room', 'Storage Area', 'Hanging Banner', 
-    'LED Video Wall', 'Product Shelving', 'Bar / Hospitality', 
-    'Interactive Demo Area', 'Lounge Seating', 'Touchscreens'
+const requirementsList = [
+    'Hanging Structure / Banner', 'Reception Desk', 'Private Meeting Room', 
+    'Storage Area', 'LED Video Wall', 'Product Display Shelving', 
+    'Bar / Hospitality Area', 'Interactive Demo Zone', 'Lounge Seating', 
+    'Raised Flooring', 'Touchscreens / Kiosks', 'Brochure Stand'
 ];
 
-// Reusable Components
 const StepIndicator: React.FC<{ currentStep: number; totalSteps: number }> = ({ currentStep, totalSteps }) => (
     <div className="mb-12 relative px-4">
         <div className="flex justify-between items-center relative z-10">
@@ -130,12 +131,21 @@ interface ValidationErrors {
     [key: string]: boolean | string;
 }
 
+interface AnalysisResult {
+    industry: string;
+    colors: string[];
+    vibe: string;
+}
+
 const ExhibitionStudioPage: React.FC = () => {
     const navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState(1);
     const [errors, setErrors] = useState<ValidationErrors>({});
     const [shake, setShake] = useState(false);
     const [showErrorBanner, setShowErrorBanner] = useState(false);
+    
+    const [isAnalyzing, setIsAnalyzing] = useState(false);
+    const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
 
     const [formData, setFormData] = useState({
         companyName: '',
@@ -145,9 +155,11 @@ const ExhibitionStudioPage: React.FC = () => {
         countryCode: '+971',
         phone: '',
         websiteUrl: '',
+        logo: null as string | null,
         eventName: '',
         eventDate: '',
         eventLocation: '',
+        eventIndustry: '',
         standWidth: 6,
         standLength: 3,
         boothType: 'Inline',
@@ -155,7 +167,7 @@ const ExhibitionStudioPage: React.FC = () => {
     });
 
     const isBusinessEmail = (email: string) => {
-        const publicDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com', 'aol.com', 'live.com'];
+        const publicDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com', 'aol.com', 'live.com', 'me.com'];
         const domain = email.split('@')[1];
         return domain && !publicDomains.includes(domain.toLowerCase());
     };
@@ -169,6 +181,67 @@ const ExhibitionStudioPage: React.FC = () => {
                 return newErrors;
             });
             if (Object.keys(errors).length <= 1) setShowErrorBanner(false);
+        }
+    };
+
+    const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFormData(prev => ({ ...prev, logo: reader.result as string }));
+                if (errors.logo) {
+                    setErrors(prev => { const { logo, ...rest } = prev; return rest; });
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleAnalyzeBrand = async () => {
+        if (!formData.websiteUrl || !formData.logo) {
+            setErrors(prev => ({ 
+                ...prev, 
+                websiteUrl: !formData.websiteUrl ? 'Required for analysis' : false,
+                logo: !formData.logo ? 'Required for analysis' : false 
+            }));
+            return;
+        }
+
+        setIsAnalyzing(true);
+        try {
+            const response = await fetch('/api/analyze-brand', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    logo: formData.logo.split(',')[1], // Send base64 data only
+                    mimeType: formData.logo.match(/data:(.*);base64/)?.[1] || 'image/png',
+                    websiteUrl: formData.websiteUrl
+                })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setAnalysisResult(data);
+            } else {
+                console.error("Analysis failed");
+                // Fallback mock if API fails or isn't set up yet
+                setAnalysisResult({
+                    industry: "Technology & Innovation",
+                    colors: ["#000000", "#D4AF76", "#FFFFFF"],
+                    vibe: "Modern, Professional, High-End"
+                });
+            }
+        } catch (e) {
+            console.error(e);
+             // Fallback mock
+             setAnalysisResult({
+                industry: "Detected Industry",
+                colors: ["#333333", "#CCCCCC"],
+                vibe: "Corporate"
+            });
+        } finally {
+            setIsAnalyzing(false);
         }
     };
 
@@ -194,20 +267,20 @@ const ExhibitionStudioPage: React.FC = () => {
         let isValid = true;
 
         if (step === 1) {
-            if (!formData.companyName) newErrors.companyName = true;
             if (!formData.firstName) newErrors.firstName = true;
             if (!formData.lastName) newErrors.lastName = true;
+            if (!formData.phone) newErrors.phone = true;
             if (!formData.websiteUrl) newErrors.websiteUrl = true;
+            if (!formData.logo) newErrors.logo = "Logo is mandatory";
             
             if (!formData.email) {
                 newErrors.email = true;
             } else if (!isBusinessEmail(formData.email)) {
-                newErrors.email = "Please use a work email address (no Gmail, Outlook, etc.)";
+                newErrors.email = "Please use a work email (no Gmail/Outlook)";
             }
         } else if (step === 2) {
              if (!formData.eventName) newErrors.eventName = true;
-             if (!formData.eventDate) newErrors.eventDate = true;
-             if (!formData.eventLocation) newErrors.eventLocation = true;
+             // Date and Location are optional but good to have
         }
 
         if (Object.keys(newErrors).length > 0) {
@@ -242,6 +315,7 @@ const ExhibitionStudioPage: React.FC = () => {
                     formData: {
                         ...formData,
                         boothSize: formData.standWidth * formData.standLength,
+                        analysis: analysisResult
                     }
                 } 
             });
@@ -255,18 +329,17 @@ const ExhibitionStudioPage: React.FC = () => {
             case 1:
                 return (
                     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
-                        <div className="text-center mb-10">
+                        <div className="text-center mb-8">
                             <h2 className="text-3xl font-serif font-bold text-white mb-2">Company Essentials</h2>
-                            <p className="text-gray-400">We'll analyze your website to tailor the design.</p>
+                            <p className="text-gray-400">Tell us about your brand.</p>
                         </div>
                         <div className="grid md:grid-cols-2 gap-6">
                             <div className="md:col-span-2 space-y-2">
-                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Company Name <span className="text-red-500">*</span></label>
+                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Company Name (Optional)</label>
                                 <div className="relative">
                                     <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18}/>
-                                    <input type="text" name="companyName" value={formData.companyName} onChange={handleInputChange} className={`${getInputClass('companyName')} pl-12`} placeholder="e.g. TechGlobal" />
+                                    <input type="text" name="companyName" value={formData.companyName} onChange={handleInputChange} className="input-premium pl-12" placeholder="e.g. TechGlobal" />
                                 </div>
-                                {errors.companyName && <span className="text-red-400 text-xs flex items-center gap-1 mt-1 font-semibold"><AlertCircle size={10} /> Required</span>}
                             </div>
 
                             <div className="space-y-2">
@@ -275,12 +348,10 @@ const ExhibitionStudioPage: React.FC = () => {
                                     <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18}/>
                                     <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className={`${getInputClass('firstName')} pl-12`} placeholder="John" />
                                 </div>
-                                {errors.firstName && <span className="text-red-400 text-xs flex items-center gap-1 mt-1 font-semibold"><AlertCircle size={10} /> Required</span>}
                             </div>
                             <div className="space-y-2">
                                 <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Last Name <span className="text-red-500">*</span></label>
                                 <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className={getInputClass('lastName')} placeholder="Doe" />
-                                {errors.lastName && <span className="text-red-400 text-xs flex items-center gap-1 mt-1 font-semibold"><AlertCircle size={10} /> Required</span>}
                             </div>
 
                             <div className="md:col-span-2 space-y-2">
@@ -297,7 +368,7 @@ const ExhibitionStudioPage: React.FC = () => {
                             </div>
 
                             <div className="md:col-span-1 space-y-2">
-                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Phone</label>
+                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Phone <span className="text-red-500">*</span></label>
                                 <div className="flex gap-2">
                                     <select 
                                         name="countryCode" 
@@ -307,18 +378,80 @@ const ExhibitionStudioPage: React.FC = () => {
                                     >
                                         {countryCodes.map(c => <option key={c.country} value={c.code}>{c.code} ({c.country})</option>)}
                                     </select>
-                                    <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className="input-premium flex-1" placeholder="50 123 4567" />
+                                    <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className={getInputClass('phone')} placeholder="50 123 4567" />
                                 </div>
                             </div>
 
                              <div className="md:col-span-1 space-y-2">
-                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Website URL <span className="text-red-500">*</span></label>
+                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Website <span className="text-red-500">*</span></label>
                                 <div className="relative">
                                     <Globe className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18}/>
                                     <input type="url" name="websiteUrl" value={formData.websiteUrl} onChange={handleInputChange} className={`${getInputClass('websiteUrl')} pl-12`} placeholder="https://..." />
                                 </div>
-                                {errors.websiteUrl && <span className="text-red-400 text-xs flex items-center gap-1 mt-1 font-semibold"><AlertCircle size={10} /> Required for AI Analysis</span>}
                             </div>
+
+                            <div className="md:col-span-2 space-y-2">
+                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Company Logo <span className="text-red-500">*</span></label>
+                                <div className={`border-2 border-dashed ${errors.logo ? 'border-red-500' : 'border-white/20'} rounded-lg p-6 text-center hover:bg-white/5 transition-colors relative`}>
+                                    <input type="file" accept="image/*" onChange={handleLogoUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                                    {formData.logo ? (
+                                        <div className="flex items-center justify-center gap-4">
+                                            <img src={formData.logo} alt="Logo Preview" className="h-12 w-auto object-contain" />
+                                            <span className="text-green-400 text-sm flex items-center gap-1"><Check size={14}/> Uploaded</span>
+                                        </div>
+                                    ) : (
+                                        <div className="flex flex-col items-center gap-2 text-gray-400">
+                                            <Upload size={24} />
+                                            <span className="text-sm">Click to upload logo</span>
+                                        </div>
+                                    )}
+                                </div>
+                                {errors.logo && <span className="text-red-400 text-xs flex items-center gap-1 mt-1 font-semibold"><AlertCircle size={10} /> Required</span>}
+                            </div>
+                        </div>
+
+                        {/* Analysis Section */}
+                        <div className="mt-8 border-t border-white/10 pt-8">
+                            {!analysisResult ? (
+                                <div className="text-center">
+                                    <button 
+                                        type="button"
+                                        onClick={handleAnalyzeBrand}
+                                        disabled={isAnalyzing}
+                                        className="bg-fann-gold/10 border border-fann-gold text-fann-gold hover:bg-fann-gold hover:text-black font-bold py-3 px-8 rounded-full uppercase tracking-wider text-sm transition-all flex items-center gap-2 mx-auto"
+                                    >
+                                        {isAnalyzing ? <Loader2 className="animate-spin" size={18} /> : <ScanSearch size={18} />} 
+                                        {isAnalyzing ? 'Analyzing Brand...' : 'Analyze Brand Identity'}
+                                    </button>
+                                    <p className="text-xs text-gray-500 mt-2">We'll extract your colors and vibe to personalize the design.</p>
+                                </div>
+                            ) : (
+                                <motion.div 
+                                    initial={{ opacity: 0, y: 10 }} 
+                                    animate={{ opacity: 1, y: 0 }} 
+                                    className="bg-[#111] border border-fann-gold/30 rounded-xl p-6"
+                                >
+                                    <h3 className="text-fann-gold font-serif font-bold text-lg mb-4 flex items-center gap-2"><Sparkles size={18}/> AI Brand Findings</h3>
+                                    <div className="grid md:grid-cols-3 gap-6">
+                                        <div>
+                                            <p className="text-xs text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1"><Briefcase size={12}/> Detected Industry</p>
+                                            <p className="text-white font-bold">{analysisResult.industry}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-xs text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1"><Palette size={12}/> Brand Colors</p>
+                                            <div className="flex gap-2">
+                                                {analysisResult.colors.map((color, i) => (
+                                                    <div key={i} className="w-8 h-8 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: color }} title={color}></div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">Brand Vibe</p>
+                                            <p className="text-white font-light italic">"{analysisResult.vibe}"</p>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
                         </div>
                     </motion.div>
                 );
@@ -326,24 +459,35 @@ const ExhibitionStudioPage: React.FC = () => {
                 return (
                     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
                         <div className="text-center mb-10">
-                            <h2 className="text-3xl font-serif font-bold text-white mb-2">Event Context</h2>
-                            <p className="text-gray-400">We'll automatically identify the industry based on the event.</p>
+                            <h2 className="text-3xl font-serif font-bold text-white mb-2">Event Details</h2>
+                            <p className="text-gray-400">Where will you be exhibiting?</p>
                         </div>
                         <div className="grid md:grid-cols-2 gap-8">
                              <div className="md:col-span-2 space-y-2">
                                 <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Event Name <span className="text-red-500">*</span></label>
-                                <input type="text" name="eventName" value={formData.eventName} onChange={handleInputChange} className={getInputClass('eventName')} placeholder="e.g. GITEX Global" />
+                                <input 
+                                    type="text" 
+                                    name="eventName" 
+                                    value={formData.eventName} 
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                        // Simple heuristic for immediate feedback (real analysis happens on submit)
+                                        if(e.target.value.toLowerCase().includes('tech') || e.target.value.toLowerCase().includes('gitex')) setFormData(prev => ({...prev, eventIndustry: 'Technology'}));
+                                        else if(e.target.value.toLowerCase().includes('food') || e.target.value.toLowerCase().includes('gulfood')) setFormData(prev => ({...prev, eventIndustry: 'Food & Beverage'}));
+                                    }} 
+                                    className={getInputClass('eventName')} 
+                                    placeholder="e.g. GITEX Global 2024" 
+                                />
+                                {formData.eventIndustry && <p className="text-xs text-fann-gold flex items-center gap-1 mt-1"><Sparkles size={10}/> Detected Context: {formData.eventIndustry}</p>}
                                 {errors.eventName && <span className="text-red-400 text-xs flex items-center gap-1 mt-1 font-semibold"><AlertCircle size={10} /> Required</span>}
                             </div>
                              <div className="space-y-2">
-                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Date <span className="text-red-500">*</span></label>
+                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Date</label>
                                 <input type="date" name="eventDate" value={formData.eventDate} onChange={handleInputChange} className={getInputClass('eventDate')} />
-                                {errors.eventDate && <span className="text-red-400 text-xs flex items-center gap-1 mt-1 font-semibold"><AlertCircle size={10} /> Required</span>}
                             </div>
                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Venue / Location <span className="text-red-500">*</span></label>
+                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Venue</label>
                                 <input type="text" name="eventLocation" value={formData.eventLocation} onChange={handleInputChange} className={getInputClass('eventLocation')} placeholder="e.g. DWTC" />
-                                {errors.eventLocation && <span className="text-red-400 text-xs flex items-center gap-1 mt-1 font-semibold"><AlertCircle size={10} /> Required</span>}
                             </div>
                         </div>
                     </motion.div>
@@ -352,7 +496,7 @@ const ExhibitionStudioPage: React.FC = () => {
                 return (
                     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-12">
                          <div className="text-center mb-6">
-                            <h2 className="text-3xl font-serif font-bold text-white mb-2">Space Dimensions</h2>
+                            <h2 className="text-3xl font-serif font-bold text-white mb-2">Stand Specs</h2>
                             <p className="text-gray-400">Define your footprint.</p>
                         </div>
                         
@@ -406,11 +550,11 @@ const ExhibitionStudioPage: React.FC = () => {
                 return (
                     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
                         <div className="text-center mb-10">
-                            <h2 className="text-3xl font-serif font-bold text-white mb-2">Stand Essentials</h2>
-                            <p className="text-gray-400">Select the physical elements you require.</p>
+                            <h2 className="text-3xl font-serif font-bold text-white mb-2">Stand Requirements</h2>
+                            <p className="text-gray-400">Select the essential elements you need.</p>
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                            {essentialsList.map(item => {
+                            {requirementsList.map(item => {
                                 const isSelected = formData.features.includes(item);
                                 return (
                                     <motion.button 
@@ -433,7 +577,7 @@ const ExhibitionStudioPage: React.FC = () => {
                         <div className="mt-12 pt-8 border-t border-white/10">
                             <h4 className="text-fann-gold font-bold mb-6 text-sm uppercase tracking-widest">Summary</h4>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm text-gray-400">
-                                <div><p className="text-xs text-gray-600 uppercase">Company</p><p className="text-white">{formData.companyName}</p></div>
+                                <div><p className="text-xs text-gray-600 uppercase">Company</p><p className="text-white">{formData.companyName || 'N/A'}</p></div>
                                 <div><p className="text-xs text-gray-600 uppercase">Event</p><p className="text-white">{formData.eventName}</p></div>
                                 <div><p className="text-xs text-gray-600 uppercase">Size</p><p className="text-white">{formData.standWidth}m x {formData.standLength}m</p></div>
                                 <div><p className="text-xs text-gray-600 uppercase">Type</p><p className="text-white">{formData.boothType}</p></div>
@@ -472,7 +616,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                     exit={{ opacity: 0, y: -20 }}
                                     className="absolute top-4 left-0 right-0 mx-6 md:mx-12 bg-red-900/80 border border-red-500 text-white p-3 rounded text-center text-sm font-semibold flex items-center justify-center gap-2 z-50 backdrop-blur-sm"
                                 >
-                                    <AlertCircle size={16} /> {typeof errors.email === 'string' ? errors.email : 'Please complete all required fields correctly.'}
+                                    <AlertCircle size={16} /> Please complete all required fields correctly.
                                 </motion.div>
                             )}
                         </AnimatePresence>

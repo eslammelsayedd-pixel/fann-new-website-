@@ -1,3 +1,4 @@
+
 import { GoogleGenAI, Type } from "@google/genai";
 
 export const config = {
@@ -11,9 +12,9 @@ export default async function handler(req: Request) {
 
     try {
         const config = await req.json();
-        const { companyName, websiteUrl, eventName, boothSize, boothType, features } = config;
+        const { companyName, websiteUrl, eventName, boothSize, boothType, features, analysis } = config;
 
-        if (!companyName || !boothSize || !boothType || !eventName) {
+        if (!boothSize || !boothType || !eventName) {
             return new Response(JSON.stringify({ error: 'Missing required design parameters.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
         }
 
@@ -23,23 +24,30 @@ export default async function handler(req: Request) {
         }
         const ai = new GoogleGenAI({ apiKey });
 
+        // Use analysis from Step 1 if available, otherwise prompt for it.
+        const brandContext = analysis ? 
+            `Detected Brand Vibe: ${analysis.vibe}. Brand Colors: ${analysis.colors.join(', ')}.` : 
+            `Analyze the website "${websiteUrl}" for brand vibe.`;
+
         // === 1. Generate Text Concepts (2 Distinct Options) ===
-        // We prompt the AI to analyze the website/brand and event/industry implicitly.
         let textPrompt = `
         You are a world-class exhibition stand designer.
         
-        Task:
-        1. Analyze the company website: "${websiteUrl || 'Not provided'}" to determine brand colors, vibe, and industry.
-        2. Analyze the event name: "${eventName}" to determine the industry vertical (e.g., Tech, Food, Real Estate).
-        3. Create TWO distinct design concepts (Concept A and Concept B) for a ${boothSize} sqm ${boothType} stand.
-           - Concept A should be "Modern, Bold, and High-Impact".
-           - Concept B should be "Luxurious, Elegant, and Sophisticated" (or an alternative style that fits the brand analysis).
+        Context:
+        - Event: "${eventName}" (Infer the industry if not provided).
+        - Company: "${companyName || 'The Client'}"
+        - Website: "${websiteUrl}"
+        - ${brandContext}
         
-        Client Details:
-        - Company: "${companyName}"
-        - Key Essentials Required: ${features.join(', ') || 'Standard exhibition requirements'}
+        Task:
+        Create TWO distinct design concepts (Option A and Option B) for a ${boothSize} sqm ${boothType} stand.
+        - Option A: "Modern, Tech-Forward & Bold". Focus on high impact and innovation.
+        - Option B: "Elegant, Sophisticated & Premium". Focus on luxury materials and hospitality.
+        
+        Requirements:
+        - Must include: ${features.join(', ') || 'Standard exhibition requirements'}.
 
-        Return a single, valid JSON object with the exact structure defined. Do not include any text, notes, or markdown formatting before or after the JSON.
+        Return a single, valid JSON object with the exact structure defined.
         `;
 
         const conceptSchema = {
@@ -57,19 +65,19 @@ export default async function handler(req: Request) {
         const responseSchema = {
             type: Type.OBJECT,
             properties: {
-                industryDetected: { type: Type.STRING, description: "The industry inferred from the event name." },
-                brandAnalysis: { type: Type.STRING, description: "Brief analysis of the brand vibe from the website." },
+                industryDetected: { type: Type.STRING },
                 conceptA: conceptSchema,
                 conceptB: conceptSchema
             },
-            required: ['industryDetected', 'brandAnalysis', 'conceptA', 'conceptB']
+            required: ['industryDetected', 'conceptA', 'conceptB']
         };
 
         const textResponse = await ai.models.generateContent({
             model: "gemini-2.5-flash",
             contents: textPrompt,
             config: {
-                tools: websiteUrl ? [{ googleSearch: {} }] : [],
+                // Only use googleSearch if we don't have pre-analysis
+                tools: analysis ? [] : [{ googleSearch: {} }],
                 responseMimeType: "application/json",
                 responseSchema: responseSchema,
             },
@@ -80,17 +88,17 @@ export default async function handler(req: Request) {
         // === 2. Generate Images (2 Distinct Renders) ===
         
         const generateImage = async (concept: any) => {
-             const imagePrompt = `Photorealistic, award-winning 3D render of an exhibition stand for "${companyName}" at "${eventName}".
+             const imagePrompt = `Photorealistic, award-winning 3D render of an exhibition stand for "${companyName || 'Corporate Brand'}" at "${eventName}".
             Style: ${concept.style}.
-            Concept: "${concept.conceptName}". Description: ${concept.description}.
-            Stand Type: ${boothSize} sqm ${boothType}.
+            Concept Name: "${concept.conceptName}". 
+            Description: ${concept.description}.
+            Stand Config: ${boothSize} sqm ${boothType}.
             Key Feature: ${concept.keyFeature}.
             Materials: ${concept.materials.join(', ')}.
             Industry: ${designData.industryDetected}.
-            Essentials visible: ${features.join(', ')}.
-            High-quality, professional architectural visualization, cinematic lighting.`;
+            Visible Requirements: ${features.join(', ')}.
+            Lighting: Cinematic, volumetric, studio lighting. High resolution, architectural visualization.`;
 
-            // Fix: Cast config to any to use imageConfig
             const resp = await ai.models.generateContent({
                 model: 'gemini-3-pro-image-preview',
                 contents: { parts: [{ text: imagePrompt }] },
@@ -107,15 +115,11 @@ export default async function handler(req: Request) {
             return null;
         };
 
-        // Run image generation in parallel for speed
+        // Run image generation in parallel
         const [imageA, imageB] = await Promise.all([
             generateImage(designData.conceptA),
             generateImage(designData.conceptB)
         ]);
-
-        if (!imageA || !imageB) {
-            throw new Error("Failed to generate images.");
-        }
 
         // === 3. Respond ===
         return new Response(JSON.stringify({ 
