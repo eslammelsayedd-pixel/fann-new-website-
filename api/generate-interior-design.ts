@@ -70,7 +70,7 @@ export default async function handler(req: Request) {
         The furniture is characterized by: ${designConcept.furnitureStyle.join(', ')}.
         The overall atmosphere is professional, luxurious, and highly functional. High-quality, detailed rendering.`;
         
-        // Fix: Use 'as any' to bypass strict type checking on imageConfig which may cause build errors with certain SDK versions
+        // Fix: Cast the entire object to any to bypass type checking for imageConfig/imageSize
         const imageResponse = await ai.models.generateContent({
             model: 'gemini-3-pro-image-preview',
             contents: {
@@ -81,8 +81,8 @@ export default async function handler(req: Request) {
                     aspectRatio: "16:9",
                     imageSize: "1K"
                 }
-            } as any,
-        });
+            }
+        } as any);
         
         let image = null;
         if (imageResponse.candidates?.[0]?.content?.parts) {
