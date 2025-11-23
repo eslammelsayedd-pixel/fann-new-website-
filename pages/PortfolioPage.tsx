@@ -45,9 +45,12 @@ const portfolioPageSchema = {
 const PortfolioPage: React.FC = () => {
   const [selectedService, setSelectedService] = useState('All');
   const [selectedIndustry, setSelectedIndustry] = useState('All');
+  const [selectedScale, setSelectedScale] = useState('All');
   const [metaInfo, setMetaInfo] = useState({ title: '', description: '' });
 
   const services = ['All', 'Exhibitions', 'Events', 'Interior Design'];
+  const scales = ['All', 'Boutique', 'Standard', 'Large', 'Mega'];
+  
   const industries = useMemo(() => {
     const uniqueIndustries = new Set(portfolioProjects.map(p => p.industry));
     return ['All', ...Array.from(uniqueIndustries)].sort((a,b) => a.localeCompare(b));
@@ -57,31 +60,24 @@ const PortfolioPage: React.FC = () => {
     return portfolioProjects.filter(project => {
         const serviceMatch = selectedService === 'All' || project.service === selectedService;
         const industryMatch = selectedIndustry === 'All' || project.industry === selectedIndustry;
-        return serviceMatch && industryMatch;
+        const scaleMatch = selectedScale === 'All' || project.scale === selectedScale;
+        return serviceMatch && industryMatch && scaleMatch;
     });
-  }, [selectedService, selectedIndustry]);
+  }, [selectedService, selectedIndustry, selectedScale]);
 
   useEffect(() => {
     const baseTitle = "FANN Portfolio";
-    let dynamicTitle = baseTitle;
-    let dynamicDescription = "";
+    const parts = [];
 
-    const serviceText = selectedService !== 'All' ? selectedService : '';
-    const industryText = selectedIndustry !== 'All' ? selectedIndustry : '';
+    if (selectedScale !== 'All') parts.push(selectedScale);
+    if (selectedService !== 'All') parts.push(selectedService);
+    if (selectedIndustry !== 'All') parts.push(`for ${selectedIndustry}`);
 
-    if (serviceText && industryText) {
-      dynamicTitle = `${baseTitle} | ${serviceText} for ${industryText}`;
-      dynamicDescription = `Explore FANN's portfolio of ${serviceText.toLowerCase()} projects for the ${industryText} industry. Discover our work with leading brands in the GCC.`;
-    } else if (serviceText) {
-      dynamicTitle = `${baseTitle} | ${serviceText} Projects`;
-      dynamicDescription = `Browse our portfolio of exceptional ${serviceText.toLowerCase()} projects. See how FANN creates unforgettable experiences for clients across various industries.`;
-    } else if (industryText) {
-      dynamicTitle = `${baseTitle} | ${industryText} Industry Projects`;
-      dynamicDescription = `View FANN's specialized projects for the ${industryText} industry. Discover our expertise in creating bespoke exhibitions, events, and interiors.`;
-    } else {
-      dynamicTitle = `Our Work | FANN Portfolio`;
-      dynamicDescription = 'Explore the diverse portfolio of FANN. View our successful projects in exhibitions, events, and interior design across various industries in Dubai and the GCC.';
-    }
+    const dynamicTitle = parts.length > 0 
+        ? `${baseTitle} | ${parts.join(' ')}` 
+        : `${baseTitle} | Exhibitions, Events & Interior Design`;
+
+    let dynamicDescription = `Explore FANN's diverse portfolio of ${selectedScale !== 'All' ? selectedScale.toLowerCase() + ' scale ' : ''}projects${selectedService !== 'All' ? ' in ' + selectedService.toLowerCase() : ''}${selectedIndustry !== 'All' ? ' for the ' + selectedIndustry + ' industry' : ''}.`;
     
     if (filteredProjects.length > 0) {
         const projectTitles = filteredProjects.slice(0, 2).map(p => p.title).join(', ');
@@ -92,7 +88,7 @@ const PortfolioPage: React.FC = () => {
 
     setMetaInfo({ title: dynamicTitle, description: dynamicDescription });
 
-  }, [selectedService, selectedIndustry, filteredProjects]);
+  }, [selectedService, selectedIndustry, selectedScale, filteredProjects]);
 
 
   const FilterButtons: React.FC<{title: string, options: string[], selected: string, setSelected: (value: string) => void}> = ({ title, options, selected, setSelected }) => (
@@ -129,6 +125,7 @@ const PortfolioPage: React.FC = () => {
           <div className="max-w-4xl mx-auto bg-white dark:bg-fann-accent-teal p-6 rounded-lg mb-12 shadow-md">
             <FilterButtons title="Service" options={services} selected={selectedService} setSelected={setSelectedService} />
             <FilterButtons title="Industry" options={industries} selected={selectedIndustry} setSelected={setSelectedIndustry} />
+            <FilterButtons title="Project Scale" options={scales} selected={selectedScale} setSelected={setSelectedScale} />
           </div>
 
           <motion.div 
@@ -164,8 +161,11 @@ const PortfolioPage: React.FC = () => {
                         />
                     </picture>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-                    <div className="absolute bottom-0 left-0 p-6">
-                      <span className="text-sm bg-fann-gold text-fann-charcoal font-bold py-1 px-2 rounded">{project.service}</span>
+                    <div className="absolute bottom-0 left-0 p-6 w-full">
+                      <div className="flex gap-2 mb-2 flex-wrap">
+                        <span className="text-xs bg-fann-gold text-fann-charcoal font-bold py-1 px-2 rounded">{project.service}</span>
+                        <span className="text-xs bg-black/50 text-white font-bold py-1 px-2 rounded backdrop-blur-md border border-white/10">{project.scale}</span>
+                      </div>
                       <h3 className="text-xl font-bold mt-2 text-white">{project.title}</h3>
                       <p className="text-fann-peach">{project.client}</p>
                     </div>
