@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Check, ArrowDown, Globe, LayoutTemplate, Award, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, Check, ArrowDown, Globe, LayoutTemplate, Award, ChevronLeft, ChevronRight, Calculator, Download } from 'lucide-react';
 import SEO from '../components/SEO';
 import { motion, AnimatePresence } from 'framer-motion';
 import ScrollReveal from '../components/ScrollReveal';
@@ -156,9 +156,9 @@ const HeroSection: React.FC = () => {
                                     Learn More
                                 </button>
                             </Link>
-                            <Link to="/contact">
+                            <Link to="/fann-studio">
                                 <button className="btn-outline min-w-[180px]">
-                                    Start Project
+                                    Launch Studio
                                 </button>
                             </Link>
                         </div>
@@ -217,6 +217,31 @@ const AboutSection: React.FC = () => (
             </div>
         </div>
     </section>
+);
+
+const CostCalculatorBanner: React.FC = () => (
+    <ScrollReveal>
+        <section className="py-20 bg-[#111] border-y border-white/5">
+            <div className="container">
+                <div className="bg-gradient-to-r from-fann-gold/10 to-transparent p-8 md:p-12 rounded-2xl border border-fann-gold/20 flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div className="flex items-start gap-6">
+                        <div className="hidden md:flex w-16 h-16 bg-fann-gold text-fann-charcoal rounded-full items-center justify-center shrink-0">
+                            <Calculator size={32} />
+                        </div>
+                        <div>
+                            <h3 className="text-2xl md:text-3xl font-serif text-white mb-2">Planning an Exhibition?</h3>
+                            <p className="text-gray-400 max-w-lg">Get an instant cost estimate for your stand design and build in Dubai. Accurate, fast, and free.</p>
+                        </div>
+                    </div>
+                    <Link to="/resources/cost-calculator" className="shrink-0">
+                        <button className="btn-gold py-4 px-10 text-sm">
+                            Get Instant Estimate
+                        </button>
+                    </Link>
+                </div>
+            </div>
+        </section>
+    </ScrollReveal>
 );
 
 const ServicesSection: React.FC = () => (
@@ -326,6 +351,40 @@ const SelectedWork: React.FC = () => (
     </section>
 );
 
+const FeaturedResource: React.FC = () => (
+    <ScrollReveal>
+        <section className="py-24 bg-fann-charcoal-light relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-purple-900/20 rounded-full blur-[120px]"></div>
+            <div className="container relative z-10">
+                <div className="flex flex-col md:flex-row items-center gap-12">
+                    <div className="md:w-1/2">
+                        <span className="text-purple-400 font-bold tracking-widest uppercase text-xs mb-2 block">Just Released</span>
+                        <h2 className="text-3xl md:text-5xl font-serif text-white mb-6">2026 Exhibition Trends Report</h2>
+                        <p className="text-gray-400 text-lg mb-8">
+                            Discover the cutting-edge materials, immersive technologies, and design philosophies that will define the next era of exhibitions in the GCC.
+                        </p>
+                        <Link to="/resources/trends-2026">
+                            <button className="flex items-center gap-2 text-white border-b border-white pb-1 hover:text-fann-gold hover:border-fann-gold transition-colors">
+                                Download Report <Download size={16} />
+                            </button>
+                        </Link>
+                    </div>
+                    <div className="md:w-1/2 flex justify-center">
+                        <div className="relative w-64 h-80 bg-gradient-to-br from-gray-800 to-black border border-white/10 rounded-lg shadow-2xl p-6 flex flex-col justify-between transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                            <div className="text-xs font-bold text-gray-500 uppercase">FANN Intelligence</div>
+                            <div className="text-center">
+                                <div className="text-4xl font-bold text-white mb-2">2026</div>
+                                <div className="text-sm text-fann-gold uppercase tracking-[0.2em]">Future Trends</div>
+                            </div>
+                            <div className="w-full h-1 bg-gradient-to-r from-transparent via-fann-gold to-transparent"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </ScrollReveal>
+);
+
 const CtaSection: React.FC = () => (
     <section className="py-32 relative overflow-hidden">
         <div className="absolute inset-0 bg-fann-charcoal-light"></div>
@@ -335,11 +394,18 @@ const CtaSection: React.FC = () => (
                 <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-12">
                     Let's discuss your upcoming project. Our team of experts is ready to bring your vision to life with precision and style.
                 </p>
-                <Link to="/contact">
-                    <button className="btn-gold text-sm py-4 px-10">
-                        Schedule a Consultation
-                    </button>
-                </Link>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Link to="/book-consultation">
+                        <button className="btn-gold text-sm py-4 px-10">
+                            Book Free Consultation
+                        </button>
+                    </Link>
+                    <Link to="/contact">
+                        <button className="btn-outline text-sm py-4 px-10">
+                            Contact Us
+                        </button>
+                    </Link>
+                </div>
             </ScrollReveal>
         </div>
     </section>
@@ -356,8 +422,10 @@ const HomePage: React.FC = () => {
             <HeroSection />
             <AboutSection />
             <ServicesSection />
+            <CostCalculatorBanner />
             <WhyChooseUs />
             <SelectedWork />
+            <FeaturedResource />
             <CtaSection />
         </div>
     );

@@ -16,7 +16,6 @@ import InteriorResultPage from './pages/InteriorResultPage';
 import MediaStudioPage from './pages/MediaStudioPage';
 import EventsCalendarPage from './pages/EventsCalendarPage';
 import AboutPage from './pages/AboutPage';
-// FIX: Changed to a default import since ContactPage now has a default export.
 import ContactPage from './pages/ContactPage';
 import InsightsPage from './pages/InsightsPage';
 import { ApiKeyProvider } from './context/ApiKeyProvider';
@@ -26,6 +25,12 @@ import ModularSystemsPage from './pages/services/ModularSystemsPage';
 import TurnkeyServicesPage from './pages/services/TurnkeyServicesPage';
 import FabricationPage from './pages/services/FabricationPage';
 import FitOutPage from './pages/services/FitOutPage';
+
+// New Lead Magnet Pages
+import ExhibitionGuidePage from './pages/resources/ExhibitionGuidePage';
+import TrendsReportPage from './pages/resources/TrendsReportPage';
+import CostCalculatorPage from './pages/resources/CostCalculatorPage';
+import ConsultationPage from './pages/ConsultationPage';
 
 const App: React.FC = () => {
     const location = useLocation();
@@ -58,6 +63,12 @@ const App: React.FC = () => {
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/insights" element={<InsightsPage />} />
                         <Route path="/roi-calculator" element={<ROICalculatorPage />} />
+                        
+                        {/* Resources & Lead Magnets */}
+                        <Route path="/resources/exhibition-guide" element={<ExhibitionGuidePage />} />
+                        <Route path="/resources/trends-2026" element={<TrendsReportPage />} />
+                        <Route path="/resources/cost-calculator" element={<CostCalculatorPage />} />
+                        <Route path="/book-consultation" element={<ConsultationPage />} />
                     </Routes>
                 </AnimatePresence>
             </Layout>
