@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { FileText, Building2, Palette, Sparkles, SlidersHorizontal, Check, Globe } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FileText, Building2, Palette, Sparkles, SlidersHorizontal, Check, Globe, ArrowRight, ArrowLeft } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 
@@ -10,65 +10,67 @@ const designStyles = ['Luxurious & Elegant', 'Minimalist & Clean', 'High-Tech & 
 const featureOptions = ['Private Meeting Room', 'Hospitality Bar', 'LED Screen Wall', 'Product Display Pods', 'Interactive Demo Area', 'Storage Room'];
 
 const steps = ['Brief', 'Structure', 'Aesthetics', 'Functionality'];
-const ProgressIndicator: React.FC = () => (
-    <div className="mb-12 px-2 sm:px-4">
-        <div className="flex items-start">
-            {steps.map((step, index) => (
-                <React.Fragment key={step}>
-                    <div className="flex flex-col items-center text-center w-20 sm:w-24">
-                        <div className={`w-10 h-10 rounded-full bg-fann-gold text-fann-charcoal flex items-center justify-center font-bold text-lg`}>
-                            {index + 1}
-                        </div>
-                        <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-fann-teal dark:text-fann-peach">{step}</p>
+
+const StepIndicator: React.FC<{ currentStep: number; totalSteps: number }> = ({ currentStep, totalSteps }) => (
+    <div className="mb-8">
+        <div className="flex justify-between items-center mb-4">
+            {steps.map((step, index) => {
+                const stepNum = index + 1;
+                const isActive = stepNum === currentStep;
+                const isCompleted = stepNum < currentStep;
+                
+                return (
+                    <div key={step} className="flex flex-col items-center relative z-10">
+                        <motion.div 
+                            initial={false}
+                            animate={{
+                                backgroundColor: isActive || isCompleted ? '#D4AF76' : '#1a1a1a',
+                                borderColor: isActive || isCompleted ? '#D4AF76' : '#333333',
+                                color: isActive || isCompleted ? '#1a1a1a' : '#A99E96',
+                            }}
+                            className={`w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-sm transition-colors duration-300`}
+                        >
+                            {isCompleted ? <Check size={18} /> : stepNum}
+                        </motion.div>
+                        <span className={`text-xs mt-2 font-medium tracking-wide ${isActive ? 'text-fann-gold' : 'text-fann-light-gray'}`}>
+                            {step}
+                        </span>
                     </div>
-                    {index < steps.length - 1 && <div className="flex-1 h-1 bg-fann-gold/30 rounded-full mt-5"></div>}
-                </React.Fragment>
-            ))}
+                );
+            })}
+            {/* Connecting Line */}
+            <div className="absolute top-5 left-0 w-full h-0.5 bg-gray-800 -z-0 transform -translate-y-1/2 px-4 sm:px-10">
+                <motion.div 
+                    className="h-full bg-fann-gold" 
+                    initial={{ width: '0%' }}
+                    animate={{ width: `${((currentStep - 1) / (totalSteps - 1)) * 100}%` }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                />
+            </div>
         </div>
     </div>
 );
 
-interface FormSectionProps {
-  step: number;
-  title: string;
-  icon: React.ElementType;
-  description: string;
-  children: React.ReactNode;
-}
-const FormSection: React.FC<FormSectionProps> = ({ step, title, icon: Icon, description, children }) => (
-    <div className="border-t border-fann-teal/10 dark:border-fann-border pt-8 mt-8 first:mt-0 first:border-t-0 first:pt-0">
-        <div className="flex items-start md:items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-fann-peach dark:bg-fann-teal flex-shrink-0 flex items-center justify-center border border-fann-teal/10 dark:border-fann-border">
-                <Icon className="w-7 h-7 text-fann-accent-teal dark:text-fann-gold" />
-            </div>
-            <div>
-                 <h2 className="text-2xl font-serif font-bold text-fann-teal dark:text-fann-peach">{`Step ${step}: ${title}`}</h2>
-                 <p className="text-sm text-fann-light-gray mt-1">{description}</p>
-            </div>
+const OptionCard: React.FC<{ label: string; isSelected: boolean; onClick: () => void; }> = ({ label, isSelected, onClick }) => (
+    <button
+        type="button"
+        onClick={onClick}
+        className={`relative p-4 rounded-xl border-2 text-left transition-all duration-300 group overflow-hidden ${
+            isSelected 
+            ? 'border-fann-gold bg-fann-gold/10 shadow-[0_0_15px_rgba(212,175,118,0.3)]' 
+            : 'border-white/10 bg-white/5 hover:border-fann-gold/50 hover:bg-white/10'
+        }`}
+    >
+        <div className="flex items-center justify-between z-10 relative">
+            <span className={`font-semibold ${isSelected ? 'text-fann-gold' : 'text-gray-300 group-hover:text-white'}`}>{label}</span>
+            {isSelected && <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}><Check size={18} className="text-fann-gold" /></motion.div>}
         </div>
-        <div className="md:pl-16 pt-6">
-             {children}
-        </div>
-    </div>
+    </button>
 );
-
-interface FeatureCheckboxProps {
-  label: string;
-  isChecked: boolean;
-  onChange: () => void;
-}
-const FeatureCheckbox: React.FC<FeatureCheckboxProps> = ({ label, isChecked, onChange }) => (
-    <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg transition-colors duration-200 hover:bg-fann-peach/50 dark:hover:bg-fann-teal-dark/50">
-        <div className={`w-6 h-6 rounded-md border-2 flex-shrink-0 flex items-center justify-center transition-all duration-200 ${isChecked ? 'bg-fann-gold border-fann-gold' : 'bg-transparent border-fann-light-gray group-hover:border-fann-gold/50'}`}>
-            {isChecked && <Check size={16} className="text-fann-charcoal" />}
-        </div>
-        <span className={`transition-colors duration-200 text-base ${isChecked ? 'text-fann-teal dark:text-fann-peach font-semibold' : 'text-fann-teal/80 dark:text-fann-light-gray'}`}>{label}</span>
-    </label>
-);
-
 
 const ExhibitionStudioPage: React.FC = () => {
     const navigate = useNavigate();
+    const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState({
         companyName: '',
         websiteUrl: '',
@@ -80,7 +82,7 @@ const ExhibitionStudioPage: React.FC = () => {
         features: ['Hospitality Bar', 'LED Screen Wall', 'Private Meeting Room'],
     });
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
@@ -101,6 +103,18 @@ const ExhibitionStudioPage: React.FC = () => {
         });
     };
 
+    const nextStep = () => {
+        // Basic validation
+        if (currentStep === 1) {
+            if (!formData.companyName || !formData.eventName) return; // Add visual error handling ideally
+        }
+        setCurrentStep(prev => Math.min(prev + 1, steps.length));
+    };
+
+    const prevStep = () => {
+        setCurrentStep(prev => Math.max(prev - 1, 1));
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         navigate('/fann-studio/exhibition/result', { 
@@ -113,109 +127,206 @@ const ExhibitionStudioPage: React.FC = () => {
         });
     };
 
+    const renderStepContent = () => {
+        switch (currentStep) {
+            case 1:
+                return (
+                    <div className="space-y-6">
+                        <div className="text-center mb-6">
+                            <h2 className="text-2xl font-serif font-bold text-fann-peach">Project Essentials</h2>
+                            <p className="text-fann-light-gray">Start by telling us about your brand and the event.</p>
+                        </div>
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-fann-gold ml-1">Company Name</label>
+                                <div className="relative">
+                                    <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
+                                    <input type="text" name="companyName" placeholder="e.g. Acme Corp" value={formData.companyName} onChange={handleInputChange} required className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-4 focus:outline-none focus:border-fann-gold focus:ring-1 focus:ring-fann-gold transition-all text-white placeholder-gray-500" />
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-fann-gold ml-1">Event Name</label>
+                                <div className="relative">
+                                    <FileText className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
+                                    <input type="text" name="eventName" placeholder="e.g. GITEX Global" value={formData.eventName} onChange={handleInputChange} required className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-4 focus:outline-none focus:border-fann-gold focus:ring-1 focus:ring-fann-gold transition-all text-white placeholder-gray-500" />
+                                </div>
+                            </div>
+                        </div>
+                         <div className="space-y-2">
+                            <label className="text-sm font-medium text-fann-gold ml-1">Website URL <span className="text-gray-500 font-normal">(Optional - for brand analysis)</span></label>
+                            <div className="relative">
+                                <Globe className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
+                                <input type="url" name="websiteUrl" placeholder="https://example.com" value={formData.websiteUrl} onChange={handleInputChange} className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-4 focus:outline-none focus:border-fann-gold focus:ring-1 focus:ring-fann-gold transition-all text-white placeholder-gray-500" />
+                            </div>
+                        </div>
+                    </div>
+                );
+            case 2:
+                return (
+                    <div className="space-y-8">
+                        <div className="text-center mb-6">
+                            <h2 className="text-2xl font-serif font-bold text-fann-peach">Stand Structure</h2>
+                            <p className="text-fann-light-gray">Define the dimensions and layout of your space.</p>
+                        </div>
+                        
+                        <div className="bg-white/5 p-6 rounded-2xl border border-white/10">
+                            <div className="flex justify-between items-center mb-4">
+                                <span className="font-bold text-lg text-white">Stand Dimensions</span>
+                                <span className="text-fann-gold font-mono bg-fann-gold/10 px-3 py-1 rounded-lg">
+                                    {formData.standWidth}m × {formData.standLength}m ({formData.standWidth * formData.standLength} sqm)
+                                </span>
+                            </div>
+                            <div className="space-y-6">
+                                <div>
+                                    <div className="flex justify-between text-sm text-gray-400 mb-2"><span>Width</span><span>{formData.standWidth}m</span></div>
+                                    <input type="range" name="standWidth" min="3" max="50" value={formData.standWidth} onChange={handleSliderChange} className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-gray-700 accent-fann-gold" />
+                                </div>
+                                <div>
+                                    <div className="flex justify-between text-sm text-gray-400 mb-2"><span>Length</span><span>{formData.standLength}m</span></div>
+                                    <input type="range" name="standLength" min="3" max="50" value={formData.standLength} onChange={handleSliderChange} className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-gray-700 accent-fann-gold" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-fann-gold mb-3 ml-1">Booth Configuration</label>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                {boothTypes.map(type => (
+                                    <OptionCard 
+                                        key={type} 
+                                        label={type} 
+                                        isSelected={formData.boothType === type} 
+                                        onClick={() => handleOptionClick('boothType', type)} 
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                );
+            case 3:
+                return (
+                    <div className="space-y-6">
+                        <div className="text-center mb-6">
+                            <h2 className="text-2xl font-serif font-bold text-fann-peach">Visual Style</h2>
+                            <p className="text-fann-light-gray">Choose the aesthetic that best represents your brand.</p>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {designStyles.map(style => (
+                                <OptionCard 
+                                    key={style} 
+                                    label={style} 
+                                    isSelected={formData.style === style} 
+                                    onClick={() => handleOptionClick('style', style)} 
+                                />
+                            ))}
+                        </div>
+                        <div className="bg-fann-gold/10 p-4 rounded-xl flex items-start gap-3 border border-fann-gold/20">
+                            <Palette className="text-fann-gold flex-shrink-0 mt-1" size={20} />
+                            <p className="text-sm text-fann-peach/80">
+                                <strong>Tip:</strong> Our AI will analyze your website (if provided) to ensure the generated concept aligns with your existing brand colors and identity, blending it with the selected style.
+                            </p>
+                        </div>
+                    </div>
+                );
+            case 4:
+                return (
+                    <div className="space-y-6">
+                         <div className="text-center mb-6">
+                            <h2 className="text-2xl font-serif font-bold text-fann-peach">Key Features</h2>
+                            <p className="text-fann-light-gray">What functional elements does your stand need?</p>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {featureOptions.map(feature => (
+                                <OptionCard 
+                                    key={feature} 
+                                    label={feature} 
+                                    isSelected={formData.features.includes(feature)} 
+                                    onClick={() => handleFeatureChange(feature)} 
+                                />
+                            ))}
+                        </div>
+                        <div className="bg-white/5 p-4 rounded-xl border border-white/10 mt-6">
+                            <h4 className="text-fann-gold font-bold mb-2 flex items-center gap-2"><SlidersHorizontal size={16}/> Summary</h4>
+                            <ul className="text-sm text-gray-400 space-y-1">
+                                <li>• {formData.companyName} at {formData.eventName}</li>
+                                <li>• {formData.standWidth}m x {formData.standLength}m {formData.boothType}</li>
+                                <li>• {formData.style} Style</li>
+                                <li>• {formData.features.length} features selected</li>
+                            </ul>
+                        </div>
+                    </div>
+                );
+            default:
+                return null;
+        }
+    };
+
     return (
         <AnimatedPage>
             <SEO
                 title="Exhibition Design Brief | FANN Studio"
-                description="Start designing your exhibition stand with our guided step-by-step brief. Provide your requirements to receive a custom concept from FANN."
+                description="Start designing your exhibition stand with our guided step-by-step brief."
             />
-            <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-                    <div className="text-center mb-12">
-                         <Building2 className="mx-auto h-16 w-16 text-fann-accent-teal dark:text-fann-gold" />
-                        <h1 className="text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mt-4 mb-4">Exhibition Studio</h1>
-                        <p className="text-xl text-fann-teal/90 dark:text-fann-peach/90">
-                           Complete the brief below to generate a bespoke 3D concept for your stand.
-                        </p>
+            <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-fann-peach">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
+                    <div className="text-center mb-10">
+                        <div className="inline-flex items-center justify-center p-3 bg-fann-gold/10 rounded-full mb-4">
+                            <Building2 className="h-8 w-8 text-fann-gold" />
+                        </div>
+                        <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-2">Exhibition Studio</h1>
+                        <p className="text-lg text-gray-400">Design your perfect stand in 4 simple steps.</p>
                     </div>
 
-                    <div className="bg-white dark:bg-fann-accent-teal p-6 sm:p-10 rounded-lg shadow-xl">
-                        <ProgressIndicator />
-                        <form onSubmit={handleSubmit} className="space-y-0">
-                            <FormSection step={1} title="The Brief" icon={FileText} description="Tell us about your company and the event.">
-                                <div className="space-y-4">
-                                    <div className="grid md:grid-cols-2 gap-6">
-                                        <input type="text" name="companyName" placeholder="Your Company Name" value={formData.companyName} onChange={handleInputChange} required className="w-full bg-fann-peach/50 dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold" />
-                                        <input type="text" name="eventName" placeholder="Event Name (e.g., GITEX)" value={formData.eventName} onChange={handleInputChange} required className="w-full bg-fann-peach/50 dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold" />
-                                    </div>
-                                    <div className="relative">
-                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <Globe className="h-5 w-5 text-fann-light-gray" />
-                                        </div>
-                                        <input 
-                                            type="url" 
-                                            name="websiteUrl" 
-                                            placeholder="Company Website URL (Optional - AI will analyze your brand style)" 
-                                            value={formData.websiteUrl} 
-                                            onChange={handleInputChange} 
-                                            className="w-full pl-10 bg-fann-peach/50 dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold" 
-                                        />
-                                    </div>
-                                </div>
-                            </FormSection>
+                    <div className="bg-white/5 backdrop-blur-md border border-white/10 p-6 sm:p-10 rounded-3xl shadow-2xl relative overflow-hidden">
+                        {/* Background Decoration */}
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-fann-gold/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
 
-                            <FormSection step={2} title="Stand Structure" icon={Building2} description="Define the size and type of your booth.">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                                    <div>
-                                        <div className="flex justify-between items-center mb-2">
-                                            <label className="block text-sm font-medium">Width:</label>
-                                            <span className="font-bold text-lg text-fann-accent-teal dark:text-fann-gold bg-fann-peach/50 dark:bg-fann-teal px-2 py-0.5 rounded-md">{formData.standWidth}m</span>
-                                        </div>
-                                        <input type="range" name="standWidth" min="3" max="50" value={formData.standWidth} onChange={handleSliderChange} className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-fann-teal/20 dark:bg-fann-border accent-fann-accent-teal dark:accent-fann-gold" />
-                                        <div className="flex justify-between text-xs text-fann-light-gray mt-1"><span>3m</span><span>50m</span></div>
-                                    </div>
-                                    <div>
-                                        <div className="flex justify-between items-center mb-2">
-                                            <label className="block text-sm font-medium">Length:</label>
-                                            <span className="font-bold text-lg text-fann-accent-teal dark:text-fann-gold bg-fann-peach/50 dark:bg-fann-teal px-2 py-0.5 rounded-md">{formData.standLength}m</span>
-                                        </div>
-                                        <input type="range" name="standLength" min="3" max="50" value={formData.standLength} onChange={handleSliderChange} className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-fann-teal/20 dark:bg-fann-border accent-fann-accent-teal dark:accent-fann-gold" />
-                                        <div className="flex justify-between text-xs text-fann-light-gray mt-1"><span>3m</span><span>50m</span></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium mb-3">Booth Type</label>
-                                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
-                                        {boothTypes.map(type => (
-                                            <button key={type} type="button" onClick={() => handleOptionClick('boothType', type)} className={`px-3 py-2 text-sm font-semibold rounded-md transition-all flex items-center justify-center ${formData.boothType === type ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-peach/50 dark:bg-fann-teal-dark hover:bg-fann-peach'}`}>
-                                                {formData.boothType === type && <Check size={16} className="mr-2 flex-shrink-0" />}
-                                                {type}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-                            </FormSection>
+                        <StepIndicator currentStep={currentStep} totalSteps={steps.length} />
 
-                            <FormSection step={3} title="Aesthetics" icon={Palette} description="Choose the look and feel that represents your brand.">
-                                <label className="block text-sm font-medium mb-3">Design Style</label>
-                                <div className="flex flex-wrap gap-2">
-                                    {designStyles.map(style => (
-                                        <button key={style} type="button" onClick={() => handleOptionClick('style', style)} className={`px-3 py-2 text-sm font-semibold rounded-md transition-all flex items-center ${formData.style === style ? 'bg-fann-gold text-fann-charcoal' : 'bg-fann-peach/50 dark:bg-fann-teal-dark hover:bg-fann-peach'}`}>
-                                            {formData.style === style && <Check size={16} className="mr-2 flex-shrink-0" />}
-                                            {style}
-                                        </button>
-                                    ))}
-                                </div>
-                            </FormSection>
-
-                            <FormSection step={4} title="Functionality" icon={SlidersHorizontal} description="Select the key features your stand will need.">
-                                <label className="block text-sm font-medium mb-3">Key Features</label>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
-                                    {featureOptions.map(feature => (
-                                        <FeatureCheckbox key={feature} label={feature} isChecked={formData.features.includes(feature)} onChange={() => handleFeatureChange(feature)} />
-                                    ))}
-                                </div>
-                            </FormSection>
-                            
-                            <div className="pt-10">
-                                <motion.button 
-                                    whileHover={{ scale: 1.05, y: -2 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    type="submit" 
-                                    className="w-full bg-fann-gold text-fann-charcoal font-bold py-4 rounded-full text-lg uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:shadow-fann-gold/40"
+                        <form onSubmit={handleSubmit} className="relative z-10">
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={currentStep}
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -20 }}
+                                    transition={{ duration: 0.3 }}
+                                    className="min-h-[300px]"
                                 >
-                                    <Sparkles size={20} /> Generate My Design
-                                </motion.button>
+                                    {renderStepContent()}
+                                </motion.div>
+                            </AnimatePresence>
+
+                            <div className="flex justify-between items-center mt-12 pt-6 border-t border-white/10">
+                                {currentStep > 1 ? (
+                                    <button
+                                        type="button"
+                                        onClick={prevStep}
+                                        className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors font-medium px-4 py-2 rounded-lg hover:bg-white/5"
+                                    >
+                                        <ArrowLeft size={18} /> Back
+                                    </button>
+                                ) : (
+                                    <div></div> // Spacer
+                                )}
+
+                                {currentStep < steps.length ? (
+                                    <button
+                                        type="button"
+                                        onClick={nextStep}
+                                        disabled={!formData.companyName || !formData.eventName}
+                                        className="flex items-center gap-2 bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full hover:bg-white transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-fann-gold/20"
+                                    >
+                                        Next Step <ArrowRight size={18} />
+                                    </button>
+                                ) : (
+                                    <button
+                                        type="submit"
+                                        className="flex items-center gap-2 bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full hover:bg-white transition-all shadow-lg shadow-fann-gold/20 hover:shadow-fann-gold/40 transform hover:-translate-y-1"
+                                    >
+                                        <Sparkles size={18} /> Generate Concept
+                                    </button>
+                                )}
                             </div>
                         </form>
                     </div>
