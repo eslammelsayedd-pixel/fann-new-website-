@@ -1,121 +1,155 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { Award, Wrench, Users, Headset, ShieldCheck, CheckCircle, Calendar, ArrowRight, Sparkles, Play, ChevronRight } from 'lucide-react';
-import { testimonials, regionalEvents } from '../constants';
+import { Award, Wrench, Users, Headset, ShieldCheck, CheckCircle, ArrowRight, Sparkles, Play, ChevronRight, Zap } from 'lucide-react';
+import { testimonials } from '../constants';
 import SEO from '../components/SEO';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import ScrollReveal from '../components/ScrollReveal';
 
 const HeroSection: React.FC = () => {
-    // Parallax effect for hero content
     const { scrollY } = useScroll();
     const y1 = useTransform(scrollY, [0, 500], [0, 200]);
-    const y2 = useTransform(scrollY, [0, 500], [0, -150]);
+    const y2 = useTransform(scrollY, [0, 500], [0, -100]);
+    const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
     return (
-        <section className="relative h-screen min-h-[800px] flex items-center overflow-hidden bg-fann-teal">
+        <section className="relative h-screen min-h-[850px] flex items-center overflow-hidden bg-fann-teal perspective-1000">
             {/* Background Video */}
             <div className="absolute inset-0 z-0">
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-fann-teal/40 z-10" />
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/20 to-black/80 z-10" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-fann-teal/30 z-10" />
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/40 to-black/90 z-10" />
                 <video 
                     autoPlay 
                     loop 
                     muted 
                     playsInline 
-                    className="w-full h-full object-cover scale-105"
+                    className="w-full h-full object-cover scale-110"
                     poster="https://images.pexels.com/photos/3058926/pexels-photo-3058926.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                 >
                     <source src="https://player.vimeo.com/external/371843339.sd.mp4?s=d448100569762141979b1836792348395270214c&profile_id=164&oauth2_token_id=57447761" type="video/mp4" />
-                    {/* Fallback Image if video fails */}
                     <img src="https://images.pexels.com/photos/3058926/pexels-photo-3058926.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Architecture Background" />
                 </video>
             </div>
 
-            <div className="relative z-20 container mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="relative z-20 container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
+                <div className="grid lg:grid-cols-12 gap-12 items-center w-full">
                     
                     {/* Left: Main Brand Messaging */}
-                    <motion.div style={{ y: y1 }} className="text-left">
+                    <motion.div style={{ y: y1, opacity }} className="lg:col-span-7 text-left pt-20">
                         <motion.div 
-                            initial={{ opacity: 0, x: -50 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.8, ease: "easeOut" }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 1 }}
                         >
-                            <div className="flex items-center gap-3 mb-6">
-                                <span className="h-px w-12 bg-fann-gold"></span>
-                                <span className="text-fann-gold font-bold uppercase tracking-[0.2em] text-sm">
-                                    Dubai's Premier Design & Build
+                            <motion.div 
+                                initial={{ width: 0 }}
+                                animate={{ width: "auto" }}
+                                transition={{ duration: 0.8, ease: "circOut" }}
+                                className="inline-flex items-center gap-3 mb-8 overflow-hidden whitespace-nowrap border-l-4 border-fann-gold pl-4"
+                            >
+                                <span className="text-fann-gold font-bold uppercase tracking-[0.3em] text-sm md:text-base">
+                                    The Future of Design
                                 </span>
-                            </div>
-                            <h1 className="text-6xl md:text-7xl lg:text-8xl font-serif font-bold leading-[1.1] text-white mb-8">
-                                Crafting <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-fann-gold to-fann-peach">Experiences.</span>
-                            </h1>
-                            <p className="text-lg md:text-xl text-gray-300 max-w-xl mb-10 font-light leading-relaxed">
-                                Award-winning exhibition stands, corporate events, and luxury interiors. We merge human expertise with AI innovation to build the extraordinary.
-                            </p>
+                            </motion.div>
                             
-                            <div className="flex flex-wrap gap-4">
+                            <h1 className="text-6xl md:text-7xl lg:text-8xl font-serif font-bold leading-[1.05] text-white mb-8 tracking-tight">
+                                <motion.span 
+                                    initial={{ y: 100, opacity: 0 }}
+                                    animate={{ y: 0, opacity: 1 }}
+                                    transition={{ duration: 0.8, delay: 0.2 }}
+                                    className="block"
+                                >
+                                    Beyond
+                                </motion.span>
+                                <motion.span 
+                                    initial={{ y: 100, opacity: 0 }}
+                                    animate={{ y: 0, opacity: 1 }}
+                                    transition={{ duration: 0.8, delay: 0.4 }}
+                                    className="block text-transparent bg-clip-text bg-gradient-to-r from-fann-gold via-[#ffeebb] to-fann-peach"
+                                >
+                                    Imagination.
+                                </motion.span>
+                            </h1>
+                            
+                            <motion.p 
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.8, delay: 0.6 }}
+                                className="text-lg md:text-xl text-gray-300 max-w-xl mb-12 font-light leading-relaxed border-l border-white/10 pl-6"
+                            >
+                                We don't just build spaces; we engineer experiences. FANN merges world-class craftsmanship with advanced <strong>FANN Intelligence</strong> to deliver the extraordinary.
+                            </motion.p>
+                            
+                            <motion.div 
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, delay: 0.8 }}
+                                className="flex flex-wrap gap-6"
+                            >
                                 <Link to="/portfolio">
-                                    <button className="group relative px-8 py-4 bg-transparent border border-white/30 text-white font-bold rounded-full overflow-hidden transition-all hover:border-fann-gold hover:text-fann-gold">
-                                        <span className="absolute inset-0 w-0 bg-white/5 transition-all duration-[250ms] ease-out group-hover:w-full"></span>
-                                        <span className="relative flex items-center gap-2">View Portfolio <ArrowRight size={18} /></span>
+                                    <button className="group relative px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/20 text-white font-bold rounded-none overflow-hidden transition-all hover:border-fann-gold hover:bg-black/50">
+                                        <span className="relative flex items-center gap-3 uppercase tracking-widest text-sm">
+                                            View Portfolio <ArrowRight size={16} className="text-fann-gold group-hover:translate-x-1 transition-transform" />
+                                        </span>
                                     </button>
                                 </Link>
                                 <Link to="/contact">
-                                    <button className="px-8 py-4 bg-fann-gold text-fann-charcoal font-bold rounded-full shadow-[0_0_20px_rgba(212,175,118,0.3)] hover:shadow-[0_0_30px_rgba(212,175,118,0.5)] transition-all hover:scale-105">
-                                        Get a Quote
+                                    <button className="px-10 py-4 bg-fann-gold text-fann-charcoal font-bold rounded-none uppercase tracking-widest text-sm shadow-[0_0_30px_rgba(212,175,118,0.2)] hover:shadow-[0_0_50px_rgba(212,175,118,0.4)] transition-all hover:-translate-y-1">
+                                        Start Project
                                     </button>
                                 </Link>
-                            </div>
+                            </motion.div>
                         </motion.div>
                     </motion.div>
 
                     {/* Right: FANN Studio Integration Card */}
-                    <motion.div style={{ y: y2 }} className="hidden lg:block">
+                    <motion.div style={{ y: y2 }} className="lg:col-span-5 hidden lg:block perspective-500">
                         <motion.div 
-                            initial={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }}
-                            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                            transition={{ duration: 0.8, delay: 0.3 }}
-                            className="relative"
+                            initial={{ opacity: 0, rotateX: 20, z: -100 }}
+                            animate={{ opacity: 1, rotateX: 0, z: 0 }}
+                            transition={{ duration: 1.2, type: "spring", bounce: 0.3, delay: 0.5 }}
+                            className="relative group"
                         >
-                            {/* Decorative Elements */}
-                            <div className="absolute -inset-1 bg-gradient-to-r from-fann-gold to-fann-accent-teal rounded-2xl blur opacity-30 animate-pulse"></div>
+                            {/* Glow Effect */}
+                            <div className="absolute -inset-0.5 bg-gradient-to-br from-fann-gold to-fann-accent-teal opacity-30 blur-2xl group-hover:opacity-50 transition-opacity duration-500"></div>
                             
-                            <div className="relative bg-black/40 backdrop-blur-xl border border-white/10 p-8 rounded-2xl shadow-2xl overflow-hidden">
-                                <div className="absolute top-0 right-0 p-4 opacity-20">
-                                    <Sparkles size={120} className="text-fann-gold" />
-                                </div>
+                            <div className="relative bg-black/60 backdrop-blur-2xl border border-white/10 p-10 rounded-xl shadow-2xl overflow-hidden">
+                                {/* Ambient Background within card */}
+                                <div className="absolute top-0 right-0 w-64 h-64 bg-fann-gold/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
                                 
-                                <div className="flex items-center gap-3 mb-4">
-                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-fann-gold to-orange-500 flex items-center justify-center shadow-lg">
-                                        <Sparkles size={20} className="text-white" />
-                                    </div>
+                                <div className="flex justify-between items-start mb-8">
                                     <div>
-                                        <h3 className="text-2xl font-serif font-bold text-white">FANN Studio</h3>
-                                        <p className="text-xs text-fann-gold uppercase tracking-widest font-bold">AI-Powered Design</p>
+                                        <div className="flex items-center gap-3 mb-2">
+                                            <Zap className="text-fann-gold fill-fann-gold animate-pulse" size={24} />
+                                            <span className="text-xs font-bold text-fann-gold uppercase tracking-widest border border-fann-gold/30 px-2 py-1 rounded">System Online</span>
+                                        </div>
+                                        <h3 className="text-4xl font-serif font-bold text-white mt-4">FANN Studio</h3>
+                                    </div>
+                                    <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center bg-white/5">
+                                        <Sparkles className="text-white" size={20} />
                                     </div>
                                 </div>
 
-                                <p className="text-gray-300 mb-6 relative z-10">
-                                    Visualize your next project in seconds. Use our proprietary AI tools to generate concepts for exhibitions, events, and interiors instantly.
+                                <p className="text-gray-300 mb-8 relative z-10 leading-relaxed border-t border-white/10 pt-6">
+                                    Experience the power of <strong>FANN Intelligence</strong>. Generate photorealistic concepts for exhibitions, events, and interiors in seconds.
                                 </p>
 
-                                <div className="space-y-3 mb-8">
-                                    <div className="flex items-center gap-3 bg-white/5 p-3 rounded-lg border border-white/5">
-                                        <div className="w-2 h-2 rounded-full bg-green-400"></div>
-                                        <span className="text-sm text-gray-200">Instant 3D Concepts</span>
+                                <div className="grid grid-cols-2 gap-4 mb-8">
+                                    <div className="bg-white/5 p-4 rounded-lg border border-white/5 hover:border-fann-gold/30 transition-colors">
+                                        <div className="text-2xl font-bold text-white mb-1">0.5s</div>
+                                        <div className="text-xs text-gray-400 uppercase tracking-wide">Generation Time</div>
                                     </div>
-                                    <div className="flex items-center gap-3 bg-white/5 p-3 rounded-lg border border-white/5">
-                                        <div className="w-2 h-2 rounded-full bg-blue-400"></div>
-                                        <span className="text-sm text-gray-200">Smart Budget Estimation</span>
+                                    <div className="bg-white/5 p-4 rounded-lg border border-white/5 hover:border-fann-gold/30 transition-colors">
+                                        <div className="text-2xl font-bold text-white mb-1">4K</div>
+                                        <div className="text-xs text-gray-400 uppercase tracking-wide">Visual Quality</div>
                                     </div>
                                 </div>
 
                                 <Link to="/fann-studio" className="block w-full">
-                                    <button className="w-full py-4 bg-gradient-to-r from-fann-gold to-[#bfa172] text-fann-charcoal font-bold rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform shadow-lg">
-                                        <Play size={18} fill="currentColor" /> Launch Studio
+                                    <button className="relative w-full py-5 bg-gradient-to-r from-fann-gold to-[#bfa172] text-fann-charcoal font-bold rounded-lg flex items-center justify-center gap-3 overflow-hidden group/btn">
+                                        <span className="absolute inset-0 w-full h-full bg-white/20 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-500 ease-in-out"></span>
+                                        <Play size={20} fill="currentColor" /> 
+                                        <span className="uppercase tracking-widest text-sm">Launch Interface</span>
                                     </button>
                                 </Link>
                             </div>
@@ -129,11 +163,10 @@ const HeroSection: React.FC = () => {
             <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1, y: [0, 10, 0] }}
-                transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-                className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/50 flex flex-col items-center gap-2"
+                transition={{ duration: 2, repeat: Infinity, delay: 2 }}
+                className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/30 flex flex-col items-center gap-2"
             >
-                <span className="text-xs uppercase tracking-widest">Scroll to Explore</span>
-                <div className="w-px h-12 bg-gradient-to-b from-white/0 via-white/50 to-white/0"></div>
+                <div className="w-px h-16 bg-gradient-to-b from-transparent via-fann-gold to-transparent"></div>
             </motion.div>
         </section>
     );
@@ -189,7 +222,7 @@ const ServicesOverview: React.FC = () => (
                         Comprehensive <br/> Design Solutions
                     </h2>
                     <p className="text-fann-teal/80 dark:text-gray-300 mb-8 text-lg leading-relaxed">
-                        From the bustling aisles of GITEX to the exclusive corridors of private villas, we deliver excellence. Our <strong>Turnkey Services</strong> cover everything from initial <Link to="/fann-studio" className="text-fann-gold hover:underline">AI-powered concepts</Link> to final fabrication.
+                        From the bustling aisles of GITEX to the exclusive corridors of private villas, we deliver excellence. Our <strong>Turnkey Services</strong> cover everything from initial <Link to="/fann-studio" className="text-fann-gold hover:underline">smart generated concepts</Link> to final fabrication.
                     </p>
                     
                     <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8 mb-10">

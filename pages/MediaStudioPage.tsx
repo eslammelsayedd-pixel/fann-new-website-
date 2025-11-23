@@ -12,7 +12,7 @@ const MediaStudioPage: React.FC = () => {
                     <h1 className="text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mt-6 mb-4">Media Studio</h1>
                     <h2 className="text-3xl font-serif text-fann-teal dark:text-fann-peach mb-4">Coming Soon</h2>
                     <p className="text-xl text-fann-teal/90 dark:text-fann-peach/90 max-w-2xl mx-auto mb-8">
-                        Our AI-powered Media Studio is currently under development. Soon, you'll be able to generate video concepts and perform AI-edits on your images.
+                        Our smart Media Studio is currently under development. Soon, you'll be able to generate video concepts and perform intelligent edits on your images.
                     </p>
                     <Link to="/fann-studio" className="border-2 border-fann-accent-teal dark:border-fann-gold text-fann-accent-teal dark:text-fann-gold font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider">
                         Back to FANN Studio

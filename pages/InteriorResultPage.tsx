@@ -80,7 +80,7 @@ const InteriorResultPage: React.FC = () => {
         <AnimatedPage>
             <SEO
                 title={isLoading ? "Generating Your Interior Concept..." : design?.designConcept.conceptName || "Interior Concept"}
-                description="Your bespoke AI-generated interior design concept from FANN Studio."
+                description="Your bespoke interior design concept from FANN Studio."
             />
             <div className="min-h-screen bg-fann-teal-dark pt-32 pb-20 text-fann-peach">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
@@ -93,7 +93,7 @@ const InteriorResultPage: React.FC = () => {
                             <motion.div key="loader" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-center py-20">
                                 <Loader2 className="w-16 h-16 text-fann-gold animate-spin mx-auto" />
                                 <h1 className="text-4xl font-serif mt-6">Generating Your Vision...</h1>
-                                <p className="text-fann-light-gray mt-2">This may take up to a minute. Our AI is crafting a unique concept for you.</p>
+                                <p className="text-fann-light-gray mt-2">This may take up to a minute. Our intelligent engine is crafting a unique concept for you.</p>
                             </motion.div>
                         )}
 
@@ -109,7 +109,7 @@ const InteriorResultPage: React.FC = () => {
                             <motion.div key="result" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                                 <div className="text-center mb-12">
                                     <h1 className="text-5xl font-serif font-bold text-fann-gold mb-2">{design.designConcept.conceptName}</h1>
-                                    <p className="text-xl text-fann-light-gray">Your AI-Generated 3D Render for {formData.projectName}</p>
+                                    <p className="text-xl text-fann-light-gray">Your FANN-Generated 3D Render for {formData.projectName}</p>
                                 </div>
                                 <div className="bg-fann-teal p-2 rounded-lg shadow-2xl mb-12">
                                     <img 

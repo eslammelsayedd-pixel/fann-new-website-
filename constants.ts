@@ -32,7 +32,7 @@ export const supportedLanguages = [
 
 
 export const portfolioProjects: Project[] = [
-  { id: 1, title: "TechVision AI", client: "GITEX 2024", service: "Exhibitions", industry: "Technology", scale: "Standard", year: 2024, image: "https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=800&q=75", sqm: 250, location: "Dubai World Trade Centre", timeline: "Concept to Completion: 8 weeks", challenge: "Integrating interactive AI demos seamlessly into a luxury, minimalist aesthetic.", result: "Generated over 5,000 qualified leads, a 40% increase from the previous year." },
+  { id: 1, title: "TechVision Systems", client: "GITEX 2024", service: "Exhibitions", industry: "Technology", scale: "Standard", year: 2024, image: "https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=800&q=75", sqm: 250, location: "Dubai World Trade Centre", timeline: "Concept to Completion: 8 weeks", challenge: "Integrating interactive smart demos seamlessly into a luxury, minimalist aesthetic.", result: "Generated over 5,000 qualified leads, a 40% increase from the previous year." },
   { id: 2, title: "MediCorp International", client: "Arab Health 2024", service: "Exhibitions", industry: "Healthcare", scale: "Standard", year: 2024, image: "https://images.pexels.com/photos/1250655/pexels-photo-1250655.jpeg?auto=compress&cs=tinysrgb&w=800&q=75", sqm: 180, location: "Dubai World Trade Centre", timeline: "Concept to Completion: 7 weeks", challenge: "Creating a sterile, high-tech environment that felt approachable and welcoming.", result: "Secured distribution deals in 5 new MENA markets." },
   { id: 3, title: "AeroDefense Systems", client: "Dubai Air Show 2023", service: "Exhibitions", industry: "Aviation", scale: "Large", year: 2023, image: "https://images.pexels.com/photos/1089306/pexels-photo-1089306.jpeg?auto=compress&cs=tinysrgb&w=800&q=75", sqm: 400, location: "DWC, Dubai Airshow Site", timeline: "Concept to Completion: 12 weeks", challenge: "Building a secure, double-deck structure to host high-level government delegations.", result: "Facilitated over $50M in preliminary agreements." },
   { id: 4, title: "Artisan Delights", client: "Gulfood 2024", service: "Exhibitions", industry: "Food & Beverage", scale: "Standard", year: 2024, image: "https://images.pexels.com/photos/3217157/pexels-photo-3217157.jpeg?auto=compress&cs=tinysrgb&w=800&q=75", sqm: 120, location: "Dubai World Trade Centre", timeline: "Concept to Completion: 6 weeks", challenge: "Designing an open-concept stand with live cooking stations and high foot traffic.", result: "Increased brand visibility by 200% on social media during the event." },
@@ -77,7 +77,7 @@ export const regionalEvents: Event[] = [
   { name: "ArabPlast", date: "Dec 13-15, 2024", venue: "Dubai World Trade Centre", country: "UAE", industry: "Manufacturing" },
 
   // --- KSA 2024 ---
-  { name: "Global AI Summit", date: "Sep 10-12, 2024", venue: "King Abdulaziz Conference Center, Riyadh", country: "KSA", industry: "Technology" },
+  { name: "Global Tech Summit", date: "Sep 10-12, 2024", venue: "King Abdulaziz Conference Center, Riyadh", country: "KSA", industry: "Technology" },
   { name: "Hotel & Hospitality Expo Saudi Arabia", date: "Sep 10-12, 2024", venue: "Riyadh Front", country: "KSA", industry: "Hospitality" },
   { name: "INDEX Saudi", date: "Sep 10-12, 2024", venue: "Riyadh Front", country: "KSA", industry: "Interior Design" },
   { name: "Cityscape Global KSA", date: "Sep 10-13, 2024", venue: "Riyadh Exhibition and Convention Center", country: "KSA", industry: "Real Estate" },
@@ -115,7 +115,7 @@ export const regionalEvents: Event[] = [
   { name: "GESS Dubai", date: "Mar 25-27, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Education" },
   { name: "World Art Dubai", date: "Apr 2-5, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Art & Design" },
   { name: "Middle East Energy", date: "Apr 15-17, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Energy" },
-  { name: "Global AI Show", date: "Apr 16-17, 2025", venue: "Dubai Festival City", country: "UAE", industry: "Technology" },
+  { name: "Global Future Show", date: "Apr 16-17, 2025", venue: "Dubai Festival City", country: "UAE", industry: "Technology" },
   { name: "GISEC Global", date: "Apr 21-23, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Technology" },
   { name: "Middle East Rail", date: "Apr 22-23, 2025", venue: "ADNEC, Abu Dhabi", country: "UAE", industry: "Logistics" },
   { name: "Arabian Travel Market", date: "Apr 28 - May 1, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Hospitality" },
@@ -162,7 +162,7 @@ export const regionalEvents: Event[] = [
 ];
 
 export const testimonials: Testimonial[] = [
-  { quote: "FANN didn't just build a stand; they created an experience. Their attention to detail and project management is unparalleled. Our leads increased by 40%!", client: "Aisha Al Futtaim", company: "TechVision AI", projectType: "GITEX Exhibition" },
+  { quote: "FANN didn't just build a stand; they created an experience. Their attention to detail and project management is unparalleled. Our leads increased by 40%!", client: "Aisha Al Futtaim", company: "TechVision Systems", projectType: "GITEX Exhibition" },
   { quote: "The team at FANN is a dream to work with. They took our vision for the annual gala and elevated it beyond our wildest expectations. Flawless execution from start to finish.", client: "Johnathan Lee", company: "Global Leaders Org", projectType: "Corporate Event" },
   { quote: "Transforming our new headquarters with FANN was the best decision we made. The design is not only beautiful but has tangibly improved our team's collaboration and morale.", client: "Fatima Al Mansouri", company: "Emirates Tech Solutions", projectType: "Interior Design" },
 ];

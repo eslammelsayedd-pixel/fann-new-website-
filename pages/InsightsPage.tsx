@@ -34,7 +34,7 @@ const insightTopics: InsightTopic[] = [
     {
         title: "Audience Engagement Tech at Dubai Events",
         slug: slugify("Audience Engagement Tech at Dubai Events"),
-        prompt: "As an expert event management agency, write a blog post detailing the most innovative audience engagement technologies being used at corporate events in Dubai. Discuss AR, VR, and AI-powered networking tools with examples from recent major UAE events. Focus on ROI for exhibitors.",
+        prompt: "As an expert event management agency, write a blog post detailing the most innovative audience engagement technologies being used at corporate events in Dubai. Discuss AR, VR, and smart networking tools with examples from recent major UAE events. Focus on ROI for exhibitors.",
         category: 'Events',
         icon: BrainCircuit,
         image: 'https://images.pexels.com/photos/6187640/pexels-photo-6187640.jpeg?auto=compress&cs=tinysrgb&w=600&q=75'

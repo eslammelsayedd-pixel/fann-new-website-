@@ -223,7 +223,7 @@ const ExhibitionStudioPage: React.FC = () => {
                         <div className="bg-fann-gold/10 p-4 rounded-xl flex items-start gap-3 border border-fann-gold/20">
                             <Palette className="text-fann-gold flex-shrink-0 mt-1" size={20} />
                             <p className="text-sm text-fann-peach/80">
-                                <strong>Tip:</strong> Our AI will analyze your website (if provided) to ensure the generated concept aligns with your existing brand colors and identity, blending it with the selected style.
+                                <strong>Tip:</strong> Our smart system will analyze your website (if provided) to ensure the generated concept aligns with your existing brand colors and identity, blending it with the selected style.
                             </p>
                         </div>
                     </div>

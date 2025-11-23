@@ -34,7 +34,7 @@ const studioOptions = [
         id: 'media', 
         name: 'Media Studio', 
         icon: Clapperboard, 
-        description: 'Instantly generate video concepts or perform AI-powered edits on your existing images for marketing and social media.',
+        description: 'Instantly generate video concepts or perform smart edits on your existing images for marketing and social media.',
         link: '/fann-studio/media',
         isComingSoon: true 
     },
@@ -43,7 +43,7 @@ const studioOptions = [
 const studioPageSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
-    "serviceType": "AI-Powered Design Studio",
+    "serviceType": "FANN-Powered Design Studio",
     "name": "FANN Studio",
     "description": "Your vision, realized in minutes. Select a studio to begin creating with FANN's powerful design tools for exhibitions, events, and interiors.",
     "url": "https://fann.ae/fann-studio",
@@ -114,8 +114,8 @@ const AIDesignStudioPage: React.FC = () => {
     return (
         <AnimatedPage>
             <SEO
-                title="FANN Studio | AI-Powered Design Concepts"
-                description="Generate bespoke design concepts for exhibitions, events, and interiors in minutes with FANN's AI-powered design studio. Visualize your project today."
+                title="FANN Studio | Intelligent Design Concepts"
+                description="Generate bespoke design concepts for exhibitions, events, and interiors in minutes with FANN's intelligent design studio. Visualize your project today."
                 schema={studioPageSchema}
             />
             <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">

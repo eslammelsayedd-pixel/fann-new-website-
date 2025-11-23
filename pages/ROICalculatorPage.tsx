@@ -37,7 +37,7 @@ const roiCalculatorSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "Personalized Exhibition ROI Calculator",
-    "description": "Get hyper-personalized ROI projections for major Dubai & KSA exhibitions. Our AI-powered calculator analyzes your company and event to provide a data-driven forecast.",
+    "description": "Get hyper-personalized ROI projections for major Dubai & KSA exhibitions. Our smart calculator analyzes your company and event to provide a data-driven forecast.",
     "url": "https://fann.ae/roi-calculator",
     "mainEntity": {
         "@type": "Service",
@@ -47,7 +47,7 @@ const roiCalculatorSchema = {
             "@type": "Organization",
             "@id": "https://fann.ae"
         },
-        "description": "An AI-powered tool to forecast the potential Return on Investment for exhibiting at major trade shows in the UAE and KSA.",
+        "description": "A smart tool to forecast the potential Return on Investment for exhibiting at major trade shows in the UAE and KSA.",
         "areaServed": {
             "@type": "AdministrativeArea",
             "name": "Middle East"
@@ -180,7 +180,7 @@ const ROICalculatorPage: React.FC = () => {
         <AnimatedPage>
             <SEO
                 title="Personalized Exhibition ROI Calculator"
-                description="Get hyper-personalized ROI projections for major Dubai & KSA exhibitions. Our AI-powered calculator analyzes your company and event to provide a data-driven forecast."
+                description="Get hyper-personalized ROI projections for major Dubai & KSA exhibitions. Our smart calculator analyzes your company and event to provide a data-driven forecast."
                 schema={roiCalculatorSchema}
             />
             <div className="min-h-screen bg-fann-teal pt-32 pb-20 text-fann-peach">
