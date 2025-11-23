@@ -12,7 +12,7 @@ export default async function handler(req: Request) {
 
     try {
         const config = await req.json();
-        const { companyName, websiteUrl, eventName, boothSize, boothType, features, analysis } = config;
+        const { companyName, websiteUrl, eventName, boothSize, boothType, features, analysis, standWidth, standLength, standHeight } = config;
 
         if (!boothSize || !boothType || !eventName) {
             return new Response(JSON.stringify({ error: 'Missing required design parameters.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
@@ -39,8 +39,13 @@ export default async function handler(req: Request) {
         - Website: "${websiteUrl}"
         - ${brandContext}
         
+        STRICT Design Constraints:
+        - Orientation: ${boothType} (Must adhere to this configuration).
+        - Dimensions: ${standWidth}m x ${standLength}m.
+        - Max Height: ${standHeight || 4}m.
+        
         Task:
-        Create TWO distinct design concepts (Option A and Option B) for a ${boothSize} sqm ${boothType} stand.
+        Create TWO distinct design concepts (Option A and Option B) for this ${boothSize} sqm stand.
         - Option A: "Modern, Tech-Forward & Bold". Focus on high impact and innovation.
         - Option B: "Elegant, Sophisticated & Premium". Focus on luxury materials and hospitality.
         
@@ -55,7 +60,7 @@ export default async function handler(req: Request) {
             properties: {
                 conceptName: { type: Type.STRING },
                 style: { type: Type.STRING },
-                description: { type: Type.STRING, description: "Captivating description of the look and feel." },
+                description: { type: Type.STRING, description: "Captivating description. Mention how it fits the specific orientation and height." },
                 materials: { type: Type.ARRAY, items: { type: Type.STRING } },
                 keyFeature: { type: Type.STRING, description: "The standout element of this design." }
             },
@@ -92,7 +97,7 @@ export default async function handler(req: Request) {
             Style: ${concept.style}.
             Concept Name: "${concept.conceptName}". 
             Description: ${concept.description}.
-            Stand Config: ${boothSize} sqm ${boothType}.
+            Configuration: ${boothType} Stand (${standWidth}m x ${standLength}m, Height ${standHeight || 4}m).
             Key Feature: ${concept.keyFeature}.
             Materials: ${concept.materials.join(', ')}.
             Industry: ${designData.industryDetected}.

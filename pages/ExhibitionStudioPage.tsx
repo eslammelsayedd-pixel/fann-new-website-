@@ -1,8 +1,7 @@
-
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Building2, Sparkles, Check, ArrowRight, ArrowLeft, Ruler, AlertCircle, Globe, Mail, Phone, User, Upload, Loader2, Palette, Briefcase, ScanSearch, X } from 'lucide-react';
+import { Building2, Sparkles, Check, ArrowRight, ArrowLeft, Ruler, AlertCircle, Globe, Mail, Phone, User, Upload, Loader2, Palette, Briefcase, ScanSearch, X, ArrowUpToLine } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 
@@ -10,7 +9,7 @@ const steps = [
     { id: 1, title: 'Company' },
     { id: 2, title: 'Event' },
     { id: 3, title: 'Specs' },
-    { id: 4, title: 'Requirements' }
+    { id: 4, title: 'Features' }
 ];
 
 const countryCodes = [
@@ -143,8 +142,9 @@ const ExhibitionStudioPage: React.FC = () => {
     const [errors, setErrors] = useState<ValidationErrors>({});
     const [shake, setShake] = useState(false);
     const [showErrorBanner, setShowErrorBanner] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     
-    const [isAnalyzing, setIsAnalyzing] = useState(false);
+    // Background analysis state
     const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
 
     const [formData, setFormData] = useState({
@@ -162,7 +162,8 @@ const ExhibitionStudioPage: React.FC = () => {
         eventIndustry: '',
         standWidth: 6,
         standLength: 3,
-        boothType: '', // Mandatory selection
+        standHeight: 4, // New Height Field
+        boothType: '', 
         features: [] as string[],
     });
 
@@ -193,26 +194,15 @@ const ExhibitionStudioPage: React.FC = () => {
                 if (errors.logo) {
                     setErrors(prev => { const { logo, ...rest } = prev; return rest; });
                 }
-                // Trigger basic analysis immediately if website is also present
-                if (formData.websiteUrl) {
-                    // Optional: auto-trigger analysis
-                }
             };
             reader.readAsDataURL(file);
         }
     };
 
-    const handleAnalyzeBrand = async () => {
-        if (!formData.websiteUrl && !formData.logo) {
-            setErrors(prev => ({ 
-                ...prev, 
-                websiteUrl: !formData.websiteUrl ? 'Website or Logo required for analysis' : false,
-                logo: !formData.logo ? 'Website or Logo required for analysis' : false 
-            }));
-            return;
-        }
-
-        setIsAnalyzing(true);
+    // Triggered silently when moving from Step 1
+    const performBackgroundAnalysis = async () => {
+        if (!formData.websiteUrl && !formData.logo) return;
+        
         try {
             const response = await fetch('/api/analyze-brand', {
                 method: 'POST',
@@ -230,23 +220,10 @@ const ExhibitionStudioPage: React.FC = () => {
                 if (data.industry) {
                     setFormData(prev => ({...prev, eventIndustry: data.industry}));
                 }
-            } else {
-                // Fallback if API fails
-                setAnalysisResult({
-                    industry: "General Business",
-                    colors: ["#D4AF76", "#000000"],
-                    vibe: "Professional"
-                });
             }
         } catch (e) {
-            console.error(e);
-             setAnalysisResult({
-                industry: "General Business",
-                colors: ["#D4AF76", "#000000"],
-                vibe: "Professional"
-            });
-        } finally {
-            setIsAnalyzing(false);
+            console.error("Background analysis failed", e);
+            // Fail silently, defaults will be used in generation
         }
     };
 
@@ -256,7 +233,6 @@ const ExhibitionStudioPage: React.FC = () => {
 
     const handleOptionClick = (field: string, value: string) => {
         setFormData({ ...formData, [field]: value });
-        // Clear error if exists
         if (errors[field]) {
              setErrors(prev => {
                 const newErrors = { ...prev };
@@ -289,13 +265,7 @@ const ExhibitionStudioPage: React.FC = () => {
             if (!formData.email) {
                 newErrors.email = true;
             } else if (!isBusinessEmail(formData.email)) {
-                newErrors.email = "Please use a work email (no Gmail/Outlook)";
-            }
-
-            if (!analysisResult) {
-                // Force analysis before proceeding
-                newErrors.analysis = "Please click 'Analyze Brand Identity' before proceeding.";
-                isValid = false;
+                newErrors.email = "Please use a work email";
             }
         } else if (step === 2) {
              if (!formData.eventName) newErrors.eventName = true;
@@ -318,6 +288,9 @@ const ExhibitionStudioPage: React.FC = () => {
 
     const nextStep = () => {
         if (validateStep(currentStep)) {
+            if (currentStep === 1 && !analysisResult) {
+                performBackgroundAnalysis();
+            }
             setCurrentStep(prev => Math.min(prev + 1, steps.length));
         }
     };
@@ -327,9 +300,28 @@ const ExhibitionStudioPage: React.FC = () => {
         setShowErrorBanner(false);
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (validateStep(currentStep)) {
+            setIsSubmitting(true);
+            
+            // 1. Send email inquiry to sales
+            try {
+                await fetch('/api/send-inquiry', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        type: 'Exhibition Studio Design Request',
+                        ...formData,
+                        analysis: analysisResult 
+                    })
+                });
+            } catch (error) {
+                console.error("Failed to send inquiry email", error);
+                // Proceed anyway to show results
+            }
+
+            // 2. Navigate to result page
             navigate('/fann-studio/exhibition/result', { 
                 state: { 
                     formData: {
@@ -342,7 +334,8 @@ const ExhibitionStudioPage: React.FC = () => {
         }
     };
 
-    const getInputClass = (fieldName: string) => `input-premium ${errors[fieldName] ? 'border-red-500 ring-1 ring-red-500 bg-red-900/10' : ''}`;
+    // Updated seamless input class - transparent background
+    const getInputClass = (fieldName: string) => `w-full bg-transparent border-b border-white/20 py-4 text-white placeholder-gray-600 transition-all duration-300 focus:outline-none focus:border-fann-gold rounded-none font-light ${errors[fieldName] ? 'border-red-500' : ''}`;
 
     const renderStepContent = () => {
         switch (currentStep) {
@@ -351,34 +344,34 @@ const ExhibitionStudioPage: React.FC = () => {
                     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
                         <div className="text-center mb-8">
                             <h2 className="text-3xl font-serif font-bold text-white mb-2">Company Essentials</h2>
-                            <p className="text-gray-400">Let's start with the basics.</p>
+                            <p className="text-gray-400">Let's start with your brand.</p>
                         </div>
-                        <div className="grid md:grid-cols-2 gap-6">
-                            <div className="md:col-span-2 space-y-2">
-                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Company Name (Optional)</label>
+                        <div className="grid md:grid-cols-2 gap-x-12 gap-y-8">
+                            <div className="md:col-span-2 space-y-1">
+                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Company Name</label>
                                 <div className="relative">
-                                    <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18}/>
-                                    <input type="text" name="companyName" value={formData.companyName} onChange={handleInputChange} className="input-premium pl-12" placeholder="e.g. TechGlobal" />
+                                    <Building2 className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-500" size={18}/>
+                                    <input type="text" name="companyName" value={formData.companyName} onChange={handleInputChange} className={`${getInputClass('companyName')} pl-8`} placeholder="e.g. TechGlobal" />
                                 </div>
                             </div>
 
-                            <div className="space-y-2">
+                            <div className="space-y-1">
                                 <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">First Name <span className="text-red-500">*</span></label>
                                 <div className="relative">
-                                    <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18}/>
-                                    <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className={`${getInputClass('firstName')} pl-12`} placeholder="John" />
+                                    <User className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-500" size={18}/>
+                                    <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className={`${getInputClass('firstName')} pl-8`} placeholder="John" />
                                 </div>
                             </div>
-                            <div className="space-y-2">
+                            <div className="space-y-1">
                                 <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Last Name <span className="text-red-500">*</span></label>
                                 <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className={getInputClass('lastName')} placeholder="Doe" />
                             </div>
 
-                            <div className="md:col-span-2 space-y-2">
+                            <div className="md:col-span-2 space-y-1">
                                 <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Work Email <span className="text-red-500">*</span></label>
                                 <div className="relative">
-                                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18}/>
-                                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={`${getInputClass('email')} pl-12`} placeholder="name@company.com" />
+                                    <Mail className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-500" size={18}/>
+                                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={`${getInputClass('email')} pl-8`} placeholder="name@company.com" />
                                 </div>
                                 {errors.email && (
                                     <span className="text-red-400 text-xs flex items-center gap-1 mt-1 font-semibold">
@@ -387,32 +380,32 @@ const ExhibitionStudioPage: React.FC = () => {
                                 )}
                             </div>
 
-                            <div className="md:col-span-1 space-y-2">
+                            <div className="md:col-span-1 space-y-1">
                                 <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Phone <span className="text-red-500">*</span></label>
                                 <div className="flex gap-2">
                                     <select 
                                         name="countryCode" 
                                         value={formData.countryCode} 
                                         onChange={handleInputChange}
-                                        className="bg-[#151515] border border-white/10 text-white px-2 py-4 w-24 focus:border-fann-gold focus:outline-none"
+                                        className="bg-transparent border-b border-white/20 text-white py-4 w-24 focus:border-fann-gold focus:outline-none"
                                     >
-                                        {countryCodes.map(c => <option key={c.country} value={c.code}>{c.code} ({c.country})</option>)}
+                                        {countryCodes.map(c => <option key={c.country} value={c.code} className="bg-gray-900">{c.code} ({c.country})</option>)}
                                     </select>
                                     <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className={getInputClass('phone')} placeholder="50 123 4567" />
                                 </div>
                             </div>
 
-                             <div className="md:col-span-1 space-y-2">
+                             <div className="md:col-span-1 space-y-1">
                                 <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Website <span className="text-red-500">*</span></label>
                                 <div className="relative">
-                                    <Globe className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18}/>
-                                    <input type="url" name="websiteUrl" value={formData.websiteUrl} onChange={handleInputChange} className={`${getInputClass('websiteUrl')} pl-12`} placeholder="https://..." />
+                                    <Globe className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-500" size={18}/>
+                                    <input type="url" name="websiteUrl" value={formData.websiteUrl} onChange={handleInputChange} className={`${getInputClass('websiteUrl')} pl-8`} placeholder="https://..." />
                                 </div>
                             </div>
 
                             <div className="md:col-span-2 space-y-2">
                                 <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Company Logo <span className="text-red-500">*</span></label>
-                                <div className={`border-2 border-dashed ${errors.logo ? 'border-red-500' : 'border-white/20'} rounded-lg p-6 text-center hover:bg-white/5 transition-colors relative`}>
+                                <div className={`border border-dashed ${errors.logo ? 'border-red-500' : 'border-white/20'} rounded-sm p-6 text-center hover:bg-white/5 transition-colors relative bg-transparent`}>
                                     <input type="file" accept="image/*" onChange={handleLogoUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
                                     {formData.logo ? (
                                         <div className="flex items-center justify-center gap-4">
@@ -429,54 +422,6 @@ const ExhibitionStudioPage: React.FC = () => {
                                 {errors.logo && <span className="text-red-400 text-xs flex items-center gap-1 mt-1 font-semibold"><AlertCircle size={10} /> Required</span>}
                             </div>
                         </div>
-
-                        {/* Analysis Section */}
-                        <div className="mt-8 border-t border-white/10 pt-8">
-                            {!analysisResult ? (
-                                <div className="text-center">
-                                    <button 
-                                        type="button"
-                                        onClick={handleAnalyzeBrand}
-                                        disabled={isAnalyzing}
-                                        className="bg-fann-gold/10 border border-fann-gold text-fann-gold hover:bg-fann-gold hover:text-black font-bold py-3 px-8 rounded-full uppercase tracking-wider text-sm transition-all flex items-center gap-2 mx-auto"
-                                    >
-                                        {isAnalyzing ? <Loader2 className="animate-spin" size={18} /> : <ScanSearch size={18} />} 
-                                        {isAnalyzing ? 'Analyzing Brand...' : 'Analyze Brand Identity'}
-                                    </button>
-                                    <p className="text-xs text-gray-500 mt-2">We'll extract your colors and vibe to personalize the design.</p>
-                                    {errors.analysis && <p className="text-red-500 text-xs font-bold mt-2">{errors.analysis}</p>}
-                                </div>
-                            ) : (
-                                <motion.div 
-                                    initial={{ opacity: 0, y: 10 }} 
-                                    animate={{ opacity: 1, y: 0 }} 
-                                    className="bg-[#111] border border-fann-gold/30 rounded-xl p-6"
-                                >
-                                    <div className="flex justify-between items-start mb-4">
-                                        <h3 className="text-fann-gold font-serif font-bold text-lg flex items-center gap-2"><Sparkles size={18}/> AI Brand Findings</h3>
-                                        <button onClick={() => setAnalysisResult(null)} className="text-gray-500 hover:text-white"><X size={16}/></button>
-                                    </div>
-                                    <div className="grid md:grid-cols-3 gap-6">
-                                        <div>
-                                            <p className="text-xs text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1"><Briefcase size={12}/> Industry</p>
-                                            <p className="text-white font-bold">{analysisResult.industry}</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-xs text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1"><Palette size={12}/> Brand Colors</p>
-                                            <div className="flex gap-2">
-                                                {analysisResult.colors.map((color, i) => (
-                                                    <div key={i} className="w-8 h-8 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: color }} title={color}></div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">Brand Vibe</p>
-                                            <p className="text-white font-light italic">"{analysisResult.vibe}"</p>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            )}
-                        </div>
                     </motion.div>
                 );
             case 2:
@@ -486,33 +431,39 @@ const ExhibitionStudioPage: React.FC = () => {
                             <h2 className="text-3xl font-serif font-bold text-white mb-2">Event Details</h2>
                             <p className="text-gray-400">Where will you be exhibiting?</p>
                         </div>
-                        <div className="grid md:grid-cols-2 gap-8">
-                             <div className="md:col-span-2 space-y-2">
+                        <div className="grid md:grid-cols-2 gap-x-12 gap-y-8">
+                             <div className="md:col-span-2 space-y-1">
                                 <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Event Name <span className="text-red-500">*</span></label>
-                                <input 
-                                    type="text" 
-                                    name="eventName" 
-                                    value={formData.eventName} 
-                                    onChange={(e) => {
-                                        handleInputChange(e);
-                                        // Heuristic for immediate industry detection (refined on backend)
-                                        const val = e.target.value.toLowerCase();
-                                        if(val.includes('tech') || val.includes('gitex')) setFormData(prev => ({...prev, eventIndustry: 'Technology'}));
-                                        else if(val.includes('food') || val.includes('gulfood')) setFormData(prev => ({...prev, eventIndustry: 'Food & Beverage'}));
-                                        else if(val.includes('health') || val.includes('med')) setFormData(prev => ({...prev, eventIndustry: 'Healthcare'}));
-                                        else if(val.includes('build') || val.includes('big 5')) setFormData(prev => ({...prev, eventIndustry: 'Construction'}));
-                                    }} 
-                                    className={getInputClass('eventName')} 
-                                    placeholder="e.g. GITEX Global 2024" 
-                                />
-                                {formData.eventIndustry && <p className="text-xs text-fann-gold flex items-center gap-1 mt-1"><Sparkles size={10}/> Detected Industry: {formData.eventIndustry}</p>}
-                                {errors.eventName && <span className="text-red-400 text-xs flex items-center gap-1 mt-1 font-semibold"><AlertCircle size={10} /> Required</span>}
+                                <div className="relative">
+                                    <Sparkles className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-500" size={18}/>
+                                    <input 
+                                        type="text" 
+                                        name="eventName" 
+                                        value={formData.eventName} 
+                                        onChange={(e) => {
+                                            handleInputChange(e);
+                                            // Simple heuristic for immediate industry detection
+                                            const val = e.target.value.toLowerCase();
+                                            if(val.includes('tech') || val.includes('gitex')) setFormData(prev => ({...prev, eventIndustry: 'Technology'}));
+                                            else if(val.includes('food') || val.includes('gulfood')) setFormData(prev => ({...prev, eventIndustry: 'Food & Beverage'}));
+                                            else if(val.includes('health') || val.includes('med')) setFormData(prev => ({...prev, eventIndustry: 'Healthcare'}));
+                                            else if(val.includes('build') || val.includes('big 5')) setFormData(prev => ({...prev, eventIndustry: 'Construction'}));
+                                        }} 
+                                        className={`${getInputClass('eventName')} pl-8`} 
+                                        placeholder="e.g. GITEX Global 2024" 
+                                    />
+                                </div>
+                                {formData.eventIndustry && (
+                                    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-[10px] text-fann-gold flex items-center gap-1 mt-2 uppercase tracking-wider">
+                                        Detected Industry: {formData.eventIndustry}
+                                    </motion.p>
+                                )}
                             </div>
-                             <div className="space-y-2">
+                             <div className="space-y-1">
                                 <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Date</label>
                                 <input type="date" name="eventDate" value={formData.eventDate} onChange={handleInputChange} className={getInputClass('eventDate')} />
                             </div>
-                            <div className="space-y-2">
+                            <div className="space-y-1">
                                 <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Venue</label>
                                 <input type="text" name="eventLocation" value={formData.eventLocation} onChange={handleInputChange} className={getInputClass('eventLocation')} placeholder="e.g. DWTC" />
                             </div>
@@ -531,9 +482,14 @@ const ExhibitionStudioPage: React.FC = () => {
                              <div className="absolute top-0 right-0 p-4 opacity-10"><Ruler size={100} className="text-fann-gold"/></div>
                             <div className="flex justify-between items-end mb-10 relative z-10">
                                 <span className="text-4xl font-bold text-fann-gold">{formData.standWidth * formData.standLength} <span className="text-lg text-gray-400">sqm</span></span>
-                                <span className="text-sm font-mono text-gray-500 uppercase">
-                                    {formData.standWidth}m width × {formData.standLength}m length
-                                </span>
+                                <div className="text-right">
+                                    <span className="block text-sm font-mono text-gray-500 uppercase mb-1">
+                                        {formData.standWidth}m width × {formData.standLength}m length
+                                    </span>
+                                    <span className="block text-sm font-mono text-fann-gold uppercase">
+                                        Max Height: {formData.standHeight}m
+                                    </span>
+                                </div>
                             </div>
                             <div className="space-y-8 relative z-10">
                                 <div>
@@ -543,6 +499,10 @@ const ExhibitionStudioPage: React.FC = () => {
                                 <div>
                                     <div className="flex justify-between text-xs font-bold text-fann-gold uppercase tracking-widest mb-4"><span>Length</span><span>{formData.standLength}m</span></div>
                                     <input type="range" name="standLength" min="3" max="50" value={formData.standLength} onChange={handleSliderChange} className="w-full h-1 bg-gray-800 appearance-none cursor-pointer accent-fann-gold" />
+                                </div>
+                                <div>
+                                    <div className="flex justify-between text-xs font-bold text-fann-gold uppercase tracking-widest mb-4 flex items-center gap-1"><span className="flex items-center gap-1"><ArrowUpToLine size={12}/> Max Build Height</span><span>{formData.standHeight}m</span></div>
+                                    <input type="range" name="standHeight" min="2" max="10" step="0.5" value={formData.standHeight} onChange={handleSliderChange} className="w-full h-1 bg-gray-800 appearance-none cursor-pointer accent-fann-gold" />
                                 </div>
                             </div>
                         </div>
@@ -560,7 +520,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                         className={`flex flex-col items-center justify-center p-6 border transition-all duration-300 gap-4 ${
                                             formData.boothType === config.id 
                                             ? 'border-fann-gold bg-fann-gold/10' 
-                                            : 'border-white/10 bg-white/5 hover:bg-white/10'
+                                            : 'border-white/10 bg-transparent hover:bg-white/5'
                                         } ${errors.boothType ? 'border-red-500' : ''}`}
                                     >
                                         {config.icon(formData.boothType === config.id)}
@@ -593,7 +553,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                         className={`p-4 border text-left flex items-center justify-between transition-all ${
                                             isSelected 
                                             ? 'border-fann-gold bg-fann-gold/20 text-white' 
-                                            : 'border-white/10 bg-white/5 text-gray-400 hover:text-white hover:border-white/30'
+                                            : 'border-white/10 bg-transparent text-gray-400 hover:text-white hover:border-white/30'
                                         }`}
                                     >
                                         <span className="font-semibold text-sm">{item}</span>
@@ -607,7 +567,7 @@ const ExhibitionStudioPage: React.FC = () => {
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm text-gray-400">
                                 <div><p className="text-xs text-gray-600 uppercase">Company</p><p className="text-white">{formData.companyName || 'N/A'}</p></div>
                                 <div><p className="text-xs text-gray-600 uppercase">Event</p><p className="text-white">{formData.eventName}</p></div>
-                                <div><p className="text-xs text-gray-600 uppercase">Size</p><p className="text-white">{formData.standWidth}m x {formData.standLength}m</p></div>
+                                <div><p className="text-xs text-gray-600 uppercase">Specs</p><p className="text-white">{formData.standWidth}x{formData.standLength}m (H: {formData.standHeight}m)</p></div>
                                 <div><p className="text-xs text-gray-600 uppercase">Type</p><p className="text-white">{formData.boothType}</p></div>
                             </div>
                         </div>
@@ -673,9 +633,11 @@ const ExhibitionStudioPage: React.FC = () => {
                                 ) : (
                                     <button
                                         type="submit"
-                                        className="btn-primary flex items-center gap-3"
+                                        disabled={isSubmitting}
+                                        className="btn-primary flex items-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed"
                                     >
-                                        <Sparkles size={16} /> Generate Concepts
+                                        {isSubmitting ? <Loader2 className="animate-spin" size={16} /> : <Sparkles size={16} />} 
+                                        Generate Concepts
                                     </button>
                                 )}
                             </div>
