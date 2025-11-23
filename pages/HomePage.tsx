@@ -11,37 +11,53 @@ const HeroSection: React.FC = () => {
     const yText = useTransform(scrollY, [0, 500], [0, 150]);
     const opacityText = useTransform(scrollY, [0, 300], [1, 0]);
 
-    const dynamicWords = ["Reality", "Exhibitions", "Experiences", "Interiors"];
-    const [currentWordIndex, setCurrentWordIndex] = useState(0);
+    const slides = [
+        {
+            image: "https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80",
+            text: "Exhibitions"
+        },
+        {
+            image: "https://images.pexels.com/photos/2608516/pexels-photo-2608516.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80",
+            text: "Global Events"
+        },
+        {
+            image: "https://images.pexels.com/photos/1170412/pexels-photo-1170412.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80",
+            text: "Luxury Interiors"
+        }
+    ];
+
+    const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setCurrentWordIndex((prev) => (prev + 1) % dynamicWords.length);
-        }, 3000); 
+            setCurrentIndex((prev) => (prev + 1) % slides.length);
+        }, 5000); 
         return () => clearInterval(interval);
     }, []);
 
     return (
         <section className="relative h-screen flex items-center justify-center overflow-hidden bg-fann-teal-dark">
-            {/* Background Video Layer */}
+            {/* Background Slideshow */}
             <div className="absolute inset-0 z-0">
-                <video 
-                    autoPlay 
-                    loop 
-                    muted 
-                    playsInline 
-                    poster="https://images.pexels.com/photos/4322027/pexels-photo-4322027.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                    className="w-full h-full object-cover scale-105"
-                >
-                    {/* Abstract Gold/Black Fluid Luxury Video */}
-                    <source src="https://videos.pexels.com/video-files/3163534/3163534-uhd_2560_1440_30fps.mp4" type="video/mp4" />
-                </video>
-
-                {/* Refined Gradient Overlay - Lighter center for visibility */}
-                <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-fann-teal-dark z-10" />
-                
-                {/* Subtle texture for grain effect */}
-                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 z-10 mix-blend-overlay"></div>
+                <AnimatePresence mode="popLayout">
+                    <motion.div
+                        key={currentIndex}
+                        initial={{ opacity: 0, scale: 1.1 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 1.5, ease: "easeInOut" }}
+                        className="absolute inset-0"
+                    >
+                        <img 
+                            src={slides[currentIndex].image}
+                            alt="FANN Project Background"
+                            className="w-full h-full object-cover"
+                        />
+                        {/* Professional Dark Overlays for Text Readability */}
+                        <div className="absolute inset-0 bg-black/60 mix-blend-multiply" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-fann-teal-dark/90" />
+                    </motion.div>
+                </AnimatePresence>
             </div>
 
             {/* Main Content */}
@@ -59,27 +75,25 @@ const HeroSection: React.FC = () => {
                         className="mb-10"
                     >
                          <h1 className="text-5xl md:text-7xl lg:text-9xl font-serif font-bold text-white tracking-tight uppercase leading-[0.9] mb-8 drop-shadow-2xl flex flex-col items-center">
-                            <span className="block">Transforming</span>
-                            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-fann-gold via-white to-fann-gold bg-300% animate-gradient">
-                                Visions Into
-                            </span>
-                            <span className="relative h-[1.2em] overflow-hidden min-w-[5ch] text-left inline-flex items-center text-white mt-2">
+                            <span className="block text-fann-gold/90 text-2xl md:text-4xl font-sans font-bold tracking-[0.3em] mb-4">Premier Design & Build</span>
+                            <span className="block">For World-Class</span>
+                            <span className="relative h-[1.2em] overflow-hidden min-w-[5ch] text-left inline-flex items-center mt-2 text-transparent bg-clip-text bg-gradient-to-r from-white via-fann-gold to-white bg-200% animate-gradient">
                                 <AnimatePresence mode="wait">
                                     <motion.span
-                                        key={dynamicWords[currentWordIndex]}
-                                        initial={{ y: 80, opacity: 0 }}
+                                        key={slides[currentIndex].text}
+                                        initial={{ y: 100, opacity: 0 }}
                                         animate={{ y: 0, opacity: 1 }}
-                                        exit={{ y: -80, opacity: 0 }}
+                                        exit={{ y: -100, opacity: 0 }}
                                         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                                        className="absolute left-1/2 -translate-x-1/2"
+                                        className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap"
                                     >
-                                        {dynamicWords[currentWordIndex]}
+                                        {slides[currentIndex].text}
                                     </motion.span>
                                 </AnimatePresence>
                             </span>
                         </h1>
-                        <p className="text-lg md:text-2xl text-gray-300 font-light tracking-wide max-w-3xl mx-auto border-t border-fann-gold/30 pt-8 mt-4">
-                            Premier Design & Build Partner for <span className="text-fann-gold font-semibold">Exhibitions</span> and <span className="text-fann-gold font-semibold">Luxury Interiors</span>.
+                        <p className="text-lg md:text-2xl text-gray-300 font-light tracking-wide max-w-3xl mx-auto border-t border-fann-gold/30 pt-8 mt-4 leading-relaxed">
+                            Your trusted turnkey partner in Dubai & KSA for award-winning <span className="text-white font-medium">Exhibition Stands</span>, <span className="text-white font-medium">Corporate Events</span>, and <span className="text-white font-medium">Commercial Fit-Outs</span>.
                         </p>
                     </motion.div>
 
@@ -91,16 +105,16 @@ const HeroSection: React.FC = () => {
                         className="flex flex-col sm:flex-row gap-6"
                     >
                         <Link to="/portfolio">
-                            <button className="group relative bg-fann-gold text-black font-bold text-sm tracking-[0.2em] uppercase py-5 px-10 overflow-hidden transition-transform duration-300 hover:scale-105 shadow-[0_0_30px_rgba(212,175,118,0.3)]">
+                            <button className="group relative bg-fann-gold text-black font-bold text-sm tracking-[0.2em] uppercase py-5 px-12 overflow-hidden transition-transform duration-300 hover:scale-105 shadow-[0_0_30px_rgba(212,175,118,0.3)]">
                                 <span className="relative z-10 flex items-center gap-3">
-                                    View Portfolio <ArrowRight size={18} />
+                                    View Projects <ArrowRight size={18} />
                                 </span>
                             </button>
                         </Link>
-                        <Link to="/fann-studio">
-                            <button className="group relative bg-transparent border border-white text-white font-bold text-sm tracking-[0.2em] uppercase py-5 px-10 overflow-hidden transition-colors duration-300 hover:bg-white hover:text-black hover:border-white">
+                        <Link to="/contact">
+                            <button className="group relative bg-transparent border border-white text-white font-bold text-sm tracking-[0.2em] uppercase py-5 px-12 overflow-hidden transition-colors duration-300 hover:bg-white hover:text-black hover:border-white backdrop-blur-sm">
                                 <span className="relative z-10 flex items-center gap-3">
-                                    <Zap size={18} className="text-fann-gold group-hover:text-black"/> Try AI Studio
+                                    Get A Quote <CheckCircle size={18} className="text-fann-gold group-hover:text-black"/>
                                 </span>
                             </button>
                         </Link>
@@ -115,7 +129,7 @@ const HeroSection: React.FC = () => {
                 transition={{ duration: 1, delay: 1.5 }}
                 className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-20"
             >
-                <span className="text-[10px] uppercase tracking-widest text-fann-gold/70">Scroll</span>
+                <span className="text-[10px] uppercase tracking-widest text-fann-gold/70">Explore FANN</span>
                 <div className="w-[1px] h-16 bg-gradient-to-b from-fann-gold/0 via-fann-gold to-fann-gold/0 opacity-50"></div>
             </motion.div>
         </section>
