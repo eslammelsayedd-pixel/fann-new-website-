@@ -24,31 +24,7 @@ export default async function handler(req: Request) {
         }
         const ai = new GoogleGenAI({ apiKey });
 
-        // === 1. Analyze Brand & Generate 4 Text Concepts ===
-        const textPrompt = `
-        You are a world-class exhibition stand designer.
-        
-        Context:
-        - Event: "${eventName}" (Infer the industry).
-        - Company: "${companyName}"
-        - Website: "${websiteUrl}"
-        - Client Brief: "${brief || 'No specific instructions.'}"
-        
-        Constraints:
-        - Orientation: ${boothType} (${standWidth}m x ${standLength}m).
-        - Height: ${standHeight || 4}m.
-        - Must include: ${features.join(', ') || 'Standard exhibition features'}.
-        
-        Task:
-        Create FOUR distinct design concepts:
-        1. Concept A: "Modern & Tech-Forward" (Innovation focus).
-        2. Concept B: "Luxury & Hospitality" (Premium materials, lounge focus).
-        3. Concept C: "Interactive & Engaging" (Gamification/Demo focus).
-        4. Concept D: "Sustainable & Organic" (Greenery, wood, eco-friendly focus).
-
-        Return a single valid JSON object.
-        `;
-
+        // Define Schema Structure
         const conceptSchema = {
             type: Type.OBJECT,
             properties: {
@@ -73,6 +49,33 @@ export default async function handler(req: Request) {
             required: ['industryDetected', 'conceptA', 'conceptB', 'conceptC', 'conceptD']
         };
 
+        // === 1. Analyze Brand & Generate 4 Text Concepts ===
+        const textPrompt = `
+        You are a world-class exhibition stand designer.
+        
+        Context:
+        - Event: "${eventName}" (Infer the industry).
+        - Company: "${companyName}"
+        - Website: "${websiteUrl}"
+        - Client Brief: "${brief || 'No specific instructions.'}"
+        
+        Constraints:
+        - Orientation: ${boothType} (${standWidth}m x ${standLength}m).
+        - Height: ${standHeight || 4}m.
+        - Must include: ${features.join(', ') || 'Standard exhibition features'}.
+        
+        Task:
+        Create FOUR distinct design concepts:
+        1. Concept A: "Modern & Tech-Forward" (Innovation focus).
+        2. Concept B: "Luxury & Hospitality" (Premium materials, lounge focus).
+        3. Concept C: "Interactive & Engaging" (Gamification/Demo focus).
+        4. Concept D: "Sustainable & Organic" (Greenery, wood, eco-friendly focus).
+
+        OUTPUT INSTRUCTION:
+        Return ONLY a raw valid JSON object matching the following structure. Do not include markdown code blocks (like \`\`\`json).
+        Structure: ${JSON.stringify(responseSchema)}
+        `;
+
         // If logo is provided, pass it for color analysis implicitly
         const parts = [];
         if (logo && logo.startsWith('data:')) {
@@ -89,12 +92,23 @@ export default async function handler(req: Request) {
             contents: { parts },
             config: {
                 tools: [{ googleSearch: {} }], // Use search to understand the company/event
-                responseMimeType: "application/json",
-                responseSchema: responseSchema,
+                // Note: responseMimeType and responseSchema are NOT supported when using tools in the same request.
+                // We rely on the prompt to enforce JSON structure.
             },
         });
 
-        const designData = JSON.parse(textResponse.text.trim());
+        // Clean and Parse JSON
+        let rawText = textResponse.text.trim();
+        // Remove markdown code blocks if the model adds them despite instructions
+        rawText = rawText.replace(/^```json\s*/, "").replace(/^```\s*/, "").replace(/\s*```$/, "");
+        
+        let designData;
+        try {
+            designData = JSON.parse(rawText);
+        } catch (e) {
+            console.error("JSON Parsing Failed", rawText);
+            throw new Error("Failed to parse generated design data.");
+        }
 
         // === 2. Generate Images (4 distinct renders) ===
         

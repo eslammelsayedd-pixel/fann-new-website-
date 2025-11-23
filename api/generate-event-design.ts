@@ -1,3 +1,4 @@
+
 import { GoogleGenAI, Type } from "@google/genai";
 
 export const config = {
@@ -11,9 +12,9 @@ export default async function handler(req: Request) {
 
     try {
         const config = await req.json();
-        const { companyName, eventName, guestCount, eventType, style, features } = config;
+        const { companyName, eventName, guestCount, eventType, brief, features } = config;
 
-        if (!companyName || !eventName || !guestCount || !eventType || !style) {
+        if (!companyName || !eventName) {
             return new Response(JSON.stringify({ error: 'Missing required design parameters.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
         }
 
@@ -23,84 +24,120 @@ export default async function handler(req: Request) {
         }
         const ai = new GoogleGenAI({ apiKey });
 
-        // === 1. Generate Text Concept ===
-        const textPrompt = `
-        You are a world-class event designer for luxury corporate events in Dubai.
-        Based on the following client brief, generate a compelling and creative event concept.
-        - Company: "${companyName}"
-        - Event Name: "${eventName}"
-        - Guest Count: Approximately ${guestCount}
-        - Event Type: ${eventType}
-        - Desired Style: ${style}
-        - Key Features Required: ${features.join(', ') || 'None specified'}
-
-        The concept should be innovative and high-end, suitable for a major corporate gathering in a premium Dubai venue like the Armani Hotel or Madinat Jumeirah.
-        The "detailedDescription" should be a captivating paragraph (3-4 sentences).
-        Return a single, valid JSON object with the exact structure defined. Do not include any text, notes, or markdown formatting before or after the JSON.
-        `;
+        // Define Schema
+        const conceptSchema = {
+            type: Type.OBJECT,
+            properties: {
+                conceptName: { type: Type.STRING },
+                style: { type: Type.STRING },
+                detailedDescription: { type: Type.STRING, description: "3-4 sentences describing the atmosphere." },
+                decorElements: { type: Type.ARRAY, items: { type: Type.STRING } },
+                lighting: { type: Type.STRING },
+                engagementTech: { type: Type.ARRAY, items: { type: Type.STRING } }
+            },
+            required: ['conceptName', 'style', 'detailedDescription', 'decorElements', 'lighting', 'engagementTech']
+        };
 
         const responseSchema = {
             type: Type.OBJECT,
             properties: {
-                conceptName: { type: Type.STRING, description: "A catchy, professional name for the event theme (e.g., 'The Lumina Gala')." },
-                detailedDescription: { type: Type.STRING, description: "A detailed paragraph describing the event's atmosphere, decor, and guest experience." },
-                decorElements: { type: Type.ARRAY, items: { type: Type.STRING }, description: "A list of 3-4 key decor elements (e.g., 'Cascading floral installations', 'Custom-branded ice sculptures')." },
-                lighting: { type: Type.STRING, description: "A brief description of the AV & lighting strategy (e.g., 'Dynamic projection mapping on walls with warm, ambient uplighting')." },
-                engagementTech: { type: Type.ARRAY, items: { type: Type.STRING }, description: "A list of 2-3 suggested technology integrations for guest engagement (e.g., 'Interactive social media wall', 'Live digital caricature artist')." },
+                industryDetected: { type: Type.STRING },
+                conceptA: conceptSchema,
+                conceptB: conceptSchema,
+                conceptC: conceptSchema,
+                conceptD: conceptSchema
             },
-            required: ['conceptName', 'detailedDescription', 'decorElements', 'lighting', 'engagementTech']
+            required: ['industryDetected', 'conceptA', 'conceptB', 'conceptC', 'conceptD']
         };
+
+        // === 1. Generate 4 Text Concepts ===
+        const textPrompt = `
+        You are a world-class creative director for luxury events in Dubai.
+        
+        Context:
+        - Client: "${companyName}"
+        - Event: "${eventName}" (${eventType})
+        - Guests: ~${guestCount}
+        - Brief/Theme: "${brief || 'No specific theme, surprise us.'}"
+        - Must Haves: ${features.join(', ') || 'Standard luxury event features'}
+
+        Task:
+        Create FOUR distinct event concepts to pitch to the client:
+        1. Concept A: "Timeless Luxury" (Elegant, classic, opulent).
+        2. Concept B: "Futuristic Tech" (Digital, immersive, neon/holographic).
+        3. Concept C: "Avant-Garde" (Artistic, bold, unexpected).
+        4. Concept D: "Organic Sanctuary" (Sustainable, biophilic, warm).
+
+        OUTPUT INSTRUCTION:
+        Return ONLY a raw valid JSON object matching the following structure. Do not include markdown code blocks.
+        Structure: ${JSON.stringify(responseSchema)}
+        `;
 
         const textResponse = await ai.models.generateContent({
             model: "gemini-2.5-flash",
-            contents: textPrompt,
+            contents: { parts: [{ text: textPrompt }] },
             config: {
-                responseMimeType: "application/json",
-                responseSchema: responseSchema,
+                tools: [{ googleSearch: {} }] // Use search to understand the company context if needed
+                // Removed responseMimeType: 'application/json' to avoid conflict with tools
             },
         });
 
-        const designConcept = JSON.parse(textResponse.text.trim());
+        // Clean and Parse JSON
+        let rawText = textResponse.text.trim();
+        rawText = rawText.replace(/^```json\s*/, "").replace(/^```\s*/, "").replace(/\s*```$/, "");
 
-        // === 2. Generate Image (Using gemini-3-pro-image-preview / Nano Banana Pro) ===
-        const imagePrompt = `Photorealistic, atmospheric mood board image for a bespoke corporate event: the "${designConcept.conceptName}" for "${companyName}".
-        The event is a "${eventType}" with a "${style}" theme.
-        The scene depicts the main event space, described as: "${designConcept.detailedDescription}".
-        Key visual elements include: ${features.join(', ')}.
-        The decor features: ${designConcept.decorElements.join(', ')}.
-        The lighting is ${designConcept.lighting}.
-        The overall atmosphere is professional, luxurious, and highly engaging. High-quality, detailed rendering.`;
-        
-        // Fix: Cast the entire object to any to bypass type checking for imageConfig/imageSize
-        const imageResponse = await ai.models.generateContent({
-            model: 'gemini-3-pro-image-preview',
-            contents: {
-                parts: [{ text: imagePrompt }],
-            },
-            config: {
-                imageConfig: {
-                    aspectRatio: "16:9",
-                    imageSize: "1K"
-                }
-            }
-        } as any);
-        
-        let image = null;
-        if (imageResponse.candidates?.[0]?.content?.parts) {
-            for (const part of imageResponse.candidates[0].content.parts) {
-                if (part.inlineData) {
-                    image = part.inlineData.data;
-                    break;
-                }
-            }
+        let designData;
+        try {
+            designData = JSON.parse(rawText);
+        } catch (e) {
+            console.error("JSON Parsing Failed", rawText);
+            throw new Error("Failed to parse generated event concepts.");
         }
 
-        if (!image) {
-            throw new Error("Failed to generate image.");
-        }
+        // === 2. Generate Images (4 distinct renders) ===
+        
+        const generateImage = async (concept: any) => {
+             const imagePrompt = `Photorealistic, award-winning event photography of "${concept.conceptName}" for "${companyName}".
+            Event Type: ${eventType}.
+            Style: ${concept.style}.
+            Scene Description: ${concept.detailedDescription}.
+            Key Decor: ${concept.decorElements.join(', ')}.
+            Lighting Atmosphere: ${concept.lighting}.
+            Venue: High-end luxury venue in Dubai.
+            Resolution: 8k, cinematic, atmospheric depth.`;
+
+            const resp = await ai.models.generateContent({
+                model: 'gemini-3-pro-image-preview',
+                contents: { parts: [{ text: imagePrompt }] },
+                config: {
+                    imageConfig: { aspectRatio: "16:9", imageSize: "1K" }
+                }
+            } as any);
+
+            if (resp.candidates?.[0]?.content?.parts) {
+                for (const part of resp.candidates[0].content.parts) {
+                    if (part.inlineData) return part.inlineData.data;
+                }
+            }
+            return null;
+        };
+
+        // Run image generation in parallel
+        const [imageA, imageB, imageC, imageD] = await Promise.all([
+            generateImage(designData.conceptA),
+            generateImage(designData.conceptB),
+            generateImage(designData.conceptC),
+            generateImage(designData.conceptD)
+        ]);
 
         // === 3. Respond ===
-        return new Response(JSON.stringify({ designConcept, image }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        return new Response(JSON.stringify({ 
+            industry: designData.industryDetected,
+            conceptA: { ...designData.conceptA, image: imageA },
+            conceptB: { ...designData.conceptB, image: imageB },
+            conceptC: { ...designData.conceptC, image: imageC },
+            conceptD: { ...designData.conceptD, image: imageD }
+        }), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
     } catch (error: any) {
         console.error('Error in generate-event-design API:', error);
