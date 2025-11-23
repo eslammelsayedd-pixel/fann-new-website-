@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { navLinks } from '../constants';
@@ -68,7 +67,7 @@ const Header: React.FC = () => {
                             alt="FANN Logo" 
                             className="h-10 w-auto transition-transform duration-300 group-hover:scale-105" 
                         />
-                        <span className={`font-serif font-bold text-2xl tracking-widest transition-colors duration-300 ${logoTextClass}`}>
+                        <span className={`font-sans font-bold text-2xl tracking-widest transition-colors duration-300 ${logoTextClass}`}>
                             FANN
                         </span>
                     </Link>
