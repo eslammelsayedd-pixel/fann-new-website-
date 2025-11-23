@@ -10,189 +10,144 @@ const Header: React.FC = () => {
     const [scrolled, setScrolled] = useState(false);
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
     const location = useLocation();
-    const isHome = location.pathname === '/';
 
     useEffect(() => {
         const handleScroll = () => {
-            setScrolled(window.scrollY > 20);
+            setScrolled(window.scrollY > 50);
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Liquid Metal Header Styling
     const headerClasses = scrolled
-        ? 'bg-fann-dark-glass backdrop-blur-xl border-b border-white/5 py-4 shadow-[0_10px_30px_rgba(0,0,0,0.5)]'
-        : isHome
-            ? 'bg-transparent py-6'
-            : 'bg-fann-black border-b border-white/5 py-6';
-
-    const textColorClass = 'text-fann-chrome';
-    const hoverColorClass = 'hover:text-fann-gold hover:drop-shadow-[0_0_8px_rgba(212,175,55,0.5)]';
-    const activeLinkClass = 'text-fann-gold drop-shadow-[0_0_8px_rgba(212,175,55,0.3)]';
-    const dropdownBgClass = 'bg-fann-charcoal/90 backdrop-blur-xl border border-white/10';
-    const dropdownTextClass = 'text-gray-400 hover:text-white hover:bg-white/5';
+        ? 'bg-fann-charcoal/90 backdrop-blur-md border-b border-white/5 py-4'
+        : 'bg-transparent py-6';
 
     return (
         <header 
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${headerClasses}`}
         >
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center justify-between">
-                    {/* LOGO */}
-                    <Link to="/" className="group relative z-50 flex items-center gap-3">
-                        <img 
-                            src="/favicon.svg" 
-                            alt="FANN Logo" 
-                            className="h-10 w-auto transition-transform duration-300 group-hover:scale-110 drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]" 
-                        />
-                        <span className={`font-sans font-black text-2xl tracking-[0.2em] transition-colors duration-300 text-white group-hover:text-fann-gold`}>
-                            FANN
-                        </span>
-                    </Link>
+            <div className="container mx-auto flex items-center justify-between">
+                {/* LOGO */}
+                <Link to="/" className="flex items-center gap-3 z-50 hover-trigger">
+                    <img 
+                        src="/favicon.svg" 
+                        alt="FANN Logo" 
+                        className="h-8 w-auto" 
+                    />
+                    <span className="font-sans font-bold text-xl tracking-[0.15em] text-white">
+                        FANN
+                    </span>
+                </Link>
 
-                    {/* DESKTOP NAVIGATION */}
-                    <nav className="hidden lg:flex items-center space-x-8">
+                {/* DESKTOP NAVIGATION */}
+                <nav className="hidden lg:flex items-center space-x-10">
+                    {navLinks.map((link) => (
+                        <div key={link.name} className="relative group h-full">
+                            {link.children ? (
+                                <button 
+                                    className="flex items-center gap-1 text-xs font-semibold uppercase tracking-widest text-gray-300 hover:text-fann-gold transition-colors py-2 hover-trigger"
+                                >
+                                    {link.name}
+                                    <ChevronDown size={10} className="opacity-70" />
+                                </button>
+                            ) : (
+                                <NavLink
+                                    to={link.path!}
+                                    className={({ isActive }) => `text-xs font-semibold uppercase tracking-widest transition-colors relative link-underline hover-trigger ${
+                                        isActive ? 'text-fann-gold' : 'text-gray-300 hover:text-white'
+                                    }`}
+                                >
+                                    {link.name}
+                                </NavLink>
+                            )}
+                            
+                            {/* Dropdown */}
+                            {link.children && (
+                                <div className="absolute top-full left-1/2 -translate-x-1/2 pt-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                                    <div className="bg-fann-charcoal border border-white/10 p-4 min-w-[200px] shadow-2xl rounded-sm">
+                                        {link.children.map(child => (
+                                            <NavLink
+                                                key={child.name}
+                                                to={child.path}
+                                                className="block px-4 py-3 text-xs font-medium uppercase tracking-wider text-gray-400 hover:text-fann-gold hover:bg-white/5 transition-colors hover-trigger"
+                                            >
+                                                {child.name}
+                                            </NavLink>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </nav>
+
+                {/* RIGHT ACTIONS */}
+                <div className="hidden lg:flex items-center gap-6">
+                    <ThemeToggle />
+                    <Link to="/contact" className="hover-trigger">
+                      <button 
+                          className="btn-gold"
+                      >
+                          Start Project
+                      </button>
+                    </Link>
+                </div>
+
+                {/* MOBILE TOGGLE */}
+                <div className="lg:hidden flex items-center gap-4 z-50">
+                    <button 
+                        onClick={() => setIsOpen(!isOpen)} 
+                        className="text-white p-2 hover:text-fann-gold transition-colors"
+                    >
+                        {isOpen ? <X size={24} /> : <Menu size={24} />}
+                    </button>
+                </div>
+            </div>
+            
+            {/* MOBILE MENU */}
+            <AnimatePresence>
+            {isOpen && (
+                <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="fixed inset-0 bg-fann-charcoal z-40 pt-24 px-6 overflow-y-auto"
+                >
+                    <nav className="flex flex-col space-y-6">
                         {navLinks.map((link) => (
-                            link.children ? (
-                                <div key={link.name} className="relative group h-full">
-                                    <button className={`flex items-center space-x-1 text-xs font-bold uppercase tracking-[0.15em] transition-all duration-300 py-2 ${textColorClass} ${hoverColorClass}`}>
-                                        <span>{link.name}</span>
-                                        <ChevronDown size={12} className="group-hover:rotate-180 transition-transform duration-300 opacity-70" />
-                                    </button>
-                                    
-                                    {/* Dropdown */}
-                                    <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                                        <div className={`rounded-sm shadow-[0_0_30px_rgba(0,0,0,0.5)] overflow-hidden py-2 ${dropdownBgClass}`}>
+                             <div key={link.name}>
+                                {link.children ? (
+                                    <div className="space-y-4">
+                                        <div className="text-sm font-bold text-gray-500 uppercase tracking-widest border-b border-white/10 pb-2">{link.name}</div>
+                                        <div className="pl-4 space-y-4 border-l border-white/10">
                                             {link.children.map(child => (
                                                 <NavLink
                                                     key={child.name}
                                                     to={child.path}
-                                                    className={({ isActive }) => `block px-6 py-3 text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
-                                                        isActive 
-                                                        ? 'text-fann-gold bg-white/5' 
-                                                        : dropdownTextClass
-                                                    }`}
+                                                    onClick={() => setIsOpen(false)}
+                                                    className="block text-lg font-medium text-white hover:text-fann-gold"
                                                 >
                                                     {child.name}
                                                 </NavLink>
                                             ))}
                                         </div>
                                     </div>
-                                </div>
-                            ) : (
-                                <NavLink
-                                    key={link.name}
-                                    to={link.path!}
-                                    className={({ isActive }) => `text-xs font-bold uppercase tracking-[0.15em] transition-all duration-300 relative group py-2 ${
-                                        isActive ? activeLinkClass : `${textColorClass} ${hoverColorClass}`
-                                    }`}
-                                >
-                                    {({ isActive }) => (
-                                        <>
-                                            {link.name}
-                                            <span className={`absolute bottom-0 left-0 w-0 h-0.5 bg-fann-gold transition-all duration-300 shadow-[0_0_10px_#D4AF37] ${isActive ? 'w-full' : 'group-hover:w-full'}`}></span>
-                                        </>
-                                    )}
-                                </NavLink>
-                            )
-                        ))}
-                    </nav>
-
-                    {/* RIGHT ACTIONS */}
-                    <div className="hidden lg:flex items-center space-x-6">
-                        <div id="google_translate_element" className="opacity-70 hover:opacity-100 transition-opacity scale-90 origin-right"></div>
-                        <ThemeToggle />
-                        <Link to="/contact">
-                          <button 
-                              className="relative overflow-hidden bg-transparent text-white border border-fann-gold/50 font-bold py-2.5 px-6 rounded-none text-xs uppercase tracking-[0.15em] group transition-all duration-300 hover:border-fann-gold hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]"
-                          >
-                              <span className="relative z-10 group-hover:text-black transition-colors">Start Designing</span>
-                              <div className="absolute inset-0 bg-fann-gold transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></div>
-                          </button>
-                        </Link>
-                    </div>
-
-                    {/* MOBILE TOGGLE */}
-                    <div className="lg:hidden flex items-center gap-4 z-50">
-                        <ThemeToggle />
-                        <button 
-                            onClick={() => setIsOpen(!isOpen)} 
-                            className={`p-2 transition-colors text-white hover:text-fann-gold`}
-                        >
-                            {isOpen ? <X size={28} /> : <Menu size={28} />}
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            {/* MOBILE MENU OVERLAY */}
-            <AnimatePresence>
-            {isOpen && (
-                <motion.div 
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: '100vh' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="lg:hidden fixed inset-0 bg-black z-40 overflow-y-auto pt-24 backdrop-blur-lg bg-opacity-90"
-                >
-                    <nav className="flex flex-col items-center space-y-6 px-6 pb-12">
-                        {navLinks.map((link) => (
-                             <div key={link.name} className="text-center w-full">
-                                {link.children ? (
-                                    <div className="flex flex-col items-center">
-                                        <button 
-                                            onClick={() => setOpenDropdown(openDropdown === link.name ? null : link.name)}
-                                            className={`flex items-center justify-center w-full text-xl font-bold uppercase tracking-widest mb-4 transition-colors ${openDropdown === link.name ? 'text-fann-gold' : 'text-white'}`}
-                                        >
-                                            {link.name}
-                                            <ChevronDown size={20} className={`ml-2 transition-transform duration-300 ${openDropdown === link.name ? 'rotate-180 text-fann-gold' : ''}`} />
-                                        </button>
-                                        <AnimatePresence>
-                                            {openDropdown === link.name && (
-                                                <motion.div
-                                                    initial={{ height: 0, opacity: 0 }}
-                                                    animate={{ height: 'auto', opacity: 1 }}
-                                                    exit={{ height: 0, opacity: 0 }}
-                                                    className="overflow-hidden flex flex-col items-center space-y-4 w-full bg-white/5 py-4 border-t border-b border-white/10"
-                                                >
-                                                    {link.children.map(child => (
-                                                        <NavLink
-                                                            key={child.name}
-                                                            to={child.path}
-                                                            onClick={() => setIsOpen(false)}
-                                                            className={({ isActive }) => `${isActive ? 'text-fann-gold' : 'text-gray-400'} text-sm font-bold uppercase tracking-wider hover:text-white transition-colors`}
-                                                        >
-                                                            {child.name}
-                                                        </NavLink>
-                                                    ))}
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
-                                    </div>
                                 ) : (
                                     <NavLink
                                         to={link.path!}
                                         onClick={() => setIsOpen(false)}
-                                        className={({ isActive }) => `${isActive ? 'text-fann-gold' : 'text-white'} block text-xl font-bold uppercase tracking-widest hover:text-fann-gold transition-all`}
+                                        className="block text-2xl font-serif text-white hover:text-fann-gold"
                                     >
                                         {link.name}
                                     </NavLink>
                                 )}
                             </div>
                         ))}
-                        
-                        <div className="w-24 h-px bg-white/10 my-6"></div>
-
-                        <div className="flex flex-col items-center gap-6 w-full">
-                            <div id="google_translate_element_mobile"></div>
-                            <Link to="/contact" className="w-full max-w-xs">
-                              <button 
-                                onClick={() => setIsOpen(false)}
-                                className="btn-liquid w-full"
-                              >
-                                  Start Designing
-                              </button>
+                        <div className="pt-8 mt-8 border-t border-white/10">
+                            <Link to="/contact" onClick={() => setIsOpen(false)} className="block w-full btn-gold text-center">
+                                Contact Us
                             </Link>
                         </div>
                     </nav>
