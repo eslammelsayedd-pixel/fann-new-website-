@@ -11,9 +11,9 @@ export default async function handler(req: Request) {
 
     try {
         const config = await req.json();
-        const { companyName, websiteUrl, eventName, boothSize, boothType, style, features } = config;
+        const { companyName, websiteUrl, eventName, boothSize, boothType, features } = config;
 
-        if (!companyName || !boothSize || !boothType || !style) {
+        if (!companyName || !boothSize || !boothType || !eventName) {
             return new Response(JSON.stringify({ error: 'Missing required design parameters.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
         }
 
@@ -23,41 +23,46 @@ export default async function handler(req: Request) {
         }
         const ai = new GoogleGenAI({ apiKey });
 
-        // === 1. Generate Text Concept ===
+        // === 1. Generate Text Concepts (2 Distinct Options) ===
+        // We prompt the AI to analyze the website/brand and event/industry implicitly.
         let textPrompt = `
-        You are a world-class exhibition stand designer for the luxury and tech markets in Dubai.
-        Based on the following client requirements, generate a compelling and creative design concept.
+        You are a world-class exhibition stand designer.
+        
+        Task:
+        1. Analyze the company website: "${websiteUrl || 'Not provided'}" to determine brand colors, vibe, and industry.
+        2. Analyze the event name: "${eventName}" to determine the industry vertical (e.g., Tech, Food, Real Estate).
+        3. Create TWO distinct design concepts (Concept A and Concept B) for a ${boothSize} sqm ${boothType} stand.
+           - Concept A should be "Modern, Bold, and High-Impact".
+           - Concept B should be "Luxurious, Elegant, and Sophisticated" (or an alternative style that fits the brand analysis).
+        
+        Client Details:
         - Company: "${companyName}"
-        - Website: "${websiteUrl || 'Not provided'}"
-        - Event: "${eventName}"
-        - Booth Size: ${boothSize} sqm
-        - Booth Type: ${boothType}
-        - Desired Style: ${style}
-        - Key Features Required: ${features.join(', ') || 'None specified'}
+        - Key Essentials Required: ${features.join(', ') || 'Standard exhibition requirements'}
 
-        Instruction:
-        `;
-
-        if (websiteUrl) {
-            textPrompt += `\nUse the Google Search tool to research the company at "${websiteUrl}". Analyze their brand identity, logo colors, and visual language. Incorporate their specific brand colors and aesthetic style into the "materials", "detailedDescription" and "conceptName".\n`;
-        }
-
-        textPrompt += `
-        Your concept should be innovative, luxurious, and practical for a high-traffic event like GITEX or Arab Health.
-        The "detailedDescription" should be a captivating paragraph (3-4 sentences) that mentions the brand colors specifically if found.
         Return a single, valid JSON object with the exact structure defined. Do not include any text, notes, or markdown formatting before or after the JSON.
         `;
+
+        const conceptSchema = {
+            type: Type.OBJECT,
+            properties: {
+                conceptName: { type: Type.STRING },
+                style: { type: Type.STRING },
+                description: { type: Type.STRING, description: "Captivating description of the look and feel." },
+                materials: { type: Type.ARRAY, items: { type: Type.STRING } },
+                keyFeature: { type: Type.STRING, description: "The standout element of this design." }
+            },
+            required: ['conceptName', 'style', 'description', 'materials', 'keyFeature']
+        };
 
         const responseSchema = {
             type: Type.OBJECT,
             properties: {
-                conceptName: { type: Type.STRING, description: "A catchy, professional name for the stand concept (e.g., 'The Apex Horizon Pavilion')." },
-                detailedDescription: { type: Type.STRING, description: "A detailed paragraph describing the stand's look, feel, brand color usage, and visitor journey." },
-                materials: { type: Type.ARRAY, items: { type: Type.STRING }, description: "A list of 3-4 key materials suggested for construction (e.g., 'Brushed bronze accents', 'Matte finish laminates')." },
-                lighting: { type: Type.STRING, description: "A brief description of the lighting strategy (e.g., 'Architectural track lighting with soft-lit LED strips')." },
-                technologyFeatures: { type: Type.ARRAY, items: { type: Type.STRING }, description: "A list of 2-3 suggested technology integrations (e.g., 'Holographic product display', 'Interactive touch table')." },
+                industryDetected: { type: Type.STRING, description: "The industry inferred from the event name." },
+                brandAnalysis: { type: Type.STRING, description: "Brief analysis of the brand vibe from the website." },
+                conceptA: conceptSchema,
+                conceptB: conceptSchema
             },
-            required: ['conceptName', 'detailedDescription', 'materials', 'lighting', 'technologyFeatures']
+            required: ['industryDetected', 'brandAnalysis', 'conceptA', 'conceptB']
         };
 
         const textResponse = await ai.models.generateContent({
@@ -70,48 +75,54 @@ export default async function handler(req: Request) {
             },
         });
 
-        const designConcept = JSON.parse(textResponse.text.trim());
+        const designData = JSON.parse(textResponse.text.trim());
 
-        // === 2. Generate Image (Using gemini-3-pro-image-preview / Nano Banana Pro) ===
-        const imagePrompt = `Photorealistic, award-winning 3D render of a bespoke exhibition stand for "${companyName}" at "${eventName}".
-        The design style is "${style}".
-        The concept is named "${designConcept.conceptName}" and is described as: "${designConcept.detailedDescription}".
-        It's a ${boothSize} sqm ${boothType} stand.
-        Key features visible should include: ${features.join(', ')}.
-        Prominently use these materials: ${designConcept.materials.join(', ')}.
-        The lighting should be ${designConcept.lighting}.
-        The overall atmosphere is professional, high-end, and immersive, suitable for a major Dubai trade show. High-quality, detailed rendering.`;
+        // === 2. Generate Images (2 Distinct Renders) ===
         
-        // Fix: Cast the entire object to any to bypass type checking for imageConfig/imageSize
-        const imageResponse = await ai.models.generateContent({
-            model: 'gemini-3-pro-image-preview',
-            contents: {
-                parts: [{ text: imagePrompt }],
-            },
-            config: {
-                imageConfig: {
-                    aspectRatio: "16:9",
-                    imageSize: "1K"
-                } 
-            }
-        } as any);
-        
-        let image = null;
-        if (imageResponse.candidates?.[0]?.content?.parts) {
-            for (const part of imageResponse.candidates[0].content.parts) {
-                if (part.inlineData) {
-                    image = part.inlineData.data;
-                    break;
+        const generateImage = async (concept: any) => {
+             const imagePrompt = `Photorealistic, award-winning 3D render of an exhibition stand for "${companyName}" at "${eventName}".
+            Style: ${concept.style}.
+            Concept: "${concept.conceptName}". Description: ${concept.description}.
+            Stand Type: ${boothSize} sqm ${boothType}.
+            Key Feature: ${concept.keyFeature}.
+            Materials: ${concept.materials.join(', ')}.
+            Industry: ${designData.industryDetected}.
+            Essentials visible: ${features.join(', ')}.
+            High-quality, professional architectural visualization, cinematic lighting.`;
+
+            // Fix: Cast config to any to use imageConfig
+            const resp = await ai.models.generateContent({
+                model: 'gemini-3-pro-image-preview',
+                contents: { parts: [{ text: imagePrompt }] },
+                config: {
+                    imageConfig: { aspectRatio: "16:9", imageSize: "1K" }
+                }
+            } as any);
+
+            if (resp.candidates?.[0]?.content?.parts) {
+                for (const part of resp.candidates[0].content.parts) {
+                    if (part.inlineData) return part.inlineData.data;
                 }
             }
-        }
+            return null;
+        };
 
-        if (!image) {
-            throw new Error("Failed to generate image.");
+        // Run image generation in parallel for speed
+        const [imageA, imageB] = await Promise.all([
+            generateImage(designData.conceptA),
+            generateImage(designData.conceptB)
+        ]);
+
+        if (!imageA || !imageB) {
+            throw new Error("Failed to generate images.");
         }
 
         // === 3. Respond ===
-        return new Response(JSON.stringify({ designConcept, image }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        return new Response(JSON.stringify({ 
+            industry: designData.industryDetected,
+            conceptA: { ...designData.conceptA, image: imageA },
+            conceptB: { ...designData.conceptB, image: imageB }
+        }), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
     } catch (error: any) {
         console.error('Error in generate-exhibition-design API:', error);

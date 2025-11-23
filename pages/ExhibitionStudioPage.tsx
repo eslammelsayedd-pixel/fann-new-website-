@@ -1,21 +1,87 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Building2, Palette, Sparkles, SlidersHorizontal, Check, Globe, ArrowRight, ArrowLeft, Briefcase, Mail, Phone, Calendar, MapPin, Users, Ruler, Activity, AlertCircle } from 'lucide-react';
+import { Building2, Sparkles, Check, ArrowRight, ArrowLeft, Ruler, AlertCircle, Globe, Mail, Phone, User, Box, LayoutGrid, LayoutTemplate, Square, ChevronDown } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
-
-const boothTypes = ['Island (4-side open)', 'Peninsula (3-side open)', 'Corner (2-side open)', 'Inline (1-side open)'];
-const designStyles = ['Luxurious & Elegant', 'Minimalist & Clean', 'High-Tech & Futuristic', 'Bold & Experiential', 'Warm & Natural'];
-const featureOptions = ['Private Meeting Room', 'Hospitality Bar', 'LED Screen Wall', 'Product Display Pods', 'Interactive Demo Area', 'Storage Room'];
-const eventTypes = ['Exhibition', 'Product Launch', 'Conference', 'Gala', 'Corporate Event', 'Summit'];
 
 const steps = [
     { id: 1, title: 'Basics' },
     { id: 2, title: 'Event' },
     { id: 3, title: 'Specs' },
-    { id: 4, title: 'Style' },
-    { id: 5, title: 'Features' }
+    { id: 4, title: 'Essentials' }
+];
+
+const countryCodes = [
+    { code: '+971', country: 'UAE' },
+    { code: '+966', country: 'KSA' },
+    { code: '+974', country: 'QAT' },
+    { code: '+973', country: 'BHR' },
+    { code: '+968', country: 'OMN' },
+    { code: '+965', country: 'KWT' },
+    { code: '+44', country: 'UK' },
+    { code: '+1', country: 'USA' },
+    { code: '+91', country: 'IND' },
+    { code: '+86', country: 'CHN' },
+    { code: 'Other', country: 'Other' }
+];
+
+const boothConfigs = [
+    { 
+        id: 'Island', 
+        label: 'Island (4-side open)', 
+        icon: (isSelected: boolean) => (
+            <svg viewBox="0 0 100 100" className={`w-12 h-12 ${isSelected ? 'stroke-fann-gold' : 'stroke-gray-500'} fill-none stroke-2`}>
+                <rect x="30" y="30" width="40" height="40" rx="4" className={isSelected ? 'fill-fann-gold/20' : 'fill-white/5'} />
+                <path d="M50 25 L50 15 M50 15 L45 20 M50 15 L55 20" /> {/* Top Arrow */}
+                <path d="M50 75 L50 85 M50 85 L45 80 M50 85 L55 80" /> {/* Bottom Arrow */}
+                <path d="M25 50 L15 50 M15 50 L20 45 M15 50 L20 55" /> {/* Left Arrow */}
+                <path d="M75 50 L85 50 M85 50 L80 45 M85 50 L80 55" /> {/* Right Arrow */}
+            </svg>
+        )
+    },
+    { 
+        id: 'Peninsula', 
+        label: 'Peninsula (3-side open)',
+        icon: (isSelected: boolean) => (
+            <svg viewBox="0 0 100 100" className={`w-12 h-12 ${isSelected ? 'stroke-fann-gold' : 'stroke-gray-500'} fill-none stroke-2`}>
+                <rect x="30" y="30" width="40" height="40" rx="4" className={isSelected ? 'fill-fann-gold/20' : 'fill-white/5'} />
+                <path d="M25 30 L25 70" className="stroke-gray-700 stroke-4" /> {/* Wall */}
+                <path d="M50 25 L50 15 M50 15 L45 20 M50 15 L55 20" /> {/* Top Arrow */}
+                <path d="M50 75 L50 85 M50 85 L45 80 M50 85 L55 80" /> {/* Bottom Arrow */}
+                <path d="M75 50 L85 50 M85 50 L80 45 M85 50 L80 55" /> {/* Right Arrow */}
+            </svg>
+        )
+    },
+    { 
+        id: 'Corner', 
+        label: 'Corner (2-side open)',
+        icon: (isSelected: boolean) => (
+            <svg viewBox="0 0 100 100" className={`w-12 h-12 ${isSelected ? 'stroke-fann-gold' : 'stroke-gray-500'} fill-none stroke-2`}>
+                <rect x="30" y="30" width="40" height="40" rx="4" className={isSelected ? 'fill-fann-gold/20' : 'fill-white/5'} />
+                <path d="M25 30 L25 70 M25 70 L70 70" className="stroke-gray-700 stroke-4" /> {/* Walls */}
+                <path d="M50 25 L50 15 M50 15 L45 20 M50 15 L55 20" /> {/* Top Arrow */}
+                <path d="M75 50 L85 50 M85 50 L80 45 M85 50 L80 55" /> {/* Right Arrow */}
+            </svg>
+        )
+    },
+    { 
+        id: 'Inline', 
+        label: 'Inline (1-side open)',
+        icon: (isSelected: boolean) => (
+            <svg viewBox="0 0 100 100" className={`w-12 h-12 ${isSelected ? 'stroke-fann-gold' : 'stroke-gray-500'} fill-none stroke-2`}>
+                <rect x="30" y="30" width="40" height="40" rx="4" className={isSelected ? 'fill-fann-gold/20' : 'fill-white/5'} />
+                <path d="M25 30 L25 70 M25 70 L75 70 M75 70 L75 30" className="stroke-gray-700 stroke-4" /> {/* Walls */}
+                <path d="M50 25 L50 15 M50 15 L45 20 M50 15 L55 20" /> {/* Top Arrow */}
+            </svg>
+        )
+    }
+];
+
+const essentialsList = [
+    'Reception Desk', 'Meeting Room', 'Storage Area', 'Hanging Banner', 
+    'LED Video Wall', 'Product Shelving', 'Bar / Hospitality', 
+    'Interactive Demo Area', 'Lounge Seating', 'Touchscreens'
 ];
 
 // Reusable Components
@@ -60,27 +126,8 @@ const StepIndicator: React.FC<{ currentStep: number; totalSteps: number }> = ({ 
     </div>
 );
 
-const OptionCard: React.FC<{ label: string; isSelected: boolean; onClick: () => void; }> = ({ label, isSelected, onClick }) => (
-    <motion.button
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        type="button"
-        onClick={onClick}
-        className={`relative p-6 rounded-none border text-left transition-all duration-300 group overflow-hidden w-full ${
-            isSelected 
-            ? 'border-fann-gold bg-fann-gold/10' 
-            : 'border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20'
-        }`}
-    >
-        <div className="flex items-center justify-between z-10 relative">
-            <span className={`font-semibold text-lg tracking-wide ${isSelected ? 'text-fann-gold' : 'text-gray-300 group-hover:text-white'}`}>{label}</span>
-            {isSelected && <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}><Check size={20} className="text-fann-gold" /></motion.div>}
-        </div>
-    </motion.button>
-);
-
 interface ValidationErrors {
-    [key: string]: boolean;
+    [key: string]: boolean | string;
 }
 
 const ExhibitionStudioPage: React.FC = () => {
@@ -88,29 +135,40 @@ const ExhibitionStudioPage: React.FC = () => {
     const [currentStep, setCurrentStep] = useState(1);
     const [errors, setErrors] = useState<ValidationErrors>({});
     const [shake, setShake] = useState(false);
+    const [showErrorBanner, setShowErrorBanner] = useState(false);
 
     const [formData, setFormData] = useState({
         companyName: '',
-        eventType: 'Exhibition',
-        contactName: '',
+        firstName: '',
+        lastName: '',
         email: '',
+        countryCode: '+971',
         phone: '',
         websiteUrl: '',
         eventName: '',
         eventDate: '',
         eventLocation: '',
-        footfall: '',
         standWidth: 6,
         standLength: 3,
-        boothType: 'Inline (1-side open)',
-        style: 'Modern & Corporate',
+        boothType: 'Inline',
         features: [] as string[],
     });
+
+    const isBusinessEmail = (email: string) => {
+        const publicDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com', 'aol.com', 'live.com'];
+        const domain = email.split('@')[1];
+        return domain && !publicDomains.includes(domain.toLowerCase());
+    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
         if (errors[e.target.name]) {
-            setErrors(prev => ({ ...prev, [e.target.name]: false }));
+            setErrors(prev => {
+                const newErrors = { ...prev };
+                delete newErrors[e.target.name];
+                return newErrors;
+            });
+            if (Object.keys(errors).length <= 1) setShowErrorBanner(false);
         }
     };
 
@@ -137,8 +195,15 @@ const ExhibitionStudioPage: React.FC = () => {
 
         if (step === 1) {
             if (!formData.companyName) newErrors.companyName = true;
-            if (!formData.contactName) newErrors.contactName = true;
-            if (!formData.email) newErrors.email = true;
+            if (!formData.firstName) newErrors.firstName = true;
+            if (!formData.lastName) newErrors.lastName = true;
+            if (!formData.websiteUrl) newErrors.websiteUrl = true;
+            
+            if (!formData.email) {
+                newErrors.email = true;
+            } else if (!isBusinessEmail(formData.email)) {
+                newErrors.email = "Please use a work email address (no Gmail, Outlook, etc.)";
+            }
         } else if (step === 2) {
              if (!formData.eventName) newErrors.eventName = true;
              if (!formData.eventDate) newErrors.eventDate = true;
@@ -148,8 +213,11 @@ const ExhibitionStudioPage: React.FC = () => {
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
             setShake(true);
+            setShowErrorBanner(true);
             setTimeout(() => setShake(false), 500);
             isValid = false;
+        } else {
+            setShowErrorBanner(false);
         }
 
         return isValid;
@@ -163,6 +231,7 @@ const ExhibitionStudioPage: React.FC = () => {
 
     const prevStep = () => {
         setCurrentStep(prev => Math.max(prev - 1, 1));
+        setShowErrorBanner(false);
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -179,7 +248,7 @@ const ExhibitionStudioPage: React.FC = () => {
         }
     };
 
-    const getInputClass = (fieldName: string) => `input-premium ${errors[fieldName] ? 'input-error' : ''}`;
+    const getInputClass = (fieldName: string) => `input-premium ${errors[fieldName] ? 'border-red-500 ring-1 ring-red-500 bg-red-900/10' : ''}`;
 
     const renderStepContent = () => {
         switch (currentStep) {
@@ -187,36 +256,68 @@ const ExhibitionStudioPage: React.FC = () => {
                 return (
                     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
                         <div className="text-center mb-10">
-                            <h2 className="text-3xl font-sans font-bold text-white mb-2">Company Essentials</h2>
-                            <p className="text-gray-400">Let's start with the basics.</p>
+                            <h2 className="text-3xl font-serif font-bold text-white mb-2">Company Essentials</h2>
+                            <p className="text-gray-400">We'll analyze your website to tailor the design.</p>
                         </div>
-                        <div className="grid md:grid-cols-2 gap-8">
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <div className="md:col-span-2 space-y-2">
+                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Company Name <span className="text-red-500">*</span></label>
+                                <div className="relative">
+                                    <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18}/>
+                                    <input type="text" name="companyName" value={formData.companyName} onChange={handleInputChange} className={`${getInputClass('companyName')} pl-12`} placeholder="e.g. TechGlobal" />
+                                </div>
+                                {errors.companyName && <span className="text-red-400 text-xs flex items-center gap-1 mt-1 font-semibold"><AlertCircle size={10} /> Required</span>}
+                            </div>
+
                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Company Name*</label>
-                                <input type="text" name="companyName" value={formData.companyName} onChange={handleInputChange} className={getInputClass('companyName')} placeholder="e.g. TechGlobal" />
-                                {errors.companyName && <span className="text-red-500 text-xs flex items-center gap-1"><AlertCircle size={10} /> Required</span>}
+                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">First Name <span className="text-red-500">*</span></label>
+                                <div className="relative">
+                                    <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18}/>
+                                    <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className={`${getInputClass('firstName')} pl-12`} placeholder="John" />
+                                </div>
+                                {errors.firstName && <span className="text-red-400 text-xs flex items-center gap-1 mt-1 font-semibold"><AlertCircle size={10} /> Required</span>}
                             </div>
                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Event Type</label>
-                                <select name="eventType" value={formData.eventType} onChange={handleInputChange} className="input-premium appearance-none">
-                                    {eventTypes.map(type => <option key={type} value={type}>{type}</option>)}
-                                </select>
+                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Last Name <span className="text-red-500">*</span></label>
+                                <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className={getInputClass('lastName')} placeholder="Doe" />
+                                {errors.lastName && <span className="text-red-400 text-xs flex items-center gap-1 mt-1 font-semibold"><AlertCircle size={10} /> Required</span>}
                             </div>
-                            <div className="space-y-2">
-                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Contact Name*</label>
-                                <input type="text" name="contactName" value={formData.contactName} onChange={handleInputChange} className={getInputClass('contactName')} placeholder="Full Name" />
+
+                            <div className="md:col-span-2 space-y-2">
+                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Work Email <span className="text-red-500">*</span></label>
+                                <div className="relative">
+                                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18}/>
+                                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={`${getInputClass('email')} pl-12`} placeholder="name@company.com" />
+                                </div>
+                                {errors.email && (
+                                    <span className="text-red-400 text-xs flex items-center gap-1 mt-1 font-semibold">
+                                        <AlertCircle size={10} /> {typeof errors.email === 'string' ? errors.email : 'Required'}
+                                    </span>
+                                )}
                             </div>
-                            <div className="space-y-2">
-                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Work Email*</label>
-                                <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={getInputClass('email')} placeholder="name@company.com" />
-                            </div>
-                            <div className="space-y-2">
+
+                            <div className="md:col-span-1 space-y-2">
                                 <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Phone</label>
-                                <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className="input-premium" placeholder="+971..." />
+                                <div className="flex gap-2">
+                                    <select 
+                                        name="countryCode" 
+                                        value={formData.countryCode} 
+                                        onChange={handleInputChange}
+                                        className="bg-[#151515] border border-white/10 text-white px-2 py-4 w-24 focus:border-fann-gold focus:outline-none"
+                                    >
+                                        {countryCodes.map(c => <option key={c.country} value={c.code}>{c.code} ({c.country})</option>)}
+                                    </select>
+                                    <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className="input-premium flex-1" placeholder="50 123 4567" />
+                                </div>
                             </div>
-                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Website</label>
-                                <input type="url" name="websiteUrl" value={formData.websiteUrl} onChange={handleInputChange} className="input-premium" placeholder="https://..." />
+
+                             <div className="md:col-span-1 space-y-2">
+                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Website URL <span className="text-red-500">*</span></label>
+                                <div className="relative">
+                                    <Globe className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18}/>
+                                    <input type="url" name="websiteUrl" value={formData.websiteUrl} onChange={handleInputChange} className={`${getInputClass('websiteUrl')} pl-12`} placeholder="https://..." />
+                                </div>
+                                {errors.websiteUrl && <span className="text-red-400 text-xs flex items-center gap-1 mt-1 font-semibold"><AlertCircle size={10} /> Required for AI Analysis</span>}
                             </div>
                         </div>
                     </motion.div>
@@ -225,21 +326,24 @@ const ExhibitionStudioPage: React.FC = () => {
                 return (
                     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
                         <div className="text-center mb-10">
-                            <h2 className="text-3xl font-sans font-bold text-white mb-2">Event Context</h2>
-                            <p className="text-gray-400">Where are we building?</p>
+                            <h2 className="text-3xl font-serif font-bold text-white mb-2">Event Context</h2>
+                            <p className="text-gray-400">We'll automatically identify the industry based on the event.</p>
                         </div>
                         <div className="grid md:grid-cols-2 gap-8">
                              <div className="md:col-span-2 space-y-2">
-                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Event Name*</label>
+                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Event Name <span className="text-red-500">*</span></label>
                                 <input type="text" name="eventName" value={formData.eventName} onChange={handleInputChange} className={getInputClass('eventName')} placeholder="e.g. GITEX Global" />
+                                {errors.eventName && <span className="text-red-400 text-xs flex items-center gap-1 mt-1 font-semibold"><AlertCircle size={10} /> Required</span>}
                             </div>
                              <div className="space-y-2">
-                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Date*</label>
+                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Date <span className="text-red-500">*</span></label>
                                 <input type="date" name="eventDate" value={formData.eventDate} onChange={handleInputChange} className={getInputClass('eventDate')} />
+                                {errors.eventDate && <span className="text-red-400 text-xs flex items-center gap-1 mt-1 font-semibold"><AlertCircle size={10} /> Required</span>}
                             </div>
                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Venue / Location*</label>
+                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Venue / Location <span className="text-red-500">*</span></label>
                                 <input type="text" name="eventLocation" value={formData.eventLocation} onChange={handleInputChange} className={getInputClass('eventLocation')} placeholder="e.g. DWTC" />
+                                {errors.eventLocation && <span className="text-red-400 text-xs flex items-center gap-1 mt-1 font-semibold"><AlertCircle size={10} /> Required</span>}
                             </div>
                         </div>
                     </motion.div>
@@ -248,7 +352,7 @@ const ExhibitionStudioPage: React.FC = () => {
                 return (
                     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-12">
                          <div className="text-center mb-6">
-                            <h2 className="text-3xl font-sans font-bold text-white mb-2">Space Dimensions</h2>
+                            <h2 className="text-3xl font-serif font-bold text-white mb-2">Space Dimensions</h2>
                             <p className="text-gray-400">Define your footprint.</p>
                         </div>
                         
@@ -273,15 +377,26 @@ const ExhibitionStudioPage: React.FC = () => {
                         </div>
 
                         <div className="space-y-4">
-                            <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Configuration</label>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                {boothTypes.map(type => (
-                                    <OptionCard 
-                                        key={type} 
-                                        label={type} 
-                                        isSelected={formData.boothType === type} 
-                                        onClick={() => handleOptionClick('boothType', type)} 
-                                    />
+                            <label className="text-xs font-bold text-fann-gold uppercase tracking-widest block mb-4">Configuration</label>
+                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                                {boothConfigs.map(config => (
+                                    <motion.button
+                                        key={config.id}
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        type="button"
+                                        onClick={() => handleOptionClick('boothType', config.id)}
+                                        className={`flex flex-col items-center justify-center p-6 border transition-all duration-300 gap-4 ${
+                                            formData.boothType === config.id 
+                                            ? 'border-fann-gold bg-fann-gold/10' 
+                                            : 'border-white/10 bg-white/5 hover:bg-white/10'
+                                        }`}
+                                    >
+                                        {config.icon(formData.boothType === config.id)}
+                                        <span className={`text-sm font-bold ${formData.boothType === config.id ? 'text-fann-gold' : 'text-gray-400'}`}>
+                                            {config.label}
+                                        </span>
+                                    </motion.button>
                                 ))}
                             </div>
                         </div>
@@ -290,44 +405,30 @@ const ExhibitionStudioPage: React.FC = () => {
             case 4:
                 return (
                     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
-                         <div className="text-center mb-10">
-                            <h2 className="text-3xl font-sans font-bold text-white mb-2">Visual Identity</h2>
-                            <p className="text-gray-400">Choose your aesthetic direction.</p>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            {designStyles.map(style => (
-                                <OptionCard 
-                                    key={style} 
-                                    label={style} 
-                                    isSelected={formData.style === style} 
-                                    onClick={() => handleOptionClick('style', style)} 
-                                />
-                            ))}
-                        </div>
-                         <div className="mt-8 p-4 border border-fann-gold/20 bg-fann-gold/5 flex items-start gap-4">
-                            <Palette className="text-fann-gold flex-shrink-0 mt-1" />
-                            <p className="text-sm text-gray-300">
-                                <strong>Smart Analysis:</strong> We will automatically analyze your website to extract brand colors and integrate them into the chosen style.
-                            </p>
-                        </div>
-                    </motion.div>
-                );
-            case 5: 
-                return (
-                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
                         <div className="text-center mb-10">
-                            <h2 className="text-3xl font-sans font-bold text-white mb-2">Functionality</h2>
-                            <p className="text-gray-400">Select key features.</p>
+                            <h2 className="text-3xl font-serif font-bold text-white mb-2">Stand Essentials</h2>
+                            <p className="text-gray-400">Select the physical elements you require.</p>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            {featureOptions.map(feature => (
-                                <OptionCard 
-                                    key={feature} 
-                                    label={feature} 
-                                    isSelected={formData.features.includes(feature)} 
-                                    onClick={() => handleFeatureChange(feature)} 
-                                />
-                            ))}
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            {essentialsList.map(item => {
+                                const isSelected = formData.features.includes(item);
+                                return (
+                                    <motion.button 
+                                        key={item} 
+                                        type="button"
+                                        onClick={() => handleFeatureChange(item)} 
+                                        whileTap={{ scale: 0.98 }}
+                                        className={`p-4 border text-left flex items-center justify-between transition-all ${
+                                            isSelected 
+                                            ? 'border-fann-gold bg-fann-gold/20 text-white' 
+                                            : 'border-white/10 bg-white/5 text-gray-400 hover:text-white hover:border-white/30'
+                                        }`}
+                                    >
+                                        <span className="font-semibold text-sm">{item}</span>
+                                        {isSelected && <Check size={16} className="text-fann-gold" />}
+                                    </motion.button>
+                                )
+                            })}
                         </div>
                         <div className="mt-12 pt-8 border-t border-white/10">
                             <h4 className="text-fann-gold font-bold mb-6 text-sm uppercase tracking-widest">Summary</h4>
@@ -335,7 +436,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                 <div><p className="text-xs text-gray-600 uppercase">Company</p><p className="text-white">{formData.companyName}</p></div>
                                 <div><p className="text-xs text-gray-600 uppercase">Event</p><p className="text-white">{formData.eventName}</p></div>
                                 <div><p className="text-xs text-gray-600 uppercase">Size</p><p className="text-white">{formData.standWidth}m x {formData.standLength}m</p></div>
-                                <div><p className="text-xs text-gray-600 uppercase">Style</p><p className="text-white">{formData.style}</p></div>
+                                <div><p className="text-xs text-gray-600 uppercase">Type</p><p className="text-white">{formData.boothType}</p></div>
                             </div>
                         </div>
                     </motion.div>
@@ -354,16 +455,29 @@ const ExhibitionStudioPage: React.FC = () => {
                         <div className="inline-flex items-center justify-center p-4 border border-white/10 bg-white/5 rounded-none mb-6">
                             <Building2 className="h-8 w-8 text-fann-gold" />
                         </div>
-                        <h1 className="text-4xl md:text-6xl font-sans font-bold text-white mb-4 tracking-tight">Exhibition Designer</h1>
-                        <p className="text-xl text-gray-500">Create a world-class concept in 5 simple steps.</p>
+                        <h1 className="text-4xl md:text-6xl font-serif font-bold text-white mb-4 tracking-tight">Exhibition Designer</h1>
+                        <p className="text-xl text-gray-500">Create world-class concepts in 4 simple steps.</p>
                     </div>
 
                     <motion.div 
-                        className={`bg-[#0A0A0A] border border-white/5 p-6 sm:p-12 shadow-2xl relative overflow-hidden ${shake ? 'animate-shake' : ''}`}
+                        className={`bg-[#0A0A0A] border border-white/5 p-6 sm:p-12 shadow-2xl relative overflow-hidden ${shake ? 'animate-shake border-red-500/50' : ''}`}
                     >
                         <StepIndicator currentStep={currentStep} totalSteps={steps.length} />
 
-                        <form onSubmit={handleSubmit} className="relative z-10 min-h-[400px] flex flex-col justify-between">
+                        <AnimatePresence>
+                            {showErrorBanner && (
+                                <motion.div 
+                                    initial={{ opacity: 0, y: -20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20 }}
+                                    className="absolute top-4 left-0 right-0 mx-6 md:mx-12 bg-red-900/80 border border-red-500 text-white p-3 rounded text-center text-sm font-semibold flex items-center justify-center gap-2 z-50 backdrop-blur-sm"
+                                >
+                                    <AlertCircle size={16} /> {typeof errors.email === 'string' ? errors.email : 'Please complete all required fields correctly.'}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                        <form onSubmit={handleSubmit} className="relative z-10 min-h-[400px] flex flex-col justify-between mt-8">
                             {renderStepContent()}
 
                             <div className="flex justify-between items-center mt-12 pt-8 border-t border-white/5">
@@ -389,7 +503,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                         type="submit"
                                         className="btn-primary flex items-center gap-3"
                                     >
-                                        <Sparkles size={16} /> Generate Concept
+                                        <Sparkles size={16} /> Generate Concepts
                                     </button>
                                 )}
                             </div>

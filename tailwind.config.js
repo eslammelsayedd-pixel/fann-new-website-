@@ -13,14 +13,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        'fann-gold': '#D4AF76', // Metallic Gold - Primary Accent
-        'fann-peach': '#E5E5E5', // Platinum/Light Gray - Text & Subtle backgrounds
-        'fann-teal': '#0F0F0F', // Almost Black - Main Background
-        'fann-teal-dark': '#050505', // Pure Black - Deep Backgrounds
-        'fann-accent-teal': '#262626', // Dark Charcoal - Secondary Backgrounds/Cards
-        'fann-charcoal': '#1a1a1a', // Standard Charcoal
+        'fann-gold': '#C5A059', // Slightly darker, more metallic gold for better contrast on white
+        'fann-peach': '#EAEAEA', // Platinum
+        'fann-teal': '#121212', // Rich Black
+        'fann-teal-dark': '#050505', // Pure Black
+        'fann-accent-teal': '#1E1E1E', // Charcoal
+        'fann-charcoal': '#1a1a1a', 
         'fann-charcoal-light': '#2c2c2c',
-        'fann-light-gray': '#9CA3AF', // Muted text
+        'fann-light-gray': '#9CA3AF',
         'fann-accent-peach': '#F5F5F5', 
         'fann-border': '#333333',
         'fann-error': '#EF4444',
@@ -35,6 +35,7 @@ export default {
       },
       animation: {
         'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
+        'gradient': 'gradient 8s ease infinite',
       },
       keyframes: {
         shake: {
@@ -42,8 +43,21 @@ export default {
           '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
           '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' },
           '40%, 60%': { transform: 'translate3d(4px, 0, 0)' }
-        }
-      }
+        },
+        gradient: {
+          '0%, 100%': {
+            'background-size': '200% 200%',
+            'background-position': 'left center',
+          },
+          '50%': {
+            'background-size': '200% 200%',
+            'background-position': 'right center',
+          },
+        },
+      },
+      backgroundSize: {
+        '300%': '300%',
+      },
     },
   },
   plugins: [
