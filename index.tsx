@@ -4,8 +4,6 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { ThemeProvider } from './context/ThemeProvider';
 import './index.css';
-// FIX: Import the global types file. 
-// Changed from './src/types' to './types' to match the flat file structure provided.
 import './types';
 
 const rootElement = document.getElementById('root');
