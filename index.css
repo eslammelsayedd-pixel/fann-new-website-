@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -10,7 +10,7 @@ html {
 
 body {
   overflow-x: hidden;
-  background-color: #0A0A0A; /* fann-black */
+  background-color: #050505; /* Deepest black */
   color: #E0E0E0; /* fann-chrome */
   font-family: 'Manrope', sans-serif;
 }
@@ -33,76 +33,156 @@ body {
   background: #F4D06F; 
 }
 
-.no-scrollbar::-webkit-scrollbar {
-    display: none;
-}
-.no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
+/* --- TYPOGRAPHY EFFECTS --- */
 
-/* Liquid Metal Text Effect */
+/* Liquid Metal Text Effect (Chrome/Gold Hybrid) */
 .text-liquid-gold {
   background: linear-gradient(
-    to bottom,
-    #F4D06F 0%,
-    #D4AF37 40%,
-    #996515 60%,
-    #F4D06F 100%
+    180deg,
+    #FFFFFF 0%,
+    #F4D06F 25%,
+    #D4AF37 50%,
+    #996515 75%,
+    #4A3B10 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  text-shadow: 0px 2px 10px rgba(212, 175, 55, 0.3);
+  filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.5));
 }
 
+/* 3D Metallic Text */
 .text-chrome-3d {
-  color: #E0E0E0;
+  color: #F0F0F0;
+  background: linear-gradient(to bottom, #fff 0%, #e0e0e0 50%, #b0b0b0 51%, #f0f0f0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   text-shadow: 
-    0 1px 0 #ccc, 
-    0 2px 0 #c9c9c9, 
-    0 3px 0 #bbb, 
-    0 4px 0 #b9b9b9, 
-    0 5px 0 #aaa, 
-    0 6px 1px rgba(0,0,0,.1), 
-    0 0 5px rgba(0,0,0,.1), 
-    0 1px 3px rgba(0,0,0,.3), 
-    0 3px 5px rgba(0,0,0,.2), 
-    0 5px 10px rgba(0,0,0,.25), 
-    0 10px 10px rgba(0,0,0,.2), 
-    0 20px 20px rgba(0,0,0,.15);
+    0 1px 0 #999, 
+    0 2px 0 #888, 
+    0 3px 0 #777, 
+    0 4px 0 #666, 
+    0 5px 10px rgba(0,0,0,0.5);
+  letter-spacing: -0.02em;
+}
+
+/* --- COMPONENT EFFECTS --- */
+
+/* Glass Panel (Premium) */
+.glass-panel {
+  background: rgba(20, 20, 20, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
 /* Liquid Button */
 .btn-liquid {
-  @apply relative overflow-hidden bg-fann-gold text-black font-bold py-4 px-10 uppercase tracking-widest transition-all duration-300 rounded-sm;
+  @apply relative overflow-hidden bg-fann-gold text-black font-bold py-4 px-10 uppercase tracking-widest transition-all duration-300 rounded-none shadow-[0_4px_14px_0_rgba(212,175,55,0.39)];
   background-size: 200% auto;
   background-image: linear-gradient(to right, #D4AF37 0%, #F4D06F 51%, #D4AF37 100%);
 }
 
 .btn-liquid:hover {
   background-position: right center;
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
   transform: translateY(-2px);
 }
 
-/* Liquid Input */
-.input-liquid {
-  @apply w-full bg-[#151515] border border-white/10 rounded-none pl-4 pr-4 py-4 text-white placeholder-gray-600 shadow-inner transition-all duration-500;
+/* Liquid Border Animation */
+.liquid-border-container {
+  position: relative;
+  background: rgba(15, 15, 15, 0.8);
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 1;
 }
 
-.input-liquid:focus {
-  @apply outline-none border-fann-gold shadow-[0_0_15px_rgba(212,175,55,0.3)];
-  background: linear-gradient(to right, rgba(212,175,55,0.05), transparent);
+.liquid-border-container::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background: conic-gradient(transparent, transparent, transparent, #D4AF37);
+  animation: rotate-slow 4s linear infinite;
+  transform: translate(-50%, -50%);
+  z-index: -2;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-/* Glassmorphism Card */
-.card-liquid {
-  @apply bg-fann-charcoal/50 backdrop-blur-md border border-white/5 hover:border-fann-gold/50 transition-all duration-500;
+.liquid-border-container:hover::before {
+  opacity: 1;
+}
+
+.liquid-border-container::after {
+  content: '';
+  position: absolute;
+  inset: 1px; /* Border width */
+  background: #0F0F0F; /* Inner background */
+  border-radius: 12px;
+  z-index: -1;
+}
+
+/* Ambient Blobs */
+.blob-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  animation: blob 20s infinite;
+}
+
+.blob-1 {
+  top: 0;
+  left: 0;
+  width: 500px;
+  height: 500px;
+  background: rgba(212, 175, 55, 0.15);
+  animation-delay: 0s;
+}
+
+.blob-2 {
+  bottom: 0;
+  right: 0;
+  width: 600px;
+  height: 600px;
+  background: rgba(45, 118, 127, 0.1);
+  animation-delay: 5s;
+}
+
+.blob-3 {
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  background: rgba(100, 100, 100, 0.1);
+  transform: translate(-50%, -50%);
+  animation-delay: 10s;
 }
 
 /* Custom Selection */
 ::selection {
   background: #D4AF37;
   color: #000;
+}
+
+/* Input Styles */
+.input-premium {
+  @apply w-full bg-white/5 border border-white/10 rounded-xl pl-4 pr-4 py-3 text-white placeholder-gray-500 transition-all duration-300 focus:outline-none focus:border-fann-gold/50 focus:bg-white/10 focus:ring-1 focus:ring-fann-gold/50;
 }
