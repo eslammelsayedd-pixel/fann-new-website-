@@ -1,8 +1,8 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Building2, Sparkles, Check, ArrowRight, ArrowLeft, Ruler, AlertCircle, Globe, Mail, Phone, User, Upload, Loader2, Palette, Briefcase, ScanSearch } from 'lucide-react';
+import { Building2, Sparkles, Check, ArrowRight, ArrowLeft, Ruler, AlertCircle, Globe, Mail, Phone, User, Upload, Loader2, Palette, Briefcase, ScanSearch, X } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 
@@ -162,7 +162,7 @@ const ExhibitionStudioPage: React.FC = () => {
         eventIndustry: '',
         standWidth: 6,
         standLength: 3,
-        boothType: 'Inline',
+        boothType: '', // Mandatory selection
         features: [] as string[],
     });
 
@@ -193,17 +193,21 @@ const ExhibitionStudioPage: React.FC = () => {
                 if (errors.logo) {
                     setErrors(prev => { const { logo, ...rest } = prev; return rest; });
                 }
+                // Trigger basic analysis immediately if website is also present
+                if (formData.websiteUrl) {
+                    // Optional: auto-trigger analysis
+                }
             };
             reader.readAsDataURL(file);
         }
     };
 
     const handleAnalyzeBrand = async () => {
-        if (!formData.websiteUrl || !formData.logo) {
+        if (!formData.websiteUrl && !formData.logo) {
             setErrors(prev => ({ 
                 ...prev, 
-                websiteUrl: !formData.websiteUrl ? 'Required for analysis' : false,
-                logo: !formData.logo ? 'Required for analysis' : false 
+                websiteUrl: !formData.websiteUrl ? 'Website or Logo required for analysis' : false,
+                logo: !formData.logo ? 'Website or Logo required for analysis' : false 
             }));
             return;
         }
@@ -214,8 +218,8 @@ const ExhibitionStudioPage: React.FC = () => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
-                    logo: formData.logo.split(',')[1], // Send base64 data only
-                    mimeType: formData.logo.match(/data:(.*);base64/)?.[1] || 'image/png',
+                    logo: formData.logo ? formData.logo.split(',')[1] : null, 
+                    mimeType: formData.logo ? formData.logo.match(/data:(.*);base64/)?.[1] : null,
                     websiteUrl: formData.websiteUrl
                 })
             });
@@ -223,22 +227,23 @@ const ExhibitionStudioPage: React.FC = () => {
             if (response.ok) {
                 const data = await response.json();
                 setAnalysisResult(data);
+                if (data.industry) {
+                    setFormData(prev => ({...prev, eventIndustry: data.industry}));
+                }
             } else {
-                console.error("Analysis failed");
-                // Fallback mock if API fails or isn't set up yet
+                // Fallback if API fails
                 setAnalysisResult({
-                    industry: "Technology & Innovation",
-                    colors: ["#000000", "#D4AF76", "#FFFFFF"],
-                    vibe: "Modern, Professional, High-End"
+                    industry: "General Business",
+                    colors: ["#D4AF76", "#000000"],
+                    vibe: "Professional"
                 });
             }
         } catch (e) {
             console.error(e);
-             // Fallback mock
              setAnalysisResult({
-                industry: "Detected Industry",
-                colors: ["#333333", "#CCCCCC"],
-                vibe: "Corporate"
+                industry: "General Business",
+                colors: ["#D4AF76", "#000000"],
+                vibe: "Professional"
             });
         } finally {
             setIsAnalyzing(false);
@@ -251,6 +256,14 @@ const ExhibitionStudioPage: React.FC = () => {
 
     const handleOptionClick = (field: string, value: string) => {
         setFormData({ ...formData, [field]: value });
+        // Clear error if exists
+        if (errors[field]) {
+             setErrors(prev => {
+                const newErrors = { ...prev };
+                delete newErrors[field];
+                return newErrors;
+            });
+        }
     };
     
     const handleFeatureChange = (feature: string) => {
@@ -278,9 +291,16 @@ const ExhibitionStudioPage: React.FC = () => {
             } else if (!isBusinessEmail(formData.email)) {
                 newErrors.email = "Please use a work email (no Gmail/Outlook)";
             }
+
+            if (!analysisResult) {
+                // Force analysis before proceeding
+                newErrors.analysis = "Please click 'Analyze Brand Identity' before proceeding.";
+                isValid = false;
+            }
         } else if (step === 2) {
              if (!formData.eventName) newErrors.eventName = true;
-             // Date and Location are optional but good to have
+        } else if (step === 3) {
+            if (!formData.boothType) newErrors.boothType = true;
         }
 
         if (Object.keys(newErrors).length > 0) {
@@ -331,7 +351,7 @@ const ExhibitionStudioPage: React.FC = () => {
                     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
                         <div className="text-center mb-8">
                             <h2 className="text-3xl font-serif font-bold text-white mb-2">Company Essentials</h2>
-                            <p className="text-gray-400">Tell us about your brand.</p>
+                            <p className="text-gray-400">Let's start with the basics.</p>
                         </div>
                         <div className="grid md:grid-cols-2 gap-6">
                             <div className="md:col-span-2 space-y-2">
@@ -424,6 +444,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                         {isAnalyzing ? 'Analyzing Brand...' : 'Analyze Brand Identity'}
                                     </button>
                                     <p className="text-xs text-gray-500 mt-2">We'll extract your colors and vibe to personalize the design.</p>
+                                    {errors.analysis && <p className="text-red-500 text-xs font-bold mt-2">{errors.analysis}</p>}
                                 </div>
                             ) : (
                                 <motion.div 
@@ -431,10 +452,13 @@ const ExhibitionStudioPage: React.FC = () => {
                                     animate={{ opacity: 1, y: 0 }} 
                                     className="bg-[#111] border border-fann-gold/30 rounded-xl p-6"
                                 >
-                                    <h3 className="text-fann-gold font-serif font-bold text-lg mb-4 flex items-center gap-2"><Sparkles size={18}/> AI Brand Findings</h3>
+                                    <div className="flex justify-between items-start mb-4">
+                                        <h3 className="text-fann-gold font-serif font-bold text-lg flex items-center gap-2"><Sparkles size={18}/> AI Brand Findings</h3>
+                                        <button onClick={() => setAnalysisResult(null)} className="text-gray-500 hover:text-white"><X size={16}/></button>
+                                    </div>
                                     <div className="grid md:grid-cols-3 gap-6">
                                         <div>
-                                            <p className="text-xs text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1"><Briefcase size={12}/> Detected Industry</p>
+                                            <p className="text-xs text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1"><Briefcase size={12}/> Industry</p>
                                             <p className="text-white font-bold">{analysisResult.industry}</p>
                                         </div>
                                         <div>
@@ -471,14 +495,17 @@ const ExhibitionStudioPage: React.FC = () => {
                                     value={formData.eventName} 
                                     onChange={(e) => {
                                         handleInputChange(e);
-                                        // Simple heuristic for immediate feedback (real analysis happens on submit)
-                                        if(e.target.value.toLowerCase().includes('tech') || e.target.value.toLowerCase().includes('gitex')) setFormData(prev => ({...prev, eventIndustry: 'Technology'}));
-                                        else if(e.target.value.toLowerCase().includes('food') || e.target.value.toLowerCase().includes('gulfood')) setFormData(prev => ({...prev, eventIndustry: 'Food & Beverage'}));
+                                        // Heuristic for immediate industry detection (refined on backend)
+                                        const val = e.target.value.toLowerCase();
+                                        if(val.includes('tech') || val.includes('gitex')) setFormData(prev => ({...prev, eventIndustry: 'Technology'}));
+                                        else if(val.includes('food') || val.includes('gulfood')) setFormData(prev => ({...prev, eventIndustry: 'Food & Beverage'}));
+                                        else if(val.includes('health') || val.includes('med')) setFormData(prev => ({...prev, eventIndustry: 'Healthcare'}));
+                                        else if(val.includes('build') || val.includes('big 5')) setFormData(prev => ({...prev, eventIndustry: 'Construction'}));
                                     }} 
                                     className={getInputClass('eventName')} 
                                     placeholder="e.g. GITEX Global 2024" 
                                 />
-                                {formData.eventIndustry && <p className="text-xs text-fann-gold flex items-center gap-1 mt-1"><Sparkles size={10}/> Detected Context: {formData.eventIndustry}</p>}
+                                {formData.eventIndustry && <p className="text-xs text-fann-gold flex items-center gap-1 mt-1"><Sparkles size={10}/> Detected Industry: {formData.eventIndustry}</p>}
                                 {errors.eventName && <span className="text-red-400 text-xs flex items-center gap-1 mt-1 font-semibold"><AlertCircle size={10} /> Required</span>}
                             </div>
                              <div className="space-y-2">
@@ -521,7 +548,7 @@ const ExhibitionStudioPage: React.FC = () => {
                         </div>
 
                         <div className="space-y-4">
-                            <label className="text-xs font-bold text-fann-gold uppercase tracking-widest block mb-4">Configuration</label>
+                            <label className="text-xs font-bold text-fann-gold uppercase tracking-widest block mb-4">Configuration <span className="text-red-500">*</span></label>
                             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                                 {boothConfigs.map(config => (
                                     <motion.button
@@ -534,7 +561,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                             formData.boothType === config.id 
                                             ? 'border-fann-gold bg-fann-gold/10' 
                                             : 'border-white/10 bg-white/5 hover:bg-white/10'
-                                        }`}
+                                        } ${errors.boothType ? 'border-red-500' : ''}`}
                                     >
                                         {config.icon(formData.boothType === config.id)}
                                         <span className={`text-sm font-bold ${formData.boothType === config.id ? 'text-fann-gold' : 'text-gray-400'}`}>
@@ -543,6 +570,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                     </motion.button>
                                 ))}
                             </div>
+                            {errors.boothType && <span className="text-red-400 text-xs font-bold block text-center">Please select a configuration</span>}
                         </div>
                     </motion.div>
                 );
