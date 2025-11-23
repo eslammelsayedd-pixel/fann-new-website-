@@ -1,190 +1,351 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Award, Wrench, Users, Headset, ShieldCheck, CheckCircle, ArrowRight, ChevronRight, Star } from 'lucide-react';
 import { testimonials } from '../constants';
 import SEO from '../components/SEO';
-import { motion, useScroll, useTransform, AnimatePresence, useSpring, useMotionValue } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import ScrollReveal from '../components/ScrollReveal';
 
-// --- CONCEPT 5: Cinematic Depth-of-Field Showcase ---
+// --- CONCEPT 1: 3D Floating Exhibition Booth Particles (Canvas Implementation) ---
+
+interface Point3D {
+    x: number;
+    y: number;
+    z: number;
+    tx: number; // Target X
+    ty: number; // Target Y
+    tz: number; // Target Z
+    vx: number; // Velocity
+    vy: number;
+    vz: number;
+    size: number;
+    color: string;
+}
+
 const HeroSection: React.FC = () => {
-    const [currentSlide, setCurrentSlide] = useState(0);
-    const [isLoaded, setIsLoaded] = useState(false);
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [activeConfig, setActiveConfig] = useState(0);
+    const mouseRef = useRef({ x: 0, y: 0 });
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
-    // Smooth spring animation for mouse movement (Parallax)
-    const springConfig = { damping: 25, stiffness: 100 };
-    const x = useSpring(mouseX, springConfig);
-    const y = useSpring(mouseY, springConfig);
+    const configs = ['Island', 'Peninsula', 'Corner', 'Inline'];
 
-    // Parallax transforms
-    const bgX = useTransform(x, [-1, 1], ["-2%", "2%"]); // Background moves opposite
-    const bgY = useTransform(y, [-1, 1], ["-2%", "2%"]);
-    const textX = useTransform(x, [-1, 1], ["1%", "-1%"]); // Text moves slightly with mouse
+    // Text Animation Variants
+    const sentence = "CRAFTING EXTRAORDINARY EXHIBITION EXPERIENCES";
+    const letters = sentence.split("");
 
-    const slides = [
-        {
-            id: 1,
-            image: "https://images.pexels.com/photos/3052725/pexels-photo-3052725.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80", // Architect/Design sketch vibe
-            label: "CONCEPTUALIZE",
-            title: "Visionary Design",
-            subtitle: "It starts with a spark. We turn abstract ideas into award-winning 3D concepts.",
-            color: "from-blue-900/40"
-        },
-        {
-            id: 2,
-            image: "https://images.pexels.com/photos/834892/pexels-photo-834892.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80", // Fabrication/Workshop
-            label: "CONSTRUCT",
-            title: "Precision Build",
-            subtitle: "Crafted in our state-of-the-art UAE workshop with obsessive attention to detail.",
-            color: "from-amber-900/40"
-        },
-        {
-            id: 3,
-            image: "https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80", // The Event/Booth
-            label: "EXPERIENCE",
-            title: "World-Class Events",
-            subtitle: "Dominating the floor at GITEX, Arab Health, and The Big 5.",
-            color: "from-purple-900/40"
-        },
-        {
-            id: 4,
-            image: "https://images.pexels.com/photos/1181438/pexels-photo-1181438.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80", // Success/Handshake
-            label: "SUCCEED",
-            title: "Measurable ROI",
-            subtitle: "Elevating brands and driving business growth across the Middle East.",
-            color: "from-emerald-900/40"
-        }
-    ];
+    const textVariants = {
+        hidden: { opacity: 0, y: 50 },
+        visible: { opacity: 1, y: 0 }
+    };
 
     useEffect(() => {
-        // Preload images
-        const imagePromises = slides.map(slide => {
-            return new Promise((resolve, reject) => {
-                const img = new Image();
-                img.src = slide.image;
-                img.onload = resolve;
-                img.onerror = reject;
+        const canvas = canvasRef.current;
+        const container = containerRef.current;
+        if (!canvas || !container) return;
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        let width = container.clientWidth;
+        let height = container.clientHeight;
+        let animationFrameId: number;
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const particles: Point3D[] = [];
+        const numParticles = isMobile ? 600 : 1500;
+        const focalLength = 800;
+        const baseColor = '#C5A059'; // FANN Gold
+
+        // Helper to generate random range
+        const random = (min: number, max: number) => Math.random() * (max - min) + min;
+
+        // Initialize particles
+        for (let i = 0; i < numParticles; i++) {
+            particles.push({
+                x: random(-1000, 1000),
+                y: random(-1000, 1000),
+                z: random(-1000, 1000),
+                tx: random(-1000, 1000),
+                ty: random(-1000, 1000),
+                tz: random(-1000, 1000),
+                vx: 0, vy: 0, vz: 0,
+                size: random(1, 3),
+                color: baseColor
             });
-        });
+        }
 
-        Promise.all(imagePromises).then(() => setIsLoaded(true));
+        // Define Booth Shapes (Target Coordinates)
+        const setTargetShape = (shapeIndex: number) => {
+            const scale = isMobile ? 200 : 300;
+            let pIndex = 0;
 
-        // Slide rotation
-        const timer = setInterval(() => {
-            setCurrentSlide((prev) => (prev + 1) % slides.length);
-        }, 6000);
+            const setPoint = (x: number, y: number, z: number) => {
+                if (pIndex < particles.length) {
+                    // Add some noise for organic feel
+                    const noise = 20;
+                    particles[pIndex].tx = x * scale + random(-noise, noise);
+                    particles[pIndex].ty = y * scale + random(-noise, noise);
+                    particles[pIndex].tz = z * scale + random(-noise, noise);
+                    pIndex++;
+                }
+            };
 
-        return () => clearInterval(timer);
+            // Helper to draw lines of particles
+            const drawLine = (start: [number, number, number], end: [number, number, number], density: number) => {
+                for (let i = 0; i < density; i++) {
+                    const t = i / density;
+                    setPoint(
+                        start[0] + (end[0] - start[0]) * t,
+                        start[1] + (end[1] - start[1]) * t,
+                        start[2] + (end[2] - start[2]) * t
+                    );
+                }
+            };
+
+            if (shapeIndex === 0) { // ISLAND (Cube frame + Pillars)
+                // Top Frame
+                drawLine([-1, -0.5, -1], [1, -0.5, -1], 40);
+                drawLine([1, -0.5, -1], [1, -0.5, 1], 40);
+                drawLine([1, -0.5, 1], [-1, -0.5, 1], 40);
+                drawLine([-1, -0.5, 1], [-1, -0.5, -1], 40);
+                // Pillars
+                drawLine([-1, -0.5, -1], [-1, 1, -1], 30);
+                drawLine([1, -0.5, -1], [1, 1, -1], 30);
+                drawLine([1, -0.5, 1], [1, 1, 1], 30);
+                drawLine([-1, -0.5, 1], [-1, 1, 1], 30);
+                // Center Feature
+                drawLine([0, 1, 0], [0, -0.5, 0], 50);
+            } else if (shapeIndex === 1) { // PENINSULA (Back wall + Side walls)
+                // Back Wall
+                for(let y = -0.5; y <= 1; y+=0.1) drawLine([-1, y, 1], [1, y, 1], 20);
+                // Side Walls (Partial)
+                for(let y = -0.5; y <= 1; y+=0.2) drawLine([-1, y, 1], [-1, y, -0.5], 15);
+                for(let y = -0.5; y <= 1; y+=0.2) drawLine([1, y, 1], [1, y, -0.5], 15);
+                // Roof beams
+                drawLine([-1, -0.5, 1], [-1, -0.5, -1], 30);
+                drawLine([1, -0.5, 1], [1, -0.5, -1], 30);
+            } else if (shapeIndex === 2) { // CORNER (L-Shape)
+                // Wall 1
+                for(let y = -0.5; y <= 1; y+=0.1) drawLine([-1, y, -1], [-1, y, 1], 20);
+                // Wall 2
+                for(let y = -0.5; y <= 1; y+=0.1) drawLine([-1, y, 1], [1, y, 1], 20);
+                // Counter
+                drawLine([0, 0.8, 0], [0.5, 0.8, 0.5], 20);
+            } else if (shapeIndex === 3) { // INLINE (Back wall only + reception)
+                // Back Wall
+                for(let x = -1.5; x <= 1.5; x+=0.1) drawLine([x, -0.5, 1], [x, 1, 1], 15);
+                // Reception Desk
+                drawLine([-0.5, 0.5, 0], [0.5, 0.5, 0], 30);
+                drawLine([-0.5, 0.5, 0], [-0.5, 1, 0], 10);
+                drawLine([0.5, 0.5, 0], [0.5, 1, 0], 10);
+            }
+
+            // Send remaining particles to random orbit
+            while (pIndex < particles.length) {
+                const theta = random(0, Math.PI * 2);
+                const phi = random(0, Math.PI);
+                const r = random(scale * 1.5, scale * 2.5);
+                setPoint(
+                    (r * Math.sin(phi) * Math.cos(theta)) / scale,
+                    (r * Math.sin(phi) * Math.sin(theta)) / scale,
+                    (r * Math.cos(phi)) / scale
+                );
+            }
+        };
+
+        // Cycle shapes
+        const shapeInterval = setInterval(() => {
+            setActiveConfig(prev => {
+                const next = (prev + 1) % 4;
+                setTargetShape(next);
+                return next;
+            });
+        }, 4000);
+        
+        // Initialize first shape
+        setTargetShape(0);
+
+        // Animation Loop
+        let rotationY = 0;
+
+        const render = () => {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Camera/Scene Rotation
+            rotationY += 0.002;
+            const cx = width / 2;
+            const cy = height / 2;
+
+            // Sorting particles by depth for proper z-indexing
+            particles.sort((a, b) => b.z - a.z);
+
+            particles.forEach(p => {
+                // Physics: Move towards target
+                const dx = p.tx - p.x;
+                const dy = p.ty - p.y;
+                const dz = p.tz - p.z;
+
+                p.vx += dx * 0.005;
+                p.vy += dy * 0.005;
+                p.vz += dz * 0.005;
+
+                // Damping
+                p.vx *= 0.92;
+                p.vy *= 0.92;
+                p.vz *= 0.92;
+
+                // Mouse Interaction (Magnetic Pull/Ripple)
+                // Transform 3D point to 2D to check distance from mouse
+                const scaleProj = focalLength / (focalLength + p.z);
+                const screenX = p.x * scaleProj + cx;
+                const screenY = p.y * scaleProj + cy;
+
+                const distMouse = Math.sqrt(Math.pow(screenX - mouseRef.current.x, 2) + Math.pow(screenY - mouseRef.current.y, 2));
+                
+                if (distMouse < 200) {
+                    const force = (200 - distMouse) / 200;
+                    // Magnetic pull towards mouse, but keeping z depth
+                    p.vx += (mouseRef.current.x - screenX) * force * 0.001;
+                    p.vy += (mouseRef.current.y - screenY) * force * 0.001;
+                }
+
+                p.x += p.vx;
+                p.y += p.vy;
+                p.z += p.vz;
+
+                // 3D Rotation
+                const cos = Math.cos(rotationY);
+                const sin = Math.sin(rotationY);
+                const rx = p.x * cos - p.z * sin;
+                const rz = p.z * cos + p.x * sin;
+
+                // Projection
+                const scale = focalLength / (focalLength + rz);
+                const x2d = rx * scale + cx;
+                const y2d = p.y * scale + cy;
+
+                // Draw
+                if (scale > 0) { // Only draw if in front of camera
+                    const alpha = Math.min(1, (scale - 0.2)); // Fade out distant particles
+                    ctx.globalAlpha = alpha;
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+                    ctx.arc(x2d, y2d, p.size * scale, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            });
+
+            // Connecting lines for active shape structure (optimization: only connect close neighbors)
+            // Skipped for performance to maintain 60fps on all devices without webgl shaders
+
+            animationFrameId = requestAnimationFrame(render);
+        };
+
+        render();
+
+        const handleResize = () => {
+            width = container.clientWidth;
+            height = container.clientHeight;
+            canvas.width = width;
+            canvas.height = height;
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            clearInterval(shapeInterval);
+            cancelAnimationFrame(animationFrameId);
+        };
     }, []);
 
     const handleMouseMove = (e: React.MouseEvent) => {
-        const { clientX, clientY } = e;
-        const { innerWidth, innerHeight } = window;
-        // Normalize mouse position to -1 to 1
-        mouseX.set((clientX / innerWidth) * 2 - 1);
-        mouseY.set((clientY / innerHeight) * 2 - 1);
+        const rect = containerRef.current?.getBoundingClientRect();
+        if (rect) {
+            mouseRef.current = {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top
+            };
+        }
     };
-
-    if (!isLoaded) {
-        return (
-            <div className="h-screen bg-black flex items-center justify-center">
-                <div className="flex flex-col items-center">
-                    <div className="w-16 h-16 border-4 border-fann-gold border-t-transparent rounded-full animate-spin mb-4"></div>
-                    <span className="text-fann-gold text-xs tracking-[0.3em] uppercase animate-pulse">Loading Experience</span>
-                </div>
-            </div>
-        );
-    }
 
     return (
         <section 
-            className="relative h-screen w-full overflow-hidden bg-black"
+            ref={containerRef}
+            className="relative h-screen w-full overflow-hidden bg-[#050505]"
             onMouseMove={handleMouseMove}
         >
-            {/* Cinematic Background Carousel */}
-            <AnimatePresence mode="popLayout">
-                <motion.div
-                    key={slides[currentSlide].id}
-                    className="absolute inset-0 z-0"
-                    initial={{ opacity: 0, scale: 1.1 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 1.5, ease: "easeInOut" }}
-                    style={{ x: bgX, y: bgY }} // Parallax effect applied to background
-                >
-                    <div className="absolute inset-0 bg-black/40 z-10" /> {/* Base Dimmer */}
-                    <div className={`absolute inset-0 bg-gradient-to-b ${slides[currentSlide].color} via-transparent to-black/90 z-10 mix-blend-overlay`} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent z-20" /> {/* Bottom Fade */}
+            {/* 3D Canvas Layer */}
+            <canvas 
+                ref={canvasRef} 
+                className="absolute inset-0 z-10 block"
+            />
+
+            {/* Vignette & Grading Overlay */}
+            <div className="absolute inset-0 z-20 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,#050505_120%)]" />
+            <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-b from-black/60 via-transparent to-black/80" />
+
+            {/* Content Layer */}
+            <div className="absolute inset-0 z-30 flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 pointer-events-none">
+                <div className="max-w-6xl mx-auto text-center">
                     
-                    <img 
-                        src={slides[currentSlide].image} 
-                        alt={slides[currentSlide].title}
-                        className="w-full h-full object-cover"
-                    />
-                </motion.div>
-            </AnimatePresence>
-
-            {/* Floating Particles / Bokeh Overlay */}
-            <div className="absolute inset-0 z-20 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30 mix-blend-screen animate-pulse" />
-
-            {/* Main Content */}
-            <div className="absolute inset-0 z-30 flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8">
-                <motion.div 
-                    className="max-w-5xl mx-auto text-center"
-                    style={{ x: textX, y: useTransform(y, [-1, 1], ["0.5%", "-0.5%"]) }} // Subtle foreground parallax
-                >
-                    {/* Dynamic Label */}
-                    <div className="overflow-hidden mb-6 flex justify-center">
+                    {/* Dynamic Config Label */}
+                    <div className="mb-8 overflow-hidden flex justify-center">
                         <AnimatePresence mode="wait">
-                            <motion.span
-                                key={slides[currentSlide].label}
-                                initial={{ y: 40, opacity: 0 }}
+                            <motion.div
+                                key={activeConfig}
+                                initial={{ y: 20, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
-                                exit={{ y: -40, opacity: 0 }}
-                                transition={{ duration: 0.5, ease: "circOut" }}
-                                className="inline-block px-4 py-1 border border-fann-gold/50 rounded-full text-fann-gold text-xs md:text-sm font-bold tracking-[0.3em] uppercase bg-black/30 backdrop-blur-sm"
+                                exit={{ y: -20, opacity: 0 }}
+                                className="flex items-center gap-2 px-4 py-1 rounded-full border border-fann-gold/30 bg-black/40 backdrop-blur-md"
                             >
-                                {slides[currentSlide].label}
+                                <div className="w-2 h-2 rounded-full bg-fann-gold animate-pulse" />
+                                <span className="text-fann-gold text-xs font-mono tracking-widest uppercase">
+                                    Mode: {configs[activeConfig]}
+                                </span>
+                            </motion.div>
+                        </AnimatePresence>
+                    </div>
+
+                    {/* Staggered Headline */}
+                    <motion.h1 
+                        className="text-4xl md:text-6xl lg:text-8xl font-serif font-bold text-white tracking-tight leading-[1.1] mb-8 drop-shadow-2xl mix-blend-screen"
+                        initial="hidden"
+                        animate="visible"
+                        variants={{
+                            hidden: {},
+                            visible: { transition: { staggerChildren: 0.03 } }
+                        }}
+                    >
+                        {letters.map((char, index) => (
+                            <motion.span key={index} variants={textVariants} className="inline-block">
+                                {char === " " ? "\u00A0" : char}
                             </motion.span>
-                        </AnimatePresence>
-                    </div>
+                        ))}
+                    </motion.h1>
 
-                    {/* Main Headline */}
-                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-white tracking-tight leading-[1.1] mb-8 drop-shadow-2xl">
-                        <span className="block text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-gray-400">
-                            ELEVATING BRANDS
-                        </span>
-                        <span className="block text-2xl md:text-4xl lg:text-5xl font-sans font-light tracking-[0.2em] mt-4 text-gray-200">
-                            THROUGH WORLD-CLASS EXHIBITIONS
-                        </span>
-                    </h1>
-
-                    {/* Dynamic Subtitle */}
-                    <div className="h-16 md:h-12 mb-12 overflow-hidden">
-                        <AnimatePresence mode="wait">
-                            <motion.p
-                                key={slides[currentSlide].subtitle}
-                                initial={{ opacity: 0, filter: "blur(10px)" }}
-                                animate={{ opacity: 1, filter: "blur(0px)" }}
-                                exit={{ opacity: 0, filter: "blur(10px)" }}
-                                transition={{ duration: 0.8 }}
-                                className="text-lg md:text-xl text-gray-300 font-light max-w-3xl mx-auto"
-                            >
-                                {slides[currentSlide].subtitle}
-                            </motion.p>
-                        </AnimatePresence>
-                    </div>
-
-                    {/* CTAs */}
-                    <motion.div 
+                    <motion.p 
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.5, duration: 0.8 }}
-                        className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+                        transition={{ delay: 1.5, duration: 0.8 }}
+                        className="text-lg md:text-xl text-gray-300 font-light max-w-2xl mx-auto mb-12 tracking-wide"
                     >
-                        <Link to="/contact">
+                        Transforming abstract visions into award-winning physical realities.
+                        <br className="hidden md:block"/> Your premier partner for Exhibitions, Events & Interiors.
+                    </motion.p>
+
+                    {/* CTAs - Pointer events enabled for buttons */}
+                    <motion.div 
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 1.8, type: "spring" }}
+                        className="flex flex-col sm:flex-row gap-6 justify-center items-center pointer-events-auto"
+                    >
+                        <Link to="/fann-studio/exhibition">
                             <button className="group relative bg-fann-gold text-black font-bold text-sm tracking-[0.2em] uppercase py-5 px-10 overflow-hidden rounded-none hover:shadow-[0_0_40px_rgba(212,175,118,0.6)] transition-all duration-300">
                                 <div className="absolute inset-0 w-full h-full bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
                                 <span className="relative z-10 flex items-center gap-3">
@@ -200,36 +361,18 @@ const HeroSection: React.FC = () => {
                             </button>
                         </Link>
                     </motion.div>
-                </motion.div>
+                </div>
             </div>
 
-            {/* Slide Progress Indicators */}
-            <div className="absolute bottom-10 left-0 right-0 z-30 flex justify-center gap-3">
-                {slides.map((slide, index) => (
-                    <button
-                        key={slide.id}
-                        onClick={() => setCurrentSlide(index)}
-                        className={`h-1 transition-all duration-500 rounded-full ${currentSlide === index ? 'w-12 bg-fann-gold' : 'w-4 bg-white/30 hover:bg-white/50'}`}
-                        aria-label={`Go to slide ${index + 1}`}
-                    />
-                ))}
-            </div>
-
-            {/* Scroll Hint */}
+            {/* Scroll Indicator */}
             <motion.div 
-                className="absolute bottom-8 right-8 z-30 hidden lg:flex flex-col items-center gap-2 text-white/50 mix-blend-difference"
+                className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 text-white/30 flex flex-col items-center gap-2"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 2, duration: 1 }}
+                transition={{ delay: 3, duration: 1 }}
             >
-                <span className="text-[10px] uppercase tracking-widest rotate-90 origin-right translate-x-2">Scroll</span>
-                <div className="w-[1px] h-12 bg-white/30 overflow-hidden">
-                    <motion.div 
-                        className="w-full h-full bg-white"
-                        animate={{ y: ["-100%", "100%"] }}
-                        transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-                    />
-                </div>
+                <span className="text-[10px] uppercase tracking-widest">Scroll to Explore</span>
+                <div className="w-[1px] h-12 bg-gradient-to-b from-fann-gold to-transparent"></div>
             </motion.div>
         </section>
     );
