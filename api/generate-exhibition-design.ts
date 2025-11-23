@@ -11,7 +11,7 @@ export default async function handler(req: Request) {
 
     try {
         const config = await req.json();
-        const { companyName, eventName, boothSize, boothType, style, features } = config;
+        const { companyName, websiteUrl, eventName, boothSize, boothType, style, features } = config;
 
         if (!companyName || !boothSize || !boothType || !style) {
             return new Response(JSON.stringify({ error: 'Missing required design parameters.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
@@ -24,18 +24,27 @@ export default async function handler(req: Request) {
         const ai = new GoogleGenAI({ apiKey });
 
         // === 1. Generate Text Concept ===
-        const textPrompt = `
+        let textPrompt = `
         You are a world-class exhibition stand designer for the luxury and tech markets in Dubai.
         Based on the following client requirements, generate a compelling and creative design concept.
         - Company: "${companyName}"
+        - Website: "${websiteUrl || 'Not provided'}"
         - Event: "${eventName}"
         - Booth Size: ${boothSize} sqm
         - Booth Type: ${boothType}
         - Desired Style: ${style}
         - Key Features Required: ${features.join(', ') || 'None specified'}
 
+        Instruction:
+        `;
+
+        if (websiteUrl) {
+            textPrompt += `\nUse the Google Search tool to research the company at "${websiteUrl}". Analyze their brand identity, logo colors, and visual language. Incorporate their specific brand colors and aesthetic style into the "materials", "detailedDescription" and "conceptName".\n`;
+        }
+
+        textPrompt += `
         Your concept should be innovative, luxurious, and practical for a high-traffic event like GITEX or Arab Health.
-        The "detailedDescription" should be a captivating paragraph (3-4 sentences).
+        The "detailedDescription" should be a captivating paragraph (3-4 sentences) that mentions the brand colors specifically if found.
         Return a single, valid JSON object with the exact structure defined. Do not include any text, notes, or markdown formatting before or after the JSON.
         `;
 
@@ -43,7 +52,7 @@ export default async function handler(req: Request) {
             type: Type.OBJECT,
             properties: {
                 conceptName: { type: Type.STRING, description: "A catchy, professional name for the stand concept (e.g., 'The Apex Horizon Pavilion')." },
-                detailedDescription: { type: Type.STRING, description: "A detailed paragraph describing the stand's look, feel, and visitor journey." },
+                detailedDescription: { type: Type.STRING, description: "A detailed paragraph describing the stand's look, feel, brand color usage, and visitor journey." },
                 materials: { type: Type.ARRAY, items: { type: Type.STRING }, description: "A list of 3-4 key materials suggested for construction (e.g., 'Brushed bronze accents', 'Matte finish laminates')." },
                 lighting: { type: Type.STRING, description: "A brief description of the lighting strategy (e.g., 'Architectural track lighting with soft-lit LED strips')." },
                 technologyFeatures: { type: Type.ARRAY, items: { type: Type.STRING }, description: "A list of 2-3 suggested technology integrations (e.g., 'Holographic product display', 'Interactive touch table')." },
@@ -55,6 +64,7 @@ export default async function handler(req: Request) {
             model: "gemini-2.5-flash",
             contents: textPrompt,
             config: {
+                tools: websiteUrl ? [{ googleSearch: {} }] : [],
                 responseMimeType: "application/json",
                 responseSchema: responseSchema,
             },

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FileText, Building2, Palette, Sparkles, SlidersHorizontal, Check } from 'lucide-react';
+import { FileText, Building2, Palette, Sparkles, SlidersHorizontal, Check, Globe } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 
@@ -28,7 +28,6 @@ const ProgressIndicator: React.FC = () => (
     </div>
 );
 
-// FIX: Refactored to use a typed interface for props to correctly handle children.
 interface FormSectionProps {
   step: number;
   title: string;
@@ -53,7 +52,6 @@ const FormSection: React.FC<FormSectionProps> = ({ step, title, icon: Icon, desc
     </div>
 );
 
-// FIX: Refactored to use a typed interface and React.FC to correctly handle React's special `key` prop during iteration.
 interface FeatureCheckboxProps {
   label: string;
   isChecked: boolean;
@@ -73,6 +71,7 @@ const ExhibitionStudioPage: React.FC = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         companyName: '',
+        websiteUrl: '',
         eventName: '',
         standWidth: 10,
         standLength: 6,
@@ -134,9 +133,24 @@ const ExhibitionStudioPage: React.FC = () => {
                         <ProgressIndicator />
                         <form onSubmit={handleSubmit} className="space-y-0">
                             <FormSection step={1} title="The Brief" icon={FileText} description="Tell us about your company and the event.">
-                                <div className="grid md:grid-cols-2 gap-6">
-                                    <input type="text" name="companyName" placeholder="Your Company Name" value={formData.companyName} onChange={handleInputChange} required className="w-full bg-fann-peach/50 dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold" />
-                                    <input type="text" name="eventName" placeholder="Event Name (e.g., GITEX)" value={formData.eventName} onChange={handleInputChange} required className="w-full bg-fann-peach/50 dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold" />
+                                <div className="space-y-4">
+                                    <div className="grid md:grid-cols-2 gap-6">
+                                        <input type="text" name="companyName" placeholder="Your Company Name" value={formData.companyName} onChange={handleInputChange} required className="w-full bg-fann-peach/50 dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold" />
+                                        <input type="text" name="eventName" placeholder="Event Name (e.g., GITEX)" value={formData.eventName} onChange={handleInputChange} required className="w-full bg-fann-peach/50 dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold" />
+                                    </div>
+                                    <div className="relative">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <Globe className="h-5 w-5 text-fann-light-gray" />
+                                        </div>
+                                        <input 
+                                            type="url" 
+                                            name="websiteUrl" 
+                                            placeholder="Company Website URL (Optional - AI will analyze your brand style)" 
+                                            value={formData.websiteUrl} 
+                                            onChange={handleInputChange} 
+                                            className="w-full pl-10 bg-fann-peach/50 dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold" 
+                                        />
+                                    </div>
                                 </div>
                             </FormSection>
 
