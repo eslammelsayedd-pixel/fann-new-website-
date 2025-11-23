@@ -442,8 +442,8 @@ const ExhibitionStudioPage: React.FC = () => {
                             <h2 className="text-3xl font-serif font-bold text-white mb-2">Event Details</h2>
                             <p className="text-gray-400">Where will you be exhibiting?</p>
                         </div>
-                        <div className="grid md:grid-cols-2 gap-x-12 gap-y-8">
-                             <div className="md:col-span-2 space-y-1">
+                        <div className="max-w-2xl mx-auto space-y-8">
+                             <div className="space-y-1">
                                 <label className="text-xs font-bold text-fann-gold uppercase tracking-widest flex items-center gap-1">Event Name <span className="text-red-500">*</span></label>
                                 <div className="relative">
                                     <Sparkles className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-500" size={18}/>
@@ -468,14 +468,6 @@ const ExhibitionStudioPage: React.FC = () => {
                                         Detected Industry: {formData.eventIndustry}
                                     </motion.p>
                                 )}
-                            </div>
-                             <div className="space-y-1">
-                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Date</label>
-                                <input type="date" name="eventDate" value={formData.eventDate} onChange={handleInputChange} className={getInputClass('eventDate')} />
-                            </div>
-                            <div className="space-y-1">
-                                <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Venue</label>
-                                <input type="text" name="eventLocation" value={formData.eventLocation} onChange={handleInputChange} className={getInputClass('eventLocation')} placeholder="e.g. DWTC" />
                             </div>
                         </div>
                     </motion.div>
