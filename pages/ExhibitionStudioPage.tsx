@@ -1,12 +1,12 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Building2, Sparkles, Check, ArrowRight, ArrowLeft, Ruler, AlertCircle, Globe, Mail, Phone, User, Upload, Loader2, Palette, Briefcase, ScanSearch, X, ArrowUpToLine } from 'lucide-react';
+import { Building2, Sparkles, Check, ArrowRight, ArrowLeft, Ruler, AlertCircle, Globe, Mail, Phone, User, Upload, Loader2, Palette, Briefcase, ScanSearch, ArrowUpToLine, PenTool } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 
 const steps = [
-    { id: 1, title: 'Company' },
+    { id: 1, title: 'Brand & Brief' },
     { id: 2, title: 'Event' },
     { id: 3, title: 'Specs' },
     { id: 4, title: 'Features' }
@@ -24,6 +24,16 @@ const countryCodes = [
     { code: '+91', country: 'IND' },
     { code: '+86', country: 'CHN' },
     { code: 'Other', country: 'Other' }
+];
+
+const industries = [
+    'Technology', 'Healthcare', 'Real Estate', 'Food & Beverage', 'Automotive', 
+    'Energy', 'Finance', 'Luxury Goods', 'Construction', 'Aviation', 'Other'
+];
+
+const vibes = [
+    'Modern', 'Minimalist', 'Luxury', 'Tech-Forward', 'Sustainable', 
+    'Traditional', 'Industrial', 'Playful', 'Corporate', 'Futuristic'
 ];
 
 const boothConfigs = [
@@ -130,12 +140,6 @@ interface ValidationErrors {
     [key: string]: boolean | string;
 }
 
-interface AnalysisResult {
-    industry: string;
-    colors: string[];
-    vibe: string;
-}
-
 const ExhibitionStudioPage: React.FC = () => {
     const navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState(1);
@@ -143,11 +147,6 @@ const ExhibitionStudioPage: React.FC = () => {
     const [shake, setShake] = useState(false);
     const [showErrorBanner, setShowErrorBanner] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    
-    // Background analysis state
-    const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
-    const [isLoadingAnalysis, setIsLoadingAnalysis] = useState(false);
-    const [showAnalysisResults, setShowAnalysisResults] = useState(false);
 
     const [formData, setFormData] = useState({
         companyName: '',
@@ -164,9 +163,12 @@ const ExhibitionStudioPage: React.FC = () => {
         eventIndustry: '',
         standWidth: 6,
         standLength: 3,
-        standHeight: 4, // New Height Field
+        standHeight: 4,
         boothType: '', 
         features: [] as string[],
+        vibe: '',
+        colors: ['#000000', '#FFFFFF', '#C9A962'],
+        brief: ''
     });
 
     const isBusinessEmail = (email: string) => {
@@ -175,7 +177,7 @@ const ExhibitionStudioPage: React.FC = () => {
         return domain && !publicDomains.includes(domain.toLowerCase());
     };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
         if (errors[e.target.name]) {
             setErrors(prev => {
@@ -185,6 +187,12 @@ const ExhibitionStudioPage: React.FC = () => {
             });
             if (Object.keys(errors).length <= 1) setShowErrorBanner(false);
         }
+    };
+
+    const handleColorChange = (index: number, value: string) => {
+        const newColors = [...formData.colors];
+        newColors[index] = value;
+        setFormData(prev => ({ ...prev, colors: newColors }));
     };
 
     const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -199,34 +207,6 @@ const ExhibitionStudioPage: React.FC = () => {
             };
             reader.readAsDataURL(file);
         }
-    };
-
-    const performBackgroundAnalysis = async () => {
-        if (!formData.websiteUrl && !formData.logo) return null;
-        
-        try {
-            const response = await fetch('/api/analyze-brand', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    logo: formData.logo ? formData.logo.split(',')[1] : null, 
-                    mimeType: formData.logo ? formData.logo.match(/data:(.*);base64/)?.[1] : null,
-                    websiteUrl: formData.websiteUrl
-                })
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                setAnalysisResult(data);
-                if (data.industry) {
-                    setFormData(prev => ({...prev, eventIndustry: data.industry}));
-                }
-                return data;
-            }
-        } catch (e) {
-            console.error("Background analysis failed", e);
-        }
-        return null;
     };
 
     const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -263,12 +243,13 @@ const ExhibitionStudioPage: React.FC = () => {
             if (!formData.phone) newErrors.phone = true;
             if (!formData.websiteUrl) newErrors.websiteUrl = true;
             if (!formData.logo) newErrors.logo = "Logo is mandatory";
-            
             if (!formData.email) {
                 newErrors.email = true;
             } else if (!isBusinessEmail(formData.email)) {
                 newErrors.email = "Please use a work email";
             }
+            // Add basic validation for new fields if strictness is desired
+            // For now, making them optional/pre-filled is fine as per "make the user select"
         } else if (step === 2) {
              if (!formData.eventName) newErrors.eventName = true;
         } else if (step === 3) {
@@ -288,26 +269,10 @@ const ExhibitionStudioPage: React.FC = () => {
         return isValid;
     };
 
-    const nextStep = async () => {
+    const nextStep = () => {
         if (validateStep(currentStep)) {
-            if (currentStep === 1) {
-                if (!analysisResult) {
-                    setIsLoadingAnalysis(true);
-                    const result = await performBackgroundAnalysis();
-                    setIsLoadingAnalysis(false);
-                    if (result) {
-                        setShowAnalysisResults(true);
-                        return; // Pause to show findings
-                    }
-                }
-            }
             setCurrentStep(prev => Math.min(prev + 1, steps.length));
         }
-    };
-
-    const confirmAnalysisAndProceed = () => {
-        setShowAnalysisResults(false);
-        setCurrentStep(2);
     };
 
     const prevStep = () => {
@@ -320,6 +285,13 @@ const ExhibitionStudioPage: React.FC = () => {
         if (validateStep(currentStep)) {
             setIsSubmitting(true);
             
+            // Prepare analysis object from user inputs for compatibility
+            const manualAnalysis = {
+                industry: formData.eventIndustry,
+                vibe: formData.vibe,
+                colors: formData.colors
+            };
+
             try {
                 await fetch('/api/send-inquiry', {
                     method: 'POST',
@@ -327,7 +299,7 @@ const ExhibitionStudioPage: React.FC = () => {
                     body: JSON.stringify({ 
                         type: 'Exhibition Studio Design Request',
                         ...formData,
-                        analysis: analysisResult 
+                        analysis: manualAnalysis 
                     })
                 });
             } catch (error) {
@@ -339,7 +311,7 @@ const ExhibitionStudioPage: React.FC = () => {
                     formData: {
                         ...formData,
                         boothSize: formData.standWidth * formData.standLength,
-                        analysis: analysisResult
+                        analysis: manualAnalysis // Pass manual data as analysis
                     }
                 } 
             });
@@ -354,8 +326,8 @@ const ExhibitionStudioPage: React.FC = () => {
                 return (
                     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
                         <div className="text-center mb-8">
-                            <h2 className="text-3xl font-serif font-bold text-white mb-2">Company Essentials</h2>
-                            <p className="text-gray-400">Let's start with your brand.</p>
+                            <h2 className="text-3xl font-serif font-bold text-white mb-2">Brand & Brief</h2>
+                            <p className="text-gray-400">Tell us about your company and vision.</p>
                         </div>
                         <div className="grid md:grid-cols-2 gap-x-12 gap-y-8">
                             <div className="md:col-span-2 space-y-1">
@@ -432,6 +404,84 @@ const ExhibitionStudioPage: React.FC = () => {
                                 </div>
                                 {errors.logo && <span className="text-red-400 text-xs flex items-center gap-1 mt-1 font-semibold"><AlertCircle size={10} /> Required</span>}
                             </div>
+
+                            {/* Brand Identity Section */}
+                            <div className="md:col-span-2 pt-8 mt-4 border-t border-white/10">
+                                <h3 className="text-lg font-serif font-bold text-white mb-6">Brand Identity</h3>
+                                <div className="grid md:grid-cols-2 gap-x-12 gap-y-8">
+                                    <div className="md:col-span-1 space-y-1">
+                                        <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Industry</label>
+                                        <div className="relative">
+                                            <Briefcase className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-500" size={18}/>
+                                            <select 
+                                                name="eventIndustry" 
+                                                value={formData.eventIndustry} 
+                                                onChange={handleInputChange}
+                                                className={`${getInputClass('eventIndustry')} pl-8 appearance-none cursor-pointer`}
+                                            >
+                                                <option value="" className="bg-gray-900 text-gray-500">Select Industry</option>
+                                                {industries.map(ind => <option key={ind} value={ind} className="bg-gray-900">{ind}</option>)}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div className="md:col-span-1 space-y-1">
+                                        <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Brand Colors</label>
+                                        <div className="flex gap-4 py-2">
+                                            {formData.colors.map((color, index) => (
+                                                <div key={index} className="relative group">
+                                                    <div 
+                                                        className="w-10 h-10 rounded-full border-2 border-white/20 shadow-lg cursor-pointer overflow-hidden"
+                                                        style={{ backgroundColor: color }}
+                                                    >
+                                                        <input 
+                                                            type="color" 
+                                                            value={color}
+                                                            onChange={(e) => handleColorChange(index, e.target.value)}
+                                                            className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="md:col-span-2 space-y-3">
+                                        <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Brand Vibe</label>
+                                        <div className="flex flex-wrap gap-3">
+                                            {vibes.map(vibe => (
+                                                <button
+                                                    key={vibe}
+                                                    type="button"
+                                                    onClick={() => handleOptionClick('vibe', vibe)}
+                                                    className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide border transition-all ${
+                                                        formData.vibe === vibe 
+                                                        ? 'bg-fann-gold text-black border-fann-gold' 
+                                                        : 'bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white'
+                                                    }`}
+                                                >
+                                                    {vibe}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="md:col-span-2 space-y-1">
+                                        <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Project Brief</label>
+                                        <div className="relative">
+                                            <PenTool className="absolute left-0 top-4 text-gray-500" size={18}/>
+                                            <textarea 
+                                                name="brief" 
+                                                rows={3}
+                                                value={formData.brief} 
+                                                onChange={handleInputChange} 
+                                                className="w-full bg-transparent border-b border-white/20 py-4 pl-8 text-white placeholder-gray-600 transition-all duration-300 focus:outline-none focus:border-fann-gold rounded-none font-light resize-none" 
+                                                placeholder="Describe your vision, goals, or any specific requirements..." 
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </motion.div>
                 );
@@ -451,23 +501,11 @@ const ExhibitionStudioPage: React.FC = () => {
                                         type="text" 
                                         name="eventName" 
                                         value={formData.eventName} 
-                                        onChange={(e) => {
-                                            handleInputChange(e);
-                                            const val = e.target.value.toLowerCase();
-                                            if(val.includes('tech') || val.includes('gitex')) setFormData(prev => ({...prev, eventIndustry: 'Technology'}));
-                                            else if(val.includes('food') || val.includes('gulfood')) setFormData(prev => ({...prev, eventIndustry: 'Food & Beverage'}));
-                                            else if(val.includes('health') || val.includes('med')) setFormData(prev => ({...prev, eventIndustry: 'Healthcare'}));
-                                            else if(val.includes('build') || val.includes('big 5')) setFormData(prev => ({...prev, eventIndustry: 'Construction'}));
-                                        }} 
+                                        onChange={handleInputChange} 
                                         className={`${getInputClass('eventName')} pl-8`} 
                                         placeholder="e.g. GITEX Global 2024" 
                                     />
                                 </div>
-                                {formData.eventIndustry && (
-                                    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-[10px] text-fann-gold flex items-center gap-1 mt-2 uppercase tracking-wider">
-                                        Detected Industry: {formData.eventIndustry}
-                                    </motion.p>
-                                )}
                             </div>
                         </div>
                     </motion.div>
@@ -628,10 +666,9 @@ const ExhibitionStudioPage: React.FC = () => {
                                     <button
                                         type="button"
                                         onClick={nextStep}
-                                        disabled={isLoadingAnalysis}
                                         className="btn-secondary flex items-center gap-3"
                                     >
-                                        {isLoadingAnalysis ? <Loader2 className="animate-spin" size={16} /> : <>Next <ArrowRight size={16} /></>}
+                                        Next <ArrowRight size={16} />
                                     </button>
                                 ) : (
                                     <button
@@ -648,62 +685,6 @@ const ExhibitionStudioPage: React.FC = () => {
                     </motion.div>
                 </div>
             </div>
-
-            {/* Findings Modal */}
-            <AnimatePresence>
-                {showAnalysisResults && analysisResult && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
-                        <motion.div 
-                            initial={{scale:0.9, opacity: 0}} 
-                            animate={{scale:1, opacity: 1}} 
-                            exit={{scale:0.9, opacity: 0}}
-                            className="bg-[#151515] border border-fann-gold/30 p-8 rounded-2xl max-w-md w-full text-center shadow-[0_0_50px_rgba(201,169,98,0.15)] relative overflow-hidden"
-                        >
-                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-fann-gold to-transparent"></div>
-                            
-                            <div className="w-16 h-16 bg-fann-gold/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-fann-gold/20">
-                                <Sparkles className="w-8 h-8 text-fann-gold" />
-                            </div>
-                            
-                            <h3 className="text-3xl font-serif text-white mb-2">Identity Detected</h3>
-                            <p className="text-gray-400 text-sm mb-8">Our AI has analyzed your digital presence.</p>
-                            
-                            <div className="space-y-4 text-left bg-white/5 p-6 rounded-lg mb-8 border border-white/10">
-                                <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
-                                    <div>
-                                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest block mb-1">Industry</span>
-                                        <span className="text-white font-medium text-lg">{analysisResult.industry || 'General'}</span>
-                                    </div>
-                                    <Briefcase className="text-fann-gold opacity-50" size={20} />
-                                </div>
-                                <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
-                                    <div>
-                                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest block mb-1">Brand Vibe</span>
-                                        <span className="text-white font-medium text-lg">{analysisResult.vibe || 'Modern'}</span>
-                                    </div>
-                                    <ScanSearch className="text-fann-gold opacity-50" size={20} />
-                                </div>
-                                <div>
-                                    <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest block mb-3">Color Palette</span>
-                                    <div className="flex gap-3">
-                                        {analysisResult.colors.map((color, i) => (
-                                            <div key={i} className="w-10 h-10 rounded-full shadow-lg border border-white/20 relative group" style={{ backgroundColor: color }} title={color}>
-                                                <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                                                    {color}
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button onClick={confirmAnalysisAndProceed} className="btn-gold w-full flex items-center justify-center gap-2">
-                                Proceed with this Identity <ArrowRight size={16} />
-                            </button>
-                        </motion.div>
-                    </div>
-                )}
-            </AnimatePresence>
         </AnimatedPage>
     );
 };

@@ -12,7 +12,7 @@ export default async function handler(req: Request) {
 
     try {
         const config = await req.json();
-        const { companyName, websiteUrl, eventName, boothSize, boothType, features, analysis, standWidth, standLength, standHeight } = config;
+        const { companyName, websiteUrl, eventName, boothSize, boothType, features, analysis, standWidth, standLength, standHeight, brief } = config;
 
         if (!boothSize || !boothType || !eventName) {
             return new Response(JSON.stringify({ error: 'Missing required design parameters.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
@@ -24,9 +24,10 @@ export default async function handler(req: Request) {
         }
         const ai = new GoogleGenAI({ apiKey });
 
-        // Use analysis from Step 1 if available, otherwise prompt for it.
+        // Use analysis from Step 1 if available (now mostly manual inputs), otherwise prompt for it.
+        // If analysis is provided manually by the user, trust it.
         const brandContext = analysis ? 
-            `Detected Brand Vibe: ${analysis.vibe}. Brand Colors: ${analysis.colors.join(', ')}.` : 
+            `Brand Industry: ${analysis.industry}. Brand Vibe: ${analysis.vibe}. Brand Colors: ${analysis.colors.join(', ')}.` : 
             `Analyze the website "${websiteUrl}" for brand vibe.`;
 
         // === 1. Generate Text Concepts (2 Distinct Options) ===
@@ -38,6 +39,7 @@ export default async function handler(req: Request) {
         - Company: "${companyName || 'The Client'}"
         - Website: "${websiteUrl}"
         - ${brandContext}
+        - Client Brief/Notes: "${brief || 'No specific instructions provided.'}"
         
         STRICT Design Constraints:
         - Orientation: ${boothType} (Must adhere to this configuration).
@@ -81,7 +83,7 @@ export default async function handler(req: Request) {
             model: "gemini-2.5-flash",
             contents: textPrompt,
             config: {
-                // Only use googleSearch if we don't have pre-analysis
+                // Only use googleSearch if we don't have pre-analysis (manual or auto)
                 tools: analysis ? [] : [{ googleSearch: {} }],
                 responseMimeType: "application/json",
                 responseSchema: responseSchema,
@@ -102,6 +104,7 @@ export default async function handler(req: Request) {
             Materials: ${concept.materials.join(', ')}.
             Industry: ${designData.industryDetected}.
             Visible Requirements: ${features.join(', ')}.
+            Client Specifics: "${brief || ''}".
             Lighting: Cinematic, volumetric, studio lighting. High resolution, architectural visualization.`;
 
             const resp = await ai.models.generateContent({
