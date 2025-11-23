@@ -25,14 +25,22 @@ const HeroSection: React.FC = () => {
         <section className="relative h-screen flex items-center justify-center overflow-hidden bg-[#1a1a1a]">
             {/* Background Video */}
             <div className="absolute inset-0 z-0">
-                <div className="absolute inset-0 bg-[#1a1a1a]/20 z-10" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-black/50 to-transparent z-10" />
+                {/* Base Darkening Layer for consistency */}
+                <div className="absolute inset-0 bg-black/50 z-10" />
+                
+                {/* Advanced Gradient Overlay: 
+                    - Darkened top for Navbar legibility
+                    - Subtle tint in middle for content pop
+                    - Seamless blend to dark background at bottom 
+                */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/20 to-[#1a1a1a] z-10" />
+                
                 <video 
                     autoPlay 
                     loop 
                     muted 
                     playsInline 
-                    className="w-full h-full object-cover opacity-80"
+                    className="w-full h-full object-cover"
                 >
                     <source src="https://joy1.videvo.net/videvo_files/video/free/2019-05/large_watermarked/190522_03_GoingUp_Escalator_09_preview.mp4" type="video/mp4" />
                 </video>
@@ -72,7 +80,7 @@ const HeroSection: React.FC = () => {
                                 </span>
                             </span>
                         </h1>
-                        <p className="text-lg md:text-xl text-gray-300 font-light tracking-wide max-w-3xl mx-auto border-t border-white/10 pt-6">
+                        <p className="text-lg md:text-xl text-gray-200 font-light tracking-wide max-w-3xl mx-auto border-t border-white/20 pt-6 drop-shadow-md">
                             Premier Design & Build Partner for <span className="font-semibold text-white">Exhibitions</span> and <span className="font-semibold text-white">Luxury Interiors</span> in the UAE.
                         </p>
                     </motion.div>
@@ -84,7 +92,7 @@ const HeroSection: React.FC = () => {
                         transition={{ duration: 0.8, delay: 0.5 }}
                     >
                         <Link to="/portfolio">
-                            <button className="group relative bg-transparent border border-fann-gold text-white font-bold text-sm tracking-[0.2em] uppercase py-4 px-12 overflow-hidden transition-colors duration-300 hover:text-black rounded-none">
+                            <button className="group relative bg-black/30 backdrop-blur-sm border border-fann-gold text-white font-bold text-sm tracking-[0.2em] uppercase py-4 px-12 overflow-hidden transition-colors duration-300 hover:text-black rounded-none shadow-lg">
                                 <span className="absolute inset-0 w-full h-full bg-fann-gold transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out"></span>
                                 <span className="relative z-10 flex items-center gap-2">
                                     View Our Portfolio <ArrowRight size={16} />
