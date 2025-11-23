@@ -80,7 +80,7 @@ export default async function handler(req: Request) {
                 imageConfig: {
                     aspectRatio: "16:9",
                     imageSize: "1K"
-                }
+                } as any
             },
         });
         
