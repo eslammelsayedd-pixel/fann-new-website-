@@ -1,18 +1,19 @@
+
 import { GoogleGenAI } from "@google/genai";
 
-export const config = {
-  runtime: 'edge',
-};
+// Switch to Node.js runtime
+// export const config = { runtime: 'edge' };
 
-export default async function handler(req: Request) {
+export default async function handler(req: any, res: any) {
     if (req.method !== 'POST') {
-        return new Response(JSON.stringify({ error: 'Method Not Allowed' }), { status: 405, headers: { 'Content-Type': 'application/json' } });
+        res.setHeader('Allow', ['POST']);
+        return res.status(405).json({ error: 'Method Not Allowed' });
     }
 
     try {
-        const { eventName } = await req.json();
+        const { eventName } = req.body;
         if (!eventName) {
-             return new Response(JSON.stringify({ industry: null }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+             return res.status(200).json({ industry: null });
         }
 
         const apiKey = process.env.API_KEY || process.env.GOOGLE_CLOUD_API_KEY;
@@ -27,10 +28,10 @@ export default async function handler(req: Request) {
         });
 
         const industry = response.text ? response.text.trim() : "General";
-        return new Response(JSON.stringify({ industry }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        return res.status(200).json({ industry });
 
     } catch (error: any) {
         console.error('Error detecting industry:', error);
-        return new Response(JSON.stringify({ error: error.message }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+        return res.status(500).json({ error: error.message });
     }
 }

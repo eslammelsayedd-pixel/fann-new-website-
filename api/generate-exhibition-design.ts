@@ -1,21 +1,21 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
 
-export const config = {
-  runtime: 'edge',
-};
+// Switch to Node.js runtime for longer timeouts (configured in vercel.json)
+// export const config = { runtime: 'edge' }; 
 
-export default async function handler(req: Request) {
+export default async function handler(req: any, res: any) {
     if (req.method !== 'POST') {
-        return new Response(JSON.stringify({ error: 'Method Not Allowed' }), { status: 405, headers: { 'Content-Type': 'application/json' } });
+        res.setHeader('Allow', ['POST']);
+        return res.status(405).json({ error: 'Method Not Allowed' });
     }
 
     try {
-        const config = await req.json();
-        const { companyName, websiteUrl, eventName, boothSize, boothType, features, standWidth, standLength, standHeight, brief, logo, brandColors, industry } = config;
+        const config = req.body;
+        const { companyName, websiteUrl, eventName, boothSize, boothType, features, standWidth, standLength, standHeight, brief, brandColors, industry } = config;
 
         if (!boothSize || !boothType) {
-            return new Response(JSON.stringify({ error: 'Missing required design parameters.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+            return res.status(400).json({ error: 'Missing required design parameters.' });
         }
 
         const apiKey = process.env.API_KEY || process.env.GOOGLE_CLOUD_API_KEY;
@@ -50,6 +50,7 @@ export default async function handler(req: Request) {
         };
 
         // === 1. Analyze Brand & Generate 4 Text Concepts ===
+        // Note: We rely on the passed 'brandColors' instead of analyzing the logo again to save bandwidth/time.
         const textPrompt = `
         You are a world-class exhibition stand designer.
         
@@ -59,7 +60,7 @@ export default async function handler(req: Request) {
         - Website: "${websiteUrl}"
         - Client Brief: "${brief || 'No specific instructions.'}"
         - Detected Industry: "${industry || 'General'}"
-        - Brand Colors: ${brandColors && brandColors.length > 0 ? brandColors.join(', ') : 'Infer from brand/logo'}.
+        - Brand Colors: ${brandColors && brandColors.length > 0 ? brandColors.join(', ') : 'Not specified (Infer from context)'}.
         
         Constraints:
         - Orientation: ${boothType} (${standWidth}m x ${standLength}m).
@@ -80,38 +81,28 @@ export default async function handler(req: Request) {
         Structure: ${JSON.stringify(responseSchema)}
         `;
 
-        // If logo is provided, pass it for color analysis implicitly
-        const parts = [];
-        if (logo && logo.startsWith('data:')) {
-             // Extract mime type and base64
-             const matches = logo.match(/^data:(.+);base64,(.+)$/);
-             if (matches && matches.length === 3) {
-                 parts.push({ inlineData: { mimeType: matches[1], data: matches[2] } });
-             }
-        }
-        parts.push({ text: textPrompt });
-
         const textResponse = await ai.models.generateContent({
             model: "gemini-2.5-flash",
-            contents: { parts },
+            contents: { parts: [{ text: textPrompt }] },
             config: {
-                tools: [{ googleSearch: {} }], // Use search to understand the company/event
-                // Note: responseMimeType and responseSchema are NOT supported when using tools in the same request.
-                // We rely on the prompt to enforce JSON structure.
+                tools: [{ googleSearch: {} }], 
             },
         });
 
         // Clean and Parse JSON
-        let rawText = textResponse.text.trim();
-        // Remove markdown code blocks if the model adds them despite instructions
+        let rawText = textResponse.text ? textResponse.text.trim() : "";
         rawText = rawText.replace(/^```json\s*/, "").replace(/^```\s*/, "").replace(/\s*```$/, "");
         
+        if (!rawText) {
+            throw new Error("Model returned empty response.");
+        }
+
         let designData;
         try {
             designData = JSON.parse(rawText);
         } catch (e) {
-            console.error("JSON Parsing Failed", rawText);
-            throw new Error("Failed to parse generated design data.");
+            console.error("JSON Parsing Failed. Raw text:", rawText);
+            throw new Error("Failed to parse generated design data. The model output was not valid JSON.");
         }
 
         // === 2. Generate Images (4 distinct renders) ===
@@ -128,20 +119,24 @@ export default async function handler(req: Request) {
             Industry: ${designData.industryDetected}.
             Lighting: Cinematic studio lighting, high resolution 8k.`;
 
-            const resp = await ai.models.generateContent({
-                model: 'gemini-3-pro-image-preview',
-                contents: { parts: [{ text: imagePrompt }] },
-                config: {
-                    imageConfig: { aspectRatio: "16:9", imageSize: "1K" }
-                }
-            } as any);
+            try {
+                const resp = await ai.models.generateContent({
+                    model: 'gemini-3-pro-image-preview',
+                    contents: { parts: [{ text: imagePrompt }] },
+                    config: {
+                        imageConfig: { aspectRatio: "16:9", imageSize: "1K" }
+                    }
+                } as any);
 
-            if (resp.candidates?.[0]?.content?.parts) {
-                for (const part of resp.candidates[0].content.parts) {
-                    if (part.inlineData) return part.inlineData.data;
+                if (resp.candidates?.[0]?.content?.parts) {
+                    for (const part of resp.candidates[0].content.parts) {
+                        if (part.inlineData) return part.inlineData.data;
+                    }
                 }
+            } catch (imgError) {
+                console.error("Image generation failed for concept:", concept.conceptName, imgError);
             }
-            return null; // Fallback handled in frontend
+            return null; 
         };
 
         // Run image generation in parallel for speed
@@ -153,16 +148,16 @@ export default async function handler(req: Request) {
         ]);
 
         // === 3. Respond ===
-        return new Response(JSON.stringify({ 
+        return res.status(200).json({ 
             industry: designData.industryDetected,
             conceptA: { ...designData.conceptA, image: imageA },
             conceptB: { ...designData.conceptB, image: imageB },
             conceptC: { ...designData.conceptC, image: imageC },
             conceptD: { ...designData.conceptD, image: imageD }
-        }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        });
 
     } catch (error: any) {
         console.error('Error in generate-exhibition-design API:', error);
-        return new Response(JSON.stringify({ error: error.message || 'An internal server error occurred.' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+        return res.status(500).json({ error: error.message || 'An internal server error occurred.' });
     }
 }

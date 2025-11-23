@@ -1,21 +1,21 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
 
-export const config = {
-  runtime: 'edge',
-};
+// Switch to Node.js runtime
+// export const config = { runtime: 'edge' };
 
-export default async function handler(req: Request) {
+export default async function handler(req: any, res: any) {
     if (req.method !== 'POST') {
-        return new Response(JSON.stringify({ error: 'Method Not Allowed' }), { status: 405, headers: { 'Content-Type': 'application/json' } });
+        res.setHeader('Allow', ['POST']);
+        return res.status(405).json({ error: 'Method Not Allowed' });
     }
 
     try {
-        const config = await req.json();
+        const config = req.body;
         const { companyName, eventName, guestCount, eventType, brief, features } = config;
 
         if (!companyName || !eventName) {
-            return new Response(JSON.stringify({ error: 'Missing required design parameters.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+            return res.status(400).json({ error: 'Missing required design parameters.' });
         }
 
         const apiKey = process.env.API_KEY || process.env.GOOGLE_CLOUD_API_KEY;
@@ -77,14 +77,17 @@ export default async function handler(req: Request) {
             model: "gemini-2.5-flash",
             contents: { parts: [{ text: textPrompt }] },
             config: {
-                tools: [{ googleSearch: {} }] // Use search to understand the company context if needed
-                // Removed responseMimeType: 'application/json' to avoid conflict with tools
+                tools: [{ googleSearch: {} }] 
             },
         });
 
         // Clean and Parse JSON
-        let rawText = textResponse.text.trim();
+        let rawText = textResponse.text ? textResponse.text.trim() : "";
         rawText = rawText.replace(/^```json\s*/, "").replace(/^```\s*/, "").replace(/\s*```$/, "");
+
+        if (!rawText) {
+             throw new Error("Model returned empty response.");
+        }
 
         let designData;
         try {
@@ -106,18 +109,22 @@ export default async function handler(req: Request) {
             Venue: High-end luxury venue in Dubai.
             Resolution: 8k, cinematic, atmospheric depth.`;
 
-            const resp = await ai.models.generateContent({
-                model: 'gemini-3-pro-image-preview',
-                contents: { parts: [{ text: imagePrompt }] },
-                config: {
-                    imageConfig: { aspectRatio: "16:9", imageSize: "1K" }
-                }
-            } as any);
+            try {
+                const resp = await ai.models.generateContent({
+                    model: 'gemini-3-pro-image-preview',
+                    contents: { parts: [{ text: imagePrompt }] },
+                    config: {
+                        imageConfig: { aspectRatio: "16:9", imageSize: "1K" }
+                    }
+                } as any);
 
-            if (resp.candidates?.[0]?.content?.parts) {
-                for (const part of resp.candidates[0].content.parts) {
-                    if (part.inlineData) return part.inlineData.data;
+                if (resp.candidates?.[0]?.content?.parts) {
+                    for (const part of resp.candidates[0].content.parts) {
+                        if (part.inlineData) return part.inlineData.data;
+                    }
                 }
+            } catch (imgError) {
+                console.error("Image generation failed for concept:", concept.conceptName, imgError);
             }
             return null;
         };
@@ -131,16 +138,16 @@ export default async function handler(req: Request) {
         ]);
 
         // === 3. Respond ===
-        return new Response(JSON.stringify({ 
+        return res.status(200).json({ 
             industry: designData.industryDetected,
             conceptA: { ...designData.conceptA, image: imageA },
             conceptB: { ...designData.conceptB, image: imageB },
             conceptC: { ...designData.conceptC, image: imageC },
             conceptD: { ...designData.conceptD, image: imageD }
-        }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        });
 
     } catch (error: any) {
         console.error('Error in generate-event-design API:', error);
-        return new Response(JSON.stringify({ error: error.message || 'An internal server error occurred.' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+        return res.status(500).json({ error: error.message || 'An internal server error occurred.' });
     }
 }
