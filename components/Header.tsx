@@ -20,17 +20,17 @@ const Header: React.FC = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Elite-Tier Header Styling
+    // Liquid Metal Header Styling
     const headerClasses = scrolled
-        ? 'bg-black/80 backdrop-blur-lg border-b border-white/10 py-4 shadow-lg'
+        ? 'bg-fann-dark-glass backdrop-blur-xl border-b border-white/5 py-4 shadow-[0_10px_30px_rgba(0,0,0,0.5)]'
         : isHome
-            ? 'bg-gradient-to-b from-black/90 to-transparent py-6'
-            : 'bg-black border-b border-white/10 py-6';
+            ? 'bg-transparent py-6'
+            : 'bg-fann-black border-b border-white/5 py-6';
 
-    const textColorClass = 'text-white';
-    const hoverColorClass = 'hover:text-fann-gold';
-    const activeLinkClass = 'text-fann-gold';
-    const dropdownBgClass = 'bg-[#0F0F0F] border border-white/10';
+    const textColorClass = 'text-fann-chrome';
+    const hoverColorClass = 'hover:text-fann-gold hover:drop-shadow-[0_0_8px_rgba(212,175,55,0.5)]';
+    const activeLinkClass = 'text-fann-gold drop-shadow-[0_0_8px_rgba(212,175,55,0.3)]';
+    const dropdownBgClass = 'bg-fann-charcoal/90 backdrop-blur-xl border border-white/10';
     const dropdownTextClass = 'text-gray-400 hover:text-white hover:bg-white/5';
 
     return (
@@ -44,9 +44,9 @@ const Header: React.FC = () => {
                         <img 
                             src="/favicon.svg" 
                             alt="FANN Logo" 
-                            className="h-10 w-auto transition-transform duration-300 group-hover:scale-105" 
+                            className="h-10 w-auto transition-transform duration-300 group-hover:scale-110 drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]" 
                         />
-                        <span className={`font-sans font-bold text-2xl tracking-[0.2em] transition-colors duration-300 text-white group-hover:text-fann-gold`}>
+                        <span className={`font-sans font-black text-2xl tracking-[0.2em] transition-colors duration-300 text-white group-hover:text-fann-gold`}>
                             FANN
                         </span>
                     </Link>
@@ -56,14 +56,14 @@ const Header: React.FC = () => {
                         {navLinks.map((link) => (
                             link.children ? (
                                 <div key={link.name} className="relative group h-full">
-                                    <button className={`flex items-center space-x-1 text-xs font-bold uppercase tracking-[0.15em] transition-colors duration-300 py-2 ${textColorClass} ${hoverColorClass}`}>
+                                    <button className={`flex items-center space-x-1 text-xs font-bold uppercase tracking-[0.15em] transition-all duration-300 py-2 ${textColorClass} ${hoverColorClass}`}>
                                         <span>{link.name}</span>
                                         <ChevronDown size={12} className="group-hover:rotate-180 transition-transform duration-300 opacity-70" />
                                     </button>
                                     
                                     {/* Dropdown */}
                                     <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                                        <div className={`rounded-sm shadow-2xl overflow-hidden py-2 ${dropdownBgClass}`}>
+                                        <div className={`rounded-sm shadow-[0_0_30px_rgba(0,0,0,0.5)] overflow-hidden py-2 ${dropdownBgClass}`}>
                                             {link.children.map(child => (
                                                 <NavLink
                                                     key={child.name}
@@ -91,7 +91,7 @@ const Header: React.FC = () => {
                                     {({ isActive }) => (
                                         <>
                                             {link.name}
-                                            <span className={`absolute bottom-0 left-0 w-0 h-0.5 bg-fann-gold transition-all duration-300 ${isActive ? 'w-full' : 'group-hover:w-full'}`}></span>
+                                            <span className={`absolute bottom-0 left-0 w-0 h-0.5 bg-fann-gold transition-all duration-300 shadow-[0_0_10px_#D4AF37] ${isActive ? 'w-full' : 'group-hover:w-full'}`}></span>
                                         </>
                                     )}
                                 </NavLink>
@@ -105,9 +105,10 @@ const Header: React.FC = () => {
                         <ThemeToggle />
                         <Link to="/contact">
                           <button 
-                              className="bg-white text-black border border-white font-bold py-2.5 px-6 rounded-none text-xs uppercase tracking-[0.15em] hover:bg-fann-gold hover:border-fann-gold hover:text-black transition-all duration-300 shadow-[0_0_15px_rgba(255,255,255,0.1)]"
+                              className="relative overflow-hidden bg-transparent text-white border border-fann-gold/50 font-bold py-2.5 px-6 rounded-none text-xs uppercase tracking-[0.15em] group transition-all duration-300 hover:border-fann-gold hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]"
                           >
-                              Start Designing
+                              <span className="relative z-10 group-hover:text-black transition-colors">Start Designing</span>
+                              <div className="absolute inset-0 bg-fann-gold transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></div>
                           </button>
                         </Link>
                     </div>
@@ -133,7 +134,7 @@ const Header: React.FC = () => {
                     animate={{ opacity: 1, height: '100vh' }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="lg:hidden fixed inset-0 bg-[#000] z-40 overflow-y-auto pt-24"
+                    className="lg:hidden fixed inset-0 bg-black z-40 overflow-y-auto pt-24 backdrop-blur-lg bg-opacity-90"
                 >
                     <nav className="flex flex-col items-center space-y-6 px-6 pb-12">
                         {navLinks.map((link) => (
@@ -188,7 +189,7 @@ const Header: React.FC = () => {
                             <Link to="/contact" className="w-full max-w-xs">
                               <button 
                                 onClick={() => setIsOpen(false)}
-                                className="w-full bg-fann-gold text-black font-bold py-4 px-8 rounded-none text-lg uppercase tracking-wider hover:bg-white transition-colors"
+                                className="btn-liquid w-full"
                               >
                                   Start Designing
                               </button>

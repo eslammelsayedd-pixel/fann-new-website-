@@ -10,8 +10,8 @@ html {
 
 body {
   overflow-x: hidden;
-  background-color: #0F0F0F; /* fann-teal */
-  color: #E5E5E5; /* fann-peach */
+  background-color: #0A0A0A; /* fann-black */
+  color: #E0E0E0; /* fann-chrome */
   font-family: 'Manrope', sans-serif;
 }
 
@@ -21,16 +21,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0F0F0F; 
+  background: #0A0A0A; 
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333; 
+  background: linear-gradient(to bottom, #D4AF37, #996515); 
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #D4AF76; 
+  background: #F4D06F; 
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -41,19 +41,68 @@ body {
     scrollbar-width: none;
 }
 
-/* Premium Input Styles */
-.input-premium {
-  @apply w-full bg-[#151515] border border-white/10 rounded-none pl-4 pr-4 py-4 focus:outline-none focus:border-fann-gold focus:ring-1 focus:ring-fann-gold transition-all text-white placeholder-gray-600 shadow-inner;
+/* Liquid Metal Text Effect */
+.text-liquid-gold {
+  background: linear-gradient(
+    to bottom,
+    #F4D06F 0%,
+    #D4AF37 40%,
+    #996515 60%,
+    #F4D06F 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0px 2px 10px rgba(212, 175, 55, 0.3);
 }
 
-.input-error {
-  @apply border-red-500 focus:border-red-500 focus:ring-red-500;
+.text-chrome-3d {
+  color: #E0E0E0;
+  text-shadow: 
+    0 1px 0 #ccc, 
+    0 2px 0 #c9c9c9, 
+    0 3px 0 #bbb, 
+    0 4px 0 #b9b9b9, 
+    0 5px 0 #aaa, 
+    0 6px 1px rgba(0,0,0,.1), 
+    0 0 5px rgba(0,0,0,.1), 
+    0 1px 3px rgba(0,0,0,.3), 
+    0 3px 5px rgba(0,0,0,.2), 
+    0 5px 10px rgba(0,0,0,.25), 
+    0 10px 10px rgba(0,0,0,.2), 
+    0 20px 20px rgba(0,0,0,.15);
 }
 
-.btn-primary {
-  @apply bg-fann-gold text-black font-bold py-4 px-10 rounded-none uppercase tracking-widest hover:bg-white transition-all shadow-lg shadow-fann-gold/10 hover:shadow-fann-gold/30;
+/* Liquid Button */
+.btn-liquid {
+  @apply relative overflow-hidden bg-fann-gold text-black font-bold py-4 px-10 uppercase tracking-widest transition-all duration-300 rounded-sm;
+  background-size: 200% auto;
+  background-image: linear-gradient(to right, #D4AF37 0%, #F4D06F 51%, #D4AF37 100%);
 }
 
-.btn-secondary {
-  @apply border border-white/20 text-white font-bold py-4 px-10 rounded-none uppercase tracking-widest hover:bg-white hover:text-black transition-all;
+.btn-liquid:hover {
+  background-position: right center;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+  transform: translateY(-2px);
+}
+
+/* Liquid Input */
+.input-liquid {
+  @apply w-full bg-[#151515] border border-white/10 rounded-none pl-4 pr-4 py-4 text-white placeholder-gray-600 shadow-inner transition-all duration-500;
+}
+
+.input-liquid:focus {
+  @apply outline-none border-fann-gold shadow-[0_0_15px_rgba(212,175,55,0.3)];
+  background: linear-gradient(to right, rgba(212,175,55,0.05), transparent);
+}
+
+/* Glassmorphism Card */
+.card-liquid {
+  @apply bg-fann-charcoal/50 backdrop-blur-md border border-white/5 hover:border-fann-gold/50 transition-all duration-500;
+}
+
+/* Custom Selection */
+::selection {
+  background: #D4AF37;
+  color: #000;
 }
