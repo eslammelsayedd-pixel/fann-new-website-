@@ -1,472 +1,295 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { Award, Wrench, Users, Headset, ShieldCheck, CheckCircle, ArrowRight, ChevronRight, Star, MousePointer2 } from 'lucide-react';
+import { Award, Wrench, Users, Headset, ShieldCheck, CheckCircle, ArrowRight, ChevronRight, Star, Play, Pause, Volume2, VolumeX, MousePointer2 } from 'lucide-react';
 import { testimonials } from '../constants';
 import SEO from '../components/SEO';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import ScrollReveal from '../components/ScrollReveal';
 
-// --- ELITE-TIER CUSTOM 3D PARTICLE ENGINE ---
-// This engine simulates Three.js physics using lightweight Canvas 2D for maximum performance and compatibility.
+// --- SPLIT FLAP TEXT COMPONENT ---
+// Simulates a mechanical departure board flipping effect
+const SplitFlapText: React.FC<{ text: string; className?: string }> = ({ text, className }) => {
+    const [displayString, setDisplayString] = useState('');
+    const charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
 
-interface Point3D {
-    x: number;
-    y: number;
-    z: number;
-    // Target coordinates for morphing
-    tx: number;
-    ty: number;
-    tz: number;
-    // Velocity
-    vx: number;
-    vy: number;
-    vz: number;
-    // Appearance
-    color: string;
-    baseSize: number;
-    // Interaction
-    magnetForce: number;
-}
+    useEffect(() => {
+        let interval: any;
+        let iteration = 0;
+        
+        const runAnimation = () => {
+            interval = setInterval(() => {
+                setDisplayString(prev => 
+                    text.split('').map((char, index) => {
+                        if (index < iteration) {
+                            return text[index];
+                        }
+                        return charSet[Math.floor(Math.random() * charSet.length)];
+                    }).join('')
+                );
 
+                if (iteration >= text.length) {
+                    clearInterval(interval);
+                }
+                iteration += 1 / 3; // Speed of reveal
+            }, 30);
+        };
+
+        runAnimation();
+        return () => clearInterval(interval);
+    }, [text]);
+
+    return (
+        <span className={`font-mono tracking-widest ${className}`}>
+            {displayString}
+        </span>
+    );
+};
+
+// --- IMMERSIVE HERO SECTION ---
 const HeroSection: React.FC = () => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    const [activeConfig, setActiveConfig] = useState(0);
+    const videoRefBW = useRef<HTMLVideoElement>(null);
+    const videoRefColor = useRef<HTMLVideoElement>(null);
+    
+    // Interaction State
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [isHovering, setIsHovering] = useState(false);
-    
-    const configNames = ['Island Structure', 'Peninsula Layout', 'Corner Stand', 'Inline Booth'];
+    const [isPlaying, setIsPlaying] = useState(true);
+    const [isMuted, setIsMuted] = useState(true);
+    const [activeChapter, setActiveChapter] = useState(0);
 
-    // Text Animation - Letter by Letter
-    const sentence = "CRAFTING EXTRAORDINARY EXHIBITION EXPERIENCES";
-    const words = sentence.split(" ");
+    // Physics for smooth mouse movement
+    const springConfig = { damping: 25, stiffness: 120 };
+    const springX = useSpring(0, springConfig);
+    const springY = useSpring(0, springConfig);
 
-    // ----------------------------------------------------------------
-    // 3D SHAPE GENERATORS
-    // ----------------------------------------------------------------
-    // These functions generate 3D coordinates for different booth types
-    
-    const generateIsland = (count: number): {x:number, y:number, z:number}[] => {
-        const points = [];
-        const width = 600;
-        const height = 300;
-        const depth = 600;
+    // Video Chapters (Time in seconds)
+    const chapters = [
+        { id: 0, label: "CONCEPT", time: 0, title: "Where Ideas Take Shape" },
+        { id: 1, label: "DESIGN", time: 5, title: "Precision Meets Creativity" },
+        { id: 2, label: "BUILD", time: 10, title: "Craftsmanship In Action" },
+        { id: 3, label: "EXPERIENCE", time: 15, title: "Unforgettable Moments" }
+    ];
+
+    // Handle Mouse Move
+    const handleMouseMove = (e: React.MouseEvent) => {
+        const { clientX, clientY } = e;
+        const { innerWidth, innerHeight } = window;
         
-        for (let i = 0; i < count; i++) {
-            const r = Math.random();
-            let p = {x:0, y:0, z:0};
-            
-            if (r < 0.2) { // Top Ring
-                const theta = Math.random() * Math.PI * 2;
-                p = { x: Math.cos(theta) * width/2, y: -height/2, z: Math.sin(theta) * depth/2 };
-            } else if (r < 0.4) { // 4 Pillars
-                const pillar = Math.floor(Math.random() * 4);
-                const px = (pillar % 2 === 0 ? 1 : -1) * (width/2 - 20);
-                const pz = (pillar < 2 ? 1 : -1) * (depth/2 - 20);
-                p = { x: px + (Math.random()-0.5)*20, y: (Math.random()-0.5)*height, z: pz + (Math.random()-0.5)*20 };
-            } else if (r < 0.7) { // Center Feature
-                const h = (Math.random()-0.5) * height * 0.8;
-                const radius = 100 * (1 - (h + height/2)/height); // Cone shape
-                const theta = Math.random() * Math.PI * 2;
-                p = { x: Math.cos(theta) * radius, y: h, z: Math.sin(theta) * radius };
-            } else { // Floor scattered
-                p = { x: (Math.random()-0.5)*width, y: height/2, z: (Math.random()-0.5)*depth };
-            }
-            points.push(p);
-        }
-        return points;
-    };
+        // Update state for rendering
+        setMousePos({ x: clientX, y: clientY });
+        setIsHovering(true);
 
-    const generatePeninsula = (count: number): {x:number, y:number, z:number}[] => {
-        const points = [];
-        const width = 600;
-        const height = 350;
-        const depth = 400;
-
-        for (let i = 0; i < count; i++) {
-            const r = Math.random();
-            let p = {x:0, y:0, z:0};
-
-            if (r < 0.4) { // Back Wall
-                p = { x: (Math.random()-0.5)*width, y: (Math.random()-0.5)*height, z: -depth/2 };
-            } else if (r < 0.6) { // Side Wall Left
-                p = { x: -width/2, y: (Math.random()-0.5)*height, z: (Math.random()-0.5)*depth };
-            } else if (r < 0.8) { // Side Wall Right
-                p = { x: width/2, y: (Math.random()-0.5)*height, z: (Math.random()-0.5)*depth };
-            } else { // Overhead Beams
-                p = { x: (Math.random()-0.5)*width, y: -height/2, z: (Math.random()-0.5)*depth };
-            }
-            points.push(p);
-        }
-        return points;
-    };
-
-    const generateCorner = (count: number): {x:number, y:number, z:number}[] => {
-        const points = [];
-        const size = 500;
+        // Update springs for parallax effect
+        // Calculate normalized position (-1 to 1)
+        const xPct = (clientX / innerWidth - 0.5) * 2;
+        const yPct = (clientY / innerHeight - 0.5) * 2;
         
-        for (let i = 0; i < count; i++) {
-            const r = Math.random();
-            let p = {x:0, y:0, z:0};
-            
-            if (r < 0.5) { // Wall 1 (Back)
-                p = { x: (Math.random()-0.5)*size, y: (Math.random()-0.5)*300, z: -size/2 };
-            } else { // Wall 2 (Side)
-                p = { x: -size/2, y: (Math.random()-0.5)*300, z: (Math.random()-0.5)*size };
-            }
-            
-            // Add L-shaped reception desk
-            if (Math.random() < 0.1) {
-               p.y = 100 + Math.random() * 50;
-               p.x *= 0.5;
-               p.z *= 0.5;
-            }
-            points.push(p);
-        }
-        return points;
+        springX.set(xPct * 20); // 20px movement
+        springY.set(yPct * 20);
     };
 
-    const generateInline = (count: number): {x:number, y:number, z:number}[] => {
-        const points = [];
-        const width = 700;
-        const height = 300;
-        
-        for (let i = 0; i < count; i++) {
-            const r = Math.random();
-            let p = {x:0, y:0, z:0};
-            
-            if (r < 0.7) { // Huge Back Wall
-                p = { x: (Math.random()-0.5)*width, y: (Math.random()-0.5)*height, z: 100 };
-            } else if (r < 0.85) { // Branding Header
-                p = { x: (Math.random()-0.5)*width, y: -height/2, z: 50 };
-            } else { // Counter
-                p = { x: (Math.random()-0.5)*200, y: 100, z: -100 };
-            }
-            points.push(p);
-        }
-        return points;
-    };
-
-    // ----------------------------------------------------------------
-    // ANIMATION LOOP
-    // ----------------------------------------------------------------
-
+    // Sync Videos Hook
     useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
+        const v1 = videoRefBW.current;
+        const v2 = videoRefColor.current;
+        
+        if (!v1 || !v2) return;
 
-        // Configuration
-        let width = window.innerWidth;
-        let height = window.innerHeight;
-        const particleCount = window.innerWidth < 768 ? 300 : 800;
-        const focalLength = 800;
-        let frameId = 0;
-        let autoRotate = 0;
-
-        // Initialize Particles
-        const particles: Point3D[] = [];
-        for (let i = 0; i < particleCount; i++) {
-            particles.push({
-                x: (Math.random() - 0.5) * 2000,
-                y: (Math.random() - 0.5) * 2000,
-                z: (Math.random() - 0.5) * 2000,
-                tx: 0, ty: 0, tz: 0,
-                vx: 0, vy: 0, vz: 0,
-                color: Math.random() > 0.8 ? '#FFFFFF' : '#D4AF76', // Gold & White mix
-                baseSize: Math.random() * 2 + 1,
-                magnetForce: 0
-            });
-        }
-
-        // Shape Targets
-        const shapes = [
-            generateIsland(particleCount),
-            generatePeninsula(particleCount),
-            generateCorner(particleCount),
-            generateInline(particleCount)
-        ];
-
-        // Render Loop
-        const render = () => {
-            // 1. Setup Canvas
-            canvas.width = width;
-            canvas.height = height;
-            const cx = width / 2;
-            const cy = height / 2;
-            
-            ctx.fillStyle = '#050505'; // Deep black background
-            ctx.fillRect(0, 0, width, height);
-
-            // 2. Update Physics
-            autoRotate += 0.003;
-            const targetShape = shapes[activeConfig];
-
-            // Sort for Z-buffering (drawing far items first)
-            particles.sort((a, b) => b.z - a.z);
-
-            particles.forEach((p, i) => {
-                // A. Morphing Logic: Move towards target (tx, ty, tz)
-                // Loop array if fewer target points than particles
-                const target = targetShape[i % targetShape.length];
-                
-                // Spring physics for smooth morph
-                const dx = target.x - p.x;
-                const dy = target.y - p.y;
-                const dz = target.z - p.z;
-
-                p.vx += dx * 0.02; // Spring stiffness
-                p.vy += dy * 0.02;
-                p.vz += dz * 0.02;
-
-                p.vx *= 0.9; // Friction
-                p.vy *= 0.9;
-                p.vz *= 0.9;
-
-                // B. Magnetic Mouse Interaction
-                // Project current 3D position to 2D to check distance from mouse
-                const scaleProj = focalLength / (focalLength + p.z);
-                const screenX = p.x * scaleProj + cx;
-                const screenY = p.y * scaleProj + cy;
-
-                const distMouseX = screenX - mousePos.x;
-                const distMouseY = screenY - mousePos.y;
-                const distMouse = Math.sqrt(distMouseX*distMouseX + distMouseY*distMouseY);
-                
-                const magnetRadius = 200;
-                
-                if (distMouse < magnetRadius) {
-                    // Magnetic Pull/Push
-                    const force = (1 - distMouse / magnetRadius) * 50;
-                    // Ripple effect using sine wave
-                    const ripple = Math.sin(distMouse * 0.05 - autoRotate * 10) * 20;
-                    
-                    // Apply force to velocity
-                    p.vx -= (distMouseX / distMouse) * force * 0.05;
-                    p.vy -= (distMouseY / distMouse) * force * 0.05;
-                    p.z += ripple; // Move in Z for 3D ripple
-                }
-
-                // Apply Velocity
-                p.x += p.vx;
-                p.y += p.vy;
-                p.z += p.vz;
-
-                // C. 3D Rotation (Camera Orbit)
-                const cos = Math.cos(autoRotate);
-                const sin = Math.sin(autoRotate);
-                
-                const rx = p.x * cos - p.z * sin;
-                const rz = p.z * cos + p.x * sin;
-                const ry = p.y; // No vertical rotation
-
-                // D. Projection to 2D
-                const scale = focalLength / (focalLength + rz);
-                const x2d = rx * scale + cx;
-                const y2d = ry * scale + cy;
-
-                // E. Draw Particle
-                if (scale > 0) { // Only draw if in front of camera
-                    const alpha = Math.max(0.1, Math.min(1, (scale - 0.2))); // Depth fade
-                    const size = p.baseSize * scale;
-
-                    // Glow effect
-                    const gradient = ctx.createRadialGradient(x2d, y2d, 0, x2d, y2d, size * 2);
-                    gradient.addColorStop(0, p.color === '#FFFFFF' ? 'rgba(255,255,255,1)' : 'rgba(212,175,118,1)');
-                    gradient.addColorStop(0.4, p.color === '#FFFFFF' ? 'rgba(255,255,255,0.5)' : 'rgba(212,175,118,0.5)');
-                    gradient.addColorStop(1, 'rgba(0,0,0,0)');
-
-                    ctx.fillStyle = gradient;
-                    ctx.beginPath();
-                    ctx.arc(x2d, y2d, size * 2, 0, Math.PI * 2);
-                    ctx.fill();
-                    
-                    // Optional: Draw connecting lines for close particles to form "structure"
-                    // Optimization: Only check close neighbors in array (since we morphed from same structure)
-                    if (i > 0 && Math.random() > 0.9) {
-                        const prev = particles[i-1];
-                        // Re-project prev
-                        const prx = prev.x * cos - prev.z * sin;
-                        const prz = prev.z * cos + prev.x * sin;
-                        const pscale = focalLength / (focalLength + prz);
-                        const px2d = prx * pscale + cx;
-                        const py2d = prev.y * pscale + cy;
-
-                        const dist = Math.hypot(x2d - px2d, y2d - py2d);
-                        if (dist < 50) {
-                            ctx.strokeStyle = `rgba(212,175,118, ${0.2 * alpha})`;
-                            ctx.lineWidth = 0.5;
-                            ctx.beginPath();
-                            ctx.moveTo(x2d, y2d);
-                            ctx.lineTo(px2d, py2d);
-                            ctx.stroke();
-                        }
-                    }
-                }
-            });
-
-            frameId = requestAnimationFrame(render);
+        const syncVideos = () => {
+            if (Math.abs(v1.currentTime - v2.currentTime) > 0.1) {
+                v2.currentTime = v1.currentTime;
+            }
+            requestAnimationFrame(syncVideos);
         };
+        const animFrame = requestAnimationFrame(syncVideos);
 
-        // Handle Resize
-        const handleResize = () => {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-        };
-
-        window.addEventListener('resize', handleResize);
-        render();
+        // Sync Play/Pause
+        const handlePlay = () => v2.play();
+        const handlePause = () => v2.pause();
+        
+        v1.addEventListener('play', handlePlay);
+        v1.addEventListener('pause', handlePause);
+        v1.addEventListener('seeking', () => v2.currentTime = v1.currentTime);
 
         return () => {
-            window.removeEventListener('resize', handleResize);
-            cancelAnimationFrame(frameId);
+            cancelAnimationFrame(animFrame);
+            v1.removeEventListener('play', handlePlay);
+            v1.removeEventListener('pause', handlePause);
         };
-    }, [activeConfig, mousePos]); // Re-run effect only if config changes (points stay, target changes)
+    }, []);
 
-    // ----------------------------------------------------------------
-    // INTERACTIONS
-    // ----------------------------------------------------------------
-
-    // Mouse Tracking
-    const handleMouseMove = (e: React.MouseEvent) => {
-        setMousePos({ x: e.clientX, y: e.clientY });
-        setIsHovering(true);
+    // Chapter Navigation
+    const seekToChapter = (index: number) => {
+        if (videoRefBW.current && videoRefColor.current) {
+            const time = chapters[index].time;
+            videoRefBW.current.currentTime = time;
+            videoRefColor.current.currentTime = time;
+            setActiveChapter(index);
+        }
     };
 
-    // Config Auto-Cycle
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (!isHovering) { // Pause morphing if user is interacting
-                setActiveConfig(prev => (prev + 1) % 4);
-            }
-        }, 5000);
-        return () => clearInterval(interval);
-    }, [isHovering]);
+    const togglePlay = () => {
+        if (videoRefBW.current) {
+            if (isPlaying) videoRefBW.current.pause();
+            else videoRefBW.current.play();
+            setIsPlaying(!isPlaying);
+        }
+    };
 
+    const toggleMute = () => {
+        if (videoRefBW.current) {
+            videoRefBW.current.muted = !isMuted;
+            setIsMuted(!isMuted);
+        }
+    };
+
+    // Video Source - High quality architectural timelapse
+    const videoSrc = "https://videos.pexels.com/video-files/3205633/3205633-hd_1920_1080_25fps.mp4";
 
     return (
         <section 
             ref={containerRef}
-            className="relative h-screen w-full overflow-hidden bg-[#050505]"
+            className="relative h-screen w-full overflow-hidden bg-black"
             onMouseMove={handleMouseMove}
             onMouseLeave={() => setIsHovering(false)}
         >
-            {/* 1. 3D Engine Layer */}
-            <canvas 
-                ref={canvasRef} 
-                className="absolute inset-0 z-10 block pointer-events-none"
-            />
+            {/* --- VIDEO LAYERS --- */}
+            <motion.div 
+                className="absolute inset-0 w-full h-full"
+                style={{ x: springX, y: springY, scale: 1.05 }} // Parallax Container
+            >
+                {/* Layer 1: B&W Conceptual Layer */}
+                <video
+                    ref={videoRefBW}
+                    src={videoSrc}
+                    className="absolute inset-0 w-full h-full object-cover filter grayscale brightness-50 contrast-125"
+                    autoPlay
+                    loop
+                    muted={isMuted}
+                    playsInline
+                />
 
-            {/* 2. Overlay Gradients for Depth */}
-            <div className="absolute inset-0 z-20 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,#050505_120%)] opacity-80" />
-            
-            {/* 3. Main Content Layer */}
-            <div className="absolute inset-0 z-30 flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8">
-                <div className="max-w-7xl mx-auto text-center w-full">
-                    
-                    {/* Mode Indicator */}
-                    <motion.div 
-                        key={activeConfig}
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 20 }}
-                        className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-fann-gold/30 bg-black/50 backdrop-blur-md mb-8"
-                    >
-                        <div className="w-2 h-2 rounded-full bg-fann-gold animate-pulse shadow-[0_0_10px_#C5A059]" />
-                        <span className="text-fann-gold text-xs font-mono tracking-[0.3em] uppercase">
-                            Mode: {configNames[activeConfig]}
+                {/* Layer 2: Color Reality Layer (Masked) */}
+                <div 
+                    className="absolute inset-0 w-full h-full overflow-hidden"
+                    style={{
+                        clipPath: isHovering 
+                            ? `circle(250px at ${mousePos.x}px ${mousePos.y}px)` 
+                            : `circle(0px at 50% 50%)`,
+                        transition: 'clip-path 0.1s ease-out' // Smooth feathering
+                    }}
+                >
+                    <video
+                        ref={videoRefColor}
+                        src={videoSrc}
+                        className="absolute inset-0 w-full h-full object-cover filter brightness-110 saturate-125"
+                        muted
+                        playsInline
+                        autoPlay={isPlaying} // Controlled via sync
+                        loop
+                    />
+                    {/* Spotlight Edge Glow */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-fann-gold/10 to-transparent opacity-50 mix-blend-overlay pointer-events-none"></div>
+                </div>
+            </motion.div>
+
+            {/* --- OVERLAY UI --- */}
+            <div className="absolute inset-0 z-30 bg-gradient-to-b from-black/60 via-transparent to-black/80 pointer-events-none"></div>
+
+            <div className="absolute inset-0 z-40 flex flex-col justify-center items-center px-4">
+                {/* Headline */}
+                <div className="text-center space-y-6 max-w-5xl">
+                    <div className="inline-block bg-black/30 backdrop-blur-sm border border-white/10 px-4 py-1 rounded-full mb-4">
+                        <span className="text-fann-gold text-xs font-mono tracking-[0.3em] uppercase flex items-center gap-2">
+                            <span className="w-2 h-2 bg-fann-gold rounded-full animate-pulse"></span>
+                            Concept 2: Immersive Canvas
                         </span>
-                    </motion.div>
+                    </div>
 
-                    {/* Main Headline - Fully Responsive & Wrapping */}
-                    <h1 className="font-serif font-bold text-white leading-[1.1] mb-8 drop-shadow-2xl mix-blend-screen flex flex-wrap justify-center gap-x-4 gap-y-2 px-4">
-                        {/* Responsive Text Sizes: Mobile: 36px (text-4xl), Tablet: 60px, Desktop: 96px (text-8xl) */}
-                        {words.map((word, i) => (
-                            <span key={i} className="inline-block whitespace-nowrap overflow-visible">
-                                {word.split("").map((char, j) => (
-                                    <motion.span
-                                        key={j}
-                                        initial={{ opacity: 0, y: 50, rotateX: 90 }}
-                                        animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                                        transition={{ 
-                                            duration: 0.8, 
-                                            delay: i * 0.2 + j * 0.05,
-                                            type: "spring",
-                                            damping: 12
-                                        }}
-                                        className="inline-block text-4xl md:text-6xl lg:text-8xl bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-gray-400"
-                                    >
-                                        {char}
-                                    </motion.span>
-                                ))}
-                            </span>
-                        ))}
+                    <h1 className="text-5xl md:text-7xl lg:text-9xl font-black text-white leading-none tracking-tighter mix-blend-overlay">
+                        <SplitFlapText text="FROM VISION" className="block mb-2" />
+                        <SplitFlapText text="TO REALITY" className="text-fann-gold" />
                     </h1>
 
                     <motion.p 
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 2.5, duration: 1 }}
-                        className="text-lg md:text-2xl text-gray-300 font-light max-w-3xl mx-auto mb-12 tracking-wide leading-relaxed"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 1.5, duration: 1 }}
+                        className="text-lg md:text-2xl text-gray-300 font-light max-w-2xl mx-auto tracking-wide"
                     >
-                        Transforming abstract visions into award-winning physical realities.
-                        <span className="block mt-2 text-fann-gold/80">Your premier partner for Exhibitions, Events & Interiors.</span>
+                        Transforming Exhibition Concepts into Award-Winning Experiences.
                     </motion.p>
 
                     {/* CTAs */}
                     <motion.div 
-                        initial={{ opacity: 0, y: 30 }}
+                        initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 3, type: "spring" }}
-                        className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+                        transition={{ delay: 2 }}
+                        className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8 pointer-events-auto"
                     >
-                        <Link to="/fann-studio/exhibition">
-                            <button className="group relative bg-fann-gold text-black font-bold text-sm tracking-[0.2em] uppercase py-5 px-10 overflow-hidden rounded-none hover:shadow-[0_0_40px_rgba(212,175,118,0.6)] transition-all duration-300">
-                                <div className="absolute inset-0 w-full h-full bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
-                                <span className="relative z-10 flex items-center gap-3">
-                                    Start Your Project <ArrowRight size={18} />
-                                </span>
+                        <Link to="/contact">
+                            <button className="bg-fann-gold hover:bg-white text-black font-bold py-4 px-10 rounded-none uppercase tracking-[0.2em] transition-all duration-300 hover:scale-105">
+                                Start Project
                             </button>
                         </Link>
-                        <Link to="/portfolio">
-                            <button className="group relative bg-transparent border border-white/30 text-white font-bold text-sm tracking-[0.2em] uppercase py-5 px-10 overflow-hidden transition-all duration-300 hover:bg-white hover:text-black hover:border-white backdrop-blur-sm">
-                                <span className="relative z-10 flex items-center gap-3">
-                                    View Portfolio <Users size={18} />
-                                </span>
-                            </button>
-                        </Link>
+                        <button 
+                            onClick={() => document.getElementById('showcase')?.scrollIntoView({ behavior: 'smooth' })}
+                            className="flex items-center gap-3 text-white hover:text-fann-gold transition-colors group uppercase tracking-widest text-sm font-bold"
+                        >
+                            <div className="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center group-hover:border-fann-gold transition-colors">
+                                <Play size={16} className="fill-current ml-1" />
+                            </div>
+                            Watch Reel
+                        </button>
                     </motion.div>
                 </div>
             </div>
 
-            {/* 4. Interactive Cursor Hint */}
+            {/* --- SIDEBAR NAVIGATION (CHAPTERS) --- */}
+            <div className="absolute right-8 top-1/2 -translate-y-1/2 z-50 hidden md:flex flex-col gap-8 pointer-events-auto">
+                {chapters.map((chapter, idx) => (
+                    <button 
+                        key={chapter.id}
+                        onClick={() => seekToChapter(idx)}
+                        className="group flex items-center gap-4 justify-end"
+                    >
+                        <div className={`text-right transition-all duration-300 ${activeChapter === idx ? 'opacity-100' : 'opacity-0 group-hover:opacity-50 -translate-x-4'}`}>
+                            <span className="block text-[10px] font-bold text-fann-gold tracking-widest uppercase">{chapter.label}</span>
+                            <span className="block text-xs text-white font-serif">{chapter.title}</span>
+                        </div>
+                        <div className={`w-1 h-12 rounded-full transition-all duration-300 ${activeChapter === idx ? 'bg-fann-gold h-16' : 'bg-white/20 hover:bg-white/50'}`}></div>
+                        <span className="text-[10px] font-mono text-gray-500 w-4">0{idx + 1}</span>
+                    </button>
+                ))}
+            </div>
+
+            {/* --- BOTTOM CONTROLS --- */}
+            <div className="absolute bottom-8 left-8 z-50 flex items-center gap-4 pointer-events-auto">
+                <button onClick={togglePlay} className="text-white/70 hover:text-white transition-colors">
+                    {isPlaying ? <Pause size={20} /> : <Play size={20} />}
+                </button>
+                <button onClick={toggleMute} className="text-white/70 hover:text-white transition-colors">
+                    {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                </button>
+                <div className="h-px w-12 bg-white/20"></div>
+                <span className="text-[10px] text-white/50 uppercase tracking-widest">Sound {isMuted ? 'Off' : 'On'}</span>
+            </div>
+
+            {/* --- CURSOR HINT --- */}
             <AnimatePresence>
                 {!isHovering && (
                     <motion.div 
-                        initial={{ opacity: 0 }} 
+                        initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         className="absolute bottom-32 left-1/2 -translate-x-1/2 z-30 text-fann-gold/50 flex flex-col items-center gap-2 pointer-events-none"
                     >
                         <MousePointer2 size={24} className="animate-bounce" />
-                        <span className="text-xs uppercase tracking-widest">Interact with the Particles</span>
+                        <span className="text-xs uppercase tracking-widest">Hover to Reveal Reality</span>
                     </motion.div>
                 )}
             </AnimatePresence>
-
-            {/* 5. Scroll Indicator */}
-            <motion.div 
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 text-white/30 flex flex-col items-center gap-2"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 4, duration: 1 }}
-            >
-                <span className="text-[10px] uppercase tracking-widest">Scroll to Explore</span>
-                <div className="w-[1px] h-12 bg-gradient-to-b from-fann-gold to-transparent"></div>
-            </motion.div>
         </section>
     );
 };
@@ -480,7 +303,7 @@ const WhyChooseFann: React.FC = () => {
         { icon: Headset, title: "Turnkey Solutions", description: "End-to-end management from concept to dismantling." },
     ];
     return (
-        <section className="py-32 bg-[#0A0A0A] text-center relative overflow-hidden">
+        <section id="showcase" className="py-32 bg-[#0A0A0A] text-center relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-fann-accent-teal/20 via-[#0A0A0A] to-[#0A0A0A] pointer-events-none"></div>
             
             <div className="container mx-auto px-4 relative z-10">
