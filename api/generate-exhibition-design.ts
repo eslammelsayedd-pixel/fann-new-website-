@@ -62,7 +62,7 @@ export default async function handler(req: Request) {
 
         const designConcept = JSON.parse(textResponse.text.trim());
 
-        // === 2. Generate Image ===
+        // === 2. Generate Image (Using gemini-3-pro-image-preview / Nano Banana Pro) ===
         const imagePrompt = `Photorealistic, award-winning 3D render of a bespoke exhibition stand for "${companyName}" at "${eventName}".
         The design style is "${style}".
         The concept is named "${designConcept.conceptName}" and is described as: "${designConcept.detailedDescription}".
@@ -72,17 +72,32 @@ export default async function handler(req: Request) {
         The lighting should be ${designConcept.lighting}.
         The overall atmosphere is professional, high-end, and immersive, suitable for a major Dubai trade show. High-quality, detailed rendering.`;
         
-        const imageResponse = await ai.models.generateImages({
-            model: 'imagen-4.0-generate-001',
-            prompt: imagePrompt,
+        const imageResponse = await ai.models.generateContent({
+            model: 'gemini-3-pro-image-preview',
+            contents: {
+                parts: [{ text: imagePrompt }],
+            },
             config: {
-                numberOfImages: 1,
-                outputMimeType: 'image/jpeg',
-                aspectRatio: '16:9',
+                imageConfig: {
+                    aspectRatio: "16:9",
+                    imageSize: "1K"
+                }
             },
         });
         
-        const image = imageResponse.generatedImages[0].image.imageBytes; // base64 string
+        let image = null;
+        if (imageResponse.candidates?.[0]?.content?.parts) {
+            for (const part of imageResponse.candidates[0].content.parts) {
+                if (part.inlineData) {
+                    image = part.inlineData.data;
+                    break;
+                }
+            }
+        }
+
+        if (!image) {
+            throw new Error("Failed to generate image.");
+        }
 
         // === 3. Respond ===
         return new Response(JSON.stringify({ designConcept, image }), { status: 200, headers: { 'Content-Type': 'application/json' } });
