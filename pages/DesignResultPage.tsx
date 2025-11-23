@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Layers, Lightbulb, Wrench, ArrowLeft, Loader2, ServerCrash, Sparkles, MessageSquare } from 'lucide-react';
+import { Layers, Lightbulb, Wrench, ArrowLeft, Loader2, ServerCrash, Sparkles, MessageSquare, RefreshCw } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 
@@ -19,6 +19,8 @@ interface GeneratedResult {
     industry: string;
     conceptA: Concept;
     conceptB: Concept;
+    conceptC: Concept;
+    conceptD: Concept;
 }
 
 const InfoCard = ({ icon: Icon, title, items }: { icon: React.ElementType, title: string, items: string[] | string }) => (
@@ -45,7 +47,7 @@ const DesignResultPage: React.FC = () => {
     const [result, setResult] = useState<GeneratedResult | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [activeTab, setActiveTab] = useState<'A' | 'B'>('A');
+    const [activeTab, setActiveTab] = useState<'A' | 'B' | 'C' | 'D'>('A');
 
     useEffect(() => {
         if (!formData) {
@@ -80,7 +82,18 @@ const DesignResultPage: React.FC = () => {
         generateDesign();
     }, [formData, navigate]);
 
-    const activeConcept = activeTab === 'A' ? result?.conceptA : result?.conceptB;
+    const getActiveConcept = () => {
+        if (!result) return null;
+        switch(activeTab) {
+            case 'A': return result.conceptA;
+            case 'B': return result.conceptB;
+            case 'C': return result.conceptC;
+            case 'D': return result.conceptD;
+            default: return result.conceptA;
+        }
+    };
+
+    const activeConcept = getActiveConcept();
 
     return (
         <AnimatedPage>
@@ -91,7 +104,7 @@ const DesignResultPage: React.FC = () => {
             <div className="min-h-screen bg-fann-teal-dark pt-32 pb-20 text-fann-peach">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
                     <Link to="/fann-studio/exhibition" className="flex items-center gap-2 text-fann-gold mb-8 font-semibold hover:underline uppercase tracking-widest text-xs">
-                        <ArrowLeft size={14} /> Back to Brief
+                        <ArrowLeft size={14} /> Back to Studio
                     </Link>
                     
                     <AnimatePresence mode="wait">
@@ -101,10 +114,11 @@ const DesignResultPage: React.FC = () => {
                                     <div className="absolute inset-0 bg-fann-gold/20 rounded-full blur-xl animate-pulse"></div>
                                     <Loader2 className="w-16 h-16 text-fann-gold animate-spin relative z-10" />
                                 </div>
-                                <h1 className="text-4xl font-serif mt-8 text-white">Crafting Your Vision...</h1>
+                                <h1 className="text-4xl font-serif mt-8 text-white">Bringing Your Brand to Life...</h1>
                                 <div className="mt-4 space-y-2 text-fann-light-gray font-mono text-sm">
-                                    <p>Analysing Brand Identity...</p>
-                                    <p>Generating 3D Concepts (Option A & B)...</p>
+                                    <p>Creating 4 Unique Concepts...</p>
+                                    <p>Analyzing Brand Identity...</p>
+                                    <p>Rendering Photorealistic Visuals...</p>
                                 </div>
                             </motion.div>
                         )}
@@ -126,37 +140,24 @@ const DesignResultPage: React.FC = () => {
                                     <span className="text-fann-gold text-xs font-bold uppercase tracking-widest border border-fann-gold/30 px-3 py-1 rounded-full bg-fann-gold/5 mb-4 inline-block">
                                         Industry: {result.industry}
                                     </span>
-                                    <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-2">Design Concepts</h1>
+                                    <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-2">Your 4 Concepts</h1>
                                 </div>
 
-                                {/* Custom Tab Switcher */}
-                                <div className="flex justify-center mb-12">
-                                    <div className="bg-[#111] p-1 rounded-full border border-white/10 flex relative">
-                                        <button 
-                                            onClick={() => setActiveTab('A')}
-                                            className={`px-8 py-3 rounded-full text-sm font-bold uppercase tracking-widest transition-all duration-300 relative z-10 ${activeTab === 'A' ? 'text-black' : 'text-gray-400 hover:text-white'}`}
+                                {/* Tab Switcher */}
+                                <div className="flex flex-wrap justify-center gap-2 mb-12">
+                                    {['A', 'B', 'C', 'D'].map((tab) => (
+                                        <button
+                                            key={tab}
+                                            onClick={() => setActiveTab(tab as any)}
+                                            className={`px-6 py-3 rounded-full text-sm font-bold uppercase tracking-widest transition-all duration-300 border ${
+                                                activeTab === tab 
+                                                ? 'bg-fann-gold text-black border-fann-gold' 
+                                                : 'bg-transparent text-gray-400 border-white/10 hover:border-white/30'
+                                            }`}
                                         >
-                                            Option 1
+                                            Concept {tab}
                                         </button>
-                                        <button 
-                                            onClick={() => setActiveTab('B')}
-                                            className={`px-8 py-3 rounded-full text-sm font-bold uppercase tracking-widest transition-all duration-300 relative z-10 ${activeTab === 'B' ? 'text-black' : 'text-gray-400 hover:text-white'}`}
-                                        >
-                                            Option 2
-                                        </button>
-                                        {/* Sliding Background */}
-                                        <motion.div 
-                                            className="absolute top-1 bottom-1 bg-fann-gold rounded-full shadow-lg"
-                                            layoutId="activeTab"
-                                            initial={false}
-                                            animate={{ 
-                                                left: activeTab === 'A' ? '4px' : '50%', 
-                                                right: activeTab === 'A' ? '50%' : '4px',
-                                                width: 'calc(50% - 4px)'
-                                            }}
-                                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                        />
-                                    </div>
+                                    ))}
                                 </div>
 
                                 {/* Main Content Area */}
@@ -164,7 +165,7 @@ const DesignResultPage: React.FC = () => {
                                     {/* Image Side */}
                                     <div className="lg:col-span-8">
                                         <motion.div 
-                                            key={activeTab} // Trigger animation on tab switch
+                                            key={activeTab}
                                             initial={{ opacity: 0, scale: 0.98 }}
                                             animate={{ opacity: 1, scale: 1 }}
                                             transition={{ duration: 0.4 }}
@@ -179,7 +180,7 @@ const DesignResultPage: React.FC = () => {
                                                 />
                                             ) : (
                                                 <div className="w-full h-96 flex items-center justify-center bg-gray-900 text-gray-600">
-                                                    Image Generation Failed
+                                                    Image generation unavailable for this concept.
                                                 </div>
                                             )}
                                             <div className="absolute top-6 right-6 bg-black/80 backdrop-blur-md text-fann-gold border border-fann-gold/30 px-6 py-2 text-xs font-bold uppercase tracking-widest">
@@ -204,7 +205,7 @@ const DesignResultPage: React.FC = () => {
                                             <div className="space-y-4">
                                                 <InfoCard icon={Sparkles} title="Key Feature" items={activeConcept.keyFeature} />
                                                 <InfoCard icon={Layers} title="Material Palette" items={activeConcept.materials} />
-                                                <InfoCard icon={Wrench} title="Requirements Met" items={formData.features} />
+                                                {/* <InfoCard icon={Wrench} title="Specs" items={`${formData.standWidth}x${formData.standLength}m`} /> */}
                                             </div>
                                          </motion.div>
                                     </div>
@@ -214,25 +215,27 @@ const DesignResultPage: React.FC = () => {
                                 <div className="mt-16 bg-[#151515] p-8 md:p-12 border border-white/10 text-center relative overflow-hidden">
                                     <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10"></div>
                                     
-                                    <h2 className="text-3xl font-serif font-bold text-white mb-4">Bring this concept to life</h2>
-                                    <p className="max-w-xl mx-auto text-gray-400 mb-8">
-                                        Speak directly with a sales agent to discuss pricing and technical details for <strong>{activeConcept.conceptName}</strong>.
-                                    </p>
-                                    
-                                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                                        <a 
-                                            href={`https://wa.me/971505667502?text=${encodeURIComponent(`Hi FANN, I'm interested in the "${activeConcept.conceptName}" concept generated for ${formData.companyName}.`)}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-4 px-10 rounded-none text-lg uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-[#25D366]/20"
-                                        >
-                                            <MessageSquare size={20} fill="currentColor" /> Speak to Sales Agent
-                                        </a>
-                                        <Link to="/contact">
-                                            <button className="border-2 border-white/20 hover:bg-white hover:text-black text-white font-bold py-4 px-10 rounded-none text-lg uppercase tracking-wider transition-all w-full sm:w-auto">
-                                                Request Formal Quote
-                                            </button>
-                                        </Link>
+                                    <div className="relative z-10">
+                                        <h2 className="text-3xl font-serif font-bold text-white mb-6">Want to refine these concepts?</h2>
+                                        
+                                        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                                            <a 
+                                                href={`https://wa.me/971505667502?text=${encodeURIComponent(`Hi FANN, I generated concepts for ${formData.companyName} and would like to discuss refinements or create new options.`)}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-4 px-8 rounded-sm text-sm uppercase tracking-wider flex items-center justify-center gap-3 transition-all shadow-lg w-full sm:w-auto"
+                                            >
+                                                <RefreshCw size={20} /> Generate More via Sales Agent
+                                            </a>
+                                            <a 
+                                                href={`https://wa.me/971505667502?text=${encodeURIComponent(`Hi FANN, I'm interested in Concept ${activeTab}: "${activeConcept.conceptName}" generated for ${formData.companyName}.`)}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="border-2 border-white/20 hover:bg-white hover:text-black text-white font-bold py-4 px-8 rounded-sm text-sm uppercase tracking-wider transition-all w-full sm:w-auto flex items-center justify-center gap-3"
+                                            >
+                                                <MessageSquare size={20} /> Discuss This Design
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </motion.div>
