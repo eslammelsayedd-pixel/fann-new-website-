@@ -4,7 +4,6 @@ import Footer from './Footer';
 import { Chatbot } from './Chatbot';
 import WhatsAppButton from './WhatsAppButton';
 import MetaPixelTracker from './MetaPixelTracker';
-import CustomCursor from './CustomCursor';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,8 +11,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="flex flex-col min-h-screen bg-fann-charcoal text-fann-grey cursor-none">
-      <CustomCursor />
+    <div className="flex flex-col min-h-screen bg-fann-charcoal text-fann-grey">
       <Header />
       <MetaPixelTracker />
       <main className="flex-grow">{children}</main>

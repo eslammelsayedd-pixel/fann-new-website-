@@ -4,10 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --cursor-size: 20px;
-}
-
 html {
   scroll-behavior: smooth;
   background-color: #1A1A1A;
@@ -85,43 +81,6 @@ body {
 /* Input Styles */
 .input-field {
   @apply w-full bg-transparent border-b border-white/20 py-4 text-white placeholder-gray-500 transition-all duration-300 focus:outline-none focus:border-fann-gold rounded-none font-light;
-}
-
-/* --- CUSTOM CURSOR --- */
-.custom-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: var(--cursor-size);
-  height: var(--cursor-size);
-  border: 1px solid #C9A962;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  mix-blend-mode: difference;
-  transform: translate(-50%, -50%);
-  transition: width 0.3s, height 0.3s, background-color 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.custom-cursor::after {
-  content: '';
-  width: 2px;
-  height: 2px;
-  background: #C9A962;
-  border-radius: 50%;
-}
-
-/* Hide default cursor on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  body {
-    cursor: none;
-  }
-  a, button, input, textarea, select {
-    cursor: none;
-  }
 }
 
 /* Link Underline Animation */
