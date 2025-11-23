@@ -20,18 +20,18 @@ const Header: React.FC = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Consistent Dark Theme Styles
+    // Elite-Tier Header Styling
     const headerClasses = scrolled
-        ? 'bg-[#0A0A0A]/95 backdrop-blur-md border-b border-white/5 py-4'
+        ? 'bg-black/80 backdrop-blur-lg border-b border-white/10 py-4 shadow-lg'
         : isHome
-            ? 'bg-gradient-to-b from-black/80 to-transparent py-6'
-            : 'bg-[#0A0A0A] border-b border-white/5 py-6';
+            ? 'bg-gradient-to-b from-black/90 to-transparent py-6'
+            : 'bg-black border-b border-white/10 py-6';
 
     const textColorClass = 'text-white';
     const hoverColorClass = 'hover:text-fann-gold';
     const activeLinkClass = 'text-fann-gold';
-    const dropdownBgClass = 'bg-[#151515] border border-white/10';
-    const dropdownTextClass = 'text-gray-300 hover:text-white hover:bg-white/5';
+    const dropdownBgClass = 'bg-[#0F0F0F] border border-white/10';
+    const dropdownTextClass = 'text-gray-400 hover:text-white hover:bg-white/5';
 
     return (
         <header 
@@ -46,7 +46,7 @@ const Header: React.FC = () => {
                             alt="FANN Logo" 
                             className="h-10 w-auto transition-transform duration-300 group-hover:scale-105" 
                         />
-                        <span className={`font-sans font-bold text-2xl tracking-widest transition-colors duration-300 text-white`}>
+                        <span className={`font-sans font-bold text-2xl tracking-[0.2em] transition-colors duration-300 text-white group-hover:text-fann-gold`}>
                             FANN
                         </span>
                     </Link>
@@ -58,12 +58,12 @@ const Header: React.FC = () => {
                                 <div key={link.name} className="relative group h-full">
                                     <button className={`flex items-center space-x-1 text-xs font-bold uppercase tracking-[0.15em] transition-colors duration-300 py-2 ${textColorClass} ${hoverColorClass}`}>
                                         <span>{link.name}</span>
-                                        <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-300" />
+                                        <ChevronDown size={12} className="group-hover:rotate-180 transition-transform duration-300 opacity-70" />
                                     </button>
                                     
                                     {/* Dropdown */}
-                                    <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-60 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                                        <div className={`rounded-none shadow-2xl overflow-hidden py-2 ${dropdownBgClass}`}>
+                                    <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                                        <div className={`rounded-sm shadow-2xl overflow-hidden py-2 ${dropdownBgClass}`}>
                                             {link.children.map(child => (
                                                 <NavLink
                                                     key={child.name}
@@ -100,12 +100,12 @@ const Header: React.FC = () => {
                     </nav>
 
                     {/* RIGHT ACTIONS */}
-                    <div className="hidden lg:flex items-center space-x-5">
-                        <div id="google_translate_element" className="opacity-80 hover:opacity-100 transition-opacity"></div>
+                    <div className="hidden lg:flex items-center space-x-6">
+                        <div id="google_translate_element" className="opacity-70 hover:opacity-100 transition-opacity scale-90 origin-right"></div>
                         <ThemeToggle />
                         <Link to="/contact">
                           <button 
-                              className="bg-fann-gold text-black border border-fann-gold font-bold py-2.5 px-6 rounded-none text-xs uppercase tracking-[0.15em] hover:bg-transparent hover:text-fann-gold transition-all duration-300"
+                              className="bg-white text-black border border-white font-bold py-2.5 px-6 rounded-none text-xs uppercase tracking-[0.15em] hover:bg-fann-gold hover:border-fann-gold hover:text-black transition-all duration-300 shadow-[0_0_15px_rgba(255,255,255,0.1)]"
                           >
                               Start Designing
                           </button>
@@ -117,7 +117,7 @@ const Header: React.FC = () => {
                         <ThemeToggle />
                         <button 
                             onClick={() => setIsOpen(!isOpen)} 
-                            className={`p-2 transition-colors text-white hover:bg-white/10`}
+                            className={`p-2 transition-colors text-white hover:text-fann-gold`}
                         >
                             {isOpen ? <X size={28} /> : <Menu size={28} />}
                         </button>
@@ -133,7 +133,7 @@ const Header: React.FC = () => {
                     animate={{ opacity: 1, height: '100vh' }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="lg:hidden fixed inset-0 bg-[#0F0F0F] z-40 overflow-y-auto pt-24"
+                    className="lg:hidden fixed inset-0 bg-[#000] z-40 overflow-y-auto pt-24"
                 >
                     <nav className="flex flex-col items-center space-y-6 px-6 pb-12">
                         {navLinks.map((link) => (
@@ -160,7 +160,7 @@ const Header: React.FC = () => {
                                                             key={child.name}
                                                             to={child.path}
                                                             onClick={() => setIsOpen(false)}
-                                                            className={({ isActive }) => `${isActive ? 'text-fann-gold' : 'text-gray-300'} text-sm font-bold uppercase tracking-wider hover:text-white transition-colors`}
+                                                            className={({ isActive }) => `${isActive ? 'text-fann-gold' : 'text-gray-400'} text-sm font-bold uppercase tracking-wider hover:text-white transition-colors`}
                                                         >
                                                             {child.name}
                                                         </NavLink>

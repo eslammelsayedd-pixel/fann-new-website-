@@ -1,136 +1,235 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Award, Wrench, Users, Headset, ShieldCheck, CheckCircle, ArrowRight, ChevronRight, Mouse, Star, Zap } from 'lucide-react';
+import { Award, Wrench, Users, Headset, ShieldCheck, CheckCircle, ArrowRight, ChevronRight, Star } from 'lucide-react';
 import { testimonials } from '../constants';
 import SEO from '../components/SEO';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence, useSpring, useMotionValue } from 'framer-motion';
 import ScrollReveal from '../components/ScrollReveal';
 
+// --- CONCEPT 5: Cinematic Depth-of-Field Showcase ---
 const HeroSection: React.FC = () => {
-    const { scrollY } = useScroll();
-    const yText = useTransform(scrollY, [0, 500], [0, 150]);
-    const opacityText = useTransform(scrollY, [0, 300], [1, 0]);
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
+
+    // Smooth spring animation for mouse movement (Parallax)
+    const springConfig = { damping: 25, stiffness: 100 };
+    const x = useSpring(mouseX, springConfig);
+    const y = useSpring(mouseY, springConfig);
+
+    // Parallax transforms
+    const bgX = useTransform(x, [-1, 1], ["-2%", "2%"]); // Background moves opposite
+    const bgY = useTransform(y, [-1, 1], ["-2%", "2%"]);
+    const textX = useTransform(x, [-1, 1], ["1%", "-1%"]); // Text moves slightly with mouse
 
     const slides = [
         {
-            image: "https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80",
-            text: "Exhibitions"
+            id: 1,
+            image: "https://images.pexels.com/photos/3052725/pexels-photo-3052725.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80", // Architect/Design sketch vibe
+            label: "CONCEPTUALIZE",
+            title: "Visionary Design",
+            subtitle: "It starts with a spark. We turn abstract ideas into award-winning 3D concepts.",
+            color: "from-blue-900/40"
         },
         {
-            image: "https://images.pexels.com/photos/2608516/pexels-photo-2608516.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80",
-            text: "Global Events"
+            id: 2,
+            image: "https://images.pexels.com/photos/834892/pexels-photo-834892.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80", // Fabrication/Workshop
+            label: "CONSTRUCT",
+            title: "Precision Build",
+            subtitle: "Crafted in our state-of-the-art UAE workshop with obsessive attention to detail.",
+            color: "from-amber-900/40"
         },
         {
-            image: "https://images.pexels.com/photos/1170412/pexels-photo-1170412.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80",
-            text: "Luxury Interiors"
+            id: 3,
+            image: "https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80", // The Event/Booth
+            label: "EXPERIENCE",
+            title: "World-Class Events",
+            subtitle: "Dominating the floor at GITEX, Arab Health, and The Big 5.",
+            color: "from-purple-900/40"
+        },
+        {
+            id: 4,
+            image: "https://images.pexels.com/photos/1181438/pexels-photo-1181438.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80", // Success/Handshake
+            label: "SUCCEED",
+            title: "Measurable ROI",
+            subtitle: "Elevating brands and driving business growth across the Middle East.",
+            color: "from-emerald-900/40"
         }
     ];
 
-    const [currentIndex, setCurrentIndex] = useState(0);
-
     useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentIndex((prev) => (prev + 1) % slides.length);
-        }, 5000); 
-        return () => clearInterval(interval);
+        // Preload images
+        const imagePromises = slides.map(slide => {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.src = slide.image;
+                img.onload = resolve;
+                img.onerror = reject;
+            });
+        });
+
+        Promise.all(imagePromises).then(() => setIsLoaded(true));
+
+        // Slide rotation
+        const timer = setInterval(() => {
+            setCurrentSlide((prev) => (prev + 1) % slides.length);
+        }, 6000);
+
+        return () => clearInterval(timer);
     }, []);
 
-    return (
-        <section className="relative h-screen flex items-center justify-center overflow-hidden bg-fann-teal-dark">
-            {/* Background Slideshow */}
-            <div className="absolute inset-0 z-0">
-                <AnimatePresence mode="popLayout">
-                    <motion.div
-                        key={currentIndex}
-                        initial={{ opacity: 0, scale: 1.1 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 1.5, ease: "easeInOut" }}
-                        className="absolute inset-0"
-                    >
-                        <img 
-                            src={slides[currentIndex].image}
-                            alt="FANN Project Background"
-                            className="w-full h-full object-cover"
-                        />
-                        {/* Professional Dark Overlays for Text Readability */}
-                        <div className="absolute inset-0 bg-black/60 mix-blend-multiply" />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-fann-teal-dark/90" />
-                    </motion.div>
-                </AnimatePresence>
+    const handleMouseMove = (e: React.MouseEvent) => {
+        const { clientX, clientY } = e;
+        const { innerWidth, innerHeight } = window;
+        // Normalize mouse position to -1 to 1
+        mouseX.set((clientX / innerWidth) * 2 - 1);
+        mouseY.set((clientY / innerHeight) * 2 - 1);
+    };
+
+    if (!isLoaded) {
+        return (
+            <div className="h-screen bg-black flex items-center justify-center">
+                <div className="flex flex-col items-center">
+                    <div className="w-16 h-16 border-4 border-fann-gold border-t-transparent rounded-full animate-spin mb-4"></div>
+                    <span className="text-fann-gold text-xs tracking-[0.3em] uppercase animate-pulse">Loading Experience</span>
+                </div>
             </div>
+        );
+    }
+
+    return (
+        <section 
+            className="relative h-screen w-full overflow-hidden bg-black"
+            onMouseMove={handleMouseMove}
+        >
+            {/* Cinematic Background Carousel */}
+            <AnimatePresence mode="popLayout">
+                <motion.div
+                    key={slides[currentSlide].id}
+                    className="absolute inset-0 z-0"
+                    initial={{ opacity: 0, scale: 1.1 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 1.5, ease: "easeInOut" }}
+                    style={{ x: bgX, y: bgY }} // Parallax effect applied to background
+                >
+                    <div className="absolute inset-0 bg-black/40 z-10" /> {/* Base Dimmer */}
+                    <div className={`absolute inset-0 bg-gradient-to-b ${slides[currentSlide].color} via-transparent to-black/90 z-10 mix-blend-overlay`} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent z-20" /> {/* Bottom Fade */}
+                    
+                    <img 
+                        src={slides[currentSlide].image} 
+                        alt={slides[currentSlide].title}
+                        className="w-full h-full object-cover"
+                    />
+                </motion.div>
+            </AnimatePresence>
+
+            {/* Floating Particles / Bokeh Overlay */}
+            <div className="absolute inset-0 z-20 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30 mix-blend-screen animate-pulse" />
 
             {/* Main Content */}
-            <motion.div 
-                style={{ y: yText, opacity: opacityText }}
-                className="relative z-20 container mx-auto px-4 sm:px-6 lg:px-8 text-center"
-            >
-                <div className="max-w-6xl mx-auto flex flex-col items-center">
-                    
-                    {/* Animated Headline */}
-                    <motion.div 
-                        initial={{ opacity: 0, y: 50 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1, ease: "easeOut" }}
-                        className="mb-10"
-                    >
-                         <h1 className="text-5xl md:text-7xl lg:text-9xl font-serif font-bold text-white tracking-tight uppercase leading-[0.9] mb-8 drop-shadow-2xl flex flex-col items-center">
-                            <span className="block text-fann-gold/90 text-2xl md:text-4xl font-sans font-bold tracking-[0.3em] mb-4">Premier Design & Build</span>
-                            <span className="block">For World-Class</span>
-                            <span className="relative h-[1.2em] overflow-hidden min-w-[5ch] text-left inline-flex items-center mt-2 text-transparent bg-clip-text bg-gradient-to-r from-white via-fann-gold to-white bg-200% animate-gradient">
-                                <AnimatePresence mode="wait">
-                                    <motion.span
-                                        key={slides[currentIndex].text}
-                                        initial={{ y: 100, opacity: 0 }}
-                                        animate={{ y: 0, opacity: 1 }}
-                                        exit={{ y: -100, opacity: 0 }}
-                                        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                                        className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap"
-                                    >
-                                        {slides[currentIndex].text}
-                                    </motion.span>
-                                </AnimatePresence>
-                            </span>
-                        </h1>
-                        <p className="text-lg md:text-2xl text-gray-300 font-light tracking-wide max-w-3xl mx-auto border-t border-fann-gold/30 pt-8 mt-4 leading-relaxed">
-                            Your trusted turnkey partner in Dubai & KSA for award-winning <span className="text-white font-medium">Exhibition Stands</span>, <span className="text-white font-medium">Corporate Events</span>, and <span className="text-white font-medium">Commercial Fit-Outs</span>.
-                        </p>
-                    </motion.div>
+            <div className="absolute inset-0 z-30 flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8">
+                <motion.div 
+                    className="max-w-5xl mx-auto text-center"
+                    style={{ x: textX, y: useTransform(y, [-1, 1], ["0.5%", "-0.5%"]) }} // Subtle foreground parallax
+                >
+                    {/* Dynamic Label */}
+                    <div className="overflow-hidden mb-6 flex justify-center">
+                        <AnimatePresence mode="wait">
+                            <motion.span
+                                key={slides[currentSlide].label}
+                                initial={{ y: 40, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: -40, opacity: 0 }}
+                                transition={{ duration: 0.5, ease: "circOut" }}
+                                className="inline-block px-4 py-1 border border-fann-gold/50 rounded-full text-fann-gold text-xs md:text-sm font-bold tracking-[0.3em] uppercase bg-black/30 backdrop-blur-sm"
+                            >
+                                {slides[currentSlide].label}
+                            </motion.span>
+                        </AnimatePresence>
+                    </div>
 
-                    {/* CTA Buttons */}
+                    {/* Main Headline */}
+                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-white tracking-tight leading-[1.1] mb-8 drop-shadow-2xl">
+                        <span className="block text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-gray-400">
+                            ELEVATING BRANDS
+                        </span>
+                        <span className="block text-2xl md:text-4xl lg:text-5xl font-sans font-light tracking-[0.2em] mt-4 text-gray-200">
+                            THROUGH WORLD-CLASS EXHIBITIONS
+                        </span>
+                    </h1>
+
+                    {/* Dynamic Subtitle */}
+                    <div className="h-16 md:h-12 mb-12 overflow-hidden">
+                        <AnimatePresence mode="wait">
+                            <motion.p
+                                key={slides[currentSlide].subtitle}
+                                initial={{ opacity: 0, filter: "blur(10px)" }}
+                                animate={{ opacity: 1, filter: "blur(0px)" }}
+                                exit={{ opacity: 0, filter: "blur(10px)" }}
+                                transition={{ duration: 0.8 }}
+                                className="text-lg md:text-xl text-gray-300 font-light max-w-3xl mx-auto"
+                            >
+                                {slides[currentSlide].subtitle}
+                            </motion.p>
+                        </AnimatePresence>
+                    </div>
+
+                    {/* CTAs */}
                     <motion.div 
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.5 }}
-                        className="flex flex-col sm:flex-row gap-6"
+                        transition={{ delay: 0.5, duration: 0.8 }}
+                        className="flex flex-col sm:flex-row gap-6 justify-center items-center"
                     >
-                        <Link to="/portfolio">
-                            <button className="group relative bg-fann-gold text-black font-bold text-sm tracking-[0.2em] uppercase py-5 px-12 overflow-hidden transition-transform duration-300 hover:scale-105 shadow-[0_0_30px_rgba(212,175,118,0.3)]">
+                        <Link to="/contact">
+                            <button className="group relative bg-fann-gold text-black font-bold text-sm tracking-[0.2em] uppercase py-5 px-10 overflow-hidden rounded-none hover:shadow-[0_0_40px_rgba(212,175,118,0.6)] transition-all duration-300">
+                                <div className="absolute inset-0 w-full h-full bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
                                 <span className="relative z-10 flex items-center gap-3">
-                                    View Projects <ArrowRight size={18} />
+                                    Start Your Project <ArrowRight size={18} />
                                 </span>
                             </button>
                         </Link>
-                        <Link to="/contact">
-                            <button className="group relative bg-transparent border border-white text-white font-bold text-sm tracking-[0.2em] uppercase py-5 px-12 overflow-hidden transition-colors duration-300 hover:bg-white hover:text-black hover:border-white backdrop-blur-sm">
+                        <Link to="/portfolio">
+                            <button className="group relative bg-transparent border border-white/30 text-white font-bold text-sm tracking-[0.2em] uppercase py-5 px-10 overflow-hidden transition-all duration-300 hover:bg-white hover:text-black hover:border-white backdrop-blur-sm">
                                 <span className="relative z-10 flex items-center gap-3">
-                                    Get A Quote <CheckCircle size={18} className="text-fann-gold group-hover:text-black"/>
+                                    View Portfolio <Users size={18} />
                                 </span>
                             </button>
                         </Link>
                     </motion.div>
-                </div>
-            </motion.div>
+                </motion.div>
+            </div>
 
-            {/* Scroll Indicator */}
+            {/* Slide Progress Indicators */}
+            <div className="absolute bottom-10 left-0 right-0 z-30 flex justify-center gap-3">
+                {slides.map((slide, index) => (
+                    <button
+                        key={slide.id}
+                        onClick={() => setCurrentSlide(index)}
+                        className={`h-1 transition-all duration-500 rounded-full ${currentSlide === index ? 'w-12 bg-fann-gold' : 'w-4 bg-white/30 hover:bg-white/50'}`}
+                        aria-label={`Go to slide ${index + 1}`}
+                    />
+                ))}
+            </div>
+
+            {/* Scroll Hint */}
             <motion.div 
+                className="absolute bottom-8 right-8 z-30 hidden lg:flex flex-col items-center gap-2 text-white/50 mix-blend-difference"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 1, delay: 1.5 }}
-                className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-20"
+                transition={{ delay: 2, duration: 1 }}
             >
-                <span className="text-[10px] uppercase tracking-widest text-fann-gold/70">Explore FANN</span>
-                <div className="w-[1px] h-16 bg-gradient-to-b from-fann-gold/0 via-fann-gold to-fann-gold/0 opacity-50"></div>
+                <span className="text-[10px] uppercase tracking-widest rotate-90 origin-right translate-x-2">Scroll</span>
+                <div className="w-[1px] h-12 bg-white/30 overflow-hidden">
+                    <motion.div 
+                        className="w-full h-full bg-white"
+                        animate={{ y: ["-100%", "100%"] }}
+                        transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+                    />
+                </div>
             </motion.div>
         </section>
     );
