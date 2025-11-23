@@ -82,6 +82,7 @@ export default async function handler(req: Request) {
         The lighting should be ${designConcept.lighting}.
         The overall atmosphere is professional, high-end, and immersive, suitable for a major Dubai trade show. High-quality, detailed rendering.`;
         
+        // Fix: Use 'as any' to bypass strict type checking on imageConfig which may cause build errors with certain SDK versions
         const imageResponse = await ai.models.generateContent({
             model: 'gemini-3-pro-image-preview',
             contents: {
@@ -91,8 +92,8 @@ export default async function handler(req: Request) {
                 imageConfig: {
                     aspectRatio: "16:9",
                     imageSize: "1K"
-                } as any
-            },
+                } 
+            } as any,
         });
         
         let image = null;
