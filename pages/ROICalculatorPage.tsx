@@ -269,9 +269,13 @@ const ROICalculatorPage: React.FC = () => {
                     <div className="text-center mb-12">
                         <span className="text-fann-gold text-xs font-bold uppercase tracking-widest border border-fann-gold/20 px-3 py-1 rounded-full bg-fann-gold/5 mb-4 inline-block">Financial Intelligence</span>
                         <h1 className="text-4xl md:text-6xl font-serif font-bold text-white mb-4">ROI Engine</h1>
-                        <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+                        <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-6">
                             Simulate the financial impact of your next exhibition with our multi-model analysis tool.
                         </p>
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-fann-gold/10 border border-fann-gold/20 text-fann-gold/80 text-xs font-semibold">
+                            <AlertTriangle size={14} />
+                            <span>Beta Preview: This is a predictive model powered by AI. Actual results may vary.</span>
+                        </div>
                     </div>
 
                     {step < 4 ? (

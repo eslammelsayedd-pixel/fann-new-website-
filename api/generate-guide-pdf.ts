@@ -1,4 +1,6 @@
 
+import nodemailer from 'nodemailer';
+
 // Vercel Serverless Function
 export default async function handler(req: any, res: any) {
     if (req.method !== 'POST') {
@@ -7,7 +9,7 @@ export default async function handler(req: any, res: any) {
     }
 
     try {
-        const { guideData, userContext } = req.body;
+        const { guideData, userContext, contactInfo } = req.body;
         const date = new Date().toLocaleDateString('en-AE', { year: 'numeric', month: 'long', day: 'numeric' });
 
         const htmlContent = `
@@ -86,6 +88,47 @@ export default async function handler(req: any, res: any) {
             </body>
             </html>
         `;
+
+        // === SEND EMAIL TO SALES ===
+        const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_SECURE } = process.env;
+
+        if (SMTP_HOST && contactInfo && contactInfo.email) {
+            try {
+                const transporter = nodemailer.createTransport({
+                    host: SMTP_HOST,
+                    port: parseInt(SMTP_PORT || '587', 10),
+                    secure: SMTP_SECURE === 'true',
+                    auth: { user: SMTP_USER, pass: SMTP_PASS },
+                });
+
+                const emailHtml = `
+                    <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+                        <h2 style="color: #C9A962;">New Exhibition Guide Lead</h2>
+                        <p><strong>Name:</strong> ${contactInfo.name}</p>
+                        <p><strong>Email:</strong> ${contactInfo.email}</p>
+                        <p><strong>Company:</strong> ${contactInfo.company}</p>
+                        <hr/>
+                        <h3>Event Context</h3>
+                        <ul>
+                            <li>Event: ${userContext.eventType}</li>
+                            <li>Industry: ${userContext.industry}</li>
+                            <li>Size: ${userContext.standSize} sqm</li>
+                            <li>Budget: ${userContext.budget}</li>
+                            <li>Location: ${userContext.location}</li>
+                        </ul>
+                    </div>
+                `;
+
+                await transporter.sendMail({
+                    from: `FANN Guide Bot <${SMTP_USER}>`,
+                    to: 'sales@fann.ae',
+                    subject: `New Guide Lead: ${contactInfo.company}`,
+                    html: emailHtml,
+                });
+            } catch (emailError) {
+                console.error("Failed to send guide lead email:", emailError);
+            }
+        }
 
         res.status(200).json({ htmlContent });
 

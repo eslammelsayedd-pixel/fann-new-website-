@@ -13,7 +13,6 @@ import EventStudioPage from './pages/EventStudioPage';
 import EventResultPage from './pages/EventResultPage';
 import InteriorStudioPage from './pages/InteriorStudioPage';
 import InteriorResultPage from './pages/InteriorResultPage';
-import MediaStudioPage from './pages/MediaStudioPage';
 import EventsCalendarPage from './pages/EventsCalendarPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
@@ -57,7 +56,6 @@ const App: React.FC = () => {
                         <Route path="/fann-studio/event/result" element={<EventResultPage />} />
                         <Route path="/fann-studio/interior" element={<InteriorStudioPage />} />
                         <Route path="/fann-studio/interior/result" element={<InteriorResultPage />} />
-                        <Route path="/fann-studio/media" element={<MediaStudioPage />} />
                         <Route path="/events-calendar" element={<EventsCalendarPage />} />
                         <Route path="/about" element={<AboutPage />} />
                         <Route path="/contact" element={<ContactPage />} />

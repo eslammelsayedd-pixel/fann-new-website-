@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import AnimatedPage from '../components/AnimatedPage';
-import { Building, Crown, PenTool, Clapperboard } from 'lucide-react';
+import { Building, Crown, PenTool, AlertTriangle } from 'lucide-react';
 import SEO from '../components/SEO';
 
 const studioOptions = [
@@ -29,14 +29,6 @@ const studioOptions = [
         description: 'Visualize commercial or residential interiors. Experiment with styles, materials, and layouts for your unique space.',
         link: '/fann-studio/interior',
         isComingSoon: false 
-    },
-    { 
-        id: 'media', 
-        name: 'Media Studio', 
-        icon: Clapperboard, 
-        description: 'Instantly generate video concepts or perform smart edits on your existing images for marketing and social media.',
-        link: '/fann-studio/media',
-        isComingSoon: true 
     },
 ];
 
@@ -120,14 +112,19 @@ const AIDesignStudioPage: React.FC = () => {
             />
             <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-12">
+                    <div className="text-center mb-8">
                         <h1 className="text-5xl md:text-6xl font-serif font-bold text-white mb-4">FANN Studio</h1>
                         <p className="text-xl text-gray-400 max-w-3xl mx-auto">
                             Your vision, realized in minutes. Select a studio to begin creating with FANN's powerful design tools.
                         </p>
                     </div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+                    <div className="bg-fann-gold/5 border border-fann-gold/20 rounded-lg p-4 mb-12 flex items-start gap-3 text-sm text-gray-300 max-w-3xl mx-auto">
+                        <AlertTriangle className="w-5 h-5 text-fann-gold flex-shrink-0 mt-0.5" />
+                        <p><strong>Beta Preview:</strong> FANN Studio utilizes experimental AI technology. Concepts and visuals generated are for ideation and planning purposes only. Please consult with our design experts for technical validation and final production specs.</p>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                         {studioOptions.map((studio, index) => (
                            <StudioCard key={studio.id} studio={studio} index={index} />
                         ))}

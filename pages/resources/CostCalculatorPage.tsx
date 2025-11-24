@@ -62,6 +62,7 @@ const CostCalculatorPage: React.FC = () => {
     });
 
     const [isCalculating, setIsCalculating] = useState(false);
+    const [isDownloading, setIsDownloading] = useState(false);
     const [result, setResult] = useState<any | null>(null);
     const [error, setError] = useState<string | null>(null);
 
@@ -117,6 +118,28 @@ const CostCalculatorPage: React.FC = () => {
         }
     };
 
+    const handleDownloadReport = async () => {
+        setIsDownloading(true);
+        try {
+            const response = await fetch('/api/generate-cost-pdf', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ calculation: result, inputs: state }),
+            });
+            const { htmlContent } = await response.json();
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `FANN_Cost_Estimate_${state.contact.company.replace(/\s/g, '_')}.html`;
+            a.click();
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setIsDownloading(false);
+        }
+    };
+
     const formatCurrency = (val: number) => new Intl.NumberFormat('en-AE', { style: 'currency', currency: 'AED', maximumFractionDigits: 0 }).format(val);
 
     return (
@@ -127,9 +150,13 @@ const CostCalculatorPage: React.FC = () => {
                     
                     <div className="text-center mb-12">
                         <h1 className="text-4xl md:text-6xl font-serif font-bold mb-4">Stand Cost Estimator</h1>
-                        <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+                        <p className="text-gray-300 text-lg max-w-2xl mx-auto mb-6">
                             Based on 2025 market rates for Dubai & KSA. Get a precise breakdown including hidden fees.
                         </p>
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-fann-gold/10 border border-fann-gold/20 text-fann-gold/80 text-xs font-semibold">
+                            <AlertTriangle size={14} />
+                            <span>Beta Preview: Estimations are for budget planning only.</span>
+                        </div>
                     </div>
 
                     <div className="grid lg:grid-cols-3 gap-8">
@@ -351,8 +378,11 @@ const CostCalculatorPage: React.FC = () => {
                                     </div>
 
                                     <div className="flex gap-4">
-                                        <button onClick={() => window.print()} className="flex-1 border border-white/20 hover:bg-white/5 rounded-lg py-3 text-sm font-bold text-white transition-colors">Print / PDF</button>
-                                        <button onClick={() => { setResult(null); setState(prev => ({ ...prev, step: 1 })); }} className="flex-1 bg-fann-gold text-black rounded-lg py-3 text-sm font-bold hover:bg-white transition-colors">Start Over</button>
+                                        <button onClick={handleDownloadReport} disabled={isDownloading} className="flex-1 bg-fann-gold hover:bg-white hover:text-black text-black rounded-lg py-3 text-sm font-bold transition-colors flex items-center justify-center gap-2">
+                                            {isDownloading ? <Loader2 className="animate-spin" size={16} /> : <Download size={16} />}
+                                            Download Report
+                                        </button>
+                                        <button onClick={() => { setResult(null); setState(prev => ({ ...prev, step: 1 })); }} className="flex-1 border border-white/20 text-white rounded-lg py-3 text-sm font-bold hover:bg-white/5 transition-colors">Start Over</button>
                                     </div>
                                 </motion.div>
                             )}

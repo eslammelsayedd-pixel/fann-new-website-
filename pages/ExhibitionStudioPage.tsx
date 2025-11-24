@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Building2, Sparkles, Check, ArrowRight, ArrowLeft, Ruler, AlertCircle, Globe, Mail, Phone, User, Upload, Loader2, LayoutGrid, Box, PenTool, Scan, Palette, Plus, X, RefreshCcw } from 'lucide-react';
+import { Building2, Sparkles, Check, ArrowRight, ArrowLeft, Ruler, AlertCircle, Globe, Mail, Phone, User, Upload, Loader2, LayoutGrid, Box, PenTool, Scan, Palette, Plus, X, RefreshCcw, AlertTriangle } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 
@@ -317,7 +317,11 @@ const ExhibitionStudioPage: React.FC = () => {
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
                     <div className="text-center mb-12">
                         <h1 className="text-4xl md:text-6xl font-serif font-bold text-white mb-4 tracking-tight">Exhibition Studio</h1>
-                        <p className="text-xl text-gray-500">Design your presence in 3 steps.</p>
+                        <p className="text-xl text-gray-500 mb-6">Design your presence in 3 steps.</p>
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-fann-gold/10 border border-fann-gold/20 text-fann-gold/80 text-xs font-semibold">
+                            <AlertTriangle size={14} />
+                            <span>Beta Preview: AI designs are for conceptualization only.</span>
+                        </div>
                     </div>
 
                     <div className="bg-[#0A0A0A] border border-white/5 p-6 sm:p-12 shadow-2xl relative overflow-hidden rounded-sm min-h-[600px] flex flex-col">

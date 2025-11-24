@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, BookOpen, BrainCircuit, Building2, Globe, Lightbulb, Loader2, Rocket, ServerCrash, Sparkles, Store, TrendingUp } from 'lucide-react';
+import { ArrowLeft, BookOpen, BrainCircuit, Building2, Globe, Lightbulb, Loader2, Rocket, ServerCrash, Sparkles, Store, TrendingUp, AlertTriangle } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 import { useApiKey } from '../context/ApiKeyProvider';
@@ -207,9 +208,13 @@ const InsightsPage: React.FC = () => {
     const renderTopicSelection = () => (
         <div className="text-center">
             <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">FANN Intelligence Hub</h1>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-12">
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-6">
                 Select a topic for an expert-driven analysis of key industry trends.
             </p>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-fann-gold/10 border border-fann-gold/20 text-fann-gold/80 text-xs font-semibold mb-12">
+                <AlertTriangle size={14} />
+                <span>Beta Preview: Intelligence reports are compiled by AI using real-time data.</span>
+            </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
                 {insightTopics.map((topic, index) => (
                     <motion.div

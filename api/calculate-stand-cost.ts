@@ -1,25 +1,26 @@
 
 import { Type } from "@google/genai";
+import nodemailer from 'nodemailer';
 
-// Vercel Edge Runtime
-export const config = {
-  runtime: 'edge',
-};
+// Switch to Node.js runtime to support nodemailer
+// export const config = { runtime: 'edge' };
 
-export default async function handler(req: Request) {
+export default async function handler(req: any, res: any) {
     if (req.method !== 'POST') {
-        return new Response(JSON.stringify({ error: 'Method Not Allowed' }), { status: 405, headers: { 'Content-Type': 'application/json' } });
+        res.setHeader('Allow', ['POST']);
+        return res.status(405).json({ error: 'Method Not Allowed' });
     }
 
     try {
-        const body = await req.json();
+        const body = req.body;
         const { 
             standType,
             dimensions, 
             configuration, 
             location, 
             duration, 
-            features 
+            features,
+            contact
         } = body;
 
         // === CONSTANTS & RATES (AED) ===
@@ -125,9 +126,7 @@ export default async function handler(req: Request) {
             });
         }
         
-        // Always add basic graphics cost estimation if not strictly excluded, but for this logic we stick to checklist
-        // Assuming "Graphics & Branding" adds 200/sqm if selected (not in checklist but standard)
-        // Let's add a baseline graphics cost for Custom stands
+        // Always add basic graphics cost estimation if not strictly excluded
         if (standType !== 'Shell Scheme') {
             featuresTotal += (200 * totalSqm); 
         }
@@ -165,10 +164,56 @@ export default async function handler(req: Request) {
             disclaimer: "This is an AI-powered estimate based on 2025 market rates. Final pricing requires a detailed technical drawing."
         };
 
-        return new Response(JSON.stringify(result), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        // === SEND EMAIL TO SALES ===
+        const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_SECURE } = process.env;
+
+        if (SMTP_HOST && contact && contact.email) {
+            try {
+                const transporter = nodemailer.createTransport({
+                    host: SMTP_HOST,
+                    port: parseInt(SMTP_PORT || '587', 10),
+                    secure: SMTP_SECURE === 'true',
+                    auth: { user: SMTP_USER, pass: SMTP_PASS },
+                });
+
+                const formatCurrency = (val: number) => new Intl.NumberFormat('en-AE', { style: 'currency', currency: 'AED', maximumFractionDigits: 0 }).format(val);
+
+                const html = `
+                    <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+                        <h2 style="color: #C9A962;">New Stand Cost Calculation</h2>
+                        <p><strong>Client:</strong> ${contact.name} (${contact.company})</p>
+                        <p><strong>Email:</strong> ${contact.email}</p>
+                        <p><strong>Phone:</strong> ${contact.phone}</p>
+                        <p><strong>Event:</strong> ${contact.eventName || 'N/A'} at ${location}</p>
+                        <hr/>
+                        <h3>Specifications</h3>
+                        <ul>
+                            <li>Type: ${standType}</li>
+                            <li>Size: ${dimensions.length}x${dimensions.width}m (${totalSqm} sqm)</li>
+                            <li>Config: ${configuration}</li>
+                            <li>Features: ${features.length > 0 ? features.join(', ') : 'None'}</li>
+                        </ul>
+                        <h3>Estimate</h3>
+                        <p style="font-size: 18px; font-weight: bold;">${formatCurrency(finalMin)} - ${formatCurrency(finalMax)}</p>
+                    </div>
+                `;
+
+                await transporter.sendMail({
+                    from: `FANN Calculator <${SMTP_USER}>`,
+                    to: 'sales@fann.ae',
+                    subject: `New Cost Calc Lead: ${contact.company}`,
+                    html: html,
+                });
+            } catch (emailError) {
+                console.error("Failed to send lead email:", emailError);
+                // Don't fail the response if email fails
+            }
+        }
+
+        return res.status(200).json(result);
 
     } catch (error: any) {
         console.error('Error in calculate-stand-cost API:', error);
-        return new Response(JSON.stringify({ error: error.message || 'Calculation failed.' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+        return res.status(500).json({ error: error.message || 'Calculation failed.' });
     }
 }

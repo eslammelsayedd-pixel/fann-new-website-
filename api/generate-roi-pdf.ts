@@ -123,8 +123,45 @@ export default async function handler(req: any, res: any) {
             </html>
         `;
 
-        // In production, also send email using nodemailer here if configured
-        
+        // === SEND EMAIL TO SALES ===
+        const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_SECURE } = process.env;
+
+        if (SMTP_HOST && userData && userData.email) {
+            try {
+                const transporter = nodemailer.createTransport({
+                    host: SMTP_HOST,
+                    port: parseInt(SMTP_PORT || '587', 10),
+                    secure: SMTP_SECURE === 'true',
+                    auth: { user: SMTP_USER, pass: SMTP_PASS },
+                });
+
+                const emailHtml = `
+                    <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+                        <h2 style="color: #C9A962;">New ROI Report Download</h2>
+                        <p><strong>Client:</strong> ${userData.name} (${userData.company})</p>
+                        <p><strong>Email:</strong> ${userData.email}</p>
+                        <p><strong>Event:</strong> ${inputs.event_name} (${inputs.industry})</p>
+                        <hr/>
+                        <h3>Key Metrics (Realistic)</h3>
+                        <ul>
+                            <li>Investment: ${formatCurrency(inputs.total_investment)}</li>
+                            <li>Net Profit: ${formatCurrency(metrics.cash_roi.net_profit)}</li>
+                            <li>ROI: ${metrics.cash_roi.roi_percentage}%</li>
+                        </ul>
+                    </div>
+                `;
+
+                await transporter.sendMail({
+                    from: `FANN ROI Engine <${SMTP_USER}>`,
+                    to: 'sales@fann.ae',
+                    subject: `New ROI Lead: ${userData.company}`,
+                    html: emailHtml,
+                });
+            } catch (emailError) {
+                console.error("Failed to send ROI lead email:", emailError);
+            }
+        }
+
         res.status(200).json({ htmlContent });
 
     } catch (error: any) {

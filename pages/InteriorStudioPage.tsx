@@ -1,7 +1,8 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FileText, PenTool, Palette, Sparkles, SlidersHorizontal, Square, Check, ArrowLeft, ArrowRight, Building2, User, Mail, Phone, MapPin } from 'lucide-react';
+import { FileText, PenTool, Palette, Sparkles, SlidersHorizontal, Square, Check, ArrowLeft, ArrowRight, Building2, User, Mail, Phone, MapPin, AlertTriangle } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 
@@ -271,7 +272,11 @@ const InteriorStudioPage: React.FC = () => {
                             <PenTool className="h-10 w-10 text-black" />
                         </div>
                         <h1 className="text-5xl md:text-6xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 mb-4">Interior Designer</h1>
-                        <p className="text-xl text-gray-400 max-w-2xl mx-auto">Transform your space with a few simple clicks.</p>
+                        <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-6">Transform your space with a few simple clicks.</p>
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-fann-gold/10 border border-fann-gold/20 text-fann-gold/80 text-xs font-semibold">
+                            <AlertTriangle size={14} />
+                            <span>Beta Preview: Generated visuals are for concept exploration.</span>
+                        </div>
                     </div>
 
                     <div className="bg-[#0A0A0A] border border-white/5 p-6 sm:p-12 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
