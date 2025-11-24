@@ -1,323 +1,429 @@
+
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AlertCircle, BarChart2, CheckCircle, Download, Loader2, Sparkles, TrendingUp, Users, Target } from 'lucide-react';
+import { 
+    BarChart2, CheckCircle, Download, Loader2, Sparkles, 
+    TrendingUp, Users, Target, Briefcase, Calculator, 
+    AlertTriangle, RefreshCcw, ChevronRight, DollarSign 
+} from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 import { regionalEvents } from '../constants';
 
-const eventOptions = [...new Set(regionalEvents.map(e => e.name))].sort();
+// --- Types ---
 
-interface FormData {
-    company_name: string;
-    event_name: string;
-    booth_size_sqm: number;
-    stand_cost: number;
-    average_deal_size: number;
-    close_rate: number;
+interface ROIMetrics {
+    net_profit: number;
+    roi_percentage: number;
+    payback_period_months: number;
+    cost_per_lead: number;
+    cost_per_acquisition: number;
+    break_even_deals: number;
 }
 
-interface LeadData {
-    name: string;
-    email: string;
-    company: string;
+interface ROIModel {
+    cash_roi: ROIMetrics;
+    pipeline_roi: { projected_value: number; ltv_impact: number };
+    brand_roi: { impressions: number; media_value: number };
+    network_roi: { partnership_value: number };
+}
+
+interface ScenarioData {
+    label: string;
+    metrics: ROIModel;
+    probability: number;
+}
+
+interface AnalysisResult {
+    scenarios: {
+        conservative: ScenarioData;
+        realistic: ScenarioData;
+        optimistic: ScenarioData;
+    };
+    benchmarks: {
+        industry_avg_cpl: number;
+        industry_avg_conversion: number;
+        verdict: string;
+    };
+    strategic_advice: string[];
+}
+
+interface FormData {
+    // Event Context
+    event_name: string;
+    industry: string;
+    duration_days: number;
+    
+    // Financials (Investment)
+    stand_cost: number;
+    staff_cost: number;
+    marketing_cost: number;
+    logistics_cost: number;
+    
+    // Performance (Goals/Actuals)
+    visitors_expected: number;
+    leads_expected: number;
+    
+    // Sales Data
+    avg_deal_value: number;
+    close_rate_percent: number;
+    sales_cycle_months: number;
+    customer_ltv: number;
 }
 
 const initialFormData: FormData = {
-    company_name: '',
     event_name: '',
-    booth_size_sqm: 50,
+    industry: 'Technology',
+    duration_days: 3,
     stand_cost: 75000,
-    average_deal_size: 50000,
-    close_rate: 20,
+    staff_cost: 15000,
+    marketing_cost: 10000,
+    logistics_cost: 5000,
+    visitors_expected: 500,
+    leads_expected: 150,
+    avg_deal_value: 25000,
+    close_rate_percent: 10,
+    sales_cycle_months: 3,
+    customer_ltv: 50000
 };
 
-const formatCurrency = (value: number) => new Intl.NumberFormat('en-AE', { style: 'currency', currency: 'AED', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
+const eventOptions = [...new Set(regionalEvents.map(e => e.name))].sort();
+const industries = ["Technology", "Real Estate", "Healthcare", "Energy", "Construction", "Retail", "Finance", "Automotive"];
 
-const roiCalculatorSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Personalized Exhibition ROI Calculator",
-    "description": "Get hyper-personalized ROI projections for major Dubai & KSA exhibitions. Our smart calculator analyzes your company and event to provide a data-driven forecast.",
-    "url": "https://fann.ae/roi-calculator",
-    "mainEntity": {
-        "@type": "Service",
-        "name": "Exhibition ROI Calculation",
-        "serviceType": "FinancialService",
-        "provider": {
-            "@type": "Organization",
-            "@id": "https://fann.ae"
-        },
-        "description": "A smart tool to forecast the potential Return on Investment for exhibiting at major trade shows in the UAE and KSA.",
-        "areaServed": {
-            "@type": "AdministrativeArea",
-            "name": "Middle East"
-        },
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "AED"
-        }
-    }
-};
-
+const formatCurrency = (value: number) => 
+    new Intl.NumberFormat('en-AE', { style: 'currency', currency: 'AED', maximumFractionDigits: 0 }).format(value);
 
 const ROICalculatorPage: React.FC = () => {
+    const [step, setStep] = useState(1);
     const [formData, setFormData] = useState<FormData>(initialFormData);
-    const [leadData, setLeadData] = useState<LeadData>({ name: '', email: '', company: '' });
-    const [results, setResults] = useState<any | null>(null);
+    const [results, setResults] = useState<AnalysisResult | null>(null);
+    const [activeScenario, setActiveScenario] = useState<'conservative' | 'realistic' | 'optimistic'>('realistic');
     const [isLoading, setIsLoading] = useState(false);
-    const [isDownloading, setIsDownloading] = useState(false);
-    const [isDownloaded, setIsDownloaded] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    
-    const handleCalculate = useCallback(async () => {
+    const [leadForm, setLeadForm] = useState({ name: '', email: '', company: '' });
+    const [isDownloading, setIsDownloading] = useState(false);
+
+    const totalInvestment = formData.stand_cost + formData.staff_cost + formData.marketing_cost + formData.logistics_cost;
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        const numValue = parseFloat(value);
+        setFormData(prev => ({
+            ...prev,
+            [name]: isNaN(numValue) ? value : numValue
+        }));
+    };
+
+    const handleCalculate = async () => {
         setIsLoading(true);
         setError(null);
-        setResults(null);
-        setIsDownloaded(false);
-
-        if (!formData.company_name || !formData.event_name) {
-            setError("Please provide both a company name and an event name to calculate projections.");
-            setIsLoading(false);
-            return;
-        }
-
         try {
             const response = await fetch('/api/calculate-roi', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({ ...formData, total_investment: totalInvestment }),
             });
             
-            if (!response.ok) {
-                 const errText = await response.text();
-                let errMessage = `Server responded with status ${response.status}`;
-                try {
-                    const err = JSON.parse(errText);
-                    errMessage = err.error || errText;
-                } catch(e) { errMessage = errText; }
-                throw new Error(errMessage);
-            }
-            
-            const resultData = await response.json();
-            setResults(resultData);
-            setLeadData(prev => ({...prev, company: formData.company_name}));
-
+            if (!response.ok) throw new Error("Calculation failed");
+            const data = await response.json();
+            setResults(data);
+            setStep(4); // Move to results
         } catch (e: any) {
-            setError(e.message);
-            setResults(null);
+            setError(e.message || "Failed to calculate ROI");
         } finally {
             setIsLoading(false);
         }
-    }, [formData]);
-    
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        const isNumeric = !['company_name', 'event_name'].includes(name);
-        setFormData(prev => ({
-            ...prev,
-            [name]: isNumeric ? Number(value) : value
-        }));
-    };
-
-    const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        handleCalculate();
-    };
-
-
-    const handleLeadInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setLeadData(prev => ({...prev, [name]: value }));
     };
 
     const handleDownloadReport = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!leadData.name || !leadData.email || !leadData.company) {
-            setError("Please fill in all fields to download the report.");
-            return;
-        }
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(leadData.email)) {
-            setError("Please enter a valid email address.");
-            return;
-        }
-        
-        setError(null);
         setIsDownloading(true);
-
         try {
             const response = await fetch('/api/generate-roi-pdf', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ roiData: results, userData: leadData }),
+                body: JSON.stringify({ roiData: results, userData: leadForm, inputs: formData }),
             });
-
-            if (!response.ok) {
-                const err = await response.json();
-                throw new Error(err.error || "Failed to generate the report.");
-            }
-
             const { htmlContent } = await response.json();
             const blob = new Blob([htmlContent], { type: 'text/html' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `FANN_ROI_Analysis_${formData.company_name.replace(/\s/g, '_')}_${formData.event_name.replace(/\s/g, '_')}.html`;
-            document.body.appendChild(a);
+            a.download = `FANN_ROI_Report_${formData.event_name.replace(/\s/g, '_')}.html`;
             a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            setIsDownloaded(true);
-
-        } catch (e: any) {
-            setError(e.message);
+        } catch (e) {
+            console.error(e);
         } finally {
             setIsDownloading(false);
         }
     };
-    
+
+    // --- Render Components ---
+
+    const MetricCard = ({ label, value, subtext, color = "text-white" }: { label: string, value: string, subtext?: string, color?: string }) => (
+        <div className="bg-white/5 border border-white/10 p-4 rounded-xl">
+            <p className="text-xs text-gray-400 uppercase tracking-wider mb-1 font-bold">{label}</p>
+            <p className={`text-2xl font-bold font-serif ${color}`}>{value}</p>
+            {subtext && <p className="text-xs text-gray-400 mt-1">{subtext}</p>}
+        </div>
+    );
+
+    const renderFormStep = () => {
+        switch(step) {
+            case 1: // Financials
+                return (
+                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block text-sm text-gray-400 mb-2 font-medium">Event Name</label>
+                                <input type="text" list="events" name="event_name" value={formData.event_name} onChange={handleInputChange} className="w-full bg-black/30 border border-white/20 rounded p-3 text-white focus:border-fann-gold outline-none placeholder-gray-500" placeholder="e.g. GITEX" />
+                                <datalist id="events">{eventOptions.map(e => <option key={e} value={e}/>)}</datalist>
+                            </div>
+                            <div>
+                                <label className="block text-sm text-gray-400 mb-2 font-medium">Industry</label>
+                                <select name="industry" value={formData.industry} onChange={handleInputChange} className="w-full bg-black/30 border border-white/20 rounded p-3 text-white focus:border-fann-gold outline-none">
+                                    {industries.map(i => <option key={i} value={i}>{i}</option>)}
+                                </select>
+                            </div>
+                        </div>
+                        <div className="bg-white/5 p-6 rounded-xl border border-white/10">
+                            <h3 className="text-fann-gold text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-2"><Calculator size={16}/> Investment Breakdown (AED)</h3>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div><label className="text-xs text-gray-400 font-medium block mb-1">Stand Design & Build</label><input type="number" name="stand_cost" value={formData.stand_cost} onChange={handleInputChange} className="w-full bg-black/30 border border-white/20 rounded p-2 text-white"/></div>
+                                <div><label className="text-xs text-gray-400 font-medium block mb-1">Staff & Travel</label><input type="number" name="staff_cost" value={formData.staff_cost} onChange={handleInputChange} className="w-full bg-black/30 border border-white/20 rounded p-2 text-white"/></div>
+                                <div><label className="text-xs text-gray-400 font-medium block mb-1">Marketing & Promo</label><input type="number" name="marketing_cost" value={formData.marketing_cost} onChange={handleInputChange} className="w-full bg-black/30 border border-white/20 rounded p-2 text-white"/></div>
+                                <div><label className="text-xs text-gray-400 font-medium block mb-1">Logistics & Misc</label><input type="number" name="logistics_cost" value={formData.logistics_cost} onChange={handleInputChange} className="w-full bg-black/30 border border-white/20 rounded p-2 text-white"/></div>
+                            </div>
+                            <div className="mt-4 pt-4 border-t border-white/10 flex justify-between items-center">
+                                <span className="text-sm text-gray-300">Total Estimated Investment</span>
+                                <span className="text-xl font-bold text-white">{formatCurrency(totalInvestment)}</span>
+                            </div>
+                        </div>
+                        <button onClick={() => setStep(2)} className="w-full btn-gold">Next: Performance Metrics</button>
+                    </motion.div>
+                );
+            case 2: // Performance
+                return (
+                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block text-sm text-gray-400 mb-2 font-medium">Target Visitors (Footfall)</label>
+                                <input type="number" name="visitors_expected" value={formData.visitors_expected} onChange={handleInputChange} className="w-full bg-black/30 border border-white/20 rounded p-3 text-white focus:border-fann-gold outline-none"/>
+                            </div>
+                            <div>
+                                <label className="block text-sm text-gray-400 mb-2 font-medium">Target Leads Generated</label>
+                                <input type="number" name="leads_expected" value={formData.leads_expected} onChange={handleInputChange} className="w-full bg-black/30 border border-white/20 rounded p-3 text-white focus:border-fann-gold outline-none"/>
+                            </div>
+                        </div>
+                        <div className="bg-blue-900/10 border border-blue-500/30 p-4 rounded-xl flex items-start gap-3">
+                            <Target className="text-blue-400 flex-shrink-0 mt-1" size={18}/>
+                            <p className="text-xs text-gray-300 leading-relaxed">Tip: For a standard 3-day Dubai trade show, a 30sqm stand typically captures 150-300 qualified leads depending on location and engagement strategy.</p>
+                        </div>
+                        <div className="flex gap-4">
+                            <button onClick={() => setStep(1)} className="flex-1 text-gray-400 font-medium hover:text-white">Back</button>
+                            <button onClick={() => setStep(3)} className="flex-1 btn-gold">Next: Sales Data</button>
+                        </div>
+                    </motion.div>
+                );
+            case 3: // Sales
+                return (
+                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block text-sm text-gray-400 mb-2 font-medium">Avg. Deal Value (AED)</label>
+                                <input type="number" name="avg_deal_value" value={formData.avg_deal_value} onChange={handleInputChange} className="w-full bg-black/30 border border-white/20 rounded p-3 text-white focus:border-fann-gold outline-none"/>
+                            </div>
+                            <div>
+                                <label className="block text-sm text-gray-400 mb-2 font-medium">Sales Close Rate (%)</label>
+                                <input type="number" name="close_rate_percent" value={formData.close_rate_percent} onChange={handleInputChange} className="w-full bg-black/30 border border-white/20 rounded p-3 text-white focus:border-fann-gold outline-none"/>
+                            </div>
+                            <div>
+                                <label className="block text-sm text-gray-400 mb-2 font-medium">Sales Cycle (Months)</label>
+                                <input type="number" name="sales_cycle_months" value={formData.sales_cycle_months} onChange={handleInputChange} className="w-full bg-black/30 border border-white/20 rounded p-3 text-white focus:border-fann-gold outline-none"/>
+                            </div>
+                            <div>
+                                <label className="block text-sm text-gray-400 mb-2 font-medium">Customer LTV (AED)</label>
+                                <input type="number" name="customer_ltv" value={formData.customer_ltv} onChange={handleInputChange} className="w-full bg-black/30 border border-white/20 rounded p-3 text-white focus:border-fann-gold outline-none"/>
+                            </div>
+                        </div>
+                        <div className="flex gap-4">
+                            <button onClick={() => setStep(2)} className="flex-1 text-gray-400 font-medium hover:text-white">Back</button>
+                            <button onClick={handleCalculate} disabled={isLoading} className="flex-1 btn-gold flex justify-center items-center gap-2">
+                                {isLoading ? <Loader2 className="animate-spin"/> : <Sparkles size={18}/>} Run Simulation
+                            </button>
+                        </div>
+                    </motion.div>
+                );
+            default: return null;
+        }
+    };
+
+    const activeMetrics = results?.scenarios[activeScenario].metrics;
+
     return (
         <AnimatedPage>
-            <SEO
-                title="Personalized Exhibition ROI Calculator"
-                description="Get hyper-personalized ROI projections for major Dubai & KSA exhibitions. Our smart calculator analyzes your company and event to provide a data-driven forecast."
-                schema={roiCalculatorSchema}
-            />
-            <div className="min-h-screen bg-fann-teal pt-32 pb-20 text-fann-peach">
+            <SEO title="Exhibition ROI Intelligence Engine | FANN" description="Advanced multi-model ROI calculator for Dubai exhibitions. Simulate financial, brand, and network returns." />
+            <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                    
                     <div className="text-center mb-12">
-                        <BarChart2 className="mx-auto h-16 w-16 text-fann-gold" />
-                        <h1 className="text-5xl font-serif font-bold text-fann-gold mt-4 mb-4">Exhibition ROI Calculator</h1>
-                        <p className="text-xl text-fann-peach/90 max-w-3xl mx-auto">
-                           From generic estimates to hyper-personalized forecasts. Tell us who you are and where you're going.
+                        <span className="text-fann-gold text-xs font-bold uppercase tracking-widest border border-fann-gold/20 px-3 py-1 rounded-full bg-fann-gold/5 mb-4 inline-block">Financial Intelligence</span>
+                        <h1 className="text-4xl md:text-6xl font-serif font-bold text-white mb-4">ROI Engine</h1>
+                        <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+                            Simulate the financial impact of your next exhibition with our multi-model analysis tool.
                         </p>
                     </div>
 
-                    <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-                        {/* Input Form */}
-                        <form onSubmit={handleFormSubmit} className="bg-fann-teal-dark p-6 rounded-lg space-y-6 self-start">
-                            <h2 className="text-2xl font-serif font-bold text-fann-peach border-b border-fann-border pb-3">Your Event Details</h2>
-                            <div className="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <label htmlFor="company_name" className="block text-sm font-normal text-fann-light-gray mb-2">Company Name</label>
-                                    <input type="text" id="company_name" name="company_name" placeholder="Your Company Name" value={formData.company_name} onChange={handleInputChange} required className="w-full bg-fann-teal border border-fann-border rounded-md px-3 py-2" />
-                                </div>
-                                <div>
-                                    <label htmlFor="event_name" className="block text-sm font-normal text-fann-light-gray mb-2">Event Name</label>
-                                    <input type="text" id="event_name" name="event_name" list="event-options" placeholder="e.g., GITEX Global" value={formData.event_name} onChange={handleInputChange} required className="w-full bg-fann-teal border border-fann-border rounded-md px-3 py-2" />
-                                    <datalist id="event-options">
-                                        {eventOptions.map(name => <option key={name} value={name} />)}
-                                    </datalist>
-                                </div>
+                    {step < 4 ? (
+                        <div className="max-w-2xl mx-auto bg-fann-charcoal-light border border-white/10 p-8 rounded-2xl shadow-2xl">
+                            <div className="flex gap-2 mb-8">
+                                {[1, 2, 3].map(s => (
+                                    <div key={s} className={`h-1 flex-1 rounded-full transition-colors ${s <= step ? 'bg-fann-gold' : 'bg-white/10'}`}/>
+                                ))}
                             </div>
-                            
-                            <div className="border-t border-fann-border pt-6 space-y-6">
-                                <div>
-                                    <label htmlFor="booth_size_sqm" className="block text-sm font-normal text-fann-light-gray mb-2">Booth Size (sqm): <span className="text-fann-gold font-bold">{formData.booth_size_sqm}</span></label>
-                                    <input type="range" id="booth_size_sqm" name="booth_size_sqm" min="9" max="500" step="1" value={formData.booth_size_sqm} onChange={handleInputChange} className="w-full h-2 bg-fann-teal-dark rounded-lg appearance-none cursor-pointer accent-fann-gold" />
-                                </div>
-                                <div>
-                                    <label htmlFor="stand_cost" className="block text-sm font-normal text-fann-light-gray mb-2">Stand Design & Build Cost (AED)</label>
-                                    <input type="number" step="1000" id="stand_cost" name="stand_cost" value={formData.stand_cost} onChange={handleInputChange} className="w-full bg-fann-teal border border-fann-border rounded-md px-3 py-2" />
-                                </div>
-                                <div className="grid md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label htmlFor="average_deal_size" className="block text-sm font-normal text-fann-light-gray mb-2">Avg. Deal Size (AED)</label>
-                                        <input type="number" step="1000" id="average_deal_size" name="average_deal_size" value={formData.average_deal_size} onChange={handleInputChange} className="w-full bg-fann-teal border border-fann-border rounded-md px-3 py-2" />
+                            {renderFormStep()}
+                        </div>
+                    ) : (
+                        // Results Dashboard
+                        results && activeMetrics && (
+                            <div className="max-w-7xl mx-auto space-y-8">
+                                
+                                {/* Scenario Controller */}
+                                <div className="bg-fann-charcoal-light border border-white/10 p-4 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4 sticky top-24 z-40 shadow-2xl backdrop-blur-md bg-opacity-90">
+                                    <div className="flex gap-2 bg-black/50 p-1 rounded-lg">
+                                        {['conservative', 'realistic', 'optimistic'].map((s) => (
+                                            <button 
+                                                key={s}
+                                                onClick={() => setActiveScenario(s as any)}
+                                                className={`px-6 py-2 rounded-md text-sm font-bold uppercase transition-all ${activeScenario === s ? 'bg-fann-gold text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
+                                            >
+                                                {s}
+                                            </button>
+                                        ))}
                                     </div>
-                                    <div>
-                                        <label htmlFor="close_rate" className="block text-sm font-normal text-fann-light-gray mb-2">Sales Close Rate: <span className="text-fann-gold font-bold">{formData.close_rate}%</span></label>
-                                        <input type="range" id="close_rate" name="close_rate" min="1" max="80" step="1" value={formData.close_rate} onChange={handleInputChange} className="w-full h-2 bg-fann-teal-dark rounded-lg appearance-none cursor-pointer accent-fann-gold" />
+                                    <div className="text-right">
+                                        <p className="text-xs text-gray-400 uppercase tracking-widest font-bold">Projected Net Profit</p>
+                                        <p className={`text-3xl font-bold font-serif ${activeMetrics.cash_roi.net_profit > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                                            {formatCurrency(activeMetrics.cash_roi.net_profit)}
+                                        </p>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="border-t border-fann-border pt-6">
-                                <motion.button 
-                                    whileHover={{ scale: 1.05, y: -2 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    type="submit" 
-                                    disabled={isLoading || !formData.company_name || !formData.event_name} 
-                                    className="w-full bg-fann-gold text-fann-charcoal font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-fann-gold/40"
-                                >
-                                    {isLoading ? <><Loader2 className="animate-spin" />Calculating...</> : results ? 'Recalculate Projections' : 'Calculate Projections'}
-                                </motion.button>
-                            </div>
-                        </form>
 
-                        {/* Results Display */}
-                        <div className="relative">
-                             <AnimatePresence>
-                                {isLoading && (
-                                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-fann-teal-dark/80 backdrop-blur-sm flex flex-col justify-center items-center z-10 rounded-lg">
-                                        <Loader2 className="w-12 h-12 text-fann-gold animate-spin"/>
-                                        <p className="mt-4 font-semibold">Calculating Projections...</p>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                            <div className="space-y-6">
-                                {error && (
-                                    <div className="bg-red-900/50 border border-red-500 text-red-300 p-4 rounded-lg text-sm flex items-start gap-3 h-full">
-                                        <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-                                        <span>{error}</span>
-                                    </div>
-                                )}
-                                {!results && !error && !isLoading && (
-                                    <div className="bg-fann-teal-dark p-6 rounded-lg text-center h-full flex flex-col justify-center items-center min-h-[400px]">
-                                        <Sparkles className="w-12 h-12 text-fann-gold mb-4" />
-                                        <p className="text-fann-light-gray">Your personalized ROI projections will appear here.</p>
-                                        <p className="text-sm text-fann-light-gray/70 mt-2">Fill in your details and click "Calculate" to begin.</p>
-                                    </div>
-                                )}
-                                {results && !error && (
-                                    <motion.div initial={{opacity: 0}} animate={{opacity: 1}} className="space-y-6">
-                                        <div className="bg-fann-teal p-8 rounded-lg text-center">
-                                            <p className="text-fann-light-gray uppercase tracking-wider text-sm">Projected ROI</p>
-                                            <p className="text-5xl lg:text-7xl font-bold text-fann-accent-teal my-2">{results.roi_metrics.roi_percentage_min}% - {results.roi_metrics.roi_percentage_max}%</p>
-                                            <p className="text-fann-light-gray text-base">({results.roi_metrics.roi_ratio_min} to {results.roi_metrics.roi_ratio_max} return on investment)</p>
-                                        </div>
+                                <div className="grid lg:grid-cols-3 gap-8">
+                                    {/* Left: Financial Core */}
+                                    <div className="lg:col-span-2 space-y-8">
                                         
-                                        <div>
-                                            <h3 className="text-xl font-serif font-bold text-fann-peach mb-4">Key Projections Snippet</h3>
-                                            <div className="grid md:grid-cols-3 gap-4">
-                                                <div className="bg-fann-teal p-4 rounded-lg flex items-center gap-4"><Users className="w-8 h-8 text-fann-gold flex-shrink-0" /><div><p className="text-sm text-fann-light-gray">Qualified Leads</p><p className="text-xl font-bold text-fann-peach">{`${results.visitor_projections.qualified_leads_min} - ${results.visitor_projections.qualified_leads_max}`}</p></div></div>
-                                                <div className="bg-fann-teal p-4 rounded-lg flex items-center gap-4"><TrendingUp className="w-8 h-8 text-fann-gold flex-shrink-0" /><div><p className="text-sm text-fann-light-gray">Expected Revenue</p><p className="text-xl font-bold text-fann-peach">{`${formatCurrency(results.financial_projections.expected_revenue_min)}`}</p></div></div>
-                                                <div className="bg-fann-teal p-4 rounded-lg flex items-center gap-4"><Target className="w-8 h-8 text-fann-gold flex-shrink-0" /><div><p className="text-sm text-fann-light-gray">Deals to Break-Even</p><p className="text-xl font-bold text-fann-peach">{`${results.roi_metrics.break_even_deals}`}</p></div></div>
+                                        {/* 4-Pillar Grid */}
+                                        <div className="grid md:grid-cols-2 gap-4">
+                                            <div className="bg-fann-charcoal-light p-6 rounded-xl border border-white/10">
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <div className="p-2 bg-green-900/20 rounded-lg text-green-400"><DollarSign size={20}/></div>
+                                                    <span className="text-xs bg-white/5 px-2 py-1 rounded text-gray-400 font-bold">Immediate</span>
+                                                </div>
+                                                <h3 className="text-gray-400 text-sm uppercase tracking-wider font-bold mb-1">Cash ROI</h3>
+                                                <p className="text-3xl font-bold text-white mb-2">{activeMetrics.cash_roi.roi_percentage}%</p>
+                                                <p className="text-xs text-gray-400">Break-even: {activeMetrics.cash_roi.break_even_deals} Deals</p>
+                                            </div>
+
+                                            <div className="bg-fann-charcoal-light p-6 rounded-xl border border-white/10">
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <div className="p-2 bg-blue-900/20 rounded-lg text-blue-400"><TrendingUp size={20}/></div>
+                                                    <span className="text-xs bg-white/5 px-2 py-1 rounded text-gray-400 font-bold">Long Term</span>
+                                                </div>
+                                                <h3 className="text-gray-400 text-sm uppercase tracking-wider font-bold mb-1">Pipeline Value</h3>
+                                                <p className="text-3xl font-bold text-white mb-2">{formatCurrency(activeMetrics.pipeline_roi.projected_value)}</p>
+                                                <p className="text-xs text-gray-400">Over {formData.sales_cycle_months} months</p>
+                                            </div>
+
+                                            <div className="bg-fann-charcoal-light p-6 rounded-xl border border-white/10">
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <div className="p-2 bg-purple-900/20 rounded-lg text-purple-400"><Users size={20}/></div>
+                                                    <span className="text-xs bg-white/5 px-2 py-1 rounded text-gray-400 font-bold">Soft Value</span>
+                                                </div>
+                                                <h3 className="text-gray-400 text-sm uppercase tracking-wider font-bold mb-1">Brand Equity</h3>
+                                                <p className="text-3xl font-bold text-white mb-2">{formatCurrency(activeMetrics.brand_roi.media_value)}</p>
+                                                <p className="text-xs text-gray-400">Based on {activeMetrics.brand_roi.impressions.toLocaleString()} impressions</p>
+                                            </div>
+
+                                            <div className="bg-fann-charcoal-light p-6 rounded-xl border border-white/10">
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <div className="p-2 bg-fann-gold/20 rounded-lg text-fann-gold"><Briefcase size={20}/></div>
+                                                    <span className="text-xs bg-white/5 px-2 py-1 rounded text-gray-400 font-bold">Strategic</span>
+                                                </div>
+                                                <h3 className="text-gray-400 text-sm uppercase tracking-wider font-bold mb-1">Network Value</h3>
+                                                <p className="text-3xl font-bold text-white mb-2">{formatCurrency(activeMetrics.network_roi.partnership_value)}</p>
+                                                <p className="text-xs text-gray-400">Projected partnership equity</p>
                                             </div>
                                         </div>
-                                        
-                                        <AnimatePresence mode="wait">
-                                        {isDownloaded ? (
-                                            <motion.div key="thank-you" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-fann-teal p-6 rounded-lg text-center border-2 border-fann-gold">
-                                                <CheckCircle className="mx-auto h-12 w-12 text-fann-gold" />
-                                                <h3 className="text-2xl font-serif font-bold text-fann-peach mt-4">Thank You!</h3>
-                                                <p className="text-fann-light-gray mt-2">Your report has been downloaded. Our team will be in touch shortly to discuss your project.</p>
-                                            </motion.div>
-                                        ) : (
-                                            <motion.form key="lead-form" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} onSubmit={handleDownloadReport} className="bg-fann-teal p-6 rounded-lg border border-fann-border">
-                                                <h3 className="text-xl font-serif font-bold text-fann-peach mb-1">Unlock the Full, Multi-Page Analysis</h3>
-                                                <p className="text-fann-light-gray text-sm mb-4">Enter your details to download the FANN Proprietary ROI Analysis, including visitor projections, financial modeling, and strategic recommendations.</p>
-                                                <div className="space-y-4">
-                                                    <input type="text" name="name" placeholder="Full Name" value={leadData.name} onChange={handleLeadInputChange} required className="w-full bg-fann-teal-dark border border-fann-border rounded-md px-3 py-2" />
-                                                    <input type="email" name="email" placeholder="Business Email" value={leadData.email} onChange={handleLeadInputChange} required className="w-full bg-fann-teal-dark border border-fann-border rounded-md px-3 py-2" />
-                                                    <input type="text" name="company" placeholder="Company Name" value={leadData.company} onChange={handleLeadInputChange} required className="w-full bg-fann-teal-dark border border-fann-border rounded-md px-3 py-2" />
-                                                    <motion.button 
-                                                        whileHover={{ scale: 1.05, y: -2 }}
-                                                        whileTap={{ scale: 0.95 }}
-                                                        type="submit" 
-                                                        disabled={isDownloading} 
-                                                        className="w-full bg-fann-gold text-fann-charcoal font-bold py-3 rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-fann-gold/40"
-                                                    >
-                                                        {isDownloading ? <><Loader2 className="animate-spin w-5 h-5"/> Generating...</> : <><Download size={18}/> Download Full Report</>}
-                                                    </motion.button>
-                                                </div>
-                                            </motion.form>
-                                        )}
-                                        </AnimatePresence>
-                                    </motion.div>
-                                )}
+
+                                        {/* Efficiency Metrics */}
+                                        <div className="bg-white/5 border border-white/10 rounded-xl p-6">
+                                            <h3 className="text-white font-bold mb-6 flex items-center gap-2"><BarChart2 size={18} className="text-fann-gold"/> Efficiency Ratios</h3>
+                                            <div className="grid md:grid-cols-3 gap-6">
+                                                <MetricCard label="Cost Per Lead (CPL)" value={formatCurrency(activeMetrics.cash_roi.cost_per_lead)} />
+                                                <MetricCard label="Cost Per Acquisition" value={formatCurrency(activeMetrics.cash_roi.cost_per_acquisition)} />
+                                                <MetricCard label="Payback Period" value={`${activeMetrics.cash_roi.payback_period_months} Mo`} />
+                                            </div>
+                                        </div>
+
+                                        {/* Benchmark Analysis */}
+                                        <div className="bg-fann-charcoal-light border border-white/10 rounded-xl p-6 relative overflow-hidden">
+                                            <div className="absolute top-0 right-0 p-4 opacity-20"><Target size={64}/></div>
+                                            <h3 className="text-white font-bold mb-4">Industry Benchmark: {formData.industry}</h3>
+                                            <p className="text-gray-300 mb-4">{results.benchmarks.verdict}</p>
+                                            <div className="w-full bg-black/50 h-2 rounded-full overflow-hidden mb-1">
+                                                <div 
+                                                    className={`h-full rounded-full ${activeMetrics.cash_roi.cost_per_lead < results.benchmarks.industry_avg_cpl ? 'bg-green-500' : 'bg-red-500'}`} 
+                                                    style={{ width: `${Math.min((results.benchmarks.industry_avg_cpl / activeMetrics.cash_roi.cost_per_lead) * 50, 100)}%` }}
+                                                />
+                                            </div>
+                                            <div className="flex justify-between text-xs text-gray-400 font-medium">
+                                                <span>Your CPL: {formatCurrency(activeMetrics.cash_roi.cost_per_lead)}</span>
+                                                <span>Industry Avg: {formatCurrency(results.benchmarks.industry_avg_cpl)}</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    {/* Right: AI Consultant & Export */}
+                                    <div className="space-y-6">
+                                        <div className="bg-gradient-to-br from-fann-gold/20 to-transparent border border-fann-gold/30 p-6 rounded-xl">
+                                            <div className="flex items-center gap-2 mb-4 text-fann-gold">
+                                                <Sparkles size={20}/>
+                                                <h3 className="font-bold uppercase tracking-widest text-sm">AI Strategic Advice</h3>
+                                            </div>
+                                            <ul className="space-y-4">
+                                                {results.strategic_advice.map((tip, i) => (
+                                                    <li key={i} className="flex gap-3 text-sm text-gray-200">
+                                                        <CheckCircle className="w-4 h-4 text-fann-gold flex-shrink-0 mt-1"/>
+                                                        {tip}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+
+                                        <div className="bg-fann-charcoal-light border border-white/10 p-6 rounded-xl">
+                                            <h3 className="text-white font-bold mb-4">Download Full Report</h3>
+                                            <div className="space-y-3">
+                                                <input type="text" placeholder="Name" className="w-full bg-black/50 border border-white/20 rounded p-2 text-sm text-white focus:border-fann-gold outline-none placeholder-gray-500" onChange={e => setLeadForm({...leadForm, name: e.target.value})} />
+                                                <input type="email" placeholder="Email" className="w-full bg-black/50 border border-white/20 rounded p-2 text-sm text-white focus:border-fann-gold outline-none placeholder-gray-500" onChange={e => setLeadForm({...leadForm, email: e.target.value})} />
+                                                <input type="text" placeholder="Company" className="w-full bg-black/50 border border-white/20 rounded p-2 text-sm text-white focus:border-fann-gold outline-none placeholder-gray-500" onChange={e => setLeadForm({...leadForm, company: e.target.value})} />
+                                                <button onClick={handleDownloadReport} disabled={isDownloading} className="w-full btn-gold flex items-center justify-center gap-2 mt-2">
+                                                    {isDownloading ? <Loader2 className="animate-spin" size={16}/> : <Download size={16}/>} Export PDF
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div className="text-center">
+                                            <button onClick={() => setStep(1)} className="text-sm text-gray-400 hover:text-white flex items-center justify-center gap-2 mx-auto font-medium">
+                                                <RefreshCcw size={14}/> Start New Calculation
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        )
+                    )}
                 </div>
             </div>
         </AnimatedPage>

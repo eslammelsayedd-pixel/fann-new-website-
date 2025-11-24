@@ -29,14 +29,8 @@ const Header: React.FC = () => {
         >
             <div className="container mx-auto flex items-center justify-between">
                 {/* LOGO */}
-                <Link to="/" className="flex items-center gap-3 z-50 hover-trigger group">
-                    <img 
-                        src="/favicon.svg" 
-                        alt="FANN Logo" 
-                        className="h-10 w-auto transition-transform duration-300 group-hover:scale-105"
-                        style={{ filter: 'brightness(0) invert(68%) sepia(67%) saturate(432%) hue-rotate(352deg) brightness(90%) contrast(90%)' }}
-                    />
-                    <span className="font-sans font-bold text-2xl tracking-[0.15em] text-fann-gold group-hover:text-white transition-colors duration-300">
+                <Link to="/" className="flex items-center z-50 hover-trigger group">
+                    <span className="font-serif font-bold text-4xl tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-fann-gold via-[#FFE5B4] to-fann-gold drop-shadow-sm group-hover:drop-shadow-[0_0_15px_rgba(201,169,98,0.6)] transition-all duration-500">
                         FANN
                     </span>
                 </Link>

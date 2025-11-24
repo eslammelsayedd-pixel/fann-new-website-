@@ -13,20 +13,21 @@ export default {
   theme: {
     extend: {
       colors: {
-        'fann-charcoal': '#1A1A1A', // Primary Dark
-        'fann-charcoal-light': '#262626', // Lighter Dark for cards
-        'fann-charcoal-dark': '#111111', // Deepest Dark
-        'fann-grey': '#F5F5F5', // Primary Light Text
+        'fann-charcoal': '#0F0F0F', // Deepest Black/Grey for Main Backgrounds
+        'fann-charcoal-light': '#1A1A1A', // Secondary Backgrounds (Cards)
+        'fann-charcoal-lighter': '#262626', // Hover states
+        'fann-grey': '#E5E5E5', // Primary Text (High Clarity)
+        'fann-grey-muted': '#A3A3A3', // Secondary Text
         'fann-gold': '#C9A962', // Refined Gold Accent
         'fann-gold-light': '#E5C580',
         'fann-white': '#FFFFFF',
         'fann-border': 'rgba(255, 255, 255, 0.1)',
-        // Preserving existing variable names but mapping to dark theme palette or accents
-        'fann-peach': '#1A1A1A', // Re-mapped to dark for safety
-        'fann-teal': '#F5F5F5', // Re-mapped to light text for safety
-        'fann-teal-dark': '#111111',
-        'fann-accent-teal': '#C9A962', // Map accent teal to gold for consistency
-        'fann-light-gray': '#A3A3A3',
+        // Legacy mappings re-routed to dark theme palette
+        'fann-peach': '#0F0F0F', 
+        'fann-teal': '#E5E5E5', 
+        'fann-teal-dark': '#0A0A0A',
+        'fann-accent-teal': '#C9A962',
+        'fann-light-gray': '#D4D4D4', // Improved contrast from A3A3A3
       },
       fontFamily: {
         sans: ['Manrope', 'Inter', 'system-ui', 'sans-serif'],
@@ -66,7 +67,7 @@ export default {
       },
       backgroundImage: {
         'gold-gradient': 'linear-gradient(135deg, #C9A962 0%, #E5C580 100%)',
-        'subtle-dark': 'radial-gradient(circle at center, #2A2A2A 0%, #1A1A1A 100%)',
+        'subtle-dark': 'radial-gradient(circle at center, #1F1F1F 0%, #0F0F0F 100%)',
       }
     },
   },

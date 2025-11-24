@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Playfair+Display:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,36 +6,38 @@
 
 html {
   scroll-behavior: smooth;
-  background-color: #1A1A1A;
+  background-color: #0F0F0F;
 }
 
 body {
   overflow-x: hidden;
-  background-color: #1A1A1A;
-  color: #F5F5F5;
+  background-color: #0F0F0F;
+  color: #E5E5E5;
   font-family: 'Manrope', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* Custom Selection */
 ::selection {
   background: #C9A962;
-  color: #1A1A1A;
+  color: #000000;
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1A1A1A;
+  background: #0F0F0F;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #333;
-  border-radius: 3px;
+  border-radius: 4px;
+  border: 1px solid #0F0F0F;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -47,8 +49,8 @@ body {
 /* Architectural Glass Panel */
 .glass-premium {
   background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -57,30 +59,30 @@ body {
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(201, 169, 98, 0.3);
   transform: translateY(-4px);
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
 }
 
 /* Premium Button */
 .btn-gold {
-  @apply relative overflow-hidden bg-fann-gold text-fann-charcoal font-semibold py-3 px-8 transition-all duration-300 rounded-sm uppercase tracking-widest text-xs;
+  @apply relative overflow-hidden bg-fann-gold text-black font-bold py-3 px-8 transition-all duration-300 rounded-sm uppercase tracking-widest text-xs shadow-md;
 }
 
 .btn-gold:hover {
-  @apply bg-white text-fann-charcoal;
-  box-shadow: 0 0 20px rgba(201, 169, 98, 0.2);
+  @apply bg-white text-black;
+  box-shadow: 0 0 25px rgba(201, 169, 98, 0.4);
 }
 
 .btn-outline {
-  @apply relative overflow-hidden border border-white/20 text-white font-semibold py-3 px-8 transition-all duration-300 rounded-sm uppercase tracking-widest text-xs;
+  @apply relative overflow-hidden border border-white/30 text-white font-bold py-3 px-8 transition-all duration-300 rounded-sm uppercase tracking-widest text-xs;
 }
 
 .btn-outline:hover {
   @apply border-fann-gold text-fann-gold;
 }
 
-/* Input Styles */
+/* Input Styles - High Contrast */
 .input-field {
-  @apply w-full bg-transparent border-b border-white/20 py-4 text-white placeholder-gray-500 transition-all duration-300 focus:outline-none focus:border-fann-gold rounded-none font-light;
+  @apply w-full bg-fann-charcoal-light border border-white/10 py-4 px-4 text-white placeholder-gray-500 transition-all duration-300 focus:outline-none focus:border-fann-gold focus:bg-black rounded-sm font-medium;
 }
 
 /* Link Underline Animation */

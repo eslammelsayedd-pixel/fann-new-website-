@@ -1,125 +1,133 @@
+
 import nodemailer from 'nodemailer';
 
-// This is a Vercel Serverless Function.
 export default async function handler(req: any, res: any) {
     if (req.method !== 'POST') {
-        res.setHeader('Allow', ['POST']);
         return res.status(405).json({ error: 'Method Not Allowed' });
     }
 
     try {
-        const { roiData, userData } = req.body;
-        if (!roiData || !userData) {
-            return res.status(400).json({ error: 'Missing ROI data or user data.' });
-        }
+        const { roiData, userData, inputs } = req.body;
+        const date = new Date().toLocaleDateString('en-AE', { year: 'numeric', month: 'long', day: 'numeric' });
+        const formatCurrency = (val: number) => new Intl.NumberFormat('en-AE', { style: 'currency', currency: 'AED', maximumFractionDigits: 0 }).format(val);
 
-        // 1. Send lead notification email
-        const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_SECURE } = process.env;
-        if (SMTP_HOST && SMTP_USER && SMTP_PASS) {
-             try {
-                const transporter = nodemailer.createTransport({
-                    host: SMTP_HOST,
-                    port: parseInt(SMTP_PORT || "587", 10),
-                    secure: SMTP_SECURE === 'true',
-                    auth: { user: SMTP_USER, pass: SMTP_PASS },
-                });
-                
-                await transporter.sendMail({
-                    from: `FANN ROI Calculator <${SMTP_USER}>`,
-                    to: 'sales@fann.ae',
-                    subject: `New ROI Report Download: ${userData.company} for ${roiData.event_name}`,
-                    html: `
-                        <div style="font-family: Arial, sans-serif; color: #f5f5dc; background-color: #1a1a1a; padding: 20px; border-radius: 8px; max-width: 600px; margin: auto; border: 1px solid #D4AF76;">
-                            <h1 style="color: #D4AF76;">New ROI Report Lead</h1>
-                            <p><strong>Name:</strong> ${userData.name}</p>
-                            <p><strong>Email:</strong> <a href="mailto:${userData.email}" style="color: #5A8B8C;">${userData.email}</a></p>
-                            <p><strong>Company:</strong> ${userData.company}</p>
-                            <hr style="border-color: #444; margin: 20px 0;"/>
-                            <h2 style="color: #D4AF76;">Report Details</h2>
-                            <p><strong>Event:</strong> ${roiData.event_name}</p>
-                            <p><strong>Projected ROI:</strong> ${roiData.roi_metrics.roi_percentage_min}% - ${roiData.roi_metrics.roi_percentage_max}%</p>
-                        </div>
-                    `,
-                });
-            } catch (emailError) {
-                console.error("Failed to send lead notification email:", emailError);
-                // Do not block the user from getting their report if email fails
-            }
-        } else {
-             console.warn("SMTP variables not set. Skipping lead notification email.");
-        }
-        
-
-        // 2. Generate and return HTML content for download
-        const formatCurrency = (value: number) => new Intl.NumberFormat('en-AE', { style: 'currency', currency: 'AED', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
+        const metrics = roiData.scenarios.realistic.metrics;
 
         const htmlContent = `
             <!DOCTYPE html>
             <html lang="en">
             <head>
                 <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>FANN ROI Analysis for ${userData.company}</title>
+                <title>FANN ROI Report - ${inputs.event_name}</title>
                 <style>
-                    body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #121212; color: #FCE5D4; }
-                    .container { max-width: 800px; margin: 40px auto; padding: 40px; background-color: #1E1E1E; border-radius: 8px; border: 1px solid #D4AF76; }
-                    h1, h2, h3 { font-family: 'Playfair Display', serif; color: #D4AF76; }
-                    h1 { font-size: 36px; text-align: center; }
-                    h2 { font-size: 28px; border-bottom: 2px solid #2D767F; padding-bottom: 10px; margin-top: 40px; }
+                    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #111; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 40px; background: #fff; }
+                    .header { border-bottom: 2px solid #C9A962; padding-bottom: 20px; margin-bottom: 40px; display: flex; justify-content: space-between; align-items: flex-end; }
+                    .logo { font-size: 24px; font-weight: bold; color: #C9A962; letter-spacing: 2px; }
+                    .meta { font-size: 12px; color: #666; text-align: right; }
+                    h1 { font-size: 36px; margin: 0 0 10px 0; }
+                    h2 { font-size: 20px; color: #C9A962; margin-top: 30px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+                    .summary-box { background: #f9f9f9; padding: 30px; border-radius: 8px; text-align: center; border: 1px solid #eee; margin-bottom: 30px; }
+                    .summary-box .roi { font-size: 64px; font-weight: bold; color: ${metrics.cash_roi.roi_percentage >= 0 ? '#22c55e' : '#ef4444'}; }
+                    .summary-box .label { text-transform: uppercase; letter-spacing: 1px; font-size: 14px; color: #666; }
+                    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
+                    .card { border: 1px solid #eee; padding: 20px; border-radius: 8px; }
+                    .card-title { font-size: 12px; text-transform: uppercase; color: #999; margin-bottom: 5px; }
+                    .card-value { font-size: 24px; font-weight: bold; }
                     table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                    th, td { text-align: left; padding: 12px; border-bottom: 1px solid #333; }
-                    th { color: #A99E96; text-transform: uppercase; font-size: 12px; }
-                    td { font-size: 16px; }
-                    .highlight { font-size: 24px; font-weight: bold; color: #FCE5D4; }
-                    .summary-card { background-color: #121212; padding: 20px; text-align: center; border-radius: 8px; margin-top: 20px; }
-                    .summary-card p { margin: 0; color: #A99E96; text-transform: uppercase; font-size: 14px; }
-                    .summary-card .value { font-size: 48px; color: #2D767F; font-weight: bold; margin: 10px 0; font-family: 'Playfair Display', serif; }
-                    .footer { text-align: center; margin-top: 40px; font-size: 12px; color: #A99E96; }
+                    th { text-align: left; border-bottom: 2px solid #eee; padding: 10px; font-size: 12px; text-transform: uppercase; color: #666; }
+                    td { border-bottom: 1px solid #eee; padding: 15px 10px; font-size: 14px; }
+                    .advice-box { background: #fffbeb; border: 1px solid #fcd34d; padding: 20px; border-radius: 8px; margin-top: 30px; }
+                    .footer { margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; text-align: center; font-size: 12px; color: #999; }
                 </style>
-                <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
             </head>
             <body>
-                <div class="container">
-                    <h1>FANN Proprietary ROI Analysis</h1>
-                    <p style="text-align:center; color: #A99E96;">Prepared for ${userData.company} at ${roiData.event_name}</p>
-
-                    <div class="summary-card">
-                        <p>Projected Return on Investment (ROI)</p>
-                        <div class="value">${roiData.roi_metrics.roi_percentage_min}% - ${roiData.roi_metrics.roi_percentage_max}%</div>
-                        <p>(${roiData.roi_metrics.roi_ratio_min} to ${roiData.roi_metrics.roi_ratio_max} return)</p>
+                <div class="header">
+                    <div class="logo">FANN</div>
+                    <div class="meta">
+                        Generated for: ${userData.company}<br>
+                        Date: ${date}
                     </div>
+                </div>
 
-                    <h2>Visitor & Lead Projections</h2>
-                    <table>
-                        <tr><th>Metric</th><th>Min Projection</th><th>Max Projection</th></tr>
-                        <tr><td>Total Booth Visitors</td><td>${roiData.visitor_projections.total_visitors_min}</td><td>${roiData.visitor_projections.total_visitors_max}</td></tr>
-                        <tr><td>Qualified Leads</td><td class="highlight">${roiData.visitor_projections.qualified_leads_min}</td><td class="highlight">${roiData.visitor_projections.qualified_leads_max}</td></tr>
-                    </table>
+                <h1>Exhibition Financial Analysis</h1>
+                <p style="color: #666; font-size: 18px;">Event: ${inputs.event_name} | Industry: ${inputs.industry}</p>
 
-                    <h2>Financial Projections</h2>
-                    <table>
-                        <tr><th>Metric</th><th>Min Projection</th><th>Max Projection</th></tr>
-                        <tr><td>Expected Deals</td><td>${roiData.financial_projections.expected_deals_min}</td><td>${roiData.financial_projections.expected_deals_max}</td></tr>
-                        <tr><td>Expected Revenue</td><td class="highlight">${formatCurrency(roiData.financial_projections.expected_revenue_min)}</td><td class="highlight">${formatCurrency(roiData.financial_projections.expected_revenue_max)}</td></tr>
-                        <tr><td>Deals to Break-Even</td><td colspan="2">${roiData.roi_metrics.break_even_deals}</td></tr>
-                    </table>
+                <div class="summary-box">
+                    <div class="label">Projected Cash ROI (Realistic)</div>
+                    <div class="roi">${metrics.cash_roi.roi_percentage}%</div>
+                    <p>Net Profit: ${formatCurrency(metrics.cash_roi.net_profit)}</p>
+                </div>
 
-                    <h2>Strategic Recommendations</h2>
-                    <p>${roiData.strategic_recommendation || "To maximize these results, focus on pre-show marketing to drive targeted traffic to your booth, implement a robust lead-capture system, and ensure prompt post-event follow-up. A compelling stand design from FANN is your first step to attracting high-quality visitors."}</p>
-                    
-                    <div class="footer">
-                        <p>&copy; ${new Date().getFullYear()} FANN. All Rights Reserved.</p>
-                        <p>This is an AI-powered projection and should be used for planning purposes. Actual results may vary.</p>
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-title">Total Investment</div>
+                        <div class="card-value">${formatCurrency(inputs.total_investment)}</div>
                     </div>
+                    <div class="card">
+                        <div class="card-title">Break-Even Sales</div>
+                        <div class="card-value">${metrics.cash_roi.break_even_deals} Deals</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Cost Per Lead</div>
+                        <div class="card-value">${formatCurrency(metrics.cash_roi.cost_per_lead)}</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Brand Media Value</div>
+                        <div class="card-value">${formatCurrency(metrics.brand_roi.media_value)}</div>
+                    </div>
+                </div>
+
+                <h2>Scenario Planning</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Net Profit</th>
+                            <th>ROI %</th>
+                            <th>Payback Period</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Conservative</strong></td>
+                            <td>${formatCurrency(roiData.scenarios.conservative.metrics.cash_roi.net_profit)}</td>
+                            <td>${roiData.scenarios.conservative.metrics.cash_roi.roi_percentage}%</td>
+                            <td>${roiData.scenarios.conservative.metrics.cash_roi.payback_period_months} Months</td>
+                        </tr>
+                        <tr style="background-color: #f9f9f9;">
+                            <td><strong>Realistic</strong> (Likely)</td>
+                            <td><strong>${formatCurrency(roiData.scenarios.realistic.metrics.cash_roi.net_profit)}</strong></td>
+                            <td><strong>${roiData.scenarios.realistic.metrics.cash_roi.roi_percentage}%</strong></td>
+                            <td><strong>${roiData.scenarios.realistic.metrics.cash_roi.payback_period_months} Months</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Optimistic</strong></td>
+                            <td>${formatCurrency(roiData.scenarios.optimistic.metrics.cash_roi.net_profit)}</td>
+                            <td>${roiData.scenarios.optimistic.metrics.cash_roi.roi_percentage}%</td>
+                            <td>${roiData.scenarios.optimistic.metrics.cash_roi.payback_period_months} Months</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Strategic Recommendations</h2>
+                <div class="advice-box">
+                    <ul style="margin: 0; padding-left: 20px;">
+                        ${roiData.strategic_advice.map((tip: string) => `<li>${tip}</li>`).join('')}
+                    </ul>
+                </div>
+
+                <div class="footer">
+                    <p>Powered by FANN Intelligence Engine | sales@fann.ae</p>
                 </div>
             </body>
             </html>
         `;
 
+        // In production, also send email using nodemailer here if configured
+        
         res.status(200).json({ htmlContent });
 
     } catch (error: any) {
-        console.error('Error in generate-roi-pdf API:', error);
         return res.status(500).json({ error: 'Failed to generate report.' });
     }
 }

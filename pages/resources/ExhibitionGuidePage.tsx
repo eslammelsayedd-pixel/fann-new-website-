@@ -105,7 +105,7 @@ const EmergencyModal: React.FC<{ onClose: () => void; daysLeft: number }> = ({ o
                     </>
                 ) : (
                     <div className="space-y-6">
-                        <div className="prose prose-invert prose-sm max-h-[300px] overflow-y-auto">
+                        <div className="prose prose-invert prose-sm max-h-[300px] overflow-y-auto text-red-100">
                             <div dangerouslySetInnerHTML={{__html: plan.replace(/\n/g, '<br/>')}} />
                         </div>
                         <div className="flex gap-4">
@@ -153,7 +153,7 @@ const TemplateGenerator: React.FC<{ context: GuideState }> = ({ context }) => {
                     <button 
                         key={t} 
                         onClick={() => { setType(t); setContent(''); }}
-                        className={`px-3 py-1 text-xs rounded-full border transition-all ${type === t ? 'bg-fann-gold text-black border-fann-gold' : 'border-white/20 text-gray-400'}`}
+                        className={`px-3 py-1 text-xs rounded-full border transition-all ${type === t ? 'bg-fann-gold text-black border-fann-gold' : 'border-white/20 text-gray-400 hover:text-white'}`}
                     >
                         {t}
                     </button>
@@ -161,7 +161,7 @@ const TemplateGenerator: React.FC<{ context: GuideState }> = ({ context }) => {
             </div>
             
             {!content ? (
-                <button onClick={generate} disabled={loading} className="w-full py-8 border-2 border-dashed border-white/10 rounded-lg text-gray-500 hover:border-fann-gold/50 hover:text-fann-gold transition-colors flex flex-col items-center gap-2">
+                <button onClick={generate} disabled={loading} className="w-full py-8 border-2 border-dashed border-white/10 rounded-lg text-gray-500 hover:border-fann-gold/50 hover:text-fann-gold transition-colors flex flex-col items-center gap-2 bg-black/20">
                     {loading ? <Loader2 className="animate-spin"/> : <Plus size={24}/>}
                     <span>Generate {type}</span>
                 </button>
@@ -170,7 +170,7 @@ const TemplateGenerator: React.FC<{ context: GuideState }> = ({ context }) => {
                     <textarea 
                         readOnly 
                         value={content} 
-                        className="w-full h-64 bg-black/30 border border-white/10 rounded p-4 text-xs font-mono text-gray-300 resize-none focus:outline-none"
+                        className="w-full h-64 bg-black/50 border border-white/10 rounded p-4 text-xs font-mono text-gray-300 resize-none focus:outline-none"
                     />
                     <button 
                         onClick={() => {
@@ -249,7 +249,7 @@ const ExhibitionGuidePage: React.FC = () => {
     };
 
     const renderOnboarding = () => (
-        <div className="max-w-2xl mx-auto bg-[#111] border border-white/10 p-8 rounded-2xl shadow-2xl">
+        <div className="max-w-2xl mx-auto bg-fann-charcoal-light border border-white/10 p-8 rounded-2xl shadow-2xl">
             <div className="flex justify-between items-center mb-8">
                 <h2 className="text-2xl font-serif font-bold text-white">
                     {step === 1 ? "Event Basics" : step === 2 ? "Stand Specs" : "Context"}
@@ -264,12 +264,12 @@ const ExhibitionGuidePage: React.FC = () => {
             {step === 1 && (
                 <motion.div initial={{opacity: 0, x: 20}} animate={{opacity: 1, x: 0}} className="space-y-6">
                     <div>
-                        <label className="block text-xs uppercase text-gray-500 mb-2">Event Date</label>
-                        <input type="date" value={state.eventDate} onChange={(e) => setState({...state, eventDate: e.target.value})} className="w-full bg-black/30 border border-white/20 rounded p-3 text-white focus:border-fann-gold outline-none"/>
+                        <label className="block text-xs uppercase tracking-wider font-bold text-gray-400 mb-2">Event Date</label>
+                        <input type="date" value={state.eventDate} onChange={(e) => setState({...state, eventDate: e.target.value})} className="w-full bg-black/50 border border-white/20 rounded p-3 text-white focus:border-fann-gold outline-none"/>
                     </div>
                     <div>
-                        <label className="block text-xs uppercase text-gray-500 mb-2">Event Type</label>
-                        <select value={state.eventType} onChange={(e) => setState({...state, eventType: e.target.value})} className="w-full bg-black/30 border border-white/20 rounded p-3 text-white focus:border-fann-gold outline-none">
+                        <label className="block text-xs uppercase tracking-wider font-bold text-gray-400 mb-2">Event Type</label>
+                        <select value={state.eventType} onChange={(e) => setState({...state, eventType: e.target.value})} className="w-full bg-black/50 border border-white/20 rounded p-3 text-white focus:border-fann-gold outline-none">
                             <option>Trade Show</option>
                             <option>Conference</option>
                             <option>Consumer Expo</option>
@@ -277,8 +277,8 @@ const ExhibitionGuidePage: React.FC = () => {
                         </select>
                     </div>
                     <div>
-                        <label className="block text-xs uppercase text-gray-500 mb-2">Location / Venue</label>
-                        <input type="text" value={state.location} onChange={(e) => setState({...state, location: e.target.value})} className="w-full bg-black/30 border border-white/20 rounded p-3 text-white focus:border-fann-gold outline-none" placeholder="e.g. Dubai World Trade Centre"/>
+                        <label className="block text-xs uppercase tracking-wider font-bold text-gray-400 mb-2">Location / Venue</label>
+                        <input type="text" value={state.location} onChange={(e) => setState({...state, location: e.target.value})} className="w-full bg-black/50 border border-white/20 rounded p-3 text-white focus:border-fann-gold outline-none" placeholder="e.g. Dubai World Trade Centre"/>
                     </div>
                     <button onClick={() => state.eventDate && setStep(2)} className="w-full btn-gold mt-4">Next</button>
                 </motion.div>
@@ -287,21 +287,21 @@ const ExhibitionGuidePage: React.FC = () => {
             {step === 2 && (
                 <motion.div initial={{opacity: 0, x: 20}} animate={{opacity: 1, x: 0}} className="space-y-6">
                     <div>
-                        <label className="block text-xs uppercase text-gray-500 mb-2">Stand Size (sqm)</label>
-                        <input type="number" value={state.standSize} onChange={(e) => setState({...state, standSize: parseInt(e.target.value)})} className="w-full bg-black/30 border border-white/20 rounded p-3 text-white focus:border-fann-gold outline-none"/>
+                        <label className="block text-xs uppercase tracking-wider font-bold text-gray-400 mb-2">Stand Size (sqm)</label>
+                        <input type="number" value={state.standSize} onChange={(e) => setState({...state, standSize: parseInt(e.target.value)})} className="w-full bg-black/50 border border-white/20 rounded p-3 text-white focus:border-fann-gold outline-none"/>
                     </div>
                     <div>
-                        <label className="block text-xs uppercase text-gray-500 mb-2">Budget Range</label>
+                        <label className="block text-xs uppercase tracking-wider font-bold text-gray-400 mb-2">Budget Range</label>
                         <div className="grid grid-cols-2 gap-2">
                             {budgets.map(b => (
-                                <button key={b} onClick={() => setState({...state, budget: b})} className={`p-3 rounded border text-sm ${state.budget === b ? 'border-fann-gold bg-fann-gold/10 text-white' : 'border-white/10 text-gray-400'}`}>
+                                <button key={b} onClick={() => setState({...state, budget: b})} className={`p-3 rounded border text-sm ${state.budget === b ? 'border-fann-gold bg-fann-gold/10 text-white' : 'border-white/10 text-gray-400 hover:text-white'}`}>
                                     {b}
                                 </button>
                             ))}
                         </div>
                     </div>
                     <div className="flex gap-4 mt-6">
-                        <button onClick={() => setStep(1)} className="text-gray-500">Back</button>
+                        <button onClick={() => setStep(1)} className="text-gray-400 font-medium">Back</button>
                         <button onClick={() => setStep(3)} className="flex-1 btn-gold">Next</button>
                     </div>
                 </motion.div>
@@ -310,23 +310,23 @@ const ExhibitionGuidePage: React.FC = () => {
             {step === 3 && (
                 <motion.div initial={{opacity: 0, x: 20}} animate={{opacity: 1, x: 0}} className="space-y-6">
                     <div>
-                        <label className="block text-xs uppercase text-gray-500 mb-2">Industry</label>
-                        <select value={state.industry} onChange={(e) => setState({...state, industry: e.target.value})} className="w-full bg-black/30 border border-white/20 rounded p-3 text-white focus:border-fann-gold outline-none">
+                        <label className="block text-xs uppercase tracking-wider font-bold text-gray-400 mb-2">Industry</label>
+                        <select value={state.industry} onChange={(e) => setState({...state, industry: e.target.value})} className="w-full bg-black/50 border border-white/20 rounded p-3 text-white focus:border-fann-gold outline-none">
                             {industries.map(i => <option key={i} value={i}>{i}</option>)}
                         </select>
                     </div>
                     <div>
-                        <label className="block text-xs uppercase text-gray-500 mb-2">Experience Level</label>
+                        <label className="block text-xs uppercase tracking-wider font-bold text-gray-400 mb-2">Experience Level</label>
                         <div className="flex gap-2">
                             {experienceLevels.map(l => (
-                                <button key={l} onClick={() => setState({...state, experienceLevel: l})} className={`flex-1 p-3 rounded border text-sm ${state.experienceLevel === l ? 'border-fann-gold bg-fann-gold/10 text-white' : 'border-white/10 text-gray-400'}`}>
+                                <button key={l} onClick={() => setState({...state, experienceLevel: l})} className={`flex-1 p-3 rounded border text-sm ${state.experienceLevel === l ? 'border-fann-gold bg-fann-gold/10 text-white' : 'border-white/10 text-gray-400 hover:text-white'}`}>
                                     {l}
                                 </button>
                             ))}
                         </div>
                     </div>
                     <div className="flex gap-4 mt-6">
-                        <button onClick={() => setStep(2)} className="text-gray-500">Back</button>
+                        <button onClick={() => setStep(2)} className="text-gray-400 font-medium">Back</button>
                         <button onClick={generateGuide} disabled={loading} className="flex-1 btn-gold flex justify-center items-center gap-2">
                             {loading ? <Loader2 className="animate-spin"/> : <Zap size={16}/>} Generate Strategy
                         </button>
@@ -346,7 +346,7 @@ const ExhibitionGuidePage: React.FC = () => {
                         <div className="text-center mb-12">
                             <span className="text-fann-gold text-xs font-bold uppercase tracking-widest border border-fann-gold/20 px-3 py-1 rounded-full bg-fann-gold/5 mb-4 inline-block">Beta 3.0</span>
                             <h1 className="text-4xl md:text-6xl font-serif font-bold text-white mb-4">Exhibition Copilot</h1>
-                            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+                            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
                                 An intelligent agent that builds your timeline, checklists, and compliance strategy instantly.
                             </p>
                         </div>
@@ -357,7 +357,7 @@ const ExhibitionGuidePage: React.FC = () => {
                             
                             {/* Header Dashboard */}
                             <div className="grid md:grid-cols-3 gap-6 mb-8">
-                                <div className="md:col-span-2 bg-[#111] border border-white/10 p-6 rounded-xl flex flex-col justify-center">
+                                <div className="md:col-span-2 bg-fann-charcoal-light border border-white/10 p-6 rounded-xl flex flex-col justify-center">
                                     <h1 className="text-2xl font-serif text-fann-gold mb-2">{guide.guideTitle}</h1>
                                     <p className="text-sm text-gray-400 italic">"{guide.executiveSummary}"</p>
                                 </div>
@@ -378,7 +378,7 @@ const ExhibitionGuidePage: React.FC = () => {
                                     <button 
                                         key={tab.id}
                                         onClick={() => setActiveTab(tab.id as any)}
-                                        className={`flex items-center gap-2 px-6 py-3 rounded-t-lg transition-colors whitespace-nowrap ${activeTab === tab.id ? 'bg-white/10 text-fann-gold border-b-2 border-fann-gold' : 'text-gray-500 hover:text-white'}`}
+                                        className={`flex items-center gap-2 px-6 py-3 rounded-t-lg transition-colors whitespace-nowrap ${activeTab === tab.id ? 'bg-white/10 text-fann-gold border-b-2 border-fann-gold' : 'text-gray-400 hover:text-white'}`}
                                     >
                                         <tab.icon size={16}/> {tab.label}
                                     </button>
@@ -399,7 +399,7 @@ const ExhibitionGuidePage: React.FC = () => {
                                     {activeTab === 'timeline' && (
                                         <div className="space-y-6">
                                             {guide.phases.map((phase, i) => (
-                                                <div key={i} className="bg-[#111] border border-white/10 rounded-xl p-6 relative overflow-hidden group hover:border-fann-gold/30 transition-colors">
+                                                <div key={i} className="bg-fann-charcoal-light border border-white/10 rounded-xl p-6 relative overflow-hidden group hover:border-fann-gold/30 transition-colors">
                                                     <div className="absolute top-0 left-0 w-1 h-full bg-fann-gold opacity-20 group-hover:opacity-100 transition-opacity"/>
                                                     <div className="flex justify-between items-start mb-4">
                                                         <div>
@@ -410,7 +410,7 @@ const ExhibitionGuidePage: React.FC = () => {
                                                             <Clock size={20} className="text-gray-400"/>
                                                         </div>
                                                     </div>
-                                                    <p className="text-gray-400 text-sm mb-4">{phase.description}</p>
+                                                    <p className="text-gray-300 text-sm mb-4">{phase.description}</p>
                                                     <div className="space-y-2">
                                                         {phase.actions.slice(0, 3).map((action, j) => (
                                                             <div key={j} className="flex items-center gap-3 text-sm text-gray-300 bg-black/30 p-2 rounded">
@@ -426,7 +426,7 @@ const ExhibitionGuidePage: React.FC = () => {
 
                                     {/* Checklist View */}
                                     {activeTab === 'checklist' && (
-                                        <div className="bg-[#111] border border-white/10 rounded-xl p-6">
+                                        <div className="bg-fann-charcoal-light border border-white/10 rounded-xl p-6">
                                             {guide.phases.map((phase, i) => (
                                                 <div key={i} className="mb-8 last:mb-0">
                                                     <h3 className="text-fann-gold font-bold mb-4 border-b border-white/10 pb-2">{phase.phaseName}</h3>
@@ -466,9 +466,9 @@ const ExhibitionGuidePage: React.FC = () => {
 
                                 {/* Sidebar */}
                                 <div className="space-y-6">
-                                    <div className="bg-[#111] border border-white/10 p-6 rounded-xl">
+                                    <div className="bg-fann-charcoal-light border border-white/10 p-6 rounded-xl">
                                         <h3 className="text-white font-bold mb-4 flex items-center gap-2"><MapPin size={18} className="text-fann-gold"/> Location Intel</h3>
-                                        <ul className="space-y-3 text-sm text-gray-400">
+                                        <ul className="space-y-3 text-sm text-gray-300">
                                             {guide.compliance_notes.map((note, i) => (
                                                 <li key={i} className="flex gap-2">
                                                     <span className="text-fann-gold">•</span> {note}
@@ -479,7 +479,7 @@ const ExhibitionGuidePage: React.FC = () => {
 
                                     <div className="bg-red-900/10 border border-red-900/30 p-6 rounded-xl">
                                         <h3 className="text-red-400 font-bold mb-4 flex items-center gap-2"><AlertTriangle size={18}/> Pitfalls</h3>
-                                        <ul className="space-y-3 text-sm text-gray-400">
+                                        <ul className="space-y-3 text-sm text-gray-300">
                                             {guide.common_pitfalls.map((pitfall, i) => (
                                                 <li key={i} className="flex gap-2">
                                                     <span className="text-red-500">×</span> {pitfall}

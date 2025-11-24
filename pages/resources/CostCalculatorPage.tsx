@@ -127,14 +127,14 @@ const CostCalculatorPage: React.FC = () => {
                     
                     <div className="text-center mb-12">
                         <h1 className="text-4xl md:text-6xl font-serif font-bold mb-4">Stand Cost Estimator</h1>
-                        <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+                        <p className="text-gray-300 text-lg max-w-2xl mx-auto">
                             Based on 2025 market rates for Dubai & KSA. Get a precise breakdown including hidden fees.
                         </p>
                     </div>
 
                     <div className="grid lg:grid-cols-3 gap-8">
                         {/* Left Column: Steps */}
-                        <div className="lg:col-span-2 bg-[#111] border border-white/10 rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
+                        <div className="lg:col-span-2 bg-fann-charcoal-light border border-white/10 rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
                             
                             {/* Progress */}
                             <div className="flex gap-2 mb-8">
@@ -146,10 +146,10 @@ const CostCalculatorPage: React.FC = () => {
                             {/* Step 1: Specs */}
                             {state.step === 1 && (
                                 <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-8">
-                                    <h2 className="text-2xl font-serif">Stand Specifications</h2>
+                                    <h2 className="text-2xl font-serif text-white">Stand Specifications</h2>
                                     
                                     <div>
-                                        <label className="block text-xs text-gray-500 uppercase mb-4">Stand Type</label>
+                                        <label className="block text-xs text-gray-400 uppercase tracking-wider font-bold mb-4">Stand Type</label>
                                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                             {['Shell Scheme', 'Custom-Built', 'Premium/Luxury'].map(type => (
                                                 <button
@@ -164,23 +164,23 @@ const CostCalculatorPage: React.FC = () => {
                                     </div>
 
                                     <div>
-                                        <label className="block text-xs text-gray-500 uppercase mb-4">Dimensions (Meters)</label>
+                                        <label className="block text-xs text-gray-400 uppercase tracking-wider font-bold mb-4">Dimensions (Meters)</label>
                                         <div className="grid grid-cols-3 gap-6">
                                             <div>
-                                                <span className="block text-sm mb-2 text-gray-300">Width: {state.dimensions.width}m</span>
+                                                <span className="block text-sm mb-2 text-gray-300 font-medium">Width: {state.dimensions.width}m</span>
                                                 <input type="range" name="width" min="3" max="30" value={state.dimensions.width} onChange={handleDimensionChange} className="w-full accent-fann-gold" />
                                             </div>
                                             <div>
-                                                <span className="block text-sm mb-2 text-gray-300">Length: {state.dimensions.length}m</span>
+                                                <span className="block text-sm mb-2 text-gray-300 font-medium">Length: {state.dimensions.length}m</span>
                                                 <input type="range" name="length" min="3" max="30" value={state.dimensions.length} onChange={handleDimensionChange} className="w-full accent-fann-gold" />
                                             </div>
                                             <div>
-                                                <span className="block text-sm mb-2 text-gray-300">Height: {state.dimensions.height}m</span>
+                                                <span className="block text-sm mb-2 text-gray-300 font-medium">Height: {state.dimensions.height}m</span>
                                                 <input type="range" name="height" min="2.5" max="8" step="0.5" value={state.dimensions.height} onChange={handleDimensionChange} className="w-full accent-fann-gold" />
                                             </div>
                                         </div>
                                         <div className="mt-4 bg-white/5 p-3 rounded flex justify-between items-center">
-                                            <span className="text-sm text-gray-400">Total Area</span>
+                                            <span className="text-sm text-gray-300">Total Area</span>
                                             <span className="text-xl font-bold text-fann-gold">{totalSqm} sqm</span>
                                         </div>
                                         {totalSqm > 500 && (
@@ -197,10 +197,10 @@ const CostCalculatorPage: React.FC = () => {
                             {/* Step 2: Config & Location */}
                             {state.step === 2 && (
                                 <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-8">
-                                    <h2 className="text-2xl font-serif">Context & Config</h2>
+                                    <h2 className="text-2xl font-serif text-white">Context & Config</h2>
 
                                     <div>
-                                        <label className="block text-xs text-gray-500 uppercase mb-4">Configuration</label>
+                                        <label className="block text-xs text-gray-400 uppercase tracking-wider font-bold mb-4">Configuration</label>
                                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                             {[
                                                 { id: 'Island', sides: 4, label: 'Island' },
@@ -223,21 +223,21 @@ const CostCalculatorPage: React.FC = () => {
 
                                     <div className="grid md:grid-cols-2 gap-6">
                                         <div>
-                                            <label className="block text-xs text-gray-500 uppercase mb-2">Location</label>
+                                            <label className="block text-xs text-gray-400 uppercase tracking-wider font-bold mb-2">Location</label>
                                             <select 
                                                 value={state.location}
                                                 onChange={(e) => setState(prev => ({...prev, location: e.target.value}))}
-                                                className="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-white focus:border-fann-gold outline-none"
+                                                className="w-full bg-black/50 border border-white/20 rounded-lg p-3 text-white focus:border-fann-gold outline-none"
                                             >
                                                 {locations.map(l => <option key={l} value={l}>{l}</option>)}
                                             </select>
                                         </div>
                                         <div>
-                                            <label className="block text-xs text-gray-500 uppercase mb-2">Event Duration</label>
+                                            <label className="block text-xs text-gray-400 uppercase tracking-wider font-bold mb-2">Event Duration</label>
                                             <select 
                                                 value={state.duration}
                                                 onChange={(e) => setState(prev => ({...prev, duration: e.target.value}))}
-                                                className="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-white focus:border-fann-gold outline-none"
+                                                className="w-full bg-black/50 border border-white/20 rounded-lg p-3 text-white focus:border-fann-gold outline-none"
                                             >
                                                 {durations.map(d => <option key={d} value={d}>{d}</option>)}
                                             </select>
@@ -245,7 +245,7 @@ const CostCalculatorPage: React.FC = () => {
                                     </div>
 
                                     <div className="flex justify-between">
-                                        <button onClick={() => setState(prev => ({ ...prev, step: 1 }))} className="text-gray-500 hover:text-white">Back</button>
+                                        <button onClick={() => setState(prev => ({ ...prev, step: 1 }))} className="text-gray-400 hover:text-white font-medium">Back</button>
                                         <button onClick={() => setState(prev => ({ ...prev, step: 3 }))} className="btn-gold">Next Step</button>
                                     </div>
                                 </motion.div>
@@ -254,23 +254,23 @@ const CostCalculatorPage: React.FC = () => {
                             {/* Step 3: Features */}
                             {state.step === 3 && (
                                 <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-8">
-                                    <h2 className="text-2xl font-serif">Add-ons & Features</h2>
+                                    <h2 className="text-2xl font-serif text-white">Add-ons & Features</h2>
                                     
                                     <div className="grid md:grid-cols-2 gap-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
                                         {featuresList.map(f => (
                                             <button
                                                 key={f.id}
                                                 onClick={() => toggleFeature(f.id)}
-                                                className={`flex items-center justify-between p-4 border rounded-lg text-left transition-all ${state.features.includes(f.id) ? 'border-fann-gold bg-fann-gold/10 text-white' : 'border-white/10 text-gray-400 hover:border-white/30'}`}
+                                                className={`flex items-center justify-between p-4 border rounded-lg text-left transition-all ${state.features.includes(f.id) ? 'border-fann-gold bg-fann-gold/10 text-white' : 'border-white/10 text-gray-400 hover:border-white/30 hover:text-white'}`}
                                             >
-                                                <span className="text-sm">{f.label}</span>
+                                                <span className="text-sm font-medium">{f.label}</span>
                                                 {state.features.includes(f.id) && <Check size={16} className="text-fann-gold" />}
                                             </button>
                                         ))}
                                     </div>
 
                                     <div className="flex justify-between">
-                                        <button onClick={() => setState(prev => ({ ...prev, step: 2 }))} className="text-gray-500 hover:text-white">Back</button>
+                                        <button onClick={() => setState(prev => ({ ...prev, step: 2 }))} className="text-gray-400 hover:text-white font-medium">Back</button>
                                         <button onClick={() => setState(prev => ({ ...prev, step: 4 }))} className="btn-gold">Next Step</button>
                                     </div>
                                 </motion.div>
@@ -279,38 +279,38 @@ const CostCalculatorPage: React.FC = () => {
                             {/* Step 4: Contact */}
                             {state.step === 4 && !result && (
                                 <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-8">
-                                    <h2 className="text-2xl font-serif">Where should we send the detailed breakdown?</h2>
+                                    <h2 className="text-2xl font-serif text-white">Where should we send the detailed breakdown?</h2>
                                     
                                     <div className="space-y-4">
                                         <div className="grid md:grid-cols-2 gap-4">
                                             <div className="relative">
                                                 <User className="absolute left-3 top-3 text-gray-500" size={16}/>
-                                                <input type="text" name="name" placeholder="Full Name *" value={state.contact.name} onChange={handleContactChange} className="w-full pl-10 bg-black/30 border border-white/10 rounded-lg p-3 text-white focus:border-fann-gold outline-none"/>
+                                                <input type="text" name="name" placeholder="Full Name *" value={state.contact.name} onChange={handleContactChange} className="w-full pl-10 bg-black/50 border border-white/20 rounded-lg p-3 text-white focus:border-fann-gold outline-none placeholder-gray-500"/>
                                             </div>
                                             <div className="relative">
                                                 <Building className="absolute left-3 top-3 text-gray-500" size={16}/>
-                                                <input type="text" name="company" placeholder="Company Name *" value={state.contact.company} onChange={handleContactChange} className="w-full pl-10 bg-black/30 border border-white/10 rounded-lg p-3 text-white focus:border-fann-gold outline-none"/>
+                                                <input type="text" name="company" placeholder="Company Name *" value={state.contact.company} onChange={handleContactChange} className="w-full pl-10 bg-black/50 border border-white/20 rounded-lg p-3 text-white focus:border-fann-gold outline-none placeholder-gray-500"/>
                                             </div>
                                         </div>
                                         <div className="grid md:grid-cols-2 gap-4">
                                             <div className="relative">
                                                 <Mail className="absolute left-3 top-3 text-gray-500" size={16}/>
-                                                <input type="email" name="email" placeholder="Work Email *" value={state.contact.email} onChange={handleContactChange} className="w-full pl-10 bg-black/30 border border-white/10 rounded-lg p-3 text-white focus:border-fann-gold outline-none"/>
+                                                <input type="email" name="email" placeholder="Work Email *" value={state.contact.email} onChange={handleContactChange} className="w-full pl-10 bg-black/50 border border-white/20 rounded-lg p-3 text-white focus:border-fann-gold outline-none placeholder-gray-500"/>
                                             </div>
                                             <div className="relative">
                                                 <Phone className="absolute left-3 top-3 text-gray-500" size={16}/>
-                                                <input type="text" name="phone" placeholder="Phone Number *" value={state.contact.phone} onChange={handleContactChange} className="w-full pl-10 bg-black/30 border border-white/10 rounded-lg p-3 text-white focus:border-fann-gold outline-none"/>
+                                                <input type="text" name="phone" placeholder="Phone Number *" value={state.contact.phone} onChange={handleContactChange} className="w-full pl-10 bg-black/50 border border-white/20 rounded-lg p-3 text-white focus:border-fann-gold outline-none placeholder-gray-500"/>
                                             </div>
                                         </div>
                                         <div className="relative">
-                                            <input type="text" name="eventName" placeholder="Event Name (Optional)" value={state.contact.eventName} onChange={handleContactChange} className="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-white focus:border-fann-gold outline-none"/>
+                                            <input type="text" name="eventName" placeholder="Event Name (Optional)" value={state.contact.eventName} onChange={handleContactChange} className="w-full bg-black/50 border border-white/20 rounded-lg p-3 text-white focus:border-fann-gold outline-none placeholder-gray-500"/>
                                         </div>
                                     </div>
 
                                     {error && <div className="text-red-400 text-sm text-center bg-red-900/20 p-2 rounded">{error}</div>}
 
                                     <div className="flex justify-between items-center pt-4">
-                                        <button onClick={() => setState(prev => ({ ...prev, step: 3 }))} className="text-gray-500 hover:text-white">Back</button>
+                                        <button onClick={() => setState(prev => ({ ...prev, step: 3 }))} className="text-gray-400 hover:text-white font-medium">Back</button>
                                         <button onClick={calculateCost} disabled={isCalculating} className="btn-gold flex items-center gap-2 px-8 py-4">
                                             {isCalculating ? <Loader2 className="animate-spin"/> : <Calculator size={18}/>} Calculate Now
                                         </button>
@@ -351,8 +351,8 @@ const CostCalculatorPage: React.FC = () => {
                                     </div>
 
                                     <div className="flex gap-4">
-                                        <button onClick={() => window.print()} className="flex-1 border border-white/10 hover:bg-white/5 rounded-lg py-3 text-sm font-bold">Print / PDF</button>
-                                        <button onClick={() => { setResult(null); setState(prev => ({ ...prev, step: 1 })); }} className="flex-1 bg-fann-gold text-black rounded-lg py-3 text-sm font-bold">Start Over</button>
+                                        <button onClick={() => window.print()} className="flex-1 border border-white/20 hover:bg-white/5 rounded-lg py-3 text-sm font-bold text-white transition-colors">Print / PDF</button>
+                                        <button onClick={() => { setResult(null); setState(prev => ({ ...prev, step: 1 })); }} className="flex-1 bg-fann-gold text-black rounded-lg py-3 text-sm font-bold hover:bg-white transition-colors">Start Over</button>
                                     </div>
                                 </motion.div>
                             )}
@@ -361,31 +361,31 @@ const CostCalculatorPage: React.FC = () => {
 
                         {/* Right Column: Summary */}
                         <div className="lg:col-span-1 space-y-6">
-                            <div className="bg-white/5 border border-white/10 rounded-xl p-6">
+                            <div className="bg-fann-charcoal-light border border-white/10 rounded-xl p-6">
                                 <h3 className="text-fann-gold font-bold uppercase tracking-widest text-xs mb-4">Project Summary</h3>
                                 <ul className="space-y-4 text-sm">
                                     <li className="flex justify-between border-b border-white/5 pb-2">
-                                        <span className="text-gray-500">Dimensions</span>
-                                        <span>{state.dimensions.length}x{state.dimensions.width}m ({totalSqm}m²)</span>
+                                        <span className="text-gray-400">Dimensions</span>
+                                        <span className="text-white font-medium">{state.dimensions.length}x{state.dimensions.width}m ({totalSqm}m²)</span>
                                     </li>
                                     <li className="flex justify-between border-b border-white/5 pb-2">
-                                        <span className="text-gray-500">Type</span>
-                                        <span>{state.standType}</span>
+                                        <span className="text-gray-400">Type</span>
+                                        <span className="text-white font-medium">{state.standType}</span>
                                     </li>
                                     <li className="flex justify-between border-b border-white/5 pb-2">
-                                        <span className="text-gray-500">Location</span>
-                                        <span className="text-right">{state.location.split('(')[0]}</span>
+                                        <span className="text-gray-400">Location</span>
+                                        <span className="text-right text-white font-medium">{state.location.split('(')[0]}</span>
                                     </li>
                                     <li className="flex justify-between border-b border-white/5 pb-2">
-                                        <span className="text-gray-500">Features</span>
-                                        <span className="text-right">{state.features.length} Selected</span>
+                                        <span className="text-gray-400">Features</span>
+                                        <span className="text-right text-white font-medium">{state.features.length} Selected</span>
                                     </li>
                                 </ul>
                             </div>
                             
-                            <div className="bg-blue-900/10 border border-blue-500/30 p-6 rounded-xl">
+                            <div className="bg-blue-900/20 border border-blue-500/30 p-6 rounded-xl">
                                 <h3 className="text-blue-400 font-bold mb-2 text-sm flex items-center gap-2"><Info size={16}/> Why this tool?</h3>
-                                <p className="text-xs text-gray-400 leading-relaxed">
+                                <p className="text-xs text-gray-300 leading-relaxed">
                                     Most online calculators ignore venue-specific hidden fees like rigging permits and waste disposal. Our engine uses real 2025 data from DWTC & ADNEC to give you a realistic budget, not just a construction quote.
                                 </p>
                             </div>

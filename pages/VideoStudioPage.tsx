@@ -58,12 +58,12 @@ const VideoStudioPage: React.FC = () => {
 
     return (
         <AnimatedPage>
-            <div className="min-h-screen bg-fann-peach dark:bg-fann-teal pt-32 pb-20 text-fann-teal dark:text-fann-peach">
+            <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
                     <div className="text-center mb-12">
-                        <Video className="mx-auto h-16 w-16 text-fann-accent-teal dark:text-fann-gold" />
-                        <h1 className="text-5xl font-serif font-bold text-fann-accent-teal dark:text-fann-gold mt-4 mb-4">FANN Video Concept Studio</h1>
-                        <p className="text-xl text-fann-teal/90 dark:text-fann-peach/90">
+                        <Video className="mx-auto h-16 w-16 text-fann-gold" />
+                        <h1 className="text-5xl font-serif font-bold text-white mt-4 mb-4">FANN Video Concept Studio</h1>
+                        <p className="text-xl text-gray-400">
                             Generate short promotional video concepts for your event or brand.
                         </p>
                     </div>
@@ -72,26 +72,26 @@ const VideoStudioPage: React.FC = () => {
                         <motion.div 
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="bg-white dark:bg-fann-accent-teal p-8 rounded-lg"
+                            className="bg-fann-charcoal-light border border-white/10 p-8 rounded-lg"
                         >
                             <div className="space-y-6">
                                 <div>
-                                    <label htmlFor="style-select" className="block text-sm font-medium text-fann-light-gray mb-2">
+                                    <label htmlFor="style-select" className="block text-sm font-medium text-gray-300 mb-2">
                                         Base Style
                                     </label>
                                     <select
                                         id="style-select"
                                         value={selectedStyle}
                                         onChange={(e) => setSelectedStyle(e.target.value)}
-                                        className="w-full bg-fann-peach/50 dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold"
+                                        className="w-full bg-black/50 border border-white/20 rounded-md px-3 py-3 text-white focus:outline-none focus:ring-2 focus:ring-fann-gold"
                                     >
                                         {videoStyles.map((style, index) => (
-                                            <option key={index} value={style}>{style.split(' for ')[0]}</option>
+                                            <option key={index} value={style} className="bg-black">{style.split(' for ')[0]}</option>
                                         ))}
                                     </select>
                                 </div>
                                 <div>
-                                    <label htmlFor="prompt-input" className="block text-sm font-medium text-fann-light-gray mb-2">
+                                    <label htmlFor="prompt-input" className="block text-sm font-medium text-gray-300 mb-2">
                                         Describe Your Vision (Optional)
                                     </label>
                                     <textarea
@@ -100,7 +100,7 @@ const VideoStudioPage: React.FC = () => {
                                         value={prompt}
                                         onChange={(e) => setPrompt(e.target.value)}
                                         placeholder="e.g., featuring a futuristic city skyline, with neon holograms of our logo."
-                                        className="w-full bg-fann-peach/50 dark:bg-fann-teal border border-fann-teal/20 dark:border-fann-border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fann-accent-teal dark:focus:ring-fann-gold"
+                                        className="w-full bg-black/50 border border-white/20 rounded-md px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-fann-gold"
                                     />
                                 </div>
                             </div>
@@ -119,13 +119,13 @@ const VideoStudioPage: React.FC = () => {
                             <div className="mt-8">
                                 <motion.button
                                     onClick={handleGenerateVideo}
-                                    className="w-full bg-fann-gold text-fann-charcoal font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2"
+                                    className="w-full btn-gold flex items-center justify-center gap-2"
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
                                 >
                                     <Sparkles size={20} /> Generate Video
                                 </motion.button>
-                                <p className="text-xs text-fann-light-gray text-center mt-3">Video generation can take several minutes. Please be patient.</p>
+                                <p className="text-xs text-gray-500 text-center mt-3">Video generation can take several minutes. Please be patient.</p>
                             </div>
                         </motion.div>
                     )}
@@ -137,8 +137,8 @@ const VideoStudioPage: React.FC = () => {
                             className="text-center p-8"
                         >
                             <Loader2 className="w-16 h-16 text-fann-gold animate-spin mx-auto" />
-                            <h2 className="text-3xl font-serif text-fann-peach mt-6">Generating Video...</h2>
-                            <p className="text-fann-light-gray mt-2">{statusMessage}</p>
+                            <h2 className="text-3xl font-serif text-white mt-6">Generating Video...</h2>
+                            <p className="text-gray-400 mt-2">{statusMessage}</p>
                         </motion.div>
                     )}
 
@@ -147,12 +147,12 @@ const VideoStudioPage: React.FC = () => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                         >
-                            <video controls autoPlay loop src={videoUrl} className="w-full rounded-lg shadow-2xl" />
+                            <video controls autoPlay loop src={videoUrl} className="w-full rounded-lg shadow-2xl border border-white/10" />
                             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-                                <a href={videoUrl} download="fann-video-concept.mp4" className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full flex items-center justify-center gap-2">
+                                <a href={videoUrl} download="fann-video-concept.mp4" className="btn-gold flex items-center justify-center gap-2">
                                     <Download size={20} /> Download Video
                                 </a>
-                                <button onClick={() => { setVideoUrl(null); setPrompt(''); clearError(); }} className="border-2 border-fann-gold text-fann-gold font-bold py-3 px-8 rounded-full">
+                                <button onClick={() => { setVideoUrl(null); setPrompt(''); clearError(); }} className="btn-outline rounded-full">
                                     Generate Another
                                 </button>
                             </div>

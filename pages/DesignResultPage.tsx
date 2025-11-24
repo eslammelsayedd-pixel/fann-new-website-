@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -24,17 +23,17 @@ interface GeneratedResult {
 }
 
 const InfoCard = ({ icon: Icon, title, items }: { icon: React.ElementType, title: string, items: string[] | string }) => (
-    <div className="bg-white/5 dark:bg-fann-teal/50 p-6 rounded-none border border-white/10">
+    <div className="bg-white/5 p-6 rounded-none border border-white/10">
         <div className="flex items-center gap-3 mb-3">
             <Icon className="w-5 h-5 text-fann-gold" />
-            <h3 className="text-lg font-serif font-bold text-fann-peach">{title}</h3>
+            <h3 className="text-lg font-serif font-bold text-white">{title}</h3>
         </div>
         {Array.isArray(items) ? (
-            <ul className="space-y-2 list-disc list-inside text-sm text-fann-light-gray">
+            <ul className="space-y-2 list-disc list-inside text-sm text-gray-300">
                 {items.map((item, i) => <li key={i}>{item}</li>)}
             </ul>
         ) : (
-            <p className="text-sm text-fann-light-gray">{items}</p>
+            <p className="text-sm text-gray-300">{items}</p>
         )}
     </div>
 );
@@ -101,7 +100,7 @@ const DesignResultPage: React.FC = () => {
                 title={isLoading ? "Generating Concepts..." : "Your Custom Concepts | FANN"}
                 description="View your bespoke AI-generated exhibition stand concepts."
             />
-            <div className="min-h-screen bg-fann-teal-dark pt-32 pb-20 text-fann-peach">
+            <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
                     <Link to="/fann-studio/exhibition" className="flex items-center gap-2 text-fann-gold mb-8 font-semibold hover:underline uppercase tracking-widest text-xs">
                         <ArrowLeft size={14} /> Back to Studio
@@ -115,7 +114,7 @@ const DesignResultPage: React.FC = () => {
                                     <Loader2 className="w-16 h-16 text-fann-gold animate-spin relative z-10" />
                                 </div>
                                 <h1 className="text-4xl font-serif mt-8 text-white">Bringing Your Brand to Life...</h1>
-                                <div className="mt-4 space-y-2 text-fann-light-gray font-mono text-sm">
+                                <div className="mt-4 space-y-2 text-gray-400 font-mono text-sm">
                                     <p>Creating 4 Unique Concepts...</p>
                                     <p>Analyzing Brand Identity...</p>
                                     <p>Rendering Photorealistic Visuals...</p>
@@ -198,21 +197,20 @@ const DesignResultPage: React.FC = () => {
                                             transition={{ duration: 0.4 }}
                                          >
                                             <h2 className="text-3xl font-serif text-white mb-4 leading-tight">{activeConcept.conceptName}</h2>
-                                            <p className="text-gray-400 leading-relaxed mb-8 border-l-2 border-fann-gold pl-4">
+                                            <p className="text-gray-300 leading-relaxed mb-8 border-l-2 border-fann-gold pl-4">
                                                 {activeConcept.description}
                                             </p>
 
                                             <div className="space-y-4">
                                                 <InfoCard icon={Sparkles} title="Key Feature" items={activeConcept.keyFeature} />
                                                 <InfoCard icon={Layers} title="Material Palette" items={activeConcept.materials} />
-                                                {/* <InfoCard icon={Wrench} title="Specs" items={`${formData.standWidth}x${formData.standLength}m`} /> */}
                                             </div>
                                          </motion.div>
                                     </div>
                                 </div>
 
                                 {/* CTA Section */}
-                                <div className="mt-16 bg-[#151515] p-8 md:p-12 border border-white/10 text-center relative overflow-hidden">
+                                <div className="mt-16 bg-fann-charcoal-light p-8 md:p-12 border border-white/10 text-center relative overflow-hidden">
                                     <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10"></div>
                                     
                                     <div className="relative z-10">

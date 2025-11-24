@@ -19,17 +19,17 @@ interface GeneratedDesign {
 }
 
 const InfoCard = ({ icon: Icon, title, items }: { icon: React.ElementType, title: string, items: string[] | string }) => (
-    <div className="bg-white/5 dark:bg-fann-teal/50 p-6 rounded-lg">
+    <div className="bg-white/5 p-6 rounded-lg border border-white/10">
         <div className="flex items-center gap-3 mb-3">
             <Icon className="w-6 h-6 text-fann-gold" />
-            <h3 className="text-xl font-serif font-bold text-fann-peach">{title}</h3>
+            <h3 className="text-xl font-serif font-bold text-white">{title}</h3>
         </div>
         {Array.isArray(items) ? (
-            <ul className="space-y-2 list-disc list-inside text-fann-light-gray">
+            <ul className="space-y-2 list-disc list-inside text-gray-300">
                 {items.map((item, i) => <li key={i}>{item}</li>)}
             </ul>
         ) : (
-            <p className="text-fann-light-gray">{items}</p>
+            <p className="text-gray-300">{items}</p>
         )}
     </div>
 );
@@ -82,7 +82,7 @@ const InteriorResultPage: React.FC = () => {
                 title={isLoading ? "Generating Your Interior Concept..." : design?.designConcept.conceptName || "Interior Concept"}
                 description="Your bespoke interior design concept from FANN Studio."
             />
-            <div className="min-h-screen bg-fann-teal-dark pt-32 pb-20 text-fann-peach">
+            <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
                     <Link to="/fann-studio/interior" className="flex items-center gap-2 text-fann-gold mb-8 font-semibold hover:underline">
                         <ArrowLeft size={16} /> Back to Brief
@@ -93,7 +93,7 @@ const InteriorResultPage: React.FC = () => {
                             <motion.div key="loader" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-center py-20">
                                 <Loader2 className="w-16 h-16 text-fann-gold animate-spin mx-auto" />
                                 <h1 className="text-4xl font-serif mt-6">Generating Your Vision...</h1>
-                                <p className="text-fann-light-gray mt-2">This may take up to a minute. Our intelligent engine is crafting a unique concept for you.</p>
+                                <p className="text-gray-400 mt-2">This may take up to a minute. Our intelligent engine is crafting a unique concept for you.</p>
                             </motion.div>
                         )}
 
@@ -109,9 +109,9 @@ const InteriorResultPage: React.FC = () => {
                             <motion.div key="result" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                                 <div className="text-center mb-12">
                                     <h1 className="text-5xl font-serif font-bold text-fann-gold mb-2">{design.designConcept.conceptName}</h1>
-                                    <p className="text-xl text-fann-light-gray">Your FANN-Generated 3D Render for {formData.projectName}</p>
+                                    <p className="text-xl text-gray-300">Your FANN-Generated 3D Render for {formData.projectName}</p>
                                 </div>
-                                <div className="bg-fann-teal p-2 rounded-lg shadow-2xl mb-12">
+                                <div className="bg-black/50 p-2 rounded-lg shadow-2xl mb-12 border border-white/10">
                                     <img 
                                         src={`data:image/jpeg;base64,${design.image}`} 
                                         alt={design.designConcept.conceptName} 
@@ -123,8 +123,8 @@ const InteriorResultPage: React.FC = () => {
                                 </div>
                                 
                                 <div className="max-w-4xl mx-auto text-center mb-12">
-                                     <h2 className="text-3xl font-serif text-fann-peach mb-4">Concept Overview</h2>
-                                     <p className="text-lg text-fann-light-gray leading-relaxed">{design.designConcept.detailedDescription}</p>
+                                     <h2 className="text-3xl font-serif text-white mb-4">Concept Overview</h2>
+                                     <p className="text-lg text-gray-300 leading-relaxed">{design.designConcept.detailedDescription}</p>
                                 </div>
                                 
                                 <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
@@ -134,14 +134,14 @@ const InteriorResultPage: React.FC = () => {
                                     <InfoCard icon={Sofa} title="Furniture Style" items={design.designConcept.furnitureStyle} />
                                 </div>
 
-                                <div className="mt-16 text-center bg-fann-teal p-8 rounded-lg">
+                                <div className="mt-16 text-center bg-fann-charcoal-light p-8 rounded-lg border border-white/10">
                                     <h2 className="text-3xl font-serif font-bold text-fann-gold">Ready for the Next Step?</h2>
-                                    <p className="max-w-2xl mx-auto text-fann-light-gray my-4">Our expert team is ready to turn this concept into reality. Contact us for a detailed proposal and pricing.</p>
+                                    <p className="max-w-2xl mx-auto text-gray-300 my-4">Our expert team is ready to turn this concept into reality. Contact us for a detailed proposal and pricing.</p>
                                     <Link to="/contact">
                                         <motion.button 
                                             whileHover={{ scale: 1.05, y: -2 }}
                                             whileTap={{ scale: 0.95 }}
-                                            className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider"
+                                            className="btn-gold text-lg uppercase tracking-wider"
                                         >
                                             Get a Quote
                                         </motion.button>
