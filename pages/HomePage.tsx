@@ -16,7 +16,7 @@ const heroSlides = [
         headline: "Architecture for Brands",
         description: "We design and build award-winning exhibition stands that dominate the floor at GITEX, Arab Health, and beyond.",
         video: "https://cdn.pixabay.com/video/2020/02/16/32378-392290092_large.mp4", // Generic tech/structure background
-        image: "https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2000&auto=format&fit=crop",
         link: "/services/custom-exhibition-stands-dubai"
     },
     {
