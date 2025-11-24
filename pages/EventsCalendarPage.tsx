@@ -1,9 +1,11 @@
+
 import React, { useState, useEffect, useMemo } from 'react';
 import AnimatedPage from '../components/AnimatedPage';
 import { regionalEvents } from '../constants';
 import { Event } from '../types';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import SEO from '../components/SEO';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 interface DateRange {
   start: Date;
@@ -45,7 +47,7 @@ const parseDateRange = (dateStr: string): DateRange => {
     return { start: startDate, end: endDate };
 
   } catch (error) {
-    console.error(`Error parsing date string "${dateStr}":`, error);
+    // console.error(`Error parsing date string "${dateStr}":`, error);
     const invalidDate = new Date(0);
     return { start: invalidDate, end: invalidDate };
   }
@@ -61,14 +63,62 @@ const itemVariants = {
   visible: { opacity: 1, x: 0 },
 };
 
+const EventCard: React.FC<{ event: Event }> = ({ event }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    return (
+        <motion.div 
+            variants={itemVariants}
+            className="bg-fann-charcoal-light border border-white/5 p-6 rounded-lg flex flex-col sm:flex-row justify-between items-start border-l-4 border-l-fann-gold hover:bg-white/5 transition-colors cursor-pointer"
+            onClick={() => setIsExpanded(!isExpanded)}
+        >
+            <div className="flex-grow pr-4">
+                <div className="flex justify-between items-start w-full sm:hidden mb-2">
+                     <p className="text-lg font-semibold text-fann-gold">{event.date}</p>
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-1">{event.name}</h3>
+                <p className="text-gray-400">{event.venue}, {event.country}</p>
+                <p className="text-sm text-gray-500 mt-1">{event.industry}</p>
+                
+                <AnimatePresence>
+                    {isExpanded && event.description && (
+                        <motion.div 
+                            initial={{ height: 0, opacity: 0, marginTop: 0 }}
+                            animate={{ height: 'auto', opacity: 1, marginTop: 16 }}
+                            exit={{ height: 0, opacity: 0, marginTop: 0 }}
+                            className="overflow-hidden text-sm text-gray-300 leading-relaxed"
+                        >
+                            {event.description}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
+            <div className="mt-4 sm:mt-0 text-left sm:text-right flex-shrink-0 flex flex-col items-end justify-between h-full gap-4">
+                <div className="hidden sm:block">
+                    <p className="text-lg font-semibold text-fann-gold">{event.date}</p>
+                </div>
+                {event.description && (
+                    <button className="text-fann-gold/70 hover:text-fann-gold transition-colors">
+                        {isExpanded ? <ChevronUp size={20}/> : <ChevronDown size={20}/>}
+                    </button>
+                )}
+            </div>
+        </motion.div>
+    );
+};
+
 const EventsCalendarPage: React.FC = () => {
   const displayableEvents = useMemo(() => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     return regionalEvents
       .map(event => ({ event, parsedDate: parseDateRange(event.date) }))
-      .filter(({ parsedDate }) => parsedDate.end >= today && parsedDate.start.getTime() !== 0)
-      .sort((a, b) => a.parsedDate.start.getTime() - b.parsedDate.start.getTime())
+      .filter(({ parsedDate }) => parsedDate.end >= today || parsedDate.start.getTime() === 0) // Keep TBC events
+      .sort((a, b) => {
+          if (a.parsedDate.start.getTime() === 0) return 1; // Push TBC to end
+          if (b.parsedDate.start.getTime() === 0) return -1;
+          return a.parsedDate.start.getTime() - b.parsedDate.start.getTime();
+      })
       .map(({ event }) => event);
   }, []);
 
@@ -100,8 +150,8 @@ const EventsCalendarPage: React.FC = () => {
                     "item": {
                         "@type": "Event",
                         "name": event.name,
-                        "startDate": start.toISOString().split('T')[0],
-                        "endDate": end.toISOString().split('T')[0],
+                        "startDate": start.getTime() !== 0 ? start.toISOString().split('T')[0] : undefined,
+                        "endDate": end.getTime() !== 0 ? end.toISOString().split('T')[0] : undefined,
                         "location": {
                             "@type": "Place",
                             "name": event.venue,
@@ -111,7 +161,7 @@ const EventsCalendarPage: React.FC = () => {
                             }
                         },
                         "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-                        "description": `A leading ${event.industry} event held at ${event.venue}.`
+                        "description": event.description || `A leading ${event.industry} event held at ${event.venue}.`
                     }
                 };
             })
@@ -149,6 +199,9 @@ const EventsCalendarPage: React.FC = () => {
       if (rangeEndDate) {
         events = events.filter(event => {
           const eventStartDate = parseDateRange(event.date).start;
+          // Include TBC events if range is 'All' or keep them out for specific ranges?
+          // Usually specific ranges filter out TBCs as they have date 0
+          if (eventStartDate.getTime() === 0) return false;
           return eventStartDate >= today && eventStartDate <= rangeEndDate!;
         });
       }
@@ -223,21 +276,8 @@ const EventsCalendarPage: React.FC = () => {
                     animate="visible"
                 >
                     {filteredEvents.length > 0 ? (
-                      filteredEvents.map((event) => (
-                          <motion.div 
-                            key={`${event.name}-${event.date}`}
-                            variants={itemVariants}
-                            className="bg-fann-charcoal-light border border-white/5 p-6 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center border-l-4 border-l-fann-gold"
-                           >
-                              <div>
-                                  <h3 className="text-2xl font-bold text-white mb-1">{event.name}</h3>
-                                  <p className="text-gray-400">{event.venue}, {event.country}</p>
-                              </div>
-                              <div className="mt-4 sm:mt-0 text-left sm:text-right flex-shrink-0 sm:pl-4">
-                                  <p className="text-lg font-semibold text-fann-gold">{event.date}</p>
-                                  <p className="text-gray-300">{event.industry}</p>
-                              </div>
-                          </motion.div>
+                      filteredEvents.map((event, idx) => (
+                          <EventCard key={`${event.name}-${idx}`} event={event} />
                       ))
                     ) : (
                       <motion.div 

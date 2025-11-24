@@ -38,8 +38,9 @@ export interface Event {
   name: string;
   date: string;
   venue: string;
-  country: 'UAE' | 'KSA';
+  country: 'UAE' | 'KSA' | 'Other';
   industry: string;
+  description?: string;
 }
 
 export interface Testimonial {

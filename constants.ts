@@ -40,12 +40,8 @@ export const supportedLanguages = [
 ];
 
 export const projects: Project[] = [
-  
-  // =============================================
-  // EXHIBITION PROJECTS (1-20)
-  // =============================================
-  
-  // --- GITEX (Technology) ---
+  // ... (Projects array remains unchanged, abbreviated for brevity in this specific update request)
+  // Use the existing projects array content here in the real file
   {
     id: 1,
     title: "GITEX Global 2024 - Enterprise AI",
@@ -91,8 +87,6 @@ export const projects: Project[] = [
     tags: ["Technology", "Telecom", "GITEX", "Small"],
     featured: false
   },
-
-  // --- Arab Health (Healthcare) ---
   {
     id: 4,
     title: "Arab Health 2024 - Medical Imaging",
@@ -138,8 +132,6 @@ export const projects: Project[] = [
     tags: ["Healthcare", "Technology", "Arab Health", "Small"],
     featured: false
   },
-
-  // --- Gulfood (Food & Beverage) ---
   {
     id: 7,
     title: "Gulfood 2024 - Dairy Products",
@@ -185,8 +177,6 @@ export const projects: Project[] = [
     tags: ["Food & Beverage", "Gulfood", "Small", "Beverages"],
     featured: false
   },
-
-  // --- The Big 5 (Construction) ---
   {
     id: 10,
     title: "The Big 5 Dubai 2024",
@@ -232,8 +222,6 @@ export const projects: Project[] = [
     tags: ["Construction", "Lighting", "Big 5", "Small"],
     featured: false
   },
-
-  // --- Automechanika (Automotive) ---
   {
     id: 13,
     title: "Automechanika Dubai 2024",
@@ -264,8 +252,6 @@ export const projects: Project[] = [
     tags: ["Automotive", "Tires", "Automechanika"],
     featured: false
   },
-
-  // --- Beautyworld (Beauty & Cosmetics) ---
   {
     id: 15,
     title: "Beautyworld Middle East 2024",
@@ -296,8 +282,6 @@ export const projects: Project[] = [
     tags: ["Beauty", "Hair Care", "Beautyworld", "Small"],
     featured: false
   },
-
-  // --- ADIPEC (Energy) ---
   {
     id: 17,
     title: "ADIPEC 2024 - Energy Solutions",
@@ -328,8 +312,6 @@ export const projects: Project[] = [
     tags: ["Energy", "ADIPEC", "Industrial"],
     featured: false
   },
-
-  // --- Cityscape (Real Estate) ---
   {
     id: 19,
     title: "Cityscape Global 2024",
@@ -360,11 +342,6 @@ export const projects: Project[] = [
     tags: ["Real Estate", "Cityscape"],
     featured: false
   },
-
-  // =============================================
-  // EVENTS PROJECTS (21-28)
-  // =============================================
-
   {
     id: 21,
     title: "Emirates NBD GenAI Summit 2025",
@@ -485,11 +462,6 @@ export const projects: Project[] = [
     tags: ["Fashion", "Luxury", "Conference", "Design"],
     featured: false
   },
-
-  // =============================================
-  // INTERIOR DESIGN PROJECTS (29-40)
-  // =============================================
-
   {
     id: 29,
     title: "Emirates NBD Executive Office DIFC",
@@ -673,115 +645,158 @@ export const projects: Project[] = [
 ];
 
 export const regionalEvents: Event[] = [
-  // --- UAE 2024 ---
-  { name: "Sleep Expo Middle East", date: "Sep 10-12, 2024", venue: "Dubai World Trade Centre", country: "UAE", industry: "Retail" },
-  { name: "Sign and Graphic Imaging Middle East", date: "Sep 24-26, 2024", venue: "Dubai World Trade Centre", country: "UAE", industry: "Marketing" },
-  { name: "The Hotel Show Dubai", date: "Sep 24-26, 2024", venue: "Dubai World Trade Centre", country: "UAE", industry: "Hospitality" },
-  { name: "Watch & Jewellery Show Sharjah", date: "Oct 2-6, 2024", venue: "Expo Centre Sharjah", country: "UAE", industry: "Luxury" },
-  { name: "Expand North Star", date: "Oct 13-16, 2024", venue: "Dubai Harbour", country: "UAE", industry: "Technology" },
-  { name: "GITEX Global", date: "Oct 14-18, 2024", venue: "Dubai World Trade Centre", country: "UAE", industry: "Technology" },
-  { name: "Fintech Surge", date: "Oct 14-18, 2024", venue: "Dubai World Trade Centre", country: "UAE", industry: "Finance" },
-  { name: "Marketing Mania", date: "Oct 14-18, 2024", venue: "Dubai World Trade Centre", country: "UAE", industry: "Marketing" },
-  { name: "World Blockchain Summit", date: "Oct 22-23, 2024", venue: "Atlantis, The Palm", country: "UAE", industry: "Finance" },
-  { name: "NAJAH Abu Dhabi", date: "Oct 27-29, 2024", venue: "ADNEC, Abu Dhabi", country: "UAE", industry: "Education" },
-  { name: "Beautyworld Middle East", date: "Oct 28-30, 2024", venue: "Dubai World Trade Centre", country: "UAE", industry: "Beauty" },
-  { name: "Sharjah International Book Fair", date: "Nov 1-12, 2024", venue: "Expo Centre Sharjah", country: "UAE", industry: "Culture" },
-  { name: "Gulfood Manufacturing", date: "Nov 5-7, 2024", venue: "Dubai World Trade Centre", country: "UAE", industry: "Food & Beverage" },
-  { name: "Downtown Design", date: "Nov 6-9, 2024", venue: "Dubai Design District (d3)", country: "UAE", industry: "Art & Design" },
-  { name: "ADIPEC", date: "Nov 11-14, 2024", venue: "ADNEC, Abu Dhabi", country: "UAE", industry: "Energy" },
-  { name: "Cityscape Global", date: "Nov 19-21, 2024", venue: "Dubai World Trade Centre", country: "UAE", industry: "Real Estate" },
-  { name: "Big 5 Global", date: "Nov 26-29, 2024", venue: "Dubai World Trade Centre", country: "UAE", industry: "Construction" },
-  { name: "FM Expo", date: "Nov 26-29, 2024", venue: "Dubai World Trade Centre", country: "UAE", industry: "Real Estate" },
-  { name: "Middle East Film & Comic Con", date: "Dec 6-8, 2024", venue: "ADNEC, Abu Dhabi", country: "UAE", industry: "Entertainment" },
-  { name: "MEBAA Show", date: "Dec 10-12, 2024", venue: "DWC, Dubai Airshow Site", country: "UAE", industry: "Aviation"},
-  { name: "ArabPlast", date: "Dec 13-15, 2024", venue: "Dubai World Trade Centre", country: "UAE", industry: "Manufacturing" },
-
-  // --- KSA 2024 ---
-  { name: "Global Tech Summit", date: "Sep 10-12, 2024", venue: "King Abdulaziz Conference Center, Riyadh", country: "KSA", industry: "Technology" },
-  { name: "Hotel & Hospitality Expo Saudi Arabia", date: "Sep 10-12, 2024", venue: "Riyadh Front", country: "KSA", industry: "Hospitality" },
-  { name: "INDEX Saudi", date: "Sep 10-12, 2024", venue: "Riyadh Front", country: "KSA", industry: "Interior Design" },
-  { name: "Cityscape Global KSA", date: "Sep 10-13, 2024", venue: "Riyadh Exhibition and Convention Center", country: "KSA", industry: "Real Estate" },
-  { name: "Saudi Food Expo", date: "Sep 17-19, 2024", venue: "Riyadh Front", country: "KSA", industry: "Food & Beverage" },
-  { name: "Saudi Infrastructure Expo", date: "Sep 24-26, 2024", venue: "Riyadh International Convention & Exhibition Center", country: "KSA", industry: "Construction" },
-  { name: "Riyadh International Book Fair", date: "Sep 26 - Oct 5, 2024", venue: "Riyadh Front", country: "KSA", industry: "Culture" },
-  { name: "Saudi Agriculture", date: "Oct 21-24, 2024", venue: "Riyadh International Convention & Exhibition Center", country: "KSA", industry: "Food & Beverage" },
-  { name: "Global Health Exhibition", date: "Oct 27-29, 2024", venue: "Riyadh Front", country: "KSA", industry: "Healthcare" },
-  { name: "Saudi Build", date: "Nov 4-7, 2024", venue: "Riyadh International Convention & Exhibition Center", country: "KSA", industry: "Construction" },
-  { name: "Misk Global Forum", date: "Nov 12-14, 2024", venue: "Riyadh", country: "KSA", industry: "Education" },
-  { name: "Saudi Power", date: "Nov 25-27, 2024", venue: "Riyadh International Convention & Exhibition Center", country: "KSA", industry: "Energy" },
-  { name: "Black Hat Middle East & Africa", date: "Nov 26-28, 2024", venue: "Riyadh Front", country: "KSA", industry: "Security" },
-  { name: "Saudi International Motor Show", date: "Dec 5-8, 2024", venue: "Jeddah Superdome", country: "KSA", industry: "Automotive" },
-  { name: "Jeddah International Trade Fair", date: "Dec 15-18, 2024", venue: "Jeddah Centre for Forums & Events", country: "KSA", industry: "Retail" },
-
-  // --- UAE 2025 ---
-  { name: "World Future Energy Summit", date: "Jan 13-15, 2025", venue: "ADNEC, Abu Dhabi", country: "UAE", industry: "Energy" },
-  { name: "Intersec", date: "Jan 14-16, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Security" },
-  { name: "Light Middle East", date: "Jan 17-19, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Construction" },
-  { name: "World of Coffee Dubai", date: "Jan 21-23, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Food & Beverage" },
-  { name: "Arab Health", date: "Jan 27-30, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Healthcare" },
-  { name: "AEEDC Dubai", date: "Feb 4-6, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Healthcare" },
-  { name: "Breakbulk Middle East", date: "Feb 10-11, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Logistics" },
-  { name: "STEP Conference", date: "Feb 11-12, 2025", venue: "Dubai Internet City", country: "UAE", industry: "Technology" },
-  { name: "International Property Show", date: "Feb 12-14, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Real Estate" },
-  { name: "IDEX & NAVDEX", date: "Feb 17-21, 2025", venue: "ADNEC, Abu Dhabi", country: "UAE", industry: "Defence" },
-  { name: "Gulfood", date: "Feb 17-21, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Food & Beverage" },
-  { name: "Dubai Food Festival", date: "Feb 28 - Mar 15, 2025", venue: "City-wide, Dubai", country: "UAE", industry: "Food & Beverage"},
-  { name: "Dubai Derma", date: "Mar 3-5, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Healthcare" },
-  { name: "World Police Summit", date: "Mar 5-7, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Security" },
-  { name: "Dubai International Boat Show", date: "Mar 5-9, 2025", venue: "Dubai Harbour", country: "UAE", industry: "Luxury" },
-  { name: "Art Dubai", date: "Mar 12-15, 2025", venue: "Madinat Jumeirah", country: "UAE", industry: "Art & Design" },
-  { name: "Dubai International Horse Fair", date: "Mar 21-23, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Equestrian" },
-  { name: "Custom Show Emirates", date: "Mar 21-23, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Automotive" },
-  { name: "GESS Dubai", date: "Mar 25-27, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Education" },
-  { name: "World Art Dubai", date: "Apr 2-5, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Art & Design" },
-  { name: "Middle East Energy", date: "Apr 15-17, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Energy" },
-  { name: "Global Future Show", date: "Apr 16-17, 2025", venue: "Dubai Festival City", country: "UAE", industry: "Technology" },
-  { name: "GISEC Global", date: "Apr 21-23, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Technology" },
-  { name: "Middle East Rail", date: "Apr 22-23, 2025", venue: "ADNEC, Abu Dhabi", country: "UAE", industry: "Logistics" },
-  { name: "Arabian Travel Market", date: "Apr 28 - May 1, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Hospitality" },
-  { name: "CABSAT", date: "May 13-15, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Media" },
-  { name: "Paperworld Middle East", date: "May 19-21, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Retail"},
-  { name: "Airport Show", date: "May 20-22, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Aviation" },
-  { name: "Automechanika Dubai", date: "May 27-29, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Automotive" },
-  { name: "INDEX Dubai", date: "Jun 3-5, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Interior Design" },
-  { name: "Seamless Middle East", date: "Sep 9-10, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Retail" },
-  { name: "Seatrade Maritime Middle East", date: "Sep 16-18, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Logistics"},
-  { name: "WETEX and Dubai Solar Show", date: "Sep 23-25, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Energy" },
-  { name: "GITEX Global 2025", date: "Oct 13-17, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Technology" },
-  { name: "Dubai Muscle Show & Dubai Active", date: "Oct 24-26, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Fitness" },
-  { name: "Beautyworld Middle East 2025", date: "Oct 27-29, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Beauty" },
-  { name: "Gulfood Manufacturing 2025", date: "Nov 4-6, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Food & Beverage" },
-  { name: "Dubai Airshow", date: "Nov 17-21, 2025", venue: "DWC, Dubai Airshow Site", country: "UAE", industry: "Aviation" },
-  { name: "Cityscape Global 2025", date: "Nov 18-20, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Real Estate" },
-  { name: "Big 5 Global 2025", date: "Nov 25-28, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Construction" },
-  { name: "Dubai International Jewellery Show", date: "Dec 2-5, 2025", venue: "Dubai World Trade Centre", country: "UAE", industry: "Luxury" },
-
-  // --- KSA 2025 ---
-  { name: "Saudi Plastics & Petrochem", date: "Jan 13-16, 2025", venue: "Riyadh International Convention & Exhibition Center", country: "KSA", industry: "Manufacturing" },
-  { name: "Saudi Print & Pack", date: "Jan 27-30, 2025", venue: "Riyadh International Convention & Exhibition Center", country: "KSA", industry: "Manufacturing" },
-  { name: "World Defense Show", date: "Feb 8-12, 2025", venue: "Riyadh", country: "KSA", industry: "Defence" },
-  { name: "LEAP", date: "Feb 10-13, 2025", venue: "Riyadh Exhibition and Convention Center", country: "KSA", industry: "Technology" },
-  { name: "The Big 5 Saudi", date: "Feb 24-27, 2025", venue: "Riyadh Front", country: "KSA", industry: "Construction" },
-  { name: "Saudi Entertainment and Amusement (SEA) Expo", date: "May 20-22, 2025", venue: "Riyadh International Convention & Exhibition Center", country: "KSA", industry: "Entertainment" },
-  { name: "Saudi Light & Sound Expo", date: "May 20-22, 2025", venue: "Riyadh International Convention & Exhibition Center", country: "KSA", industry: "Entertainment" },
-  { name: "Saudi Elenex", date: "May 26-28, 2025", venue: "Riyadh International Convention & Exhibition Center", country: "KSA", industry: "Energy" },
-  { name: "Saudi Health", date: "Oct 19-21, 2025", venue: "Riyadh International Convention & Exhibition Center", country: "KSA", industry: "Healthcare" },
-  { name: "Foodex Saudi", date: "Oct 26-29, 2025", venue: "Jeddah Centre for Forums & Events", country: "KSA", industry: "Food & Beverage" },
-  { name: "InFlavour", date: "Nov 11-13, 2025", venue: "Riyadh Front", country: "KSA", industry: "Food & Beverage" },
-  
-  // --- UAE 2026 (Projected Dates) ---
-  { name: "Intersec 2026", date: "Jan 13-15, 2026 (TBC)", venue: "Dubai World Trade Centre", country: "UAE", industry: "Security" },
-  { name: "Arab Health 2026", date: "Jan 26-29, 2026 (TBC)", venue: "Dubai World Trade Centre", country: "UAE", industry: "Healthcare" },
-  { name: "Gulfood 2026", date: "Feb 16-20, 2026 (TBC)", venue: "Dubai World Trade Centre", country: "UAE", industry: "Food & Beverage" },
-  { name: "GITEX Global 2026", date: "Oct 12-16, 2026 (TBC)", venue: "Dubai World Trade Centre", country: "UAE", industry: "Technology" },
-  { name: "Big 5 Global 2026", date: "Nov 24-27, 2026 (TBC)", venue: "Dubai World Trade Centre", country: "UAE", industry: "Construction" },
-  
-  // --- KSA 2026 (Projected Dates) ---
-  { name: "LEAP 2026", date: "Feb 9-12, 2026 (TBC)", venue: "Riyadh Exhibition and Convention Center", country: "KSA", industry: "Technology" },
-  { name: "The Big 5 Saudi 2026", date: "Feb 23-26, 2026 (TBC)", venue: "Riyadh Front", country: "KSA", industry: "Construction" },
+  { name: "INTERMOBILITY EXPO", date: "Nov 2025 (TBC)", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Logistics", description: "INTERMOBILITY EXPO is the event for the transport industry to meet their peers and leading policy and decision makers from the Middle Esat Region. Connecting Infrastructure for a Sustanable Mobility Ecosystem" },
+  { name: "META CINEMA FORUM", date: "Nov 01-02, 2025", venue: "Dubai", country: "UAE", industry: "Entertainment", description: "META Cinema Forum is the premier cinema convention spanning across the Middle East, Africa, and Turkey. The Forum brings together a diverse group of industry leaders, filmmakers, distributors, exhibitors, technology providers..." },
+  { name: "SFF - SPECIALITY FOOD FESTIVAL", date: "Nov 2025 (TBC)", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Food & Beverage", description: "Trade Food Festival for Gourmet Professionals. Speciality Food Festival is a dedicated gourmet event that has evolved purely from demand for international gourmet fine foods" },
+  { name: "ADIPEC", date: "Nov 03-06, 2025", venue: "ADNEC", country: "UAE", industry: "Energy", description: "As the world’ s largest annual gathering of energy industry professionals, ADIPEC, hosted by the Abu Dhabi National Oil Company, addresses the critical challenges and opportunities in a collective future where energy is secure, affordable and sustain" },
+  { name: "DICM - DUBAI INTERNATIONAL CONTENT MARKET", date: "Nov 04-05, 2025", venue: "Madinat Arena", country: "UAE", industry: "Entertainment", description: "The ultimate destination in the region for content creators, distributors, and buyers in the region. DICM provides leading media and entertainment companies a unique platform to meet, connect and expand their business" },
+  { name: "GULFOOD MANUFACTURING", date: "Nov 04-06, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Food & Beverage", description: "The biggest food and beverage process industry event for the Middle East & Africa" },
+  { name: "SHARJAH WORLD BOOK FAIR", date: "Nov 05-16, 2025", venue: "Expo Centre Sharjah", country: "UAE", industry: "Education", description: "Sharjah nternational Book Fair. SIBF is your gateway to a wide audience of people who come together for love of the written word. Engage with thousands of readers and industry professionals from the region and around the world" },
+  { name: "STUDY IN INDIA EXPO - UAE - ABU DHABI", date: "Nov 05-08, 2025", venue: "Millennium Downtown Abu Dhabi", country: "UAE", industry: "Education", description: "Study in India Expo is one of the largest Indian Education Shows in the world which showcases India’s most prominent private universities, government institutions and colleges from various parts of India on one platform" },
+  { name: "STUDY IN INDIA EXPO - UAE - DUBAI", date: "Nov 08-09, 2025", venue: "Millennium Plaza Downtown Hotel", country: "UAE", industry: "Education", description: "Study in India Expo is one of the largest Indian Education Shows in the world which showcases India’s most prominent private universities, government institutions and colleges from various parts of India on one platform" },
+  { name: "GESS DUBAI", date: "Nov 11-13, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Education", description: "The Leading Education Conference & Exhibition in the Middle East. GESS Turkey enables educational suppliers and solutions providers to access important decision makers in the education sector" },
+  { name: "JEWELLERY, GEM & TECHNOLOGY DUBAI", date: "Nov 11-13, 2025", venue: "The Centre of Business", country: "UAE", industry: "Luxury", description: "This international B2B sourcing event is set to deliver a bigger and better in-person experience connecting global exhibitors with trade buyers from key jewellery markets" },
+  { name: "STUDY IN INDIA EXPO - UAE - RAS AL KHAIMAH", date: "Nov 11, 2025", venue: "Hilton Garden Inn", country: "UAE", industry: "Education", description: "Study in India Expo is one of the largest Indian Education Shows in the world which showcases India’s most prominent private universities, government institutions and colleges from various parts of India on one platform" },
+  { name: "THE WORLD CIGAR SHOW", date: "Nov 11-12, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Luxury", description: "Luxury Cigar trade show and conference for the international market. This event will offer a unique experience to those interested in this lucrative and growing market sector" },
+  { name: "WORLD TOBACCO MIDDLE EAST", date: "Nov 11-12, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Manufacturing", description: "Global Exhibition dedicated to tobacco. WT Middle East brings together the whole industry to discuss, discover and debate the latest products and innovations" },
+  { name: "JWS ABU DHABI", date: "Nov 12-16, 2025", venue: "ADNEC", country: "UAE", industry: "Luxury", description: "International Jewelry & Watch Show, celebrating the splendour of the jewellery and watch business in Abu Dhabi" },
+  { name: "ACCESS MBA - ABU DHABI", date: "Nov 13, 2025", venue: "Sofitel Abu Dhabi Corniche", country: "UAE", industry: "Education", description: "ACCESS MBA is a communication campaign specifically designed to better inform prospective students of existing MBA opportunities. ACCESS MBA is a series of events organised around the world" },
+  { name: "ACCESS MBA - DUBAI", date: "Nov 15, 2025", venue: "Sofitel Dubai The Palm", country: "UAE", industry: "Education", description: "ACCESS MBA is a communication campaign specifically designed to better inform prospective students of existing MBA opportunities. ACCESS MBA is a series of events organised around the world" },
+  { name: "MYPLANT & GARDEN MIDDLE EAST GREEN EXPO", date: "Nov 15-17, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Real Estate", description: "Myplant & Garden Middle East is the Middle East’s first B2B trade fair dedicated to plants, landscaping and green innovation. The expo will shocase horticulture, outdoor living, garden technologies and sustainable solutions" },
+  { name: "DUBAI AIRSHOW", date: "Nov 17-21, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Technology", description: "Dubai International Aerospace and Defence Exhibition. Dubai Airshow is set to redefine the boundaries of aviation, space, and defence" },
+  { name: "INTERNATIONAL APPAREL & TEXTILE FAIR DUBAI", date: "Nov 17-19, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Fashion", description: "The International Apparel & Textile Fair has evolved as a leading brand in the MENA region to source and showcase the best in textiles, fabric, footwear accessories and print from renowned mills across the globe" },
+  { name: "MIDDLE EAST ORGANIC & NATURAL PRODUCTS EXPO DUBAI", date: "Nov 17-19, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Food & Beverage", description: "The Middle East Organic and Natural Product Expo Dubai is the Middle East’s sole business event that focuses on organic and natural products. It has been connecting suppliers with buyers for many years" },
+  { name: "THE MINING SHOW - DUBAI", date: "Nov 17-18, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Construction", description: "The Mining Show is the region’s only exhibition and conference that gives you the opportunity to capitalise on the development and change in mining across the Middle East, Africa and South Asian region" },
+  { name: "TAWDEEF", date: "Nov 18-20, 2025", venue: "ADNEC", country: "UAE", industry: "Education", description: "Recruitment Show. To discover exciting career opportunities. The most important career expo for UAE Nationals" },
+  { name: "INTERNATIONAL PAEDIATRIC MEDICAL CONGRESS", date: "Nov 21-22, 2025", venue: "Hilton Dubai Al Habtoor City", country: "UAE", industry: "Healthcare", description: "International Paediatric Medical Congress on the subject of Promoting and Enhancing Quality and Evidence-Based Care for Children" },
+  { name: "BIG 5 GLOBAL", date: "Nov 24-27, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Construction", description: "International Exhibition for Building, Water Technology & Environment, Air Conditioning & Refrigeration, Cleaning & Maintenance, Glass & Metal" },
+  { name: "FUTUREFM", date: "Nov 24-27, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Technology", description: "FutureFM drives innovation and digitalization and leverages cutting-edge technologies to improve the efficiency, sustainability and resilience of facilities, automate repetitive tasks, improve the lives of area residents" },
+  { name: "GEOWORLD", date: "Nov 24-27, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Technology", description: "GeoWorld, the only event of its kind in the MEASA region, highlights the rapid growth of the geospatial sector supported by a combination of large-scale projects across various sectors such as construction, oil & gas, e-commerce and agriculture" },
+  { name: "HEAVY", date: "Nov 24-27, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Construction", description: "International trade show for heavy construction machinery, plant equipment and, commercial and construction vehicles" },
+  { name: "HVAC R EXPO DUBAI", date: "Nov 24-27, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Construction", description: "HVAC R Expo is a prominent platform for the heating, ventilation, air-conditioning and refrigeration industry to expand your business in the Middle East, Africa and South Asia" },
+  { name: "LIVEABLECITIESX", date: "Nov 24-27, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Real Estate", description: "Event designed to Tackle sustainable urban development, shape future city planning, and attract investments" },
+  { name: "MARBLE & STONE WORLD", date: "Nov 24-27, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Construction", description: "Middle East Stone is a prominent platform for the stone industry to expand your business in the Middle East, Africa and South Asia. Live product showcases, knowledge exchange, and networking opportunities" },
+  { name: "THE BIG 5 SOLAR", date: "Nov 24-27, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Energy", description: "International Solar & PV Exhibition, Raw Material, components & PV technology for the MENA region" },
+  { name: "TOTALLY CONCRETE", date: "Nov 24-27, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Construction", description: "Totally Concrete offers an opportunity to directly encounter the state-of-the-art technologies transforming the concrete industry" },
+  { name: "URBAN DESING & LANDSCAPE", date: "Nov 24-27, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Real Estate", description: "Urban Design & Landscape Expo is a prominent platform for the urban design and landscape industry to expand your business in the Middle East, Africa and South Asia" },
+  { name: "WINDOWS, DOORS AND FACADES EVENT", date: "Nov 24-27, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Construction", description: "Windows, Doors, Facades and Glass Industry Trade Show in United Arab Emirates" },
+  { name: "HORTI AGRI NEXT MEA - HAN MEA", date: "Nov 25-27, 2025", venue: "ADNEC", country: "UAE", industry: "Food & Beverage", description: "Horti Agri Next is the premier trade show showcasing the latest products, innovations & advancements in horticultural food production, landscaping, controlled environment practices, environmental conservation and agriculture" },
+  { name: "VIV MEA", date: "Nov 25-27, 2025", venue: "ADNEC", country: "UAE", industry: "Food & Beverage", description: "International Trade Fair for Intensive Animal Production and Processing. As the biggest Feed to Food exhibition in the region, this trade show offered products and trade opportunities from over 500 international exhibitors to MENA region professionals" },
+  { name: "CHINA HOMELIFE DUBAI", date: "Dec 17-19, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Retail", description: "China Homelife Dubai has grown into the biggest sourcing platform of Chinese products in Middle East and North Africa area" },
+  { name: "JEWELLERY & BRIDE ARABIA -DUBAI", date: "Dec 18-21, 2025", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Luxury", description: "Jewellery & Bride Arabia is a Luxury B2C event of high-end Jewellery brands from Local and International markets. JBA aims to connect the brands to local and international audience" },
+  { name: "UNITED PROPERTY & INVEST SHOW - UAE", date: "Jan 2026 (TBC)", venue: "Habtoor Grand Resort & Spa", country: "UAE", industry: "Real Estate", description: "UNITED PROPERTY EXPO is a platform for investing in real estate, making safe deals and networking. It gives the opportunity to discuss with professionals the issues of buying/renting real estate abroad, to get adviced on mortgages, taxes investments..." },
+  { name: "STEELFAB", date: "Jan 12-15, 2026", venue: "Expo Centre Sharjah", country: "UAE", industry: "Manufacturing", description: "Middle East trade show for the metalworking, metal manufacturing and steel fabrication Industry" },
+  { name: "WFES WATER", date: "Jan 13-15, 2026", venue: "ADNEC", country: "UAE", industry: "Energy", description: "WFES Water is the ideal platform to introduce technologies and products optimizing water production, usage and conservation to the Middle East and North Africa market" },
+  { name: "WORLD FUTURE ENERGY SUMMIT", date: "Jan 13-15, 2026", venue: "ADNEC", country: "UAE", industry: "Energy", description: "Renewable Energy and Environment Industry International Trade Show" },
+  { name: "WORLD FUTURE ENVIRONMENT EXHIBITION", date: "Jan 13-15, 2026", venue: "ADNEC", country: "UAE", industry: "Energy", description: "Exhibition & Conference focused on comprehensive solutions in the environmental equipment, technology and services sectors" },
+  { name: "EROC", date: "Jan 15-17, 2026", venue: "InterContinental Festival City", country: "UAE", industry: "Healthcare", description: "International congress of Otolaryngology, Audiology and Communication Disorders. The discussions address the current issues of ORL Head and Neck Surgery" },
+  { name: "WORLD OF COFFEE - DUBAI", date: "Jan 18-20, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Food & Beverage", description: "World of Coffee is a key event for coffee professionals. It attracts enthusiasts from the global coffee specialty community" },
+  { name: "AEEDC", date: "Jan 19-21, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Healthcare", description: "UAE International Scientific Dental Conference & Arab Dental Exhibition. AEEDC Dubai will brings together the suppliers and buyers of the Oral and Dental Industry to discover endless Business Opportunities" },
+  { name: "GULFOOD EXHIBITION", date: "Jan 26-30, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Food & Beverage", description: "Trade show for Food and Beverage, Hotel, Refrigeration and Food Service Equipment, Hotel Supplies and Services, Food Processing Machinery, Bakery and Confectionery Products and Equipment, Disposable Items, Hospitality Info Systems, Food Packaging" },
+  { name: "MEDLAB MIDDLE EAST", date: "Jan 27-30, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Healthcare", description: "Middle East Laboratory Exhibition and Conference. Medlab Middle East promises to be an elevated ride of knowledge sharing, forging connections and business building opportunities" },
+  { name: "TRANSPORT MIDDLE EAST", date: "Jan 27-29, 2026", venue: "Abu Dhabi", country: "UAE", industry: "Logistics", description: "Transport Middle East is the largest annual ports, shipping and logistics exhibition and conference in the Middle East" },
+  { name: "PROFESSIONAL BEAUTY - GCC", date: "Feb 02-03, 2026", venue: "Festival Arena by InterContinental", country: "UAE", industry: "Beauty", description: "UAE Beauty & Wellness Industry Trade Show. The visitors can browse the stands of the biggest brands and most recent innovations in skincare, hair, barbering, aesthetic devices, nails, make-up and much more" },
+  { name: "REFUEL FORUM MENA", date: "Feb 02-03, 2026", venue: "Grand Hyatt Dubai", country: "UAE", industry: "Energy", description: "This MENA region's leading exhibition covers all areas of the service station, from car wash equipment to the latest retail technologies. Two days to network, share ideas and discover new products and new ways of doing business" },
+  { name: "AIME - AIRCRAFT INTERIORS MIDDLE EAST", date: "Feb 04-05, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Interior Design", description: "The newest Middle East Aviation Show, focusing on Cabin & VIP Interiors, In-Flight Entertainment and In-Flight Catering" },
+  { name: "MRO MIDDLE EAST", date: "Feb 04-05, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Logistics", description: "MRO Middle East gathers the airline supply chain to network, learn and define the commercial aviation maintenance industry. Conference and Exhibition" },
+  { name: "WORLD SHISHA - DUBAI", date: "Feb 04-05, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Retail", description: "World Shisha Dubai is the only expo in the Middle East and North Africa dedicated to the thriving shisha industry. The event comprises a large exhibition of shisha suppliers, outdoor terrace, multiple networking lounges" },
+  { name: "DESERT ARCHITECTURE MENA FORUM", date: "Feb 05-06, 2026", venue: "Al Habtoor Grand Resort", country: "UAE", industry: "Construction", description: "Desert Architecture Forum is a must-attend gathering for professionals aiming to tackle the urgent challenges of building in arid environments, especially in the Middle East, where climate extremes, water scarcity, and sustainability are critical concerns" },
+  { name: "IREX (INTERNATIONAL REAL ESTATE EXPO)", date: "Feb 06-07, 2026", venue: "Taj Hotel Dubai", country: "UAE", industry: "Real Estate", description: "Luxury Real Estate Exhibition in Dubai. IREX is an innovative platform to market real estate to elite clientele and top-pier investors in Dubai" },
+  { name: "ARAB HEALTH", date: "Feb 09-12, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Healthcare", description: "International Hospital, Medical Equipment and Services Exhibition & Conference. ARAB HEALTH showcases over 4, 000 companies exhibiting their latest innovations to more than 130, 000 healthcare professionals attending from 163 countries" },
+  { name: "BUILDING HEALTHCARE MIDDLE EAST", date: "Feb 09-12, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Construction", description: "Trade show for healthcare facility planning, design, construction and management" },
+  { name: "MENA GEOSPATIAL FORUM", date: "Feb 09-10, 2026", venue: "Al Habtoor Grand Resort", country: "UAE", industry: "Technology", description: "MENA Geospatial Event. Geospatial technologies have become essential in our interconnected world, which is undergoing a profound transformation across technological, sociological, economic, and geopolitical dimensions" },
+  { name: "OBS-GYNE", date: "Feb 09-12, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Healthcare", description: "The Middle East’s Premier Showcase for the Latest Developments in Obstetrics and Gynecology Equipment and Services" },
+  { name: "PATIENT SAFETY", date: "Feb 09-12, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Healthcare", description: "Patient Safety Exhibition & Congress. The event provides multidisciplinary patient safety education for healthcare professionals spanning infection prevention control, CSSD, workforce safety..." },
+  { name: "WHX DUBAI", date: "Feb 09-12, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Healthcare", description: "WHX Dubai is an unmissable exhibition uniting thousands of healthcare professionals under one roof to learn, trade, and network. Uncover future trends and revolutionary tech, Network with international healthcare leaders" },
+  { name: "BREAKBULK MIDDLE EAST", date: "Feb 10-11, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Logistics", description: "International Trade Show for Maritime Transport of Non-Containerized Goods (Breakbulk) and 'Project Cargo' (transportation of large, heavy-duty, high value, or complex pieces of equipment)" },
+  { name: "DEAL - DUBAI ENTERTAINMENT, AMUSEMENT & LEISURE", date: "Feb 10-12, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Entertainment", description: "The Dubai Entertainment Amusement & Leisure (DEAL) show is the Middle East & Africa’s premier event for the amusement industry. It is a pivotal platform for innovation and business in the family entertainment centers, theme parks and amusement industries" },
+  { name: "CUSTOM SHOW EMIRATES", date: "Mar 2026 (TBC)", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Automotive", description: "The Middle East’s premier exhibition showcasing the latest design and trends in car customization. The latest models of luxury and sport cars" },
+  { name: "DIHF - DUBAI INTERNATIONAL HORSE FAIR", date: "Mar 2026 (TBC)", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Entertainment", description: "Dubai International Horse Fair is the equestrian industry’s pivotal gathering ground in Middle East. The most established trade show in the region connecting a diverse array of equestrian suppliers with enthusiasts, owners, breeders, stables and clubs" },
+  { name: "GREENENERGY", date: "Mar 2026 (TBC)", venue: "Dubai", country: "UAE", industry: "Energy", description: "Meeting and Expo on Green Energy and Environmental Technology. The conference extends a warm welcom to attendees, researchers and students, academic institutions, industry experts and business specialists" },
+  { name: "DUBAI DERMA", date: "Mar 23-25, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Healthcare", description: "Dubai World Dermatology and Laser Conference & Exhibition. Over the years, Dubai Derma has emerged as the largest scientific skincare gathering in the Middle East, North Africa & the Indian Subcontinent region" },
+  { name: "DUPHAT", date: "Mar 24-26, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Healthcare", description: "Dubai International Pharmaceuticals & Technologies Conference & Exhibition" },
+  { name: "ISS WORLD MEA", date: "Mar 24-26, 2026", venue: "JW Marriott Marquis", country: "UAE", industry: "Technology", description: "Intelligence Support Systems for Lawful Interception, Criminal Investigations and Intelligence Gathering" },
+  { name: "PAPER ONE SHOW", date: "Mar 24-26, 2026", venue: "ADNEC", country: "UAE", industry: "Manufacturing", description: "Paper One Show is an international paper exhibition dedicated to all kinds of paper and paper manufacturing, paper jumbo rolls, finished products, printing, writing, tissue, and hygienic paper, converters, cartons, paperboard, and more" },
+  { name: "MENA DESALINATION FORUM", date: "Mar 30-31, 2026", venue: "Conrad Abu Dhabi", country: "UAE", industry: "Energy", description: "For years, the 'MENA Desalination Forum' has established itself as the region’s premier platform for advancing desalination, fostering innovation, and driving collaboration in sustainable water technologies" },
+  { name: "MENA STORMWATER AND WASTE WATER FORUM", date: "Mar 30-31, 2026", venue: "Conrad Abu Dhabi", country: "UAE", industry: "Energy", description: "The 'MENA Stormwater and Wastewater Forum' will address the pressing challenges and opportunities in both stormwater and wastewater management. The forum will explore innovative solutions to enhance water resources, reduce consumption, and increase water" },
+  { name: "GULF PRINT & PACK", date: "Mar 31 - Apr 02, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Manufacturing", description: "The most important must-attend commercial and package printing event in the Middle East and North African (MENA) region" },
+  { name: "PAPER & TISSUE SHOW", date: "Mar 31 - Apr 02, 2026", venue: "ADNEC", country: "UAE", industry: "Manufacturing", description: "Leading the way in paper and tissue innovation, PAPER & TISSUE SHOW brings together industry experts and top-tier suppliers. Explore the latest trends and technologies" },
+  { name: "AIM - ANNUAL INVESTMENT MEETING", date: "Apr 2026 (TBC)", venue: "ADNEC", country: "UAE", industry: "Finance", description: "Congress dedicated to investments in sustainable innovation for a prosperous future in the United Arab States" },
+  { name: "CONNECTING HYDROGEN MENA", date: "Apr 01-02, 2026", venue: "Madinat Jumeirah", country: "UAE", industry: "Energy", description: "The leading showcase of hydrogen technology in MENA, featuring groundbreaking innovations and industry pioneers shaping the future of clean energy + 50+ Conference sessions" },
+  { name: "DOMOTEX MIDDLE EAST", date: "Apr 2026 (TBC)", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Interior Design", description: "World trade Fair showcasing a diverse range of products and designs that highlight the future of flooring, Carpets and rugs" },
+  { name: "MIDEAST WATCH & JEWELLERY SHOW", date: "Apr 2026 (TBC)", venue: "Expo Centre Sharjah", country: "UAE", industry: "Luxury", description: "Middle East’s premier biannual exhibition showcasing the latest designs and trends in watches, Jewelry, gold, precious stones and diamonds" },
+  { name: "SHARJAH CHILDREN`S READING FESTIVAL", date: "Apr 2026 (TBC)", venue: "Expo Centre Sharjah", country: "UAE", industry: "Education", description: "Sharjah Children's Book Fair. This celebration of books extends beyond a single age group, enriching the whole family while instilling a love of reading in young ones" },
+  { name: "SUSTAINABLE COASTAL DEVELOPMENT MENA", date: "Apr 06-07, 2026", venue: "Dubai", country: "UAE", industry: "Construction", description: "The Sustainable Coastal Development MENA Forum explores the future of sustainable and resilient coastal developments across the Middle East. Nature-based solutions for coastal defense, climate-resilient infrastructure, sustainable tourism development..." },
+  { name: "ABU DHABI GLOBAL HEALTHCARE WEEK", date: "Apr 07-09, 2026", venue: "ADNEC", country: "UAE", industry: "Healthcare", description: "Abu Dhabi international Healthcare Industry Exhibition. An innovative and unrivalled opportunity to explore and plot the future of global healthcare" },
+  { name: "INTERSOLAR MIDDLE EAST", date: "Apr 07-09, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Energy", description: "International Exhibition & Conference for the Solar Industry of the Middle East" },
+  { name: "MIDDLE EAST ENERGY - DUBAI", date: "Apr 07-09, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Energy", description: "The Middle East and Africa's most comprehensive energy exhibition. Middle East Energy is uniting the world’s foremost energy professionals, innovators, and stakeholders to drive innovation, foster collaboration, and shape the future of energy" },
+  { name: "DUBAI INTERNATIONAL BOAT SHOW", date: "Apr 08-12, 2026", venue: "Dubai Harbour", country: "UAE", industry: "Luxury", description: "One of the largest boat shows in the Middle East. 'Dubai International Boat Show' brings together the main manufacturers of super yachts, sailboats, sports boats, fishing boats and speed boats, as well as a many equipment manufacturers" },
+  { name: "MIDDLE EAST FILM & COMIC CON", date: "Apr 10-12, 2026", venue: "ADNEC", country: "UAE", industry: "Entertainment", description: "The Middle East's Ultimate Pop Culture and Entertainment Industry Festival. Toys, Games, Comics, Cosplay..." },
+  { name: "AIM CONGRESS", date: "Apr 13-15, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Finance", description: "AIM Congress has established itself as a leading investment platform in the Middle East, which aspires to ignite positive transformation by creating investment opportunities, upholding solidarity and developing economic relations among nations" },
+  { name: "MIDDLE EAST COATINGS SHOW", date: "Apr 14-16, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Manufacturing", description: "International Trade Show dedicated to the Coatings Industry for the Middle East and Gulf Region" },
+  { name: "GETEX DUBAI", date: "Apr 15-17, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Education", description: "Forum in Dubai for education, corporate training and career development in the Middle East" },
+  { name: "ART DUBAI", date: "Apr 17-19, 2026", venue: "Madinat Jumeirah", country: "UAE", industry: "Entertainment", description: "The Middle East’s leading international art fair. Art Dubai has cemented its role in being a major catalyst in the local, regional and international art market from the Middle East and surrounding region" },
+  { name: "INTERNATIONAL PROPERTY SHOW - IPS DUBAI", date: "Apr 19-21, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Real Estate", description: "IPS is the Middle East’s largest international property sales event, uniting key stakeholders in global real estate and investment" },
+  { name: "DUBAI WOOD SHOW", date: "Apr 21-23, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Construction", description: "Leading Global Wood & Wood Working Machinery Trade Show. Providing a perfect platform for suppliers, manufacturers & machinery and tools companies to showcase their products, innovative technologies, production scenarios and large scale machinery" },
+  { name: "SMART DATA SUMMIT", date: "Apr 22-23, 2026", venue: "JW Marriott Marina", country: "UAE", industry: "Technology", description: "The Smart Data Summit is the Middle East’s premier conference on data, analytics, and artificial intelligence" },
+  { name: "WORLD ART DUBAI", date: "Apr 23-26, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Entertainment", description: "World Art Dubai is one of the MENA region’s largest contemporary art fairs, brings together an extraordinary collection of over 10, 000 artworks from 400+ renowned galleries and solo artists representing more than 65 countries" },
+  { name: "ZAK WORLD OF FAÇADES", date: "Apr 23, 2026", venue: "Habtoor Grand Resort", country: "UAE", industry: "Construction", description: "Zak World of Façades is an International conference series on façade design & engineering" },
+  { name: "ABU DHABI INTERNATIONAL BOOK FAIR", date: "Apr 25 - May 04, 2026", venue: "ADNEC", country: "UAE", industry: "Education", description: "Abu Dhabi International Book Fair. Enjoy visiting everything that interests you in an exhibition that brings you culture, fun, and imagination together..." },
+  { name: "EDUCATION AND TRAINING EXHIBITION", date: "Apr 29 - May 01, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Education", description: "Every year the exhibition attracts over 35, 000 local and expatriate students who are at the threshold of college life and actively looking for higher education, professional development and training options" },
+  { name: "ILTM ARABIA", date: "May 2026 (TBC)", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Luxury", description: "International Luxury Travel Market in Middle East. Arabian Travel Market is the market leading, international travel and tourism event unlocking business potential within the Middle East for inbound and outbound tourism professionals" },
+  { name: "ATM - ARABIAN TRAVEL MARKET", date: "May 04-07, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Hospitality", description: "Arabian Travel Market is the market leading, international travel and tourism event unlocking business potential within the Middle East for inbound and outbound tourism professionals" },
+  { name: "DIHAD DUBAI", date: "May 05-07, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Healthcare", description: "Dubai International Humanitarian Aid & Re- Development Conference Exhibition" },
+  { name: "AIRPORT SHOW DUBAI", date: "May 12-14, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Logistics", description: "Leading Airport Forum for the Middle East, Africa, Indian Subcontinent and CIS" },
+  { name: "SEAMLESS MIDDLE EAST", date: "May 12-14, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Finance", description: "Seamless is a great meeting place for the brightest and most innovative minds across the payments, fintech, identity, banking, retail, e-commerce, home delivery and digital marketing industries" },
+  { name: "WORLD POLICE SUMMIT", date: "May 13-15, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Technology", description: "The World Police Summit is the global meeting place for senior, international police and law enforcement officials and professionals to connect with governments, policy makers and sector professionals" },
+  { name: "INFOSECURITY MIDDLE EAST", date: "May 19-21, 2026", venue: "ADNEC", country: "UAE", industry: "Technology", description: "International Cyber Security Exhibition for the MENA region. INFOSECURITY MIDDLE EAST features crisis management, border & transport security, intelligence & threat assessment, cyber security, emergency response, critical infrastructure & counterterroris" },
+  { name: "ISNR ABU DHABI", date: "May 19-21, 2026", venue: "ADNEC", country: "UAE", industry: "Technology", description: "International Homeland Security Fair for the Middle East" },
+  { name: "WORLD UTILITIES CONGRESS", date: "May 19-21, 2026", venue: "ADNEC", country: "UAE", industry: "Energy", description: "Congress dedicated to Clean Power Generation and Water Management & Desalination" },
+  { name: "CABSAT", date: "May 20-22, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Technology", description: "Middle East International Cable, Satellite, Broadcast & Telecommunications Exhibition. CABSAT will swhocase Content Management & Systems, Acquisition and Production Equipment, Post Production Solutions, Audio / Video Equipment" },
+  { name: "INDEX DUBAI", date: "Jun 02-04, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Interior Design", description: "International Furniture, Interiors and Retail Design Exhibition. INDEX showcases Furnishing, Furniture, Kitchen & Bathroom, Lighting, Textiles & Fabrics, Surfaces & Finishes, Outdoor Living, Contemorary Collection of Furniture, Objects for Decoration" },
+  { name: "THE HOTEL SHOW DUBAI", date: "Jun 02-04, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Hospitality", description: "The Hotel Show connects buyers looking to source the latest products and innovations shifting the landscape of the hospitality industry with top tier brands and suppliers of hotel tech, F&B, operating supplies and much more" },
+  { name: "WORKSPACE", date: "Jun 02-04, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Interior Design", description: "International Workspace Design Exhibiton. Workspace at INDEX is the regions only exhibition dedicated to commercial interior design and office furniture and is the largest sourcing platform in the region" },
+  { name: "MIDDLE EAST EVENT SHOW", date: "Jun 09-10, 2026", venue: "Madinat Arena", country: "UAE", industry: "Entertainment", description: "The Middle East EVENT Show provides the perfect sourcing and networking platform for MICE, events and entertainment suppliers to connect with buyers in the Middle East" },
+  { name: "MIDDLE EAST RAIL", date: "Jun 09-10, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Logistics", description: "The largest and most established transport event in the Middle East, North Africa and South Asia" },
+  { name: "MOBILITY LIVE ME", date: "Jun 09-10, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Technology", description: "The Middle East most important mobility event, where disruptive technology and innovation drive much needed change" },
+  { name: "WORLD VAPE SHOW - DUBAI", date: "Jun 10-12, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Retail", description: "The World Vape Show Dubai brings together manufacturers, suppliers, leaders and industry professionals for exploring the latest products, innovations, and trends shaping the alternative nicotine sector" },
+  { name: "IFES WORLD SUMMIT", date: "Jun 16-19, 2026", venue: "Dubai", country: "UAE", industry: "Entertainment", description: "A hotspot for creativity and crossover between scientists, artists, entrepreneurs and thinkers. It is your chance to meet C-level colleagues from more than 30 Countries" },
+  { name: "EXPOCULINAIRE", date: "Jun 22-24, 2026", venue: "Expo Centre Sharjah", country: "UAE", industry: "Food & Beverage", description: "Food & Equipment Expo for Chefs, Pastry Chefs, Bakers, HORECA Professionals" },
+  { name: "ADIHEX", date: "Aug 2026 (TBC)", venue: "ADNEC", country: "UAE", industry: "Entertainment", description: "The largest Exhibition for Hunting, Equestrian & Heritage Preservation in the Middle East and Africa region" },
+  { name: "AM CONCLAVE MIDDLE EAST", date: "Sep 2026 (TBC)", venue: "ADNEC", country: "UAE", industry: "Manufacturing", description: "2 Days of Conference & Showcase for Advancing the Additive Manufacturing Ecosystem in the Middle East" },
+  { name: "GLOBAL AEROSPACE SUMMIT", date: "Sep 2026 (TBC)", venue: "St. Regis Saadiyat", country: "UAE", industry: "Technology", description: "The Global Aerospace Summit is an exclusive, invitation-only event for C-level executives, senior decision makers and government officials involved with the aerospace, aviation, defence and space industries in UAE" },
+  { name: "MENA EV SHOW", date: "Sep 2026 (TBC)", venue: "Dubai Festival City", country: "UAE", industry: "Automotive", description: "MENA EV Show is the largest & most comprehensive electric vehicle (EV) event in the MENA region" },
+  { name: "SALON DU CHOCOLAT - DUBAI", date: "Sep 2026 (TBC)", venue: "Madinat Jumeirah", country: "UAE", industry: "Food & Beverage", description: "Salon du Chocolat Dubai is a show dedicated to those passionate about chocolate. Bringing together professional chocolate tasters, chocolatiers and chocolate enthusiasts" },
+  { name: "SIGN AND GRAPHIC IMAGING MIDDLE EAST", date: "Sep 2026 (TBC)", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Manufacturing", description: "International Trade Event for the Middle East's Signage and Graphic Imaging Industry" },
+  { name: "AGRAME", date: "Sep 08-10, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Food & Beverage", description: "Crop Farming, Animal Farming, Aquaculture & Animal Health International Trade Expo" },
+  { name: "VETERINARY-VET ME", date: "Sep 08-10, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Healthcare", description: "Middle East's Premier Veterinary Trade Exhibition & Conferences" },
+  { name: "E-CRIME & CYBERSECURITY ABU DHABI", date: "Sep 09, 2026", venue: "St. Regis Abu Dhabi", country: "UAE", industry: "Technology", description: "Congress on cybercriminality and online-protection. E-Crime congress designed to meet the needs of professionals from the private sector & government enterprise IT departments" },
+  { name: "MENA PPP FORUM", date: "Sep 10-11, 2026", venue: "Jumeirah Emirates Towers", country: "UAE", industry: "Finance", description: "The PPP (Public-Private Partnerships) MENA Forum serves as a vital platform for addressing economic and social developments across the region" },
+  { name: "PAPER ARABIA", date: "Sep 15-17, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Manufacturing", description: "International Technological Exhibition for Paper, Printing & Converting Industries" },
+  { name: "YUMMEX MIDDLE EAST", date: "Sep 15-17, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Food & Beverage", description: "International Exhibition for Processing, Manufacturing and Packaging for the Sweet & Confectionery, Bakery & Snack Food Industry" },
+  { name: "IGIC UAE", date: "Sep 16-17, 2026", venue: "Dubai", country: "UAE", industry: "Construction", description: "The IGIC Forum addresses the plethora of challenges faced during the design and construction of deep foundations & underground infrastructures" },
+  { name: "MEBIS", date: "Sep 16-17, 2026", venue: "Jumeirah Emirates Towers", country: "UAE", industry: "Finance", description: "Middle East Banking Innovation Summit. MEBIS has established itself as the largest and most successful banking innovation and technology event in the GCC" },
+  { name: "RU'YA", date: "Sep 28-30, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Education", description: "Ru'ya serves as a platform for UAE Nationals to find jobs opportunities, redefine their future, reconnect with industry leaders and refresh with a full empowerment journey" },
+  { name: "DUBAI ACTIVE", date: "Oct 2026 (TBC)", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Healthcare", description: "The Middle East’s Leading International Fitness & Wellness Exhibition" },
+  { name: "DUBAI HELISHOW", date: "Oct 2026 (TBC)", venue: "Skydive Dubai", country: "UAE", industry: "Technology", description: "International Civil and Military Helicopter Technology & Operations Exhibition" },
+  { name: "HRSE - HR SUMMIT & EXPO", date: "Oct 2026 (TBC)", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Corporate", description: "HRSE is the biggest Middle East event for HR professionals" },
+  { name: "ABU DHABI AIR EXPO", date: "Oct 14-16, 2026", venue: "ADNEC", country: "UAE", industry: "Technology", description: "Abu Dhabi International Aviation Exhibition & Conference. Business & General Aviation. Commercial Aviation, MRO, Aircraft Interiors" },
+  { name: "ABU DHABI HELI EXPO", date: "Oct 14-16, 2026", venue: "ADNEC", country: "UAE", industry: "Technology", description: "Helicpoter Expo in Abu Dhabi. Abu Dhabi Heli Expo shocases helicopters types ranging from private transportation to SAR" },
+  { name: "NAJAH ABU DHABI", date: "Oct 18-20, 2026", venue: "ADNEC", country: "UAE", industry: "Education", description: "Leading Education Training Exhibition & Career Fair in the Middle East" },
+  { name: "ACCESSABILITIES EXPO", date: "Oct 19-21, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Healthcare", description: "International trade event for medical care and mobility of persons with disabilities for the Middle East" },
+  { name: "PORT DEVELOPMENT MEA FORUM", date: "Oct 20-21, 2026", venue: "Al Habtoor Grand Resort", country: "UAE", industry: "Logistics", description: "The Port Development Middle East & Africa Forum will unite industry leaders to explore innovative strategies for maritime trade" },
+  { name: "WETEX & DUBAI SOLAR SHOW", date: "Oct 20-22, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Energy", description: "The Midle East Largest Sustainability & Clean Energy Technology Fair" },
+  { name: "ARABLAB EXPO", date: "Oct 26-28, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Technology", description: "Middle East & Africa Expo for the Global Laboratory and Instrumentation Industry" },
+  { name: "DUBAI MUSCLE SHOW", date: "Oct 30 - Nov 01, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Healthcare", description: "Muscle Show is the Middle East’s Leading Fitness & Bodybuilding Show" },
+  { name: "GITEX GLOBAL", date: "Dec 07-11, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Technology", description: "International Trade Show for the ICT Industry. GITEX GLOBAL is one of World'S largest Tech, AI & Startup Show" },
+  { name: "MEBAA - MIDDLE EAST BUSINESS AVIATION", date: "Dec 08-10, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Technology", description: "The only event dedicated to Business Aviation within the Middle East" },
+  { name: "IDEX", date: "Jan 25-29, 2027", venue: "ADNEC", country: "UAE", industry: "Technology", description: "IDEX brings together global defence leaders, cutting-edge innovations, and strategic collaborations under one roof" },
+  { name: "ARAB PLAST", date: "Mar 24-26, 2027", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Manufacturing", description: "International Trade Expo for Plastic, Recycling, Petrochemicals, Packaging & Rubber Industries in the Middle East" },
+  { name: "SEATRADE MARITIME LOGISTICS MIDDLE EAST", date: "May 11-13, 2027", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Logistics", description: "Seatrade Maritime brings together leading maritime professionals from across the Middle East" }
 ];
 
 export const testimonials: Testimonial[] = [
+// ... testimonials remain unchanged
   { quote: "FANN didn't just build a stand; they created an experience. Their attention to detail and project management is unparalleled. Our leads increased by 40%!", client: "Aisha Al Futtaim", company: "TechVision Systems", projectType: "GITEX Exhibition" },
   { quote: "The team at FANN is a dream to work with. They took our vision for the annual gala and elevated it beyond our wildest expectations. Flawless execution from start to finish.", client: "Johnathan Lee", company: "Global Leaders Org", projectType: "Corporate Event" },
   { quote: "Transforming our new headquarters with FANN was the best decision we made. The design is not only beautiful but has tangibly improved our team's collaboration and morale.", client: "Fatima Al Mansouri", company: "Emirates Tech Solutions", projectType: "Interior Design" },
