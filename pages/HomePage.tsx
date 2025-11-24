@@ -6,6 +6,7 @@ import SEO from '../components/SEO';
 import { motion, AnimatePresence } from 'framer-motion';
 import ScrollReveal from '../components/ScrollReveal';
 import OptimizedImage from '../components/OptimizedImage';
+import { DeadlineCalculator } from '../components/UrgencySystem';
 
 // --- DATA ---
 
@@ -225,31 +226,6 @@ const AboutSection: React.FC = () => (
     </section>
 );
 
-const CostCalculatorBanner: React.FC = () => (
-    <ScrollReveal>
-        <section className="py-20 bg-[#111] border-y border-white/5">
-            <div className="container">
-                <div className="bg-gradient-to-r from-fann-gold/10 to-transparent p-8 md:p-12 rounded-2xl border border-fann-gold/20 flex flex-col md:flex-row items-center justify-between gap-8">
-                    <div className="flex items-start gap-6">
-                        <div className="hidden md:flex w-16 h-16 bg-fann-gold text-fann-charcoal rounded-full items-center justify-center shrink-0">
-                            <Calculator size={32} />
-                        </div>
-                        <div>
-                            <h3 className="text-2xl md:text-3xl font-serif text-white mb-2">Planning an Exhibition?</h3>
-                            <p className="text-gray-400 max-w-lg">Get an instant cost estimate for your stand design and build in Dubai. Accurate, fast, and free.</p>
-                        </div>
-                    </div>
-                    <Link to="/resources/cost-calculator" className="shrink-0">
-                        <button className="btn-gold py-4 px-10 text-sm">
-                            Get Instant Estimate
-                        </button>
-                    </Link>
-                </div>
-            </div>
-        </section>
-    </ScrollReveal>
-);
-
 const ServicesSection: React.FC = () => (
     <section className="py-32 bg-fann-charcoal">
         <div className="container">
@@ -426,9 +402,11 @@ const HomePage: React.FC = () => {
             />
             
             <HeroSection />
+            <ScrollReveal>
+                <DeadlineCalculator />
+            </ScrollReveal>
             <AboutSection />
             <ServicesSection />
-            <CostCalculatorBanner />
             <WhyChooseUs />
             <SelectedWork />
             <FeaturedResource />
