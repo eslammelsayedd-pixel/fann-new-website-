@@ -1,6 +1,7 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSearchParams } from 'react-router-dom';
 import AnimatedPage from '../components/AnimatedPage';
 import { projects } from '../constants';
 import SEO from '../components/SEO';
@@ -49,7 +50,10 @@ const industries = [
 ];
 
 const PortfolioPage: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchParams] = useSearchParams();
+  const initialCategory = searchParams.get('category') || 'all';
+  
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [selectedIndustry, setSelectedIndustry] = useState('All');
   const [selectedScale, setSelectedScale] = useState('all');
   const [metaInfo, setMetaInfo] = useState({ title: '', description: '' });

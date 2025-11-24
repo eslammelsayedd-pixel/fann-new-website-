@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -89,7 +90,7 @@ const servicesData = [
         image: "https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=800&q=75",
         services: [ "Custom Stand Design & Build", "Modular & Reusable Systems", "Turnkey Project Management", "In-House Fabrication & Production", "Premium Interior Fit-Out" ],
         imagePosition: "right" as "right",
-        link: "/services/custom-exhibition-stands-dubai"
+        link: "/portfolio?category=exhibition"
     },
     {
         icon: <Calendar size={40} />,
