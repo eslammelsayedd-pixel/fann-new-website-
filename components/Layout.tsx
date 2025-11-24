@@ -4,6 +4,7 @@ import Header from './Header';
 import Footer from './Footer';
 import { Chatbot } from './Chatbot';
 import WhatsAppButton from './WhatsAppButton';
+import ExitIntentPopup from './ExitIntentPopup';
 import MetaPixelTracker from './MetaPixelTracker';
 
 interface LayoutProps {
@@ -17,7 +18,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <MetaPixelTracker />
       <main className="flex-grow">{children}</main>
       <Footer />
+      
+      {/* Conversion Tools */}
       <WhatsAppButton />
+      <ExitIntentPopup />
       <Chatbot />
     </div>
   );

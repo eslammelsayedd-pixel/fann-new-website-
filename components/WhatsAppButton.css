@@ -1,0 +1,98 @@
+
+/* Mobile-First Positioning */
+.wa-floating-button {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* Desktop Positioning */
+@media (min-width: 768px) {
+  .wa-floating-button {
+    left: auto;
+    right: 30px;
+    bottom: 30px;
+    transform: none;
+  }
+}
+
+/* Animations */
+@keyframes wa-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); transform: scale(1); }
+  70% { box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); transform: scale(1.05); }
+  100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); transform: scale(1); }
+}
+
+/* Only apply pulse to desktop to save battery on mobile/avoid distraction, 
+   or apply to both if strict requirement. Prompt says "Continuous subtle pulse". */
+.wa-anim-pulse {
+  animation: wa-pulse 2s infinite;
+}
+
+/* Variant A: Icon Only */
+.wa-variant-a {
+  width: 56px;
+  height: 56px;
+  background-color: #25D366;
+  border-radius: 50%;
+}
+
+@media (min-width: 768px) {
+  .wa-variant-a {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* Variant B: Icon + Text */
+.wa-variant-b {
+  background-color: #25D366;
+  padding: 12px 24px;
+  border-radius: 30px;
+  gap: 12px;
+  width: auto;
+  min-width: 140px;
+}
+
+.wa-variant-b:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(37, 211, 102, 0.6);
+}
+
+.wa-text {
+  color: white;
+  font-weight: 700;
+  font-size: 16px;
+  font-family: 'Manrope', sans-serif;
+  white-space: nowrap;
+}
+
+.wa-icon {
+  width: 28px;
+  height: 28px;
+  fill: white;
+}
+
+/* Entrance Animation */
+.wa-slide-in {
+  animation: slideUp 0.5s ease-out forwards;
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+@keyframes slideUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

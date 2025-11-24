@@ -1,20 +1,35 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
 
-# Run and deploy your AI Studio app
+# FANN WhatsApp Conversion System
 
-This contains everything you need to run your app locally.
+This module implements a high-conversion WhatsApp integration designed for mobile-first B2B users.
 
-View your app in AI Studio: https://ai.studio/apps/drive/1K0LyVrxaxSV2r2FZlQY8ZAE1_3m6DcTs
+## Components
 
-## Run Locally
+### 1. Floating WhatsApp Button (`components/WhatsAppButton.tsx`)
+- **Positioning**: Bottom-right (Desktop), Bottom-center (Mobile).
+- **Behavior**: Stays fixed on scroll.
+- **A/B Testing**: Automatically splits traffic 50/50 between "Icon Only" and "Icon + Text" variants. Persists selection via localStorage.
+- **Context-Aware**: Pre-fills message based on the page (Homepage, Portfolio, Services, etc.).
 
-**Prerequisites:**  Node.js
+### 2. Exit Intent Popup (`components/ExitIntentPopup.tsx`)
+- **Triggers**: 
+  - Mouse leaving top of window (Desktop).
+  - Scrolling past 50% (Mobile/General).
+  - 30 seconds time on page.
+- **Offer**: 5% Discount + Free 3D Design.
+- **Frequency**: Shows once per session (controlled by `exit_popup_shown` in localStorage).
 
+### 3. Configuration (`whatsappConfig.ts`)
+- Edit `MESSAGES` object to change pre-filled text.
+- Edit `WHATSAPP_PHONE` to update destination number.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### 4. Analytics (`whatsappTracking.ts`)
+- Pushes `whatsapp_click` event to Google Tag Manager (dataLayer).
+- Tracks: Page Type, Variant (A/B), Scroll Depth, Time on Page.
+
+## A/B Testing
+The A/B test runs automatically. To check which variant is active for a user, check `localStorage.getItem('fann_ab_wa_button_v1')`.
+
+## Deployment
+1. Ensure GTM container is published to receive the `whatsapp_click` event.
+2. Verify `WHATSAPP_PHONE` is correct format (no plus sign, country code included).
