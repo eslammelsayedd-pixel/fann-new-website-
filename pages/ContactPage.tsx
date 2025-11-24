@@ -4,7 +4,6 @@ import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 import { Mail, Phone, MapPin, Loader2, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { AvailabilityBadge } from '../components/UrgencySystem';
 
 
 const WhatsAppIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -169,7 +168,6 @@ const ContactPage: React.FC = () => {
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
             >
-                <AvailabilityBadge />
                 
                 {isSent ? (
                      <div className="flex flex-col items-center justify-center h-full text-center py-12">

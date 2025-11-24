@@ -6,7 +6,6 @@ import SEO from '../components/SEO';
 import { motion, AnimatePresence } from 'framer-motion';
 import ScrollReveal from '../components/ScrollReveal';
 import OptimizedImage from '../components/OptimizedImage';
-import { DeadlineCalculator } from '../components/UrgencySystem';
 
 // --- DATA ---
 
@@ -402,9 +401,6 @@ const HomePage: React.FC = () => {
             />
             
             <HeroSection />
-            <ScrollReveal>
-                <DeadlineCalculator />
-            </ScrollReveal>
             <AboutSection />
             <ServicesSection />
             <WhyChooseUs />

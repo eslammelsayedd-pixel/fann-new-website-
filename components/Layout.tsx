@@ -5,7 +5,6 @@ import Footer from './Footer';
 import { Chatbot } from './Chatbot';
 import WhatsAppButton from './WhatsAppButton';
 import MetaPixelTracker from './MetaPixelTracker';
-import { UrgencyBar } from './UrgencySystem';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -14,7 +13,6 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen bg-fann-charcoal text-fann-grey">
-      <UrgencyBar />
       <Header />
       <MetaPixelTracker />
       <main className="flex-grow">{children}</main>
