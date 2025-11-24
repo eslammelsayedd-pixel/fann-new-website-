@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
@@ -24,6 +25,7 @@ import ModularSystemsPage from './pages/services/ModularSystemsPage';
 import TurnkeyServicesPage from './pages/services/TurnkeyServicesPage';
 import FabricationPage from './pages/services/FabricationPage';
 import FitOutPage from './pages/services/FitOutPage';
+import TestimonialsPage from './pages/TestimonialsPage';
 
 // New Lead Magnet Pages
 import ExhibitionGuidePage from './pages/resources/ExhibitionGuidePage';
@@ -49,6 +51,7 @@ const App: React.FC = () => {
                         <Route path="/services/interior-fitout-exhibition-spaces-dubai" element={<FitOutPage />} />
                         
                         <Route path="/portfolio" element={<PortfolioPage />} />
+                        <Route path="/testimonials" element={<TestimonialsPage />} />
                         <Route path="/fann-studio" element={<AIDesignStudioPage />} />
                         <Route path="/fann-studio/exhibition" element={<ExhibitionStudioPage />} />
                         <Route path="/fann-studio/exhibition/result" element={<DesignResultPage />} />
