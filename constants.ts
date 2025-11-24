@@ -1,3 +1,4 @@
+
 import { Project, Event, Testimonial, NavLink } from './types';
 
 export const navLinks: NavLink[] = [
@@ -40,45 +41,108 @@ export const supportedLanguages = [
 
 export const projects: Project[] = [
   
-  // ========================================
-  // EXHIBITION PROJECTS (Real Companies & Events)
-  // ========================================
+  // =============================================
+  // EXHIBITION PROJECTS (1-20)
+  // =============================================
   
+  // --- GITEX (Technology) ---
   {
     id: 1,
-    title: "GITEX Global 2024 - Technology Solutions",
+    title: "GITEX Global 2024 - Enterprise AI",
     client: "Deloitte Middle East",
     category: "exhibition",
     size: "120 sqm",
     configuration: "Island",
     location: "Dubai World Trade Centre",
-    industry: "Technology & Consulting",
+    industry: "Technology",
     year: 2024,
-    description: "Premium double-decker stand for Deloitte showcasing AI consulting services, blockchain solutions, and digital transformation tools. Featured interactive demos, VIP meeting rooms, and a main stage for presentations.",
+    description: "Premium double-decker stand showcasing AI consulting services and blockchain solutions with interactive demos and VIP meeting rooms.",
     image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=80",
     tags: ["Technology", "Large Scale", "GITEX", "Premium"],
     featured: true
   },
-
   {
     id: 2,
-    title: "Arab Health 2025 - Medical Equipment",
+    title: "GITEX 2023 - Cloud Infrastructure",
+    client: "Microsoft Azure",
+    category: "exhibition",
+    size: "95 sqm",
+    configuration: "Peninsula",
+    location: "Dubai World Trade Centre",
+    industry: "Technology",
+    year: 2023,
+    description: "Modern stand featuring cloud computing demos, developer workshops, and Azure AI showcase. Blue and white branding with interactive touchscreens.",
+    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&q=80",
+    tags: ["Technology", "Cloud", "GITEX"],
+    featured: false
+  },
+  {
+    id: 3,
+    title: "GITEX 2022 - 5G Solutions",
+    client: "Ericsson Middle East",
+    category: "exhibition",
+    size: "18 sqm",
+    configuration: "Inline",
+    location: "Dubai World Trade Centre",
+    industry: "Telecommunications",
+    year: 2022,
+    description: "Compact stand demonstrating 5G technology with live network demos and IoT applications. Efficient use of small space with eye-catching LED displays.",
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80",
+    tags: ["Technology", "Telecom", "GITEX", "Small"],
+    featured: false
+  },
+
+  // --- Arab Health (Healthcare) ---
+  {
+    id: 4,
+    title: "Arab Health 2024 - Medical Imaging",
     client: "Siemens Healthineers",
     category: "exhibition",
     size: "96 sqm",
     configuration: "Island",
     location: "Dubai World Trade Centre",
-    industry: "Healthcare & Medical Technology",
-    year: 2025,
-    description: "Sophisticated stand displaying advanced medical imaging equipment, diagnostic tools, and healthcare IT solutions. Clean clinical design with dedicated demo areas and consultation zones.",
+    industry: "Healthcare",
+    year: 2024,
+    description: "Sophisticated stand displaying advanced MRI and CT equipment with clinical consultation zones and technical demonstration areas.",
     image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&q=80",
-    tags: ["Healthcare", "Arab Health", "Medical", "Technology"],
+    tags: ["Healthcare", "Arab Health", "Medical Equipment"],
     featured: true
   },
-
   {
-    id: 3,
-    title: "Gulfood 2024 - Food & Beverage",
+    id: 5,
+    title: "Arab Health 2023 - Pharmaceutical Solutions",
+    client: "Julphar Pharmaceuticals",
+    category: "exhibition",
+    size: "32 sqm",
+    configuration: "Corner",
+    location: "Dubai World Trade Centre",
+    industry: "Pharmaceuticals",
+    year: 2023,
+    description: "Professional pharma stand with product displays, consultation area, and educational materials. Clean white and blue healthcare aesthetic.",
+    image: "https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=1200&q=80",
+    tags: ["Healthcare", "Pharma", "Arab Health", "Small"],
+    featured: false
+  },
+  {
+    id: 6,
+    title: "Arab Health 2022 - Healthcare IT",
+    client: "Cerner Middle East",
+    category: "exhibition",
+    size: "24 sqm",
+    configuration: "Inline",
+    location: "Dubai World Trade Centre",
+    industry: "Healthcare Technology",
+    year: 2022,
+    description: "Compact tech-focused stand showcasing electronic health records and digital health solutions with demo stations.",
+    image: "https://images.unsplash.com/photo-1576671081837-49000212a370?w=1200&q=80",
+    tags: ["Healthcare", "Technology", "Arab Health", "Small"],
+    featured: false
+  },
+
+  // --- Gulfood (Food & Beverage) ---
+  {
+    id: 7,
+    title: "Gulfood 2024 - Dairy Products",
     client: "Lactalis Group",
     category: "exhibition",
     size: "64 sqm",
@@ -86,162 +150,223 @@ export const projects: Project[] = [
     location: "Dubai World Trade Centre",
     industry: "Food & Beverage",
     year: 2024,
-    description: "Elegant stand for Lactalis dairy products featuring refrigerated display units, tasting bar, product showcase wall, and meeting area. Warm lighting with natural wood finishes.",
+    description: "Elegant stand with refrigerated displays, tasting bar, and product showcase. Warm wood finishes with premium branding.",
     image: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1200&q=80",
     tags: ["Food & Beverage", "Gulfood", "Premium"],
     featured: true
   },
-
   {
-    id: 4,
-    title: "GITEX 2024 - Cloud Computing",
-    client: "Google Cloud MENA",
-    category: "exhibition",
-    size: "150 sqm",
-    configuration: "Island",
-    location: "Dubai World Trade Centre",
-    industry: "Technology & Cloud",
-    year: 2024,
-    description: "Cutting-edge stand showcasing Google Cloud infrastructure, AI/ML tools, and workspace solutions. Featured interactive cloud demo zones, developer workshops area, and executive briefing center.",
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&q=80",
-    tags: ["Technology", "Cloud", "GITEX", "Large Scale"],
-    featured: false
-  },
-
-  {
-    id: 5,
-    title: "GITEX 2024 - AI Hardware",
-    client: "NVIDIA Middle East",
-    category: "exhibition",
-    size: "180 sqm",
-    configuration: "Island",
-    location: "Dubai World Trade Centre",
-    industry: "Technology & AI",
-    year: 2024,
-    description: "Impressive two-story stand featuring NVIDIA GPU technology, AI data center solutions, and autonomous vehicle demos. Dark theme with neon green accents and live AI demonstrations.",
-    image: "https://images.unsplash.com/photo-1591488320449-011701bb6704?w=1200&q=80",
-    tags: ["AI", "Technology", "GITEX", "Large Scale", "Premium"],
-    featured: true
-  },
-
-  {
-    id: 6,
-    title: "Gulfood 2024 - Premium Foods",
+    id: 8,
+    title: "Gulfood 2023 - UAE Food Brands",
     client: "Agthia Group",
     category: "exhibition",
     size: "48 sqm",
     configuration: "Corner",
     location: "Dubai World Trade Centre",
     industry: "Food & Beverage",
-    year: 2024,
-    description: "Modern stand for UAE's leading F&B company showcasing water, juice, and dairy products. Interactive product sampling, digital menu boards, and sustainability messaging.",
+    year: 2023,
+    description: "Modern stand showcasing Al Ain water, juice, and dairy products with interactive sampling stations and sustainability messaging.",
     image: "https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=1200&q=80",
     tags: ["Food & Beverage", "Gulfood", "UAE Brands"],
     featured: false
   },
-
-  {
-    id: 7,
-    title: "Arab Health 2025 - Pharmaceutical",
-    client: "Julphar Pharmaceuticals",
-    category: "exhibition",
-    size: "54 sqm",
-    configuration: "Peninsula",
-    location: "Dubai World Trade Centre",
-    industry: "Pharmaceuticals",
-    year: 2025,
-    description: "Professional pharmaceutical stand with product display cabinets, consultation rooms, and educational material zones. Clean white design with blue accents representing healthcare trust.",
-    image: "https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=1200&q=80",
-    tags: ["Healthcare", "Pharma", "Arab Health"],
-    featured: false
-  },
-
-  {
-    id: 8,
-    title: "Beautyworld Middle East 2024",
-    client: "Babyliss Pro Middle East",
-    category: "exhibition",
-    size: "36 sqm",
-    configuration: "Inline",
-    location: "Dubai World Trade Centre",
-    industry: "Beauty & Personal Care",
-    year: 2024,
-    description: "Stylish beauty equipment showcase with live demonstration stations, product displays, and styling zones. Modern salon aesthetic with perfect lighting for product demos.",
-    image: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=1200&q=80",
-    tags: ["Beauty", "Beautyworld", "Retail"],
-    featured: false
-  },
-
   {
     id: 9,
-    title: "The Big 5 Construction 2024",
-    client: "Schneider Electric Gulf",
+    title: "Gulfood 2022 - Coffee & Beverages",
+    client: "Monin Middle East",
+    category: "exhibition",
+    size: "20 sqm",
+    configuration: "Inline",
+    location: "Dubai World Trade Centre",
+    industry: "Beverages",
+    year: 2022,
+    description: "Compact cafe-style stand with live barista demos, product tasting, and vibrant branding. Efficient small-space design.",
+    image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80",
+    tags: ["Food & Beverage", "Gulfood", "Small", "Beverages"],
+    featured: false
+  },
+
+  // --- The Big 5 (Construction) ---
+  {
+    id: 10,
+    title: "The Big 5 Dubai 2024",
+    client: "Schneider Electric",
     category: "exhibition",
     size: "72 sqm",
     configuration: "Peninsula",
     location: "Dubai World Trade Centre",
-    industry: "Construction & Building Tech",
+    industry: "Construction Technology",
     year: 2024,
-    description: "Technical stand featuring electrical systems, smart building solutions, and energy management products. Interactive displays with live automation demos.",
+    description: "Technical stand featuring smart building solutions, electrical systems, and energy management with live automation demos.",
     image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1200&q=80",
     tags: ["Construction", "Technology", "Big 5"],
     featured: false
   },
-
   {
-    id: 10,
-    title: "ADIPEC 2024 Energy Conference",
+    id: 11,
+    title: "The Big 5 2023 - Building Materials",
+    client: "Al Ghurair Iron & Steel",
+    category: "exhibition",
+    size: "56 sqm",
+    configuration: "Corner",
+    location: "Dubai World Trade Centre",
+    industry: "Construction Materials",
+    year: 2023,
+    description: "Industrial stand displaying steel products, technical specifications, and construction applications with material samples.",
+    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1200&q=80",
+    tags: ["Construction", "Materials", "Big 5"],
+    featured: false
+  },
+  {
+    id: 12,
+    title: "The Big 5 2022 - Smart Lighting",
+    client: "Philips Lighting Middle East",
+    category: "exhibition",
+    size: "28 sqm",
+    configuration: "Inline",
+    location: "Dubai World Trade Centre",
+    industry: "Construction",
+    year: 2022,
+    description: "Small but impactful stand showcasing architectural LED lighting solutions with working demos and design consultation area.",
+    image: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=1200&q=80",
+    tags: ["Construction", "Lighting", "Big 5", "Small"],
+    featured: false
+  },
+
+  // --- Automechanika (Automotive) ---
+  {
+    id: 13,
+    title: "Automechanika Dubai 2024",
+    client: "Bosch Automotive",
+    category: "exhibition",
+    size: "84 sqm",
+    configuration: "Island",
+    location: "Dubai World Trade Centre",
+    industry: "Automotive",
+    year: 2024,
+    description: "Professional automotive stand with parts display, diagnostic equipment demos, and technical workshop area. Red and black branding.",
+    image: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1200&q=80",
+    tags: ["Automotive", "Parts", "Automechanika"],
+    featured: false
+  },
+  {
+    id: 14,
+    title: "Automechanika 2023 - Tires",
+    client: "Bridgestone Middle East",
+    category: "exhibition",
+    size: "36 sqm",
+    configuration: "Corner",
+    location: "Dubai World Trade Centre",
+    industry: "Automotive",
+    year: 2023,
+    description: "Tire showcase stand with product displays, technical information, and consultation zone. Bold branding with product wall.",
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80",
+    tags: ["Automotive", "Tires", "Automechanika"],
+    featured: false
+  },
+
+  // --- Beautyworld (Beauty & Cosmetics) ---
+  {
+    id: 15,
+    title: "Beautyworld Middle East 2024",
+    client: "L'Oréal Middle East",
+    category: "exhibition",
+    size: "68 sqm",
+    configuration: "Peninsula",
+    location: "Dubai World Trade Centre",
+    industry: "Beauty & Cosmetics",
+    year: 2024,
+    description: "Elegant beauty stand with product displays, makeup stations, hair styling area, and brand storytelling zones. Premium finishes throughout.",
+    image: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=1200&q=80",
+    tags: ["Beauty", "Cosmetics", "Beautyworld", "Premium"],
+    featured: false
+  },
+  {
+    id: 16,
+    title: "Beautyworld 2023 - Hair Care",
+    client: "GHD Middle East",
+    category: "exhibition",
+    size: "24 sqm",
+    configuration: "Inline",
+    location: "Dubai World Trade Centre",
+    industry: "Beauty",
+    year: 2023,
+    description: "Compact salon-style stand with live styling demos, product displays, and consultation area. Modern black and gold aesthetic.",
+    image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1200&q=80",
+    tags: ["Beauty", "Hair Care", "Beautyworld", "Small"],
+    featured: false
+  },
+
+  // --- ADIPEC (Energy) ---
+  {
+    id: 17,
+    title: "ADIPEC 2024 - Energy Solutions",
     client: "Shell Middle East",
     category: "exhibition",
     size: "200 sqm",
     configuration: "Island",
     location: "ADNEC Abu Dhabi",
-    industry: "Energy & Oil",
+    industry: "Energy",
     year: 2024,
-    description: "Corporate mega-stand showcasing energy transition solutions, renewable projects, and LNG technology. Featured theater presentation area, executive lounge, and multiple meeting rooms.",
+    description: "Massive corporate stand showcasing LNG technology, renewable energy projects, and digital solutions with theater, lounge, and meeting rooms.",
     image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1200&q=80",
-    tags: ["Energy", "ADIPEC", "Abu Dhabi", "Large Scale", "Premium"],
+    tags: ["Energy", "ADIPEC", "Large Scale", "Premium"],
     featured: true
   },
-
   {
-    id: 11,
-    title: "Gulfood Manufacturing 2024",
-    client: "Tetra Pak Middle East",
+    id: 18,
+    title: "ADIPEC 2023 - Oilfield Services",
+    client: "Schlumberger Middle East",
     category: "exhibition",
-    size: "80 sqm",
+    size: "88 sqm",
+    configuration: "Peninsula",
+    location: "ADNEC Abu Dhabi",
+    industry: "Energy",
+    year: 2023,
+    description: "Technical stand featuring drilling technology, digital oilfield solutions, and consultation areas. Professional industrial aesthetic.",
+    image: "https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=1200&q=80",
+    tags: ["Energy", "ADIPEC", "Industrial"],
+    featured: false
+  },
+
+  // --- Cityscape (Real Estate) ---
+  {
+    id: 19,
+    title: "Cityscape Global 2024",
+    client: "Emaar Properties",
+    category: "exhibition",
+    size: "120 sqm",
     configuration: "Island",
     location: "Dubai World Trade Centre",
-    industry: "Food Processing",
+    industry: "Real Estate",
     year: 2024,
-    description: "Industrial stand displaying packaging machinery, processing solutions, and automation systems. Live equipment demonstrations and technical consultation areas.",
-    image: "https://images.unsplash.com/photo-1565688534245-05d6b5be184a?w=1200&q=80",
-    tags: ["Food Tech", "Manufacturing", "Industrial"],
-    featured: false
+    description: "Prestigious stand showcasing luxury developments with large-format visuals, VR property tours, and VIP consultation lounges.",
+    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80",
+    tags: ["Real Estate", "Luxury", "Cityscape", "Large Scale"],
+    featured: true
   },
-
   {
-    id: 12,
-    title: "GITEX 2024 - Cybersecurity",
-    client: "Trend Micro DMCC",
+    id: 20,
+    title: "Cityscape 2023 - Developer Showcase",
+    client: "Damac Properties",
     category: "exhibition",
-    size: "42 sqm",
-    configuration: "Corner",
+    size: "64 sqm",
+    configuration: "Peninsula",
     location: "Dubai World Trade Centre",
-    industry: "Cybersecurity",
-    year: 2024,
-    description: "Secure-themed stand showcasing cybersecurity solutions with live threat simulation demos, security operations center mockup, and consultation zones.",
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&q=80",
-    tags: ["Cybersecurity", "Technology", "GITEX"],
+    industry: "Real Estate",
+    year: 2023,
+    description: "Elegant property showcase with project displays, payment plan information, and sales consultation areas.",
+    image: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&q=80",
+    tags: ["Real Estate", "Cityscape"],
     featured: false
   },
 
-  // ========================================
-  // EVENTS PROJECTS (Real Companies & Venues)
-  // ========================================
+  // =============================================
+  // EVENTS PROJECTS (21-28)
+  // =============================================
 
   {
-    id: 13,
+    id: 21,
     title: "Emirates NBD GenAI Summit 2025",
     client: "Emirates NBD Bank",
     category: "event",
@@ -250,14 +375,13 @@ export const projects: Project[] = [
     industry: "Banking",
     eventType: "Corporate Summit",
     year: 2025,
-    description: "Premium technology conference bringing together global AI experts from OpenAI, AWS, and McKinsey. Featured main stage, breakout sessions, exhibition area, and networking lounge. Sophisticated AV setup with LED walls.",
+    description: "Premium technology conference bringing together global AI experts. Featured main stage, breakout sessions, exhibition area, and networking lounge.",
     image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=80",
     tags: ["Corporate", "Technology", "Summit", "Banking"],
     featured: true
   },
-
   {
-    id: 14,
+    id: 22,
     title: "HSBC MENAT Future Forum 2025",
     client: "HSBC Bank Middle East",
     category: "event",
@@ -266,14 +390,13 @@ export const projects: Project[] = [
     industry: "Finance",
     eventType: "Financial Conference",
     year: 2025,
-    description: "Three-day financial markets forum for institutional investors and regulators. Multiple conference halls, VIP networking areas, exhibition zone, and gala dinner setup.",
+    description: "Three-day financial markets forum for institutional investors and regulators. Multiple conference halls, VIP networking areas, and gala dinner setup.",
     image: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200&q=80",
     tags: ["Finance", "Conference", "Luxury", "Corporate"],
     featured: true
   },
-
   {
-    id: 15,
+    id: 23,
     title: "Luxury Brand Launch - Swiss Watches",
     client: "Rolex Middle East",
     category: "event",
@@ -282,14 +405,13 @@ export const projects: Project[] = [
     industry: "Luxury",
     eventType: "Product Launch",
     year: 2024,
-    description: "Exclusive evening event for new watch collection launch. Elegant setup with display cases, ambient lighting, champagne service, and fountain view backdrop. Black and gold theme.",
+    description: "Exclusive evening event for new watch collection launch. Elegant setup with display cases, ambient lighting, and fountain view backdrop.",
     image: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1200&q=80",
     tags: ["Luxury", "Product Launch", "VIP", "Retail"],
     featured: true
   },
-
   {
-    id: 16,
+    id: 24,
     title: "Step Conference 2024",
     client: "Step Group",
     category: "event",
@@ -298,14 +420,13 @@ export const projects: Project[] = [
     industry: "Technology",
     eventType: "Tech Conference",
     year: 2024,
-    description: "Major startup and tech conference with 6 specialized tracks (AI, Fintech, Digital). Multiple stages, exhibition area, investor lounge, and networking zones.",
+    description: "Major startup and tech conference with 6 specialized tracks. Multiple stages, exhibition area, investor lounge, and networking zones.",
     image: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1200&q=80",
     tags: ["Startups", "Technology", "Conference", "Large Scale"],
     featured: false
   },
-
   {
-    id: 17,
+    id: 25,
     title: "Emirates NBD Annual Gala Dinner",
     client: "Emirates NBD Bank",
     category: "event",
@@ -314,14 +435,13 @@ export const projects: Project[] = [
     industry: "Banking",
     eventType: "Corporate Gala",
     year: 2024,
-    description: "Elegant annual appreciation gala with premium table settings, stage entertainment, award ceremony setup, and sophisticated lighting design. Navy blue and gold theme.",
+    description: "Elegant annual appreciation gala with premium table settings, stage entertainment, award ceremony setup, and sophisticated lighting design.",
     image: "https://images.unsplash.com/photo-1519167758481-83f29da8c8d6?w=1200&q=80",
     tags: ["Gala", "Corporate", "Luxury", "Banking"],
     featured: false
   },
-
   {
-    id: 18,
+    id: 26,
     title: "Arabian Luxury Dubai 2024",
     client: "Various Luxury Brands",
     category: "event",
@@ -330,30 +450,28 @@ export const projects: Project[] = [
     industry: "Luxury",
     eventType: "Luxury Showcase",
     year: 2024,
-    description: "Invitation-only luxury event featuring private properties, yachts, and premium experiences. Elegant display areas, VIP networking lounges, and premium catering.",
+    description: "Invitation-only luxury event featuring private properties, yachts, and premium experiences. Elegant display areas and VIP lounges.",
     image: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=80",
     tags: ["Luxury", "VIP", "Networking", "Premium"],
     featured: true
   },
-
   {
-    id: 19,
+    id: 27,
     title: "Dubai FinTech Summit 2024",
-    client: "Emirates NBD & Dubai Economy",
+    client: "Dubai Economy",
     category: "event",
     capacity: "2,000 attendees",
     location: "Dubai World Trade Centre",
     industry: "Fintech",
     eventType: "Industry Summit",
     year: 2024,
-    description: "Major fintech conference aligned with Dubai D33 Economic Agenda. Exhibition stands, innovation showcase, main stage, breakout rooms, and startup pitch area.",
+    description: "Major fintech conference aligned with Dubai D33 Economic Agenda. Exhibition stands, innovation showcase, main stage, and startup pitch area.",
     image: "https://images.unsplash.com/photo-1556155092-490a1ba16284?w=1200&q=80",
     tags: ["Fintech", "Technology", "Summit", "Banking"],
     featured: false
   },
-
   {
-    id: 20,
+    id: 28,
     title: "Fashion Futures Dubai 2024",
     client: "Dubai Design District",
     category: "event",
@@ -362,18 +480,18 @@ export const projects: Project[] = [
     industry: "Fashion",
     eventType: "Fashion Conference",
     year: 2024,
-    description: "Luxury fashion industry summit with runway shows, exhibition areas, panel discussion stages, and VIP networking lounges. Contemporary design with fashion-forward aesthetics.",
+    description: "Luxury fashion industry summit with runway shows, exhibition areas, panel discussion stages, and VIP networking lounges.",
     image: "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=1200&q=80",
     tags: ["Fashion", "Luxury", "Conference", "Design"],
     featured: false
   },
 
-  // ========================================
-  // INTERIOR DESIGN PROJECTS (Real Locations)
-  // ========================================
+  // =============================================
+  // INTERIOR DESIGN PROJECTS (29-40)
+  // =============================================
 
   {
-    id: 21,
+    id: 29,
     title: "Emirates NBD Executive Office DIFC",
     client: "Emirates NBD Bank",
     category: "interior",
@@ -382,14 +500,13 @@ export const projects: Project[] = [
     industry: "Banking",
     spaceType: "Corporate Office",
     year: 2024,
-    description: "Premium executive office suite with glass partitions, custom Italian furniture, meeting rooms, private offices, and reception area. Sophisticated navy blue and gold finishes with marble accents.",
+    description: "Premium executive office suite with glass partitions, custom Italian furniture, meeting rooms, and sophisticated navy blue and gold finishes.",
     image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80",
     tags: ["Corporate", "Office", "Luxury", "Banking"],
     featured: true
   },
-
   {
-    id: 22,
+    id: 30,
     title: "HSBC Private Banking Lounge",
     client: "HSBC Bank Middle East",
     category: "interior",
@@ -398,14 +515,13 @@ export const projects: Project[] = [
     industry: "Banking",
     spaceType: "Banking Lounge",
     year: 2024,
-    description: "Ultra-luxury private banking lounge with consultation rooms, waiting area, digital displays, and premium coffee service. Contemporary British design with Middle Eastern influences.",
+    description: "Ultra-luxury private banking lounge with consultation rooms, waiting area, and premium coffee service. Contemporary British design.",
     image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80",
     tags: ["Banking", "Luxury", "Lounge", "Corporate"],
     featured: true
   },
-
   {
-    id: 23,
+    id: 31,
     title: "Deloitte Consulting Hub",
     client: "Deloitte Middle East",
     category: "interior",
@@ -414,14 +530,13 @@ export const projects: Project[] = [
     industry: "Consulting",
     spaceType: "Corporate Office",
     year: 2024,
-    description: "Modern open-plan office with collaboration zones, meeting pods, innovation lab, and client presentation center. Sustainable materials and smart building technology throughout.",
+    description: "Modern open-plan office with collaboration zones, meeting pods, innovation lab, and client presentation center. Sustainable materials.",
     image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1200&q=80",
     tags: ["Corporate", "Office", "Consulting", "Modern"],
     featured: false
   },
-
   {
-    id: 24,
+    id: 32,
     title: "Google Cloud Regional Office",
     client: "Google Cloud MENA",
     category: "interior",
@@ -430,14 +545,13 @@ export const projects: Project[] = [
     industry: "Technology",
     spaceType: "Tech Office",
     year: 2024,
-    description: "Vibrant tech office space with open workstations, creative meeting rooms, game area, cafeteria, and innovation showcase zone. Signature Google colors and playful design elements.",
+    description: "Vibrant tech office space with open workstations, creative meeting rooms, game area, and innovation showcase zone.",
     image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1200&q=80",
     tags: ["Technology", "Office", "Creative", "Modern"],
     featured: true
   },
-
   {
-    id: 25,
+    id: 33,
     title: "Rolex Boutique Dubai Mall",
     client: "Rolex Middle East",
     category: "interior",
@@ -446,14 +560,13 @@ export const projects: Project[] = [
     industry: "Retail",
     spaceType: "Luxury Retail",
     year: 2024,
-    description: "Prestigious watch boutique with custom display cases, VIP consultation room, secure vault, and elegant seating areas. Premium materials including marble, brass, and leather throughout.",
+    description: "Prestigious watch boutique with custom display cases, VIP consultation room, secure vault, and elegant seating areas.",
     image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=80",
     tags: ["Retail", "Luxury", "Watches", "Premium"],
     featured: true
   },
-
   {
-    id: 26,
+    id: 34,
     title: "Siemens Healthcare Clinic",
     client: "Siemens Healthineers",
     category: "interior",
@@ -462,14 +575,13 @@ export const projects: Project[] = [
     industry: "Healthcare",
     spaceType: "Medical Facility",
     year: 2025,
-    description: "State-of-the-art medical diagnostic center with imaging rooms, consultation areas, waiting lounge, and reception. Clean clinical design with calming color palette and patient-focused layout.",
+    description: "State-of-the-art medical diagnostic center with imaging rooms, consultation areas, and reception. Clean clinical design.",
     image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1200&q=80",
     tags: ["Healthcare", "Medical", "Clinical", "Technology"],
     featured: false
   },
-
   {
-    id: 27,
+    id: 35,
     title: "Tetra Pak Innovation Center",
     client: "Tetra Pak Middle East",
     category: "interior",
@@ -478,30 +590,28 @@ export const projects: Project[] = [
     industry: "Food Tech",
     spaceType: "Innovation Lab",
     year: 2024,
-    description: "Industrial-modern innovation center with product testing lab, demonstration kitchen, meeting rooms, and exhibition area. Combines technical functionality with client-facing presentation spaces.",
+    description: "Industrial-modern innovation center with product testing lab, demonstration kitchen, meeting rooms, and exhibition area.",
     image: "https://images.unsplash.com/photo-1497366412874-3415097a27e7?w=1200&q=80",
     tags: ["Industrial", "Innovation", "Food Tech", "Commercial"],
     featured: false
   },
-
   {
-    id: 28,
+    id: 36,
     title: "La Petite Maison Restaurant",
     client: "DIFC Restaurants Group",
     category: "interior",
-    size: "320 sqm (120 seats)",
+    size: "320 sqm",
     location: "Dubai International Financial Centre",
     industry: "Hospitality",
     spaceType: "Fine Dining",
     year: 2024,
-    description: "Upscale French Mediterranean restaurant with open kitchen, wine cellar display, private dining room, and outdoor terrace. Elegant French bistro aesthetic with Dubai luxury touches.",
+    description: "Upscale French Mediterranean restaurant with open kitchen, wine cellar display, private dining room, and outdoor terrace.",
     image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=80",
     tags: ["Restaurant", "Hospitality", "Luxury", "Fine Dining"],
     featured: true
   },
-
   {
-    id: 29,
+    id: 37,
     title: "Fitness First Platinum Club",
     client: "Fitness First Middle East",
     category: "interior",
@@ -510,14 +620,13 @@ export const projects: Project[] = [
     industry: "Fitness",
     spaceType: "Fitness Center",
     year: 2024,
-    description: "Premium gym facility with cardio zone, free weights area, functional training space, studio rooms, spa, and juice bar. Modern industrial aesthetic with motivational branding.",
+    description: "Premium gym facility with cardio zone, free weights area, functional training space, studio rooms, spa, and juice bar.",
     image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&q=80",
     tags: ["Fitness", "Wellness", "Commercial", "Modern"],
     featured: false
   },
-
   {
-    id: 30,
+    id: 38,
     title: "Address Hotels Executive Lounge",
     client: "Address Hotels + Resorts",
     category: "interior",
@@ -526,14 +635,13 @@ export const projects: Project[] = [
     industry: "Hospitality",
     spaceType: "Hotel Lounge",
     year: 2024,
-    description: "Sophisticated hotel executive lounge with reception, seating zones, business center, breakfast area, and bar. Contemporary luxury design with Arabian hospitality elements.",
+    description: "Sophisticated hotel executive lounge with reception, seating zones, business center, breakfast area, and bar.",
     image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&q=80",
     tags: ["Hotel", "Hospitality", "Luxury", "Lounge"],
     featured: false
   },
-
   {
-    id: 31,
+    id: 39,
     title: "Private Villa Emirates Hills",
     client: "Private Client",
     category: "interior",
@@ -542,14 +650,13 @@ export const projects: Project[] = [
     industry: "Residential",
     spaceType: "Luxury Residence",
     year: 2024,
-    description: "Ultra-luxury villa interior featuring grand entrance, formal living, family lounge, dining room, chef's kitchen, home theater, master suite, and spa. Custom Italian furniture and marble throughout.",
+    description: "Ultra-luxury villa interior featuring grand entrance, formal living, family lounge, dining room, chef's kitchen, and home theater.",
     image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80",
     tags: ["Residential", "Villa", "Ultra Luxury", "Custom"],
     featured: true
   },
-
   {
-    id: 32,
+    id: 40,
     title: "WeWork Co-Working Space",
     client: "WeWork Dubai",
     category: "interior",
@@ -558,7 +665,7 @@ export const projects: Project[] = [
     industry: "Real Estate",
     spaceType: "Co-Working",
     year: 2024,
-    description: "Flexible workspace with hot desks, private offices, meeting rooms, phone booths, lounge area, and pantry. Modern collaborative design with Instagram-worthy interiors and community focus.",
+    description: "Flexible workspace with hot desks, private offices, meeting rooms, phone booths, lounge area, and pantry.",
     image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1200&q=80",
     tags: ["Office", "Co-Working", "Modern", "Flexible"],
     featured: false

@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AnimatedPage from '../components/AnimatedPage';
@@ -43,7 +44,8 @@ const portfolioPageSchema = {
 
 const industries = [
   'All', 'Technology', 'Healthcare', 'Food & Beverage', 'Banking', 'Luxury', 
-  'Retail', 'Corporate', 'Hospitality', 'Energy', 'Fashion'
+  'Retail', 'Corporate', 'Hospitality', 'Energy', 'Fashion', 'Construction',
+  'Automotive', 'Telecommunications', 'Consulting', 'Real Estate', 'Fintech'
 ];
 
 const PortfolioPage: React.FC = () => {
