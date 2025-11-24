@@ -16,16 +16,21 @@ export interface Project {
   id: number;
   title: string;
   client: string;
-  service: 'Exhibitions' | 'Events' | 'Interior Design';
-  industry: 'Technology' | 'Healthcare' | 'Aviation' | 'Hospitality' | 'Real Estate' | 'Luxury' | 'Corporate' | 'Retail' | 'Residential' | 'Automotive' | 'Energy' | 'Finance' | 'Food & Beverage' | 'Culture' | 'Art & Design' | 'Construction' | 'Entertainment' | 'Security' | 'Manufacturing' | 'Education' | 'Logistics' | 'Defence' | 'Equestrian' | 'Media' | 'Fitness' | 'Beauty';
-  scale: 'Boutique' | 'Standard' | 'Large' | 'Mega';
+  category: 'exhibition' | 'event' | 'interior';
+  industry: string;
   year: number;
   image: string;
-  sqm: number;
+  description: string;
   location: string;
-  timeline: string;
-  challenge: string;
-  result: string;
+  tags?: string[];
+  featured?: boolean;
+  
+  // Category specific fields
+  size?: string; // e.g., "120 sqm"
+  configuration?: string; // e.g., "Island" (Exhibitions)
+  capacity?: string; // e.g., "350 attendees" (Events)
+  eventType?: string; // e.g., "Corporate Summit" (Events)
+  spaceType?: string; // e.g., "Corporate Office" (Interiors)
 }
 
 export interface Event {

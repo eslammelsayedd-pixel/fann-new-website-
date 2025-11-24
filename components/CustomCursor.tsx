@@ -49,8 +49,8 @@ const CustomCursor: React.FC = () => {
     <motion.div
       className="custom-cursor"
       style={{
-        translateX: cursorXSpring,
-        translateY: cursorYSpring,
+        x: cursorXSpring,
+        y: cursorYSpring,
       }}
       animate={{
         scale: isHovering ? 2 : 1,
