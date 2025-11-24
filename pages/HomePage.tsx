@@ -1,9 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Check, ArrowDown, Globe, LayoutTemplate, Award, ChevronLeft, ChevronRight, Calculator, Download } from 'lucide-react';
+import { ArrowRight, Calculator, Download } from 'lucide-react';
 import SEO from '../components/SEO';
 import { motion, AnimatePresence } from 'framer-motion';
 import ScrollReveal from '../components/ScrollReveal';
+import OptimizedImage from '../components/OptimizedImage';
 
 // --- DATA ---
 
@@ -50,11 +52,12 @@ const ServiceCard: React.FC<{ title: string; description: string; image: string;
     <ScrollReveal delay={index * 0.1} className="group cursor-pointer">
         <Link to={link} className="block relative overflow-hidden aspect-[4/5] md:aspect-[3/4]">
             <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500 z-10"></div>
-            <img 
+            <OptimizedImage 
                 src={image} 
                 alt={title} 
                 className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105 grayscale-[30%] group-hover:grayscale-0" 
-                loading="lazy"
+                width={400}
+                height={533}
             />
             <div className="absolute bottom-0 left-0 right-0 p-8 z-20 transform transition-transform duration-500 translate-y-4 group-hover:translate-y-0">
                 <h3 className="text-2xl font-serif text-white mb-3">{title}</h3>
@@ -73,11 +76,12 @@ const ProjectCard: React.FC<{ title: string; category: string; image: string; li
     <ScrollReveal className="relative group cursor-pointer overflow-hidden">
         <Link to={link}>
             <div className="aspect-video overflow-hidden bg-gray-900">
-                <img 
+                <OptimizedImage 
                     src={image} 
                     alt={title} 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
-                    loading="lazy"
+                    width={600}
+                    height={338}
                 />
             </div>
             <div className="mt-4 flex justify-between items-end">
@@ -204,10 +208,12 @@ const AboutSection: React.FC = () => (
                 </ScrollReveal>
                 <ScrollReveal variant="scale" delay={0.2}>
                     <div className="relative">
-                        <img 
+                        <OptimizedImage 
                             src="https://images.pexels.com/photos/30556812/pexels-photo-30556812.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
                             alt="FANN Workshop Team" 
                             className="w-full rounded-sm shadow-2xl grayscale hover:grayscale-0 transition-all duration-700"
+                            width={600}
+                            height={400}
                         />
                         <div className="absolute -bottom-6 -left-6 bg-fann-charcoal-light p-6 border border-white/10 max-w-xs hidden md:block">
                             <p className="text-sm text-gray-300 italic">"Precision in every detail, from concept to construction."</p>

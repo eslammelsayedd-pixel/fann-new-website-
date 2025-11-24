@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
 const WhatsAppIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -8,9 +9,20 @@ const WhatsAppIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
 );
 
 const WhatsAppButton: React.FC = () => {
+    const [isVisible, setIsVisible] = useState(false);
     const phoneNumber = "971505667502";
     const message = "Hello FANN, I'm interested in your services and would like to discuss a project.";
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+    useEffect(() => {
+        // Defer loading of the button interaction until after main content paints
+        const timer = setTimeout(() => {
+            setIsVisible(true);
+        }, 2000);
+        return () => clearTimeout(timer);
+    }, []);
+
+    if (!isVisible) return null;
 
     return (
         <motion.a
@@ -20,7 +32,7 @@ const WhatsAppButton: React.FC = () => {
             className="fixed bottom-6 left-6 bg-[#25D366] text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center z-40"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 1, type: 'spring' }}
+            transition={{ type: 'spring', stiffness: 200, damping: 20 }}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             aria-label="Chat on WhatsApp"
