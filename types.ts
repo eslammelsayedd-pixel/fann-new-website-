@@ -15,12 +15,15 @@ export interface NavLink {
 
 export interface Project {
   id: number;
+  slug: string; // URL friendly identifier
   title: string;
+  subtitle?: string; // One-liner for hero sections
   client: string;
   category: 'exhibition' | 'event' | 'interior';
   industry: string;
   year: number;
-  image: string;
+  image: string; // Thumbnail
+  heroImage?: string; // Large banner image
   description: string;
   location: string;
   tags?: string[];
@@ -32,6 +35,39 @@ export interface Project {
   capacity?: string; // e.g., "350 attendees" (Events)
   eventType?: string; // e.g., "Corporate Summit" (Events)
   spaceType?: string; // e.g., "Corporate Office" (Interiors)
+
+  // Detailed Case Study Data
+  challenge?: {
+    description: string;
+    requirements: string[];
+  };
+  solution?: {
+    description: string;
+    highlights: { title: string; description: string }[];
+  };
+  results?: {
+    summary: string;
+    stats: { number: string; label: string }[];
+  };
+  specs?: {
+    structure?: { label: string; value: string }[];
+    technology?: { label: string; value: string }[];
+    materials?: { label: string; value: string }[];
+    timeline?: { label: string; value: string }[];
+  };
+  testimonial?: {
+    quote: string;
+    authorName: string;
+    authorTitle: string;
+    authorCompany: string;
+    authorPhoto?: string;
+  };
+  gallery?: {
+    image: string;
+    caption: string;
+    featured?: boolean;
+  }[];
+  similarProjects?: string[]; // List of slugs
 }
 
 export interface Event {

@@ -1,10 +1,11 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import AnimatedPage from '../components/AnimatedPage';
 import { projects } from '../constants';
 import SEO from '../components/SEO';
+import { ArrowRight, Maximize2, MapPin, Calendar } from 'lucide-react';
 
 const containerVariants = {
   hidden: { },
@@ -16,7 +17,7 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, scale: 0.8 },
+  hidden: { opacity: 0, scale: 0.95 },
   visible: { opacity: 1, scale: 1 },
 };
 
@@ -35,7 +36,7 @@ const portfolioPageSchema = {
             "item": {
                 "@type": "CreativeWork",
                 "name": project.title,
-                "url": `https://fann.ae/portfolio#${project.id}`,
+                "url": `https://fann.ae/portfolio/${project.slug}`,
                 "image": project.image,
                 "disambiguatingDescription": `${project.category} for ${project.client} (${project.year}) - ${project.industry} industry.`
             }
@@ -202,50 +203,57 @@ const PortfolioPage: React.FC = () => {
                     animate="visible"
                     exit={{ opacity: 0, scale: 0.8 }}
                     transition={{ duration: 0.3 }}
-                    className="group relative overflow-hidden rounded-sm shadow-lg border border-white/5 bg-black"
                   >
-                    <div className="aspect-[4/3] overflow-hidden">
-                        <picture>
-                            <source srcSet={`${project.image}&fm=webp`} type="image/webp" />
-                            <source srcSet={project.image} type="image/jpeg" />
-                            <img 
-                                src={project.image} 
-                                alt={project.title} 
-                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100" 
-                                loading="lazy"
-                            />
-                        </picture>
-                    </div>
-                    
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent opacity-90"></div>
-                    
-                    <div className="absolute top-4 left-4 flex gap-2">
-                        <span className="text-[10px] uppercase tracking-widest font-bold bg-fann-gold text-black px-2 py-1 rounded-sm">
-                            {project.category}
-                        </span>
-                        {project.featured && (
-                            <span className="text-[10px] uppercase tracking-widest font-bold bg-white text-black px-2 py-1 rounded-sm">
-                                Featured
+                    <Link to={`/portfolio/${project.slug || project.id}`} className="project-card-link" aria-label={`View details for ${project.title}`}>
+                      <article class="project-card">
+                        <div className="project-image-wrapper">
+                          <img 
+                            src={project.image} 
+                            alt={project.title} 
+                            loading="lazy"
+                          />
+                          <div className="project-overlay">
+                            <ArrowRight className="view-project-icon w-12 h-12" />
+                            <span className="view-project-text">View Project</span>
+                          </div>
+                        </div>
+                        
+                        <div className="project-card-content">
+                          <div className="flex gap-2 flex-wrap">
+                            <span className="text-[10px] uppercase tracking-widest font-bold bg-fann-gold text-black px-2 py-1 rounded-sm">
+                              {project.category}
                             </span>
-                        )}
-                    </div>
-
-                    <div className="absolute bottom-0 left-0 p-6 w-full transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                      <div className="mb-2 text-fann-gold text-xs uppercase tracking-widest font-bold">
-                        {project.client}
-                      </div>
-                      <h3 className="text-xl font-serif font-bold text-white mb-2 leading-tight">{project.title}</h3>
-                      <p className="text-gray-400 text-xs line-clamp-2 mb-4 group-hover:text-gray-300 transition-colors">
-                        {project.description}
-                      </p>
-                      
-                      <div className="flex flex-wrap gap-2 text-[10px] text-gray-500 border-t border-white/10 pt-3">
-                        {project.size && <span className="border border-white/10 px-2 py-1 rounded">{project.size}</span>}
-                        {project.capacity && <span className="border border-white/10 px-2 py-1 rounded">{project.capacity}</span>}
-                        {project.location && <span className="border border-white/10 px-2 py-1 rounded">{project.location.split(',')[0]}</span>}
-                        <span className="border border-white/10 px-2 py-1 rounded">{project.year}</span>
-                      </div>
-                    </div>
+                            {project.featured && (
+                              <span className="text-[10px] uppercase tracking-widest font-bold bg-white/10 text-white px-2 py-1 rounded-sm border border-white/20">
+                                Featured
+                              </span>
+                            )}
+                          </div>
+                          
+                          <p className="text-xs font-bold text-fann-gold uppercase tracking-widest mb-0">{project.client}</p>
+                          <h3 className="text-xl font-serif font-bold text-white leading-tight group-hover:text-fann-gold transition-colors">{project.title}</h3>
+                          <p className="text-gray-400 text-xs line-clamp-2 mb-2">
+                            {project.description}
+                          </p>
+                          
+                          <div className="flex flex-wrap gap-4 text-[11px] text-gray-500 border-t border-white/10 pt-3 mt-auto">
+                            {project.size && (
+                              <span className="flex items-center gap-1">
+                                <Maximize2 size={12} /> {project.size}
+                              </span>
+                            )}
+                            {project.location && (
+                              <span className="flex items-center gap-1">
+                                <MapPin size={12} /> {project.location.split(',')[0]}
+                              </span>
+                            )}
+                            <span className="flex items-center gap-1 ml-auto">
+                              <Calendar size={12} /> {project.year}
+                            </span>
+                          </div>
+                        </div>
+                      </article>
+                    </Link>
                   </motion.div>
                 ))
               ) : (

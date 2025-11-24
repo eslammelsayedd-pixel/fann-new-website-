@@ -7,6 +7,7 @@ import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import ServicesPage from './pages/ServicesPage';
 import PortfolioPage from './pages/PortfolioPage';
+import ProjectDetailPage from './pages/ProjectDetailPage'; // Import
 import AIDesignStudioPage from './pages/AIDesignStudioPage';
 import ExhibitionStudioPage from './pages/ExhibitionStudioPage';
 import DesignResultPage from './pages/DesignResultPage';
@@ -51,6 +52,8 @@ const App: React.FC = () => {
                         <Route path="/services/interior-fitout-exhibition-spaces-dubai" element={<FitOutPage />} />
                         
                         <Route path="/portfolio" element={<PortfolioPage />} />
+                        <Route path="/portfolio/:slug" element={<ProjectDetailPage />} /> {/* New Route */}
+                        
                         <Route path="/testimonials" element={<TestimonialsPage />} />
                         <Route path="/fann-studio" element={<AIDesignStudioPage />} />
                         <Route path="/fann-studio/exhibition" element={<ExhibitionStudioPage />} />
