@@ -89,8 +89,9 @@ const PortfolioPage: React.FC = () => {
         const industryMatch = selectedIndustry === 'All' || project.industry.includes(selectedIndustry) || (project.tags && project.tags.includes(selectedIndustry));
         
         // Scale Filter
+        // Only apply scale filter if the project has a size property (Events might not)
         const scaleFilterObj = scales.find(s => s.id === selectedScale);
-        const scaleMatch = scaleFilterObj ? scaleFilterObj.filter(project) : true;
+        const scaleMatch = (selectedScale === 'all') || (project.size && scaleFilterObj ? scaleFilterObj.filter(project) : true);
 
         return categoryMatch && industryMatch && scaleMatch;
     });
@@ -111,7 +112,7 @@ const PortfolioPage: React.FC = () => {
     
     setMetaInfo({ title: dynamicTitle, description: dynamicDescription });
 
-  }, [selectedCategory, selectedIndustry, selectedScale]);
+  }, [selectedCategory, selectedIndustry, selectedScale, categories]);
 
   return (
     <AnimatedPage>
@@ -235,7 +236,7 @@ const PortfolioPage: React.FC = () => {
                       <div className="flex flex-wrap gap-2 text-[10px] text-gray-500 border-t border-white/10 pt-3">
                         {project.size && <span className="border border-white/10 px-2 py-1 rounded">{project.size}</span>}
                         {project.capacity && <span className="border border-white/10 px-2 py-1 rounded">{project.capacity}</span>}
-                        {project.location && <span className="border border-white/10 px-2 py-1 rounded">{project.location}</span>}
+                        {project.location && <span className="border border-white/10 px-2 py-1 rounded">{project.location.split(',')[0]}</span>}
                         <span className="border border-white/10 px-2 py-1 rounded">{project.year}</span>
                       </div>
                     </div>
