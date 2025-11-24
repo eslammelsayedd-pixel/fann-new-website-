@@ -46,13 +46,7 @@ const WhatsAppButton: React.FC = () => {
     const date = new Date();
     const month = date.toLocaleString('default', { month: 'short' }).toLowerCase();
     
-    const params = new URLSearchParams();
-    params.append('text', message);
-    // UTM Params appended to the text usually for WA, but here we are constructing a direct WA Me link
-    // Standard UTMs aren't processed by WhatsApp app, but we can track them if we used a redirector.
-    // Per requirements: URL FORMAT: https://wa.me/...?text=...&utm_source=...
-    // Note: WhatsApp API ignores extra params like utm_source, but we will add them as requested for compliance.
-    
+    // URL FORMAT: https://wa.me/...?text=...&utm_source=...
     let url = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
     url += `&utm_source=${source}`;
     url += `&utm_medium=${UTM_CONFIG.medium}`;

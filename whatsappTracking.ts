@@ -5,7 +5,7 @@ declare global {
   }
 }
 
-interface WhatsAppEventParams {
+export interface WhatsAppEventParams {
   pageType: string;
   messageVariant: string;
   label: string;

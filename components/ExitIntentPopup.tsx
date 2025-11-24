@@ -10,7 +10,7 @@ const ExitIntentPopup: React.FC = () => {
   const [hasShown, setHasShown] = useState(false);
 
   useEffect(() => {
-    // Check cookie/storage
+    // Check storage
     const dismissed = localStorage.getItem('exit_popup_shown');
     if (dismissed) {
       setHasShown(true);
