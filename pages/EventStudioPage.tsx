@@ -218,7 +218,7 @@ const EventStudioPage: React.FC = () => {
         }
     };
 
-    const getInputClass = (fieldName: string) => `w-full bg-transparent border-b border-white/20 py-4 text-white placeholder-gray-600 transition-all duration-300 focus:outline-none focus:border-fann-gold rounded-none font-light ${errors[fieldName] ? 'border-red-500' : ''}`;
+    const getInputClass = (fieldName: string) => `w-full bg-transparent border-b border-white/20 py-4 text-base text-white placeholder-gray-600 transition-all duration-300 focus:outline-none focus:border-fann-gold rounded-none font-light ${errors[fieldName] ? 'border-red-500' : ''}`;
 
     return (
         <AnimatedPage>
@@ -237,7 +237,7 @@ const EventStudioPage: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="bg-[#0A0A0A] border border-white/5 p-6 sm:p-12 shadow-2xl relative overflow-hidden rounded-sm min-h-[600px] flex flex-col">
+                    <div className="bg-[#0A0A0A] border border-white/5 p-4 sm:p-12 shadow-2xl relative overflow-hidden rounded-sm min-h-[600px] flex flex-col">
                         
                         <StepIndicator currentStep={currentStep} totalSteps={steps.length} />
 
@@ -336,7 +336,7 @@ const EventStudioPage: React.FC = () => {
                                                 value={formData.brief} 
                                                 onChange={handleInputChange} 
                                                 rows={4}
-                                                className="w-full bg-white/5 border border-white/10 p-4 text-white text-sm placeholder-gray-500 focus:border-fann-gold focus:outline-none rounded-sm resize-none"
+                                                className="w-full bg-white/5 border border-white/10 p-4 text-white text-base placeholder-gray-500 focus:border-fann-gold focus:outline-none rounded-sm resize-none"
                                                 placeholder="Describe the mood, colors, or specific theme you have in mind (e.g., 'Futuristic Oasis', 'Great Gatsby', 'Sustainable Luxury')..."
                                             ></textarea>
                                         </div>
@@ -384,7 +384,7 @@ const EventStudioPage: React.FC = () => {
                                                     name="countryCode" 
                                                     value={formData.countryCode} 
                                                     onChange={handleInputChange}
-                                                    className="bg-transparent border-b border-white/20 py-4 w-24 text-white focus:border-fann-gold focus:outline-none"
+                                                    className="bg-transparent border-b border-white/20 py-4 w-24 text-white focus:border-fann-gold focus:outline-none text-base"
                                                 >
                                                     {countryCodes.map(c => <option key={c.code} value={c.code} className="bg-black">{c.code}</option>)}
                                                 </select>

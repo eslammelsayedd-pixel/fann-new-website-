@@ -92,7 +92,7 @@ const InputField: React.FC<{ label: string; icon: React.ReactNode; type?: string
                 value={value} 
                 onChange={onChange} 
                 required={required} 
-                className="w-full bg-[#151515] border border-white/10 rounded-xl pl-12 pr-4 py-4 focus:outline-none focus:border-fann-gold focus:ring-1 focus:ring-fann-gold transition-all text-white placeholder-gray-600 shadow-inner" 
+                className="w-full bg-[#151515] border border-white/10 rounded-xl pl-12 pr-4 py-4 focus:outline-none focus:border-fann-gold focus:ring-1 focus:ring-fann-gold transition-all text-base text-white placeholder-gray-600 shadow-inner" 
             />
         </div>
     </div>
@@ -279,7 +279,7 @@ const InteriorStudioPage: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="bg-[#0A0A0A] border border-white/5 p-6 sm:p-12 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+                    <div className="bg-[#0A0A0A] border border-white/5 p-6 sm:p-12 rounded-3xl md:rounded-[2.5rem] shadow-2xl relative overflow-hidden">
                          <div className="absolute -top-40 -right-40 w-96 h-96 bg-fann-gold/5 rounded-full blur-[100px] pointer-events-none"></div>
                          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-fann-accent-teal/10 rounded-full blur-[100px] pointer-events-none"></div>
 
