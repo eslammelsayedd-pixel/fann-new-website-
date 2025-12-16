@@ -31,7 +31,7 @@ import TestimonialsPage from './pages/TestimonialsPage';
 // New Lead Magnet Pages
 import ExhibitionGuidePage from './pages/resources/ExhibitionGuidePage';
 import TrendsReportPage from './pages/resources/TrendsReportPage';
-import CostCalculatorPage from './pages/resources/CostCalculatorPage';
+import CostCalculatorPage from './pages/resources/CostCalculatorPage';\nimport CostGuidePage from './pages/resources/CostGuidePage';
 import ConsultationPage from './pages/ConsultationPage';
 
 const App: React.FC = () => {
@@ -71,7 +71,7 @@ const App: React.FC = () => {
                         {/* Resources & Lead Magnets */}
                         <Route path="/resources/exhibition-guide" element={<ExhibitionGuidePage />} />
                         <Route path="/resources/trends-2026" element={<TrendsReportPage />} />
-                        <Route path="/resources/cost-calculator" element={<CostCalculatorPage />} />
+                        <Route path="/resources/cost-calculator" element={<CostCalculatorPage />} />\n                        <Route path="/resources/exhibition-stand-cost-dubai" element={<CostGuidePage />} />
                         <Route path="/book-consultation" element={<ConsultationPage />} />
                     </Routes>
                 </AnimatePresence>
