@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Manus-generated temporary files
+optimize_image.js
+pnpm-lock.yaml
+public/assets/images/hero-poster-original.jpeg
