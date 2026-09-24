@@ -86,7 +86,7 @@ const servicesData = [
     {
         icon: <Layers size={40} />,
         title: "Exhibition Services",
-        description: "From award-winning custom stands to versatile modular systems, our exhibition services are comprehensive. We offer turnkey solutions, managing everything from design and in-house fabrication to logistics and on-site installation, ensuring a powerful and stress-free presence at any trade show.",
+        description: "From custom stands to versatile modular systems, our exhibition services are comprehensive. We offer turnkey solutions, managing everything from design and in-house fabrication to logistics and on-site installation, ensuring a powerful and stress-free presence at any trade show.",
         image: "https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=800&q=75",
         services: [ "Custom Stand Design & Build", "Modular & Reusable Systems", "Turnkey Project Management", "In-House Fabrication & Production", "Premium Interior Fit-Out" ],
         imagePosition: "right" as "right",
@@ -108,7 +108,7 @@ const servicesData = [
         image: "https://images.pexels.com/photos/3797991/pexels-photo-3797991.jpeg?auto=compress&cs=tinysrgb&w=800&q=75",
         services: [ "Comprehensive Space Planning", "Concept & Mood Board Development", "Custom Furniture & Joinery Design", "Complete Fit-Out & Project Management", "Turnkey Design & Build Solutions" ],
         imagePosition: "right" as "right",
-        link: "/services/commercial-interior-fit-out-dubai"
+        link: "/fit-out-dubai"
     }
 ];
 

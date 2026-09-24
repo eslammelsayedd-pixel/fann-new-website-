@@ -23,7 +23,7 @@ export const navLinks: NavLink[] = [
             { name: 'Modular Systems', path: '/services/modular-exhibition-systems-dubai' },
             { name: 'Turnkey Exhibitions', path: '/services/turnkey-exhibition-services-uae' },
             { name: 'Stand Fabrication', path: '/services/exhibition-stand-fabrication-dubai' },
-            { name: 'Commercial Fit-Out', path: '/services/commercial-interior-fit-out-dubai' },
+            { name: 'Commercial Fit-Out', path: '/fit-out-dubai' },
         ]
     },
     { name: 'Portfolio', path: '/portfolio' },

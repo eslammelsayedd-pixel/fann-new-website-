@@ -6,7 +6,7 @@ import FaqAccordion from '../../components/FaqAccordion';
 import { Link } from 'react-router-dom';
 
 const path = '/services/commercial-interior-fit-out-dubai';
-const pageTitle = 'Commercial Interior Fit-Out in Dubai & Abu Dhabi';
+const pageTitle = 'Office, Clinic & School Fit-Out and Renovation';
 
 const breadcrumbs = [
   { name: 'Home', path: '/' },
@@ -21,7 +21,28 @@ const sectors = [
   { title: 'Small & mid-size businesses', img: '/images/site/workshop-carpentry.webp', alt: 'Carpenter cutting timber in the FANN joinery workshop', text: 'Showrooms, retail units, cafes, salons and service offices. Clear fixed quotes, practical designs that fit the budget, and one team from design to handover.' },
 ];
 
+const proof = [
+  { img: '/images/projects/icons-of-porsche/06.webp', alt: 'Timber slat entrance built by FANN for Icons of Porsche 2025', title: 'Joinery made in our own workshop', text: 'The timber slat entrance for Icons of Porsche 2025 was cut, finished and installed by our team. Reception desks, wall panels, counters and storage for your office or clinic come from the same workshop in Umm Al Quwain.', link: '/portfolio/icons-of-porsche-2025-dubai' },
+  { img: '/images/projects/national-expression-adek/01.webp', alt: 'Curved gallery walls and lighting built for the ADEK National Expression exhibition', title: 'Walls, ceilings and lighting', text: 'For ADEK in Abu Dhabi we built a full walk-through gallery: curved partition walls, overhead canopies, track lighting and finished flooring. That is the same scope as an interior fit-out, delivered on a tight event deadline.', link: '/portfolio/national-expression-adek-abu-dhabi' },
+  { img: '/images/projects/icons-of-porsche/03.webp', alt: 'Lounge and stage area built for Icons of Porsche 2025', title: 'Power, AV and tight programmes', text: 'Event builds run on fixed dates with no room to slip. We plan power, lighting and AV with the venue and specialist trades, then build and hand over on time. We bring that discipline to every fit-out.', link: '/portfolio' },
+];
+
+const scope = [
+  'Space planning, 3D visuals and material boards',
+  'Gypsum partitions, glass partitions and false ceilings',
+  'Flooring, wall finishes, painting and cladding',
+  'Custom joinery: reception desks, counters, wall panels, storage',
+  'Lighting design and electrical changes',
+  'MEP works (power, lighting, AC and plumbing changes) coordinated with licensed specialists',
+  'Signage, branding and graphics',
+  'Loose furniture supply and installation',
+  'Landlord and authority drawings and approvals',
+  'Snagging, handover and aftercare',
+];
+
 const faqs = [
+  { question: 'Do you do renovations of existing spaces?', answer: 'Yes. We renovate occupied and empty offices, clinics, shops and schools: new layouts, finishes, ceilings, lighting and joinery. We can phase the work or work out of hours so you keep operating.' },
+  { question: 'Do you offer maintenance after handover?', answer: 'Yes. We offer maintenance and repairs for spaces we have built and for existing sites: joinery repairs, painting, ceiling and partition repairs, lighting and small works. Tell us what you need and we will quote a one-off visit or a regular plan.' },
   { question: 'Which areas do you cover for fit-out?', answer: 'We deliver commercial fit-out projects across Dubai and Abu Dhabi.' },
   { question: 'Do you handle design as well as the build?', answer: 'Yes. We can start from your idea, a landlord layout or an existing design. We prepare the layout, 3D visuals and material choices, then build it with our own team and workshop.' },
   { question: 'Can you help with authority approvals?', answer: 'Yes. We prepare the fit-out drawings and coordinate with the landlord and the relevant authorities for your project type. For clinics and schools, tell us your licensing authority at the start so the design meets its requirements from day one.' },
@@ -37,7 +58,7 @@ const schema = {
       '@type': 'Service',
       serviceType: 'Commercial Interior Fit-Out',
       name: pageTitle,
-      description: 'Design and build interior fit-out for offices, clinics, schools and small businesses in Dubai and Abu Dhabi.',
+      description: 'Interior fit-out, renovation and maintenance for offices, clinics, schools and small businesses in Dubai and Abu Dhabi.',
       provider: { '@type': 'Organization', name: 'FANN', url: 'https://fann.ae' },
       areaServed: [{ '@type': 'City', name: 'Dubai' }, { '@type': 'City', name: 'Abu Dhabi' }],
     },
@@ -55,19 +76,33 @@ const schema = {
 const CommercialFitOutPage: React.FC = () => (
   <AnimatedPage>
     <SEO
-      title="Commercial Fit-Out Dubai & Abu Dhabi | Offices, Clinics, Schools"
-      description="Design and build fit-out for offices, clinics, schools and small businesses in Dubai and Abu Dhabi. Own joinery workshop, one team from design to handover."
+      title="Office, Clinic & School Fit-Out and Renovation Dubai"
+      description="Fit-out, renovation and maintenance for offices, clinics, schools and shops in Dubai and Abu Dhabi. Own joinery workshop, 200+ projects, one team from design to handover."
       schema={schema}
     />
     <ServicePageLayout
       heroImage="/images/site/fitout-executive-office.webp"
       heroAltText="Modern office interior fit-out with timber panels and designer lighting"
       pageTitle={pageTitle}
-      pageDescription="Offices, clinics, schools and small businesses. Designed, built and handed over by one team."
+      pageDescription="Fit-out, renovation and maintenance for offices, clinics, schools and shops. Designed, built and handed over by one team with its own workshop."
       breadcrumbs={breadcrumbs}
     >
       <h2>Fit-out for the spaces your business runs on</h2>
       <p>FANN designs and builds commercial interiors across Dubai and Abu Dhabi. We take an empty unit or an old layout and hand back a finished space: ceilings, partitions, flooring, lighting, joinery, furniture and branding. Because we build our own joinery in our workshop, we control quality and dates instead of waiting on subcontractors.</p>
+
+      <div className="not-prose grid grid-cols-3 gap-4 my-8 text-center">
+        <div className="border border-white/10 rounded-lg p-4"><div className="text-3xl font-serif text-fann-gold">200+</div><div className="text-sm text-gray-400">projects delivered</div></div>
+        <div className="border border-white/10 rounded-lg p-4"><div className="text-3xl font-serif text-fann-gold">6+</div><div className="text-sm text-gray-400">years building in the UAE</div></div>
+        <div className="border border-white/10 rounded-lg p-4"><div className="text-3xl font-serif text-fann-gold">In-house</div><div className="text-sm text-gray-400">joinery workshop in Umm Al Quwain</div></div>
+      </div>
+
+      <h2>Fit-out, renovation and maintenance</h2>
+      <p><strong>Fit-out:</strong> we turn a shell or empty unit into a finished, working space. <strong>Renovation:</strong> we refresh or re-plan an existing space, in phases or out of hours if you need to stay open. <strong>Maintenance:</strong> after handover, or for spaces built by others, we handle repairs and small works so the space stays in shape.</p>
+
+      <h2>What we build for you</h2>
+      <ul className="columns-1 md:columns-2">
+        {scope.map(item => <li key={item}>{item}</li>)}
+      </ul>
 
       <h2>Sectors we fit out</h2>
       <div className="not-prose grid sm:grid-cols-2 gap-6 my-8">
@@ -79,6 +114,20 @@ const CommercialFitOutPage: React.FC = () => (
               <p className="text-gray-400 text-sm leading-relaxed">{s.text}</p>
             </div>
           </div>
+        ))}
+      </div>
+
+      <h2>Proof from our builds</h2>
+      <p>Exhibition and event builds are fit-outs against a hard deadline. The same team, workshop and trades deliver our interiors. Here is what our recent work shows:</p>
+      <div className="not-prose grid md:grid-cols-3 gap-6 my-8">
+        {proof.map(p => (
+          <Link key={p.title} to={p.link} className="block bg-fann-charcoal-light border border-white/10 rounded-lg overflow-hidden hover:border-fann-gold transition-colors">
+            <img src={p.img} alt={p.alt} loading="lazy" className="w-full aspect-video object-cover" />
+            <div className="p-5">
+              <h3 className="text-lg font-serif text-white mb-2">{p.title}</h3>
+              <p className="text-gray-400 text-sm leading-relaxed">{p.text}</p>
+            </div>
+          </Link>
         ))}
       </div>
 
@@ -98,7 +147,7 @@ const CommercialFitOutPage: React.FC = () => (
       <h2>Frequently asked questions</h2>
       <FaqAccordion faqs={faqs} />
 
-      <p className="mt-8">Planning an exhibition instead? See our <Link to="/services/custom-exhibition-stands-dubai">custom exhibition stands</Link> and <Link to="/services/interior-fitout-exhibition-spaces-dubai">exhibition space fit-out</Link>.</p>
+      <p className="mt-8">See our main <Link to="/fit-out-dubai">commercial fit-out contractor</Link> page. Planning an exhibition instead? See our <Link to="/services/custom-exhibition-stands-dubai">custom exhibition stands</Link> and <Link to="/services/interior-fitout-exhibition-spaces-dubai">exhibition space fit-out</Link>.</p>
     </ServicePageLayout>
   </AnimatedPage>
 );
