@@ -33,13 +33,47 @@
       "maxDuration": 60
     }
   },
-  "rewrites": [
-    { "source": "/robots.txt", "destination": "/api/index?route=robots" },
-    { "source": "/llms.txt", "destination": "/api/index?route=llms" },
-    { "source": "/sitemap.xml", "destination": "/api/index?route=sitemap" },
-    { "source": "/api/:path*", "destination": "/api/index" },
+  "redirects": [
     {
-      "source": "/((?!api/|.*\\..*).*)",
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.fann.ae"
+        }
+      ],
+      "destination": "https://fann.ae/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/services/commercial-interior-fit-out-dubai",
+      "destination": "/fit-out-dubai",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/robots.txt",
+      "destination": "/api/index?route=robots"
+    },
+    {
+      "source": "/llms.txt",
+      "destination": "/api/index?route=llms"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/index?route=sitemap"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "/api/index"
+    },
+    {
+      "source": "/fann-studio/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/portfolio/:path*",
       "destination": "/index.html"
     }
   ]
