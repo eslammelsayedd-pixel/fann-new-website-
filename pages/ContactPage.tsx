@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
+import { submitLead } from '../lib/submitLead';
 import { Mail, Phone, MapPin, Loader2, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -38,29 +39,7 @@ const ContactPage: React.FC = () => {
     const message = formData.get('message') as string;
 
     try {
-        const response = await fetch('https://formspree.io/f/xzzbnqvj', {
-            method: 'POST',
-            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, message })
-        });
-        if (!response.ok) {
-            if (response.status === 404) {
-                console.warn("Formspree form 'xzzbnqvj' not found. Simulating successful form submission for preview purposes.");
-                setIsSending(false);
-                setIsSent(true);
-                return;
-            }
-            let errorText = `Server responded with status ${response.status}`;
-            const responseText = await response.text();
-            try {
-                const errorData = JSON.parse(responseText);
-                errorText = errorData.error || responseText;
-            } catch (e) {
-                errorText = responseText;
-            }
-            throw new Error(errorText);
-        }
-
+        await submitLead({ formType: 'Contact form', name, email, phone: (formData.get('phone') as string) || '', message, website: (formData.get('website') as string) || '' });
         setIsSent(true);
     } catch (err: any) {
         setError(err.message);
@@ -87,7 +66,7 @@ const ContactPage: React.FC = () => {
                 "email": "sales@fann.ae",
                 "address": {
                     "@type": "PostalAddress",
-                    "streetAddress": "Office 508, Dusseldorf Business Point, Al Barsha 1",
+                    "streetAddress": "Office No. 508, Dusseldorf Business Center, Al Barsha",
                     "addressLocality": "Dubai",
                     "addressCountry": "AE"
                 },
@@ -98,8 +77,8 @@ const ContactPage: React.FC = () => {
                         "areaServed": "AE",
                         "address": {
                             "@type": "PostalAddress",
-                            "streetAddress": "WH10-Umm Dera",
-                            "addressLocality": "Umm Al Quain",
+                            "streetAddress": "Warehouse No. 10, Um Dera",
+                            "addressLocality": "Umm Al Quwain",
                             "addressCountry": "AE"
                         }
                     }
@@ -153,14 +132,14 @@ const ContactPage: React.FC = () => {
                         <MapPin className="text-fann-gold mt-1 flex-shrink-0" size={24} />
                         <div>
                             <h3 className="text-lg font-bold text-white">Office Address</h3>
-                            <p className="text-lg text-gray-400">Office 508, Dusseldorf Business Point, <br/>Al Barsha 1, Dubai, UAE</p>
+                            <p className="text-lg text-gray-400">Office No. 508, Dusseldorf Business Center, <br/>Al Barsha, Dubai, UAE</p>
                         </div>
                     </div>
                      <div className="flex items-start space-x-4 pt-4 mt-4 border-t border-white/10">
                         <MapPin className="text-fann-gold mt-1 flex-shrink-0" size={24} />
                          <div>
                             <h3 className="text-lg font-bold text-white">Warehouse Address</h3>
-                            <p className="text-lg text-gray-400">WH10-Umm Dera, <br/>Umm Al Quain, UAE</p>
+                            <p className="text-lg text-gray-400">Warehouse No. 10, Um Dera, <br/>Umm Al Quwain, UAE</p>
                         </div>
                     </div>
                 </div>

@@ -178,7 +178,7 @@ const InsightsPage: React.FC = () => {
                             onClick={() => setSearchParams({ topic: topic.slug })}
                             className="h-64 relative rounded-lg overflow-hidden cursor-pointer group border border-white/5"
                         >
-                            <img src={topic.image} className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-110 opacity-50" />
+                            <img src={topic.image} alt={topic.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-110 opacity-50" />
                             <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
                             <div className="relative h-full flex flex-col justify-end p-6 text-left">
                                 <topic.icon className="text-fann-gold mb-2" size={24} />

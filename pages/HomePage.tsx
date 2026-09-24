@@ -202,13 +202,13 @@ const AboutSection: React.FC = () => (
                     <div className="grid grid-cols-3 gap-8 border-t border-white/10 pt-8">
                         <StatItem value="200+" label="Projects Delivered" />
                         <StatItem value="6+" label="Years Excellence" />
-                        <StatItem value="100%" label="Client Satisfaction" />
+                        <StatItem value="In-house" label="Workshop & Warehouse" />
                     </div>
                 </ScrollReveal>
                 <ScrollReveal variant="scale" delay={0.2}>
                     <div className="relative">
                         <OptimizedImage 
-                            src="https://images.pexels.com/photos/30556812/pexels-photo-30556812.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
+                            src="/images/site/exhibition-tech-expo.webp" 
                             alt="FANN Workshop Team" 
                             className="w-full rounded-sm shadow-2xl grayscale hover:grayscale-0 transition-all duration-700"
                             width={600}

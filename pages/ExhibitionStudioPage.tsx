@@ -1,4 +1,5 @@
 
+import { submitLead } from '../lib/submitLead';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -279,16 +280,12 @@ const ExhibitionStudioPage: React.FC = () => {
             
             try {
                 // Fire and forget lead capture
-                fetch('/api/send-inquiry', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
+                await submitLead({ formType: 'Exhibition Studio design request', name: [ (formData as any).firstName, (formData as any).lastName ].filter(Boolean).join(' ') || (formData as any).name, email: (formData as any).email, phone: (formData as any).phone, company: (formData as any).company || (formData as any).companyName, details: { 
                         type: 'Exhibition Studio Design Request',
                         ...formData,
                         brandColors,
                         detectedIndustry
-                    })
-                });
+                    } });
 
                 // Navigate to results where actual generation happens
                 navigate('/fann-studio/exhibition/result', { 
@@ -301,8 +298,9 @@ const ExhibitionStudioPage: React.FC = () => {
                         }
                     } 
                 });
-            } catch (error) {
+            } catch (error: any) {
                 console.error("Submission error", error);
+                window.alert(error?.message || 'Sorry, we could not send your request. Please WhatsApp us on +971 50 566 7502.');
                 setIsSubmitting(false);
             }
         }
@@ -372,7 +370,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                                             </span>
                                                         )}
                                                     </label>
-                                                    <input type="text" name="eventName" value={formData.eventName} onChange={handleInputChange} className={getInputClass('eventName')} placeholder="e.g. GITEX 2025" />
+                                                    <input type="text" name="eventName" value={formData.eventName} onChange={handleInputChange} className={getInputClass('eventName')} placeholder="e.g. GITEX Global 2026" />
                                                 </div>
                                                 
                                                 <div>

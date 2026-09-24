@@ -12,7 +12,7 @@ const TestimonialsPage: React.FC = () => {
         <AnimatedPage>
             <SEO 
                 title="Client Testimonials | Exhibition Stand Reviews Dubai" 
-                description="Read authentic reviews from local and international SMEs who trusted FANN with their exhibition stands at GITEX, Gulfood, Arab Health, and ADIPEC."
+                description="What clients say about working with FANN on exhibition stands, events and interior fit-outs in Dubai and Abu Dhabi."
             />
             
             <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
@@ -37,6 +37,12 @@ const TestimonialsPage: React.FC = () => {
 
                 {/* Testimonials Grid */}
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                    {detailedTestimonials.length === 0 && (
+                        <div className="max-w-2xl mx-auto text-center bg-fann-charcoal-light border border-white/10 rounded-lg p-10">
+                            <p className="text-gray-300 mb-6">We are collecting written feedback from recent exhibition, event and fit-out clients. In the meantime, ask us for references from projects similar to yours.</p>
+                            <Link to="/contact" className="inline-block bg-fann-gold text-black font-bold uppercase tracking-widest text-xs px-8 py-4 rounded">Request client references</Link>
+                        </div>
+                    )}
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {detailedTestimonials.map((testimonial, index) => (
                             <motion.div
