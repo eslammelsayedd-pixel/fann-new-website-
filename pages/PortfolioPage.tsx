@@ -136,13 +136,38 @@ const PortfolioPage: React.FC = () => {
           </div>
           
           {projects.length === 0 && (
-            <div className="max-w-3xl mx-auto text-center bg-fann-charcoal-light border border-white/10 p-10 rounded-lg shadow-2xl">
-              <h2 className="text-3xl font-serif font-bold text-white mb-4">Case studies are being photographed</h2>
-              <p className="text-gray-300 mb-3">We are adding recent exhibition stands, events and fit-out projects from Dubai, Abu Dhabi, Sharjah and Al Ain, with real site photos.</p>
-              <p className="text-gray-400 mb-8">Want to see work similar to your project now? Ask us and we will send relevant photos and references.</p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Link to="/contact" className="bg-fann-gold text-fann-charcoal font-bold px-8 py-3 rounded-full hover:opacity-90 transition">Request project examples</Link>
-                <a href="https://wa.me/971505667502" target="_blank" rel="noopener noreferrer" className="border border-fann-gold text-fann-gold font-bold px-8 py-3 rounded-full hover:bg-fann-gold/10 transition">WhatsApp us</a>
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center max-w-3xl mx-auto mb-12">
+                <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-4">What we build</h2>
+                <p className="text-gray-300">200+ projects over 6+ years, from single-day event builds to full exhibition stands and office fit-outs. We work mostly in Dubai, with regular projects in Abu Dhabi, Sharjah and Al Ain. Our own workshop and warehouse in Dubai handle design, joinery, fabrication and installation.</p>
+              </div>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
+                {[
+                  { t: 'Custom exhibition stands', img: '/images/site/exhibition-booth-lounge.webp', where: 'DWTC, Dubai Exhibition Centre (Expo City), ADNEC Abu Dhabi, Expo Centre Sharjah', scope: '18 - 150+ sqm, full design & build, AV, furniture, graphics, on-site build and dismantle' },
+                  { t: 'Modular & reusable stands', img: '/images/site/exhibition-machinery-stand.webp', where: 'Dubai and Abu Dhabi trade shows', scope: 'Systems that can be reused across several shows, with new graphics each time' },
+                  { t: 'Interactive & immersive displays', img: '/images/site/exhibition-tech-expo.webp', where: 'Exhibitions, brand activations and launches', scope: 'LED walls, touchscreens, projection, lighting and product displays built into the stand or set' },
+                  { t: 'Event sets & stages', img: '/images/site/event-dramatic-lighting.webp', where: 'Hotels and venues across Dubai and Abu Dhabi', scope: 'Stages, backdrops, photo walls, entrance features, gala and launch sets' },
+                  { t: 'Conferences & corporate events', img: '/images/site/event-conference-speaker.webp', where: 'Dubai, Abu Dhabi, Sharjah', scope: 'Stage and set build, branding, registration areas, breakout rooms' },
+                  { t: 'Commercial fit-out', img: '/images/site/fitout-executive-office.webp', where: 'Offices, clinics, retail and F&B across the UAE', scope: 'Design, joinery, ceilings, flooring, MEP coordination and handover' },
+                ].map(c => (
+                  <article key={c.t} className="bg-fann-charcoal-light border border-white/10 rounded-lg overflow-hidden shadow-xl">
+                    <img src={c.img} alt={c.t} loading="lazy" className="w-full h-52 object-cover" />
+                    <div className="p-6">
+                      <h3 className="text-xl font-serif font-bold text-white mb-3">{c.t}</h3>
+                      <p className="text-sm text-gray-300 mb-2"><MapPin size={14} className="inline mr-1 text-fann-gold" />{c.where}</p>
+                      <p className="text-sm text-gray-400">{c.scope}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+              <p className="text-center text-xs text-gray-500 mb-10">Images show the type of work. Photos of our own projects similar to yours are available on request.</p>
+              <div className="text-center bg-fann-charcoal-light border border-white/10 p-10 rounded-lg">
+                <h2 className="text-2xl font-serif font-bold text-white mb-3">Want to see work like yours?</h2>
+                <p className="text-gray-400 mb-6">Tell us your event or space and we will send photos and references from similar projects.</p>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <Link to="/contact" className="bg-fann-gold text-fann-charcoal font-bold px-8 py-3 rounded-full hover:opacity-90 transition">Request project examples</Link>
+                  <a href="https://wa.me/971505667502" target="_blank" rel="noopener noreferrer" className="border border-fann-gold text-fann-gold font-bold px-8 py-3 rounded-full hover:bg-fann-gold/10 transition">WhatsApp us</a>
+                </div>
               </div>
             </div>
           )}
