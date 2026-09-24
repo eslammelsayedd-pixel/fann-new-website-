@@ -923,7 +923,7 @@ const SITE = 'https://fann.ae';
 const SITEMAP_PATHS = [
   '/', '/services', '/services/custom-exhibition-stands-dubai', '/services/exhibition-stand-fabrication-dubai',
   '/services/interior-fitout-exhibition-spaces-dubai', '/services/modular-exhibition-systems-dubai',
-  '/services/turnkey-exhibition-services-uae', '/portfolio', '/about', '/contact', '/privacy-policy', '/services/commercial-interior-fit-out-dubai', 
+  '/services/turnkey-exhibition-services-uae', '/portfolio', '/about', '/contact', '/privacy-policy',
   '/insights', '/events-calendar', '/fann-studio', '/book-consultation', '/resources/cost-calculator',
   '/resources/exhibition-guide', '/roi-calculator',
   '/portfolio/icons-of-porsche-2025-dubai', '/portfolio/special-olympics-uae-unified-champion-schools-2025', '/portfolio/national-expression-adek-abu-dhabi', '/fit-out-dubai',
