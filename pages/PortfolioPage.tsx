@@ -135,6 +135,19 @@ const PortfolioPage: React.FC = () => {
             <p className="text-xl text-gray-400">Showcasing excellence in design and execution across Dubai.</p>
           </div>
           
+          {projects.length === 0 && (
+            <div className="max-w-3xl mx-auto text-center bg-fann-charcoal-light border border-white/10 p-10 rounded-lg shadow-2xl">
+              <h2 className="text-3xl font-serif font-bold text-white mb-4">Case studies are being photographed</h2>
+              <p className="text-gray-300 mb-3">We are adding recent exhibition stands, events and fit-out projects from Dubai, Abu Dhabi, Sharjah and Al Ain, with real site photos.</p>
+              <p className="text-gray-400 mb-8">Want to see work similar to your project now? Ask us and we will send relevant photos and references.</p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Link to="/contact" className="bg-fann-gold text-fann-charcoal font-bold px-8 py-3 rounded-full hover:opacity-90 transition">Request project examples</Link>
+                <a href="https://wa.me/971505667502" target="_blank" rel="noopener noreferrer" className="border border-fann-gold text-fann-gold font-bold px-8 py-3 rounded-full hover:bg-fann-gold/10 transition">WhatsApp us</a>
+              </div>
+            </div>
+          )}
+
+          {projects.length > 0 && (<>
           <div className="max-w-6xl mx-auto bg-fann-charcoal-light border border-white/10 p-6 rounded-lg mb-12 shadow-2xl space-y-6">
             
             {/* Category Filter */}
@@ -274,6 +287,7 @@ const PortfolioPage: React.FC = () => {
               )}
             </AnimatePresence>
           </motion.div>
+          </>)}
 
         </div>
       </div>
