@@ -134,7 +134,7 @@ async function generateInsights(req: VercelRequest, res: VercelResponse) {
       model: "gemini-3.5-flash",
       contents: prompt,
       config: {
-        systemInstruction: "You are an expert design journalist for FANN Intelligence Hub, a thought leadership publication in the GCC. Write an extremely engaging, high-quality, professional article based on the prompt. Cite industry reports or real examples if possible. Use clean Markdown.",
+        systemInstruction: "You are an expert design journalist for FANN Insights & Guides, a publication in the GCC. Write an extremely engaging, high-quality, professional article based on the prompt. Cite industry reports or real examples if possible. Use clean Markdown.",
         tools: [{ googleSearch: {} }]
       }
     });
