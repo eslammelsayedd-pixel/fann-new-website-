@@ -144,14 +144,14 @@ const CostCalculatorPage: React.FC = () => {
 
     return (
         <AnimatedPage>
-            <SEO title="Exhibition Cost Calculator Dubai | FANN" description="Calculate accurate exhibition stand costs for DWTC, ADNEC, and Riyadh Front based on 2025 market rates." />
+            <SEO title="Exhibition Cost Calculator Dubai | FANN" description="Get indicative exhibition stand costs for DWTC, ADNEC and Riyadh Front." />
             <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
                 <div className="container mx-auto px-4 max-w-5xl">
                     
                     <div className="text-center mb-12">
                         <h1 className="text-4xl md:text-6xl font-serif font-bold mb-4">Stand Cost Estimator</h1>
                         <p className="text-gray-300 text-lg max-w-2xl mx-auto mb-6">
-                            Based on 2025 market rates for Dubai & KSA. Get a precise breakdown including hidden fees.
+                            Indicative ranges for Dubai & KSA, confirmed in a free quote. Get a precise breakdown including hidden fees.
                         </p>
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-fann-gold/10 border border-fann-gold/20 text-fann-gold/80 text-xs font-semibold">
                             <AlertTriangle size={14} />
@@ -416,7 +416,7 @@ const CostCalculatorPage: React.FC = () => {
                             <div className="bg-blue-900/20 border border-blue-500/30 p-6 rounded-xl">
                                 <h3 className="text-blue-400 font-bold mb-2 text-sm flex items-center gap-2"><Info size={16}/> Why this tool?</h3>
                                 <p className="text-xs text-gray-300 leading-relaxed">
-                                    Most online calculators ignore venue-specific hidden fees like rigging permits and waste disposal. Our engine uses real 2025 data from DWTC & ADNEC to give you a realistic budget, not just a construction quote.
+                                    Most online calculators ignore venue-specific hidden fees like rigging permits and waste disposal. Our ranges include venue fees from DWTC & ADNEC to give you a realistic budget, not just a construction quote.
                                 </p>
                             </div>
                         </div>
