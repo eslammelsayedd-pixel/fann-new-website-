@@ -138,7 +138,7 @@ const FitOutDubaiPage: React.FC = () => (
       <h2>Frequently asked questions</h2>
       <FaqAccordion faqs={faqs} />
 
-      <p className="mt-8">Looking for sector detail? See <Link to="/services/commercial-interior-fit-out-dubai">office, clinic and school fit-out and renovation</Link>.</p>
+      <p className="mt-8">We also deliver office, clinic and school fit-out and renovation projects across Dubai and Abu Dhabi. <Link to="/contact">Tell us about your space</Link>.</p>
     </ServicePageLayout>
   </AnimatedPage>
 );
