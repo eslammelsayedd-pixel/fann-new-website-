@@ -85,7 +85,42 @@ export const supportedLanguages = [
 
 // Portfolio: only real FANN projects with the client's permission and real photos go here.
 // Previous placeholder entries (brand-name projects) were removed on the owner's instruction.
-export const projects: Project[] = [];
+export const projects: Project[] = [
+  {
+    id: 1,
+    slug: 'icons-of-porsche-2025-dubai',
+    title: 'Icons of Porsche 2025',
+    subtitle: 'Full outdoor event build in Dubai Design District',
+    client: 'Icons of Porsche',
+    category: 'event',
+    industry: 'Automotive',
+    year: 2025,
+    image: '/images/projects/icons-of-porsche/02.webp',
+    heroImage: '/images/projects/icons-of-porsche/14.webp',
+    description: 'Icons of Porsche 2025 - Dubai Design District. Full outdoor event build: LED stage walls, esports arena rig, display totems, custom structures.',
+    location: 'Dubai Design District, Dubai',
+    featured: true,
+    eventType: 'Outdoor festival',
+    gallery: [
+      { image: '/images/projects/icons-of-porsche/01.webp', caption: 'Porsche 99X Electric display with custom totems', featured: true },
+      { image: '/images/projects/icons-of-porsche/02.webp', caption: 'Electric Field entrance truss with LED wall' },
+      { image: '/images/projects/icons-of-porsche/03.webp', caption: 'Lounge and esports arena stage' },
+      { image: '/images/projects/icons-of-porsche/04.webp', caption: 'Concept racecar display with information totems' },
+      { image: '/images/projects/icons-of-porsche/05.webp', caption: 'Esports arena simulator rigs and leaderboard wall' },
+      { image: '/images/projects/icons-of-porsche/06.webp', caption: 'Community Village entrance in timber slats' },
+      { image: '/images/projects/icons-of-porsche/07.webp', caption: 'Icons of the Region classic car display' },
+      { image: '/images/projects/icons-of-porsche/08.webp', caption: '911 Dakar container build with lighting' },
+      { image: '/images/projects/icons-of-porsche/09.webp', caption: 'Icons of Porsche entrance tower with landscaping' },
+      { image: '/images/projects/icons-of-porsche/10.webp', caption: 'Icons of the Region display lane' },
+      { image: '/images/projects/icons-of-porsche/11.webp', caption: 'Main stage deck with desert landscaping' },
+      { image: '/images/projects/icons-of-porsche/12.webp', caption: 'Main stage LED wall and hosts' },
+      { image: '/images/projects/icons-of-porsche/13.webp', caption: 'Neon wireframe skyline installation' },
+      { image: '/images/projects/icons-of-porsche/14.webp', caption: 'Main stage LED walls and lighting rig' },
+      { image: '/images/projects/icons-of-porsche/15.webp', caption: 'Main stage with audience seating' },
+      { image: '/images/projects/icons-of-porsche/16.webp', caption: 'Twin LED stage walls at dusk' }
+    ],
+  },
+];
 
 export const regionalEvents: Event[] = [
   // Dates checked against organiser / venue sites on 24 Sep 2026. Always confirm with the organiser before booking space.
