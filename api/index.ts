@@ -925,7 +925,7 @@ const SITEMAP_PATHS = [
   '/services/interior-fitout-exhibition-spaces-dubai', '/services/modular-exhibition-systems-dubai',
   '/services/turnkey-exhibition-services-uae', '/portfolio', '/about', '/contact', '/privacy-policy', '/services/commercial-interior-fit-out-dubai', 
   '/insights', '/events-calendar', '/fann-studio', '/book-consultation', '/resources/cost-calculator',
-  '/resources/exhibition-guide', '/resources/trends-2026', '/roi-calculator',
+  '/resources/exhibition-guide', '/roi-calculator',
 ];
 function robotsTxt(res: VercelResponse) {
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');
