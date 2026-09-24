@@ -110,8 +110,7 @@ const ModularSystemsPage: React.FC = () => {
         </ul>
 
          {/* Visual Placeholder */}
-        <div className="my-8 p-4 border-2 border-dashed border-fann-light-gray rounded-lg text-center">
-            <p className="text-fann-light-gray font-semibold">[Image: Side-by-side comparison of a basic modular frame and a FANN-customized hybrid modular stand]</p>
+        <div className="my-8">
             <img src="/images/site/exhibition-machinery-stand.webp" loading="lazy" alt="Exhibition stand with large machinery display on a trade show floor" className="w-full aspect-video object-cover mt-2 rounded-md"/>
         </div>
 
