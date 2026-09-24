@@ -21,7 +21,7 @@ export interface Project {
   client: string;
   category: 'exhibition' | 'event' | 'interior';
   industry: string;
-  year: number;
+  year?: number;
   image: string; // Thumbnail
   heroImage?: string; // Large banner image
   description: string;

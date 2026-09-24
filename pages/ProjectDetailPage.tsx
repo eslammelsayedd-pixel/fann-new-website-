@@ -19,7 +19,7 @@ const ProjectDetailPage: React.FC = () => {
 
   // Fallback data if detailed info is missing (ensures page doesn't break for older projects)
   const gallery = project.gallery || [{ image: project.image, caption: project.title }];
-  const specs = project.specs || { structure: [{ label: 'Category', value: project.category }, { label: 'Year', value: project.year.toString() }] };
+  const specs = project.specs || { structure: [{ label: 'Category', value: project.category }, ...(project.year ? [{ label: 'Year', value: project.year.toString() }] : [])] };
 
   // Lightbox handlers
   const openLightbox = (index: number) => setLightboxIndex(index);
@@ -36,7 +36,7 @@ const ProjectDetailPage: React.FC = () => {
     "image": project.image,
     "creator": { "@type": "Organization", "name": "FANN" },
     "client": { "@type": "Organization", "name": project.client },
-    "dateCreated": project.year.toString(),
+    ...(project.year ? { "dateCreated": project.year.toString() } : {}),
     "locationCreated": { "@type": "Place", "name": project.location }
   };
 
@@ -74,7 +74,7 @@ const ProjectDetailPage: React.FC = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
             <DetailItem label="Client" value={project.client} />
             <DetailItem label="Location" value={project.location} />
-            <DetailItem label="Year" value={project.year.toString()} />
+            {project.year && <DetailItem label="Year" value={project.year.toString()} />}
             <DetailItem label="Category" value={project.category} />
             {project.size && <DetailItem label="Size" value={project.size} />}
             {project.industry && <DetailItem label="Industry" value={project.industry} />}

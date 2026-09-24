@@ -171,6 +171,38 @@ export const projects: Project[] = [
       { image: '/images/projects/special-olympics-ucs-2025/05.webp', caption: 'Arch detail with LED portrait panel and logo sculpture' }
     ],
   },
+  {
+    id: 3,
+    slug: 'national-expression-adek-abu-dhabi',
+    title: 'National Expression - ADEK',
+    subtitle: 'Student art gallery and digital screens for the Abu Dhabi Department of Education and Knowledge',
+    client: 'ADEK (Abu Dhabi Department of Education and Knowledge)',
+    category: 'event',
+    industry: 'Education & Culture',
+    image: '/images/projects/national-expression-adek/01.webp',
+    heroImage: '/images/projects/national-expression-adek/03.webp',
+    description: 'National Expression exhibition for ADEK in Abu Dhabi, linked to Louvre Abu Dhabi. We built a walk-through gallery of curved white walls, striped canopies, spotlit artwork displays, seating islands and craft zones, plus outdoor LED screens telling the story of the programme, including the training of around 450 teachers.',
+    location: 'Abu Dhabi',
+    featured: true,
+    eventType: 'Exhibition',
+    gallery: [
+      { image: '/images/projects/national-expression-adek/01.webp', caption: 'Gallery walkway with striped canopy and framed student artwork', featured: true },
+      { image: '/images/projects/national-expression-adek/02.webp', caption: 'Curved exhibition walls lit for the evening opening' },
+      { image: '/images/projects/national-expression-adek/03.webp', caption: 'Central seating island between artwork walls' },
+      { image: '/images/projects/national-expression-adek/04.webp', caption: 'Arched entrance wall with digital screen' },
+      { image: '/images/projects/national-expression-adek/05.webp', caption: 'Framed artwork display under spotlights' },
+      { image: '/images/projects/national-expression-adek/06.webp', caption: 'Gallery zones with feature wall graphics' },
+      { image: '/images/projects/national-expression-adek/07.webp', caption: 'Planter island and wayfinding wall' },
+      { image: '/images/projects/national-expression-adek/08.webp', caption: 'Craft display zone with seating pouffes' },
+      { image: '/images/projects/national-expression-adek/09.webp', caption: 'Close-up of artwork walls and spotlights' },
+      { image: '/images/projects/national-expression-adek/10.webp', caption: 'Canopy-covered gallery lane' },
+      { image: '/images/projects/national-expression-adek/11.webp', caption: 'Wide view of the gallery at night' },
+      { image: '/images/projects/national-expression-adek/12.webp', caption: 'Circular portal screen at the entrance' },
+      { image: '/images/projects/national-expression-adek/13.webp', caption: 'Outdoor LED screens along the walkway' },
+      { image: '/images/projects/national-expression-adek/14.webp', caption: 'Large-format LED screen showing the programme' },
+      { image: '/images/projects/national-expression-adek/15.webp', caption: 'LED screen presenting the training of around 450 teachers' }
+    ],
+  },
 ];
 
 export const regionalEvents: Event[] = [
