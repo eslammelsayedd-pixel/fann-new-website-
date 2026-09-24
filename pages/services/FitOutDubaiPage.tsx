@@ -29,6 +29,12 @@ const proof = [
   { img: '/images/projects/icons-of-porsche/37.webp', alt: 'Community Village timber entrance at dusk at Icons of Porsche 2025', caption: 'Event build: Community Village entrance, Icons of Porsche 2025', link: '/portfolio/icons-of-porsche-2025-dubai' },
 ];
 
+const concepts = [
+  { img: '/images/concepts/clinic.webp', title: 'Clinic reception', text: 'Curved reception desk with fluted oak front, terrazzo floor, calm sage palette and a waiting lounge planned around patient flow.' },
+  { img: '/images/concepts/cafe.webp', title: 'Specialty coffee and restaurant', text: 'Ribbed walnut bar with stone top, open display shelving, banquette seating and warm pendant lighting.' },
+  { img: '/images/concepts/retail.webp', title: 'Boutique retail', text: 'Travertine display table, backlit oak niches, brass rails and a curved fitting room in a warm neutral palette.' },
+];
+
 const faqs = [
   { question: 'Which areas do you cover?', answer: 'We deliver commercial fit-outs across Dubai and Abu Dhabi.' },
   { question: 'What do you need from us to quote?', answer: 'Drawings or a BOQ, the site location and your target opening date. We return a clear, itemised scope and quotation per site, without a long tender process.' },
@@ -104,6 +110,24 @@ const FitOutDubaiPage: React.FC = () => (
 
       <h2>How we quote</h2>
       <p>Per site, itemised, and fast. Send us drawings or a BOQ and we return a clear scope and quotation without a long tender process.</p>
+
+      <h2 id="design-concepts">Design concepts</h2>
+      <p>These are design concepts created by FANN to show how we approach clinic, restaurant and retail interiors. They are concept visuals, not photos of completed projects. We design every fit-out around your brand, site and budget, and we can prepare a concept like this for your space before you commit.</p>
+      <div className="not-prose grid md:grid-cols-3 gap-6 my-8">
+        {concepts.map(c => (
+          <figure key={c.img} className="bg-fann-charcoal-light border border-fann-gold/40 rounded-lg overflow-hidden">
+            <div className="relative">
+              <img src={c.img} alt={`Design concept by FANN: ${c.title.toLowerCase()} interior (concept visual, not a completed project)`} loading="lazy" className="w-full aspect-video object-cover" />
+              <span className="absolute top-3 left-3 bg-fann-gold text-fann-charcoal text-xs font-bold uppercase tracking-wider px-3 py-1 rounded">Design Concept</span>
+            </div>
+            <figcaption className="p-5">
+              <p className="text-xs uppercase tracking-wider text-fann-gold mb-1">Design Concept - designed by FANN</p>
+              <h3 className="text-lg font-serif text-white mb-2">{c.title}</h3>
+              <p className="text-gray-400 text-sm leading-relaxed">{c.text}</p>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
 
       <div className="not-prose my-10 p-8 border border-fann-gold/40 rounded-lg text-center">
         <p className="text-xl text-white font-serif mb-4">Opening a new site or refreshing an existing one? Tell us about it.</p>
