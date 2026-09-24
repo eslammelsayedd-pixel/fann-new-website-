@@ -1,4 +1,5 @@
 
+import { submitLead } from '../../lib/submitLead';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calculator, DollarSign, MapPin, Box, Check, Loader2, ArrowRight, AlertTriangle, Info, PieChart, Download, Share2, RotateCcw, Mail, User, Phone, Building } from 'lucide-react';
@@ -111,6 +112,7 @@ const CostCalculatorPage: React.FC = () => {
             if (!response.ok) throw new Error("Calculation failed");
             const data = await response.json();
             setResult(data);
+            submitLead({ formType: 'Cost Calculator estimate', name: state.contact.name, email: state.contact.email, phone: state.contact.phone, company: state.contact.company, details: { ...state, estimate: data } }).catch(err => console.error('Lead delivery failed', err));
         } catch (err: any) {
             setError(err.message || "Something went wrong");
         } finally {
