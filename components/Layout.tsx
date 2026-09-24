@@ -4,6 +4,7 @@ import Footer from './Footer';
 import WhatsAppButton from './WhatsAppButton';
 import ExitIntentPopup from './ExitIntentPopup';
 import MetaPixelTracker from './MetaPixelTracker';
+import MobileActionBar from './MobileActionBar';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -15,11 +16,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Header />
       <MetaPixelTracker />
       <main className="flex-grow">{children}</main>
-      <Footer />
+      <div className="pb-16 md:pb-0"><Footer /></div>
       
       {/* Conversion Tools */}
       <WhatsAppButton />
       <ExitIntentPopup />
+      <MobileActionBar />
     </div>
   );
 };

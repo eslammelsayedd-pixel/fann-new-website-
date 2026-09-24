@@ -33,8 +33,8 @@ const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[450px] flex items-center justify-center text-center text-white overflow-hidden bg-fann-charcoal">
         <picture>
-          <source srcSet={`${heroImage}&fm=webp`} type="image/webp" />
-          <source srcSet={heroImage} type="image/jpeg" />
+          {heroImage.includes("?") && <source srcSet={`${heroImage}&fm=webp`} type="image/webp" />}
+          {heroImage.includes("?") && <source srcSet={heroImage} type="image/jpeg" />}
           <img
             src={heroImage}
             alt={heroAltText}
@@ -86,7 +86,7 @@ const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
       </main>
 
        {/* Testimonials Section */}
-      <section className="py-24 bg-fann-charcoal-light border-y border-white/5 text-center">
+      {testimonials.length > 0 && (<section className="py-24 bg-fann-charcoal-light border-y border-white/5 text-center">
         <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4 text-white">What Our Clients Say</h2>
         <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto container px-4 sm:px-6 lg:px-8 mt-12">
             {testimonials.map((testimonial) => (
@@ -97,7 +97,7 @@ const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
                 </div>
             ))}
         </div>
-    </section>
+    </section>)}
 
       {/* Final CTA */}
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-24">

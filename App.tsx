@@ -1,38 +1,39 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
-import ServicesPage from './pages/ServicesPage';
-import PortfolioPage from './pages/PortfolioPage';
-import ProjectDetailPage from './pages/ProjectDetailPage';
-import AIDesignStudioPage from './pages/AIDesignStudioPage';
-import ExhibitionStudioPage from './pages/ExhibitionStudioPage';
-import DesignResultPage from './pages/DesignResultPage';
-import EventStudioPage from './pages/EventStudioPage';
-import EventResultPage from './pages/EventResultPage';
-import InteriorStudioPage from './pages/InteriorStudioPage';
-import InteriorResultPage from './pages/InteriorResultPage';
-import EventsCalendarPage from './pages/EventsCalendarPage';
-import AboutPage from './pages/AboutPage';
-import ContactPage from './pages/ContactPage';
-import InsightsPage from './pages/InsightsPage';
+const ServicesPage = lazy(() => import('./pages/ServicesPage'));
+const PortfolioPage = lazy(() => import('./pages/PortfolioPage'));
+const ProjectDetailPage = lazy(() => import('./pages/ProjectDetailPage'));
+const AIDesignStudioPage = lazy(() => import('./pages/AIDesignStudioPage'));
+const ExhibitionStudioPage = lazy(() => import('./pages/ExhibitionStudioPage'));
+const DesignResultPage = lazy(() => import('./pages/DesignResultPage'));
+const EventStudioPage = lazy(() => import('./pages/EventStudioPage'));
+const EventResultPage = lazy(() => import('./pages/EventResultPage'));
+const InteriorStudioPage = lazy(() => import('./pages/InteriorStudioPage'));
+const InteriorResultPage = lazy(() => import('./pages/InteriorResultPage'));
+const EventsCalendarPage = lazy(() => import('./pages/EventsCalendarPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
+const InsightsPage = lazy(() => import('./pages/InsightsPage'));
 import { ApiKeyProvider } from './context/ApiKeyProvider';
-import ROICalculatorPage from './pages/ROICalculatorPage';
-import CustomStandsPage from './pages/services/CustomStandsPage';
-import ModularSystemsPage from './pages/services/ModularSystemsPage';
-import TurnkeyServicesPage from './pages/services/TurnkeyServicesPage';
-import FabricationPage from './pages/services/FabricationPage';
-import FitOutPage from './pages/services/FitOutPage';
-import TestimonialsPage from './pages/TestimonialsPage';
+const ROICalculatorPage = lazy(() => import('./pages/ROICalculatorPage'));
+const CustomStandsPage = lazy(() => import('./pages/services/CustomStandsPage'));
+const ModularSystemsPage = lazy(() => import('./pages/services/ModularSystemsPage'));
+const TurnkeyServicesPage = lazy(() => import('./pages/services/TurnkeyServicesPage'));
+const FabricationPage = lazy(() => import('./pages/services/FabricationPage'));
+const FitOutPage = lazy(() => import('./pages/services/FitOutPage'));
 import GoogleAnalytics from './components/GoogleAnalytics'; // Import the tracker
 
 // New Lead Magnet Pages
-import ExhibitionGuidePage from './pages/resources/ExhibitionGuidePage';
-import TrendsReportPage from './pages/resources/TrendsReportPage';
-import CostCalculatorPage from './pages/resources/CostCalculatorPage';
-import ConsultationPage from './pages/ConsultationPage';
+const ExhibitionGuidePage = lazy(() => import('./pages/resources/ExhibitionGuidePage'));
+const CostCalculatorPage = lazy(() => import('./pages/resources/CostCalculatorPage'));
+const ConsultationPage = lazy(() => import('./pages/ConsultationPage'));
+const CommercialFitOutPage = lazy(() => import('./pages/services/CommercialFitOutPage'));
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 const App: React.FC = () => {
     const location = useLocation();
@@ -41,6 +42,7 @@ const App: React.FC = () => {
         <ApiKeyProvider>
             <GoogleAnalytics /> {/* Fired on every route change */}
             <Layout>
+                <Suspense fallback={<div className="min-h-screen bg-fann-charcoal" />}>
                 <AnimatePresence mode="wait">
                     <Routes location={location} key={location.pathname}>
                         <Route path="/" element={<HomePage />} />
@@ -52,10 +54,10 @@ const App: React.FC = () => {
                         <Route path="/services/exhibition-stand-fabrication-dubai" element={<FabricationPage />} />
                         <Route path="/services/interior-fitout-exhibition-spaces-dubai" element={<FitOutPage />} />
                         
+                        <Route path="/services/commercial-interior-fit-out-dubai" element={<CommercialFitOutPage />} />
                         <Route path="/portfolio" element={<PortfolioPage />} />
                         <Route path="/portfolio/:slug" element={<ProjectDetailPage />} />
                         
-                        <Route path="/testimonials" element={<TestimonialsPage />} />
                         <Route path="/fann-studio" element={<AIDesignStudioPage />} />
                         <Route path="/fann-studio/exhibition" element={<ExhibitionStudioPage />} />
                         <Route path="/fann-studio/exhibition/result" element={<DesignResultPage />} />
@@ -71,11 +73,13 @@ const App: React.FC = () => {
                         
                         {/* Resources & Lead Magnets */}
                         <Route path="/resources/exhibition-guide" element={<ExhibitionGuidePage />} />
-                        <Route path="/resources/trends-2026" element={<TrendsReportPage />} />
                         <Route path="/resources/cost-calculator" element={<CostCalculatorPage />} />
                         <Route path="/book-consultation" element={<ConsultationPage />} />
+                        <Route path="/privacy-policy" element={<PrivacyPage />} />
+                        <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                 </AnimatePresence>
+                </Suspense>
             </Layout>
         </ApiKeyProvider>
     );

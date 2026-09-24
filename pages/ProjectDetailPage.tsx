@@ -163,6 +163,17 @@ const ProjectDetailPage: React.FC = () => {
           </div>
         </div>
 
+        {/* VIDEO */}
+        {project.video && (
+          <div className="my-20">
+            <h2 className="text-3xl font-serif font-bold text-center mb-12">On site</h2>
+            <figure className="max-w-4xl mx-auto">
+              <video src={project.video.src} poster={project.video.poster} controls muted playsInline preload="metadata" className="w-full rounded-lg border border-white/10 bg-black" />
+              {project.video.caption && <figcaption className="text-center text-gray-400 mt-4">{project.video.caption}</figcaption>}
+            </figure>
+          </div>
+        )}
+
         {/* GALLERY */}
         <div className="my-20">
           <h2 className="text-3xl font-serif font-bold text-center mb-12">Project Gallery</h2>
@@ -173,7 +184,7 @@ const ProjectDetailPage: React.FC = () => {
                 className={`gallery-item group aspect-[4/3] ${item.featured ? 'md:col-span-2 aspect-[2/1]' : ''}`}
                 onClick={() => openLightbox(i)}
               >
-                <img src={item.image} alt={item.caption} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <img src={item.image} alt={item.caption} loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                 <div className="gallery-overlay">
                   <ZoomIn className="text-white w-10 h-10" />
                 </div>

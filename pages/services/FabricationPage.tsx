@@ -32,7 +32,7 @@ const schema = {
             "@type": "Service",
             "serviceType": "Exhibition Stand Fabrication",
             "name": "Exhibition Stand Fabrication Dubai",
-            "description": "FANN offers expert exhibition stand fabrication in Dubai from our state-of-the-art, in-house workshop. Our control over the manufacturing process guarantees superior quality, on-time delivery, and craftsmanship for your exhibition stand.",
+            "description": "FANN offers expert exhibition stand fabrication in Dubai from our in-house workshop in Umm Al Quwain. Our control over the manufacturing process guarantees superior quality, on-time delivery, and craftsmanship for your exhibition stand.",
             "provider": { "@type": "Organization", "name": "FANN" },
             "areaServed": { "@type": "City", "name": "Dubai" },
             "hasOfferCatalog": {
@@ -74,7 +74,7 @@ const FabricationPage: React.FC = () => {
     <AnimatedPage>
       <SEO
         title="Exhibition Stand Fabrication Dubai | In-House Production | FANN"
-        description="Expert exhibition stand fabrication in Dubai. Our in-house workshop ensures quality control, on-time delivery, and superior craftsmanship. DMCC licensed."
+        description="Expert exhibition stand fabrication in Dubai. Our in-house workshop in Umm Al Quwain ensures quality control, on-time delivery, and superior craftsmanship."
         schema={schema}
       />
       <ServicePageLayout
@@ -92,7 +92,7 @@ const FabricationPage: React.FC = () => {
         </div>
 
         <h2>Our State-of-the-Art Workshop</h2>
-        <p>Our expansive workshop in the UAE is the heart of our operations. It is fully equipped with the latest machinery and staffed by a team of highly skilled carpenters, painters, electricians, and technicians. Our key capabilities include:</p>
+        <p>Our workshop in Umm Al Quwain is the heart of our operations. It is fully equipped with the latest machinery and staffed by a team of highly skilled carpenters, painters, electricians, and technicians. Our key capabilities include:</p>
         <ul>
             <li><strong>CNC Routing:</strong> For computer-guided, precision cutting of complex shapes and logos, ensuring perfect accuracy every time.</li>
             <li><strong>Custom Joinery & Woodworking:</strong> A dedicated section for crafting bespoke counters, product displays, and structural elements.</li>
@@ -112,9 +112,8 @@ const FabricationPage: React.FC = () => {
         </ol>
 
         {/* Visual Placeholder */}
-        <div className="my-8 p-4 border-2 border-dashed border-fann-light-gray rounded-lg text-center">
-            <p className="text-fann-light-gray font-semibold">[Image: A large exhibition stand fully pre-built inside the FANN workshop]</p>
-            <img src="https://via.placeholder.com/800x450.png?text=Stand+Pre-Build+Assembly+in+FANN+Workshop" alt="A large exhibition stand fully assembled inside the FANN workshop for quality control pre-build" className="w-full h-auto mt-2 rounded-md opacity-50"/>
+        <div className="my-8">
+            <img src="/images/site/workshop-carpentry.webp" loading="lazy" alt="Carpenter shaping timber panels in a joinery workshop" className="w-full aspect-video object-cover mt-2 rounded-md"/>
         </div>
 
         <h2>Advanced Fabrication Techniques</h2>

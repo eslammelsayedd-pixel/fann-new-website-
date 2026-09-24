@@ -1,3 +1,4 @@
+import { submitLead } from '../../lib/submitLead';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Download, Zap, Globe, Layers, Loader2 } from 'lucide-react';
@@ -7,19 +8,18 @@ import SEO from '../../components/SEO';
 const TrendsReportPage: React.FC = () => {
     const [email, setEmail] = useState('');
     const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
+    const [formError, setFormError] = useState<string | null>(null);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setStatus('submitting');
+        setFormError(null);
         try {
-            await fetch('/api/submit-lead', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, magnetId: 'trends-2026' })
-            });
+            await submitLead({ formType: 'Trends Report 2026 download', email, details: { magnetId: 'trends-2026' } });
             setStatus('success');
-        } catch (err) {
-            setStatus('success'); // Fallback for demo
+        } catch (err: any) {
+            setFormError(err.message);
+            setStatus('idle');
         }
     };
 
@@ -89,6 +89,7 @@ const TrendsReportPage: React.FC = () => {
                                     {status === 'submitting' ? <Loader2 className="animate-spin" /> : <Download size={18} />}
                                     Download PDF
                                 </button>
+                                {formError && <p role="alert" className="mt-3 text-sm text-red-400">{formError}</p>}
                             </form>
                         )}
                     </div>

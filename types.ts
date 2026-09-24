@@ -62,6 +62,7 @@ export interface Project {
     authorCompany: string;
     authorPhoto?: string;
   };
+  video?: { src: string; poster?: string; caption?: string };
   gallery?: {
     image: string;
     caption: string;

@@ -1,4 +1,5 @@
 
+import { submitLead } from '../lib/submitLead';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -145,8 +146,14 @@ const InteriorStudioPage: React.FC = () => {
         setCurrentStep(prev => Math.max(prev - 1, 1));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        try {
+            await submitLead({ formType: 'Interior Studio design request', name: formData.clientName, email: formData.email, phone: formData.phone, message: formData.projectName, details: { ...formData } });
+        } catch (err: any) {
+            alert(err?.message || 'Sorry, we could not send your request. Please WhatsApp us on +971 50 566 7502.');
+            return;
+        }
         navigate('/fann-studio/interior/result', { 
             state: { formData } 
         });

@@ -4,7 +4,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 
 // Initialize the Google GenAI SDK with server-side API Key
 const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
+  apiKey: process.env.GEMINI_API_KEY || process.env.GOOGLE_CLOUD_API_KEY,
   httpOptions: {
     headers: {
       'User-Agent': 'aistudio-build',
@@ -118,7 +118,7 @@ async function chat(req: VercelRequest, res: VercelResponse) {
   } catch (error: any) {
     console.error('chat error:', error);
     return res.status(200).json({
-      content: "Thank you for reaching out! I'm currently operating in offline mode. Please feel free to call or WhatsApp us directly at +971 50 123 4567 for any immediate inquiries, or send us a message via our contact form!"
+      content: "Thank you for reaching out! I'm currently operating in offline mode. Please feel free to call or WhatsApp us directly at +971 50 566 7502 for any immediate inquiries, or send us a message via our contact form!"
     });
   }
 }
@@ -134,7 +134,7 @@ async function generateInsights(req: VercelRequest, res: VercelResponse) {
       model: "gemini-3.5-flash",
       contents: prompt,
       config: {
-        systemInstruction: "You are an expert design journalist for FANN Intelligence Hub, a thought leadership publication in the GCC. Write an extremely engaging, high-quality, professional article based on the prompt. Cite industry reports or real examples if possible. Use clean Markdown.",
+        systemInstruction: "You are an expert design journalist for FANN Insights & Guides, a publication in the GCC. Write an extremely engaging, high-quality, professional article based on the prompt. Cite industry reports or real examples if possible. Use clean Markdown.",
         tools: [{ googleSearch: {} }]
       }
     });
@@ -824,17 +824,125 @@ Write a highly tactical guide covering space planning, design styles, visitor en
   }
 }
 
-// 13. Form submissions (Inquiry, contact, leads)
-async function sendInquiry(req: VercelRequest, res: VercelResponse) {
-  return res.status(200).json({ success: true, message: 'Inquiry submitted successfully to FANN' });
+// 13. Form submissions (Inquiry, contact, leads) - real delivery to sales@fann.ae
+const LEAD_TO = process.env.LEAD_TO_EMAIL || 'sales@fann.ae';
+const rateBucket = new Map<string, number[]>();
+
+function clean(v: unknown, max = 2000): string {
+  if (v === undefined || v === null) return '';
+  return String(v).replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, max);
 }
 
-async function sendContactForm(req: VercelRequest, res: VercelResponse) {
-  return res.status(200).json({ success: true, message: 'Contact form submitted successfully to FANN' });
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const hits = (rateBucket.get(ip) || []).filter(t => now - t < 10 * 60 * 1000);
+  hits.push(now);
+  rateBucket.set(ip, hits);
+  return hits.length > 8;
 }
 
-async function submitLead(req: VercelRequest, res: VercelResponse) {
-  return res.status(200).json({ success: true, message: 'Lead submitted successfully to FANN Hub' });
+async function deliverLead(subject: string, text: string, replyTo?: string): Promise<void> {
+  const web3Key = process.env.WEB3FORMS_ACCESS_KEY;
+  if (web3Key) {
+    const r = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ access_key: web3Key, subject, from_name: 'FANN Website', replyto: replyTo, message: text }),
+    });
+    const d: any = await r.json().catch(() => ({}));
+    if (!r.ok || d.success === false) throw new Error(`Web3Forms failed: ${r.status} ${d.message || ''}`);
+    return;
+  }
+  if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+    const nodemailer = (await import('nodemailer')).default;
+    const transport = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT || 587),
+      secure: Number(process.env.SMTP_PORT) === 465,
+      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+    });
+    await transport.sendMail({ from: `FANN Website <${process.env.SMTP_USER}>`, to: LEAD_TO, replyTo, subject, text });
+    return;
+  }
+  throw new Error('No lead delivery method configured (set WEB3FORMS_ACCESS_KEY or SMTP_* env vars)');
+}
+
+async function handleLead(req: VercelRequest, res: VercelResponse, defaultType: string) {
+  if (req.method !== 'POST') return res.status(405).json({ success: false, error: 'Method Not Allowed' });
+  const b: any = req.body || {};
+  if (clean(b.website)) return res.status(200).json({ success: true }); // honeypot: silently drop bots
+
+  const ip = clean((req.headers['x-forwarded-for'] as string) || '', 100).split(',')[0] || 'unknown';
+  if (isRateLimited(ip)) return res.status(429).json({ success: false, error: 'Too many submissions. Please try again in a few minutes or WhatsApp us.' });
+
+  const formType = clean(b.formType || b.type || defaultType, 80);
+  const name = clean(b.name || [b.firstName, b.lastName].filter(Boolean).join(' '), 120);
+  const email = clean(b.email, 160);
+  const phone = clean(b.phone, 40);
+  const company = clean(b.company, 160);
+  const message = clean(b.message || b.details_text || '', 5000);
+
+  const emailOk = !email || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if (!emailOk) return res.status(400).json({ success: false, error: 'Please enter a valid email address.' });
+  if (!email && !phone) return res.status(400).json({ success: false, error: 'Please add an email or phone number so we can reach you.' });
+
+  const skip = new Set(['formType','type','name','firstName','lastName','email','phone','company','message','website','details','page','referrer']);
+  const extra: Record<string, unknown> = { ...(typeof b.details === 'object' && b.details ? b.details : {}) };
+  for (const k of Object.keys(b)) if (!skip.has(k)) extra[k] = b[k];
+  const extraLines = Object.entries(extra)
+    .filter(([, v]) => v !== '' && v !== null && v !== undefined)
+    .map(([k, v]) => `${k}: ${clean(typeof v === 'object' ? JSON.stringify(v) : v, 1000)}`);
+
+  const text = [
+    `New ${formType} from fann.ae`,
+    '',
+    `Name: ${name || '-'}`,
+    `Email: ${email || '-'}`,
+    `Phone: ${phone || '-'}`,
+    `Company: ${company || '-'}`,
+    '',
+    message ? `Message:\n${message}\n` : '',
+    extraLines.length ? `Details:\n${extraLines.join('\n')}\n` : '',
+    `Page: ${clean(b.page, 300) || '-'}`,
+    `Referrer: ${clean(b.referrer, 300) || '-'}`,
+    `Submitted: ${new Date().toISOString()}`,
+  ].join('\n');
+
+  try {
+    await deliverLead(`[fann.ae] ${formType}${name ? ' - ' + name : ''}${company ? ' (' + company + ')' : ''}`, text, email || undefined);
+    console.log(`Lead delivered: ${formType}`);
+    return res.status(200).json({ success: true, message: 'Thank you - we received your request.' });
+  } catch (err: any) {
+    console.error('Lead delivery failed:', err?.message, '\n', text);
+    return res.status(502).json({ success: false, error: 'Sorry, your message could not be sent right now. Please WhatsApp us on +971 50 566 7502 or email sales@fann.ae.' });
+  }
+}
+
+// SEO files
+const SITE = 'https://www.fann.ae';
+const SITEMAP_PATHS = [
+  '/', '/services', '/services/custom-exhibition-stands-dubai', '/services/exhibition-stand-fabrication-dubai',
+  '/services/interior-fitout-exhibition-spaces-dubai', '/services/modular-exhibition-systems-dubai',
+  '/services/turnkey-exhibition-services-uae', '/portfolio', '/about', '/contact', '/privacy-policy', '/services/commercial-interior-fit-out-dubai', 
+  '/insights', '/events-calendar', '/fann-studio', '/book-consultation', '/resources/cost-calculator',
+  '/resources/exhibition-guide', '/roi-calculator',
+  '/portfolio/icons-of-porsche-2025-dubai', '/portfolio/special-olympics-uae-unified-champion-schools-2025',
+];
+function robotsTxt(res: VercelResponse) {
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=3600');
+  return res.status(200).send(`User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /fann-studio/*/result\n\nSitemap: ${SITE}/sitemap.xml\n`);
+}
+function sitemapXml(res: VercelResponse) {
+  const today = new Date().toISOString().slice(0, 10);
+  const urls = SITEMAP_PATHS.map(p => `  <url><loc>${SITE}${p === '/' ? '/' : p}</loc><lastmod>${today}</lastmod><priority>${p === '/' ? '1.0' : p.split('/').length > 2 ? '0.7' : '0.8'}</priority></url>`).join('\n');
+  res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=3600');
+  return res.status(200).send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
+}
+function llmsTxt(res: VercelResponse) {
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+  return res.status(200).send(`# FANN\n> Dubai design-and-build company: exhibition stands (Dubai & Abu Dhabi), event setup (Dubai, Abu Dhabi, Al Ain), interior fit-out and renovation (Dubai & Abu Dhabi), and marble supply.\n\nContact: sales@fann.ae, +971 50 566 7502\nOffice: Office No. 508, Dusseldorf Business Center, Al Barsha, Dubai\nWarehouse: Warehouse No. 10, Um Dera, Umm Al Quwain\n\n${SITEMAP_PATHS.map(p => `- ${SITE}${p}`).join('\n')}\n`);
 }
 
 // 14. Video generation handler (mocked with premium high-quality stock loop or dynamic status)
@@ -889,12 +997,20 @@ export default async function mainHandler(req: VercelRequest, res: VercelRespons
         return await generateTemplate(req, res);
       case 'generate-exhibition-guide':
         return await generateExhibitionGuide(req, res);
+      case 'lead':
+        return await handleLead(req, res, 'Website enquiry');
       case 'send-inquiry':
-        return await sendInquiry(req, res);
+        return await handleLead(req, res, 'Studio enquiry');
       case 'send-contact-form':
-        return await sendContactForm(req, res);
+        return await handleLead(req, res, 'Contact form');
       case 'submit-lead':
-        return await submitLead(req, res);
+        return await handleLead(req, res, 'Resource download');
+      case 'robots':
+        return robotsTxt(res);
+      case 'sitemap':
+        return sitemapXml(res);
+      case 'llms':
+        return llmsTxt(res);
       case 'generate-video':
         return await generateVideo(req, res);
       default:

@@ -1,4 +1,5 @@
 
+import { submitLead } from '../lib/submitLead';
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -137,7 +138,9 @@ const ROICalculatorPage: React.FC = () => {
 
     const handleDownloadReport = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!leadForm.email) { alert('Please enter your email to download the report.'); return; }
         setIsDownloading(true);
+        submitLead({ formType: 'ROI Calculator report', name: leadForm.name, email: leadForm.email, company: leadForm.company, details: { inputs: formData, results } }).catch(err => console.error('Lead delivery failed', err));
         try {
             const response = await fetch('/api/generate-roi-pdf', {
                 method: 'POST',

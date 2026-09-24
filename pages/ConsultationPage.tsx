@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
+import { submitLead } from '../lib/submitLead';
 import { Clock, Video, Award, Phone, Mail, AlertCircle, Calendar, Loader2, CheckCircle } from 'lucide-react';
 
 const ConsultationPage: React.FC = () => {
@@ -21,37 +22,7 @@ const ConsultationPage: React.FC = () => {
         const details = formData.get('details') as string;
 
         try {
-            const response = await fetch('https://formspree.io/f/xzzbnqvj', {
-                method: 'POST',
-                headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    subject: 'New Consultation Request',
-                    name, 
-                    email, 
-                    phone,
-                    company,
-                    message: details 
-                })
-            });
-            
-            if (!response.ok) {
-                if (response.status === 404) {
-                    console.warn("Formspree form 'xzzbnqvj' not found. Simulating successful form submission for preview purposes.");
-                    setIsSending(false);
-                    setIsSent(true);
-                    return;
-                }
-                let errorText = `Server responded with status ${response.status}`;
-                const responseText = await response.text();
-                try {
-                    const errorData = JSON.parse(responseText);
-                    errorText = errorData.error || responseText;
-                } catch (e) {
-                    errorText = responseText;
-                }
-                throw new Error(errorText);
-            }
-
+            await submitLead({ formType: 'Consultation request', name, email, phone, company, message: details, website: (formData.get('website') as string) || '' });
             setIsSent(true);
         } catch (err: any) {
             setError(err.message);

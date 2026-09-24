@@ -74,7 +74,7 @@ const CustomStandsPage: React.FC = () => {
     <AnimatedPage>
       <SEO
         title="Custom Exhibition Stands Dubai | Bespoke Design & Build | FANN"
-        description="Award-winning custom exhibition stand design and build in Dubai. From 3D concept to final installation at DWTC. DMCC licensed. Get your free quote today."
+        description="Award-winning custom exhibition stand design and build in Dubai. From 3D concept to final installation at DWTC. Get your free quote today."
         schema={schema}
       />
       <ServicePageLayout
@@ -104,7 +104,7 @@ const CustomStandsPage: React.FC = () => {
         {/* Visual Placeholder */}
         <div className="my-8 p-4 border-2 border-dashed border-fann-light-gray rounded-lg text-center">
             <p className="text-fann-light-gray font-semibold">[Infographic: Our 5-Step Custom Design Process]</p>
-            <img src="https://via.placeholder.com/800x250.png?text=Discovery+%E2%86%92+3D+Design+%E2%86%92+Refinement+%E2%86%92+Fabrication+%E2%86%92+Installation" alt="Diagram showing the FANN 5-step process for custom stand design" className="w-full h-auto mt-2 rounded-md opacity-50"/>
+            <img src="/images/site/exhibition-booth-lounge.webp" loading="lazy" alt="Custom exhibition stand lounge with branded wall display" className="w-full aspect-video object-cover mt-2 rounded-md"/>
         </div>
         
         <h2>Benefits of a Bespoke Stand for Dubai's Exhibitions</h2>

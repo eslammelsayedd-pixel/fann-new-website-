@@ -134,9 +134,9 @@ const InsightsPage: React.FC = () => {
 
     const renderTopicSelection = () => (
         <div className="text-center">
-            <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">Intelligence Hub</h1>
+            <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">Insights &amp; Guides</h1>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-12">
-                Expert analysis and AI-powered insights for the UAE design market.
+                Practical guides from our exhibition, events and fit-out team in Dubai.
             </p>
 
             {/* Featured Blog Posts (Contractor Content) */}
@@ -166,28 +166,6 @@ const InsightsPage: React.FC = () => {
                 </div>
             </div>
 
-            {/* AI Topics */}
-            <div className="mb-12">
-                 <h2 className="text-left text-2xl font-serif font-bold text-white mb-8 flex items-center gap-3">
-                    <BrainCircuit className="text-fann-gold" /> AI Trend Analysis
-                </h2>
-                <div className="grid md:grid-cols-3 gap-8">
-                    {insightTopics.map((topic) => (
-                        <div 
-                            key={topic.slug}
-                            onClick={() => setSearchParams({ topic: topic.slug })}
-                            className="h-64 relative rounded-lg overflow-hidden cursor-pointer group border border-white/5"
-                        >
-                            <img src={topic.image} className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-110 opacity-50" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
-                            <div className="relative h-full flex flex-col justify-end p-6 text-left">
-                                <topic.icon className="text-fann-gold mb-2" size={24} />
-                                <h3 className="text-lg font-bold text-white">{topic.title}</h3>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
         </div>
     );
 
@@ -198,7 +176,7 @@ const InsightsPage: React.FC = () => {
         return (
             <div className="max-w-4xl mx-auto">
                 <button onClick={() => setSearchParams({})} className="flex items-center gap-2 text-fann-gold mb-8 font-semibold hover:underline">
-                    <ArrowLeft size={16} /> Back to Hub
+                    <ArrowLeft size={16} /> Back to Insights
                 </button>
                 
                 {isLoading ? (

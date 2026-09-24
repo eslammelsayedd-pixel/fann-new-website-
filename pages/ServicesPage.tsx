@@ -20,7 +20,7 @@ const buttonTransition = { type: 'spring', stiffness: 400, damping: 17 } as cons
 
 const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, description, image, services, imagePosition = 'right', link }) => {
   const imageVariants = {
-    offscreen: { opacity: 0, x: imagePosition === 'right' ? 100 : -100 },
+    offscreen: { opacity: 0, x: imagePosition === 'right' ? 40 : -40 },
     onscreen: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 50, duration: 0.8 } }
   } as const;
   
@@ -31,16 +31,16 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, descriptio
 
   return (
     <motion.section 
-      className="container mx-auto px-4 sm:px-6 lg:px-8 py-20"
+      className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 overflow-hidden"
       initial="offscreen"
       whileInView="onscreen"
-      viewport={{ once: true, amount: 0.3 }}
+      viewport={{ once: true, amount: 0.15 }}
     >
       <div className={`grid md:grid-cols-2 gap-12 items-center`}>
         <motion.div className={`order-2 ${imagePosition === 'left' ? 'md:order-2' : 'md:order-1'}`} variants={textVariants}>
           <div className="flex items-center gap-4 mb-4">
             <div className="text-fann-gold">{icon}</div>
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-fann-gold">{title}</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-fann-gold break-words min-w-0">{title}</h2>
           </div>
           <p className="text-gray-300 mb-6 leading-relaxed">{description}</p>
           <ul className="space-y-3 mb-8">
@@ -65,8 +65,8 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, descriptio
         </motion.div>
         <motion.div className={`order-1 ${imagePosition === 'left' ? 'md:order-1' : 'md:order-2'}`} variants={imageVariants}>
           <picture>
-            <source srcSet={`${image}&fm=webp`} type="image/webp" />
-            <source srcSet={image} type="image/jpeg" />
+            {image.includes("?") && <source srcSet={`${image}&fm=webp`} type="image/webp" />}
+            {image.includes("?") && <source srcSet={image} type="image/jpeg" />}
             <img 
               src={image} 
               alt={title} 
@@ -103,12 +103,12 @@ const servicesData = [
     },
     {
         icon: <PenTool size={40} />,
-        title: "Interior Design & Build",
+        title: "Interior Design & Commercial Fit-Out",
         description: "Our design and build philosophy for interiors centers on creating spaces that are both beautiful and functional. We manage the entire process from concept to completion, designing and constructing inspiring commercial environments and luxurious residential properties that reflect your unique identity.",
         image: "https://images.pexels.com/photos/3797991/pexels-photo-3797991.jpeg?auto=compress&cs=tinysrgb&w=800&q=75",
         services: [ "Comprehensive Space Planning", "Concept & Mood Board Development", "Custom Furniture & Joinery Design", "Complete Fit-Out & Project Management", "Turnkey Design & Build Solutions" ],
         imagePosition: "right" as "right",
-        link: "/portfolio" // Assuming no detailed page for this yet
+        link: "/services/commercial-interior-fit-out-dubai"
     }
 ];
 

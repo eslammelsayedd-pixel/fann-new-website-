@@ -1,4 +1,5 @@
 
+import { submitLead } from '../lib/submitLead';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -198,21 +199,18 @@ const EventStudioPage: React.FC = () => {
             
             try {
                 // Fire lead inquiry
-                fetch('/api/send-inquiry', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
+                await submitLead({ formType: 'Event Studio concept request', name: [ (formData as any).firstName, (formData as any).lastName ].filter(Boolean).join(' ') || (formData as any).name, email: (formData as any).email, phone: (formData as any).phone, company: (formData as any).company || (formData as any).companyName, details: { 
                         type: 'Event Studio Concept Request',
                         ...formData
-                    })
-                });
+                    } });
 
                 // Navigate to results
                 navigate('/fann-studio/event/result', { 
                     state: { formData } 
                 });
-            } catch (error) {
+            } catch (error: any) {
                 console.error("Submission error", error);
+                window.alert(error?.message || 'Sorry, we could not send your request. Please WhatsApp us on +971 50 566 7502.');
                 setIsSubmitting(false);
             }
         }
