@@ -32,7 +32,6 @@ const Footer: React.FC = () => {
             <h4 className="font-bold text-white uppercase tracking-wider mb-4">Free Resources</h4>
             <ul className="space-y-2 text-sm text-gray-400">
               <li><Link to="/resources/exhibition-guide" className="hover:text-fann-gold transition-colors">Exhibition Success Guide</Link></li>
-              <li><Link to="/resources/trends-2026" className="hover:text-fann-gold transition-colors">2026 Trends Report</Link></li>
               <li><Link to="/resources/cost-calculator" className="hover:text-fann-gold transition-colors">Stand Cost Calculator</Link></li>
               <li><Link to="/book-consultation" className="hover:text-fann-gold transition-colors font-bold text-fann-gold">Book Free Consultation</Link></li>
             </ul>
