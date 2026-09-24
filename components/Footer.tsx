@@ -24,6 +24,7 @@ const Footer: React.FC = () => {
               <li><Link to="/about" className="hover:text-fann-gold transition-colors">About FANN</Link></li>
               <li><Link to="/portfolio" className="hover:text-fann-gold transition-colors">Portfolio</Link></li>
               <li><Link to="/services" className="hover:text-fann-gold transition-colors">Services</Link></li>
+              <li><Link to="/services/commercial-interior-fit-out-dubai" className="hover:text-fann-gold transition-colors">Commercial Fit-Out</Link></li>
               <li><Link to="/contact" className="hover:text-fann-gold transition-colors">Contact</Link></li>
             </ul>
           </div>
@@ -42,7 +43,7 @@ const Footer: React.FC = () => {
               <li><a href="mailto:sales@fann.ae" className="hover:text-fann-gold transition-colors">sales@fann.ae</a></li>
               <li><a href="tel:+971505667502" className="hover:text-fann-gold transition-colors">+971 50 566 7502</a></li>
               <li className="font-semibold mt-2 pt-2 border-t border-white/10">Office:</li>
-              <li>Office 508, Dusseldorf Business Point, Al Barsha 1, Dubai, UAE</li>
+              <li>Office No. 508, Dusseldorf Business Center, Al Barsha, Dubai, UAE</li>
             </ul>
             <div className="flex space-x-4 text-gray-500 mt-4">
               <a href="https://www.facebook.com/fannuae/" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold transition-colors"><Facebook size={20} /></a>
@@ -53,8 +54,8 @@ const Footer: React.FC = () => {
           </div>
         </div>
         <div className="border-t border-white/10 mt-8 pt-6 text-center text-sm text-gray-500">
-          <p>&copy; {new Date().getFullYear()} FANN. All Rights Reserved. | <a href="#" className="hover:text-fann-gold">Privacy Policy</a></p>
-          <p className="mt-2">Created by <a href="https://www.ohhmyroi.com" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold font-semibold">www.ohhmyroi.com</a></p>
+          <p>&copy; {new Date().getFullYear()} FANN. All Rights Reserved. | <Link to="/privacy-policy" className="hover:text-fann-gold">Privacy Policy</Link></p>
+          
         </div>
       </div>
     </footer>
