@@ -74,7 +74,7 @@ const FabricationPage: React.FC = () => {
     <AnimatedPage>
       <SEO
         title="Exhibition Stand Fabrication Dubai | In-House Production | FANN"
-        description="Expert exhibition stand fabrication in Dubai. Our in-house workshop ensures quality control, on-time delivery, and superior craftsmanship. DMCC licensed."
+        description="Expert exhibition stand fabrication in Dubai. Our in-house workshop ensures quality control, on-time delivery, and superior craftsmanship."
         schema={schema}
       />
       <ServicePageLayout
@@ -114,7 +114,7 @@ const FabricationPage: React.FC = () => {
         {/* Visual Placeholder */}
         <div className="my-8 p-4 border-2 border-dashed border-fann-light-gray rounded-lg text-center">
             <p className="text-fann-light-gray font-semibold">[Image: A large exhibition stand fully pre-built inside the FANN workshop]</p>
-            <img src="https://via.placeholder.com/800x450.png?text=Stand+Pre-Build+Assembly+in+FANN+Workshop" alt="A large exhibition stand fully assembled inside the FANN workshop for quality control pre-build" className="w-full h-auto mt-2 rounded-md opacity-50"/>
+            <img src="/images/site/workshop-carpentry.webp" loading="lazy" alt="Carpenter shaping timber panels in a joinery workshop" className="w-full aspect-video object-cover mt-2 rounded-md"/>
         </div>
 
         <h2>Advanced Fabrication Techniques</h2>

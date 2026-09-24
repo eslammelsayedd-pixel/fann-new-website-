@@ -112,7 +112,7 @@ const FitOutPage: React.FC = () => {
         {/* Visual Placeholder */}
         <div className="my-8 p-4 border-2 border-dashed border-fann-light-gray rounded-lg text-center">
             <p className="text-fann-light-gray font-semibold">[Gallery: Images of different flooring, lighting, and wall finish examples in exhibition stands]</p>
-            <img src="https://via.placeholder.com/800x250.png?text=Gallery+of+Fit-Out+Finishes" alt="A collage showing examples of exhibition flooring, lighting, and wall graphics" className="w-full h-auto mt-2 rounded-md opacity-50"/>
+            <img src="/images/site/fitout-clinic-hall.webp" loading="lazy" alt="Clean, bright clinic corridor fit-out with glass display shelving" className="w-full aspect-video object-cover mt-2 rounded-md"/>
         </div>
 
         <h2>Hospitality & Premium Finishes</h2>
