@@ -43,7 +43,7 @@ const ProjectDetailPage: React.FC = () => {
   return (
     <div className="bg-fann-charcoal min-h-screen text-white">
       <SEO 
-        title={`${project.client} - ${project.title} | FANN Portfolio`} 
+        title={`${project.title} | ${project.location} Project`} 
         description={project.description}
         schema={schema}
       />
