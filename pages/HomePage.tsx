@@ -13,7 +13,7 @@ const heroSlides = [
         id: 1,
         tagline: "Exhibitions",
         headline: "Architecture for Brands",
-        description: "We design and build award-winning exhibition stands that dominate the floor at GITEX, Arab Health, and beyond.",
+        description: "We design and build custom exhibition stands for GITEX, ADIPEC, Gulfood and other UAE trade shows, from 3D concept to on-site build.",
         video: "https://cdn.pixabay.com/video/2020/02/16/32378-392290092_large.mp4", // Generic tech/structure background
         image: "https://images.unsplash.com/photo-1550305080-4e029753abcf?w=1920&q=90", // Fancy double decker structure
         link: "/services/custom-exhibition-stands-dubai"
@@ -197,7 +197,7 @@ const AboutSection: React.FC = () => (
                         Transforming spaces into <span className="text-fann-gold italic">experiences</span>.
                     </h2>
                     <p className="text-gray-400 text-lg leading-relaxed mb-8 font-light">
-                        FANN is a premier design and build firm based in Dubai. We specialize in three core pillars: <strong>Exhibitions, Corporate Events, and Interior Design</strong>. Our integrated approach combines architectural discipline with creative flair, ensuring every project is not just built, but crafted to perfection.
+                        FANN is a design and build company based in Dubai, with its own workshop in Umm Al Quwain. We specialize in three core pillars: <strong>Exhibitions, Corporate Events, and Interior Design</strong>. Our integrated approach combines architectural discipline with creative flair, ensuring every project is not just built, but crafted to perfection.
                     </p>
                     <div className="grid grid-cols-3 gap-8 border-t border-white/10 pt-8">
                         <StatItem value="200+" label="Projects Delivered" />
@@ -395,8 +395,8 @@ const HomePage: React.FC = () => {
     return (
         <div className="bg-fann-charcoal min-h-screen">
             <SEO
-                title="FANN | Premier Design & Build | Exhibitions, Events, Interiors"
-                description="Award-winning design and build company in Dubai specializing in custom exhibition stands, corporate events, and luxury interiors."
+                title="Exhibition Stand Contractor Dubai & Abu Dhabi"
+                description="FANN designs and builds custom exhibition stands, event setups and interior fit-outs in Dubai and Abu Dhabi. In-house workshop, 200+ projects. Get a free 3D concept."
             />
             
             <HeroSection />

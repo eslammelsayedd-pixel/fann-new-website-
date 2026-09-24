@@ -203,7 +203,7 @@ const InsightsPage: React.FC = () => {
 
     return (
         <AnimatedPage>
-            <SEO title="Insights & Intelligence | FANN" description="Expert analysis on UAE exhibitions, events, and interiors." />
+            <SEO title="Exhibition & Event Guides for Dubai" description="Practical guides on exhibition stands, event setup and fit-out in Dubai and Abu Dhabi: costs, timelines, venues and how to choose a contractor." />
             <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                    {topicSlug || blogSlug ? renderArticle() : renderTopicSelection()}
