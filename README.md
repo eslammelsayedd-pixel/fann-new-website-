@@ -16,7 +16,7 @@ This module implements a high-conversion WhatsApp integration designed for mobil
   - Mouse leaving top of window (Desktop).
   - Scrolling past 50% (Mobile/General).
   - 30 seconds time on page.
-- **Offer**: 5% Discount + Free 3D Design.
+- **Offer**: Free 3D Design concept.
 - **Frequency**: Shows once per session (controlled by `exit_popup_shown` in localStorage).
 
 ### 3. Configuration (`whatsappConfig.ts`)
