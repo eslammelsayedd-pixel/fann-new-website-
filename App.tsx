@@ -25,7 +25,6 @@ const ModularSystemsPage = lazy(() => import('./pages/services/ModularSystemsPag
 const TurnkeyServicesPage = lazy(() => import('./pages/services/TurnkeyServicesPage'));
 const FabricationPage = lazy(() => import('./pages/services/FabricationPage'));
 const FitOutPage = lazy(() => import('./pages/services/FitOutPage'));
-const TestimonialsPage = lazy(() => import('./pages/TestimonialsPage'));
 import GoogleAnalytics from './components/GoogleAnalytics'; // Import the tracker
 
 // New Lead Magnet Pages
@@ -60,7 +59,6 @@ const App: React.FC = () => {
                         <Route path="/portfolio" element={<PortfolioPage />} />
                         <Route path="/portfolio/:slug" element={<ProjectDetailPage />} />
                         
-                        <Route path="/testimonials" element={<TestimonialsPage />} />
                         <Route path="/fann-studio" element={<AIDesignStudioPage />} />
                         <Route path="/fann-studio/exhibition" element={<ExhibitionStudioPage />} />
                         <Route path="/fann-studio/exhibition/result" element={<DesignResultPage />} />
