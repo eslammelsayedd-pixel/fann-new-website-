@@ -338,14 +338,14 @@ const FeaturedResource: React.FC = () => (
             <div className="container relative z-10">
                 <div className="flex flex-col md:flex-row items-center gap-12">
                     <div className="md:w-1/2">
-                        <span className="text-purple-400 font-bold tracking-widest uppercase text-xs mb-2 block">Just Released</span>
-                        <h2 className="text-3xl md:text-5xl font-serif text-white mb-6">2026 Exhibition Trends Report</h2>
+                        <span className="text-purple-400 font-bold tracking-widest uppercase text-xs mb-2 block">Free Resource</span>
+                        <h2 className="text-3xl md:text-5xl font-serif text-white mb-6">Exhibition Success Guide</h2>
                         <p className="text-gray-400 text-lg mb-8">
-                            Discover the cutting-edge materials, immersive technologies, and design philosophies that will define the next era of exhibitions in the GCC.
+                            A practical step-by-step guide to planning your next UAE exhibition: timelines, budgets, approvals and the checklist our team uses on every stand.
                         </p>
-                        <Link to="/resources/trends-2026">
+                        <Link to="/resources/exhibition-guide">
                             <button className="flex items-center gap-2 text-white border-b border-white pb-1 hover:text-fann-gold hover:border-fann-gold transition-colors">
-                                Download Report <Download size={16} />
+                                Get the Guide <Download size={16} />
                             </button>
                         </Link>
                     </div>
