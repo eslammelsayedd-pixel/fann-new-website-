@@ -31,7 +31,6 @@ import GoogleAnalytics from './components/GoogleAnalytics'; // Import the tracke
 const ExhibitionGuidePage = lazy(() => import('./pages/resources/ExhibitionGuidePage'));
 const CostCalculatorPage = lazy(() => import('./pages/resources/CostCalculatorPage'));
 const ConsultationPage = lazy(() => import('./pages/ConsultationPage'));
-const CommercialFitOutPage = lazy(() => import('./pages/services/CommercialFitOutPage'));
 const FitOutDubaiPage = lazy(() => import('./pages/services/FitOutDubaiPage'));
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
@@ -55,7 +54,6 @@ const App: React.FC = () => {
                         <Route path="/services/exhibition-stand-fabrication-dubai" element={<FabricationPage />} />
                         <Route path="/services/interior-fitout-exhibition-spaces-dubai" element={<FitOutPage />} />
                         
-                        <Route path="/services/commercial-interior-fit-out-dubai" element={<CommercialFitOutPage />} />
                         <Route path="/fit-out-dubai" element={<FitOutDubaiPage />} />
                         <Route path="/portfolio" element={<PortfolioPage />} />
                         <Route path="/portfolio/:slug" element={<ProjectDetailPage />} />
