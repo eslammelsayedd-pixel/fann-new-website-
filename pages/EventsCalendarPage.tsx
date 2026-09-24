@@ -213,7 +213,7 @@ const EventsCalendarPage: React.FC = () => {
   return (
     <AnimatedPage>
         <SEO 
-            title="UAE & KSA Events Calendar | FANN"
+            title="UAE & Saudi Exhibitions Calendar 2026-2027 | Trade Show Dates"
             description="Your complete guide to upcoming exhibitions and trade shows in Dubai, Abu Dhabi, and Saudi Arabia. Filter by industry, country, and date to plan your next event with FANN."
             schema={calendarPageSchema}
         />

@@ -360,7 +360,7 @@ const ExhibitionGuidePage: React.FC = () => {
 
     return (
         <AnimatedPage>
-            <SEO title="AI Exhibition Copilot | FANN" description="Your personalized, AI-powered guide for exhibition success in Dubai." />
+            <SEO title="Dubai Exhibition Planning Guide | Step-by-Step" description="Plan your exhibition in Dubai or Abu Dhabi: timelines, venue rules, stand approvals, budgets and a personalised checklist." />
             <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     

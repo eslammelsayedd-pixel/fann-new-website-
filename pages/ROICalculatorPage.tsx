@@ -265,7 +265,7 @@ const ROICalculatorPage: React.FC = () => {
 
     return (
         <AnimatedPage>
-            <SEO title="Exhibition ROI Intelligence Engine | FANN" description="Advanced multi-model ROI calculator for Dubai exhibitions. Simulate financial, brand, and network returns." />
+            <SEO title="Exhibition ROI Calculator for Dubai Trade Shows" description="Estimate the return on your Dubai or Abu Dhabi exhibition stand: leads, cost per lead and expected revenue. Free calculator from FANN." />
             <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     

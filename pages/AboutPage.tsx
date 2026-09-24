@@ -40,8 +40,8 @@ const AboutPage: React.FC = () => {
   return (
     <AnimatedPage>
         <SEO
-            title="About FANN | Dubai's Premier Design & Build Partner"
-            description="Founded in 2019, FANN is a full-service design and build company in Dubai, dedicated to transforming visions into unforgettable realities with innovation and excellence."
+            title="About FANN | Exhibition & Fit-Out Contractor in Dubai"
+            description="FANN is a Dubai design and build company for exhibition stands, events and interior fit-out, with an office in Al Barsha and its own workshop in Umm Al Quwain. 200+ projects since 2019."
             schema={aboutPageSchema}
         />
       <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">

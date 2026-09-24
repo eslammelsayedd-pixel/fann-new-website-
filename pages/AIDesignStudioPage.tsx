@@ -106,7 +106,7 @@ const AIDesignStudioPage: React.FC = () => {
     return (
         <AnimatedPage>
             <SEO
-                title="FANN Studio | Intelligent Design Concepts"
+                title="Free Exhibition Stand Design Concepts in Minutes"
                 description="Generate bespoke design concepts for exhibitions, events, and interiors in minutes with FANN's intelligent design studio. Visualize your project today."
                 schema={studioPageSchema}
             />

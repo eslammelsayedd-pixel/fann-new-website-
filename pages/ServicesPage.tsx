@@ -137,7 +137,7 @@ const ServicesPage: React.FC = () => {
     <AnimatedPage>
       <SEO
           title="Exhibition, Event & Interior Design Services in Dubai | FANN"
-          description="FANN offers premier design & build services for exhibitions, corporate events, and luxury interiors in Dubai & UAE. Get a free quote for your next project today."
+          description="Exhibition stand design and build, event setup and interior fit-out in Dubai and Abu Dhabi. In-house workshop, 200+ projects. Get a free quote and 3D concept."
       >
           <script type="application/ld+json">
               {JSON.stringify(servicesSchema)}

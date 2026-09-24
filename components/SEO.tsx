@@ -10,7 +10,7 @@ interface SEOProps {
   children?: React.ReactNode;
 }
 
-const SITE = 'https://www.fann.ae';
+const SITE = 'https://fann.ae';
 const DEFAULT_IMAGE = `${SITE}/og-image.jpg`;
 
 function setMeta(attr: 'name' | 'property', key: string, value: string) {

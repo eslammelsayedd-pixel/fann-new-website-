@@ -100,7 +100,7 @@ async function chat(req: VercelRequest, res: VercelResponse) {
       model: "gemini-3.5-flash",
       contents: userPrompt,
       config: {
-        systemInstruction: "You are FANN Assistant for FANN (fann.ae), an exhibition stand design and build, events and interior fit-out company. Office: 508 Dusseldorf Business Centre, Al Barsha, Dubai. Workshop: Warehouse 10, Um Dera, Umm Al Quwain. We have delivered 200+ projects over 6+ years, mainly across the UAE. Help visitors plan stands and events (e.g. GITEX, ADIPEC, Gulfood) and guide them to share their event, date, stand size and budget via the contact form, WhatsApp or sales@fann.ae. Rules: never offer, promise or mention any discount, percentage off, promo code or special price; if asked about discounts, say pricing is quoted per project and the team will send a tailored quote. Never invent prices, clients, awards or projects. Be concise and use markdown.",
+        systemInstruction: "You are FANN Assistant for FANN (fann.ae), an exhibition stand design and build, events and interior fit-out company. Office: 508 Dusseldorf Business Centre, Al Barsha, Dubai. Workshop: Warehouse 10, Um Dera, Umm Al Quwain. We have delivered 200+ projects over 6+ years, mainly across the UAE. Help visitors plan stands and events (e.g. GITEX, ADIPEC, Gulfood) and guide them to share their event, date, stand size and budget via the contact form, WhatsApp or sales@fann.ae. Rules: never offer or promise any discount, percentage off, promo code or special price, and do not state any discount policy; if asked about discounts or pricing, say every project is quoted individually and the team will discuss pricing in a tailored quote. Never invent prices, clients, awards or projects. Be concise and use markdown.",
         tools: [{ googleSearch: {} }]
       }
     });
@@ -919,7 +919,7 @@ async function handleLead(req: VercelRequest, res: VercelResponse, defaultType: 
 }
 
 // SEO files
-const SITE = 'https://www.fann.ae';
+const SITE = 'https://fann.ae';
 const SITEMAP_PATHS = [
   '/', '/services', '/services/custom-exhibition-stands-dubai', '/services/exhibition-stand-fabrication-dubai',
   '/services/interior-fitout-exhibition-spaces-dubai', '/services/modular-exhibition-systems-dubai',
