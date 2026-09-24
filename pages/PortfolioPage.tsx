@@ -38,7 +38,7 @@ const portfolioPageSchema = {
                 "name": project.title,
                 "url": `https://fann.ae/portfolio/${project.slug}`,
                 "image": project.image,
-                "disambiguatingDescription": `${project.category} for ${project.client} (${project.year}) - ${project.industry} industry.`
+                "disambiguatingDescription": `${project.category} for ${project.client} ${project.year ? `(${project.year})` : ''} - ${project.industry} industry.`
             }
         }))
     }
@@ -148,7 +148,7 @@ const PortfolioPage: React.FC = () => {
                     </div>
                     <div className="p-6">
                       <h3 className="text-2xl font-serif font-bold text-white group-hover:text-fann-gold transition-colors">{project.title}</h3>
-                      <p className="text-sm text-fann-gold mt-1 mb-3"><MapPin size={14} className="inline mr-1" />{project.location} &middot; {project.year}</p>
+                      <p className="text-sm text-fann-gold mt-1 mb-3"><MapPin size={14} className="inline mr-1" />{project.location}{project.year ? <> &middot; {project.year}</> : null}</p>
                       <p className="text-gray-400 text-sm">{project.description}</p>
                       <span className="inline-flex items-center gap-2 text-fann-gold font-bold text-sm mt-4">View project <ArrowRight size={16} /></span>
                     </div>
