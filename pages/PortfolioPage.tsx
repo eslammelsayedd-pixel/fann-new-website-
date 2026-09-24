@@ -135,7 +135,30 @@ const PortfolioPage: React.FC = () => {
             <p className="text-xl text-gray-400">Showcasing excellence in design and execution across Dubai.</p>
           </div>
           
-          {projects.length === 0 && (
+          {projects.length > 0 && (
+            <section id="recent-projects" className="max-w-6xl mx-auto mb-20">
+              <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-8 text-center">Recent projects</h2>
+              <div className="grid md:grid-cols-2 gap-8">
+                {projects.map(project => (
+                  <Link key={project.id} to={`/portfolio/${project.slug}`} className="group block bg-fann-charcoal-light border border-white/10 rounded-lg overflow-hidden shadow-xl hover:border-fann-gold transition">
+                    <div className="relative">
+                      <img src={project.image} alt={project.title} loading="lazy" className="w-full h-64 object-cover group-hover:scale-[1.02] transition-transform duration-500" />
+                      <span className="absolute top-4 left-4 text-[10px] uppercase tracking-widest font-bold bg-fann-gold text-black px-2 py-1 rounded-sm">{project.category}</span>
+                      {project.gallery && <span className="absolute bottom-4 right-4 text-xs bg-black/70 text-white px-2 py-1 rounded">{project.gallery.length} photos</span>}
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-2xl font-serif font-bold text-white group-hover:text-fann-gold transition-colors">{project.title}</h3>
+                      <p className="text-sm text-fann-gold mt-1 mb-3"><MapPin size={14} className="inline mr-1" />{project.location} &middot; {project.year}</p>
+                      <p className="text-gray-400 text-sm">{project.description}</p>
+                      <span className="inline-flex items-center gap-2 text-fann-gold font-bold text-sm mt-4">View project <ArrowRight size={16} /></span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {true && (
             <div className="max-w-6xl mx-auto">
               <div className="text-center max-w-3xl mx-auto mb-12">
                 <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-4">What we build</h2>
@@ -172,147 +195,7 @@ const PortfolioPage: React.FC = () => {
             </div>
           )}
 
-          {projects.length > 0 && (<>
-          <div className="max-w-6xl mx-auto bg-fann-charcoal-light border border-white/10 p-6 rounded-lg mb-12 shadow-2xl space-y-6">
-            
-            {/* Category Filter */}
-            <div className="flex flex-wrap justify-center gap-4 border-b border-white/10 pb-6">
-                {categories.map(cat => (
-                    <button
-                        key={cat.id}
-                        onClick={() => setSelectedCategory(cat.id)}
-                        className={`flex items-center gap-2 px-6 py-2 rounded-full text-sm font-bold uppercase tracking-wider transition-all duration-300 ${selectedCategory === cat.id ? 'bg-fann-gold text-fann-charcoal' : 'bg-white/5 text-gray-400 hover:text-white hover:bg-white/10'}`}
-                    >
-                        {cat.name} <span className={`text-xs px-2 py-0.5 rounded-full ${selectedCategory === cat.id ? 'bg-black/20 text-black' : 'bg-black/40 text-gray-500'}`}>{cat.count}</span>
-                    </button>
-                ))}
-            </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
-                {/* Industry Filter */}
-                <div>
-                    <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-3">Industry</h3>
-                    <div className="flex flex-wrap gap-2">
-                        {industries.map(ind => (
-                            <button
-                                key={ind}
-                                onClick={() => setSelectedIndustry(ind)}
-                                className={`px-3 py-1 text-xs rounded-sm border transition-all ${selectedIndustry === ind ? 'border-fann-gold text-fann-gold bg-fann-gold/10' : 'border-white/10 text-gray-400 hover:border-white/30'}`}
-                            >
-                                {ind}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Scale Filter */}
-                <div>
-                    <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-3">Scale / Size</h3>
-                    <div className="flex flex-wrap gap-2">
-                        {scales.map(scale => (
-                            <button
-                                key={scale.id}
-                                onClick={() => setSelectedScale(scale.id)}
-                                className={`px-3 py-1 text-xs rounded-sm border transition-all ${selectedScale === scale.id ? 'border-fann-gold text-fann-gold bg-fann-gold/10' : 'border-white/10 text-gray-400 hover:border-white/30'}`}
-                            >
-                                {scale.name}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-            </div>
-          </div>
-
-          <motion.div 
-            layout 
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <AnimatePresence>
-              {filteredProjects.length > 0 ? (
-                filteredProjects.map(project => (
-                  <motion.div 
-                    key={project.id}
-                    layout
-                    variants={itemVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <Link to={`/portfolio/${project.slug || project.id}`} className="project-card-link" aria-label={`View details for ${project.title}`}>
-                      <article class="project-card">
-                        <div className="project-image-wrapper">
-                          <img 
-                            src={project.image} 
-                            alt={project.title} 
-                            loading="lazy"
-                          />
-                          <div className="project-overlay">
-                            <ArrowRight className="view-project-icon w-12 h-12" />
-                            <span className="view-project-text">View Project</span>
-                          </div>
-                        </div>
-                        
-                        <div className="project-card-content">
-                          <div className="flex gap-2 flex-wrap">
-                            <span className="text-[10px] uppercase tracking-widest font-bold bg-fann-gold text-black px-2 py-1 rounded-sm">
-                              {project.category}
-                            </span>
-                            {project.featured && (
-                              <span className="text-[10px] uppercase tracking-widest font-bold bg-white/10 text-white px-2 py-1 rounded-sm border border-white/20">
-                                Featured
-                              </span>
-                            )}
-                          </div>
-                          
-                          <p className="text-xs font-bold text-fann-gold uppercase tracking-widest mb-0">{project.client}</p>
-                          <h3 className="text-xl font-serif font-bold text-white leading-tight group-hover:text-fann-gold transition-colors">{project.title}</h3>
-                          <p className="text-gray-400 text-xs line-clamp-2 mb-2">
-                            {project.description}
-                          </p>
-                          
-                          <div className="flex flex-wrap gap-4 text-[11px] text-gray-500 border-t border-white/10 pt-3 mt-auto">
-                            {project.size && (
-                              <span className="flex items-center gap-1">
-                                <Maximize2 size={12} /> {project.size}
-                              </span>
-                            )}
-                            {project.location && (
-                              <span className="flex items-center gap-1">
-                                <MapPin size={12} /> {project.location.split(',')[0]}
-                              </span>
-                            )}
-                            <span className="flex items-center gap-1 ml-auto">
-                              <Calendar size={12} /> {project.year}
-                            </span>
-                          </div>
-                        </div>
-                      </article>
-                    </Link>
-                  </motion.div>
-                ))
-              ) : (
-                <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="md:col-span-2 lg:col-span-3 text-center py-24 bg-fann-charcoal-light rounded-lg border border-white/10"
-                >
-                  <h3 className="text-2xl font-serif text-fann-gold mb-2">No Projects Found</h3>
-                  <p className="text-gray-400">Try adjusting your filters to find a match.</p>
-                  <button 
-                    onClick={() => { setSelectedCategory('all'); setSelectedIndustry('All'); setSelectedScale('all'); }}
-                    className="mt-6 text-sm text-white border-b border-white pb-1 hover:text-fann-gold hover:border-fann-gold transition-colors"
-                  >
-                    Reset Filters
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-          </>)}
 
         </div>
       </div>
