@@ -139,7 +139,7 @@ const PortfolioPage: React.FC = () => {
             <div className="max-w-6xl mx-auto">
               <div className="text-center max-w-3xl mx-auto mb-12">
                 <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-4">What we build</h2>
-                <p className="text-gray-300">200+ projects over 6+ years, from single-day event builds to full exhibition stands and office fit-outs. We work mostly in Dubai, with regular projects in Abu Dhabi, Sharjah and Al Ain. Our own workshop and warehouse in Dubai handle design, joinery, fabrication and installation.</p>
+                <p className="text-gray-300">200+ projects over 6+ years, from single-day event builds to full exhibition stands and office fit-outs. We work mostly in Dubai, with regular projects in Abu Dhabi, Sharjah and Al Ain. Our office is in Dubai and our own workshop is in Umm Al Quwain, so design, joinery, fabrication and installation stay in one team.</p>
               </div>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
                 {[
