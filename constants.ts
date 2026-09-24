@@ -33,10 +33,9 @@ export const navLinks: NavLink[] = [
         children: [
             { name: 'Cost Calculator', path: '/resources/cost-calculator' },
             { name: 'Exhibition Guide', path: '/resources/exhibition-guide' },
-            { name: '2026 Trends Report', path: '/resources/trends-2026' },
             { name: 'Events Calendar', path: '/events-calendar' },
             { name: 'ROI Calculator', path: '/roi-calculator' },
-            { name: 'Intelligence Hub', path: '/insights' },
+            { name: 'Insights & Guides', path: '/insights' },
         ] 
     },
     { 

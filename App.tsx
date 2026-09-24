@@ -29,7 +29,6 @@ import GoogleAnalytics from './components/GoogleAnalytics'; // Import the tracke
 
 // New Lead Magnet Pages
 const ExhibitionGuidePage = lazy(() => import('./pages/resources/ExhibitionGuidePage'));
-const TrendsReportPage = lazy(() => import('./pages/resources/TrendsReportPage'));
 const CostCalculatorPage = lazy(() => import('./pages/resources/CostCalculatorPage'));
 const ConsultationPage = lazy(() => import('./pages/ConsultationPage'));
 const CommercialFitOutPage = lazy(() => import('./pages/services/CommercialFitOutPage'));
@@ -74,7 +73,6 @@ const App: React.FC = () => {
                         
                         {/* Resources & Lead Magnets */}
                         <Route path="/resources/exhibition-guide" element={<ExhibitionGuidePage />} />
-                        <Route path="/resources/trends-2026" element={<TrendsReportPage />} />
                         <Route path="/resources/cost-calculator" element={<CostCalculatorPage />} />
                         <Route path="/book-consultation" element={<ConsultationPage />} />
                         <Route path="/privacy-policy" element={<PrivacyPage />} />
