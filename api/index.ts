@@ -926,7 +926,7 @@ const SITEMAP_PATHS = [
   '/services/turnkey-exhibition-services-uae', '/portfolio', '/about', '/contact', '/privacy-policy', '/services/commercial-interior-fit-out-dubai', 
   '/insights', '/events-calendar', '/fann-studio', '/book-consultation', '/resources/cost-calculator',
   '/resources/exhibition-guide', '/roi-calculator',
-  '/portfolio/icons-of-porsche-2025-dubai', '/portfolio/special-olympics-uae-unified-champion-schools-2025',
+  '/portfolio/icons-of-porsche-2025-dubai', '/portfolio/special-olympics-uae-unified-champion-schools-2025', '/portfolio/national-expression-adek-abu-dhabi',
 ];
 function robotsTxt(res: VercelResponse) {
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');
