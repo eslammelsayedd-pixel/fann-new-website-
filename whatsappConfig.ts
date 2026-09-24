@@ -2,7 +2,7 @@
 export const WHATSAPP_PHONE = '971505667502';
 
 export const MESSAGES = {
-  homepage: "Hi FANN! I need an exhibition stand for GITEX 2025. Can you send me a quote?",
+  homepage: "Hi FANN! I need an exhibition stand for an upcoming exhibition. Can you send me a quote?",
   portfolio: "Hi FANN! I saw your Microsoft Azure stand in the portfolio. Can you quote me for a similar 50sqm stand at Arab Health 2026?",
   services: "Hi FANN! I have questions about modular vs custom exhibition stands. Which is better for my budget?",
   contact: "Hi FANN! I'd like to schedule a visit to your production facility this week. When are you available?",

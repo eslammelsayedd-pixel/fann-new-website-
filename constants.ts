@@ -15,7 +15,17 @@ export interface BlogPost {
 }
 
 export const navLinks: NavLink[] = [
-    { name: 'Services', path: '/services' },
+    {
+        name: 'Services',
+        children: [
+            { name: 'All Services', path: '/services' },
+            { name: 'Custom Exhibition Stands', path: '/services/custom-exhibition-stands-dubai' },
+            { name: 'Modular Systems', path: '/services/modular-exhibition-systems-dubai' },
+            { name: 'Turnkey Exhibitions', path: '/services/turnkey-exhibition-services-uae' },
+            { name: 'Stand Fabrication', path: '/services/exhibition-stand-fabrication-dubai' },
+            { name: 'Commercial Fit-Out', path: '/services/commercial-interior-fit-out-dubai' },
+        ]
+    },
     { name: 'Portfolio', path: '/portfolio' },
     { name: 'FANN Studio', path: '/fann-studio' },
     { 
@@ -188,7 +198,7 @@ export const projects: Project[] = [
     industry: "Pharmaceuticals",
     year: 2023,
     description: "Professional pharma stand with product displays, consultation area, and educational materials. Clean white and blue healthcare aesthetic.",
-    image: "https://images.unsplash.com/photo-1631217868269-dfc1c5c3e042?w=1200&q=80",
+    image: "/images/site/exhibition-booth-lounge.webp",
     tags: ["Healthcare", "Pharma", "Arab Health", "Small"],
     featured: false
   },
@@ -272,7 +282,7 @@ export const projects: Project[] = [
     industry: "Construction Materials",
     year: 2023,
     description: "Industrial stand displaying steel products, technical specifications, and construction applications with material samples.",
-    image: "https://images.unsplash.com/photo-1531834685032-c34bf0d84c7c?w=1200&q=80",
+    image: "/images/site/exhibition-machinery-stand.webp",
     tags: ["Construction", "Materials", "Big 5"],
     featured: false
   },
@@ -392,7 +402,7 @@ export const projects: Project[] = [
     industry: "Real Estate",
     year: 2024,
     description: "Prestigious stand showcasing luxury developments with large-format visuals, VR property tours, and VIP lounges.",
-    image: "https://images.unsplash.com/photo-1512453979798-5ea936a86775?w=1200&q=80",
+    image: "/images/site/exhibition-hall-attendees.webp",
     tags: ["Real Estate", "Luxury", "Cityscape", "Large Scale"],
     featured: true
   },
@@ -458,7 +468,7 @@ export const projects: Project[] = [
     eventType: "Corporate Gala",
     year: 2024,
     description: "Elegant annual appreciation gala with premium table settings, stage entertainment, and award ceremony setup.",
-    image: "https://images.unsplash.com/photo-1519167758481-83f29da8c8d6?w=1200&q=80",
+    image: "/images/site/event-conference-speaker.webp",
     tags: ["Gala", "Corporate", "Luxury", "Banking"],
     featured: false
   },
@@ -476,7 +486,7 @@ export const projects: Project[] = [
     eventType: "Product Launch",
     year: 2024,
     description: "Exclusive evening event for new watch collection launch. Elegant setup with display cases, ambient lighting, and fountain backdrop.",
-    image: "https://images.unsplash.com/photo-1514525253440-b393452e3383?w=1200&q=80",
+    image: "/images/site/event-dramatic-lighting.webp",
     tags: ["Luxury", "Product Launch", "VIP", "Retail"],
     featured: true
   },
@@ -508,7 +518,7 @@ export const projects: Project[] = [
     eventType: "Fashion Conference",
     year: 2024,
     description: "Luxury fashion industry summit with runway shows, exhibition areas, panel discussion stages, and VIP networking lounges.",
-    image: "https://images.unsplash.com/photo-1509631179647-b849f1150ab3?w=1200&q=80",
+    image: "/images/site/event-banquet-hall.webp",
     tags: ["Fashion", "Luxury", "Conference", "Design"],
     featured: false
   },
@@ -626,7 +636,7 @@ export const projects: Project[] = [
     spaceType: "Luxury Retail",
     year: 2024,
     description: "Prestigious watch boutique with custom display cases, VIP consultation room, secure vault, and elegant seating areas.",
-    image: "https://images.unsplash.com/photo-1612026248496-47c45db8252a?w=1200&q=80",
+    image: "/images/site/fitout-executive-office.webp",
     tags: ["Retail", "Luxury", "Watches", "Premium"],
     featured: true
   },
@@ -740,19 +750,27 @@ export const projects: Project[] = [
     spaceType: "Co-Working",
     year: 2024,
     description: "Flexible workspace with hot desks, private offices, meeting rooms, phone booths, and lounge area.",
-    image: "https://images.unsplash.com/photo-1527192491265-7de07c002698?w=1200&q=80",
+    image: "/images/site/fitout-office-wood-panel.webp",
     tags: ["Office", "Co-Working", "Modern", "Flexible"],
     featured: false
   }
 ];
 
 export const regionalEvents: Event[] = [
-  { name: "INTERMOBILITY EXPO", date: "Nov 2025 (TBC)", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Logistics", description: "INTERMOBILITY EXPO is the event for the transport industry to meet their peers and leading policy and decision makers from the Middle Esat Region. Connecting Infrastructure for a Sustanable Mobility Ecosystem" },
-  { name: "META CINEMA FORUM", date: "Nov 01-02, 2025", venue: "Dubai", country: "UAE", industry: "Entertainment", description: "META Cinema Forum is the premier cinema convention spanning across the Middle East, Africa, and Turkey. The Forum brings together a diverse group of industry leaders, filmmakers, distributors, exhibitors, technology providers..." },
+  // Dates checked against organiser / venue sites on 24 Sep 2026. Always confirm with the organiser before booking space.
+  { name: "INDEX Dubai", date: "Sep 28-30, 2026", venue: "Dubai", country: "UAE", industry: "Interiors & Design", description: "The region's main interiors and fit-out trade fair. Strong fit for joinery, furniture, lighting and finishes brands." },
+  { name: "Beautyworld Middle East", date: "Oct 6-8, 2026", venue: "Dubai World Trade Centre", country: "UAE", industry: "Beauty & Wellness", description: "Large beauty, fragrance and wellness show. Stands here need strong lighting, product display and sampling areas." },
+  { name: "ADIPEC", date: "Nov 2-5, 2026", venue: "ADNEC, Abu Dhabi", country: "UAE", industry: "Energy", description: "One of the world's largest energy exhibitions. Big double-deck and custom stands; book design and build early." },
+  { name: "Automechanika Dubai", date: "Nov 10-12, 2026", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Automotive", description: "Automotive aftermarket trade show for the Middle East and Africa." },
+  { name: "Cityscape Global", date: "Nov 16-19, 2026", venue: "Riyadh Exhibition & Convention Centre (Malham)", country: "KSA", industry: "Real Estate", description: "Major real estate show for developers. Model display and immersive sales pavilions are common." },
+  { name: "Big 5 Global", date: "Nov 23-26, 2026", venue: "Dubai World Trade Centre", country: "UAE", industry: "Construction", description: "The region's largest construction event, covering building materials, HVAC and finishes." },
+  { name: "GITEX Global", date: "Dec 7-11, 2026", venue: "Expo City Dubai (Dubai Exhibition Centre) and DWTC", country: "UAE", industry: "Technology", description: "The world's biggest tech and startup show, moving to Expo City Dubai for 2026. Summit day 7 Dec at DWTC, exhibition 8-11 Dec at Expo City." },
+  { name: "Intersec", date: "Jan 12-14, 2027", venue: "Dubai World Trade Centre", country: "UAE", industry: "Security & Safety", description: "Security, fire and safety trade fair." },
+  { name: "World Health Expo (WHX) Dubai", date: "Jan 25-28, 2027", venue: "Dubai Exhibition Centre and DWTC", country: "UAE", industry: "Healthcare", description: "Formerly Arab Health. One of the largest healthcare shows in the world." },
+  { name: "Gulfood", date: "Mar 15-19, 2027", venue: "Dubai World Trade Centre", country: "UAE", industry: "Food & Beverage", description: "The world's largest annual food and beverage show. Stands often need kitchens, tasting areas and cold storage." },
+  { name: "Arabian Travel Market", date: "May 3-6, 2027", venue: "Dubai World Trade Centre", country: "UAE", industry: "Travel & Tourism", description: "Leading travel trade show for hotels, airlines, destinations and tourism boards." },
+  { name: "Middle East Energy", date: "May 11-13, 2027", venue: "Dubai Exhibition Centre", country: "UAE", industry: "Energy", description: "Power, lighting and renewable energy exhibition." },
 ];
 
-export const testimonials: Testimonial[] = [
-  { quote: "FANN didn't just build a stand; they created an experience. Their attention to detail and project management is unparalleled. Our leads increased by 40%!", client: "Aisha Al Futtaim", company: "TechVision Systems", projectType: "GITEX Exhibition" },
-  { quote: "The team at FANN is a dream to work with. They took our vision for the annual gala and elevated it beyond our wildest expectations. Flawless execution from start to finish.", client: "Johnathan Lee", company: "Global Leaders Org", projectType: "Corporate Event" },
-  { quote: "Transforming our new headquarters with FANN was the best decision we made. The design is not only beautiful but has tangibly improved our team's collaboration and morale.", client: "Fatima Al Mansouri", company: "Emirates Tech Solutions", projectType: "Interior Design" },
-];
+// Only real, client-approved testimonials go here.
+export const testimonials: Testimonial[] = [];
