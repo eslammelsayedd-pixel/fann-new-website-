@@ -176,7 +176,7 @@ Each concept must be engineered, not decorated. For every concept, reason throug
 5. Materials realism: name buildable materials with finish and fixing (for example "fluted oak veneer panels on 18mm MDF carcass" or "powder-coated aluminium frame, matte RAL 9016") - no fantasy materials.
 6. Brand application: state exactly where and how the brand appears (3D halo-lit logo at height, brand colour on specified surfaces, LED content zone) using the given brand colours.
 
-Rules: each description must contain at least three concrete dimensions. No empty adjectives such as "stunning", "amazing", "sleek" or "cutting-edge" - show the mechanism, never the hype. The four concepts must be distinct strategies (for example hospitality-led versus demo-led versus brand-theatre versus meetings-led), all buildable by a professional contractor within a real budget. Return the details in JSON structure matching the required schema.`;
+Rules: Put the useful facts in specs as short, independently readable bullet strings, not prose. dimensions = exact footprint/height or clear assumptions; materials = named surfaces and finish; features = actual functions and layout; inclusions = build/production scope, excluding anything that requires venue approval. Do not invent confirmed site dimensions or approved engineering. Each list has 2-4 concrete items. description may be one short summary sentence. Each concept must contain at least three concrete dimensions. No empty adjectives such as "stunning", "amazing", "sleek" or "cutting-edge" - show the mechanism, never the hype. The four concepts must be distinct strategies (for example hospitality-led versus demo-led versus brand-theatre versus meetings-led), all buildable by a professional contractor within a real budget. Return the details in JSON structure matching the required schema.`;
 
     const response = await ai.models.generateContent({
       model: "gemini-3.8-flash",
@@ -193,10 +193,11 @@ Rules: each description must contain at least three concrete dimensions. No empt
                 conceptName: { type: Type.STRING },
                 style: { type: Type.STRING },
                 description: { type: Type.STRING },
+                specs: { type: Type.OBJECT, properties: { dimensions: { type: Type.ARRAY, items: { type: Type.STRING } }, materials: { type: Type.ARRAY, items: { type: Type.STRING } }, features: { type: Type.ARRAY, items: { type: Type.STRING } }, inclusions: { type: Type.ARRAY, items: { type: Type.STRING } } }, required: ["dimensions", "materials", "features", "inclusions"] },
                 materials: { type: Type.ARRAY, items: { type: Type.STRING } },
                 keyFeature: { type: Type.STRING }
               },
-              required: ["conceptName", "style", "description", "materials", "keyFeature"]
+              required: ["conceptName", "style", "description", "specs", "materials", "keyFeature"]
             },
             conceptB: {
               type: Type.OBJECT,
@@ -204,10 +205,11 @@ Rules: each description must contain at least three concrete dimensions. No empt
                 conceptName: { type: Type.STRING },
                 style: { type: Type.STRING },
                 description: { type: Type.STRING },
+                specs: { type: Type.OBJECT, properties: { dimensions: { type: Type.ARRAY, items: { type: Type.STRING } }, materials: { type: Type.ARRAY, items: { type: Type.STRING } }, features: { type: Type.ARRAY, items: { type: Type.STRING } }, inclusions: { type: Type.ARRAY, items: { type: Type.STRING } } }, required: ["dimensions", "materials", "features", "inclusions"] },
                 materials: { type: Type.ARRAY, items: { type: Type.STRING } },
                 keyFeature: { type: Type.STRING }
               },
-              required: ["conceptName", "style", "description", "materials", "keyFeature"]
+              required: ["conceptName", "style", "description", "specs", "materials", "keyFeature"]
             },
             conceptC: {
               type: Type.OBJECT,
@@ -215,10 +217,11 @@ Rules: each description must contain at least three concrete dimensions. No empt
                 conceptName: { type: Type.STRING },
                 style: { type: Type.STRING },
                 description: { type: Type.STRING },
+                specs: { type: Type.OBJECT, properties: { dimensions: { type: Type.ARRAY, items: { type: Type.STRING } }, materials: { type: Type.ARRAY, items: { type: Type.STRING } }, features: { type: Type.ARRAY, items: { type: Type.STRING } }, inclusions: { type: Type.ARRAY, items: { type: Type.STRING } } }, required: ["dimensions", "materials", "features", "inclusions"] },
                 materials: { type: Type.ARRAY, items: { type: Type.STRING } },
                 keyFeature: { type: Type.STRING }
               },
-              required: ["conceptName", "style", "description", "materials", "keyFeature"]
+              required: ["conceptName", "style", "description", "specs", "materials", "keyFeature"]
             },
             conceptD: {
               type: Type.OBJECT,
@@ -226,10 +229,11 @@ Rules: each description must contain at least three concrete dimensions. No empt
                 conceptName: { type: Type.STRING },
                 style: { type: Type.STRING },
                 description: { type: Type.STRING },
+                specs: { type: Type.OBJECT, properties: { dimensions: { type: Type.ARRAY, items: { type: Type.STRING } }, materials: { type: Type.ARRAY, items: { type: Type.STRING } }, features: { type: Type.ARRAY, items: { type: Type.STRING } }, inclusions: { type: Type.ARRAY, items: { type: Type.STRING } } }, required: ["dimensions", "materials", "features", "inclusions"] },
                 materials: { type: Type.ARRAY, items: { type: Type.STRING } },
                 keyFeature: { type: Type.STRING }
               },
-              required: ["conceptName", "style", "description", "materials", "keyFeature"]
+              required: ["conceptName", "style", "description", "specs", "materials", "keyFeature"]
             }
           },
           required: ["industry", "conceptA", "conceptB", "conceptC", "conceptD"]
@@ -239,18 +243,8 @@ Rules: each description must contain at least three concrete dimensions. No empt
 
     const result = JSON.parse(response.text?.trim() || '{}');
 
-    // Premium curated fallbacks from Unsplash (architecture and exhibition designs)
-    const fallbackImages = [
-      'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=compress&cs=tinysrgb&w=800&q=75',
-      'https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=compress&cs=tinysrgb&w=800&q=75',
-      'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=compress&cs=tinysrgb&w=800&q=75',
-      'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=compress&cs=tinysrgb&w=800&q=75'
-    ];
-
-    result.conceptA.image = fallbackImages[0];
-    result.conceptB.image = fallbackImages[1];
-    result.conceptC.image = fallbackImages[2];
-    result.conceptD.image = fallbackImages[3];
+    // Never mislabel an unrelated stock photo as the user's bespoke render.
+    for (const key of ['conceptA', 'conceptB', 'conceptC', 'conceptD']) result[key].image = '';
 
     // Try custom visual concept generation using gemini-3.1-flash-image
     try {
@@ -261,7 +255,7 @@ Rules: each description must contain at least three concrete dimensions. No empt
           contents: {
             parts: [
               {
-                text: `Photorealistic architectural visualization of a ${formData.boothSize || 36} sqm ${formData.boothType || 'Island'} exhibition stand inside a busy GCC trade show hall (high dark ceiling with exposed rigging, polished concrete floor, softly blurred neighbouring stands). Concept: "${concept.conceptName}". Style: ${concept.style}. Key feature: ${concept.keyFeature}. Brand colours applied accurately: ${(formData.brandColors || []).join(', ')}. Camera: eye-level 1.6m, 24mm wide-angle lens, three-quarter perspective showing two open sides and the approach aisle. Include 5-8 business-attired visitors for human scale, some engaged at a 1.05m reception counter. Lighting: realistic venue ambient 4500K hall light mixed with warm 3000K stand accent lighting; physically plausible shadows. Materials render with true texture (wood grain, brushed metal, fabric weave). Geometry must be buildable: straight edges, correct perspective, no floating elements, no impossible cantilevers, no warped structures. One large clean brand mark only - no small text. Award-winning exhibition design photography, 8k.`,
+                text: `Photorealistic architectural visualization of a ${formData.boothSize || 36} sqm ${formData.boothType || 'Island'} exhibition stand inside a busy GCC trade show hall (high dark ceiling with exposed rigging, polished concrete floor, softly blurred neighbouring stands). Concept: "${concept.conceptName}". Style: ${concept.style}. Key feature: ${concept.keyFeature}. Brand colours applied accurately: ${(formData.brandColors || []).join(', ')}. Camera: eye-level 1.6m, 24mm wide-angle lens, three-quarter perspective showing two open sides and the approach aisle. Include 5-8 business-attired visitors for human scale, some engaged at a 1.05m reception counter. Lighting: realistic venue ambient 4500K hall light mixed with warm 3000K stand accent lighting; physically plausible shadows. Materials render with true texture (wood grain, brushed metal, fabric weave). Geometry must be buildable: straight edges, correct perspective, no floating elements, no impossible cantilevers, no warped structures. Use specified materials and dimensions: ${JSON.stringify(concept.specs || {})}. If the client gave no logo, show abstract brand-colour blocks only. No readable signage, gibberish lettering, typographic artifacts, watermarks, duplicated limbs, warped stairs, impossible support or floating panels. Physically based materials and exposure, plausible structural bays and connections; editorial trade-show photography, not a glossy CGI poster.`,
               },
             ],
           },
@@ -280,10 +274,7 @@ Rules: each description must contain at least three concrete dimensions. No empt
         }
       });
 
-      await Promise.race([
-        Promise.all(imgPromises),
-        new Promise(resolve => setTimeout(resolve, 14000)) // Time limit
-      ]);
+      await Promise.allSettled(imgPromises);
     } catch (imageErr: any) {
       console.log("Exhibition image generation fell back to premium stock:", imageErr.message);
     }
@@ -303,7 +294,7 @@ async function generateEventDesign(req: VercelRequest, res: VercelResponse) {
   try {
     const prompt = `You are a senior event production designer with 200+ GCC corporate events staged (Dubai Opera, Atlantis The Palm, Ritz-Carlton Riyadh). Produce four premium event stage and hall design concepts for "${formData.companyName || 'Our Client'}" operating in "${formData.detectedIndustry || 'general'}".
 Event Type: ${formData.eventType || 'Corporate Summit'}.
-Attendee Capacity: ${formData.attendees || 500} guests.
+Attendee Capacity: ${formData.attendees || formData.guestCount || 200} guests.
 Style: ${formData.style || 'Modern Grandeur'}.
 Key Features: ${(formData.features || []).join(', ') || 'N/A'}.
 Brand Colors: ${(formData.brandColors || []).join(', ') || 'Gold, Deep Blue, White'}.
@@ -316,7 +307,7 @@ Each concept must be production-ready. Reason through and embed:
 5. decorElements: name real, rentable or buildable elements with materials (for example "fluted champagne-gold metal arches" or "fresh white orchid runners on 2.4m banquet rounds") - no vague "elegant decor".
 6. engagementTech: only proven, deployable technology (LED wall with branded motion content, projection mapping with lumen spec, live polling, translation headsets) with the purpose each serves.
 
-Rules: detailedDescription must include at least three concrete dimensions and the seating math for the given capacity. Ban empty adjectives such as "spectacular", "breathtaking" or "magical" - describe the mechanism that creates the effect. The four concepts must be distinct strategies. Return the details in JSON structure matching the required schema.`;
+Rules: specs must be 2-4 short bullet strings per category (dimensions, materials, features, inclusions), with exact stage/screen dimensions, seating math, venue-dependent assumptions, rentable/constructible materials, real production scope. Keep detailedDescription to one sentence. No unverified venue approval or engineering. The concept must include at least three concrete dimensions and the seating math for the given capacity. Ban empty adjectives such as "spectacular", "breathtaking" or "magical" - describe the mechanism that creates the effect. The four concepts must be distinct strategies. Return the details in JSON structure matching the required schema.`;
 
     const response = await ai.models.generateContent({
       model: "gemini-3.8-flash",
@@ -333,11 +324,12 @@ Rules: detailedDescription must include at least three concrete dimensions and t
                 conceptName: { type: Type.STRING },
                 style: { type: Type.STRING },
                 detailedDescription: { type: Type.STRING },
+                specs: { type: Type.OBJECT, properties: { dimensions: { type: Type.ARRAY, items: { type: Type.STRING } }, materials: { type: Type.ARRAY, items: { type: Type.STRING } }, features: { type: Type.ARRAY, items: { type: Type.STRING } }, inclusions: { type: Type.ARRAY, items: { type: Type.STRING } } }, required: ["dimensions", "materials", "features", "inclusions"] },
                 decorElements: { type: Type.ARRAY, items: { type: Type.STRING } },
                 lighting: { type: Type.STRING },
                 engagementTech: { type: Type.ARRAY, items: { type: Type.STRING } }
               },
-              required: ["conceptName", "style", "detailedDescription", "decorElements", "lighting", "engagementTech"]
+              required: ["conceptName", "style", "detailedDescription", "specs", "decorElements", "lighting", "engagementTech"]
             },
             conceptB: {
               type: Type.OBJECT,
@@ -345,11 +337,12 @@ Rules: detailedDescription must include at least three concrete dimensions and t
                 conceptName: { type: Type.STRING },
                 style: { type: Type.STRING },
                 detailedDescription: { type: Type.STRING },
+                specs: { type: Type.OBJECT, properties: { dimensions: { type: Type.ARRAY, items: { type: Type.STRING } }, materials: { type: Type.ARRAY, items: { type: Type.STRING } }, features: { type: Type.ARRAY, items: { type: Type.STRING } }, inclusions: { type: Type.ARRAY, items: { type: Type.STRING } } }, required: ["dimensions", "materials", "features", "inclusions"] },
                 decorElements: { type: Type.ARRAY, items: { type: Type.STRING } },
                 lighting: { type: Type.STRING },
                 engagementTech: { type: Type.ARRAY, items: { type: Type.STRING } }
               },
-              required: ["conceptName", "style", "detailedDescription", "decorElements", "lighting", "engagementTech"]
+              required: ["conceptName", "style", "detailedDescription", "specs", "decorElements", "lighting", "engagementTech"]
             },
             conceptC: {
               type: Type.OBJECT,
@@ -357,11 +350,12 @@ Rules: detailedDescription must include at least three concrete dimensions and t
                 conceptName: { type: Type.STRING },
                 style: { type: Type.STRING },
                 detailedDescription: { type: Type.STRING },
+                specs: { type: Type.OBJECT, properties: { dimensions: { type: Type.ARRAY, items: { type: Type.STRING } }, materials: { type: Type.ARRAY, items: { type: Type.STRING } }, features: { type: Type.ARRAY, items: { type: Type.STRING } }, inclusions: { type: Type.ARRAY, items: { type: Type.STRING } } }, required: ["dimensions", "materials", "features", "inclusions"] },
                 decorElements: { type: Type.ARRAY, items: { type: Type.STRING } },
                 lighting: { type: Type.STRING },
                 engagementTech: { type: Type.ARRAY, items: { type: Type.STRING } }
               },
-              required: ["conceptName", "style", "detailedDescription", "decorElements", "lighting", "engagementTech"]
+              required: ["conceptName", "style", "detailedDescription", "specs", "decorElements", "lighting", "engagementTech"]
             },
             conceptD: {
               type: Type.OBJECT,
@@ -369,11 +363,12 @@ Rules: detailedDescription must include at least three concrete dimensions and t
                 conceptName: { type: Type.STRING },
                 style: { type: Type.STRING },
                 detailedDescription: { type: Type.STRING },
+                specs: { type: Type.OBJECT, properties: { dimensions: { type: Type.ARRAY, items: { type: Type.STRING } }, materials: { type: Type.ARRAY, items: { type: Type.STRING } }, features: { type: Type.ARRAY, items: { type: Type.STRING } }, inclusions: { type: Type.ARRAY, items: { type: Type.STRING } } }, required: ["dimensions", "materials", "features", "inclusions"] },
                 decorElements: { type: Type.ARRAY, items: { type: Type.STRING } },
                 lighting: { type: Type.STRING },
                 engagementTech: { type: Type.ARRAY, items: { type: Type.STRING } }
               },
-              required: ["conceptName", "style", "detailedDescription", "decorElements", "lighting", "engagementTech"]
+              required: ["conceptName", "style", "detailedDescription", "specs", "decorElements", "lighting", "engagementTech"]
             }
           },
           required: ["industry", "conceptA", "conceptB", "conceptC", "conceptD"]
@@ -383,17 +378,8 @@ Rules: detailedDescription must include at least three concrete dimensions and t
 
     const result = JSON.parse(response.text?.trim() || '{}');
 
-    const fallbackImages = [
-      'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=compress&cs=tinysrgb&w=800&q=75',
-      'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=compress&cs=tinysrgb&w=800&q=75',
-      'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=compress&cs=tinysrgb&w=800&q=75',
-      'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=compress&cs=tinysrgb&w=800&q=75'
-    ];
-
-    result.conceptA.image = fallbackImages[0];
-    result.conceptB.image = fallbackImages[1];
-    result.conceptC.image = fallbackImages[2];
-    result.conceptD.image = fallbackImages[3];
+    // Show a clear unavailable state rather than a stock image pretending to be generated.
+    for (const key of ['conceptA', 'conceptB', 'conceptC', 'conceptD']) result[key].image = '';
 
     try {
       const imgPromises = ['conceptA', 'conceptB', 'conceptC', 'conceptD'].map(async (key) => {
@@ -403,7 +389,7 @@ Rules: detailedDescription must include at least three concrete dimensions and t
           contents: {
             parts: [
               {
-                text: `Photorealistic architectural photo of a GCC corporate event: "${concept.conceptName}" staged in a luxury hotel ballroom (high ceiling, chandeliers dimmed, dark ambient). Style: ${concept.style}. Lighting design: ${concept.lighting}. Key decor: ${(concept.decorElements || []).join(', ')}. Seating: ${formData.attendees || 500} guests in a correctly scaled banquet or theatre layout, realistic crowd density, people in business attire. Camera: rear-of-house elevated 2.5m, 24mm wide lens, showing full stage, LED wall with abstract brand-coloured content, and audience depth. Lighting renders with realistic haze, visible beams from truss positions, warm pin-spots on tables; physically plausible exposure and shadows. Straight geometry, correct perspective, no warped architecture, no floating objects, no illegible text. Professional event photography, 8k.`,
+                text: `Photorealistic architectural photo of a GCC corporate event: "${concept.conceptName}" staged in a luxury hotel ballroom (high ceiling, chandeliers dimmed, dark ambient). Style: ${concept.style}. Lighting design: ${concept.lighting}. Key decor: ${(concept.decorElements || []).join(', ')}. Seating: ${formData.attendees || formData.guestCount || 200} guests in a correctly scaled banquet or theatre layout, realistic crowd density, people in business attire. Camera: rear-of-house elevated 2.5m, 24mm wide lens, showing full stage, LED wall with abstract brand-coloured content, and audience depth. Lighting renders with realistic haze, visible beams from truss positions, warm pin-spots on tables; physically plausible exposure and shadows. Straight geometry, correct perspective, no warped architecture, no floating objects, no illegible text. Concept specifications: ${JSON.stringify(concept.specs || {})}. Honor supplied brand colours, if none use restrained champagne gold and charcoal. No readable signage or typographic artifacts, watermarks, duplicated guests or limbs, impossible rigging or warped geometry. Photographic lens and realistic skin, fabric, lighting and reflections, not illustration or fantasy stage art.`,
               },
             ],
           },
@@ -422,10 +408,7 @@ Rules: detailedDescription must include at least three concrete dimensions and t
         }
       });
 
-      await Promise.race([
-        Promise.all(imgPromises),
-        new Promise(resolve => setTimeout(resolve, 14000))
-      ]);
+      await Promise.allSettled(imgPromises);
     } catch (imageErr: any) {
       console.log("Event image generation fell back to stock:", imageErr.message);
     }
@@ -445,7 +428,7 @@ async function generateInteriorDesign(req: VercelRequest, res: VercelResponse) {
   try {
     const prompt = `You are a senior interior architect delivering luxury commercial fit-outs in DIFC, Downtown Dubai and KAFD. Produce one deeply considered interior design concept for a company named "${formData.companyName || 'Our Client'}" operating in the "${formData.detectedIndustry || 'general'}" sector.
 Space Type: ${formData.spaceType || 'Executive Office'}.
-Space Area: ${formData.size || '150'} sqm.
+Space Area: ${formData.size || formData.spaceArea || 150} sqm.
 Design Style: ${formData.style || 'Modern Biophilic'}.
 Key Features: ${(formData.features || []).join(', ') || 'N/A'}.
 Brand Colors: ${(formData.brandColors || []).join(', ') || 'Charcoal, Wood, Gold'}.
@@ -458,7 +441,7 @@ The concept must be buildable and ergonomic. Reason through and embed:
 5. Brand integration: how the brand colours and identity appear architecturally (feature wall, wayfinding, FF&E accents) without turning the office into a logo showroom.
 6. GCC context: climate-appropriate material performance, majlis-inspired hospitality where it fits the brand, local code basics (egress, fire-rated cores).
 
-Rules: detailedDescription must cite at least three real dimensions and the zoning math. Ban empty adjectives such as "elegant", "luxurious" or "stunning" without the mechanism - say what creates the feeling. furnitureStyle entries must be specifiable (for example "tan leather executive task chairs, five-star base"), not vibes. Return the details in JSON structure matching the required schema.`;
+Rules: specs must be 2-4 short bullet strings per category (dimensions, materials, features, inclusions) with zoning math, three physical dimensions, finish/application, real fit-out scope, and clearly labelled assumptions where no floor plan exists. Keep detailedDescription to one sentence; do not state unverified site or code compliance as fact. Ban empty adjectives such as "elegant", "luxurious" or "stunning" without the mechanism - say what creates the feeling. furnitureStyle entries must be specifiable (for example "tan leather executive task chairs, five-star base"), not vibes. Return the details in JSON structure matching the required schema.`;
 
     const response = await ai.models.generateContent({
       model: "gemini-3.8-flash",
@@ -473,11 +456,12 @@ Rules: detailedDescription must cite at least three real dimensions and the zoni
               properties: {
                 conceptName: { type: Type.STRING },
                 detailedDescription: { type: Type.STRING },
+                specs: { type: Type.OBJECT, properties: { dimensions: { type: Type.ARRAY, items: { type: Type.STRING } }, materials: { type: Type.ARRAY, items: { type: Type.STRING } }, features: { type: Type.ARRAY, items: { type: Type.STRING } }, inclusions: { type: Type.ARRAY, items: { type: Type.STRING } } }, required: ["dimensions", "materials", "features", "inclusions"] },
                 materials: { type: Type.ARRAY, items: { type: Type.STRING } },
                 lighting: { type: Type.STRING },
                 furnitureStyle: { type: Type.ARRAY, items: { type: Type.STRING } }
               },
-              required: ["conceptName", "detailedDescription", "materials", "lighting", "furnitureStyle"]
+              required: ["conceptName", "detailedDescription", "specs", "materials", "lighting", "furnitureStyle"]
             }
           },
           required: ["designConcept"]
@@ -486,7 +470,7 @@ Rules: detailedDescription must cite at least three real dimensions and the zoni
     });
 
     const result = JSON.parse(response.text?.trim() || '{}');
-    result.image = 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=compress&cs=tinysrgb&w=800&q=75';
+    result.image = '';
 
     try {
       const concept = result.designConcept;
@@ -495,7 +479,7 @@ Rules: detailedDescription must cite at least three real dimensions and the zoni
         contents: {
           parts: [
             {
-              text: `Photorealistic interior design photograph of "${concept.conceptName}" - a ${formData.size || '150'} sqm ${formData.spaceType || 'Executive Office'} in a premium GCC tower (floor-to-ceiling glazing, skyline softly out of focus beyond). Style: ${formData.style || 'Modern'}. Lighting: ${concept.lighting}. Furniture language: ${(concept.furnitureStyle || []).join(', ')}. Materials render with true physical texture (stone veining, wood grain, fabric weave, brushed metal). Ceiling discipline (critical): one restrained primary ceiling treatment only - for example flat gypsum board at 2.8-3.2m height with a single recessed cove, or a clean exposed concrete soffit; building services (linear slot diffusers, sprinklers, speakers) are minimal, few, and aligned in one ordered run following real reflected-ceiling-plan logic; no random openings, no decorative voids, no oversized dark channels, no scattered vents or redundant slots; every ceiling element must have an evident mechanical or lighting function. Camera: eye-level 1.5m, 20mm lens, one-point perspective down the main axis; include 2-3 professionals for scale. Lighting: natural daylight balanced with warm 3000K interior accents, soft realistic shadows, correct interior/exterior exposure balance. Architectural accuracy: level horizons, straight verticals, plausible ceiling heights (2.8-3.2m), no warped geometry, no floating furniture, no illegible text or logos. Award-winning commercial interior photography, 8k.`,
+              text: `Photorealistic interior design photograph of "${concept.conceptName}" - a ${formData.size || formData.spaceArea || 150} sqm ${formData.spaceType || 'Executive Office'} in a premium GCC tower (floor-to-ceiling glazing, skyline softly out of focus beyond). Style: ${formData.style || 'Modern'}. Lighting: ${concept.lighting}. Furniture language: ${(concept.furnitureStyle || []).join(', ')}. Materials render with true physical texture (stone veining, wood grain, fabric weave, brushed metal). Ceiling discipline (critical): one restrained primary ceiling treatment only - for example flat gypsum board at 2.8-3.2m height with a single recessed cove, or a clean exposed concrete soffit; building services (linear slot diffusers, sprinklers, speakers) are minimal, few, and aligned in one ordered run following real reflected-ceiling-plan logic; no random openings, no decorative voids, no oversized dark channels, no scattered vents or redundant slots; every ceiling element must have an evident mechanical or lighting function. Camera: eye-level 1.5m, 20mm lens, one-point perspective down the main axis; include 2-3 professionals for scale. Lighting: natural daylight balanced with warm 3000K interior accents, soft realistic shadows, correct interior/exterior exposure balance. Architectural accuracy: level horizons, straight verticals, plausible ceiling heights (2.8-3.2m), no warped geometry, no floating furniture, no illegible text or logos. Concept specifications: ${JSON.stringify(concept.specs || {})}. Honor supplied brand colours when present. No readable signage, fake text, logos, watermarks, distorted hands or people, floating furniture or implausible structure. Physically based stone/wood/fabric and daylight, not a glossy CGI poster.`,
             },
           ],
         },
