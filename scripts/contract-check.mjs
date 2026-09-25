@@ -101,19 +101,22 @@ const CONTRACTS = [
     expect: ['content', 'sources'],
   },
   {
-    route: 'generate-exhibition-design', ai: true, // consumed by pages/DesignResultPage.tsx
+    route: 'generate-exhibition-design', ai: true, // consumed by pages/ExhibitionStudioPage.tsx -> DesignResultPage.tsx
     body: { companyName: 'Contract Test Co', boothSize: 36 },
-    expect: ['concepts.0.conceptName', 'concepts.0.image'],
+    expect: ['industry', 'conceptA.conceptName', 'conceptA.image', 'conceptD.image'],
+    patterns: { 'conceptA.image': /^(data:image\/|https?:\/\/)/ }, // double data-URL prefix bug must stay dead
   },
   {
-    route: 'generate-event-design', ai: true, // consumed by pages/EventResultPage.tsx
+    route: 'generate-event-design', ai: true, // consumed by pages/EventStudioPage.tsx -> EventResultPage.tsx
     body: { companyName: 'Contract Test Co', eventType: 'Gala Dinner' },
-    expect: ['concepts.0.conceptName', 'concepts.0.image'],
+    expect: ['industry', 'conceptA.conceptName', 'conceptA.image', 'conceptD.image'],
+    patterns: { 'conceptA.image': /^(data:image\/|https?:\/\/)/ },
   },
   {
     route: 'generate-interior-design', ai: true, // consumed by pages/InteriorResultPage.tsx
     body: { companyName: 'Contract Test Co', spaceType: 'Corporate Office' },
     expect: ['designConcept.conceptName', 'image'],
+    patterns: { 'image': /^(data:image\/|https?:\/\/)/ },
   },
 ];
 
@@ -140,8 +143,12 @@ for (const c of CONTRACTS) {
     continue;
   }
   const missing = c.expect.filter((p) => get(res.payload, p) === undefined);
-  if (missing.length) {
-    console.error(`FAIL  ${c.route}: missing keys -> ${missing.join(', ')}`);
+  const badPattern = Object.entries(c.patterns || {})
+    .filter(([p, re]) => { const v = get(res.payload, p); return v !== undefined && !re.test(String(v)); })
+    .map(([p]) => p);
+  if (missing.length || badPattern.length) {
+    if (missing.length) console.error(`FAIL  ${c.route}: missing keys -> ${missing.join(', ')}`);
+    if (badPattern.length) console.error(`FAIL  ${c.route}: value pattern mismatch -> ${badPattern.join(', ')}`);
     failures++;
   } else {
     console.log(`PASS  ${c.route} (${c.expect.length} contract keys)`);
