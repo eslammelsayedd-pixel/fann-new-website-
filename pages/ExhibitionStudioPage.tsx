@@ -311,7 +311,7 @@ const ExhibitionStudioPage: React.FC = () => {
     return (
         <AnimatedPage>
             <SEO title="Exhibition Studio | Design Your Stand" description="AI-Powered Exhibition Stand Designer" />
-            <div className="min-h-screen bg-[#050505] pt-32 pb-20 text-white selection:bg-fann-gold selection:text-black">
+            <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white selection:bg-fann-gold selection:text-black">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
                     <div className="text-center mb-12">
                         <h1 className="text-4xl md:text-6xl font-serif font-bold text-white mb-4 tracking-tight">Exhibition Studio</h1>
@@ -322,7 +322,7 @@ const ExhibitionStudioPage: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="bg-[#0A0A0A] border border-white/5 p-4 sm:p-12 shadow-2xl relative overflow-hidden rounded-sm min-h-[600px] flex flex-col">
+                    <div className="bg-fann-charcoal-light border border-white/5 p-4 sm:p-12 shadow-2xl relative overflow-hidden rounded-sm min-h-[600px] flex flex-col">
                         
                         <StepIndicator currentStep={currentStep} totalSteps={steps.length} />
 
