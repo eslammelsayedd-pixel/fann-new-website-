@@ -1,5 +1,4 @@
 
-import { submitLead } from '../lib/submitLead';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -135,28 +134,11 @@ const InteriorStudioPage: React.FC = () => {
         });
     };
 
-    const nextStep = () => {
-        if (currentStep === 1) {
-             if (!formData.projectName || !formData.clientName) return;
-        }
-        setCurrentStep(prev => Math.min(prev + 1, steps.length));
-    };
-
-    const prevStep = () => {
-        setCurrentStep(prev => Math.max(prev - 1, 1));
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
+    const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, steps.length));
+    const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        try {
-            await submitLead({ formType: 'Interior Studio design request', name: formData.clientName, email: formData.email, phone: formData.phone, message: formData.projectName, details: { ...formData } });
-        } catch (err: any) {
-            alert(err?.message || 'Sorry, we could not send your request. Please WhatsApp us on +971 50 566 7502.');
-            return;
-        }
-        navigate('/fann-studio/interior/result', { 
-            state: { formData } 
-        });
+        navigate('/fann-studio/interior/result', { state: { formData: { ...formData, size: formData.spaceArea } } });
     };
 
     const renderStepContent = () => {
@@ -169,10 +151,7 @@ const InteriorStudioPage: React.FC = () => {
                             <p className="text-gray-400">Let's outline your vision.</p>
                         </div>
                         <div className="grid md:grid-cols-2 gap-6">
-                            <InputField label="Project Name" icon={<FileText size={20}/>} name="projectName" value={formData.projectName} onChange={handleInputChange} required placeholder="e.g. Downtown HQ" />
-                            <InputField label="Client Name" icon={<User size={20}/>} name="clientName" value={formData.clientName} onChange={handleInputChange} required placeholder="Your Name or Company" />
-                            <InputField label="Email" icon={<Mail size={20}/>} type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="email@domain.com" />
-                            <InputField label="Phone" icon={<Phone size={20}/>} type="tel" name="phone" value={formData.phone} onChange={handleInputChange} placeholder="+971..." />
+                            <InputField label="Project Name" icon={<FileText size={20}/>} name="projectName" value={formData.projectName} onChange={handleInputChange} placeholder="e.g. Downtown HQ (optional)" />
                         </div>
                     </div>
                 );
@@ -185,7 +164,7 @@ const InteriorStudioPage: React.FC = () => {
                         </div>
 
                         <div className="mb-6">
-                             <InputField label="Property Location" icon={<MapPin size={20}/>} name="location" value={formData.location} onChange={handleInputChange} required placeholder="e.g. DIFC, Dubai" />
+                             <InputField label="Property Location" icon={<MapPin size={20}/>} name="location" value={formData.location} onChange={handleInputChange} placeholder="e.g. DIFC, Dubai (optional)" />
                         </div>
 
                         <div className="bg-fann-charcoal-light p-6 rounded-2xl border border-white/10 mb-8">
@@ -279,7 +258,7 @@ const InteriorStudioPage: React.FC = () => {
                             <PenTool className="h-10 w-10 text-black" />
                         </div>
                         <h1 className="text-5xl md:text-6xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 mb-4">Interior Designer</h1>
-                        <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-6">Transform your space with a few simple clicks.</p>
+                        <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-6">See your design before sharing your contact details.</p>
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-fann-gold/10 border border-fann-gold/20 text-fann-gold/80 text-xs font-semibold">
                             <AlertTriangle size={14} />
                             <span>Beta Preview: Generated visuals are for concept exploration.</span>
@@ -319,7 +298,7 @@ const InteriorStudioPage: React.FC = () => {
                                         type="submit"
                                         className="flex items-center gap-3 bg-gradient-to-r from-fann-gold to-[#bfa172] text-black font-bold py-4 px-12 rounded-full hover:shadow-[0_0_40px_rgba(212,175,118,0.4)] transition-all transform hover:-translate-y-1"
                                     >
-                                        <Sparkles size={20} /> Generate My Concept
+                                        <Sparkles size={20} /> See My Concept
                                     </button>
                                 )}
                             </div>
