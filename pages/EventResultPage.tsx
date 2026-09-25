@@ -1,3 +1,5 @@
+import StudioLeadCapture from '../components/StudioLeadCapture';
+import StudioSpecList, { StudioSpecs } from '../components/StudioSpecList';
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -9,6 +11,7 @@ interface Concept {
     conceptName: string;
     style: string;
     detailedDescription: string;
+    specs?: StudioSpecs;
     decorElements: string[];
     lighting: string;
     engagementTech: string[];
@@ -64,12 +67,12 @@ const EventResultPage: React.FC = () => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData),
                 });
-                
+
                 if (!response.ok) {
                     const errorData = await response.json();
                     throw new Error(errorData.error || 'Failed to generate design.');
                 }
-                
+
                 const data: GeneratedResult = await response.json();
                 setResult(data);
             } catch (e: any) {
@@ -106,7 +109,7 @@ const EventResultPage: React.FC = () => {
                     <Link to="/fann-studio/event" className="flex items-center gap-2 text-fann-gold mb-8 font-semibold hover:underline uppercase tracking-widest text-xs">
                         <ArrowLeft size={14} /> Back to Studio
                     </Link>
-                    
+
                     <AnimatePresence mode="wait">
                         {isLoading && (
                             <motion.div key="loader" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center justify-center min-h-[50vh] text-center">
@@ -133,7 +136,7 @@ const EventResultPage: React.FC = () => {
                                 </button>
                             </motion.div>
                         )}
-                        
+
                         {result && activeConcept && !isLoading && (
                             <motion.div key="result" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                                 <div className="text-center mb-8">
@@ -150,8 +153,8 @@ const EventResultPage: React.FC = () => {
                                             key={tab}
                                             onClick={() => setActiveTab(tab as any)}
                                             className={`px-6 py-3 rounded-full text-sm font-bold uppercase tracking-widest transition-all duration-300 border ${
-                                                activeTab === tab 
-                                                ? 'bg-fann-gold text-black border-fann-gold' 
+                                                activeTab === tab
+                                                ? 'bg-fann-gold text-black border-fann-gold'
                                                 : 'bg-transparent text-gray-400 border-white/10 hover:border-white/30'
                                             }`}
                                         >
@@ -164,7 +167,7 @@ const EventResultPage: React.FC = () => {
                                 <div className="grid lg:grid-cols-12 gap-8">
                                     {/* Image Side */}
                                     <div className="lg:col-span-8">
-                                        <motion.div 
+                                        <motion.div
                                             key={activeTab}
                                             initial={{ opacity: 0, scale: 0.98 }}
                                             animate={{ opacity: 1, scale: 1 }}
@@ -172,11 +175,11 @@ const EventResultPage: React.FC = () => {
                                             className="bg-black border border-white/10 p-2 shadow-2xl relative group overflow-hidden"
                                         >
                                             {activeConcept.image ? (
-                                                <img 
-                                                    src={`data:image/jpeg;base64,${activeConcept.image}`} 
-                                                    alt={activeConcept.conceptName} 
+                                                <img
+                                                    src={activeConcept.image.startsWith('data:') || activeConcept.image.startsWith('http') ? activeConcept.image : `data:image/jpeg;base64,${activeConcept.image}`}
+                                                    alt={activeConcept.conceptName}
                                                     className="w-full object-cover aspect-video bg-white/5 animate-pulse opacity-0 transition-opacity duration-500"
-                                                    onLoad={(e) => e.currentTarget.classList.remove('opacity-0', 'animate-pulse')} 
+                                                    onLoad={(e) => e.currentTarget.classList.remove('opacity-0', 'animate-pulse')}
                                                     loading="lazy"
                                                 />
                                             ) : (
@@ -200,9 +203,7 @@ const EventResultPage: React.FC = () => {
                                             className="h-full flex flex-col"
                                          >
                                             <h2 className="text-3xl font-serif text-white mb-4 leading-tight">{activeConcept.conceptName}</h2>
-                                            <p className="text-gray-300 leading-relaxed mb-8 border-l-2 border-fann-gold pl-4 text-sm">
-                                                {activeConcept.detailedDescription}
-                                            </p>
+                                            <StudioSpecList specs={activeConcept.specs} />
 
                                             <div className="space-y-4 flex-grow">
                                                 <InfoCard icon={Palette} title="Decor Elements" items={activeConcept.decorElements} />
@@ -213,15 +214,17 @@ const EventResultPage: React.FC = () => {
                                     </div>
                                 </div>
 
+                                <StudioLeadCapture kind="Event" brief={formData} concept={activeConcept.conceptName} />
+
                                 {/* CTA Section */}
                                 <div className="mt-16 bg-fann-charcoal-light p-8 md:p-12 border border-white/10 text-center relative overflow-hidden">
                                     <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10"></div>
-                                    
+
                                     <div className="relative z-10">
                                         <h2 className="text-3xl font-serif font-bold text-white mb-6">Ready to make this happen?</h2>
-                                        
+
                                         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                                            <a 
+                                            <a
                                                 href={`https://wa.me/971505667502?text=${encodeURIComponent(`Hi FANN, I generated event concepts for ${formData.eventName} and would like to discuss refinements.`)}`}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
@@ -229,7 +232,7 @@ const EventResultPage: React.FC = () => {
                                             >
                                                 <RefreshCw size={20} /> Discuss via WhatsApp
                                             </a>
-                                            <a 
+                                            <a
                                                 href={`https://wa.me/971505667502?text=${encodeURIComponent(`Hi FANN, I'm interested in Event Concept ${activeTab}: "${activeConcept.conceptName}" generated for ${formData.eventName}.`)}`}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
