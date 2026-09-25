@@ -13,21 +13,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        'fann-charcoal': '#0F0F0F', // Deepest Black/Grey for Main Backgrounds
-        'fann-charcoal-light': '#1A1A1A', // Secondary Backgrounds (Cards)
-        'fann-charcoal-lighter': '#262626', // Hover states
-        'fann-grey': '#E5E5E5', // Primary Text (High Clarity)
-        'fann-grey-muted': '#A3A3A3', // Secondary Text
-        'fann-gold': '#C9A962', // Refined Gold Accent
-        'fann-gold-light': '#E5C580',
-        'fann-white': '#FFFFFF',
-        'fann-border': 'rgba(255, 255, 255, 0.1)',
-        // Legacy mappings re-routed to dark theme palette
-        'fann-peach': '#0F0F0F', 
-        'fann-teal': '#E5E5E5', 
-        'fann-teal-dark': '#0A0A0A',
-        'fann-accent-teal': '#C9A962',
-        'fann-light-gray': '#D4D4D4', // Improved contrast from A3A3A3
+        // Palette is driven by CSS variables (see index.css) so the
+        // day/night ThemeToggle can switch themes at runtime.
+        'fann-charcoal': 'rgb(var(--fann-charcoal) / <alpha-value>)', // Main Backgrounds
+        'fann-charcoal-light': 'rgb(var(--fann-charcoal-light) / <alpha-value>)', // Secondary Backgrounds (Cards)
+        'fann-charcoal-lighter': 'rgb(var(--fann-charcoal-lighter) / <alpha-value>)', // Hover states
+        'fann-grey': 'rgb(var(--fann-grey) / <alpha-value>)', // Primary Text
+        'fann-grey-muted': 'rgb(var(--fann-grey-muted) / <alpha-value>)', // Secondary Text
+        'fann-gold': 'rgb(var(--fann-gold) / <alpha-value>)', // Refined Gold Accent
+        'fann-gold-light': 'rgb(var(--fann-gold-light) / <alpha-value>)',
+        'fann-white': 'rgb(var(--fann-white) / <alpha-value>)',
+        'fann-border': 'var(--fann-border)',
+        // Legacy mappings follow the same variables
+        'fann-peach': 'rgb(var(--fann-peach) / <alpha-value>)',
+        'fann-teal': 'rgb(var(--fann-teal) / <alpha-value>)',
+        'fann-teal-dark': 'rgb(var(--fann-teal-dark) / <alpha-value>)',
+        'fann-accent-teal': 'rgb(var(--fann-accent-teal) / <alpha-value>)',
+        'fann-light-gray': 'rgb(var(--fann-light-gray) / <alpha-value>)',
       },
       fontFamily: {
         sans: ['Manrope', 'Inter', 'system-ui', 'sans-serif'],
@@ -67,7 +69,7 @@ export default {
       },
       backgroundImage: {
         'gold-gradient': 'linear-gradient(135deg, #C9A962 0%, #E5C580 100%)',
-        'subtle-dark': 'radial-gradient(circle at center, #1F1F1F 0%, #0F0F0F 100%)',
+        'subtle-dark': 'var(--fann-gradient-subtle)',
       }
     },
   },
