@@ -975,7 +975,7 @@ const SITEMAP_PATHS = [
   '/services/turnkey-exhibition-services-uae', '/portfolio', '/about', '/contact', '/privacy-policy',
   '/insights', '/events-calendar', '/fann-studio', '/book-consultation', '/resources/cost-calculator',
   '/resources/exhibition-guide', '/roi-calculator',
-  '/portfolio/icons-of-porsche-2025-dubai', '/portfolio/special-olympics-uae-unified-champion-schools-2025', '/portfolio/national-expression-adek-abu-dhabi', '/fit-out-dubai',
+  '/portfolio/icons-of-porsche-2025-dubai', '/portfolio/special-olympics-uae-unified-champion-schools-2025', '/portfolio/national-expression-adek-abu-dhabi', '/fit-out-dubai', '/restaurant-fit-out-dubai', '/clinic-fit-out-dubai',
 ];
 function robotsTxt(res: VercelResponse) {
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');
@@ -1071,3 +1071,4 @@ export default async function mainHandler(req: VercelRequest, res: VercelRespons
     return res.status(500).json({ error: error.message || 'Internal Server Error' });
   }
                            }
+
