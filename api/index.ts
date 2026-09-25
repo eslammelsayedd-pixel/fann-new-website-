@@ -616,12 +616,24 @@ async function calculateStandCost(req: VercelRequest, res: VercelResponse) {
     const totalCost = structureCost + technologyCost + hospitalityCost + projectManagementAndDesign;
 
     return res.status(200).json({
-      breakdown: {
-        structure: structureCost,
-        technology: technologyCost,
-        hospitality: hospitalityCost,
-        management: projectManagementAndDesign
+      estimatedCost: {
+        min: Math.round(totalCost * 0.9),
+        max: Math.round(totalCost * 1.15)
       },
+      breakdown: [
+        { category: 'Structure & Fabrication', amount: structureCost },
+        { category: 'Technology & AV', amount: technologyCost },
+        { category: 'Hospitality & VIP Experience', amount: hospitalityCost },
+        { category: 'Design & Project Management (15%)', amount: projectManagementAndDesign }
+      ],
+      hiddenCosts: [
+        'Venue electrical mains connection & consumption fees',
+        'Rigging points & truss load fees (charged by venue)',
+        'Compressed air, water & drainage hookups',
+        'Waste disposal & daily cleaning fees',
+        'After-hours build-up & teardown surcharges',
+        'Civil defense & authority approval permits'
+      ],
       total: totalCost
     });
   } catch (error: any) {
@@ -734,7 +746,7 @@ async function generateCostPdf(req: VercelRequest, res: VercelResponse) {
           <div class="bg-slate-50 p-6 border rounded-lg flex justify-between items-center mb-6">
             <div>
               <span class="text-slate-500 text-xs uppercase block">Total Turnkey Budget</span>
-              <h4 class="text-3xl font-bold text-slate-900">AED ${calculation?.total?.toLocaleString() || 'N/A'}</h4>
+              <h4 class="text-3xl font-bold text-slate-900">AED ${(calculation?.estimatedCost?.min ?? calculation?.total ?? 0).toLocaleString()} - ${(calculation?.estimatedCost?.max ?? calculation?.total ?? 0).toLocaleString()}</h4>
             </div>
             <div class="text-right">
               <span class="text-slate-500 text-xs block">Stand size: <strong>${inputs?.size || 36} sqm</strong></span>
@@ -750,22 +762,10 @@ async function generateCostPdf(req: VercelRequest, res: VercelResponse) {
               </tr>
             </thead>
             <tbody>
-              <tr class="border-b">
-                <td class="p-3 font-semibold text-slate-800">Structure & Custom Fabrication</td>
-                <td class="p-3 text-right text-slate-700">AED ${calculation?.breakdown?.structure?.toLocaleString() || '0'}</td>
-              </tr>
-              <tr class="border-b">
-                <td class="p-3 font-semibold text-slate-800">Technology & AV Integrations</td>
-                <td class="p-3 text-right text-slate-700">AED ${calculation?.breakdown?.technology?.toLocaleString() || '0'}</td>
-              </tr>
-              <tr class="border-b">
-                <td class="p-3 font-semibold text-slate-800">Hospitality & VIP Lounge Areas</td>
-                <td class="p-3 text-right text-slate-700">AED ${calculation?.breakdown?.hospitality?.toLocaleString() || '0'}</td>
-              </tr>
-              <tr class="border-b">
-                <td class="p-3 font-semibold text-slate-800">Design & Project Management (15%)</td>
-                <td class="p-3 text-right text-slate-700">AED ${calculation?.breakdown?.management?.toLocaleString() || '0'}</td>
-              </tr>
+              ${(Array.isArray(calculation?.breakdown) ? calculation.breakdown : []).map((item: any) => `<tr class="border-b">
+                <td class="p-3 font-semibold text-slate-800">${item.category}</td>
+                <td class="p-3 text-right text-slate-700">AED ${Number(item.amount || 0).toLocaleString()}</td>
+              </tr>`).join('')}
             </tbody>
           </table>
         </div>
@@ -1070,4 +1070,4 @@ export default async function mainHandler(req: VercelRequest, res: VercelRespons
     console.error('Unified API router error:', error);
     return res.status(500).json({ error: error.message || 'Internal Server Error' });
   }
-    }
+          }
