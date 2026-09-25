@@ -173,9 +173,10 @@ const EventResultPage: React.FC = () => {
                                         >
                                             {activeConcept.image ? (
                                                 <img 
-                                                    src={activeConcept.image.startsWith('data:') || activeConcept.image.startsWith('http') ? activeConcept.image : `data:image/jpeg;base64,${activeConcept.image}`} 
+                                                    src={`data:image/jpeg;base64,${activeConcept.image}`} 
                                                     alt={activeConcept.conceptName} 
-                                                    className="w-full object-cover aspect-video" 
+                                                    className="w-full object-cover aspect-video bg-white/5 animate-pulse opacity-0 transition-opacity duration-500"
+                                                    onLoad={(e) => e.currentTarget.classList.remove('opacity-0', 'animate-pulse')} 
                                                     loading="lazy"
                                                 />
                                             ) : (
