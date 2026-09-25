@@ -113,7 +113,7 @@ const InteriorResultPage: React.FC = () => {
                                 </div>
                                 <div className="bg-black/50 p-2 rounded-lg shadow-2xl mb-12 border border-white/10">
                                     <img 
-                                        src={`data:image/jpeg;base64,${design.image}`} 
+                                        src={design.image.startsWith('data:') || design.image.startsWith('http') ? design.image : `data:image/jpeg;base64,${design.image}`} 
                                         alt={design.designConcept.conceptName} 
                                         className="w-full rounded-md" 
                                         width="1136"
