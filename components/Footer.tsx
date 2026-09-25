@@ -11,16 +11,16 @@ const QuoraIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#0D0D0D] text-gray-300 py-12 border-t border-white/5">
+    <footer className="bg-fann-charcoal text-fann-grey-muted py-12 border-t border-white/5">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           <div className="md:col-span-12 lg:col-span-4">
             <h3 className="text-2xl font-serif font-bold text-fann-gold mb-4">FANN</h3>
-            <p className="text-sm text-gray-400">Your full-service design and build partner. Transforming visions into unforgettable experiences across exhibitions, events, and interiors.</p>
+            <p className="text-sm text-fann-grey-muted">Your full-service design and build partner. Transforming visions into unforgettable experiences across exhibitions, events, and interiors.</p>
           </div>
           <div className="md:col-span-6 lg:col-span-2">
-            <h4 className="font-bold text-white uppercase tracking-wider mb-4">Quick Links</h4>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <h4 className="font-bold text-fann-grey uppercase tracking-wider mb-4">Quick Links</h4>
+            <ul className="space-y-2 text-sm text-fann-grey-muted">
               <li><Link to="/about" className="hover:text-fann-gold transition-colors">About FANN</Link></li>
               <li><Link to="/portfolio" className="hover:text-fann-gold transition-colors">Portfolio</Link></li>
               <li><Link to="/services" className="hover:text-fann-gold transition-colors">Services</Link></li>
@@ -29,16 +29,16 @@ const Footer: React.FC = () => {
             </ul>
           </div>
           <div className="md:col-span-6 lg:col-span-3">
-            <h4 className="font-bold text-white uppercase tracking-wider mb-4">Free Resources</h4>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <h4 className="font-bold text-fann-grey uppercase tracking-wider mb-4">Free Resources</h4>
+            <ul className="space-y-2 text-sm text-fann-grey-muted">
               <li><Link to="/resources/exhibition-guide" className="hover:text-fann-gold transition-colors">Exhibition Success Guide</Link></li>
               <li><Link to="/resources/cost-calculator" className="hover:text-fann-gold transition-colors">Stand Cost Calculator</Link></li>
               <li><Link to="/book-consultation" className="hover:text-fann-gold transition-colors font-bold text-fann-gold">Book Free Consultation</Link></li>
             </ul>
           </div>
           <div className="md:col-span-12 lg:col-span-3">
-            <h4 className="font-bold text-white uppercase tracking-wider mb-4">Contact Us</h4>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <h4 className="font-bold text-fann-grey uppercase tracking-wider mb-4">Contact Us</h4>
+            <ul className="space-y-2 text-sm text-fann-grey-muted">
               <li><a href="mailto:sales@fann.ae" className="hover:text-fann-gold transition-colors">sales@fann.ae</a></li>
               <li><a href="tel:+971505667502" className="hover:text-fann-gold transition-colors">+971 50 566 7502</a></li>
               <li className="font-semibold mt-2 pt-2 border-t border-white/10">Office:</li>
