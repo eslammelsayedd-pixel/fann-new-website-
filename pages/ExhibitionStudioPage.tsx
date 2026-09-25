@@ -88,7 +88,6 @@ const ExhibitionStudioPage: React.FC = () => {
     const navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState(1);
     const [errors, setErrors] = useState<{[key: string]: boolean | string}>({});
-    const [emailWarning, setEmailWarning] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     
     // AI Analysis States
@@ -251,8 +250,9 @@ const ExhibitionStudioPage: React.FC = () => {
             if (!formData.phone) newErrors.phone = true;
             if (!formData.email) {
                 newErrors.email = true;
+            } else if (!isWorkEmail(formData.email)) {
+                newErrors.email = "Please use your work email - FANN Studio is for business enquiries.";
             }
-            setEmailWarning(formData.email && !isWorkEmail(formData.email) ? 'Tip: a work email helps our team verify and respond faster.' : '');
         }
 
         if (Object.keys(newErrors).length > 0) {
@@ -546,8 +546,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                             </div>
                                             <div className="md:col-span-2 relative">
                                                 <Mail className="absolute left-0 top-3 text-gray-500" size={16}/>
-                                                <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={`${getInputClass('email')} pl-6`} placeholder="Email *" />
-                                                {emailWarning && <p className="text-amber-400 text-xs mt-1">{emailWarning}</p>}
+                                                <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={`${getInputClass('email')} pl-6`} placeholder="Work Email (No Gmail/Yahoo) *" />
                                             </div>
                                             <div className="md:col-span-2 flex gap-3">
                                                 <select 
