@@ -26,7 +26,7 @@ const TrendsReportPage: React.FC = () => {
     return (
         <AnimatedPage>
             <SEO title="2026 Exhibition Design Trends Report | FANN" description="Download the definitive guide to the future of exhibitions." />
-            <div className="min-h-screen bg-[#050505] text-white pt-24 relative overflow-hidden">
+            <div className="min-h-screen bg-fann-charcoal text-white pt-24 relative overflow-hidden">
                 {/* Abstract Background */}
                 <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 opacity-30">
                     <div className="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-900/20 rounded-full blur-[120px]"></div>
@@ -64,7 +64,7 @@ const TrendsReportPage: React.FC = () => {
                         ))}
                     </div>
 
-                    <div className="max-w-md mx-auto bg-[#111] border border-white/10 p-8 rounded-2xl shadow-2xl text-center">
+                    <div className="max-w-md mx-auto bg-fann-charcoal-light border border-white/10 p-8 rounded-2xl shadow-2xl text-center">
                         {status === 'success' ? (
                             <div>
                                 <div className="text-5xl mb-4">🚀</div>
