@@ -20,7 +20,7 @@ async function detectIndustry(req: VercelRequest, res: VercelResponse) {
 
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-3.8-flash",
       contents: `Analyze this event/exhibition name: "${eventName}". Tell me what specific industry/sector it represents (e.g., Technology, Aviation, Real Estate, Medical, Automotive, Food & Beverage, Fashion, Construction, etc.). Return only the industry name.`,
       config: {
         responseMimeType: "application/json",
@@ -57,7 +57,7 @@ async function extractColors(req: VercelRequest, res: VercelResponse) {
     };
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-3.8-flash",
       contents: [
         imagePart,
         "Analyze this logo/brand image. Extract 3 primary/brand colors as hex codes. Return them in a JSON array."
@@ -97,7 +97,7 @@ async function chat(req: VercelRequest, res: VercelResponse) {
     const userPrompt = latestMessage?.parts?.[0]?.text || '';
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-3.8-flash",
       contents: userPrompt,
       config: {
         systemInstruction: "You are FANN Assistant for FANN (fann.ae), an exhibition stand design and build, events and interior fit-out company. Office: 508 Dusseldorf Business Centre, Al Barsha, Dubai. Workshop: Warehouse 10, Um Dera, Umm Al Quwain. We have delivered 200+ projects over 6+ years, mainly across the UAE. Help visitors plan stands and events (e.g. GITEX, ADIPEC, Gulfood) and guide them to share their event, date, stand size and budget via the contact form, WhatsApp or sales@fann.ae. Rules: never offer or promise any discount, percentage off, promo code or special price, and do not state any discount policy; if asked about discounts or pricing, say every project is quoted individually and the team will discuss pricing in a tailored quote. Never invent prices, clients, awards or projects. Be concise and use markdown.",
@@ -131,7 +131,7 @@ async function generateInsights(req: VercelRequest, res: VercelResponse) {
 
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-3.8-flash",
       contents: prompt,
       config: {
         systemInstruction: "You are an expert design journalist for FANN Insights & Guides, a publication in the GCC. Write an extremely engaging, high-quality, professional article based on the prompt. Cite industry reports or real examples if possible. Use clean Markdown.",
@@ -171,7 +171,7 @@ Brand Colors: ${(formData.brandColors || []).join(', ') || 'Gold, Charcoal, Whit
 Return the details in JSON structure matching the required schema. Ensure the concepts are unique, highly descriptive, and tailored to major venues like Dubai World Trade Centre (DWTC) or Riyadh Exhibition Center. Make them sound premium and architecturally realistic.`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-3.8-flash",
       contents: prompt,
       config: {
         responseMimeType: "application/json",
@@ -303,7 +303,7 @@ Brand Colors: ${(formData.brandColors || []).join(', ') || 'Gold, Deep Blue, Whi
 Return the details in JSON structure matching the required schema. Ensure the concepts are unique, highly descriptive, and tailored to major GCC venues like Dubai Opera, Atlantis The Palm, or Ritz Carlton Riyadh. Make them sound spectacular and production-ready.`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-3.8-flash",
       contents: prompt,
       config: {
         responseMimeType: "application/json",
@@ -437,7 +437,7 @@ Brand Colors: ${(formData.brandColors || []).join(', ') || 'Charcoal, Wood, Gold
 Return the details in JSON structure matching the required schema. Ensure the concept is unique, descriptive, and tailored to locations like DIFC or KAFD. Make it sound elegant, ergonomic, and luxury.`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-3.8-flash",
       contents: prompt,
       config: {
         responseMimeType: "application/json",
@@ -838,7 +838,7 @@ async function generateTemplate(req: VercelRequest, res: VercelResponse) {
     const prompt = `Generate a highly professional, highly persuasive ${templateType || 'sales follow-up email'} template customized for the "${industry || 'general'}" sector in the GCC. The template should be beautifully structured, using placeholders like [Your Name], [Company], and [Prospect Name]. Ensure it highlights the value of premium turnkey design and exhibition stand space optimization. Return only the template formatted in clean Markdown.`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-3.8-flash",
       contents: prompt,
     });
 
@@ -862,7 +862,7 @@ Budget Bracket: ${budgetBracket || 'Medium to Premium'}.
 Write a highly tactical guide covering space planning, design styles, visitor engagement technology, staff preparation, and post-show conversion. Structure it with elegant headers. Use professional tone and markdown styling.`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-3.8-flash",
       contents: prompt,
     });
 
@@ -1070,4 +1070,4 @@ export default async function mainHandler(req: VercelRequest, res: VercelRespons
     console.error('Unified API router error:', error);
     return res.status(500).json({ error: error.message || 'Internal Server Error' });
   }
-          }
+                           }
