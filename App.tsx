@@ -32,6 +32,7 @@ const ExhibitionGuidePage = lazy(() => import('./pages/resources/ExhibitionGuide
 const CostCalculatorPage = lazy(() => import('./pages/resources/CostCalculatorPage'));
 const ConsultationPage = lazy(() => import('./pages/ConsultationPage'));
 const FitOutDubaiPage = lazy(() => import('./pages/services/FitOutDubaiPage'));
+const RestaurantFitOutDubaiPage = lazy(() => import('./pages/services/RestaurantFitOutDubaiPage'));
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
@@ -55,6 +56,7 @@ const App: React.FC = () => {
                         <Route path="/services/interior-fitout-exhibition-spaces-dubai" element={<FitOutPage />} />
                         
                         <Route path="/fit-out-dubai" element={<FitOutDubaiPage />} />
+                        <Route path="/restaurant-fit-out-dubai" element={<RestaurantFitOutDubaiPage />} />
                         <Route path="/portfolio" element={<PortfolioPage />} />
                         <Route path="/portfolio/:slug" element={<ProjectDetailPage />} />
                         
@@ -86,3 +88,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+
