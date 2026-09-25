@@ -499,55 +499,92 @@ Return the details in JSON structure matching the required schema. Ensure the co
   }
 }
 
-// 8. ROI Calculator
+// 8. ROI Calculator (scenario-based analysis matching the ROICalculatorPage contract)
 async function calculateRoi(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
   const data = req.body || {};
 
   try {
-    const total_investment = Number(data.total_investment) || 50000;
-    const average_deal_value = Number(data.average_deal_value) || 25000;
-    const close_rate = Number(data.close_rate) || 10;
-    const expected_leads = Number(data.expected_leads) || 100;
+    const r = (n: number) => Math.round(n);
+    const num = (v: any, d: number) => { const n = Number(v); return isFinite(n) && n > 0 ? n : d; };
 
-    const estimatedLeads = expected_leads;
-    const costPerLead = Math.round(total_investment / expected_leads);
-    const projectedCloses = Math.round(expected_leads * (close_rate / 100));
-    const projectedRevenue = projectedCloses * average_deal_value;
-    const netProfit = projectedRevenue - total_investment;
-    const roiPercent = Math.round((netProfit / total_investment) * 100);
+    const totalInvestment = num(data.total_investment,
+      num(data.stand_cost, 75000) + num(data.staff_cost, 15000) + num(data.marketing_cost, 10000) + num(data.logistics_cost, 5000));
+    const visitors = num(data.visitors_expected, 500);
+    const leads = num(data.leads_expected, 150);
+    const dealValue = num(data.avg_deal_value, 25000);
+    const closeRate = num(data.close_rate_percent, 10);
+    const salesCycle = num(data.sales_cycle_months, 3);
+    const ltv = num(data.customer_ltv, 50000);
+    const days = num(data.duration_days, 3);
+    const eventName = String(data.event_name || 'your exhibition');
+    const industry = String(data.industry || 'your sector');
 
-    const analysisPrompt = `Perform a professional financial analysis for an exhibition ROI report.
-Inputs:
-- Total Investment: $${total_investment}
-- Average Deal Value: $${average_deal_value}
-- Close Rate: ${close_rate}%
-- Expected Leads: ${expected_leads}
-Calculated Metrics:
-- Cost Per Lead: $${costPerLead}
-- Projected Closed Deals: ${projectedCloses}
-- Projected Revenue: $${projectedRevenue}
-- Net Profit: $${netProfit}
-- ROI: ${roiPercent}%
+    const buildScenario = (label: string, leadMul: number, closeMul: number, probability: number) => {
+      const scLeads = Math.max(1, leads * leadMul);
+      const scClose = Math.min(95, closeRate * closeMul);
+      const deals = scLeads * (scClose / 100);
+      const revenue = deals * dealValue;
+      const netProfit = revenue - totalInvestment;
+      const costPerLead = totalInvestment / scLeads;
+      const costPerAcq = deals > 0.01 ? totalInvestment / deals : totalInvestment;
+      const breakEven = Math.max(1, Math.ceil(totalInvestment / dealValue));
+      const payback = breakEven <= Math.max(1, Math.round(deals)) ? salesCycle : salesCycle * 2;
+      return {
+        label,
+        probability,
+        metrics: {
+          cash_roi: {
+            net_profit: r(netProfit),
+            roi_percentage: r((netProfit / totalInvestment) * 100),
+            payback_period_months: r(payback),
+            cost_per_lead: r(costPerLead),
+            cost_per_acquisition: r(costPerAcq),
+            break_even_deals: breakEven
+          },
+          pipeline_roi: {
+            projected_value: r(deals * ltv),
+            ltv_impact: r(deals * Math.max(0, ltv - dealValue))
+          },
+          brand_roi: {
+            impressions: r(visitors * days * 6),
+            media_value: r((visitors * days * 6 / 1000) * 120)
+          },
+          network_roi: {
+            partnership_value: r(totalInvestment * 0.15)
+          }
+        }
+      };
+    };
 
-Write a detailed, personalized 3-paragraph strategic analysis. Detail key focus areas to secure the expected leads, optimize visitor conversions, and guarantee a successful exhibit. Keep it professional, encouraging, and highly specific to a premium GCC exhibition environment (GITEX, Big 5, Index, Saudi Build).`;
+    const scenarios = {
+      conservative: buildScenario('Conservative', 0.7, 0.7, 25),
+      realistic: buildScenario('Realistic', 1, 1, 50),
+      optimistic: buildScenario('Optimistic', 1.35, 1.25, 25)
+    };
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
-      contents: analysisPrompt,
-    });
+    const industryAvgCpl = 450;
+    const industryAvgConv = 8;
+    const userCpl = scenarios.realistic.metrics.cash_roi.cost_per_lead;
+    const verdict = userCpl <= industryAvgCpl
+      ? `At AED ${userCpl.toLocaleString()} per lead, your ${eventName} plan beats the GCC exhibition average (AED ${industryAvgCpl}). The model is viable - execution quality will decide the outcome.`
+      : `At AED ${userCpl.toLocaleString()} per lead, your ${eventName} plan sits above the GCC exhibition average (AED ${industryAvgCpl}). Tighten lead capture staffing and pre-show meeting bookings to bring cost per lead down.`;
 
-    const analysisText = response.text || "Your exhibition campaign exhibits robust financial viability, with an exceptional potential return on investment. To guarantee this return, focus intensely on interactive engagement, digital lead capturing, and rapid post-event follow-up workflows.";
+    const strategic_advice = [
+      `Pre-book meetings: exhibitors who book 40%+ of their meetings before ${eventName} routinely double effective close rates. Start outreach 6-8 weeks out.`,
+      `Staff for capture, not conversation: assign one person purely to qualify and log leads; target ${Math.max(10, Math.round(leads / Math.max(1, days)))} qualified leads per day.`,
+      `Follow up within 48 hours: ${industry} leads cool fast after the show. Prepare the follow-up sequence before the doors open.`,
+      `Track beyond the first deal: with a customer LTV of AED ${ltv.toLocaleString()}, the pipeline value of this event likely exceeds the immediate cash ROI.`
+    ];
 
     return res.status(200).json({
-      metrics: {
-        costPerLead,
-        projectedCloses,
-        projectedRevenue,
-        netProfit,
-        roiPercent
+      scenarios,
+      benchmarks: {
+        industry_avg_cpl: industryAvgCpl,
+        industry_avg_conversion: industryAvgConv,
+        verdict
       },
-      analysis: analysisText
+      strategic_advice
     });
   } catch (error: any) {
     console.error('calculate-roi error:', error);
@@ -596,6 +633,18 @@ async function calculateStandCost(req: VercelRequest, res: VercelResponse) {
 // 10. PDF Report/Guide Generators (Generates gorgeous self-contained HTML that renders/prints perfectly)
 async function generateRoiPdf(req: VercelRequest, res: VercelResponse) {
   const { roiData, userData, inputs } = req.body || {};
+  // Support the scenario-based calculator result: prefer the realistic scenario.
+  const scen = roiData?.scenarios?.realistic?.metrics?.cash_roi;
+  if (scen) {
+    const inv = Number(inputs?.total_investment)
+      || (Number(inputs?.stand_cost)||0) + (Number(inputs?.staff_cost)||0) + (Number(inputs?.marketing_cost)||0) + (Number(inputs?.logistics_cost)||0);
+    roiData.metrics = {
+      costPerLead: scen.cost_per_lead,
+      projectedRevenue: (scen.net_profit || 0) + inv,
+      roiPercent: scen.roi_percentage
+    };
+    roiData.analysis = (roiData?.strategic_advice || []).join('\n\n');
+  }
   const htmlContent = `
     <!DOCTYPE html>
     <html lang="en">
@@ -926,7 +975,7 @@ const SITEMAP_PATHS = [
   '/services/turnkey-exhibition-services-uae', '/portfolio', '/about', '/contact', '/privacy-policy',
   '/insights', '/events-calendar', '/fann-studio', '/book-consultation', '/resources/cost-calculator',
   '/resources/exhibition-guide', '/roi-calculator',
-  '/portfolio/icons-of-porsche-2025-dubai', '/portfolio/special-olympics-uae-unified-champion-schools-2025', '/portfolio/national-expression-adek-abu-dhabi', '/fit-out-dubai', '/restaurant-fit-out-dubai',
+  '/portfolio/icons-of-porsche-2025-dubai', '/portfolio/special-olympics-uae-unified-champion-schools-2025', '/portfolio/national-expression-adek-abu-dhabi', '/fit-out-dubai',
 ];
 function robotsTxt(res: VercelResponse) {
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');
@@ -1021,5 +1070,4 @@ export default async function mainHandler(req: VercelRequest, res: VercelRespons
     console.error('Unified API router error:', error);
     return res.status(500).json({ error: error.message || 'Internal Server Error' });
   }
-}
-
+    }
