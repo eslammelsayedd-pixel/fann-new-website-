@@ -1,3 +1,5 @@
+import StudioLeadCapture from '../components/StudioLeadCapture';
+import StudioSpecList, { StudioSpecs } from '../components/StudioSpecList';
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -9,6 +11,7 @@ interface Concept {
     conceptName: string;
     style: string;
     description: string;
+    specs?: StudioSpecs;
     materials: string[];
     keyFeature: string;
     image: string; // base64
@@ -198,9 +201,7 @@ const DesignResultPage: React.FC = () => {
                                             transition={{ duration: 0.4 }}
                                          >
                                             <h2 className="text-3xl font-serif text-white mb-4 leading-tight">{activeConcept.conceptName}</h2>
-                                            <p className="text-gray-300 leading-relaxed mb-8 border-l-2 border-fann-gold pl-4">
-                                                {activeConcept.description}
-                                            </p>
+                                            <StudioSpecList specs={activeConcept.specs} />
 
                                             <div className="space-y-4">
                                                 <InfoCard icon={Sparkles} title="Key Feature" items={activeConcept.keyFeature} />
@@ -209,6 +210,8 @@ const DesignResultPage: React.FC = () => {
                                          </motion.div>
                                     </div>
                                 </div>
+
+                                <StudioLeadCapture kind="Exhibition" brief={formData} concept={activeConcept.conceptName} />
 
                                 {/* CTA Section */}
                                 <div className="mt-16 bg-fann-charcoal-light p-8 md:p-12 border border-white/10 text-center relative overflow-hidden">
