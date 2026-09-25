@@ -91,6 +91,7 @@ const Header: React.FC = () => {
 
                 {/* MOBILE TOGGLE */}
                 <div className="lg:hidden flex items-center gap-4 z-50">
+                    <ThemeToggle />
                     <button 
                         onClick={() => setIsOpen(!isOpen)} 
                         className="text-white p-2 hover:text-fann-gold transition-colors"
