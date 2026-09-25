@@ -174,7 +174,8 @@ const DesignResultPage: React.FC = () => {
                                                 <img 
                                                     src={activeConcept.image.startsWith('data:') || activeConcept.image.startsWith('http') ? activeConcept.image : `data:image/jpeg;base64,${activeConcept.image}`} 
                                                     alt={activeConcept.conceptName} 
-                                                    className="w-full" 
+                                                    className="w-full bg-white/5 animate-pulse opacity-0 transition-opacity duration-500"
+                                                    onLoad={(e) => e.currentTarget.classList.remove('opacity-0', 'animate-pulse')} 
                                                     loading="lazy"
                                                 />
                                             ) : (
