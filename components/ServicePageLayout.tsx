@@ -79,7 +79,7 @@ const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
       {/* Main Content */}
       <main className="py-16 md:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="prose prose-lg prose-invert max-w-4xl mx-auto prose-h2:font-serif prose-h2:text-4xl prose-h2:text-fann-gold prose-h2:mb-4 prose-h2:mt-12 first:prose-h2:mt-0 prose-a:text-fann-gold hover:prose-a:underline prose-strong:text-white">
+            <div className="prose prose-lg dark:prose-invert max-w-4xl mx-auto prose-h2:font-serif prose-h2:text-4xl prose-h2:text-fann-gold prose-h2:mb-4 prose-h2:mt-12 first:prose-h2:mt-0 prose-a:text-fann-gold hover:prose-a:underline prose-strong:text-fann-grey">
                  {children}
             </div>
         </div>
@@ -111,7 +111,7 @@ const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
                                 whileHover={{ scale: 1.05, y: -2 }}
                                 whileTap={{ scale: 0.95 }}
                                 transition={buttonTransition}
-                                className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider w-full sm:w-auto"
+                                className="bg-fann-gold text-black font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider w-full sm:w-auto"
                             >
                                 Book a Consultation
                             </motion.button>
