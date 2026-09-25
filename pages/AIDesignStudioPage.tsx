@@ -77,7 +77,7 @@ const StudioCard: React.FC<StudioCardProps> = ({ studio, index }) => (
         <Link 
             to={studio.isComingSoon ? '#' : studio.link} 
             className={`
-                h-full flex flex-col justify-between p-8 bg-[#111] rounded-sm
+                h-full flex flex-col justify-between p-8 bg-fann-charcoal-light rounded-sm
                 border-2 border-white/10 group transition-all duration-300
                 ${studio.isComingSoon 
                     ? 'cursor-not-allowed opacity-60' 

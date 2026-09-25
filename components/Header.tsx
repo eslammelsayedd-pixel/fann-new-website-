@@ -30,7 +30,7 @@ const Header: React.FC = () => {
             <div className="container mx-auto flex items-center justify-between">
                 {/* LOGO */}
                 <Link to="/" className="flex items-center z-50 hover-trigger group">
-                    <span className="font-serif font-bold text-4xl tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-fann-gold via-[#FFE5B4] to-fann-gold drop-shadow-sm group-hover:drop-shadow-[0_0_15px_rgba(201,169,98,0.6)] transition-all duration-500">
+                    <span className="font-serif font-bold text-4xl tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-fann-gold via-fann-gold-light to-fann-gold drop-shadow-sm group-hover:drop-shadow-[0_0_15px_rgba(201,169,98,0.6)] transition-all duration-500">
                         FANN
                     </span>
                 </Link>

@@ -93,7 +93,7 @@ const InputField: React.FC<{ label: string; icon: React.ReactNode; type?: string
                 value={value} 
                 onChange={onChange} 
                 required={required} 
-                className="w-full bg-[#151515] border border-white/10 rounded-xl pl-12 pr-4 py-4 focus:outline-none focus:border-fann-gold focus:ring-1 focus:ring-fann-gold transition-all text-base text-white placeholder-gray-600 shadow-inner" 
+                className="w-full bg-fann-charcoal-light border border-white/10 rounded-xl pl-12 pr-4 py-4 focus:outline-none focus:border-fann-gold focus:ring-1 focus:ring-fann-gold transition-all text-base text-white placeholder-gray-600 shadow-inner" 
             />
         </div>
     </div>
@@ -188,7 +188,7 @@ const InteriorStudioPage: React.FC = () => {
                              <InputField label="Property Location" icon={<MapPin size={20}/>} name="location" value={formData.location} onChange={handleInputChange} required placeholder="e.g. DIFC, Dubai" />
                         </div>
 
-                        <div className="bg-[#151515] p-6 rounded-2xl border border-white/10 mb-8">
+                        <div className="bg-fann-charcoal-light p-6 rounded-2xl border border-white/10 mb-8">
                             <div className="flex justify-between items-center mb-4">
                                 <span className="font-bold text-lg text-white flex items-center gap-2"><Square size={20} className="text-fann-gold"/> Total Area</span>
                                 <span className="text-fann-gold font-mono bg-fann-gold/10 px-3 py-1 rounded-lg border border-fann-gold/20">
@@ -250,7 +250,7 @@ const InteriorStudioPage: React.FC = () => {
                                 />
                             ))}
                         </div>
-                         <div className="bg-[#151515] p-6 rounded-2xl border border-white/10 mt-8">
+                         <div className="bg-fann-charcoal-light p-6 rounded-2xl border border-white/10 mt-8">
                             <h4 className="text-fann-gold font-bold mb-4 flex items-center gap-2 text-lg uppercase tracking-wider"><SlidersHorizontal size={20}/> Brief Summary</h4>
                             <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-300">
                                 <div className="p-3 bg-white/5 rounded-lg"><strong>Project:</strong> {formData.projectName}</div>
