@@ -165,7 +165,7 @@ export const DeadlineCalculator: React.FC = () => {
     };
 
     return (
-        <div className="bg-[#111] border border-white/10 rounded-xl p-6 md:p-8 shadow-2xl max-w-4xl mx-auto my-16">
+        <div className="bg-fann-charcoal-light border border-white/10 rounded-xl p-6 md:p-8 shadow-2xl max-w-4xl mx-auto my-16">
             <div className="flex flex-col md:flex-row gap-8">
                 <div className="md:w-1/2">
                     <h3 className="text-2xl font-serif font-bold text-white mb-2 flex items-center gap-2">
