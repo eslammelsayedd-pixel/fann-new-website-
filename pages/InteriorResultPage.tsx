@@ -115,7 +115,8 @@ const InteriorResultPage: React.FC = () => {
                                     <img 
                                         src={design.image.startsWith('data:') || design.image.startsWith('http') ? design.image : `data:image/jpeg;base64,${design.image}`} 
                                         alt={design.designConcept.conceptName} 
-                                        className="w-full rounded-md" 
+                                        className="w-full rounded-md bg-white/5 animate-pulse opacity-0 transition-opacity duration-500"
+                                                    onLoad={(e) => e.currentTarget.classList.remove('opacity-0', 'animate-pulse')} 
                                         width="1136"
                                         height="639"
                                         loading="lazy"
