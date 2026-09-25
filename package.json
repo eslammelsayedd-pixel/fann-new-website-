@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/prerender.mjs",
+    "build": "node scripts/contract-check.mjs && vite build && node scripts/prerender.mjs",
     "preview": "vite preview",
-    "optimize-images": "node scripts/optimize-images.mjs"
+    "optimize-images": "node scripts/optimize-images.mjs",
+    "contract-check": "node scripts/contract-check.mjs"
   },
   "dependencies": {
     "@google/genai": "^1.28.0",
