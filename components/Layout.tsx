@@ -5,6 +5,7 @@ import WhatsAppButton from './WhatsAppButton';
 import ExitIntentPopup from './ExitIntentPopup';
 import MetaPixelTracker from './MetaPixelTracker';
 import MobileActionBar from './MobileActionBar';
+import { Chatbot } from './Chatbot';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -20,6 +21,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       
       {/* Conversion Tools */}
       <WhatsAppButton />
+      <Chatbot />
       <ExitIntentPopup />
       <MobileActionBar />
     </div>
