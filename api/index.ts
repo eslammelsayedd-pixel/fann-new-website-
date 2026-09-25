@@ -495,7 +495,7 @@ Rules: detailedDescription must cite at least three real dimensions and the zoni
         contents: {
           parts: [
             {
-              text: `Photorealistic interior design photograph of "${concept.conceptName}" - a ${formData.size || '150'} sqm ${formData.spaceType || 'Executive Office'} in a premium GCC tower (floor-to-ceiling glazing, skyline softly out of focus beyond). Style: ${formData.style || 'Modern'}. Lighting: ${concept.lighting}. Furniture language: ${(concept.furnitureStyle || []).join(', ')}. Materials render with true physical texture (stone veining, wood grain, fabric weave, brushed metal). Camera: eye-level 1.5m, 20mm lens, one-point perspective down the main axis; include 2-3 professionals for scale. Lighting: natural daylight balanced with warm 3000K interior accents, soft realistic shadows, correct interior/exterior exposure balance. Architectural accuracy: level horizons, straight verticals, plausible ceiling heights (2.8-3.2m), no warped geometry, no floating furniture, no illegible text or logos. Award-winning commercial interior photography, 8k.`,
+              text: `Photorealistic interior design photograph of "${concept.conceptName}" - a ${formData.size || '150'} sqm ${formData.spaceType || 'Executive Office'} in a premium GCC tower (floor-to-ceiling glazing, skyline softly out of focus beyond). Style: ${formData.style || 'Modern'}. Lighting: ${concept.lighting}. Furniture language: ${(concept.furnitureStyle || []).join(', ')}. Materials render with true physical texture (stone veining, wood grain, fabric weave, brushed metal). Ceiling discipline (critical): one restrained primary ceiling treatment only - for example flat gypsum board at 2.8-3.2m height with a single recessed cove, or a clean exposed concrete soffit; building services (linear slot diffusers, sprinklers, speakers) are minimal, few, and aligned in one ordered run following real reflected-ceiling-plan logic; no random openings, no decorative voids, no oversized dark channels, no scattered vents or redundant slots; every ceiling element must have an evident mechanical or lighting function. Camera: eye-level 1.5m, 20mm lens, one-point perspective down the main axis; include 2-3 professionals for scale. Lighting: natural daylight balanced with warm 3000K interior accents, soft realistic shadows, correct interior/exterior exposure balance. Architectural accuracy: level horizons, straight verticals, plausible ceiling heights (2.8-3.2m), no warped geometry, no floating furniture, no illegible text or logos. Award-winning commercial interior photography, 8k.`,
             },
           ],
         },
@@ -1094,4 +1094,4 @@ export default async function mainHandler(req: VercelRequest, res: VercelRespons
     console.error('Unified API router error:', error);
     return res.status(500).json({ error: error.message || 'Internal Server Error' });
   }
-                           }
+      }
