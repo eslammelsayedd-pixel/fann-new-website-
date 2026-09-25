@@ -173,7 +173,7 @@ const EventResultPage: React.FC = () => {
                                         >
                                             {activeConcept.image ? (
                                                 <img 
-                                                    src={`data:image/jpeg;base64,${activeConcept.image}`} 
+                                                    src={activeConcept.image.startsWith('data:') || activeConcept.image.startsWith('http') ? activeConcept.image : `data:image/jpeg;base64,${activeConcept.image}`} 
                                                     alt={activeConcept.conceptName} 
                                                     className="w-full object-cover aspect-video" 
                                                     loading="lazy"
