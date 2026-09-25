@@ -1,3 +1,5 @@
+import StudioLeadCapture from '../components/StudioLeadCapture';
+import StudioSpecList, { StudioSpecs } from '../components/StudioSpecList';
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -8,6 +10,7 @@ import SEO from '../components/SEO';
 interface DesignConcept {
     conceptName: string;
     detailedDescription: string;
+    specs?: StudioSpecs;
     materials: string[];
     lighting: string;
     furnitureStyle: string[];
@@ -58,12 +61,12 @@ const InteriorResultPage: React.FC = () => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData),
                 });
-                
+
                 if (!response.ok) {
                     const errorData = await response.json();
                     throw new Error(errorData.error || 'Failed to generate design.');
                 }
-                
+
                 const data: GeneratedDesign = await response.json();
                 setDesign(data);
             } catch (e: any) {
@@ -87,7 +90,7 @@ const InteriorResultPage: React.FC = () => {
                     <Link to="/fann-studio/interior" className="flex items-center gap-2 text-fann-gold mb-8 font-semibold hover:underline">
                         <ArrowLeft size={16} /> Back to Brief
                     </Link>
-                    
+
                     <AnimatePresence mode="wait">
                         {isLoading && (
                             <motion.div key="loader" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-center py-20">
@@ -104,30 +107,30 @@ const InteriorResultPage: React.FC = () => {
                                 <p className="text-red-300/80 mt-2 max-w-2xl mx-auto">{error}</p>
                             </motion.div>
                         )}
-                        
+
                         {design && !isLoading && (
                             <motion.div key="result" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                                 <div className="text-center mb-12">
                                     <h1 className="text-5xl font-serif font-bold text-fann-gold mb-2">{design.designConcept.conceptName}</h1>
-                                    <p className="text-xl text-gray-300">Your FANN-Generated 3D Render for {formData.projectName}</p>
+                                    <p className="text-xl text-gray-300">Your FANN-Generated Concept{formData.projectName ? ` for ${formData.projectName}` : ""}</p>
                                 </div>
                                 <div className="bg-black/50 p-2 rounded-lg shadow-2xl mb-12 border border-white/10">
-                                    <img 
-                                        src={design.image.startsWith('data:') || design.image.startsWith('http') ? design.image : `data:image/jpeg;base64,${design.image}`} 
-                                        alt={design.designConcept.conceptName} 
+                                    {design.image ? <img
+                                        src={design.image.startsWith('data:') || design.image.startsWith('http') ? design.image : `data:image/jpeg;base64,${design.image}`}
+                                        alt={design.designConcept.conceptName}
                                         className="w-full rounded-md bg-white/5 animate-pulse opacity-0 transition-opacity duration-500"
-                                                    onLoad={(e) => e.currentTarget.classList.remove('opacity-0', 'animate-pulse')} 
+                                                    onLoad={(e) => e.currentTarget.classList.remove('opacity-0', 'animate-pulse')}
                                         width="1136"
                                         height="639"
                                         loading="lazy"
-                                    />
+                                    /> : <div className="p-20 text-center text-gray-300">Image generation unavailable for this concept. The written spec is below.</div>}
                                 </div>
-                                
+
                                 <div className="max-w-4xl mx-auto text-center mb-12">
                                      <h2 className="text-3xl font-serif text-white mb-4">Concept Overview</h2>
-                                     <p className="text-lg text-gray-300 leading-relaxed">{design.designConcept.detailedDescription}</p>
+                                     <StudioSpecList specs={design.designConcept.specs} />
                                 </div>
-                                
+
                                 <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
                                     <InfoCard icon={Palette} title="Key Materials" items={design.designConcept.materials} />
                                     <InfoCard icon={Lightbulb} title="Lighting Strategy" items={design.designConcept.lighting} />
@@ -135,11 +138,12 @@ const InteriorResultPage: React.FC = () => {
                                     <InfoCard icon={Sofa} title="Furniture Style" items={design.designConcept.furnitureStyle} />
                                 </div>
 
+                                <StudioLeadCapture kind="Interior" brief={formData} concept={design.designConcept.conceptName} />
                                 <div className="mt-16 text-center bg-fann-charcoal-light p-8 rounded-lg border border-white/10">
                                     <h2 className="text-3xl font-serif font-bold text-fann-gold">Ready for the Next Step?</h2>
                                     <p className="max-w-2xl mx-auto text-gray-300 my-4">Our expert team is ready to turn this concept into reality. Contact us for a detailed proposal and pricing.</p>
                                     <Link to="/contact">
-                                        <motion.button 
+                                        <motion.button
                                             whileHover={{ scale: 1.05, y: -2 }}
                                             whileTap={{ scale: 0.95 }}
                                             className="btn-gold text-lg uppercase tracking-wider"
