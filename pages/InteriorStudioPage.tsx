@@ -319,7 +319,7 @@ const InteriorStudioPage: React.FC = () => {
                                         type="submit"
                                         className="flex items-center gap-3 bg-gradient-to-r from-fann-gold to-[#bfa172] text-black font-bold py-4 px-12 rounded-full hover:shadow-[0_0_40px_rgba(212,175,118,0.4)] transition-all transform hover:-translate-y-1"
                                     >
-                                        <Sparkles size={20} /> Generate Concept
+                                        <Sparkles size={20} /> Generate My Concept
                                     </button>
                                 )}
                             </div>
