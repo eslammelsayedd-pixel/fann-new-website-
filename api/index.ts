@@ -161,14 +161,22 @@ async function generateExhibitionDesign(req: VercelRequest, res: VercelResponse)
   const formData = req.body || {};
 
   try {
-    const prompt = `Generate four innovative, bespoke exhibition stand concepts for a company named "${formData.companyName || 'Our Client'}" operating in the "${formData.detectedIndustry || 'general'}" sector.
+    const prompt = `You are a senior exhibition architect with 15 years of buildable, award-winning stands delivered in GCC venues (DWTC, ADNEC, Riyadh Front). Produce four bespoke exhibition stand concepts for a company named "${formData.companyName || 'Our Client'}" operating in the "${formData.detectedIndustry || 'general'}" sector.
 Booth Size: ${formData.boothSize || 36} sqm.
 Booth Configuration/Type: ${formData.boothType || 'Island'}.
 Design Style: ${formData.style || 'Modern Luxury'}.
 Key Features Requested: ${(formData.features || []).join(', ') || 'N/A'}.
 Brand Colors: ${(formData.brandColors || []).join(', ') || 'Gold, Charcoal, White'}.
 
-Return the details in JSON structure matching the required schema. Ensure the concepts are unique, highly descriptive, and tailored to major venues like Dubai World Trade Centre (DWTC) or Riyadh Exhibition Center. Make them sound premium and architecturally realistic.`;
+Each concept must be engineered, not decorated. For every concept, reason through and embed in the description:
+1. Zoning and flow: divide the footprint into attract / engage / convert zones; state the layout logic (reception position versus the primary approach aisle, demo area, meeting space, and roughly 10-15% storage/BOH). Peninsula and island stands must read as genuinely open on the required sides.
+2. Sightlines: what a visitor registers in the first 3 seconds from 15-20m down the main aisle - one dominant brand move, visible above neighbouring 2.4m shell-scheme walls.
+3. GCC venue constraints: respect typical DWTC rules - max build height around 4m (up to 6m for island stands with venue approval), no rigging assumed, flame-retardant B1 materials, double-decks only when the footprint is 50+ sqm, with stair pitch and 1.1m balustrades noted.
+4. Human scale and ergonomics: real dimensions - reception counters 900-1100mm high, doorways 900mm or wider, meeting tables for 4-6 people, clear 1.5m circulation loops.
+5. Materials realism: name buildable materials with finish and fixing (for example "fluted oak veneer panels on 18mm MDF carcass" or "powder-coated aluminium frame, matte RAL 9016") - no fantasy materials.
+6. Brand application: state exactly where and how the brand appears (3D halo-lit logo at height, brand colour on specified surfaces, LED content zone) using the given brand colours.
+
+Rules: each description must contain at least three concrete dimensions. No empty adjectives such as "stunning", "amazing", "sleek" or "cutting-edge" - show the mechanism, never the hype. The four concepts must be distinct strategies (for example hospitality-led versus demo-led versus brand-theatre versus meetings-led), all buildable by a professional contractor within a real budget. Return the details in JSON structure matching the required schema.`;
 
     const response = await ai.models.generateContent({
       model: "gemini-3.8-flash",
@@ -253,7 +261,7 @@ Return the details in JSON structure matching the required schema. Ensure the co
           contents: {
             parts: [
               {
-                text: `A premium, photorealistic, ultra-high-end 3D architectural rendering of an exhibition stand concept named "${concept.conceptName}". Style: ${concept.style}. Key feature: ${concept.keyFeature}. Designed with a size of ${formData.boothSize || 36} sqm, configuration ${formData.boothType || 'Island'}. Brand colors: ${(formData.brandColors || []).join(', ')}. Photographed with warm, professional architectural gallery lighting, 8k resolution, award-winning exhibit design.`,
+                text: `Photorealistic architectural visualization of a ${formData.boothSize || 36} sqm ${formData.boothType || 'Island'} exhibition stand inside a busy GCC trade show hall (high dark ceiling with exposed rigging, polished concrete floor, softly blurred neighbouring stands). Concept: "${concept.conceptName}". Style: ${concept.style}. Key feature: ${concept.keyFeature}. Brand colours applied accurately: ${(formData.brandColors || []).join(', ')}. Camera: eye-level 1.6m, 24mm wide-angle lens, three-quarter perspective showing two open sides and the approach aisle. Include 5-8 business-attired visitors for human scale, some engaged at a 1.05m reception counter. Lighting: realistic venue ambient 4500K hall light mixed with warm 3000K stand accent lighting; physically plausible shadows. Materials render with true texture (wood grain, brushed metal, fabric weave). Geometry must be buildable: straight edges, correct perspective, no floating elements, no impossible cantilevers, no warped structures. One large clean brand mark only - no small text. Award-winning exhibition design photography, 8k.`,
               },
             ],
           },
@@ -293,14 +301,22 @@ async function generateEventDesign(req: VercelRequest, res: VercelResponse) {
   const formData = req.body || {};
 
   try {
-    const prompt = `Generate four premium event stage and hall design concepts for "${formData.companyName || 'Our Client'}" operating in "${formData.detectedIndustry || 'general'}".
+    const prompt = `You are a senior event production designer with 200+ GCC corporate events staged (Dubai Opera, Atlantis The Palm, Ritz-Carlton Riyadh). Produce four premium event stage and hall design concepts for "${formData.companyName || 'Our Client'}" operating in "${formData.detectedIndustry || 'general'}".
 Event Type: ${formData.eventType || 'Corporate Summit'}.
 Attendee Capacity: ${formData.attendees || 500} guests.
 Style: ${formData.style || 'Modern Grandeur'}.
 Key Features: ${(formData.features || []).join(', ') || 'N/A'}.
 Brand Colors: ${(formData.brandColors || []).join(', ') || 'Gold, Deep Blue, White'}.
 
-Return the details in JSON structure matching the required schema. Ensure the concepts are unique, highly descriptive, and tailored to major GCC venues like Dubai Opera, Atlantis The Palm, or Ritz Carlton Riyadh. Make them sound spectacular and production-ready.`;
+Each concept must be production-ready. Reason through and embed:
+1. Stage geometry versus capacity: stage width and depth scaled to room and guest count (for example a 12m x 6m stage for 400 banquet seats); sightline logic - every seat, including the worst seat at the back, sees stage and screen; state the seating format (banquet rounds of 8-10, theatre, or mixed).
+2. Lighting design as a real spec: fixture types, positions and intent (for example moving-head beams on the FOH truss for keynotes, 2700K table pin-spots, LED battens for wall wash, followspot for speakers) - write the lighting field like a lighting designer's rider.
+3. Venue and safety constraints: GCC ballroom realities - rigging points and loads, Dubai Civil Defence egress (1.2m clear aisles, marked exits), haze requires venue approval, fire-retardant drapes and scenic materials.
+4. Production logistics: backstage/BOH flow, cable management, power distribution, screen sizing (for example an 8m x 4.5m LED wall readable at 40m), stage access steps and ramps.
+5. decorElements: name real, rentable or buildable elements with materials (for example "fluted champagne-gold metal arches" or "fresh white orchid runners on 2.4m banquet rounds") - no vague "elegant decor".
+6. engagementTech: only proven, deployable technology (LED wall with branded motion content, projection mapping with lumen spec, live polling, translation headsets) with the purpose each serves.
+
+Rules: detailedDescription must include at least three concrete dimensions and the seating math for the given capacity. Ban empty adjectives such as "spectacular", "breathtaking" or "magical" - describe the mechanism that creates the effect. The four concepts must be distinct strategies. Return the details in JSON structure matching the required schema.`;
 
     const response = await ai.models.generateContent({
       model: "gemini-3.8-flash",
@@ -387,7 +403,7 @@ Return the details in JSON structure matching the required schema. Ensure the co
           contents: {
             parts: [
               {
-                text: `A professional, realistic architectural photo of a corporate event stage/hall concept named "${concept.conceptName}". Style: ${concept.style}. Lighting: ${concept.lighting}. Highlights: ${(concept.decorElements || []).join(', ')}. Capacity: ${formData.attendees || 500} seats. Deep rich atmospheric lighting, 8k, photorealistic render.`,
+                text: `Photorealistic architectural photo of a GCC corporate event: "${concept.conceptName}" staged in a luxury hotel ballroom (high ceiling, chandeliers dimmed, dark ambient). Style: ${concept.style}. Lighting design: ${concept.lighting}. Key decor: ${(concept.decorElements || []).join(', ')}. Seating: ${formData.attendees || 500} guests in a correctly scaled banquet or theatre layout, realistic crowd density, people in business attire. Camera: rear-of-house elevated 2.5m, 24mm wide lens, showing full stage, LED wall with abstract brand-coloured content, and audience depth. Lighting renders with realistic haze, visible beams from truss positions, warm pin-spots on tables; physically plausible exposure and shadows. Straight geometry, correct perspective, no warped architecture, no floating objects, no illegible text. Professional event photography, 8k.`,
               },
             ],
           },
@@ -427,14 +443,22 @@ async function generateInteriorDesign(req: VercelRequest, res: VercelResponse) {
   const formData = req.body || {};
 
   try {
-    const prompt = `Generate a luxury commercial interior design concept for a company named "${formData.companyName || 'Our Client'}" operating in "${formData.detectedIndustry || 'general'}".
+    const prompt = `You are a senior interior architect delivering luxury commercial fit-outs in DIFC, Downtown Dubai and KAFD. Produce one deeply considered interior design concept for a company named "${formData.companyName || 'Our Client'}" operating in the "${formData.detectedIndustry || 'general'}" sector.
 Space Type: ${formData.spaceType || 'Executive Office'}.
 Space Area: ${formData.size || '150'} sqm.
 Design Style: ${formData.style || 'Modern Biophilic'}.
 Key Features: ${(formData.features || []).join(', ') || 'N/A'}.
 Brand Colors: ${(formData.brandColors || []).join(', ') || 'Charcoal, Wood, Gold'}.
 
-Return the details in JSON structure matching the required schema. Ensure the concept is unique, descriptive, and tailored to locations like DIFC or KAFD. Make it sound elegant, ergonomic, and luxury.`;
+The concept must be buildable and ergonomic. Reason through and embed:
+1. Spatial planning for the given area: net usable zoning (reception, open work, focus rooms, collaboration, support) with area allocations that add up to the stated sqm; primary circulation 1.2-1.5m, workstation spacing to modern standards.
+2. Materials realism: every material named with finish and application (for example "book-matched Calacatta Viola reception desk with mitred edges", "wide-plank smoked oak flooring", "PET acoustic baffles, NRC 0.85, ceiling-suspended") - materials must be procurable in the UAE market.
+3. Lighting design: per-zone spec - 400-500 lux task lighting at desks, 3000K warm ambient in lounges, 4000K in circulation, dimmable scenes; daylight strategy and glare control.
+4. Human factors: ergonomic heights (740mm desks, 900mm counters), acoustic privacy strategy for meeting rooms, wayfinding.
+5. Brand integration: how the brand colours and identity appear architecturally (feature wall, wayfinding, FF&E accents) without turning the office into a logo showroom.
+6. GCC context: climate-appropriate material performance, majlis-inspired hospitality where it fits the brand, local code basics (egress, fire-rated cores).
+
+Rules: detailedDescription must cite at least three real dimensions and the zoning math. Ban empty adjectives such as "elegant", "luxurious" or "stunning" without the mechanism - say what creates the feeling. furnitureStyle entries must be specifiable (for example "tan leather executive task chairs, five-star base"), not vibes. Return the details in JSON structure matching the required schema.`;
 
     const response = await ai.models.generateContent({
       model: "gemini-3.8-flash",
@@ -471,7 +495,7 @@ Return the details in JSON structure matching the required schema. Ensure the co
         contents: {
           parts: [
             {
-              text: `A premium, realistic, award-winning interior design photo of a luxury commercial space: "${concept.conceptName}". Style: ${formData.style || 'Modern'}. Space: ${formData.spaceType || 'Office'}. Lighting: ${concept.lighting}. Features: ${(concept.furnitureStyle || []).join(', ')}. Photographed in Dubai, 8k resolution, award-winning commercial fit-out.`,
+              text: `Photorealistic interior design photograph of "${concept.conceptName}" - a ${formData.size || '150'} sqm ${formData.spaceType || 'Executive Office'} in a premium GCC tower (floor-to-ceiling glazing, skyline softly out of focus beyond). Style: ${formData.style || 'Modern'}. Lighting: ${concept.lighting}. Furniture language: ${(concept.furnitureStyle || []).join(', ')}. Materials render with true physical texture (stone veining, wood grain, fabric weave, brushed metal). Camera: eye-level 1.5m, 20mm lens, one-point perspective down the main axis; include 2-3 professionals for scale. Lighting: natural daylight balanced with warm 3000K interior accents, soft realistic shadows, correct interior/exterior exposure balance. Architectural accuracy: level horizons, straight verticals, plausible ceiling heights (2.8-3.2m), no warped geometry, no floating furniture, no illegible text or logos. Award-winning commercial interior photography, 8k.`,
             },
           ],
         },
@@ -1071,4 +1095,3 @@ export default async function mainHandler(req: VercelRequest, res: VercelRespons
     return res.status(500).json({ error: error.message || 'Internal Server Error' });
   }
                            }
-
