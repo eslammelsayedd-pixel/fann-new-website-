@@ -26,7 +26,6 @@ const ModularSystemsPage = lazy(() => import('./pages/services/ModularSystemsPag
 const TurnkeyServicesPage = lazy(() => import('./pages/services/TurnkeyServicesPage'));
 const FabricationPage = lazy(() => import('./pages/services/FabricationPage'));
 const FitOutPage = lazy(() => import('./pages/services/FitOutPage'));
-import GoogleAnalytics from './components/GoogleAnalytics'; // Import the tracker
 
 // New Lead Magnet Pages
 const ExhibitionGuidePage = lazy(() => import('./pages/resources/ExhibitionGuidePage'));
@@ -44,7 +43,6 @@ const App: React.FC = () => {
 
     return (
         <ApiKeyProvider>
-            <GoogleAnalytics /> {/* Fired on every route change */}
             <Layout>
                 <Suspense fallback={<div className="min-h-screen bg-fann-charcoal" />}>
                 <AnimatePresence mode="wait">
@@ -94,5 +92,4 @@ const App: React.FC = () => {
 };
 
 export default App;
-
 
