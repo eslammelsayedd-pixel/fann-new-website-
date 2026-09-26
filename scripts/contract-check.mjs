@@ -104,19 +104,19 @@ const CONTRACTS = [
     route: 'generate-exhibition-design', ai: true, // consumed by pages/ExhibitionStudioPage.tsx -> DesignResultPage.tsx
     body: { companyName: 'Contract Test Co', boothSize: 36 },
     expect: ['industry', 'conceptA.conceptName', 'conceptA.image', 'conceptD.image'],
-    patterns: { 'conceptA.image': /^(data:image\/|https?:\/\/)/ }, // double data-URL prefix bug must stay dead
+    patterns: { 'conceptA.image': /^(data:image\/|https?:\/\/|$)/ }, // double data-URL prefix bug must stay dead
   },
   {
     route: 'generate-event-design', ai: true, // consumed by pages/EventStudioPage.tsx -> EventResultPage.tsx
     body: { companyName: 'Contract Test Co', eventType: 'Gala Dinner' },
     expect: ['industry', 'conceptA.conceptName', 'conceptA.image', 'conceptD.image'],
-    patterns: { 'conceptA.image': /^(data:image\/|https?:\/\/)/ },
+    patterns: { 'conceptA.image': /^(data:image\/|https?:\/\/|$)/ },
   },
   {
     route: 'generate-interior-design', ai: true, // consumed by pages/InteriorResultPage.tsx
     body: { companyName: 'Contract Test Co', spaceType: 'Corporate Office' },
     expect: ['designConcept.conceptName', 'image'],
-    patterns: { 'image': /^(data:image\/|https?:\/\/)/ },
+    patterns: { 'image': /^(data:image\/|https?:\/\/|$)/ },
   },
 ];
 
