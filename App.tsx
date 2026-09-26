@@ -6,6 +6,7 @@ import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 const ServicesPage = lazy(() => import('./pages/ServicesPage'));
 const PortfolioPage = lazy(() => import('./pages/PortfolioPage'));
+const ExhibitionAdsLandingPage = lazy(() => import('./pages/ExhibitionAdsLandingPage'));
 const ProjectDetailPage = lazy(() => import('./pages/ProjectDetailPage'));
 const AIDesignStudioPage = lazy(() => import('./pages/AIDesignStudioPage'));
 const ExhibitionStudioPage = lazy(() => import('./pages/ExhibitionStudioPage'));
@@ -62,6 +63,7 @@ const App: React.FC = () => {
                         <Route path="/clinic-fit-out-dubai" element={<ClinicFitOutDubaiPage />} />
                         <Route path="/villa-renovation-dubai" element={<VillaRenovationDubaiPage />} />
                         <Route path="/portfolio" element={<PortfolioPage />} />
+                        <Route path="/exhibition-stand-quote" element={<ExhibitionAdsLandingPage />} />
                         <Route path="/portfolio/:slug" element={<ProjectDetailPage />} />
                         
                         <Route path="/fann-studio" element={<AIDesignStudioPage />} />
@@ -92,6 +94,5 @@ const App: React.FC = () => {
 };
 
 export default App;
-
 
 
