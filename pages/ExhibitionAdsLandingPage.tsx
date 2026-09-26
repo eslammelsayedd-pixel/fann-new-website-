@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { submitLead } from '../lib/submitLead';
 
 // Existing gtag loader is in index.html. This route adds only the Ads destination.
-const ADS_CONVERSION_ID = 'AW-17736248016';
-const ADS_CONVERSION_LABEL = 'AW-17736248016/1mB7CN6M9oUdENDVpolC';
+const ADS_CONVERSION_LABEL = 'AW-17220461597/VUwgCIrGhoYdEJ3IrZNA';
 
 function gtag_report_conversion(url?: string) {
   const gtag = (window as any).gtag;
@@ -30,9 +29,6 @@ const photos = [
 const fieldClass = 'mt-1 w-full rounded-sm border border-white/20 bg-[#171717] px-2 py-2.5 text-sm text-[#f5f2eb] md:px-3 md:py-3 placeholder:text-white/40 focus:border-[#c9a962] focus:outline-none';
 
 export default function ExhibitionAdsLandingPage() {
-  useEffect(() => {
-    if (typeof (window as any).gtag === 'function') (window as any).gtag('config', ADS_CONVERSION_ID);
-  }, []);
   const [form, setForm] = useState({ name: '', phone: '', email: '', showName: '', standSize: '', showDate: '' });
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
