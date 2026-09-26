@@ -201,10 +201,10 @@
   },
   "/exhibition-stand-quote": {
     "title": "3D Exhibition Stand Concept + Quote in 24 Hours | FANN",
-    "description": "FANN designs and builds custom exhibition stands in the UAE. Send your show brief for a 3D stand concept and full quote within 24 hours.",
+    "description": "FANN designs and builds custom exhibition stands. Send your show brief for a 3D stand concept and full quote within 24 hours.",
     "image": "https://fann.ae/images/projects/national-expression-adek/01.webp",
     "robots": "index, follow",
     "jsonld": "",
-    "body": "<h1>3D Stand Concept + Full Quote in 24 Hours</h1><p>Custom exhibition stands in Dubai and the UAE. Share your show name, stand size and show date to request a 3D concept and full quote. Custom stands from AED 45,000.</p><a href=\"/portfolio\">FANN portfolio</a>"
+    "body": "<h1>3D Stand Concept + Full Quote in 24 Hours</h1><p>Custom exhibition stands. Share your show name, stand size and show date to request a 3D concept and full quote.</p><a href=\"/portfolio\">FANN portfolio</a>"
   }
   }
