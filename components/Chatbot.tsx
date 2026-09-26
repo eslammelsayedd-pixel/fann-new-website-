@@ -94,7 +94,7 @@ export const Chatbot: React.FC = () => {
         <>
             <motion.button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-24 left-6 bg-fann-gold text-fann-charcoal w-16 h-16 rounded-full shadow-lg flex items-center justify-center z-50 hover:shadow-fann-gold/20"
+                className="fixed bottom-24 left-6 bg-fann-gold text-black w-16 h-16 rounded-full shadow-lg flex items-center justify-center z-50 hover:shadow-fann-gold/20"
                 variants={fabVariants}
                 initial="hidden"
                 animate={isOpen ? 'hidden' : 'visible'}
@@ -135,8 +135,8 @@ export const Chatbot: React.FC = () => {
                         <div className="flex-1 p-4 overflow-y-auto bg-black/30">
                             {messages.map((message, index) => (
                                 <div key={index} className={`flex gap-3 my-4 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                    {message.role === 'model' && <div className="w-8 h-8 rounded-full bg-fann-gold flex items-center justify-center flex-shrink-0"><Bot size={18} className="text-fann-charcoal" /></div>}
-                                    <div className={`max-w-[80%] rounded-lg px-4 py-2 ${message.role === 'user' ? 'bg-fann-gold text-fann-charcoal font-medium' : 'bg-fann-charcoal-light border border-white/10 text-gray-200'}`}>
+                                    {message.role === 'model' && <div className="w-8 h-8 rounded-full bg-fann-gold flex items-center justify-center flex-shrink-0"><Bot size={18} className="text-black" /></div>}
+                                    <div className={`max-w-[80%] rounded-lg px-4 py-2 ${message.role === 'user' ? 'bg-fann-gold text-black font-medium' : 'bg-fann-charcoal-light border border-white/10 text-gray-200'}`}>
                                         <div dangerouslySetInnerHTML={{ __html: parseMarkdown(message.parts[0].text) }} className="prose prose-sm prose-invert max-w-none prose-p:my-1" />
                                         {message.sources && message.sources.length > 0 && (
                                             <div className="mt-3 border-t border-white/10 pt-2">
@@ -156,7 +156,7 @@ export const Chatbot: React.FC = () => {
                             ))}
                             {isLoading && (
                                 <div className="flex gap-3 my-4 justify-start">
-                                    <div className="w-8 h-8 rounded-full bg-fann-gold flex items-center justify-center flex-shrink-0"><Bot size={18} className="text-fann-charcoal" /></div>
+                                    <div className="w-8 h-8 rounded-full bg-fann-gold flex items-center justify-center flex-shrink-0"><Bot size={18} className="text-black" /></div>
                                     <div className="max-w-[80%] rounded-lg px-4 py-3 bg-fann-charcoal-light border border-white/10">
                                         <Loader2 className="animate-spin text-fann-gold" />
                                     </div>
@@ -176,7 +176,7 @@ export const Chatbot: React.FC = () => {
                                     placeholder="Ask about our services..."
                                     className="flex-1 bg-black/30 border border-white/10 rounded-full px-4 py-2 focus:outline-none focus:border-fann-gold text-white placeholder-gray-500"
                                 />
-                                <button onClick={handleSend} disabled={isLoading || !input.trim()} className="bg-fann-gold text-fann-charcoal w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 disabled:opacity-50 hover:bg-white transition-colors">
+                                <button onClick={handleSend} disabled={isLoading || !input.trim()} className="bg-fann-gold text-black w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 disabled:opacity-50 hover:bg-white transition-colors">
                                     <Send size={20} />
                                 </button>
                             </div>
