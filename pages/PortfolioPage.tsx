@@ -188,7 +188,7 @@ const PortfolioPage: React.FC = () => {
                 <h2 className="text-2xl font-serif font-bold text-white mb-3">Want to see work like yours?</h2>
                 <p className="text-gray-400 mb-6">Tell us your event or space and we will send photos and references from similar projects.</p>
                 <div className="flex flex-wrap justify-center gap-4">
-                  <Link to="/contact" className="bg-fann-gold text-fann-charcoal font-bold px-8 py-3 rounded-full hover:opacity-90 transition">Request project examples</Link>
+                  <Link to="/contact" className="bg-fann-gold text-black font-bold px-8 py-3 rounded-full hover:opacity-90 transition">Request project examples</Link>
                   <a href="https://wa.me/971505667502" target="_blank" rel="noopener noreferrer" className="border border-fann-gold text-fann-gold font-bold px-8 py-3 rounded-full hover:bg-fann-gold/10 transition">WhatsApp us</a>
                 </div>
               </div>
