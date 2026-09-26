@@ -112,7 +112,7 @@ const TestimonialsPage: React.FC = () => {
                             </p>
                             <div className="flex flex-col sm:flex-row justify-center gap-4">
                                 <Link to="/contact">
-                                    <button className="bg-fann-gold text-fann-charcoal font-bold py-4 px-8 rounded-full text-sm uppercase tracking-wider hover:bg-white transition-all shadow-lg shadow-fann-gold/20 w-full sm:w-auto">
+                                    <button className="bg-fann-gold text-black font-bold py-4 px-8 rounded-full text-sm uppercase tracking-wider hover:bg-white transition-all shadow-lg shadow-fann-gold/20 w-full sm:w-auto">
                                         Get a Free Quote
                                     </button>
                                 </Link>

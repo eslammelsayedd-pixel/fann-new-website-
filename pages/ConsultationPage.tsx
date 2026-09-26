@@ -85,7 +85,7 @@ const ConsultationPage: React.FC = () => {
                                         </p>
                                         <button 
                                             onClick={() => setIsSent(false)}
-                                            className="px-8 py-3 bg-fann-gold text-fann-charcoal font-bold rounded-lg hover:bg-fann-gold-light transition-colors"
+                                            className="px-8 py-3 bg-fann-gold text-black font-bold rounded-lg hover:bg-fann-gold-light transition-colors"
                                         >
                                             Book Another Consultation
                                         </button>

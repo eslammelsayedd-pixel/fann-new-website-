@@ -88,7 +88,7 @@ const ModularSystemsPage: React.FC = () => {
         <p><strong>Modular exhibition systems</strong> are a sophisticated and versatile alternative to traditional custom builds. They are composed of standardized, interlocking components—such as aluminum frames, connectors, and panels—that can be assembled in a multitude of configurations. This 'building block' approach allows for the creation of stands that are not only reusable but also adaptable to different space requirements and layouts. At FANN, we leverage cutting-edge modular systems to provide our clients with high-impact, brand-centric stands that offer unparalleled flexibility and long-term value.</p>
         
         <div className="my-8 text-center">
-            <Link to="/contact" className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider inline-block">Get a Quote for a Modular System</Link>
+            <Link to="/contact" className="bg-fann-gold text-black font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider inline-block">Get a Quote for a Modular System</Link>
         </div>
 
         <h2>The Advantages of Modular Stands</h2>

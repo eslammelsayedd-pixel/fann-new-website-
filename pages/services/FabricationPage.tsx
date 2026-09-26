@@ -88,7 +88,7 @@ const FabricationPage: React.FC = () => {
         <p>In the fast-paced world of exhibitions, control is everything. Many exhibition companies in Dubai outsource their <strong>stand production</strong>, creating a dependency on third-party timelines, quality standards, and pricing. FANN takes a different approach. Our significant investment in a state-of-the-art, in-house <strong>exhibition stand fabrication</strong> workshop is our commitment to excellence. This gives us—and you—a critical advantage: direct control over every cut, joint, and finish. It means we're not just designers; we are master builders, ensuring the vision we create on paper is the exact masterpiece we deliver on the show floor.</p>
 
         <div className="my-8 text-center">
-            <Link to="/contact" className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider inline-block">Discuss Your Fabrication Needs</Link>
+            <Link to="/contact" className="bg-fann-gold text-black font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider inline-block">Discuss Your Fabrication Needs</Link>
         </div>
 
         <h2>Our State-of-the-Art Workshop</h2>

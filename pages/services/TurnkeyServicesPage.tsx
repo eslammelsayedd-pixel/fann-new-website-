@@ -89,7 +89,7 @@ const TurnkeyServicesPage: React.FC = () => {
         <p>Exhibiting at a major trade show in the UAE involves coordinating dozens of moving parts, from design and fabrication to navigating complex venue regulations and logistics. A <strong>turnkey exhibition service</strong> eliminates this complexity. FANN acts as your single, dedicated partner, taking complete ownership of the entire project lifecycle. We provide one expert point of contact, one comprehensive proposal, and one final invoice. This streamlined approach saves you time, reduces stress, and ensures a cohesive, high-quality result without the headache of managing multiple vendors and contractors.</p>
 
         <div className="my-8 text-center">
-            <Link to="/contact" className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider inline-block">Request a Turnkey Proposal</Link>
+            <Link to="/contact" className="bg-fann-gold text-black font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider inline-block">Request a Turnkey Proposal</Link>
         </div>
 
         <h2>Our End-to-End Process</h2>

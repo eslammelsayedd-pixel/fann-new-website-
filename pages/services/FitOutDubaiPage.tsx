@@ -82,7 +82,7 @@ const FitOutDubaiPage: React.FC = () => (
       <p className="lead">FANN is a Dubai design and build company. We deliver commercial fit-outs across Dubai and Abu Dhabi with one accountable team and our own joinery workshop - from first drawing to final finish.</p>
 
       <div className="not-prose my-8 text-center">
-        <Link to="/contact" className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider inline-block">Get an itemised quote</Link>
+        <Link to="/contact" className="bg-fann-gold text-black font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider inline-block">Get an itemised quote</Link>
       </div>
 
       <h2>What we deliver</h2>
@@ -118,7 +118,7 @@ const FitOutDubaiPage: React.FC = () => (
           <figure key={c.img} className="bg-fann-charcoal-light border border-fann-gold/40 rounded-lg overflow-hidden">
             <div className="relative">
               <img src={c.img} alt={`Design concept by FANN: ${c.title.toLowerCase()} interior (concept visual, not a completed project)`} loading="lazy" className="w-full aspect-video object-cover" />
-              <span className="absolute top-3 left-3 bg-fann-gold text-fann-charcoal text-xs font-bold uppercase tracking-wider px-3 py-1 rounded">Design Concept</span>
+              <span className="absolute top-3 left-3 bg-fann-gold text-black text-xs font-bold uppercase tracking-wider px-3 py-1 rounded">Design Concept</span>
             </div>
             <figcaption className="p-5">
               <p className="text-xs uppercase tracking-wider text-fann-gold mb-1">Design Concept - designed by FANN</p>
@@ -132,7 +132,7 @@ const FitOutDubaiPage: React.FC = () => (
       <div className="not-prose my-10 p-8 border border-fann-gold/40 rounded-lg text-center">
         <p className="text-xl text-white font-serif mb-4">Opening a new site or refreshing an existing one? Tell us about it.</p>
         <p className="text-gray-300 mb-6"><a href="mailto:sales@fann.ae" className="text-fann-gold">sales@fann.ae</a> &middot; <a href="tel:+971505667502" className="text-fann-gold">+971 50 566 7502</a></p>
-        <Link to="/contact" className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full uppercase tracking-wider inline-block">Send your drawings</Link>
+        <Link to="/contact" className="bg-fann-gold text-black font-bold py-3 px-8 rounded-full uppercase tracking-wider inline-block">Send your drawings</Link>
       </div>
 
       <h2>Frequently asked questions</h2>

@@ -88,7 +88,7 @@ const CustomStandsPage: React.FC = () => {
         <p>A custom exhibition stand is a bespoke, one-of-a-kind structure designed and built from the ground up to meet the unique marketing objectives of a single brand. Unlike pre-fabricated or modular systems, a custom stand offers complete creative freedom in terms of layout, materials, technology, and overall aesthetic. It is a powerful statement of brand identity, designed to attract maximum attention, facilitate meaningful interactions, and create a memorable visitor journey in a competitive exhibition environment. As a leading provider of <strong>custom exhibition stands in Dubai</strong>, FANN transforms your vision into a physical reality that commands the show floor.</p>
         
         <div className="my-8 text-center">
-            <Link to="/contact" className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider inline-block">Get a Free Quote</Link>
+            <Link to="/contact" className="bg-fann-gold text-black font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider inline-block">Get a Free Quote</Link>
         </div>
 
         <h2>Our Custom Design Process: From Vision to Reality</h2>
