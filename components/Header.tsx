@@ -10,6 +10,7 @@ const Header: React.FC = () => {
     const [scrolled, setScrolled] = useState(false);
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
     const location = useLocation();
+    const isAdsLanding = location.pathname === '/exhibition-stand-quote';
 
     useEffect(() => {
         const handleScroll = () => {
@@ -25,12 +26,12 @@ const Header: React.FC = () => {
 
     return (
         <header 
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${headerClasses}`}
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isAdsLanding ? 'ads-landing-header bg-[#111] border-b border-white/10 py-4' : headerClasses}`}
         >
             <div className="container mx-auto flex items-center justify-between">
                 {/* LOGO */}
                 <Link to="/" className="flex items-center z-50 hover-trigger group">
-                    <span className="font-serif font-bold text-4xl tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-fann-gold via-fann-gold-light to-fann-gold drop-shadow-sm group-hover:drop-shadow-[0_0_15px_rgba(201,169,98,0.6)] transition-all duration-500">
+                    <span className={isAdsLanding ? "font-serif font-bold text-4xl tracking-[0.2em] text-[#f5e8bf] drop-shadow-sm" : "font-serif font-bold text-4xl tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-fann-gold via-fann-gold-light to-fann-gold drop-shadow-sm group-hover:drop-shadow-[0_0_15px_rgba(201,169,98,0.6)] transition-all duration-500"}>
                         FANN
                     </span>
                 </Link>

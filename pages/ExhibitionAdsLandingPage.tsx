@@ -46,14 +46,14 @@ export default function ExhibitionAdsLandingPage() {
     { key: 'showDate', label: 'Show date', type: 'date' },
   ];
   return <>
-    <SEO title="3D Exhibition Stand Concept + Quote in 24 Hours" description="FANN designs and builds custom exhibition stands in the UAE. Send your show brief for a 3D stand concept and full quote within 24 hours." />
-    <section className="bg-[#111111] px-5 pb-10 pt-24 text-[#f5f2eb] md:pb-14 md:pt-36">
+    <SEO title="3D Exhibition Stand Concept + Quote in 24 Hours" description="FANN designs and builds custom exhibition stands. Send your show brief for a 3D stand concept and full quote within 24 hours." />
+    <div className="ads-landing-page">
+    <section className="bg-[#111111] px-5 pb-10 pt-28 text-[#f5f2eb] md:pb-14 md:pt-36">
       <div className="mx-auto grid max-w-6xl items-start gap-6 lg:grid-cols-[1fr_440px] lg:gap-12">
         <div className="lg:pt-10">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[.22em] text-[#c9a962]">Custom exhibition stands · Dubai & UAE</p>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[.22em] text-[#c9a962]">Custom exhibition stands</p>
           <h1 className="max-w-2xl font-serif text-4xl font-bold leading-[1.12] md:text-5xl lg:text-[3.5rem]">3D Stand Concept + Full Quote in 24 Hours</h1>
           <p className="mt-4 max-w-xl text-base md:mt-6 md:text-lg leading-relaxed text-[#d4d1cb]">Tell us your show, stand size and date. Our team will discuss your brief and put together a concept and complete quote.</p>
-          <p className="mt-3 text-sm text-[#aaa49b]">Custom stands from AED 45,000. Final pricing depends on size, materials and production scope.</p>
           <div className="mt-5 flex flex-wrap gap-2 md:mt-8 md:gap-3">
             <a href="tel:+971505667502" data-track="ads-call" className="rounded-sm border border-[#c9a962] px-3 py-2 text-sm font-semibold md:px-5 md:py-3 md:text-base text-[#e1c78d] hover:bg-[#c9a962] hover:text-black">Call +971 50 566 7502</a>
             <a href={whatsappUrl} data-track="ads-whatsapp" target="_blank" rel="noopener noreferrer" className="rounded-sm border border-white/25 px-3 py-2 text-sm font-semibold md:px-5 md:py-3 md:text-base text-[#f5f2eb] hover:border-white">WhatsApp your brief</a>
@@ -75,5 +75,6 @@ export default function ExhibitionAdsLandingPage() {
     </section>
     <section className="bg-[#1b1b1b] px-5 py-14 text-[#f5f2eb]"><div className="mx-auto max-w-6xl"><div className="mb-7 flex flex-wrap items-end justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-[.2em] text-[#c9a962]">Built by FANN</p><h2 className="mt-2 font-serif text-3xl">Selected work</h2></div><Link to="/portfolio" className="text-sm text-[#e1c78d] underline">Explore the portfolio</Link></div><div className="grid gap-5 sm:grid-cols-3">{photos.map(photo => <Link key={photo.src} to={photo.link} className="group block"><img loading="lazy" decoding="async" src={photo.src} alt={photo.alt} width="816" height="464" className="aspect-[4/3] w-full object-cover"/><span className="mt-3 block font-medium text-[#e4dfd7] group-hover:text-[#e1c78d]">{photo.title}</span></Link>)}</div><p className="mt-6 text-xs text-[#aaa49b]">Project photography from FANN's portfolio. Examples of completed work, not a preview of your stand.</p></div></section>
     <section className="bg-[#111] px-5 py-14 text-[#f5f2eb]"><div className="mx-auto max-w-6xl"><h2 className="font-serif text-3xl">One team, from brief to build</h2><p className="mt-4 max-w-2xl text-[#d4d1cb]">3D concept, detailed quote, fabrication and on-site installation. We coordinate venue and authority submissions as part of the build.</p><a href="#brief" className="mt-6 inline-block rounded-sm bg-[#c9a962] px-6 py-3 font-bold text-black">Tell us about your stand</a></div></section>
+    </div>
   </>;
 }

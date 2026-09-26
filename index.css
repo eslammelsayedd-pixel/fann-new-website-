@@ -410,3 +410,20 @@ html.light .project-image-wrapper { background: #EFE9DE; }
 html.light ::-webkit-scrollbar-thumb {
   background: #C9C2B4;
 }
+
+/* Paid-traffic landing keeps a dark, high-contrast canvas in either site theme.
+   Route-specific header overrides the global light-theme remaps without changing other pages. */
+.ads-landing-header { background-color: #111 !important; color-scheme: dark; }
+.ads-landing-page { color-scheme: dark; }
+html.light .ads-landing-header .text-white,
+html.light .ads-landing-header .text-gray-300 { color: #f5f2eb; }
+html.light .ads-landing-header .text-gray-400 { color: #d4d1cb; }
+html.light .ads-landing-header button[aria-label^="Switch to"] { background-color: #282828; }
+html.light .ads-landing-header button[aria-label^="Switch to"] svg { color: #f5e8bf; }
+html.light .ads-landing-header .btn-gold { background-color: #c9a962; color: #111; }
+
+html.light .ads-landing-page { background: #111; }
+html.light .ads-landing-page section { color: #f5f2eb; }
+html.light .ads-landing-page .text-white,
+html.light .ads-landing-page .text-gray-300 { color: #f5f2eb; }
+html.light .ads-landing-page .hover\:text-white:hover { color: #f5f2eb; }
