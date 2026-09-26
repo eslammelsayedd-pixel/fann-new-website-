@@ -15,7 +15,7 @@ const breadcrumbs = [
 ];
 
 const faqs = [
-    { question: "How much does a custom exhibition stand cost in Dubai?", answer: "The cost for a custom exhibition stand in Dubai can range from AED 45,000 for a small, simple design to over AED 500,000 for a large, complex double-decker pavilion. The final price depends on size, material quality, AV technology, and complexity. We provide a detailed, transparent quote after our initial consultation." },
+    { question: "How much does a custom exhibition stand cost in Dubai?", answer: "The cost depends on stand size, materials, technology and build complexity. Share your show, stand size and brief so FANN can prepare a tailored quote." },
     { question: "What is the typical timeline for a custom stand project?", answer: "From design approval, a typical custom stand project takes 4-6 weeks for fabrication and production. This includes 3D modeling, revisions, material procurement, manufacturing, and graphics printing. We recommend starting the process at least 8-12 weeks before your event." },
     { question: "Can FANN handle the entire process from design to installation?", answer: "Yes, absolutely. Our turnkey service covers every aspect of your project. We manage the initial concept, 3D design, fabrication, logistics, on-site installation at venues like DWTC, and post-show dismantling. This provides you with a single point of contact and a stress-free experience." },
     { question: "What kind of materials can be used for a bespoke stand?", answer: "We work with a vast range of high-quality materials to match your brand aesthetic. This includes premium woods, custom laminates, brushed metals (like bronze and aluminum), acrylics, tension fabrics for graphics, and advanced AV elements like seamless LED screens." },
@@ -32,7 +32,7 @@ const schema = {
             "@type": "Service",
             "serviceType": "Custom Exhibition Stand Design and Build",
             "name": "Custom Exhibition Stands Dubai",
-            "description": "FANN provides award-winning custom exhibition stand design and build services in Dubai. We deliver bespoke, high-impact stands for major events at venues like the Dubai World Trade Centre (DWTC). Our turnkey solutions cover everything from 3D concept to final on-site installation.",
+            "description": "FANN provides custom exhibition stand design and build services in Dubai. We deliver bespoke, high-impact stands for major events at venues like the Dubai World Trade Centre (DWTC). Our turnkey solutions cover everything from 3D concept to final on-site installation.",
             "provider": { "@type": "Organization", "name": "FANN" },
             "areaServed": { "@type": "City", "name": "Dubai" },
             "hasOfferCatalog": {
@@ -74,7 +74,7 @@ const CustomStandsPage: React.FC = () => {
     <AnimatedPage>
       <SEO
         title="Custom Exhibition Stands Dubai | Bespoke Design & Build | FANN"
-        description="Award-winning custom exhibition stand design and build in Dubai. From 3D concept to final installation at DWTC. Get your free quote today."
+        description="Custom exhibition stand design and build in Dubai. From 3D concept to final installation at DWTC. Get your free quote today."
         schema={schema}
       />
       <ServicePageLayout
