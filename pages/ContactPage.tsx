@@ -179,7 +179,7 @@ const ContactPage: React.FC = () => {
                                 whileTap={{ scale: 0.95 }}
                                 type="submit" 
                                 disabled={isSending}
-                                className="w-full bg-fann-gold text-fann-charcoal font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 disabled:opacity-70"
+                                className="w-full bg-fann-gold text-black font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 disabled:opacity-70"
                                 >
                                    {isSending ? <Loader2 className="animate-spin" /> : 'Send Message'}
                                 </motion.button>
