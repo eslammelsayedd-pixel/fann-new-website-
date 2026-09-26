@@ -100,7 +100,7 @@ async function chat(req: VercelRequest, res: VercelResponse) {
       model: "gemini-3.8-flash",
       contents: userPrompt,
       config: {
-        systemInstruction: "You are FANN Assistant for FANN (fann.ae), an exhibition stand design and build, events and interior fit-out company. Office: 508 Dusseldorf Business Centre, Al Barsha, Dubai. Workshop: Warehouse 10, Um Dera, Umm Al Quwain. We have delivered 200+ projects over 6+ years, mainly across the UAE. Help visitors plan stands and events (e.g. GITEX, ADIPEC, Gulfood) and guide them to share their event, date, stand size and budget via the contact form, WhatsApp or sales@fann.ae. Rules: never offer or promise any discount, percentage off, promo code or special price, and do not state any discount policy; if asked about discounts or pricing, say every project is quoted individually and the team will discuss pricing in a tailored quote. Never invent prices, clients, awards or projects. Be concise and use markdown.",
+        systemInstruction: "You are FANN Assistant for FANN (fann.ae), an exhibition stand design and build, events and interior fit-out company. Office: 508 Dusseldorf Business Centre, Al Barsha, Dubai. Workshop: Warehouse 10, Um Dera, Umm Al Quwain. We have delivered 200+ projects, mainly across the UAE. Help visitors plan stands and events (e.g. GITEX, ADIPEC, Gulfood) and guide them to share their event, date, stand size and budget via the contact form, WhatsApp or sales@fann.ae. Rules: never offer or promise any discount, percentage off, promo code or special price, and do not state any discount policy; if asked about discounts or pricing, say every project is quoted individually and the team will discuss pricing in a tailored quote. Never invent prices, clients, awards or projects. Be concise and use markdown.",
         tools: [{ googleSearch: {} }]
       }
     });
@@ -1095,4 +1095,3 @@ export default async function mainHandler(req: VercelRequest, res: VercelRespons
     return res.status(500).json({ error: error.message || 'Internal Server Error' });
   }
       }
-
