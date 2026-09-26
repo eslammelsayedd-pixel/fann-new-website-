@@ -201,7 +201,7 @@ const AboutSection: React.FC = () => (
                     </p>
                     <div className="grid grid-cols-3 gap-8 border-t border-white/10 pt-8">
                         <StatItem value="200+" label="Projects Delivered" />
-                        <StatItem value="6+" label="Years Excellence" />
+                        <StatItem value="UAE" label="Projects across the Emirates" />
                         <StatItem value="In-house" label="Workshop & Warehouse" />
                     </div>
                 </ScrollReveal>
