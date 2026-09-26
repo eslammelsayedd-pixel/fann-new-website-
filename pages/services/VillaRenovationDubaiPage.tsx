@@ -76,7 +76,7 @@ const VillaRenovationDubaiPage: React.FC = () => (
       <p className="lead">FANN is a Dubai design and build company. We renovate villas across Dubai and Abu Dhabi with one accountable team and our own joinery workshop - from first drawing to handover.</p>
 
       <div className="not-prose my-8 text-center">
-        <Link to="/contact" className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider inline-block">Get an itemised quote</Link>
+        <Link to="/contact" className="bg-fann-gold text-black font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider inline-block">Get an itemised quote</Link>
       </div>
 
       <h2>What we deliver</h2>
@@ -108,7 +108,7 @@ const VillaRenovationDubaiPage: React.FC = () => (
       <div className="not-prose my-10 p-8 border border-fann-gold/40 rounded-lg text-center">
         <p className="text-xl text-white font-serif mb-4">Renovating a villa, or upgrading a kitchen or wardrobe? Tell us about it.</p>
         <p className="text-gray-300 mb-6"><a href="mailto:sales@fann.ae" className="text-fann-gold">sales@fann.ae</a> &middot; <a href="tel:+971505667502" className="text-fann-gold">+971 50 566 7502</a></p>
-        <Link to="/contact" className="bg-fann-gold text-fann-charcoal font-bold py-3 px-8 rounded-full uppercase tracking-wider inline-block">Send your drawings</Link>
+        <Link to="/contact" className="bg-fann-gold text-black font-bold py-3 px-8 rounded-full uppercase tracking-wider inline-block">Send your drawings</Link>
       </div>
 
       <h2>Frequently asked questions</h2>
