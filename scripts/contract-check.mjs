@@ -69,31 +69,16 @@ const get = (obj, path) => path.split('.').reduce((o, k) => (o == null ? undefin
 // 25-26 Sep 2026 (upstream HTTP 429 RESOURCE_EXHAUSTED). Every endpoint the cap
 // touches fails its contract with status 500 even though the code is correct,
 // which blocks ALL production deploys. While the cap is active, an AI-route
-// failure is downgraded to WARN only when a direct probe of the Gemini API
-// confirms an active quota/billing rejection (HTTP 429). Every other failure
-// type - wrong shape, missing keys, non-AI routes, AI routes when the key
-// answers normally - still fails the build hard.
+// failure is downgraded to WARN only when the route's OWN error output (or the
+// thrown error) shows an upstream quota/billing rejection - HTTP 429 plus
+// RESOURCE_EXHAUSTED / spending-cap wording. Every other failure type - wrong
+// shape, missing keys, non-AI routes, AI routes failing for any other reason -
+// still fails the build hard.
 // FOLLOW-UP: restore the strict check once FANN Studio endpoints are healthy
-// again (cap resets 1 Oct 2026): delete geminiQuotaBlocked() and the two
-// downgrade branches, so AI-route failures fail hard again.
-let quotaProbeResult;
-async function geminiQuotaBlocked() {
-  if (quotaProbeResult !== undefined) return quotaProbeResult;
-  const key = process.env.GEMINI_API_KEY || process.env.GOOGLE_CLOUD_API_KEY;
-  if (!key) return (quotaProbeResult = false);
-  try {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ parts: [{ text: 'ping' }] }] }),
-    });
-    const text = await res.text();
-    quotaProbeResult = res.status === 429 && /RESOURCE_EXHAUSTED|spending cap|quota/i.test(text);
-  } catch {
-    quotaProbeResult = false; // network/probe error: keep strict behavior
-  }
-  return quotaProbeResult;
-}
+// again (cap resets 1 Oct 2026): delete isQuotaBlock(), the log capture in the
+// run loop, and the two downgrade branches, so AI-route failures fail hard
+// again. Tracked in repo issue #28.
+const isQuotaBlock = (text) => /429/.test(text) && /RESOURCE_EXHAUSTED|spending cap|quota/i.test(text);
 // --- end temporary exception ---
 
 
@@ -162,21 +147,27 @@ for (const c of CONTRACTS) {
     continue;
   }
   const res = mockRes();
+  let capturedLogs = '';
+  const origError = console.error, origWarn = console.warn;
+  console.error = (...a) => { capturedLogs += a.map(String).join(' ') + '\n'; origError(...a); };
+  console.warn = (...a) => { capturedLogs += a.map(String).join(' ') + '\n'; origWarn(...a); };
   try {
     const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout after 90s')), 90000));
     await Promise.race([handler(mockReq(c.route, c.body), res), timeout]);
   } catch (e) {
-    if (c.ai && await geminiQuotaBlocked()) {
-      console.warn(`WARN  ${c.route}: handler threw, but Gemini API probe confirms an active quota/billing block (HTTP 429) - not counted as a failure while the external cap is active`);
+    console.error = origError; console.warn = origWarn;
+    if (c.ai && isQuotaBlock(String((e && e.message) || e))) {
+      console.warn(`WARN  ${c.route}: handler threw an upstream Gemini quota/billing block (HTTP 429) - not counted as a failure while the external cap is active`);
       continue;
     }
     console.error(`FAIL  ${c.route}: handler threw - ${e.message}`);
     failures++;
     continue;
   }
+  console.error = origError; console.warn = origWarn;
   if (res.statusCode !== 200 || res.payload == null || res.payload.error) {
-    if (c.ai && await geminiQuotaBlocked()) {
-      console.warn(`WARN  ${c.route}: status ${res.statusCode}, but Gemini API probe confirms an active quota/billing block (HTTP 429) - not counted as a failure while the external cap is active`);
+    if (c.ai && isQuotaBlock(capturedLogs)) {
+      console.warn(`WARN  ${c.route}: status ${res.statusCode} caused by an upstream Gemini quota/billing block (HTTP 429) - not counted as a failure while the external cap is active`);
       continue;
     }
     console.error(`FAIL  ${c.route}: status ${res.statusCode}, payload: ${JSON.stringify(res.payload)?.slice(0, 160)}`);
