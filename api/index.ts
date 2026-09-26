@@ -179,7 +179,7 @@ Each concept must be engineered, not decorated. For every concept, reason throug
 Rules: Put the useful facts in specs as short, independently readable bullet strings, not prose. dimensions = exact footprint/height or clear assumptions; materials = named surfaces and finish; features = actual functions and layout; inclusions = build/production scope, excluding anything that requires venue approval. Do not invent confirmed site dimensions or approved engineering; do not claim code, fire, accessibility or venue approval. Mark unverified site-dependent values as proposed and subject to technical review. Each list has 2-4 concrete items. description may be one short summary sentence. Each concept must contain at least three concrete dimensions. No empty adjectives such as "stunning", "amazing", "sleek" or "cutting-edge" - show the mechanism, never the hype. The four concepts must be distinct strategies (for example hospitality-led versus demo-led versus brand-theatre versus meetings-led), all buildable by a professional contractor within a real budget. Return the details in JSON structure matching the required schema.`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.8-flash",
+      model: "gemini-3.1-flash-lite",
       contents: prompt,
       config: {
         responseMimeType: "application/json",
@@ -246,12 +246,12 @@ Rules: Put the useful facts in specs as short, independently readable bullet str
     // Never mislabel an unrelated stock photo as the user's bespoke render.
     for (const key of ['conceptA', 'conceptB', 'conceptC', 'conceptD']) result[key].image = '';
 
-    // Try custom visual concept generation using gemini-3.1-flash-image
+    // Try custom visual concept generation using the lowest-cost stable Gemini 3 image model
     try {
       const imgPromises = ['conceptA', 'conceptB', 'conceptC', 'conceptD'].map(async (key) => {
         const concept = result[key];
         const imageResponse = await ai.models.generateContent({
-          model: 'gemini-3.1-flash-image',
+          model: 'gemini-3.1-flash-lite-image',
           contents: {
             parts: [
               {
@@ -310,7 +310,7 @@ Each concept must be a practical, preliminary proposal requiring venue and engin
 Rules: specs must be 2-4 short bullet strings per category (dimensions, materials, features, inclusions), with exact stage/screen dimensions, seating math, venue-dependent assumptions, rentable/constructible materials, real production scope. Keep detailedDescription to one sentence. These are unverified concept proposals: never claim a code, fire, accessibility or venue approval; never claim a sightline has been calculated, or specify verified load capacities without a venue rigging plan. Label all venue-dependent quantities as proposed and subject to technical review. The concept must include at least three concrete dimensions and the seating math for the given capacity. Ban empty adjectives such as "spectacular", "breathtaking" or "magical" - describe the mechanism that creates the effect. The four concepts must be distinct strategies. Return the details in JSON structure matching the required schema.`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.8-flash",
+      model: "gemini-3.1-flash-lite",
       contents: prompt,
       config: {
         responseMimeType: "application/json",
@@ -385,7 +385,7 @@ Rules: specs must be 2-4 short bullet strings per category (dimensions, material
       const imgPromises = ['conceptA', 'conceptB', 'conceptC', 'conceptD'].map(async (key) => {
         const concept = result[key];
         const imageResponse = await ai.models.generateContent({
-          model: 'gemini-3.1-flash-image',
+          model: 'gemini-3.1-flash-lite-image',
           contents: {
             parts: [
               {
@@ -444,7 +444,7 @@ The concept must be buildable and ergonomic. Reason through and embed:
 Rules: specs must be 2-4 short bullet strings per category (dimensions, materials, features, inclusions) with zoning math, three physical dimensions, finish/application, real fit-out scope, and clearly labelled assumptions where no floor plan exists. Keep detailedDescription to one sentence; do not state unverified site or code compliance as fact; label venue-dependent quantities as proposed and subject to technical review, and never claim an authority or engineer has approved them. Ban empty adjectives such as "elegant", "luxurious" or "stunning" without the mechanism - say what creates the feeling. furnitureStyle entries must be specifiable (for example "tan leather executive task chairs, five-star base"), not vibes. Return the details in JSON structure matching the required schema.`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.8-flash",
+      model: "gemini-3.1-flash-lite",
       contents: prompt,
       config: {
         responseMimeType: "application/json",
@@ -475,7 +475,7 @@ Rules: specs must be 2-4 short bullet strings per category (dimensions, material
     try {
       const concept = result.designConcept;
       const imageResponse = await ai.models.generateContent({
-        model: 'gemini-3.1-flash-image',
+        model: 'gemini-3.1-flash-lite-image',
         contents: {
           parts: [
             {
@@ -1078,4 +1078,4 @@ export default async function mainHandler(req: VercelRequest, res: VercelRespons
     console.error('Unified API router error:', error);
     return res.status(500).json({ error: error.message || 'Internal Server Error' });
   }
-    }
+          }
