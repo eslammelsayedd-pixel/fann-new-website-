@@ -12,6 +12,8 @@ const Header: React.FC = () => {
     const location = useLocation();
     const isAdsLanding = location.pathname === '/exhibition-stand-quote';
 
+    useEffect(() => { setIsOpen(false); setOpenDropdown(null); }, [location.pathname]);
+
     useEffect(() => {
         const handleScroll = () => {
             setScrolled(window.scrollY > 50);
@@ -39,7 +41,7 @@ const Header: React.FC = () => {
                 {/* DESKTOP NAVIGATION */}
                 <nav className="hidden lg:flex items-center space-x-10">
                     {navLinks.map((link) => (
-                        <div key={link.name} className="relative group h-full">
+                        <div key={link.name} className={`relative group h-full ${link.name === 'FANN Studio' ? 'lg:border-l lg:border-white/20 lg:pl-8' : ''}`}>
                             {link.children ? (
                                 <button 
                                     className="flex items-center gap-1 text-xs font-semibold uppercase tracking-widest text-gray-300 hover:text-fann-gold transition-colors py-2 hover-trigger"
@@ -95,6 +97,8 @@ const Header: React.FC = () => {
                     <ThemeToggle />
                     <button 
                         onClick={() => setIsOpen(!isOpen)} 
+                        aria-label={isOpen ? 'Close menu' : 'Open menu'}
+                        aria-expanded={isOpen}
                         className="text-white p-2 hover:text-fann-gold transition-colors"
                     >
                         {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -114,7 +118,7 @@ const Header: React.FC = () => {
                 >
                     <nav className="flex flex-col space-y-6">
                         {navLinks.map((link) => (
-                             <div key={link.name}>
+                             <div key={link.name} className={link.name === 'FANN Studio' ? 'border-t border-white/20 pt-6' : ''}>
                                 {link.children ? (
                                     <div className="space-y-4">
                                         <div className="text-sm font-bold text-gray-500 uppercase tracking-widest border-b border-white/10 pb-2">{link.name}</div>
