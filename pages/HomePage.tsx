@@ -296,7 +296,7 @@ const SelectedWork: React.FC = () => (
                 <ScrollReveal>
                     <h2 className="text-4xl md:text-5xl font-serif text-white">Selected Works</h2>
                 </ScrollReveal>
-                <Link to="/portfolio/exhibitions-events" className="hidden md:flex items-center gap-2 text-white hover:text-fann-gold transition-colors text-sm font-medium">
+                <Link to="/portfolio" className="hidden md:flex items-center gap-2 text-white hover:text-fann-gold transition-colors text-sm font-medium">
                     View Exhibition & Event Projects <ArrowRight size={16} />
                 </Link>
             </div>
@@ -312,7 +312,7 @@ const SelectedWork: React.FC = () => (
             </div>
             
             <div className="mt-12 text-center md:hidden">
-                 <Link to="/portfolio/exhibitions-events" className="btn-outline inline-block">View Exhibition & Event Projects</Link>
+                 <Link to="/portfolio" className="btn-outline inline-block">View Exhibition & Event Projects</Link>
             </div>
         </div>
     </section>
