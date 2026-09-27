@@ -1,5 +1,4 @@
 
-import { submitLead } from '../lib/submitLead';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -9,8 +8,7 @@ import SEO from '../components/SEO';
 
 const steps = [
     { id: 1, title: 'Brand & Vision' },
-    { id: 2, title: 'The Blueprint' },
-    { id: 3, title: 'Unlock Designs' }
+    { id: 2, title: 'The Blueprint' }
 ];
 
 const countryCodes = [
@@ -35,13 +33,12 @@ const boothConfigs = [
 ];
 
 const featuresList = [
-    'LED Video Wall', 'Meeting Room', 'Hospitality Bar', 
+    'LED Video Wall', 'Meeting Room', 'Hospitality Bar',
     'Hanging Banner', 'Product Display', 'Interactive Screens',
     'Storage Room', 'Reception Desk', 'Lounge Area',
     'Double Decker', 'Green Wall', 'Podium/Stage'
 ];
 
-const publicEmailDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com', 'aol.com', 'live.com', 'me.com', 'protonmail.com'];
 
 const StepIndicator: React.FC<{ currentStep: number; totalSteps: number }> = ({ currentStep, totalSteps }) => (
     <div className="mb-12 relative px-4">
@@ -49,10 +46,10 @@ const StepIndicator: React.FC<{ currentStep: number; totalSteps: number }> = ({ 
             {steps.map((step, index) => {
                 const isActive = step.id === currentStep;
                 const isCompleted = step.id < currentStep;
-                
+
                 return (
                     <div key={step.id} className="flex flex-col items-center">
-                        <motion.div 
+                        <motion.div
                             initial={false}
                             animate={{
                                 backgroundColor: isActive ? '#C9A962' : isCompleted ? '#333' : '#1a1a1a',
@@ -73,8 +70,8 @@ const StepIndicator: React.FC<{ currentStep: number; totalSteps: number }> = ({ 
         </div>
         <div className="absolute top-5 left-0 w-full px-8 -z-0">
              <div className="h-0.5 bg-gray-800 w-full rounded-full overflow-hidden">
-                <motion.div 
-                    className="h-full bg-gradient-to-r from-fann-gold/50 to-fann-gold" 
+                <motion.div
+                    className="h-full bg-gradient-to-r from-fann-gold/50 to-fann-gold"
                     initial={{ width: '0%' }}
                     animate={{ width: `${((currentStep - 1) / (totalSteps - 1)) * 100}%` }}
                     transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -88,8 +85,7 @@ const ExhibitionStudioPage: React.FC = () => {
     const navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState(1);
     const [errors, setErrors] = useState<{[key: string]: boolean | string}>({});
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    
+
     // AI Analysis States
     const [isAnalyzingColors, setIsAnalyzingColors] = useState(false);
     const [isAnalyzingIndustry, setIsAnalyzingIndustry] = useState(false);
@@ -108,7 +104,7 @@ const ExhibitionStudioPage: React.FC = () => {
         standWidth: 6,
         standLength: 3,
         standHeight: 4,
-        boothType: 'Island', 
+        boothType: 'Island',
         features: [] as string[],
         // Step 3 (Lead)
         firstName: '',
@@ -169,9 +165,9 @@ const ExhibitionStudioPage: React.FC = () => {
                 const base64Data = reader.result as string;
                 // Extract raw base64 without prefix for API
                 const rawBase64 = base64Data.split(',')[1];
-                
-                setFormData(prev => ({ 
-                    ...prev, 
+
+                setFormData(prev => ({
+                    ...prev,
                     logo: base64Data,
                     logoMimeType: file.type
                 }));
@@ -184,7 +180,7 @@ const ExhibitionStudioPage: React.FC = () => {
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ image: rawBase64, mimeType: file.type })
                     });
-                    
+
                     if (response.ok) {
                         const data = await response.json();
                         if (data.colors && Array.isArray(data.colors)) {
@@ -230,80 +226,11 @@ const ExhibitionStudioPage: React.FC = () => {
         });
     };
 
-    const isWorkEmail = (email: string) => {
-        if (!email.includes('@')) return false;
-        const domain = email.split('@')[1].toLowerCase();
-        return !publicEmailDomains.includes(domain);
-    };
-
-    const validateStep = (step: number) => {
-        const newErrors: any = {};
-        let isValid = true;
-
-        if (step === 1) {
-            if (!formData.companyName) newErrors.companyName = true;
-            if (!formData.websiteUrl) newErrors.websiteUrl = true;
-            if (!formData.eventName) newErrors.eventName = true;
-        } else if (step === 3) {
-            if (!formData.firstName) newErrors.firstName = true;
-            if (!formData.lastName) newErrors.lastName = true;
-            if (!formData.phone) newErrors.phone = true;
-            if (!formData.email) {
-                newErrors.email = true;
-            } else if (!isWorkEmail(formData.email)) {
-                newErrors.email = "Please use your work email - FANN Studio is for business enquiries.";
-            }
-        }
-
-        if (Object.keys(newErrors).length > 0) {
-            setErrors(newErrors);
-            isValid = false;
-        }
-
-        return isValid;
-    };
-
-    const nextStep = () => {
-        if (validateStep(currentStep)) {
-            setCurrentStep(prev => Math.min(prev + 1, steps.length));
-        }
-    };
-
-    const prevStep = () => {
-        setCurrentStep(prev => Math.max(prev - 1, 1));
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
+    const nextStep = () => { setErrors({}); setCurrentStep(prev => Math.min(prev + 1, steps.length)); };
+    const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (validateStep(currentStep)) {
-            setIsSubmitting(true);
-            
-            try {
-                // Fire and forget lead capture
-                await submitLead({ formType: 'Exhibition Studio design request', name: [ (formData as any).firstName, (formData as any).lastName ].filter(Boolean).join(' ') || (formData as any).name, email: (formData as any).email, phone: (formData as any).phone, company: (formData as any).company || (formData as any).companyName, details: { 
-                        type: 'Exhibition Studio Design Request',
-                        ...formData,
-                        brandColors,
-                        detectedIndustry
-                    } });
-
-                // Navigate to results where actual generation happens
-                navigate('/fann-studio/exhibition/result', { 
-                    state: { 
-                        formData: {
-                            ...formData,
-                            boothSize: formData.standWidth * formData.standLength,
-                            brandColors,
-                            industry: detectedIndustry
-                        }
-                    } 
-                });
-            } catch (error: any) {
-                console.error("Submission error", error);
-                window.alert(error?.message || 'Sorry, we could not send your request. Please WhatsApp us on +971 50 566 7502.');
-                setIsSubmitting(false);
-            }
-        }
+        navigate('/fann-studio/exhibition/result', { state: { formData: { ...formData, boothSize: formData.standWidth * formData.standLength, brandColors, detectedIndustry } } });
     };
 
     const getInputClass = (fieldName: string) => `w-full bg-transparent border-b border-white/20 py-4 text-base text-white placeholder-gray-600 transition-all duration-300 focus:outline-none focus:border-fann-gold rounded-none font-light ${errors[fieldName] ? 'border-red-500' : ''}`;
@@ -315,7 +242,7 @@ const ExhibitionStudioPage: React.FC = () => {
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
                     <div className="text-center mb-12">
                         <h1 className="text-4xl md:text-6xl font-serif font-bold text-white mb-4 tracking-tight">Exhibition Studio</h1>
-                        <p className="text-xl text-gray-500 mb-6">Design your presence in 3 steps.</p>
+                        <p className="text-xl text-gray-500 mb-6">Design your presence in 2 steps. See designs before sharing contact details.</p>
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-fann-gold/10 border border-fann-gold/20 text-fann-gold/80 text-xs font-semibold">
                             <AlertTriangle size={14} />
                             <span>Beta Preview: AI designs are for conceptualization only.</span>
@@ -323,18 +250,18 @@ const ExhibitionStudioPage: React.FC = () => {
                     </div>
 
                     <div className="bg-fann-charcoal-light border border-white/5 p-4 sm:p-12 shadow-2xl relative overflow-hidden rounded-sm min-h-[600px] flex flex-col">
-                        
+
                         <StepIndicator currentStep={currentStep} totalSteps={steps.length} />
 
                         <AnimatePresence mode="wait">
                             {Object.keys(errors).length > 0 && (
-                                <motion.div 
+                                <motion.div
                                     initial={{ opacity: 0, y: -10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -10 }}
                                     className="bg-red-900/20 border border-red-500/50 text-red-200 p-3 rounded mb-6 text-center text-sm font-semibold"
                                 >
-                                    All fields are mandatory to help with the design. {errors.email && typeof errors.email === 'string' && `(${errors.email})`}
+                                    Only the choices you need for your design are shown. {errors.email && typeof errors.email === 'string' && `(${errors.email})`}
                                 </motion.div>
                             )}
                         </AnimatePresence>
@@ -345,7 +272,7 @@ const ExhibitionStudioPage: React.FC = () => {
                                     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
                                         <div className="text-center mb-8">
                                             <h2 className="text-2xl font-serif text-white">Tell us about your brand</h2>
-                                            <p className="text-gray-500 text-sm">Our AI will analyze your digital identity.</p>
+                                            <p className="text-gray-500 text-sm">Tell us what matters. Website and logo are optional.</p>
                                         </div>
 
                                         <div className="grid md:grid-cols-2 gap-8">
@@ -354,9 +281,9 @@ const ExhibitionStudioPage: React.FC = () => {
                                                     <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Company Name</label>
                                                     <input type="text" name="companyName" value={formData.companyName} onChange={handleInputChange} className={getInputClass('companyName')} placeholder="e.g. TechGlobal" />
                                                 </div>
-                                                
+
                                                 <div>
-                                                    <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Website</label>
+                                                    <label className="text-xs font-bold text-fann-gold uppercase tracking-widest">Website (optional)</label>
                                                     <input type="url" name="websiteUrl" value={formData.websiteUrl} onChange={handleInputChange} className={getInputClass('websiteUrl')} placeholder="https://..." />
                                                 </div>
 
@@ -372,13 +299,13 @@ const ExhibitionStudioPage: React.FC = () => {
                                                     </label>
                                                     <input type="text" name="eventName" value={formData.eventName} onChange={handleInputChange} className={getInputClass('eventName')} placeholder="e.g. GITEX Global 2026" />
                                                 </div>
-                                                
+
                                                 <div>
                                                     <label className="text-xs font-bold text-fann-gold uppercase tracking-widest mb-2 block">Your Vision (Brief)</label>
-                                                    <textarea 
-                                                        name="brief" 
-                                                        value={formData.brief} 
-                                                        onChange={handleInputChange} 
+                                                    <textarea
+                                                        name="brief"
+                                                        value={formData.brief}
+                                                        onChange={handleInputChange}
                                                         rows={3}
                                                         className="w-full bg-transparent border border-white/20 p-4 text-white text-base placeholder-gray-600 focus:border-fann-gold focus:outline-none rounded-sm resize-none"
                                                         placeholder="Describe your goals, vibe, or specific requirements..."
@@ -389,10 +316,10 @@ const ExhibitionStudioPage: React.FC = () => {
                                             <div className="space-y-6">
                                                 <div>
                                                     <label className="text-xs font-bold text-fann-gold uppercase tracking-widest mb-2 block flex justify-between">
-                                                        Logo Analysis
+                                                        Logo (optional)
                                                         {isAnalyzingColors && <span className="text-fann-gold text-[10px] flex items-center gap-1"><Loader2 size={10} className="animate-spin"/> Extracting Colors...</span>}
                                                     </label>
-                                                    
+
                                                     <div className="border border-dashed border-white/20 rounded-sm h-32 flex items-center justify-center relative group hover:border-fann-gold transition-colors bg-white/5 overflow-hidden">
                                                         <input type="file" accept="image/*" onChange={handleLogoUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
                                                         {formData.logo ? (
@@ -414,8 +341,8 @@ const ExhibitionStudioPage: React.FC = () => {
                                                 {/* Brand Colors Section */}
                                                 <AnimatePresence>
                                                     {brandColors.length > 0 && (
-                                                        <motion.div 
-                                                            initial={{ opacity: 0, height: 0 }} 
+                                                        <motion.div
+                                                            initial={{ opacity: 0, height: 0 }}
                                                             animate={{ opacity: 1, height: 'auto' }}
                                                             className="bg-white/5 p-4 rounded-sm border border-white/10"
                                                         >
@@ -430,18 +357,18 @@ const ExhibitionStudioPage: React.FC = () => {
                                                             <div className="flex flex-wrap gap-3">
                                                                 {brandColors.map((color, index) => (
                                                                     <div key={index} className="relative group">
-                                                                        <div 
-                                                                            className="w-8 h-8 rounded-full border border-white/20 cursor-pointer shadow-lg transition-transform hover:scale-110" 
+                                                                        <div
+                                                                            className="w-8 h-8 rounded-full border border-white/20 cursor-pointer shadow-lg transition-transform hover:scale-110"
                                                                             style={{ backgroundColor: color }}
                                                                         >
-                                                                            <input 
-                                                                                type="color" 
+                                                                            <input
+                                                                                type="color"
                                                                                 value={color}
                                                                                 onChange={(e) => updateBrandColor(index, e.target.value)}
                                                                                 className="opacity-0 w-full h-full cursor-pointer absolute inset-0"
                                                                             />
                                                                         </div>
-                                                                        <button 
+                                                                        <button
                                                                             type="button"
                                                                             onClick={() => removeBrandColor(index)}
                                                                             className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity transform scale-75"
@@ -478,13 +405,13 @@ const ExhibitionStudioPage: React.FC = () => {
                                                                 {dim === 'Width' ? formData.standWidth : dim === 'Length' ? formData.standLength : formData.standHeight}m
                                                             </span>
                                                         </div>
-                                                        <input 
-                                                            type="range" 
+                                                        <input
+                                                            type="range"
                                                             name={`stand${dim}`}
-                                                            min="3" max={dim === 'Height' ? "10" : "50"} 
-                                                            value={dim === 'Width' ? formData.standWidth : dim === 'Length' ? formData.standLength : formData.standHeight} 
-                                                            onChange={handleSliderChange} 
-                                                            className="w-full h-1 bg-gray-700 appearance-none cursor-pointer accent-fann-gold" 
+                                                            min="3" max={dim === 'Height' ? "10" : "50"}
+                                                            value={dim === 'Width' ? formData.standWidth : dim === 'Length' ? formData.standLength : formData.standHeight}
+                                                            onChange={handleSliderChange}
+                                                            className="w-full h-1 bg-gray-700 appearance-none cursor-pointer accent-fann-gold"
                                                         />
                                                     </div>
                                                 ))}
@@ -528,44 +455,6 @@ const ExhibitionStudioPage: React.FC = () => {
                                     </motion.div>
                                 )}
 
-                                {currentStep === 3 && (
-                                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="max-w-2xl mx-auto space-y-8">
-                                        <div className="text-center mb-8">
-                                            <Sparkles className="w-12 h-12 text-fann-gold mx-auto mb-4" />
-                                            <h2 className="text-3xl font-serif text-white">Unlock 4 Unique Concepts</h2>
-                                            <p className="text-gray-500">Enter your details to reveal your custom designs.</p>
-                                        </div>
-
-                                        <div className="grid md:grid-cols-2 gap-6">
-                                            <div className="relative">
-                                                <User className="absolute left-0 top-3 text-gray-500" size={16}/>
-                                                <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className={`${getInputClass('firstName')} pl-6`} placeholder="First Name *" />
-                                            </div>
-                                            <div className="relative">
-                                                <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className={`${getInputClass('lastName')} pl-2`} placeholder="Last Name *" />
-                                            </div>
-                                            <div className="md:col-span-2 relative">
-                                                <Mail className="absolute left-0 top-3 text-gray-500" size={16}/>
-                                                <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={`${getInputClass('email')} pl-6`} placeholder="Work Email (No Gmail/Yahoo) *" />
-                                            </div>
-                                            <div className="md:col-span-2 flex gap-3">
-                                                <select 
-                                                    name="countryCode" 
-                                                    value={formData.countryCode} 
-                                                    onChange={handleInputChange}
-                                                    className="bg-transparent border-b border-white/20 py-4 w-24 text-white focus:border-fann-gold focus:outline-none text-base"
-                                                >
-                                                    {countryCodes.map(c => <option key={c.code} value={c.code} className="bg-black">{c.code}</option>)}
-                                                </select>
-                                                <div className="relative flex-grow">
-                                                    <Phone className="absolute left-0 top-3 text-gray-500" size={16}/>
-                                                    <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className={`${getInputClass('phone')} pl-6`} placeholder="Phone Number *" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p className="text-xs text-gray-600 text-center pt-4">* We respect your privacy. Your details are only used to share your designs.</p>
-                                    </motion.div>
-                                )}
                             </div>
 
                             {/* Navigation */}
@@ -590,11 +479,11 @@ const ExhibitionStudioPage: React.FC = () => {
                                 ) : (
                                     <button
                                         type="submit"
-                                        disabled={isSubmitting}
+
                                         className="bg-gradient-to-r from-fann-gold to-[#bfa172] text-black font-bold py-4 px-12 rounded-sm uppercase tracking-widest text-sm hover:shadow-[0_0_30px_rgba(201,169,98,0.4)] transition-all disabled:opacity-70 flex items-center gap-2"
                                     >
-                                        {isSubmitting ? <Loader2 className="animate-spin" /> : <Sparkles size={18} />}
-                                        Generate My 4 Concepts
+                                        <Sparkles size={18} />
+                                        See My 4 Concepts
                                     </button>
                                 )}
                             </div>
