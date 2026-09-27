@@ -5,6 +5,7 @@ import SEO from '../components/SEO';
 import { motion, AnimatePresence } from 'framer-motion';
 import ScrollReveal from '../components/ScrollReveal';
 import OptimizedImage from '../components/OptimizedImage';
+import { projects } from '../constants';
 
 // --- DATA ---
 
@@ -301,31 +302,23 @@ const SelectedWork: React.FC = () => (
                 <ScrollReveal>
                     <h2 className="text-4xl md:text-5xl font-serif text-white">Selected Works</h2>
                 </ScrollReveal>
-                <Link to="/portfolio" className="hidden md:flex items-center gap-2 text-white hover:text-fann-gold transition-colors text-sm font-medium">
-                    View Full Portfolio <ArrowRight size={16} />
+                <Link to="/portfolio/exhibitions-events" className="hidden md:flex items-center gap-2 text-white hover:text-fann-gold transition-colors text-sm font-medium">
+                    View Exhibition & Event Projects <ArrowRight size={16} />
                 </Link>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <ProjectCard 
-                    title="TechVision Systems" 
-                    category="GITEX Global" 
-                    image="https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=800&q=75" 
-                />
-                <ProjectCard 
-                    title="Annual Leadership Summit" 
-                    category="Corporate Event" 
-                    image="https://images.pexels.com/photos/2608516/pexels-photo-2608516.jpeg?auto=compress&cs=tinysrgb&w=800&q=75" 
-                />
-                <ProjectCard 
-                    title="Downtown Corporate HQ" 
-                    category="Interior Fit-Out" 
-                    image="https://images.pexels.com/photos/1170412/pexels-photo-1170412.jpeg?auto=compress&cs=tinysrgb&w=800&q=75" 
-                />
+                {projects.map(project => <ProjectCard
+                    key={project.slug}
+                    title={project.title}
+                    category={project.category === 'event' ? 'Event project' : 'Exhibition project'}
+                    image={project.image}
+                    link={`/portfolio/${project.slug}`}
+                />)}
             </div>
             
             <div className="mt-12 text-center md:hidden">
-                 <Link to="/portfolio" className="btn-outline inline-block">View Portfolio</Link>
+                 <Link to="/portfolio/exhibitions-events" className="btn-outline inline-block">View Exhibition & Event Projects</Link>
             </div>
         </div>
     </section>
