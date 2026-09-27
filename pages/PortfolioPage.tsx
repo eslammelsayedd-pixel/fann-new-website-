@@ -599,7 +599,7 @@ const PortfolioPage: React.FC = () => {
             <div className="text-center max-w-3xl mx-auto mb-10">
               <p className="text-fann-gold uppercase tracking-[0.18em] text-xs font-bold mb-3">Interior fit-out & renovation</p>
               <h2 id="fitout-title" className="text-3xl md:text-4xl font-serif font-bold text-white mb-4">Fit-out project references</h2>
-              <p className="text-gray-300">Selected references from our company profile, 2021–2026. Areas are approximate. Ask us about the scope and project photos relevant to your brief.</p>
+              <p className="text-gray-300">Selected references from our company profile, 2021–2026. Areas are approximate.</p>
             </div>
             {(['Dubai', 'Abu Dhabi', 'Ras Al Khaimah'] as const).map(emirate => {
               const entries = fitOutReferences.filter(item => item.emirate === emirate);
@@ -641,12 +641,12 @@ const PortfolioPage: React.FC = () => {
                   </article>
                 ))}
               </div>
-              <p className="text-center text-xs text-gray-500 mb-10">Images show the type of work. Photos of our own projects similar to yours are available on request.</p>
+              <p className="text-center text-xs text-gray-500 mb-10">Images illustrate the types of work we build.</p>
               <div className="text-center bg-fann-charcoal-light border border-white/10 p-10 rounded-lg">
-                <h2 className="text-2xl font-serif font-bold text-white mb-3">Want to see work like yours?</h2>
-                <p className="text-gray-400 mb-6">Tell us your event or space and we will send photos and references from similar projects.</p>
+                <h2 className="text-2xl font-serif font-bold text-white mb-3">Planning a project?</h2>
+                <p className="text-gray-400 mb-6">Tell us about your event or space and we will discuss the right approach.</p>
                 <div className="flex flex-wrap justify-center gap-4">
-                  <Link to="/contact" className="bg-fann-gold text-black font-bold px-8 py-3 rounded-full hover:opacity-90 transition">Request project examples</Link>
+                  <Link to="/contact" className="bg-fann-gold text-black font-bold px-8 py-3 rounded-full hover:opacity-90 transition">Start a conversation</Link>
                   <a href="https://wa.me/971505667502" target="_blank" rel="noopener noreferrer" className="border border-fann-gold text-fann-gold font-bold px-8 py-3 rounded-full hover:bg-fann-gold/10 transition">WhatsApp us</a>
                 </div>
               </div>
