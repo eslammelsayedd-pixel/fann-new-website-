@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import WhatsAppButton from './WhatsAppButton';
-import ExitIntentPopup from './ExitIntentPopup';
 import MetaPixelTracker from './MetaPixelTracker';
 import MobileActionBar from './MobileActionBar';
 import { Chatbot } from './Chatbot';
@@ -24,7 +23,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* Conversion Tools */}
       {!isAdsLanding && <WhatsAppButton />}
       {!isAdsLanding && <Chatbot />}
-      {!isAdsLanding && <ExitIntentPopup />}
       {!isAdsLanding && <MobileActionBar />}
     </div>
   );
