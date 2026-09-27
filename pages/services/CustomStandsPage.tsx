@@ -6,7 +6,7 @@ import FaqAccordion from '../../components/FaqAccordion';
 import { Link } from 'react-router-dom';
 
 const pageTitle = 'Custom Exhibition Stands Dubai';
-const heroImage = '/images/projects/icons-of-porsche/06.webp';
+const heroImage = '/images/projects/icons-of-porsche/14.webp';
 const breadcrumbs = [
   { name: 'Home', path: '/' },
   { name: 'Services', path: '/services' },
@@ -57,7 +57,7 @@ const CustomStandsPage: React.FC = () => (
     />
     <ServicePageLayout
       heroImage={heroImage}
-      heroAltText="Timber-slat entrance built by FANN for an outdoor event at Dubai Design District"
+      heroAltText="Stage with LED walls and lighting built by FANN for Icons of Porsche 2025 in Dubai Design District"
       pageTitle="Custom Exhibition Stands in Dubai"
       pageDescription="Design, fabrication and installation planned around your show, floor plan and opening date."
       breadcrumbs={breadcrumbs}
