@@ -6,11 +6,23 @@ import FaqAccordion from '../../components/FaqAccordion';
 import { Link } from 'react-router-dom';
 
 const pageTitle = 'Custom Exhibition Stands Dubai';
-const heroImage = '/images/projects/icons-of-porsche/14.webp';
+const heroImage = '/images/stands/1-trevos-light-middle-east.webp';
 const breadcrumbs = [
   { name: 'Home', path: '/' },
   { name: 'Services', path: '/services' },
   { name: pageTitle, path: '/services/custom-exhibition-stands-dubai' }
+];
+
+const standPhotos = [
+  { file: '1-trevos-light-middle-east', name: 'TREVOS', event: 'Light Middle East', place: 'Dubai', year: '2023' },
+  { file: '2-bayara-gulfood', name: 'Bayara', event: 'Gulfood', place: 'Dubai', year: '2020' },
+  { file: '3-awazel-big-5', name: 'Awazel', event: 'The Big 5', place: 'Dubai', year: '2012' },
+  { file: '4-saudi-ceramics-big-5', name: 'Saudi Ceramics', event: 'The Big 5', place: 'Dubai', year: '2019' },
+  { file: '5-apollo-tyres-automechanika', name: 'Apollo Tyres', event: 'Automechanika', place: 'Dubai', year: '2016' },
+  { file: '6-geven-aircraft-interiors', name: 'Geven', event: 'Aircraft Interiors Middle East', place: 'Dubai', year: '2025' },
+  { file: '7-dubai-properties-cityscape', name: 'Dubai Properties Group', event: 'Cityscape', place: 'Dubai' },
+  { file: '8-india-pavilion-gulfood', name: 'India Pavilion', event: 'Gulfood', place: 'Dubai' },
+  { file: '9-abbott-arab-health', name: 'Abbott', event: 'Arab Health', place: 'Dubai' }
 ];
 
 const faqs = [
@@ -57,7 +69,7 @@ const CustomStandsPage: React.FC = () => (
     />
     <ServicePageLayout
       heroImage={heroImage}
-      heroAltText="Stage with LED walls and lighting built by FANN for Icons of Porsche 2025 in Dubai Design District"
+      heroAltText="TREVOS exhibition stand at Light Middle East, Dubai (2023), from FANN's supplied project archive"
       pageTitle="Custom Exhibition Stands in Dubai"
       pageDescription="Design, fabrication and installation planned around your show, floor plan and opening date."
       breadcrumbs={breadcrumbs}
@@ -74,6 +86,21 @@ const CustomStandsPage: React.FC = () => (
         <li><strong>Fabrication:</strong> Our <Link to="/services/exhibition-stand-fabrication-dubai">fabrication team</Link> produces the approved elements and prepares them for site installation.</li>
         <li><strong>Installation and handover:</strong> We coordinate the on-site build and check the finished space before opening. Dismantling can be included in the agreed scope.</li>
       </ol>
+
+      <h2>Exhibition stands from FANN's project archive</h2>
+      <p>These stand photographs and captions come from the exhibition profile you supplied. Each name stays with its original image; a year is shown only where that profile states it. The photos show stand environments, not a promise of a specific layout or feature for your project.</p>
+      <div className="not-prose grid gap-6 sm:grid-cols-2 lg:grid-cols-3 my-10">
+        {standPhotos.map(({ file, name, event, place, year }) => (
+          <figure key={file} className="overflow-hidden rounded-lg border border-white/10 bg-fann-charcoal-light">
+            <img src={`/images/stands/${file}.webp`} alt={`${name} exhibition stand photographed at ${event}, ${place}${year ? ` (${year})` : ''}`} loading="lazy" decoding="async" width="1600" height="1400" className="w-full aspect-[8/7] object-cover" />
+            <figcaption className="px-4 py-4 text-white">
+              <strong className="block text-base text-fann-gold">{name}</strong>
+              <span className="block mt-1 text-sm text-gray-300">{event}, {place}{year ? ` (${year})` : ''}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+      <p className="text-sm">Source: FANN Profile A, exhibition and events, selected work pages 8, 9, 11, 13, 14, 16, 18, 19 and 20. Photos were adjusted for web display, without changing the stands.</p>
 
       <h2>See the build quality in completed projects</h2>
       <p>These are documented event and exhibition environments, not examples of a standard trade-show booth or a promise that every stand will include the same features:</p>
