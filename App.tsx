@@ -8,6 +8,7 @@ const ServicesPage = lazy(() => import('./pages/ServicesPage'));
 const PortfolioPage = lazy(() => import('./pages/PortfolioPage'));
 const ExhibitionAdsLandingPage = lazy(() => import('./pages/ExhibitionAdsLandingPage'));
 const ProjectDetailPage = lazy(() => import('./pages/ProjectDetailPage'));
+const FitOutReferencePage = lazy(() => import('./pages/FitOutReferencePage'));
 const AIDesignStudioPage = lazy(() => import('./pages/AIDesignStudioPage'));
 const ExhibitionStudioPage = lazy(() => import('./pages/ExhibitionStudioPage'));
 const DesignResultPage = lazy(() => import('./pages/DesignResultPage'));
@@ -63,6 +64,7 @@ const App: React.FC = () => {
                         <Route path="/portfolio" element={<PortfolioPage />} />
                         <Route path="/exhibition-stand-quote" element={<ExhibitionAdsLandingPage />} />
                         <Route path="/portfolio/:slug" element={<ProjectDetailPage />} />
+                        <Route path="/portfolio/fit-out/:referenceSlug" element={<FitOutReferencePage />} />
                         
                         <Route path="/fann-studio" element={<AIDesignStudioPage />} />
                         <Route path="/fann-studio/exhibition" element={<ExhibitionStudioPage />} />
@@ -92,4 +94,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-
