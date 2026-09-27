@@ -35,6 +35,7 @@ const FitOutDubaiPage = lazy(() => import('./pages/services/FitOutDubaiPage'));
 const RestaurantFitOutDubaiPage = lazy(() => import('./pages/services/RestaurantFitOutDubaiPage'));
 const ClinicFitOutDubaiPage = lazy(() => import('./pages/services/ClinicFitOutDubaiPage'));
 const VillaRenovationDubaiPage = lazy(() => import('./pages/services/VillaRenovationDubaiPage'));
+const MarbleSupplyDubaiPage = lazy(() => import('./pages/services/MarbleSupplyDubaiPage'));
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
@@ -60,6 +61,7 @@ const App: React.FC = () => {
                         <Route path="/restaurant-fit-out-dubai" element={<RestaurantFitOutDubaiPage />} />
                         <Route path="/clinic-fit-out-dubai" element={<ClinicFitOutDubaiPage />} />
                         <Route path="/villa-renovation-dubai" element={<VillaRenovationDubaiPage />} />
+                        <Route path="/marble-supply-dubai" element={<MarbleSupplyDubaiPage />} />
                         <Route path="/portfolio" element={<PortfolioPage />} />
                         <Route path="/exhibition-stand-quote" element={<ExhibitionAdsLandingPage />} />
                         <Route path="/portfolio/:slug" element={<ProjectDetailPage />} />
