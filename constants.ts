@@ -26,8 +26,8 @@ export const navLinks: NavLink[] = [
             { name: 'Commercial Fit-Out', path: '/fit-out-dubai' },
         ]
     },
-    { name: 'Portfolio', path: '/portfolio' },
     { name: 'FANN Studio', path: '/fann-studio' },
+    { name: 'Portfolio', path: '/portfolio' },
     { 
         name: 'Resources', 
         children: [
