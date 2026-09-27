@@ -76,13 +76,7 @@ const ProjectCard: React.FC<{ title: string; category: string; image: string; li
     <ScrollReveal className="relative group cursor-pointer overflow-hidden">
         <Link to={link}>
             <div className="aspect-video overflow-hidden bg-gray-900">
-                <OptimizedImage 
-                    src={image} 
-                    alt={title} 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
-                    width={600}
-                    height={338}
-                />
+                <img src={image} alt={title} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100" width={600} height={338} />
             </div>
             <div className="mt-4 flex justify-between items-end">
                 <div>
