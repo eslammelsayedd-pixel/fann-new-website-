@@ -72,11 +72,25 @@ const fitOutReferences = [
     "year": "2022"
   },
   {
+    "name": "Cloud Spaces Co-working Space - ADGM",
+    "sector": "Office",
+    "emirate": "Abu Dhabi",
+    "area": "19,964",
+    "year": "2023"
+  },
+  {
     "name": "Corporate office interior",
     "sector": "Office",
     "emirate": "Abu Dhabi",
     "area": "19,267",
     "year": "2024"
+  },
+  {
+    "name": "Corporate headquarters interior",
+    "sector": "Office",
+    "emirate": "Abu Dhabi",
+    "area": "15,000",
+    "year": "2025"
   },
   {
     "name": "Technology office interior",
@@ -245,6 +259,13 @@ const fitOutReferences = [
     "emirate": "Dubai",
     "area": "12,000",
     "year": "2021"
+  },
+  {
+    "name": "Corporate headquarters interior",
+    "sector": "Office",
+    "emirate": "Dubai",
+    "area": "19,692",
+    "year": "2022"
   },
   {
     "name": "Corporate office interior",
@@ -578,7 +599,7 @@ const PortfolioPage: React.FC = () => {
             <div className="text-center max-w-3xl mx-auto mb-10">
               <p className="text-fann-gold uppercase tracking-[0.18em] text-xs font-bold mb-3">Interior fit-out & renovation</p>
               <h2 id="fitout-title" className="text-3xl md:text-4xl font-serif font-bold text-white mb-4">Fit-out project references</h2>
-              <p className="text-gray-300">Selected references from our supplied company profile, 2021–2026. Areas are approximate. Ask us about the scope and project photos relevant to your brief.</p>
+              <p className="text-gray-300">Selected references from our company profile, 2021–2026. Areas are approximate. Ask us about the scope and project photos relevant to your brief.</p>
             </div>
             {(['Dubai', 'Abu Dhabi', 'Ras Al Khaimah'] as const).map(emirate => {
               const entries = fitOutReferences.filter(item => item.emirate === emirate);
