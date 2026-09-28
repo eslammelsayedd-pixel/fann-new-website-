@@ -21,6 +21,8 @@ const itemVariants = {
   visible: { opacity: 1, scale: 1 },
 };
 
+import fitOutReferences from '../data/fitOutReferences.json';
+
 const portfolioPageSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -29,8 +31,8 @@ const portfolioPageSchema = {
     "url": "https://fann.ae/portfolio",
     "mainEntity": {
         "@type": "ItemList",
-        "numberOfItems": projects.length,
-        "itemListElement": projects.map((project, index) => ({
+        "numberOfItems": projects.length + fitOutReferences.length,
+        "itemListElement": [...projects.map((project, index) => ({
             "@type": "ListItem",
             "position": index + 1,
             "item": {
@@ -40,7 +42,16 @@ const portfolioPageSchema = {
                 "image": project.image,
                 "disambiguatingDescription": `${project.category} for ${project.client} ${project.year ? `(${project.year})` : ''} - ${project.industry} industry.`
             }
-        }))
+        })), ...fitOutReferences.map((item, index) => ({
+            "@type": "ListItem",
+            "position": projects.length + index + 1,
+            "item": {
+                "@type": "CreativeWork",
+                "name": item.name,
+                "url": `https://fann.ae/portfolio/${item.slug}`,
+                "description": item.description
+            }
+        }))]
     }
 };
 
@@ -158,6 +169,28 @@ const PortfolioPage: React.FC = () => {
             </section>
           )}
 
+          <section id="fit-out-references" className="max-w-6xl mx-auto mb-20" aria-labelledby="fitout-title">
+            <div className="text-center max-w-3xl mx-auto mb-10">
+              <p className="text-fann-gold uppercase tracking-[0.18em] text-xs font-bold mb-3">Interior fit-out & renovation</p>
+              <h2 id="fitout-title" className="text-3xl md:text-4xl font-serif font-bold text-white mb-4">Fit-out project references</h2>
+              <p className="text-gray-300">Selected references from our company profile, 2021–2026. Areas are approximate.</p>
+            </div>
+            {(['Dubai', 'Abu Dhabi', 'Ras Al Khaimah'] as const).map(emirate => {
+              const entries = fitOutReferences.filter(item => item.emirate === emirate);
+              return <div key={emirate} className="mb-10">
+                <h3 className="text-2xl font-serif font-bold text-fann-gold mb-5 border-b border-white/15 pb-3">{emirate} <span className="text-sm text-gray-400 font-sans font-normal">({entries.length})</span></h3>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {entries.map(item => <Link key={item.slug} to={`/portfolio/${item.slug}`} className="group block rounded-lg bg-fann-charcoal-light border border-white/10 p-5 hover:border-fann-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-fann-gold transition" aria-label={`View ${item.name} project reference in ${item.emirate}`}>
+                    <p className="text-xs uppercase tracking-wide text-fann-gold mb-2">{item.sector}</p>
+                    <h4 className="text-lg font-serif text-white font-bold leading-snug">{item.name}</h4>
+                    <p className="text-sm text-gray-400 mt-3">{item.year}{item.area ? ` · Approx. ${item.area} sq ft` : ''}</p>
+                    <span className="inline-flex items-center gap-2 text-fann-gold text-sm font-semibold mt-4 group-hover:underline">View details <ArrowRight size={15} aria-hidden="true" /></span>
+                  </Link>)}
+                </div>
+              </div>;
+            })}
+          </section>
+
           {true && (
             <div className="max-w-6xl mx-auto">
               <div className="text-center max-w-3xl mx-auto mb-12">
@@ -183,12 +216,12 @@ const PortfolioPage: React.FC = () => {
                   </article>
                 ))}
               </div>
-              <p className="text-center text-xs text-gray-500 mb-10">Images show the type of work. Photos of our own projects similar to yours are available on request.</p>
+              <p className="text-center text-xs text-gray-500 mb-10">Images illustrate the types of work we build.</p>
               <div className="text-center bg-fann-charcoal-light border border-white/10 p-10 rounded-lg">
-                <h2 className="text-2xl font-serif font-bold text-white mb-3">Want to see work like yours?</h2>
-                <p className="text-gray-400 mb-6">Tell us your event or space and we will send photos and references from similar projects.</p>
+                <h2 className="text-2xl font-serif font-bold text-white mb-3">Planning a project?</h2>
+                <p className="text-gray-400 mb-6">Tell us about your event or space and we will discuss the right approach.</p>
                 <div className="flex flex-wrap justify-center gap-4">
-                  <Link to="/contact" className="bg-fann-gold text-black font-bold px-8 py-3 rounded-full hover:opacity-90 transition">Request project examples</Link>
+                  <Link to="/contact" className="bg-fann-gold text-black font-bold px-8 py-3 rounded-full hover:opacity-90 transition">Start a conversation</Link>
                   <a href="https://wa.me/971505667502" target="_blank" rel="noopener noreferrer" className="border border-fann-gold text-fann-gold font-bold px-8 py-3 rounded-full hover:bg-fann-gold/10 transition">WhatsApp us</a>
                 </div>
               </div>
