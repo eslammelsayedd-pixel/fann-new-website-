@@ -2,9 +2,10 @@
 /* Mobile-First Positioning */
 .wa-floating-button {
   position: fixed;
-  bottom: 76px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: calc(5rem + env(safe-area-inset-bottom));
+  right: 16px;
+  left: auto;
+  transform: none;
   z-index: 9999;
   display: flex;
   align-items: center;
@@ -92,5 +93,18 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (max-width: 767px) {
+  .wa-variant-b { width: 56px; min-width: 56px; height: 56px; padding: 0; justify-content: center; }
+  .wa-variant-b .wa-text { display: none; }
+}
+
+/* Keep the two mobile actions apart, above the sticky call/quote bar. */
+@media (max-width: 767px) {
+  button[aria-label="Open Chat"] {
+    left: 16px !important;
+    bottom: calc(5rem + env(safe-area-inset-bottom)) !important;
   }
 }
