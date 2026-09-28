@@ -101,10 +101,32 @@
   .wa-variant-b .wa-text { display: none; }
 }
 
-/* Keep the two mobile actions apart, above the sticky call/quote bar. */
+/* Mobile conversion actions share the sticky footer instead of floating over project content. */
 @media (max-width: 767px) {
+  .wa-floating-button,
+  .wa-variant-a,
+  .wa-variant-b {
+    left: 75%;
+    right: auto;
+    bottom: env(safe-area-inset-bottom);
+    transform: none;
+    width: 25%;
+    min-width: 0;
+    height: 52px;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    animation: none;
+    opacity: 1;
+  }
+  .wa-variant-b .wa-text { display: none; }
+  .wa-icon { width: 24px; height: 24px; }
   button[aria-label="Open Chat"] {
-    left: 16px !important;
-    bottom: calc(5rem + env(safe-area-inset-bottom)) !important;
+    left: 50% !important;
+    bottom: env(safe-area-inset-bottom) !important;
+    width: 25% !important;
+    height: 52px !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
   }
 }
