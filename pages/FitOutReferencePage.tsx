@@ -20,7 +20,7 @@ const FitOutReferencePage: React.FC = () => {
     contentLocation: { '@type': 'Place', name: item.emirate },
   };
 
-  return <main className="min-h-screen bg-fann-charcoal text-white pt-32 pb-24">
+  return <main className="min-h-screen bg-fann-charcoal text-white pt-32 pb-48 md:pb-24">
     <SEO title={`${item.name} | ${item.emirate} Project Reference`} description={item.description} schema={schema} />
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
       <Link to="/portfolio#fit-out-references" className="inline-flex items-center gap-2 text-fann-gold hover:underline mb-10"><ArrowLeft size={17} /> Back to portfolio</Link>
@@ -34,8 +34,7 @@ const FitOutReferencePage: React.FC = () => {
       <section className="max-w-3xl">
         <h2 className="text-2xl md:text-3xl font-serif font-bold mb-5">Project overview</h2>
         <p className="text-lg text-gray-300 leading-relaxed">{item.description}</p>
-        {item.area && <p className="text-gray-400 mt-5">Approximate internal area listed in the supplied company profile: {item.area} sq ft.</p>}
-        <p className="text-sm text-gray-400 mt-8">Reference information comes from the company profile supplied for this portfolio. No project-specific photographs or detailed scope are included in that profile.</p>
+        {item.area && <p className="text-gray-400 mt-5">Area: {item.area} sq ft.</p>}
       </section>
       <div className="border-t border-white/15 mt-16 pt-10 flex flex-wrap gap-5 items-center">
         <Link to="/portfolio#fit-out-references" className="inline-flex items-center gap-2 text-fann-gold hover:underline">Explore more projects <ArrowRight size={17} /></Link>
