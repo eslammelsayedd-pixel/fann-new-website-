@@ -9,6 +9,24 @@ const SITE = 'https://fann.ae';
 const dist = path.resolve('dist');
 const template = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
 const routes = JSON.parse(fs.readFileSync(path.resolve('scripts/prerender-routes.json'), 'utf8'));
+const fitOutReferences = JSON.parse(fs.readFileSync(path.resolve('data/fitOutReferences.json'), 'utf8'));
+// Keep the server-rendered fit-out reference pages in sync with the approved reference data.
+for (const item of fitOutReferences) {
+  const route = `/portfolio/${item.slug}`;
+  const schema = {
+    '@context': 'https://schema.org', '@type': 'CreativeWork', name: item.name,
+    description: item.description, url: SITE + route, about: item.sector,
+    dateCreated: item.year, contentLocation: { '@type': 'Place', name: item.emirate },
+  };
+  const text = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  routes[route] = {
+    title: `${item.name} | ${item.emirate} Project Reference | FANN`,
+    description: item.description,
+    robots: 'index, follow',
+    jsonld: JSON.stringify(schema),
+    body: `<main><nav><a href="/portfolio">Back to portfolio</a></nav><p>Interior fit-out &amp; renovation · Project reference</p><h1>${text(item.name)}</h1><p>Location: ${text(item.emirate)}, UAE</p><p>Sector: ${text(item.sector)}</p><p>Year: ${text(item.year)}</p><h2>Project overview</h2><p>${text(item.description)}</p>${item.area ? `<p>Area: ${text(item.area)} sq ft.</p>` : ''}<a href="/portfolio">Explore more projects</a><a href="/contact">Discuss a fit-out project</a></main>`,
+  };
+}
 const esc = (s = '') => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 for (const [route, r] of Object.entries(routes)) {
