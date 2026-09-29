@@ -994,7 +994,7 @@ async function handleLead(req: VercelRequest, res: VercelResponse, defaultType: 
 // SEO files
 const SITE = 'https://fann.ae';
 const SITEMAP_PATHS = [
-  '/', '/services', '/services/custom-exhibition-stands-dubai', '/services/exhibition-stand-fabrication-dubai',
+  '/', '/services', '/event-setup-dubai', '/services/custom-exhibition-stands-dubai', '/services/exhibition-stand-fabrication-dubai',
   '/services/interior-fitout-exhibition-spaces-dubai', '/services/modular-exhibition-systems-dubai',
   '/services/turnkey-exhibition-services-uae', '/portfolio', '/about', '/contact', '/privacy-policy',
   '/insights', '/events-calendar', '/fann-studio', '/book-consultation', '/resources/cost-calculator',
