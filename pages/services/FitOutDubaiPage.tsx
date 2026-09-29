@@ -6,7 +6,6 @@ import FaqAccordion from '../../components/FaqAccordion';
 import { Link } from 'react-router-dom';
 
 const path = '/fit-out-dubai';
-const pageTitle = 'Commercial fit-out, built in-house';
 
 const breadcrumbs = [
   { name: 'Home', path: '/' },
@@ -68,14 +67,14 @@ const schema = {
 const FitOutDubaiPage: React.FC = () => (
   <AnimatedPage>
     <SEO
-      title="Commercial Fit-Out Contractor Dubai | FANN"
+      title="Interior Fit-Out Dubai | Commercial Contractor | FANN"
       description="Commercial fit-out in Dubai and Abu Dhabi with one accountable team and our own joinery workshop. Partitions, ceilings, flooring, joinery, MEP coordination, finishes. Itemised quotes per site."
       schema={schema}
     />
     <ServicePageLayout
       heroImage="/images/site/workshop-carpentry.webp"
       heroAltText="Joinery being cut in the FANN workshop"
-      pageTitle={pageTitle}
+      pageTitle="Interior Fit-Out in Dubai, Built In-House"
       pageDescription="One accountable team and our own joinery workshop, from first drawing to final finish."
       breadcrumbs={breadcrumbs}
     >
