@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
@@ -13,6 +13,20 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const isAdsLanding = useLocation().pathname === '/exhibition-stand-quote';
+  useEffect(() => {
+    const trackPhoneClick = (event: MouseEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const link = target.closest('a[href^="tel:"]');
+      if (!link) return;
+      const gtag = (window as any).gtag;
+      if (typeof gtag === 'function') {
+        gtag('event', 'conversion', { send_to: 'AW-17220461597/viDOCImN24odEJ3IrZNA' });
+      }
+    };
+    document.addEventListener('click', trackPhoneClick);
+    return () => document.removeEventListener('click', trackPhoneClick);
+  }, []);
   return (
     <div className="flex flex-col min-h-screen bg-fann-charcoal text-fann-grey">
       <Header />
