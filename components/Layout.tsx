@@ -17,11 +17,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     const trackPhoneClick = (event: MouseEvent) => {
       const target = event.target;
       if (!(target instanceof Element)) return;
-      const link = target.closest('a[href^="tel:"]');
+      const link = target.closest('a[href]');
       if (!link) return;
+      const href = link.getAttribute('href') || '';
+      const sendTo = href.startsWith('tel:')
+        ? 'AW-17220461597/viDOCImN24odEJ3IrZNA'
+        : href.includes('wa.me/971505667502')
+          ? 'AW-17220461597/xH-XCI_V2oodEJ3IrZNA'
+          : null;
+      if (!sendTo) return;
       const gtag = (window as any).gtag;
       if (typeof gtag === 'function') {
-        gtag('event', 'conversion', { send_to: 'AW-17220461597/viDOCImN24odEJ3IrZNA' });
+        gtag('event', 'conversion', { send_to: sendTo });
       }
     };
     document.addEventListener('click', trackPhoneClick);
