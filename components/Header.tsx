@@ -83,6 +83,7 @@ const Header: React.FC = () => {
                 {/* RIGHT ACTIONS */}
                 <div className="hidden lg:flex items-center gap-6">
                     <ThemeToggle />
+                    <a href="tel:+971505667502" className="text-xs font-semibold text-fann-gold hover:text-white transition-colors whitespace-nowrap" aria-label="Call FANN at +971 50 566 7502">+971 50 566 7502</a>
                     <Link to="/contact" className="hover-trigger">
                       <button 
                           className="btn-gold"
@@ -95,6 +96,7 @@ const Header: React.FC = () => {
                 {/* MOBILE TOGGLE */}
                 <div className="lg:hidden flex items-center gap-4 z-50">
                     <ThemeToggle />
+                    <a href="tel:+971505667502" className="text-fann-gold p-2" aria-label="Call FANN at +971 50 566 7502"><span className="sr-only">+971 50 566 7502</span><span aria-hidden="true">Call</span></a>
                     <button 
                         onClick={() => setIsOpen(!isOpen)} 
                         aria-label={isOpen ? 'Close menu' : 'Open menu'}
