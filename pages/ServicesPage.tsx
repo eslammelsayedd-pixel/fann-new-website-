@@ -95,11 +95,11 @@ const servicesData = [
     {
         icon: <Calendar size={40} />,
         title: "Corporate Event Management",
-        description: "We orchestrate flawless corporate events that resonate with your audience. Whether it's a high-profile product launch, an elegant gala dinner, or a global summit, our meticulous planning and creative production deliver unforgettable, stress-free experiences.",
+        description: "Event setup and production build around your venue, audience flow and opening date. See a documented Dubai event build and send us the structures, floor plan and technical brief you need.",
         image: "https://images.pexels.com/photos/1181438/pexels-photo-1181438.jpeg?auto=compress&cs=tinysrgb&w=800&q=75",
-        services: [ "Strategic Event Concept & Theming", "Venue Sourcing & Management", "Stage Design & Technical Production", "Delegate & VIP Management", "Entertainment & Speaker Sourcing" ],
+        services: [ "Stage & Scenic Structures", "Branded Installations", "Display & Demonstration Areas", "Fabrication & Site Installation" ],
         imagePosition: "left" as "left",
-        link: "/portfolio" // Assuming no detailed page for this yet
+        link: "/event-setup-dubai"
     },
     {
         icon: <PenTool size={40} />,
