@@ -32,6 +32,7 @@ const FitOutPage = lazy(() => import('./pages/services/FitOutPage'));
 const ExhibitionGuidePage = lazy(() => import('./pages/resources/ExhibitionGuidePage'));
 const CostCalculatorPage = lazy(() => import('./pages/resources/CostCalculatorPage'));
 const ConsultationPage = lazy(() => import('./pages/ConsultationPage'));
+const EventSetupDubaiPage = lazy(() => import('./pages/services/EventSetupDubaiPage'));
 const FitOutDubaiPage = lazy(() => import('./pages/services/FitOutDubaiPage'));
 const RestaurantFitOutDubaiPage = lazy(() => import('./pages/services/RestaurantFitOutDubaiPage'));
 const ClinicFitOutDubaiPage = lazy(() => import('./pages/services/ClinicFitOutDubaiPage'));
@@ -58,6 +59,7 @@ const App: React.FC = () => {
                         <Route path="/services/exhibition-stand-fabrication-dubai" element={<FabricationPage />} />
                         <Route path="/services/interior-fitout-exhibition-spaces-dubai" element={<FitOutPage />} />
                         
+                        <Route path="/event-setup-dubai" element={<EventSetupDubaiPage />} />
                         <Route path="/fit-out-dubai" element={<FitOutDubaiPage />} />
                         <Route path="/restaurant-fit-out-dubai" element={<RestaurantFitOutDubaiPage />} />
                         <Route path="/clinic-fit-out-dubai" element={<ClinicFitOutDubaiPage />} />
