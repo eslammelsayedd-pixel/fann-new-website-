@@ -237,9 +237,9 @@ const ServicesSection: React.FC = () => (
                 />
                 <ServiceCard 
                     title="Corporate Events" 
-                    description="Strategic event planning and production for product launches, galas, and conferences. We manage the stage, AV, and atmosphere."
+                    description="Event setup and production build for stages, displays and branded installations. See our documented Dubai event work."
                     image="https://images.pexels.com/photos/1181438/pexels-photo-1181438.jpeg?auto=compress&cs=tinysrgb&w=800&q=75"
-                    link="/portfolio"
+                    link="/event-setup-dubai"
                     index={2}
                 />
                 <ServiceCard 
