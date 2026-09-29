@@ -63,14 +63,14 @@ const schema = {
 const CustomStandsPage: React.FC = () => (
   <AnimatedPage>
     <SEO
-      title="Custom Exhibition Stands Dubai | Design & Build | FANN"
-      description="Custom exhibition stand design, fabrication and installation in Dubai. See real FANN exhibition and event builds, then share your show, venue, size and deadline."
+      title="Exhibition Stand Builder & Contractor Dubai | FANN"
+      description="Looking for an exhibition stand builder in Dubai? FANN designs, fabricates and installs custom stands. See documented builds and send your show, stand size and deadline."
       schema={schema}
     />
     <ServicePageLayout
       heroImage={heroImage}
       heroAltText="TREVOS exhibition stand at Light Middle East, Dubai (2023), from FANN's supplied project archive"
-      pageTitle="Custom Exhibition Stands in Dubai"
+      pageTitle="Exhibition Stand Builder & Contractor in Dubai"
       pageDescription="Design, fabrication and installation planned around your show, floor plan and opening date."
       breadcrumbs={breadcrumbs}
     >
