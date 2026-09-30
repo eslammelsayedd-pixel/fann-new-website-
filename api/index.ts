@@ -1077,7 +1077,7 @@ function sitemapXml(res: VercelResponse) {
 }
 function llmsTxt(res: VercelResponse) {
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-  return res.status(200).send(`# FANN\n> Dubai design-and-build company: exhibition stands (Dubai & Abu Dhabi), event setup (Dubai, Abu Dhabi, Al Ain), interior fit-out and renovation (Dubai & Abu Dhabi), and marble supply.\n\nContact: sales@fann.ae, +971 50 566 7502\nOffice: Office No. 508, Dusseldorf Business Center, Al Barsha, Dubai\nWarehouse: Warehouse No. 10, Um Dera, Umm Al Quwain\n\n${SITEMAP_PATHS.map(p => `- ${SITE}${p}`).join('\n')}\n`);
+  return res.status(200).send(`# FANN\n> Dubai design-and-build company: exhibition stands (Dubai & Abu Dhabi), event setup (Dubai, Abu Dhabi, Al Ain), interior fit-out and renovation (Dubai & Abu Dhabi).\n\nContact: sales@fann.ae, +971 50 566 7502\nOffice: Office No. 508, Dusseldorf Business Center, Al Barsha, Dubai\nWarehouse: Warehouse No. 10, Um Dera, Umm Al Quwain\n\n${SITEMAP_PATHS.map(p => `- ${SITE}${p}`).join('\n')}\n`);
 }
 
 // 14. Video generation handler (mocked with premium high-quality stock loop or dynamic status)
