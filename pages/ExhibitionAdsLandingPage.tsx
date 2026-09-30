@@ -28,7 +28,8 @@ const photos = [
 
 const openSideOptions = [
   { value: '1 side open (in-line)', closed: ['top', 'left', 'right'] },
-  { value: '2 sides open (corner)', closed: ['top', 'left'] },
+  { value: 'Corner (front + right open)', closed: ['top', 'left'] },
+  { value: 'Corner (front + left open)', closed: ['top', 'right'] },
   { value: '3 sides open (peninsula)', closed: ['top'] },
   { value: '4 sides open (island)', closed: [] },
 ];
@@ -112,7 +113,7 @@ export default function ExhibitionAdsLandingPage() {
             <form onSubmit={send} className="mt-4 grid grid-cols-2 gap-2 md:mt-5 md:gap-3">
               {fields.map(({key,label,type='text',hint}) => <label key={key} className="text-xs font-medium text-[#e4dfd7] md:text-sm">{label} *<input className={fieldClass} name={key} type={type} placeholder={hint} autoComplete={key === 'name' ? 'name' : key === 'phone' ? 'tel' : key === 'email' ? 'email' : undefined} required value={form[key]} onChange={e => setForm({ ...form, [key]: e.target.value })} /></label>)}
               <label className="text-xs font-medium text-[#e4dfd7] md:text-sm">Open sides *<select name="openSides" className={fieldClass} required value={form.openSides} onChange={e => setForm({ ...form, openSides: e.target.value })}><option value="">Select</option>{openSideOptions.map(option => <option key={option.value} value={option.value}>{option.value}</option>)}</select></label>
-              <div className="col-span-2"><div className="grid grid-cols-2 gap-2">{openSideOptions.map(option => <div key={option.value} className={`flex items-center gap-2 rounded border p-2 text-xs ${form.openSides === option.value ? 'border-[#c9a962] bg-[#171717]' : 'border-white/15'}`}><StandDiagram closed={option.closed}/><span>{option.value}</span></div>)}</div><p className="mt-2 text-xs text-[#aaa49b]">Solid white = closed wall. Dashed gold = open side. Diagrams show the layout type; tell us the exact orientation when we discuss your brief.</p></div>
+              <div className="col-span-2"><div className="grid grid-cols-2 gap-2">{openSideOptions.map(option => <div key={option.value} className={`flex items-center gap-2 rounded border p-2 text-xs ${form.openSides === option.value ? 'border-[#c9a962] bg-[#171717]' : 'border-white/15'}`}><StandDiagram closed={option.closed}/><span>{option.value}</span></div>)}</div><p className="mt-2 text-xs text-[#aaa49b]">Solid white = closed wall. Dashed gold = open side. Front = bottom edge of each diagram.</p></div>
               <label className="col-span-2 text-xs font-medium text-[#e4dfd7] md:text-sm">Floor plan (optional)<input className={fieldClass} name="floorPlan" type="file" accept=".pdf,.jpg,.jpeg,.png,.webp,.gif" onChange={e => { const file = e.target.files?.[0] || null; if (file && (file.size > 5 * 1024 * 1024 || !/\.(pdf|jpe?g|png|webp|gif)$/i.test(file.name))) { setFloorPlan(null); e.target.value = ''; setError('Please choose a PDF, JPG, PNG, WebP or GIF up to 5 MB.'); return; } setError(''); setFloorPlan(file); }} /><span className="mt-1 block text-xs text-[#aaa49b]">PDF, JPG, PNG, WebP or GIF, up to 5 MB. Stored privately; FANN receives a download link valid for 30 days.</span></label>
               <div className="col-span-2"><button disabled={busy} type="submit" className="mt-2 w-full rounded-sm bg-[#c9a962] px-5 py-4 font-bold text-black hover:bg-[#dfc488] disabled:opacity-60">{busy ? 'Sending...' : 'Request my concept + quote'}</button>
               {error && <p role="alert" className="mt-3 text-sm text-red-300">{error}</p>}
