@@ -20,7 +20,7 @@ for (const item of fitOutReferences) {
   };
   const text = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   routes[route] = {
-    title: `${item.name} | ${item.emirate} Project Reference | FANN`,
+    title: `${item.name} | ${item.emirate} Fit-Out Project | FANN`,
     description: item.description,
     robots: 'index, follow',
     jsonld: JSON.stringify(schema),
@@ -30,6 +30,8 @@ for (const item of fitOutReferences) {
 // Keep the portfolio's crawler view in sync with real project names and photo covers.
 const escapePortfolio = value => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const portfolioRoute = routes['/portfolio'];
+portfolioRoute.title = 'FANN Portfolio | UAE Fit-Out, Exhibitions & Events | FANN';
+portfolioRoute.description = 'Explore real FANN projects across Dubai, Abu Dhabi and Ras Al Khaimah, with project photography, sectors, areas and completion years.';
 portfolioRoute.body = `<main><h1>FANN Portfolio</h1><h2>Fit-out and renovation projects</h2>${fitOutReferences.map(item => `<article><a href="/portfolio/${item.slug}"><img src="${escapePortfolio(item.images[0])}" alt="${escapePortfolio(item.name)}" loading="lazy"><h3>${escapePortfolio(item.name)}</h3></a><p>${escapePortfolio(item.emirate)} · ${escapePortfolio(item.sector)} · ${item.area ? escapePortfolio(item.area) + ' sq ft' : 'Area not disclosed'} · ${item.year}</p></article>`).join('')}<a href="/portfolio/icons-of-porsche-2025-dubai">Icons of Porsche</a><a href="/portfolio/national-expression-adek-abu-dhabi">National Expression, ADEK</a><a href="/contact">Discuss your project</a></main>`;
 portfolioRoute.jsonld = JSON.stringify({'@context':'https://schema.org','@type':'CollectionPage',name:'FANN Portfolio',url:SITE+'/portfolio',mainEntity:{'@type':'ItemList',numberOfItems:fitOutReferences.length,itemListElement:fitOutReferences.map((item,index)=>({'@type':'ListItem',position:index+1,url:SITE+'/portfolio/'+item.slug,name:item.name,image:SITE+item.images[0]}))}});
 const esc = (s = '') => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
