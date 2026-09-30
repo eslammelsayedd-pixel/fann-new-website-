@@ -32,8 +32,13 @@ const escapePortfolio = value => String(value).replace(/&/g, '&amp;').replace(/<
 const portfolioRoute = routes['/portfolio'];
 portfolioRoute.title = 'FANN Portfolio | UAE Fit-Out, Exhibitions & Events | FANN';
 portfolioRoute.description = 'Explore real FANN projects across Dubai, Abu Dhabi and Ras Al Khaimah, with project photography, sectors, areas and completion years.';
-portfolioRoute.body = `<main><h1>FANN Portfolio</h1><h2>Fit-out and renovation projects</h2>${fitOutReferences.map(item => `<article><a href="/portfolio/${item.slug}"><img src="${escapePortfolio(item.images[0])}" alt="${escapePortfolio(item.name)}" loading="lazy"><h3>${escapePortfolio(item.name)}</h3></a><p>${escapePortfolio(item.emirate)} · ${escapePortfolio(item.sector)} · ${item.area ? escapePortfolio(item.area) + ' sq ft' : 'Area not disclosed'} · ${item.year}</p></article>`).join('')}<a href="/portfolio/icons-of-porsche-2025-dubai">Icons of Porsche</a><a href="/portfolio/national-expression-adek-abu-dhabi">National Expression, ADEK</a><a href="/contact">Discuss your project</a></main>`;
-portfolioRoute.jsonld = JSON.stringify({'@context':'https://schema.org','@type':'CollectionPage',name:'FANN Portfolio',url:SITE+'/portfolio',mainEntity:{'@type':'ItemList',numberOfItems:fitOutReferences.length,itemListElement:fitOutReferences.map((item,index)=>({'@type':'ListItem',position:index+1,url:SITE+'/portfolio/'+item.slug,name:item.name,image:SITE+item.images[0]}))}});
+const existingEvents = ['/portfolio/icons-of-porsche-2025-dubai', '/portfolio/special-olympics-uae-unified-champion-schools-2025', '/portfolio/national-expression-adek-abu-dhabi'].map(route => {
+  const event = JSON.parse(routes[route].jsonld);
+  return {slug: route.replace('/portfolio/', ''), name: event.name, description: event.description, emirate: event.locationCreated.name, sector: 'Events & exhibitions', year: event.dateCreated || '', images: [event.image]};
+});
+const portfolioItems = [...fitOutReferences, ...existingEvents];
+portfolioRoute.body = `<main><h1>Portfolio</h1><p>Fit-out, exhibitions and events across the UAE. Explore our project photography and details.</p>${portfolioItems.map(item => `<article><a href="/portfolio/${item.slug}"><img src="${escapePortfolio(item.images[0])}" alt="${escapePortfolio(item.name)}" loading="lazy"><h2>${escapePortfolio(item.name)}</h2></a><p>${escapePortfolio(item.emirate)} · ${escapePortfolio(item.sector)}${item.year ? ' · ' + escapePortfolio(item.year) : ''}</p></article>`).join('')}<a href="/contact">Discuss your project</a></main>`;
+portfolioRoute.jsonld = JSON.stringify({'@context':'https://schema.org','@type':'CollectionPage',name:'FANN Portfolio',url:SITE+'/portfolio',mainEntity:{'@type':'ItemList',numberOfItems:portfolioItems.length,itemListElement:portfolioItems.map((item,index)=>({'@type':'ListItem',position:index+1,url:SITE+'/portfolio/'+item.slug,name:item.name,image:SITE+item.images[0]}))}});
 const esc = (s = '') => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 for (const [route, r] of Object.entries(routes)) {
