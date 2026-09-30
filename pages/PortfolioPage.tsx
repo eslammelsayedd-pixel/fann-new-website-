@@ -68,7 +68,7 @@ const PortfolioPage: React.FC = () => {
                     <div className="relative">
                       <img src={project.image} alt={project.title} loading="lazy" className="w-full h-64 object-cover group-hover:scale-[1.02] transition-transform duration-500" />
                       <span className="absolute top-4 left-4 text-[10px] uppercase tracking-widest font-bold bg-fann-gold text-black px-2 py-1 rounded-sm">{project.category}</span>
-                      {project.gallery && <span className="absolute bottom-4 right-4 text-xs bg-black/70 text-white px-2 py-1 rounded">{project.gallery.length} photos</span>}
+                      {project.gallery && <span style={{ color: '#fff', background: 'rgba(0,0,0,0.75)' }} className="absolute bottom-4 right-4 text-xs px-2 py-1 rounded">{project.gallery.length} photos</span>}
                     </div>
                     <div className="p-6">
                       <h3 className="text-2xl font-serif font-bold text-white group-hover:text-fann-gold transition-colors">{project.title}</h3>
@@ -95,7 +95,7 @@ const PortfolioPage: React.FC = () => {
             <p role="status" className="text-sm text-gray-400 mb-5">{entries.length} projects</p>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {entries.map(item => <Link key={item.slug} to={`/portfolio/${item.slug}`} className="group block rounded-lg bg-fann-charcoal-light border border-white/10 overflow-hidden hover:border-fann-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-fann-gold transition">
-                <div className="aspect-[4/3] relative overflow-hidden"><img src={item.images[0]} alt={`${item.name}, ${item.emirate}`} loading="lazy" decoding="async" width="800" height="600" className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"/><span className="absolute bottom-3 right-3 bg-black/70 px-2 py-1 text-xs rounded">{item.images.length} photos</span></div>
+                <div className="aspect-[4/3] relative overflow-hidden"><img src={item.images[0]} alt={`${item.name}, ${item.emirate}`} loading="lazy" decoding="async" width="800" height="600" className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"/><span style={{ color: '#fff', background: 'rgba(0,0,0,0.75)' }} className="absolute bottom-3 right-3 px-2 py-1 text-xs rounded">{item.images.length} photos</span></div>
                 <div className="p-5"><p className="text-xs uppercase tracking-wide text-fann-gold mb-2">{item.sector}</p><h3 className="text-xl font-serif text-white font-bold leading-snug">{item.name}</h3><p className="text-sm text-gray-400 mt-3">{item.emirate} · {item.year}</p><p className="text-sm text-gray-400 mt-1">{item.area ? `Approx. ${item.area} sq ft` : 'Area not disclosed'}</p><span className="inline-flex items-center gap-2 text-fann-gold text-sm font-semibold mt-4 group-hover:underline">View project <ArrowRight size={15} aria-hidden="true" /></span></div>
               </Link>)}
             </div>
