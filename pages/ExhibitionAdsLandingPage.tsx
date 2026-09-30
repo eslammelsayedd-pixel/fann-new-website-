@@ -19,17 +19,28 @@ function gtag_report_conversion(url?: string) {
   return false;
 }
 
-const whatsappUrl = 'https://wa.me/971505667502?text=Hi+FANN%2C+I%27d+like+a+3D+stand+concept+and+full+quote+for+my+upcoming+exhibition.+My+show%2C+stand+size+and+date+are%3A';
+const whatsappUrl = 'https://wa.me/971505667502?text=Hi+FANN%2C+I%27d+like+a+3D+stand+concept+and+full+quote+for+my+upcoming+exhibition.+My+show%2C+stand+size+and+open+sides+are%3A';
 const photos = [
   { src: '/images/projects/national-expression-adek/01.webp', alt: 'ADEK National Expression exhibition gallery, built by FANN', title: 'National Expression, ADEK', link: '/portfolio/national-expression-adek-abu-dhabi' },
   { src: '/images/projects/icons-of-porsche/02.webp', alt: 'Icons of Porsche entrance and event display built by FANN', title: 'Icons of Porsche', link: '/portfolio/icons-of-porsche-2025-dubai' },
   { src: '/images/projects/special-olympics-ucs-2025/01.webp', alt: 'Special Olympics UAE event stage built by FANN', title: 'Special Olympics UAE', link: '/portfolio/special-olympics-uae-unified-champion-schools-2025' },
 ];
 
+const openSideOptions = [
+  { value: '1 side open (in-line)', closed: ['top', 'left', 'right'] },
+  { value: '2 sides open (corner)', closed: ['top', 'left'] },
+  { value: '3 sides open (peninsula)', closed: ['top'] },
+  { value: '4 sides open (island)', closed: [] },
+];
+function StandDiagram({ closed }: { closed: string[] }) {
+  const edges = { top: [8,8,40,8], right: [40,8,40,40], bottom: [8,40,40,40], left: [8,8,8,40] };
+  return <svg viewBox="0 0 48 48" className="h-10 w-10 shrink-0" aria-hidden="true"><rect x="8" y="8" width="32" height="32" fill="#171717" />{Object.entries(edges).map(([side, points]) => <line key={side} x1={points[0]} y1={points[1]} x2={points[2]} y2={points[3]} stroke={closed.includes(side) ? '#f5f2eb' : '#c9a962'} strokeWidth={closed.includes(side) ? 4 : 2} strokeDasharray={closed.includes(side) ? undefined : '3 3'} />)}</svg>;
+}
+
 const fieldClass = 'mt-1 w-full rounded-sm border border-white/20 bg-[#171717] px-2 py-2.5 text-sm text-[#f5f2eb] md:px-3 md:py-3 placeholder:text-white/40 focus:border-[#c9a962] focus:outline-none';
 
 export default function ExhibitionAdsLandingPage() {
-  const [form, setForm] = useState({ name: '', phone: '', email: '', showName: '', standSize: '', showDate: '' });
+  const [form, setForm] = useState({ name: '', phone: '', email: '', showName: '', standSize: '', openSides: '' });
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
@@ -44,7 +55,7 @@ export default function ExhibitionAdsLandingPage() {
         details: {
           source: 'Google Ads exhibition landing',
           offer: '3D stand concept + full quote within 24 hours',
-          showName: form.showName.trim(), standSize: form.standSize.trim(), showDate: form.showDate,
+          showName: form.showName.trim(), standSize: form.standSize.trim(), openSides: form.openSides,
           campaign: new URLSearchParams(window.location.search).get('utm_campaign') || '',
         },
       });
@@ -60,7 +71,6 @@ export default function ExhibitionAdsLandingPage() {
     { key: 'email', label: 'Email', type: 'email', hint: 'you@company.com' },
     { key: 'showName', label: 'Show name', hint: 'e.g. GITEX' },
     { key: 'standSize', label: 'Stand size', hint: 'e.g. 6 x 3 m or 18 sqm' },
-    { key: 'showDate', label: 'Show date', type: 'date' },
   ];
   return <>
     <SEO title="3D Exhibition Stand Concept + Quote in 24 Hours" description="FANN designs and builds custom exhibition stands. Send your show brief for a 3D stand concept and full quote within 24 hours." />
@@ -70,7 +80,7 @@ export default function ExhibitionAdsLandingPage() {
         <div className="lg:pt-10">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[.22em] text-[#c9a962]">Custom exhibition stands</p>
           <h1 className="max-w-2xl font-serif text-4xl font-bold leading-[1.12] md:text-5xl lg:text-[3.5rem]">3D Stand Concept + Full Quote in 24 Hours</h1>
-          <p className="mt-4 max-w-xl text-base md:mt-6 md:text-lg leading-relaxed text-[#d4d1cb]">Tell us your show, stand size and date. Our team will discuss your brief and put together a concept and complete quote.</p>
+          <p className="mt-4 max-w-xl text-base md:mt-6 md:text-lg leading-relaxed text-[#d4d1cb]">Tell us your show, stand size and open sides. Our team will discuss your brief and put together a concept and complete quote.</p>
           <div className="mt-5 flex flex-wrap gap-2 md:mt-8 md:gap-3">
             <a href="tel:+971505667502" data-track="ads-call" className="rounded-sm border border-[#c9a962] px-3 py-2 text-sm font-semibold md:px-5 md:py-3 md:text-base text-[#e1c78d] hover:bg-[#c9a962] hover:text-black">Call +971 50 566 7502</a>
             <a href={whatsappUrl} data-track="ads-whatsapp" target="_blank" rel="noopener noreferrer" className="rounded-sm border border-white/25 px-3 py-2 text-sm font-semibold md:px-5 md:py-3 md:text-base text-[#f5f2eb] hover:border-white">WhatsApp your brief</a>
@@ -82,6 +92,8 @@ export default function ExhibitionAdsLandingPage() {
             <p className="mt-2 text-sm text-[#d4d1cb]">Share the details below and we'll follow up about your 24-hour concept and quote.</p>
             <form onSubmit={send} className="mt-4 grid grid-cols-2 gap-2 md:mt-5 md:gap-3">
               {fields.map(({key,label,type='text',hint}) => <label key={key} className="text-xs font-medium text-[#e4dfd7] md:text-sm">{label} *<input className={fieldClass} name={key} type={type} placeholder={hint} autoComplete={key === 'name' ? 'name' : key === 'phone' ? 'tel' : key === 'email' ? 'email' : undefined} required value={form[key]} onChange={e => setForm({ ...form, [key]: e.target.value })} /></label>)}
+              <label className="text-xs font-medium text-[#e4dfd7] md:text-sm">Open sides *<select name="openSides" className={fieldClass} required value={form.openSides} onChange={e => setForm({ ...form, openSides: e.target.value })}><option value="">Select</option>{openSideOptions.map(option => <option key={option.value} value={option.value}>{option.value}</option>)}</select></label>
+              <div className="col-span-2"><div className="grid grid-cols-2 gap-2">{openSideOptions.map(option => <div key={option.value} className={`flex items-center gap-2 rounded border p-2 text-xs ${form.openSides === option.value ? 'border-[#c9a962] bg-[#171717]' : 'border-white/15'}`}><StandDiagram closed={option.closed}/><span>{option.value}</span></div>)}</div><p className="mt-2 text-xs text-[#aaa49b]">Solid white = closed wall. Dashed gold = open side. Diagrams show the layout type; tell us the exact orientation when we discuss your brief.</p></div>
               <div className="sm:col-span-2"><button disabled={busy} type="submit" className="mt-2 w-full rounded-sm bg-[#c9a962] px-5 py-4 font-bold text-black hover:bg-[#dfc488] disabled:opacity-60">{busy ? 'Sending...' : 'Request my concept + quote'}</button>
               {error && <p role="alert" className="mt-3 text-sm text-red-300">{error}</p>}
               <p className="mt-3 text-xs leading-relaxed text-[#aaa49b]">Your details go to FANN for this request. <Link to="/privacy-policy" className="underline">Privacy policy</Link>.</p></div>
