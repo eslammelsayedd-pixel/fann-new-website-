@@ -1,25 +1,10 @@
 
-import React, { useState, useMemo, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useSearchParams, Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import AnimatedPage from '../components/AnimatedPage';
 import { projects } from '../constants';
 import SEO from '../components/SEO';
-import { ArrowRight, Maximize2, MapPin, Calendar } from 'lucide-react';
-
-const containerVariants = {
-  hidden: { },
-  visible: {
-    transition: {
-      staggerChildren: 0.08,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, scale: 0.95 },
-  visible: { opacity: 1, scale: 1 },
-};
+import { ArrowRight, MapPin } from 'lucide-react';
 
 import fitOutReferences from '../data/fitOutReferences.json';
 
@@ -49,101 +34,29 @@ const portfolioPageSchema = {
                 "@type": "CreativeWork",
                 "name": item.name,
                 "url": `https://fann.ae/portfolio/${item.slug}`,
-                "description": item.description
+                "description": item.description, "image": item.images[0]
             }
         }))]
     }
 };
 
-const industries = [
-  'All', 'Technology', 'Healthcare', 'Food & Beverage', 'Banking', 'Luxury', 
-  'Retail', 'Corporate', 'Hospitality', 'Energy', 'Fashion', 'Construction',
-  'Automotive', 'Telecommunications', 'Consulting', 'Real Estate', 'Fintech'
-];
-
 const PortfolioPage: React.FC = () => {
-  const [searchParams] = useSearchParams();
-  const initialCategory = searchParams.get('category') || 'all';
-  
-  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
-  const [selectedIndustry, setSelectedIndustry] = useState('All');
-  const [selectedScale, setSelectedScale] = useState('all');
-  const [metaInfo, setMetaInfo] = useState({ title: '', description: '' });
-
-  // Categories with dynamic counts
-  const categories = useMemo(() => [
-    { id: 'all', name: 'All Projects', count: projects.length },
-    { id: 'exhibition', name: 'Exhibitions', count: projects.filter(p => p.category === 'exhibition').length },
-    { id: 'event', name: 'Events', count: projects.filter(p => p.category === 'event').length },
-    { id: 'interior', name: 'Interiors', count: projects.filter(p => p.category === 'interior').length }
-  ], []);
-
-  // Scales logic
-  const scales = [
-    { id: 'all', name: 'All Scales', filter: () => true },
-    { 
-      id: 'small', 
-      name: 'Small (<50 sqm)', 
-      filter: (p: any) => p.size && parseInt(p.size) < 50 
-    },
-    { 
-      id: 'medium', 
-      name: 'Medium (50-100 sqm)', 
-      filter: (p: any) => p.size && parseInt(p.size) >= 50 && parseInt(p.size) <= 100 
-    },
-    { 
-      id: 'large', 
-      name: 'Large (100+ sqm)', 
-      filter: (p: any) => p.size && parseInt(p.size) > 100 
-    }
-  ];
-
-  const filteredProjects = useMemo(() => {
-    return projects.filter(project => {
-        // Category Filter
-        const categoryMatch = selectedCategory === 'all' || project.category === selectedCategory;
-        
-        // Industry Filter - flexible matching
-        const industryMatch = selectedIndustry === 'All' || project.industry.includes(selectedIndustry) || (project.tags && project.tags.includes(selectedIndustry));
-        
-        // Scale Filter
-        // Only apply scale filter if the project has a size property (Events might not)
-        const scaleFilterObj = scales.find(s => s.id === selectedScale);
-        const scaleMatch = (selectedScale === 'all') || (project.size && scaleFilterObj ? scaleFilterObj.filter(project) : true);
-
-        return categoryMatch && industryMatch && scaleMatch;
-    });
-  }, [selectedCategory, selectedIndustry, selectedScale]);
-
-  useEffect(() => {
-    const baseTitle = "FANN Portfolio";
-    const parts = [];
-
-    if (selectedCategory !== 'all') parts.push(categories.find(c => c.id === selectedCategory)?.name || '');
-    if (selectedIndustry !== 'All') parts.push(`for ${selectedIndustry}`);
-
-    const dynamicTitle = parts.length > 0 
-        ? `${baseTitle} | ${parts.join(' ')}` 
-        : `${baseTitle} | Exhibitions, Events & Interior Design`;
-
-    let dynamicDescription = `Explore FANN's diverse portfolio of projects${selectedCategory !== 'all' ? ' in ' + selectedCategory : ''}${selectedIndustry !== 'All' ? ' for the ' + selectedIndustry + ' industry' : ''}.`;
-    
-    setMetaInfo({ title: dynamicTitle, description: dynamicDescription });
-
-  }, [selectedCategory, selectedIndustry, selectedScale, categories]);
-
+  const [emirate, setEmirate] = useState('All');
+  const [sector, setSector] = useState('All');
+  const entries = fitOutReferences.filter(item => (emirate === 'All' || item.emirate === emirate) && (sector === 'All' || item.sector === sector));
+  const sectors = Array.from(new Set(fitOutReferences.map(item => item.sector))).sort();
   return (
     <AnimatedPage>
       <SEO
-        title={metaInfo.title}
-        description={metaInfo.description}
+        title="FANN Portfolio | UAE Fit-Out, Exhibitions & Events"
+        description="Explore real FANN projects across Dubai, Abu Dhabi and Ras Al Khaimah, with project photography, sectors, areas and completion years."
         schema={portfolioPageSchema}
       />
       <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">Our Work</h1>
-            <p className="text-xl text-gray-400">Showcasing excellence in design and execution across Dubai.</p>
+            <p className="text-xl text-gray-400">Fit-out, exhibitions and events across the UAE.</p>
           </div>
           
           {projects.length > 0 && (
@@ -155,7 +68,7 @@ const PortfolioPage: React.FC = () => {
                     <div className="relative">
                       <img src={project.image} alt={project.title} loading="lazy" className="w-full h-64 object-cover group-hover:scale-[1.02] transition-transform duration-500" />
                       <span className="absolute top-4 left-4 text-[10px] uppercase tracking-widest font-bold bg-fann-gold text-black px-2 py-1 rounded-sm">{project.category}</span>
-                      {project.gallery && <span className="absolute bottom-4 right-4 text-xs bg-black/70 text-white px-2 py-1 rounded">{project.gallery.length} photos</span>}
+                      {project.gallery && <span style={{ color: '#fff', background: 'rgba(0,0,0,0.75)' }} className="absolute bottom-4 right-4 text-xs px-2 py-1 rounded">{project.gallery.length} photos</span>}
                     </div>
                     <div className="p-6">
                       <h3 className="text-2xl font-serif font-bold text-white group-hover:text-fann-gold transition-colors">{project.title}</h3>
@@ -170,63 +83,27 @@ const PortfolioPage: React.FC = () => {
           )}
 
           <section id="fit-out-references" className="max-w-6xl mx-auto mb-20" aria-labelledby="fitout-title">
-            <div className="text-center max-w-3xl mx-auto mb-10">
+            <div className="max-w-3xl mb-8">
               <p className="text-fann-gold uppercase tracking-[0.18em] text-xs font-bold mb-3">Interior fit-out & renovation</p>
-              <h2 id="fitout-title" className="text-3xl md:text-4xl font-serif font-bold text-white mb-4">Fit-out project references</h2>
-              <p className="text-gray-300">Selected references from our company profile, 2021–2026. Areas are approximate.</p>
+              <h2 id="fitout-title" className="text-3xl md:text-4xl font-serif font-bold text-white mb-4">Spaces we have built</h2>
+              <p className="text-gray-300">62 completed projects across Dubai, Abu Dhabi and Ras Al Khaimah. Explore the photography and project details. Areas are approximate.</p>
             </div>
-            {(['Dubai', 'Abu Dhabi', 'Ras Al Khaimah'] as const).map(emirate => {
-              const entries = fitOutReferences.filter(item => item.emirate === emirate);
-              return <div key={emirate} className="mb-10">
-                <h3 className="text-2xl font-serif font-bold text-fann-gold mb-5 border-b border-white/15 pb-3">{emirate} <span className="text-sm text-gray-400 font-sans font-normal">({entries.length})</span></h3>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {entries.map(item => <Link key={item.slug} to={`/portfolio/${item.slug}`} className="group block rounded-lg bg-fann-charcoal-light border border-white/10 p-5 hover:border-fann-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-fann-gold transition" aria-label={`View ${item.name} project reference in ${item.emirate}`}>
-                    <p className="text-xs uppercase tracking-wide text-fann-gold mb-2">{item.sector}</p>
-                    <h4 className="text-lg font-serif text-white font-bold leading-snug">{item.name}</h4>
-                    <p className="text-sm text-gray-400 mt-3">{item.year}{item.area ? ` · Approx. ${item.area} sq ft` : ''}</p>
-                    <span className="inline-flex items-center gap-2 text-fann-gold text-sm font-semibold mt-4 group-hover:underline">View details <ArrowRight size={15} aria-hidden="true" /></span>
-                  </Link>)}
-                </div>
-              </div>;
-            })}
+            <div className="flex flex-wrap gap-4 mb-8">
+              <label className="text-sm text-gray-300">Emirate<select value={emirate} onChange={e => setEmirate(e.target.value)} className="block mt-2 bg-fann-charcoal-light border border-white/25 rounded px-3 py-3 text-white"><option>All</option>{Array.from(new Set(fitOutReferences.map(item => item.emirate))).map(value => <option key={value}>{value}</option>)}</select></label>
+              <label className="text-sm text-gray-300">Sector<select value={sector} onChange={e => setSector(e.target.value)} className="block mt-2 bg-fann-charcoal-light border border-white/25 rounded px-3 py-3 text-white"><option>All</option>{sectors.map(value => <option key={value}>{value}</option>)}</select></label>
+            </div>
+            <p role="status" className="text-sm text-gray-400 mb-5">{entries.length} projects</p>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {entries.map(item => <Link key={item.slug} to={`/portfolio/${item.slug}`} className="group block rounded-lg bg-fann-charcoal-light border border-white/10 overflow-hidden hover:border-fann-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-fann-gold transition">
+                <div className="aspect-[4/3] relative overflow-hidden"><img src={item.images[0]} alt={`${item.name}, ${item.emirate}`} loading="lazy" decoding="async" width="800" height="600" className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"/><span style={{ color: '#fff', background: 'rgba(0,0,0,0.75)' }} className="absolute bottom-3 right-3 px-2 py-1 text-xs rounded">{item.images.length} photos</span></div>
+                <div className="p-5"><p className="text-xs uppercase tracking-wide text-fann-gold mb-2">{item.sector}</p><h3 className="text-xl font-serif text-white font-bold leading-snug">{item.name}</h3><p className="text-sm text-gray-400 mt-3">{item.emirate} · {item.year}</p><p className="text-sm text-gray-400 mt-1">{item.area ? `Approx. ${item.area} sq ft` : 'Area not disclosed'}</p><span className="inline-flex items-center gap-2 text-fann-gold text-sm font-semibold mt-4 group-hover:underline">View project <ArrowRight size={15} aria-hidden="true" /></span></div>
+              </Link>)}
+            </div>
+            {!entries.length && <p className="text-gray-300 py-10">No projects match these filters. Choose another emirate or sector.</p>}
           </section>
-
-          {true && (
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center max-w-3xl mx-auto mb-12">
-                <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-4">What we build</h2>
-                <p className="text-gray-300">200+ projects, from single-day event builds to full exhibition stands and office fit-outs. We work mostly in Dubai, with regular projects in Abu Dhabi, Sharjah and Al Ain. Our office is in Dubai and our own workshop is in Umm Al Quwain, so design, joinery, fabrication and installation stay in one team.</p>
-              </div>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
-                {[
-                  { t: 'Custom exhibition stands', img: '/images/site/exhibition-booth-lounge.webp', where: 'DWTC, Dubai Exhibition Centre (Expo City), ADNEC Abu Dhabi, Expo Centre Sharjah', scope: '18 - 150+ sqm, full design & build, AV, furniture, graphics, on-site build and dismantle' },
-                  { t: 'Modular & reusable stands', img: '/images/site/exhibition-machinery-stand.webp', where: 'Dubai and Abu Dhabi trade shows', scope: 'Systems that can be reused across several shows, with new graphics each time' },
-                  { t: 'Interactive & immersive displays', img: '/images/site/exhibition-tech-expo.webp', where: 'Exhibitions, brand activations and launches', scope: 'LED walls, touchscreens, projection, lighting and product displays built into the stand or set' },
-                  { t: 'Event sets & stages', img: '/images/site/event-dramatic-lighting.webp', where: 'Hotels and venues across Dubai and Abu Dhabi', scope: 'Stages, backdrops, photo walls, entrance features, gala and launch sets' },
-                  { t: 'Conferences & corporate events', img: '/images/site/event-conference-speaker.webp', where: 'Dubai, Abu Dhabi, Sharjah', scope: 'Stage and set build, branding, registration areas, breakout rooms' },
-                  { t: 'Commercial fit-out', img: '/images/site/fitout-executive-office.webp', where: 'Offices, clinics, retail and F&B across the UAE', scope: 'Design, joinery, ceilings, flooring, MEP coordination and handover' },
-                ].map(c => (
-                  <article key={c.t} className="bg-fann-charcoal-light border border-white/10 rounded-lg overflow-hidden shadow-xl">
-                    <img src={c.img} alt={c.t} loading="lazy" className="w-full h-52 object-cover" />
-                    <div className="p-6">
-                      <h3 className="text-xl font-serif font-bold text-white mb-3">{c.t}</h3>
-                      <p className="text-sm text-gray-300 mb-2"><MapPin size={14} className="inline mr-1 text-fann-gold" />{c.where}</p>
-                      <p className="text-sm text-gray-400">{c.scope}</p>
-                    </div>
-                  </article>
-                ))}
-              </div>
-              <p className="text-center text-xs text-gray-500 mb-10">Images illustrate the types of work we build.</p>
-              <div className="text-center bg-fann-charcoal-light border border-white/10 p-10 rounded-lg">
-                <h2 className="text-2xl font-serif font-bold text-white mb-3">Planning a project?</h2>
-                <p className="text-gray-400 mb-6">Tell us about your event or space and we will discuss the right approach.</p>
-                <div className="flex flex-wrap justify-center gap-4">
-                  <Link to="/contact" className="bg-fann-gold text-black font-bold px-8 py-3 rounded-full hover:opacity-90 transition">Start a conversation</Link>
-                  <a href="https://wa.me/971505667502" target="_blank" rel="noopener noreferrer" className="border border-fann-gold text-fann-gold font-bold px-8 py-3 rounded-full hover:bg-fann-gold/10 transition">WhatsApp us</a>
-                </div>
-              </div>
-            </div>
-          )}
+          <section className="max-w-6xl mx-auto text-center bg-fann-charcoal-light border border-white/10 p-8 md:p-12 rounded-lg">
+            <h2 className="text-3xl font-serif text-white mb-4">Planning your next space?</h2><p className="text-gray-400 mb-6">Tell us about your project and we will discuss the scope, design and build.</p><Link to="/contact" className="inline-block bg-fann-gold text-black font-bold px-8 py-3 rounded-full">Discuss your project</Link>
+          </section>
 
 
 

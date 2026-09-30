@@ -1,560 +1,1054 @@
 [
   {
-    "name": "School interior",
-    "sector": "Education",
-    "emirate": "Abu Dhabi",
-    "area": "6,664",
-    "year": "2024",
-    "slug": "fit-out/01-school-interior",
-    "description": "School interior · Education · Abu Dhabi, UAE · 2024."
-  },
-  {
-    "name": "Event hospitality interior",
-    "sector": "Entertainment & Civic",
-    "emirate": "Abu Dhabi",
-    "area": "3,230",
-    "year": "2023",
-    "slug": "fit-out/02-event-hospitality-interior",
-    "description": "Event hospitality interior · Entertainment & Civic · Abu Dhabi, UAE · 2023."
-  },
-  {
-    "name": "Itch Cafe",
-    "sector": "F&B",
-    "emirate": "Abu Dhabi",
-    "area": "1,938",
-    "year": "2021",
-    "slug": "fit-out/03-itch-cafe",
-    "description": "Itch Cafe · F&B · Abu Dhabi, UAE · 2021."
-  },
-  {
-    "name": "Break Al Qana Restaurant",
-    "sector": "F&B",
-    "emirate": "Abu Dhabi",
-    "area": "3,850",
-    "year": "2024",
-    "slug": "fit-out/04-break-al-qana-restaurant",
-    "description": "Break Al Qana Restaurant · F&B · Abu Dhabi, UAE · 2024."
-  },
-  {
-    "name": "Salmontini Le Bistro",
-    "sector": "F&B",
-    "emirate": "Abu Dhabi",
-    "area": "2,000",
-    "year": "2024",
-    "slug": "fit-out/05-salmontini-le-bistro",
-    "description": "Salmontini Le Bistro · F&B · Abu Dhabi, UAE · 2024."
-  },
-  {
-    "name": "Fitness club interior",
-    "sector": "Fitness & Leisure",
-    "emirate": "Abu Dhabi",
-    "area": "6,673",
-    "year": "2025",
-    "slug": "fit-out/06-fitness-club-interior",
-    "description": "Fitness club interior · Fitness & Leisure · Abu Dhabi, UAE · 2025."
-  },
-  {
-    "name": "Corporate office interior",
-    "sector": "Office",
-    "emirate": "Abu Dhabi",
-    "area": "13,562",
-    "year": "2022",
-    "slug": "fit-out/07-corporate-office-interior",
-    "description": "Corporate office interior · Office · Abu Dhabi, UAE · 2022."
-  },
-  {
-    "name": "Cloud Spaces Co-working Space - ADGM",
-    "sector": "Office",
-    "emirate": "Abu Dhabi",
-    "area": "19,964",
-    "year": "2023",
-    "slug": "fit-out/08-cloud-spaces-co-working-space-adgm",
-    "description": "Cloud Spaces Co-working Space - ADGM · Office · Abu Dhabi, UAE · 2023."
-  },
-  {
-    "name": "Corporate office interior",
-    "sector": "Office",
-    "emirate": "Abu Dhabi",
-    "area": "19,267",
-    "year": "2024",
-    "slug": "fit-out/09-corporate-office-interior",
-    "description": "Corporate office interior · Office · Abu Dhabi, UAE · 2024."
-  },
-  {
-    "name": "Corporate headquarters interior",
-    "sector": "Office",
-    "emirate": "Abu Dhabi",
-    "area": "15,000",
-    "year": "2025",
-    "slug": "fit-out/10-corporate-headquarters-interior",
-    "description": "Corporate headquarters interior · Office · Abu Dhabi, UAE · 2025."
-  },
-  {
-    "name": "Technology office interior",
+    "id": "AD-01",
+    "name": "DXC Technology Office",
     "sector": "Office",
     "emirate": "Abu Dhabi",
     "area": "5,885",
     "year": "2026",
     "slug": "fit-out/11-technology-office-interior",
-    "description": "Technology office interior · Office · Abu Dhabi, UAE · 2026."
+    "description": "Workplace fit-out of approximately 5,885 sq ft in Abu Dhabi, documented as complete in 2026. The interiors combine individual, collaborative and client-facing settings, delivered as a single coordinated package.",
+    "images": [
+      "/images/projects/118-fitout-5ba59deaefb7262388fbf9ee25d92b9e40b14a10.webp",
+      "/images/projects/98-fitout-4f8c66777106a695950b07d482efe919d7e4d6f1.webp",
+      "/images/projects/21-fitout-112bf5656b851771be593a397f3dd545d0ee5857.webp",
+      "/images/projects/205-fitout-b1c078fcad47f42de31c67bf2ccbaca34a7ddd73.webp",
+      "/images/projects/143-fitout-7b6afb38e69c0d80225b0197681bf9e64ed22d3e.webp"
+    ]
   },
   {
-    "name": "Villa Isola",
-    "sector": "Residential",
+    "id": "AD-02",
+    "name": "Al Masaood Corporate Headquarters",
+    "sector": "Office",
     "emirate": "Abu Dhabi",
-    "area": "4,000",
-    "year": "2022",
-    "slug": "fit-out/12-villa-isola",
-    "description": "Villa Isola · Residential · Abu Dhabi, UAE · 2022."
+    "area": "15,000",
+    "year": "2025",
+    "slug": "fit-out/10-corporate-headquarters-interior",
+    "description": "Workplace fit-out of approximately 15,000 sq ft in Abu Dhabi, documented as complete in 2025. Workstations, meeting and reception areas were completed as one programme, with finishes chosen for daily corporate use.",
+    "images": [
+      "/images/projects/53-fitout-2ce6bb272b02441331c03389e6e9d4b15298c315.webp",
+      "/images/projects/294-fitout-f308c55afd48f4e63e4ff2380caeb18732ded411.webp",
+      "/images/projects/48-fitout-29f73ce3b52484d2bf87ba1217acd65869f52e9f.webp",
+      "/images/projects/2-fitout-02b1c92377002a611540922ef8e0ba13aa377a96.webp",
+      "/images/projects/202-fitout-aefb89148e326561a3df41f8639cc08ed0c45063.webp"
+    ]
   },
   {
-    "name": "Mushrif Villa",
-    "sector": "Residential",
+    "id": "AD-03",
+    "name": "Barry's Gym",
+    "sector": "Fitness & Leisure",
     "emirate": "Abu Dhabi",
-    "area": "10,940",
-    "year": "2024",
-    "slug": "fit-out/13-mushrif-villa",
-    "description": "Mushrif Villa · Residential · Abu Dhabi, UAE · 2024."
+    "area": "6,673",
+    "year": "2025",
+    "slug": "fit-out/06-fitness-club-interior",
+    "description": "Fitness and leisure facility fit-out of approximately 6,673 sq ft in Abu Dhabi, documented as complete in 2025. Training, changing and recovery areas were completed as one coordinated programme.",
+    "images": [
+      "/images/projects/45-fitout-23f8896bc73e0afb93be5a56c4f293cadf791159.webp",
+      "/images/projects/261-fitout-d7b9c19d70014f8bcaf1c82456a29a9e62b6e975.webp",
+      "/images/projects/260-fitout-d7b7c612261553d6efa46670cb163eb6b59a0a77.webp",
+      "/images/projects/206-fitout-b23c1ad3f661b44070e968e3cae48705c9d2e725.webp",
+      "/images/projects/139-fitout-752f8d00e15a2904eb437313fca3130f14f36be0.webp"
+    ]
   },
   {
+    "id": "AD-04",
     "name": "Villa Amavita - Saadiyat Island",
     "sector": "Residential",
     "emirate": "Abu Dhabi",
     "area": "5,381",
     "year": "2025",
     "slug": "fit-out/14-villa-amavita-saadiyat-island",
-    "description": "Villa Amavita - Saadiyat Island · Residential · Abu Dhabi, UAE · 2025."
+    "description": "Private residential fit-out and refurbishment of approximately 5,381 sq ft in Abu Dhabi, documented as complete in 2025. Living and support spaces were refurbished to a bespoke, move-in-ready standard.",
+    "images": [
+      "/images/projects/303-fitout-fc358ef9244931c4d7682fc59114d27d3778ef1d.webp",
+      "/images/projects/134-fitout-6d51f53aeb79d198a1f5f0e698e2455c3dbe8298.webp",
+      "/images/projects/176-fitout-a017fcc4c37f734b636fe42abfc6f7c61a451fbc.webp",
+      "/images/projects/297-fitout-f629a4e4b940e1cd7cef50ec1487e95ab171a430.webp",
+      "/images/projects/24-fitout-153409c6107b7c3010d531a0546e46376e6b3dc1.webp"
+    ]
   },
   {
+    "id": "AD-05",
+    "name": "DFS Group Office",
+    "sector": "Office",
+    "emirate": "Abu Dhabi",
+    "area": "19,267",
+    "year": "2024",
+    "slug": "fit-out/09-corporate-office-interior",
+    "description": "Workplace fit-out of approximately 19,267 sq ft in Abu Dhabi, documented as complete in 2024. The layout balances open working space with enclosed meeting and quiet areas.",
+    "images": [
+      "/images/projects/73-fitout-3fcee4f6fc9b9437a034bbb0fb10025bcfba9f9c.webp",
+      "/images/projects/88-fitout-4977302675bd9cc797a9ba2a363b2ee4b977a1a9.webp",
+      "/images/projects/254-fitout-d3add04a1e53fd36e94116f8e0e56cb167d1c800.webp",
+      "/images/projects/19-fitout-102fea34bdf395b94e8125d75f047636fffd2906.webp",
+      "/images/projects/263-fitout-d7f8248cbc9349729887c7bc6528a56b58757850.webp"
+    ]
+  },
+  {
+    "id": "AD-06",
+    "name": "Mushrif Villa",
+    "sector": "Residential",
+    "emirate": "Abu Dhabi",
+    "area": "10,940",
+    "year": "2024",
+    "slug": "fit-out/13-mushrif-villa",
+    "description": "Private residential fit-out and refurbishment of approximately 10,940 sq ft in Abu Dhabi, documented as complete in 2024. Joinery, finishes and fittings across the interiors were delivered to a bespoke standard.",
+    "images": [
+      "/images/projects/173-fitout-9bc9a9842fe3146b3bb6bd176bb92a2f41fe2034.webp",
+      "/images/projects/192-fitout-a7f3ed76698e4795b945dbb3a2ced0034dbaeb64.webp",
+      "/images/projects/231-fitout-c0fe5bd5e0948badd14346625307711ca9daff65.webp",
+      "/images/projects/34-fitout-1d281a2aee8b994854f03feace15783c31cae007.webp",
+      "/images/projects/299-fitout-f7f6995ff5ae446cbba568b6f58cbb4f5314800c.webp"
+    ]
+  },
+  {
+    "id": "AD-07",
+    "name": "British International School",
+    "sector": "Education",
+    "emirate": "Abu Dhabi",
+    "area": "6,664",
+    "year": "2024",
+    "slug": "fit-out/01-school-interior",
+    "description": "Educational facility fit-out of approximately 6,664 sq ft in Abu Dhabi, documented as complete in 2024. Teaching and student support spaces were delivered around the operator's programme requirements.",
+    "images": [
+      "/images/projects/252-fitout-d190a06c56e83380cf078519fa58435101e29012.webp",
+      "/images/projects/58-fitout-34fb3f9c8237e12448b2d68929f061711107003e.webp",
+      "/images/projects/248-fitout-cd974e6e4f56ac7c6b2a68c6a2de7ea2f054ca37.webp",
+      "/images/projects/204-fitout-b150ec0cd3254f7c608dac49ad31b8c7f8ae9f3c.webp",
+      "/images/projects/243-fitout-c9800b42209e3bbd2bb8157cd39d9f9573198d5c.webp"
+    ]
+  },
+  {
+    "id": "AD-08",
+    "name": "Break Al Qana Restaurant",
+    "sector": "F&B",
+    "emirate": "Abu Dhabi",
+    "area": "3,850",
+    "year": "2024",
+    "slug": "fit-out/04-break-al-qana-restaurant",
+    "description": "Restaurant and cafe fit-out of approximately 3,850 sq ft in Abu Dhabi, documented as complete in 2024. Front-of-house dining and back-of-house support areas were delivered together, with finishes selected for heavy daily use.",
+    "images": [
+      "/images/projects/207-fitout-b25b21eda4cd684b813024c4327514ce7ae8b8ef.webp",
+      "/images/projects/178-fitout-a0305fe8af9b6801e4262175e54326601cfbc7f8.webp",
+      "/images/projects/266-fitout-d8efc555bc7ba52f3dedc542f76835e9a6b4857e.webp",
+      "/images/projects/78-fitout-42f1783b09e7f59a6049144a63d284a8a49d8dc7.webp",
+      "/images/projects/230-fitout-c0fbb3811bfbb651c66f4a9c5f434db4097c0469.webp"
+    ]
+  },
+  {
+    "id": "AD-09",
+    "name": "Salmontini Le Bistro",
+    "sector": "F&B",
+    "emirate": "Abu Dhabi",
+    "area": "2,000",
+    "year": "2024",
+    "slug": "fit-out/05-salmontini-le-bistro",
+    "description": "Restaurant and cafe fit-out of approximately 2,000 sq ft in Abu Dhabi, documented as complete in 2024. Dining spaces, service points and support areas were completed as a single coordinated package.",
+    "images": [
+      "/images/projects/104-fitout-5470e81c0a2502730360116780d6e94896b88fb5.webp",
+      "/images/projects/126-fitout-657921d976eb8b997613d940bea5b546543fca84.webp",
+      "/images/projects/157-fitout-8d6e28e1314f676f9494e3edc07d3278552dfb11.webp",
+      "/images/projects/63-fitout-3b670cc6ef4c29562b6df2cc8b4c9bf9f62dddd1.webp",
+      "/images/projects/222-fitout-bd64057bf1f99cc3c450cabb9bd07c3b64bc5709.webp"
+    ]
+  },
+  {
+    "id": "AD-10",
     "name": "Fern Flower Shop",
     "sector": "Retail",
     "emirate": "Abu Dhabi",
     "area": "1,152",
     "year": "2024",
     "slug": "fit-out/15-fern-flower-shop",
-    "description": "Fern Flower Shop · Retail · Abu Dhabi, UAE · 2024."
+    "description": "Retail unit fit-out of approximately 1,152 sq ft in Abu Dhabi, documented as complete in 2024. Sales floor, display and point-of-sale zones are arranged to support customer flow and merchandising.",
+    "images": [
+      "/images/projects/121-fitout-5ee730cc2ecae04b352ed3b6cb3d5b12d61b56ba.webp",
+      "/images/projects/47-fitout-27910c4e0c736051c1ad5b841be9df7324a9383e.webp",
+      "/images/projects/110-fitout-57d411e8b4e0d2ccbd97835f9b4a1731861da615.webp",
+      "/images/projects/191-fitout-a6ee5b5e06275b4310518cfaa133bdbd54b8b397.webp",
+      "/images/projects/11-fitout-072b09f5c3b46b77c42689e72fd0f32045d2f2e6.webp"
+    ]
   },
   {
-    "name": "Century Bank Brokers Office",
-    "sector": "Banking & Finance",
-    "emirate": "Dubai",
-    "area": "6,000",
+    "id": "AD-11",
+    "name": "Cloud Spaces Co-working Space - ADGM",
+    "sector": "Office",
+    "emirate": "Abu Dhabi",
+    "area": "19,964",
+    "year": "2023",
+    "slug": "fit-out/08-cloud-spaces-co-working-space-adgm",
+    "description": "Workplace fit-out of approximately 19,964 sq ft in Abu Dhabi, documented as complete in 2023. The interiors combine individual, collaborative and client-facing settings, delivered as a single coordinated package.",
+    "images": [
+      "/images/projects/170-fitout-9a0101656cc8a751ff63214cc9ac627bb300400a.webp",
+      "/images/projects/25-fitout-1546d2c81fd37bb894b7c3ca8c12daa636f40a9f.webp",
+      "/images/projects/75-fitout-4048057f220da43f6a106614451355eee471318c.webp",
+      "/images/projects/189-fitout-a6530f99a76e31609bb46fee7a45c087778dcc5b.webp",
+      "/images/projects/201-fitout-ae0cb15291b840bb1c346bd775ad9de4f319d6f2.webp"
+    ]
+  },
+  {
+    "id": "AD-12",
+    "name": "F1 Paddock Club",
+    "sector": "Entertainment & Civic",
+    "emirate": "Abu Dhabi",
+    "area": "3,230",
+    "year": "2023",
+    "slug": "fit-out/02-event-hospitality-interior",
+    "description": "Public-facing interior fit-out of approximately 3,230 sq ft in Abu Dhabi, documented as complete in 2023. The space was delivered to civic-grade finish and durability standards.",
+    "images": [
+      "/images/projects/305-fitout-fe23bb2077f85da842385006b1ef4946a60b1d96.webp",
+      "/images/projects/50-fitout-2a5c5d9e02a977b4de6fe0663cff65a30cb9e2be.webp",
+      "/images/projects/95-fitout-4c7a0ea5ee2cd3e3358317de06d9db4703463706.webp",
+      "/images/projects/232-fitout-c16a34e595306deb829033f6bb16b575c4c59360.webp",
+      "/images/projects/250-fitout-d121e3b789537d08e6ab06245121032734344a37.webp"
+    ]
+  },
+  {
+    "id": "AD-13",
+    "name": "ADQ Office, Etihad Airways Centre Abu Dhabi",
+    "sector": "Office",
+    "emirate": "Abu Dhabi",
+    "area": "13,562",
+    "year": "2022",
+    "slug": "fit-out/07-corporate-office-interior",
+    "description": "Workplace fit-out of approximately 13,562 sq ft in Abu Dhabi, documented as complete in 2022. Workstations, meeting and reception areas were completed as one programme, with finishes chosen for daily corporate use.",
+    "images": [
+      "/images/projects/163-fitout-938aad5a3620c03c038fcb3576b475ae254f72cd.webp",
+      "/images/projects/129-fitout-675fba0d611214beb96cc8a2e5ef34017c12769d.webp",
+      "/images/projects/193-fitout-a8089539c7864f454397e1b6b3b5084ef6d564ce.webp",
+      "/images/projects/283-fitout-e53f3caef6125c1ddd91756487e8bba21a45cf9b.webp",
+      "/images/projects/1-fitout-0154ddac9e41ce9dd7ada0badd457a3dbe38a3f1.webp"
+    ]
+  },
+  {
+    "id": "AD-14",
+    "name": "Villa Isola",
+    "sector": "Residential",
+    "emirate": "Abu Dhabi",
+    "area": "4,000",
+    "year": "2022",
+    "slug": "fit-out/12-villa-isola",
+    "description": "Private residential fit-out and refurbishment of approximately 4,000 sq ft in Abu Dhabi, documented as complete in 2022. The interiors pair custom joinery with a calm, neutral material palette.",
+    "images": [
+      "/images/projects/301-fitout-f888ad44e700414d56bd6beb3687d665eefe7f40.webp",
+      "/images/projects/298-fitout-f6d4f62f30a0847ceb25319553489de0f30484bd.webp",
+      "/images/projects/293-fitout-f25f15c431213fea7acd8a37a9b90e5dabfe6e13.webp",
+      "/images/projects/214-fitout-b897baa847188a4c7f5d97ab07b557ded9bc283f.webp",
+      "/images/projects/235-fitout-c251d1ec4b018102c5d0ed83c29bbad601be533f.webp"
+    ]
+  },
+  {
+    "id": "AD-15",
+    "name": "Itch Cafe",
+    "sector": "F&B",
+    "emirate": "Abu Dhabi",
+    "area": "1,938",
     "year": "2021",
-    "slug": "fit-out/16-century-bank-brokers-office",
-    "description": "Century Bank Brokers Office · Banking & Finance · Dubai, UAE · 2021."
+    "slug": "fit-out/03-itch-cafe",
+    "description": "Restaurant and cafe fit-out of approximately 1,938 sq ft in Abu Dhabi, documented as complete in 2021. Seating zones, service counters and kitchen support areas were delivered to operational standards.",
+    "images": [
+      "/images/projects/57-fitout-33c880c054a8a456f47543b1090daf63026fcc14.webp",
+      "/images/projects/225-fitout-becfaae19ffd0a76381ac497b9774bec8b61c3b2.webp",
+      "/images/projects/302-fitout-f8f992ca18e4c2e34ba84d2cd62731b54937084f.webp",
+      "/images/projects/94-fitout-4c475dbebd67f2ba20653088960cf003e71d92a8.webp",
+      "/images/projects/169-fitout-9817d229d6d48d5501c7fb2815c1e90ae31c17b5.webp"
+    ]
   },
   {
-    "name": "University interior",
-    "sector": "Education",
-    "emirate": "Dubai",
-    "area": "12,777",
-    "year": "2022",
-    "slug": "fit-out/17-university-interior",
-    "description": "University interior · Education · Dubai, UAE · 2022."
-  },
-  {
-    "name": "School interior",
-    "sector": "Education",
-    "emirate": "Dubai",
-    "area": "24,880",
-    "year": "2024",
-    "slug": "fit-out/18-school-interior",
-    "description": "School interior · Education · Dubai, UAE · 2024."
-  },
-  {
-    "name": "ATTIKO Restaurant",
-    "sector": "F&B",
-    "emirate": "Dubai",
-    "area": "6,458",
-    "year": "2022",
-    "slug": "fit-out/19-attiko-restaurant",
-    "description": "ATTIKO Restaurant · F&B · Dubai, UAE · 2022."
-  },
-  {
-    "name": "Hotel restaurant interior",
-    "sector": "F&B",
-    "emirate": "Dubai",
-    "area": "10,495",
-    "year": "2022",
-    "slug": "fit-out/20-hotel-restaurant-interior",
-    "description": "Hotel restaurant interior · F&B · Dubai, UAE · 2022."
-  },
-  {
-    "name": "Hotel restaurant interior",
-    "sector": "F&B",
-    "emirate": "Dubai",
-    "area": "6,673",
-    "year": "2022",
-    "slug": "fit-out/21-hotel-restaurant-interior",
-    "description": "Hotel restaurant interior · F&B · Dubai, UAE · 2022."
-  },
-  {
-    "name": "Atrangi Restaurant",
-    "sector": "F&B",
-    "emirate": "Dubai",
-    "area": "5,275",
-    "year": "2023",
-    "slug": "fit-out/22-atrangi-restaurant",
-    "description": "Atrangi Restaurant · F&B · Dubai, UAE · 2023."
-  },
-  {
-    "name": "City Social Restaurant",
-    "sector": "F&B",
-    "emirate": "Dubai",
-    "area": "9,310",
-    "year": "2023",
-    "slug": "fit-out/23-city-social-restaurant",
-    "description": "City Social Restaurant · F&B · Dubai, UAE · 2023."
-  },
-  {
-    "name": "Adaline Restaurant",
-    "sector": "F&B",
-    "emirate": "Dubai",
-    "area": "6,000",
-    "year": "2024",
-    "slug": "fit-out/24-adaline-restaurant",
-    "description": "Adaline Restaurant · F&B · Dubai, UAE · 2024."
-  },
-  {
-    "name": "Alba Restaurant",
-    "sector": "F&B",
-    "emirate": "Dubai",
-    "area": "5,000",
-    "year": "2024",
-    "slug": "fit-out/25-alba-restaurant",
-    "description": "Alba Restaurant · F&B · Dubai, UAE · 2024."
-  },
-  {
-    "name": "Fitness studio interior",
-    "sector": "Fitness & Leisure",
-    "emirate": "Dubai",
-    "area": "10,000",
-    "year": "2022",
-    "slug": "fit-out/26-fitness-studio-interior",
-    "description": "Fitness studio interior · Fitness & Leisure · Dubai, UAE · 2022."
-  },
-  {
-    "name": "Banya Forrest Spa and Health Club",
-    "sector": "Fitness & Leisure",
-    "emirate": "Dubai",
-    "area": "11,000",
-    "year": "2024",
-    "slug": "fit-out/27-banya-forrest-spa-and-health-club",
-    "description": "Banya Forrest Spa and Health Club · Fitness & Leisure · Dubai, UAE · 2024."
-  },
-  {
-    "name": "Healthcare clinic interior",
-    "sector": "Healthcare",
-    "emirate": "Dubai",
-    "area": "6,867",
-    "year": "2022",
-    "slug": "fit-out/28-healthcare-clinic-interior",
-    "description": "Healthcare clinic interior · Healthcare · Dubai, UAE · 2022."
-  },
-  {
-    "name": "Fayy Health Polyclinic",
-    "sector": "Healthcare",
-    "emirate": "Dubai",
-    "area": "13,000",
-    "year": "2023",
-    "slug": "fit-out/29-fayy-health-polyclinic",
-    "description": "Fayy Health Polyclinic · Healthcare · Dubai, UAE · 2023."
-  },
-  {
-    "name": "Aspris Clinic - City Walk",
-    "sector": "Healthcare",
-    "emirate": "Dubai",
-    "area": "5,490",
-    "year": "2024",
-    "slug": "fit-out/30-aspris-clinic-city-walk",
-    "description": "Aspris Clinic - City Walk · Healthcare · Dubai, UAE · 2024."
-  },
-  {
-    "name": "Hotel restaurant interior",
-    "sector": "Hospitality",
-    "emirate": "Dubai",
-    "area": "6,361",
-    "year": "2021",
-    "slug": "fit-out/31-hotel-restaurant-interior",
-    "description": "Hotel restaurant interior · Hospitality · Dubai, UAE · 2021."
-  },
-  {
-    "name": "Hotel suite interior",
-    "sector": "Hospitality",
-    "emirate": "Dubai",
-    "area": "1,722",
-    "year": "2022",
-    "slug": "fit-out/32-hotel-suite-interior",
-    "description": "Hotel suite interior · Hospitality · Dubai, UAE · 2022."
-  },
-  {
-    "name": "Resort interior",
-    "sector": "Hospitality",
-    "emirate": "Dubai",
-    "area": "4,284",
-    "year": "2023",
-    "slug": "fit-out/33-resort-interior",
-    "description": "Resort interior · Hospitality · Dubai, UAE · 2023."
-  },
-  {
-    "name": "ORO24 Real Estate Developments Head Office, Sheikh Zayed Rd",
-    "sector": "Office",
-    "emirate": "Dubai",
-    "area": "12,000",
-    "year": "2021",
-    "slug": "fit-out/34-oro24-real-estate-developments-head-office-sheikh-zayed-rd",
-    "description": "ORO24 Real Estate Developments Head Office, Sheikh Zayed Rd · Office · Dubai, UAE · 2021."
-  },
-  {
-    "name": "Corporate headquarters interior",
-    "sector": "Office",
-    "emirate": "Dubai",
-    "area": "19,692",
-    "year": "2022",
-    "slug": "fit-out/35-corporate-headquarters-interior",
-    "description": "Corporate headquarters interior · Office · Dubai, UAE · 2022."
-  },
-  {
-    "name": "Corporate office interior",
-    "sector": "Office",
-    "emirate": "Dubai",
-    "area": "12,492",
-    "year": "2022",
-    "slug": "fit-out/36-corporate-office-interior",
-    "description": "Corporate office interior · Office · Dubai, UAE · 2022."
-  },
-  {
-    "name": "Augustus Media Office",
-    "sector": "Office",
-    "emirate": "Dubai",
-    "area": "12,000",
-    "year": "2022",
-    "slug": "fit-out/37-augustus-media-office",
-    "description": "Augustus Media Office · Office · Dubai, UAE · 2022."
-  },
-  {
-    "name": "Echo Project Development Office",
-    "sector": "Office",
-    "emirate": "Dubai",
-    "area": "6,740",
-    "year": "2023",
-    "slug": "fit-out/38-echo-project-development-office",
-    "description": "Echo Project Development Office · Office · Dubai, UAE · 2023."
-  },
-  {
-    "name": "Corporate headquarters interior",
-    "sector": "Office",
-    "emirate": "Dubai",
-    "area": "7,535",
-    "year": "2023",
-    "slug": "fit-out/39-corporate-headquarters-interior",
-    "description": "Corporate headquarters interior · Office · Dubai, UAE · 2023."
-  },
-  {
-    "name": "Corporate office interior",
-    "sector": "Office",
-    "emirate": "Dubai",
-    "area": "7,596",
-    "year": "2023",
-    "slug": "fit-out/40-corporate-office-interior",
-    "description": "Corporate office interior · Office · Dubai, UAE · 2023."
-  },
-  {
-    "name": "Technology office interior",
-    "sector": "Office",
-    "emirate": "Dubai",
-    "area": "9,331",
-    "year": "2023",
-    "slug": "fit-out/41-technology-office-interior",
-    "description": "Technology office interior · Office · Dubai, UAE · 2023."
-  },
-  {
+    "id": "DU-01",
     "name": "AB Prime Realty Office",
     "sector": "Office",
     "emirate": "Dubai",
     "area": "10,118",
     "year": "2025",
     "slug": "fit-out/42-ab-prime-realty-office",
-    "description": "AB Prime Realty Office · Office · Dubai, UAE · 2025."
+    "description": "Workplace fit-out of approximately 10,118 sq ft in Dubai, documented as complete in 2025. The interiors combine individual, collaborative and client-facing settings, delivered as a single coordinated package.",
+    "images": [
+      "/images/projects/182-fitout-a1a8a8232334eb205ddcd9c1aeff8301078aab74.webp",
+      "/images/projects/28-fitout-15da8cda83b55edb90fb5a598ac5daa1cd1d25b3.webp",
+      "/images/projects/22-fitout-115385edc22b0fda0e30d919101ee0edf7f91a1a.webp",
+      "/images/projects/125-fitout-64578eebeea8f39a848ae5c8bb291a6b1167bafd.webp",
+      "/images/projects/161-fitout-936a18bfe62962f633de810db6f0b27b54b8cbdd.webp"
+    ]
   },
   {
-    "name": "Private villa interior",
-    "sector": "Residential",
-    "emirate": "Dubai",
-    "area": "26,910",
-    "year": "2021",
-    "slug": "fit-out/43-private-villa-interior",
-    "description": "Private villa interior · Residential · Dubai, UAE · 2021."
-  },
-  {
-    "name": "EA183 Private Residence",
-    "sector": "Residential",
-    "emirate": "Dubai",
-    "area": "18,000",
-    "year": "2023",
-    "slug": "fit-out/44-ea183-private-residence",
-    "description": "EA183 Private Residence · Residential · Dubai, UAE · 2023."
-  },
-  {
-    "name": "Alto Villa",
-    "sector": "Residential",
-    "emirate": "Dubai",
-    "area": "12,970",
-    "year": "2024",
-    "slug": "fit-out/45-alto-villa",
-    "description": "Alto Villa · Residential · Dubai, UAE · 2024."
-  },
-  {
-    "name": "Emirates Hills Villa - Elegance & Luxury",
-    "sector": "Residential",
-    "emirate": "Dubai",
-    "area": "17,765",
-    "year": "2024",
-    "slug": "fit-out/46-emirates-hills-villa-elegance-luxury",
-    "description": "Emirates Hills Villa - Elegance & Luxury · Residential · Dubai, UAE · 2024."
-  },
-  {
-    "name": "Private penthouse interior",
-    "sector": "Residential",
-    "emirate": "Dubai",
-    "area": "4,494",
-    "year": "2024",
-    "slug": "fit-out/47-private-penthouse-interior",
-    "description": "Private penthouse interior · Residential · Dubai, UAE · 2024."
-  },
-  {
+    "id": "DU-02",
     "name": "A Sanctuary in the City Home",
     "sector": "Residential",
     "emirate": "Dubai",
     "area": "2,500",
     "year": "2025",
     "slug": "fit-out/48-a-sanctuary-in-the-city-home",
-    "description": "A Sanctuary in the City Home · Residential · Dubai, UAE · 2025."
+    "description": "Private residential fit-out and refurbishment of approximately 2,500 sq ft in Dubai, documented as complete in 2025. Living and support spaces were refurbished to a bespoke, move-in-ready standard.",
+    "images": [
+      "/images/projects/188-fitout-a5abc36cefd1136c5f130e61969fbaf429385aab.webp",
+      "/images/projects/246-fitout-cb3c6d366046b194a26160758e46f405834bd704.webp",
+      "/images/projects/218-fitout-ba76b89a9df20e0377f80bae189e258a8bf4cf3e.webp",
+      "/images/projects/7-fitout-05125bb317da24fb9354927f703fab89b51c104e.webp",
+      "/images/projects/275-fitout-e091d7730a9607df90c88b01e36acfacfc7e7786.webp"
+    ]
   },
   {
-    "name": "Retail store interior",
-    "sector": "Retail",
-    "emirate": "Dubai",
-    "area": "1,937",
-    "year": "2022",
-    "slug": "fit-out/49-retail-store-interior",
-    "description": "Retail store interior · Retail · Dubai, UAE · 2022."
-  },
-  {
-    "name": "Luxury boutique interior",
-    "sector": "Retail",
-    "emirate": "Dubai",
-    "area": "2,000",
-    "year": "2022",
-    "slug": "fit-out/50-luxury-boutique-interior",
-    "description": "Luxury boutique interior · Retail · Dubai, UAE · 2022."
-  },
-  {
-    "name": "Retail showroom interior",
-    "sector": "Retail",
-    "emirate": "Dubai",
-    "area": "2,917",
-    "year": "2023",
-    "slug": "fit-out/51-retail-showroom-interior",
-    "description": "Retail showroom interior · Retail · Dubai, UAE · 2023."
-  },
-  {
+    "id": "DU-03",
     "name": "Global Furniture Showroom",
     "sector": "Retail",
     "emirate": "Dubai",
     "area": "1,600",
     "year": "2025",
     "slug": "fit-out/52-global-furniture-showroom",
-    "description": "Global Furniture Showroom · Retail · Dubai, UAE · 2025."
+    "description": "Retail unit fit-out of approximately 1,600 sq ft in Dubai, documented as complete in 2025. Sales floor, display and point-of-sale zones are arranged to support customer flow and merchandising.",
+    "images": [
+      "/images/projects/153-fitout-89a93b446924edd4c58861fdcc342a1e8b7e3dcd.webp",
+      "/images/projects/59-fitout-381fc99b8d990f3e29ba704ac6d7435ef36a220c.webp",
+      "/images/projects/258-fitout-d59c86916c928eda12f2c952a1f1e7d6e44133fc.webp",
+      "/images/projects/224-fitout-bde6199c5b306391aafed4cbe9c7ba3347eaa885.webp",
+      "/images/projects/123-fitout-608df0d7b00da9579e46dc84deff3030f432981f.webp"
+    ]
   },
   {
-    "name": "Kibba Wa Tabbola Restaurant",
+    "id": "DU-04",
+    "name": "Dubai British School - Jumeira",
+    "sector": "Education",
+    "emirate": "Dubai",
+    "area": "24,880",
+    "year": "2024",
+    "slug": "fit-out/18-school-interior",
+    "description": "Educational facility fit-out of approximately 24,880 sq ft in Dubai, documented as complete in 2024. Teaching and student support spaces were delivered around the operator's programme requirements.",
+    "images": [
+      "/images/projects/36-fitout-1d4bd0944ebc8a9d9d412274182044f891e730f7.webp",
+      "/images/projects/76-fitout-40646329a37be58185887317cadc01b94bbff615.webp",
+      "/images/projects/280-fitout-e410482e3a279dd6342e49909cd973ced894f02d.webp",
+      "/images/projects/18-fitout-0e80a2618ad58c315ffaee71e9e825bf27c057e1.webp",
+      "/images/projects/304-fitout-fd49248d947f5c37e4065827198fb5b6354a216f.webp"
+    ]
+  },
+  {
+    "id": "DU-05",
+    "name": "Emirates Hills Villa - Elegance & Luxury",
+    "sector": "Residential",
+    "emirate": "Dubai",
+    "area": "17,765",
+    "year": "2024",
+    "slug": "fit-out/46-emirates-hills-villa-elegance-luxury",
+    "description": "Private residential fit-out and refurbishment of approximately 17,765 sq ft in Dubai, documented as complete in 2024. Joinery, finishes and fittings across the interiors were delivered to a bespoke standard.",
+    "images": [
+      "/images/projects/291-fitout-ef7ad2e0ff4e4507204f701288901c6940cf39ca.webp",
+      "/images/projects/272-fitout-de1b2b30eb7e96bc6bfab4cb82a90a8b141c125a.webp",
+      "/images/projects/145-fitout-7fa9dfec1b06d447400e2d3a3667177f4c95facf.webp",
+      "/images/projects/135-fitout-6e4265b1aecca35f2c32cadd872d0d777cec621e.webp",
+      "/images/projects/281-fitout-e41384ed21704cb0a7dc015ea6f209415b9cb049.webp"
+    ]
+  },
+  {
+    "id": "DU-06",
+    "name": "Alto Villa",
+    "sector": "Residential",
+    "emirate": "Dubai",
+    "area": "12,970",
+    "year": "2024",
+    "slug": "fit-out/45-alto-villa",
+    "description": "Private residential fit-out and refurbishment of approximately 12,970 sq ft in Dubai, documented as complete in 2024. The interiors pair custom joinery with a calm, neutral material palette.",
+    "images": [
+      "/images/projects/288-fitout-ee0d7f709689678a9a1636396044a0e6b2b98659.webp",
+      "/images/projects/44-fitout-2389c685351c4e0ab095b00f859551a5d8212ccd.webp",
+      "/images/projects/39-fitout-21035c1786fecce22634c8c2a2c7c51896c03307.webp",
+      "/images/projects/93-fitout-4b593e6a1bb90d91ae570203e07c022eed1f8ac9.webp",
+      "/images/projects/72-fitout-3f7b0dbc9f1e028b7a39a8872a046a1ad5d2cafb.webp"
+    ]
+  },
+  {
+    "id": "DU-07",
+    "name": "Banya Forrest Spa and Health Club",
+    "sector": "Fitness & Leisure",
+    "emirate": "Dubai",
+    "area": "11,000",
+    "year": "2024",
+    "slug": "fit-out/27-banya-forrest-spa-and-health-club",
+    "description": "Fitness and leisure facility fit-out of approximately 11,000 sq ft in Dubai, documented as complete in 2024. Training, changing and recovery areas were completed as one coordinated programme.",
+    "images": [
+      "/images/projects/213-fitout-b86f6af87fcc47520bff11ada8ea16f04d4496bd.webp",
+      "/images/projects/256-fitout-d4e73be3f8fe126b85b40dda6bc69259f7c49f67.webp",
+      "/images/projects/31-fitout-1a9e96eca9975041267f52da0140c82ea8b5d93d.webp",
+      "/images/projects/101-fitout-5263a9509a05d8036e2b7652da7bf0414ef0c349.webp",
+      "/images/projects/262-fitout-d7e8ebdf635820b1ca38215feb671fe04e34aa14.webp"
+    ]
+  },
+  {
+    "id": "DU-08",
+    "name": "Adaline Restaurant",
     "sector": "F&B",
-    "emirate": "Ras Al Khaimah",
-    "area": "4,306",
-    "year": "2022",
-    "slug": "fit-out/53-kibba-wa-tabbola-restaurant",
-    "description": "Kibba Wa Tabbola Restaurant · F&B · Ras Al Khaimah, UAE · 2022."
+    "emirate": "Dubai",
+    "area": "6,000",
+    "year": "2024",
+    "slug": "fit-out/24-adaline-restaurant",
+    "description": "Restaurant and cafe fit-out of approximately 6,000 sq ft in Dubai, documented as complete in 2024. Front-of-house dining and back-of-house support areas were delivered together, with finishes selected for heavy daily use.",
+    "images": [
+      "/images/projects/186-fitout-a321ed2036ac59ab5156d5f635b75a44b9dbd8b3.webp",
+      "/images/projects/187-fitout-a4759dcafff66527036c4de9e648094fa73e3f1d.webp",
+      "/images/projects/100-fitout-51aa67982d940f2dd2fdcbeb03b437775fdf714c.webp",
+      "/images/projects/52-fitout-2c4cdae14b14c58c5ed1d76b4e411b307a67cb8e.webp",
+      "/images/projects/85-fitout-46f21b223036d4b37db56303c7fc72ace44e707b.webp"
+    ]
   },
   {
-    "name": "Hotel restaurant interior",
+    "id": "DU-09",
+    "name": "Aspris Clinic - City Walk",
+    "sector": "Healthcare",
+    "emirate": "Dubai",
+    "area": "5,490",
+    "year": "2024",
+    "slug": "fit-out/30-aspris-clinic-city-walk",
+    "description": "Clinical fit-out of approximately 5,490 sq ft in Dubai, documented as complete in 2024. Reception, consultation and treatment areas follow a patient-first planning approach with hygienic, robust finishes.",
+    "images": [
+      "/images/projects/109-fitout-572a19833891731b140968ccbb6bd3b78b4570f9.webp",
+      "/images/projects/86-fitout-4752d51d7ee26bfe131dc7f8c894d05406d7d363.webp",
+      "/images/projects/150-fitout-87f96eb381158c08df7df96cb048504e2450dac3.webp",
+      "/images/projects/120-fitout-5df3e786eccf1a817d6fb541539cfe2ae44c9fa1.webp",
+      "/images/projects/184-fitout-a25aa224b1af46a4699b617b836e36195073912d.webp"
+    ]
+  },
+  {
+    "id": "DU-10",
+    "name": "Alba Restaurant",
     "sector": "F&B",
-    "emirate": "Ras Al Khaimah",
-    "area": null,
+    "emirate": "Dubai",
+    "area": "5,000",
+    "year": "2024",
+    "slug": "fit-out/25-alba-restaurant",
+    "description": "Restaurant and cafe fit-out of approximately 5,000 sq ft in Dubai, documented as complete in 2024. Dining spaces, service points and support areas were completed as a single coordinated package.",
+    "images": [
+      "/images/projects/23-fitout-12d66e51dbcb6a5c8bbc350a5ea1c72b821ad480.webp",
+      "/images/projects/271-fitout-dd7e3cf209476fe2f8691d6674d1e019177b3546.webp",
+      "/images/projects/216-fitout-b9246a0a0cf5b1ce8d24f2385595fac46e1c24ed.webp",
+      "/images/projects/221-fitout-bcf59b133aa1cb5b44f037b3ced552c6fd9e5d42.webp",
+      "/images/projects/229-fitout-c09806e02c3f15a36d7ffe1a614fe45aae6e5f04.webp"
+    ]
+  },
+  {
+    "id": "DU-11",
+    "name": "The Burj Khalifa Rubino Penthouse",
+    "sector": "Residential",
+    "emirate": "Dubai",
+    "area": "4,494",
+    "year": "2024",
+    "slug": "fit-out/47-private-penthouse-interior",
+    "description": "Private residential fit-out and refurbishment of approximately 4,494 sq ft in Dubai, documented as complete in 2024. Living and support spaces were refurbished to a bespoke, move-in-ready standard.",
+    "images": [
+      "/images/projects/128-fitout-6751a7afcf6beb834ed277542ab807f2a247ae72.webp",
+      "/images/projects/167-fitout-9694c57c311c50cb3299140524901c218311dd08.webp",
+      "/images/projects/244-fitout-cabdd2ee64e2df42ae59a72b00ccfaa2043a3551.webp",
+      "/images/projects/49-fitout-2a0034db5167228a8573d5dc21af4de0ab140de9.webp",
+      "/images/projects/257-fitout-d56a8b68ebfa87c8a2e378332eb12a79827b90e9.webp"
+    ]
+  },
+  {
+    "id": "DU-12",
+    "name": "EA183 Private Residence",
+    "sector": "Residential",
+    "emirate": "Dubai",
+    "area": "18,000",
+    "year": "2023",
+    "slug": "fit-out/44-ea183-private-residence",
+    "description": "Private residential fit-out and refurbishment of approximately 18,000 sq ft in Dubai, documented as complete in 2023. Joinery, finishes and fittings across the interiors were delivered to a bespoke standard.",
+    "images": [
+      "/images/projects/286-fitout-ec20dc0c91d096c523ba46b2096558fcaf83c7a0.webp",
+      "/images/projects/8-fitout-059aadfa7e0fde023a4c36a54a25cc17ea723a52.webp",
+      "/images/projects/89-fitout-49fbdcce6d103e0c21d4f3d3010ba0c0407b6f4d.webp",
+      "/images/projects/226-fitout-bf0e523bf849c62524e75a3019630ce8aa4da928.webp",
+      "/images/projects/62-fitout-3ad79095ce3e26f83cf3cf626db54d1fab8274a4.webp"
+    ]
+  },
+  {
+    "id": "DU-13",
+    "name": "Fayy Health Polyclinic",
+    "sector": "Healthcare",
+    "emirate": "Dubai",
+    "area": "13,000",
+    "year": "2023",
+    "slug": "fit-out/29-fayy-health-polyclinic",
+    "description": "Clinical fit-out of approximately 13,000 sq ft in Dubai, documented as complete in 2023. Clinical and reception areas were delivered with hygienic, hard-wearing finishes.",
+    "images": [
+      "/images/projects/64-fitout-3bed79aee39856ea7c83d87302447f75b0b90090.webp",
+      "/images/projects/15-fitout-0967cd6c14f4696b5fd1f3a7c8406687677bed52.webp",
+      "/images/projects/87-fitout-4908490091d0dde52ff0b369232302b0427c590f.webp",
+      "/images/projects/200-fitout-adc61f3913dee020278e51a9c794bae53aa8f2de.webp",
+      "/images/projects/17-fitout-0e56fdaa8cf214542fa802eda04f2e5b85bff887.webp"
+    ]
+  },
+  {
+    "id": "DU-14",
+    "name": "Adyen Office",
+    "sector": "Office",
+    "emirate": "Dubai",
+    "area": "9,331",
+    "year": "2023",
+    "slug": "fit-out/41-technology-office-interior",
+    "description": "Workplace fit-out of approximately 9,331 sq ft in Dubai, documented as complete in 2023. Workstations, meeting and reception areas were completed as one programme, with finishes chosen for daily corporate use.",
+    "images": [
+      "/images/projects/306-fitout-fe5d25959f8814b423521bc64efa79ed3fa0efe2.webp",
+      "/images/projects/251-fitout-d181dcfc1731997ab062412c1452034761a07613.webp",
+      "/images/projects/215-fitout-b8ab931e8cbd02b2b58dbac67400aacc5c9fae67.webp",
+      "/images/projects/60-fitout-398e31bedabc1778ca2715fea836bf1e5fdeb7b2.webp",
+      "/images/projects/42-fitout-217e251355ca4ed1832a7b8ec7944e9cfb31ba5f.webp"
+    ]
+  },
+  {
+    "id": "DU-15",
+    "name": "City Social Restaurant",
+    "sector": "F&B",
+    "emirate": "Dubai",
+    "area": "9,310",
+    "year": "2023",
+    "slug": "fit-out/23-city-social-restaurant",
+    "description": "Restaurant and cafe fit-out of approximately 9,310 sq ft in Dubai, documented as complete in 2023. Seating zones, service counters and kitchen support areas were delivered to operational standards.",
+    "images": [
+      "/images/projects/220-fitout-bc5d21f2eb7519da999288e80e7e142cec6c415f.webp",
+      "/images/projects/111-fitout-57e2e70d041929d5aa0e66a05c6411e93397104e.webp",
+      "/images/projects/138-fitout-726d499471cf3c0170533ae815031a5bb3dcbd12.webp",
+      "/images/projects/119-fitout-5c98863ca8b73e584de7834a4fcb774e6dafcd4b.webp",
+      "/images/projects/233-fitout-c232b282f872b8693f43e0d8a651ad73073ed988.webp"
+    ]
+  },
+  {
+    "id": "DU-16",
+    "name": "AON Office",
+    "sector": "Office",
+    "emirate": "Dubai",
+    "area": "7,596",
+    "year": "2023",
+    "slug": "fit-out/40-corporate-office-interior",
+    "description": "Workplace fit-out of approximately 7,596 sq ft in Dubai, documented as complete in 2023. The layout balances open working space with enclosed meeting and quiet areas.",
+    "images": [
+      "/images/projects/105-fitout-54e3b46055358293187e05fcc0ac4c0b0784ea74.webp",
+      "/images/projects/265-fitout-d8e2a46a951d2baf0be5e59ef0b27f7606fe92da.webp",
+      "/images/projects/289-fitout-eeff868967168f37b2d6be6146c35bab1e9c9fc9.webp",
+      "/images/projects/242-fitout-c8a939698b6d8e8b9648e98817a36aa77dd33d02.webp",
+      "/images/projects/196-fitout-ab662c2036ff46aaf43939aa9732374bd6a9c3d9.webp"
+    ]
+  },
+  {
+    "id": "DU-17",
+    "name": "Fairmont Global HQ - Media City",
+    "sector": "Office",
+    "emirate": "Dubai",
+    "area": "7,535",
+    "year": "2023",
+    "slug": "fit-out/39-corporate-headquarters-interior",
+    "description": "Workplace fit-out of approximately 7,535 sq ft in Dubai, documented as complete in 2023. The interiors combine individual, collaborative and client-facing settings, delivered as a single coordinated package.",
+    "images": [
+      "/images/projects/154-fitout-8bbe00ee4daaf6056821a2214d43356124890584.webp",
+      "/images/projects/273-fitout-df3fc9c563d5c2aa42506749e9d5ecb513efaefd.webp",
+      "/images/projects/115-fitout-5a4c1f4cb482f09ca7cc80357864c6ab94bef8a3.webp",
+      "/images/projects/38-fitout-1eebfccdfbefcb79fd58efdf18a07a09941b21b3.webp",
+      "/images/projects/152-fitout-8967d9829b205953339900fdb92d66d2fe055408.webp"
+    ]
+  },
+  {
+    "id": "DU-18",
+    "name": "Echo Project Development Office",
+    "sector": "Office",
+    "emirate": "Dubai",
+    "area": "6,740",
+    "year": "2023",
+    "slug": "fit-out/38-echo-project-development-office",
+    "description": "Workplace fit-out of approximately 6,740 sq ft in Dubai, documented as complete in 2023. Workstations, meeting and reception areas were completed as one programme, with finishes chosen for daily corporate use.",
+    "images": [
+      "/images/projects/171-fitout-9ab07916fa7d3f31af72ac397496efd116c6d251.webp",
+      "/images/projects/108-fitout-55e716341aa12a3297355a499bfca848fa1673e3.webp",
+      "/images/projects/10-fitout-066e67fc787765c5f47bcdeb06c94ff0445fd66c.webp",
+      "/images/projects/295-fitout-f3c5df82ed00b810eaab59176e6767961758d3f9.webp",
+      "/images/projects/56-fitout-32f5abf0babda1e74c025a57db7b37f479f51c55.webp"
+    ]
+  },
+  {
+    "id": "DU-19",
+    "name": "Atrangi Restaurant",
+    "sector": "F&B",
+    "emirate": "Dubai",
+    "area": "5,275",
+    "year": "2023",
+    "slug": "fit-out/22-atrangi-restaurant",
+    "description": "Restaurant and cafe fit-out of approximately 5,275 sq ft in Dubai, documented as complete in 2023. Front-of-house dining and back-of-house support areas were delivered together, with finishes selected for heavy daily use.",
+    "images": [
+      "/images/projects/132-fitout-6c7818e7d6becaa18e708ebb4e551042570a30b7.webp",
+      "/images/projects/65-fitout-3d998405a811aa246c75fa49c74946486063ff92.webp",
+      "/images/projects/14-fitout-08e98da1c1ea0ae2490aed2aa3ae465a46c309af.webp",
+      "/images/projects/274-fitout-df78b5c0fdef58990098c861f239287550d243d6.webp",
+      "/images/projects/185-fitout-a28113dcb49e8019e46cd0f047d64805a2bf1581.webp"
+    ]
+  },
+  {
+    "id": "DU-20",
+    "name": "Bab Al Shams Desert Resort",
+    "sector": "Hospitality",
+    "emirate": "Dubai",
+    "area": "4,284",
+    "year": "2023",
+    "slug": "fit-out/33-resort-interior",
+    "description": "Hospitality interior renovation of approximately 4,284 sq ft in Dubai, documented as complete in 2023. Guest-facing areas were refurbished using durable, operator-grade finishes.",
+    "images": [
+      "/images/projects/92-fitout-4b1f9dd38cdab66ec15bd069aef32b054eb199f3.webp",
+      "/images/projects/223-fitout-bdc6542f0b92f33f5164ea5a403524988b6725ab.webp",
+      "/images/projects/41-fitout-212809049250d874acd28d0cf46441c662c3377a.webp",
+      "/images/projects/162-fitout-936f2e8c8b4e7fe5f2d44c3f7bdcf792c75515c1.webp",
+      "/images/projects/69-fitout-3e9c5f2cff1b537ef6ba4c34b7a90a7b12ebe5c3.webp"
+    ]
+  },
+  {
+    "id": "DU-21",
+    "name": "Golden Goose Showroom, Dubai Mall",
+    "sector": "Retail",
+    "emirate": "Dubai",
+    "area": "2,917",
+    "year": "2023",
+    "slug": "fit-out/51-retail-showroom-interior",
+    "description": "Retail unit fit-out of approximately 2,917 sq ft in Dubai, documented as complete in 2023. Fixtures, lighting and finishes were coordinated to present the brand's products clearly.",
+    "images": [
+      "/images/projects/208-fitout-b290266ad49e2a8dd14f0d6541a9ad44ef45c6e7.webp",
+      "/images/projects/29-fitout-169309a97b93dd5302088e6c628178db9fa82dce.webp",
+      "/images/projects/276-fitout-e0dcf7ef69df882f795dbbd064c93b1a5d1fa6fe.webp",
+      "/images/projects/142-fitout-79f0c1942e33cd733735b66e85665fb8133d7711.webp",
+      "/images/projects/308-fitout-feef6afb79bb6b402578cf74c19373b1097b2b85.webp"
+    ]
+  },
+  {
+    "id": "DU-22",
+    "name": "3M Headquarters",
+    "sector": "Office",
+    "emirate": "Dubai",
+    "area": "19,692",
     "year": "2022",
-    "slug": "fit-out/54-hotel-restaurant-interior",
-    "description": "Hotel restaurant interior · F&B · Ras Al Khaimah, UAE · 2022."
+    "slug": "fit-out/35-corporate-headquarters-interior",
+    "description": "Workplace fit-out of approximately 19,692 sq ft in Dubai, documented as complete in 2022. The layout balances open working space with enclosed meeting and quiet areas.",
+    "images": [
+      "/images/projects/197-fitout-ab7893c1c1d743d05ef42f67fed7ed6ee3cfc5ba.webp",
+      "/images/projects/79-fitout-4305497b21adebac89dd7f0bbf1acc90969cb06a.webp",
+      "/images/projects/269-fitout-db0d99cd90357a762374a3b08b50d248666d2a87.webp",
+      "/images/projects/74-fitout-3fe2cf305794ad7de16edc4dd33e49e278142d21.webp",
+      "/images/projects/35-fitout-1d3001f303275de15969aaf2a7e940c676ba5a76.webp"
+    ]
   },
   {
-    "name": "Resort interior",
+    "id": "DU-23",
+    "name": "EM Normandie University",
+    "sector": "Education",
+    "emirate": "Dubai",
+    "area": "12,777",
+    "year": "2022",
+    "slug": "fit-out/17-university-interior",
+    "description": "Educational facility fit-out of approximately 12,777 sq ft in Dubai, documented as complete in 2022. Classroom and communal areas were completed around the school's operational calendar.",
+    "images": [
+      "/images/projects/112-fitout-587785e85b87efa943f46c415d806617598941d9.webp",
+      "/images/projects/71-fitout-3f5aab6bbf535aa449a8236ee102c6045953d00d.webp",
+      "/images/projects/158-fitout-8ec254b385cac3e52485c11b1d7c421dca384ee1.webp",
+      "/images/projects/285-fitout-eb6e42d2809b1c68c7b73dd136d359ef99e76ef9.webp",
+      "/images/projects/55-fitout-3110f9ce481d91933bee9b61e524e8a1c720d125.webp"
+    ]
+  },
+  {
+    "id": "DU-24",
+    "name": "Boston Scientific Office",
+    "sector": "Office",
+    "emirate": "Dubai",
+    "area": "12,492",
+    "year": "2022",
+    "slug": "fit-out/36-corporate-office-interior",
+    "description": "Workplace fit-out of approximately 12,492 sq ft in Dubai, documented as complete in 2022. The interiors combine individual, collaborative and client-facing settings, delivered as a single coordinated package.",
+    "images": [
+      "/images/projects/284-fitout-e67fc370560a717781a12034a276152f9f06924e.webp",
+      "/images/projects/268-fitout-da31a0c209b838ebe24153cbd3db9ddde05a4343.webp",
+      "/images/projects/307-fitout-fea6ff9d7dcf26786c0cb832ebf2bdb18d6926cc.webp",
+      "/images/projects/156-fitout-8d6a96e5afa99b1b3027d90052c3d0f099e7f207.webp",
+      "/images/projects/137-fitout-6faabb95dcae5a5f69d6d67294ea36c2d571d668.webp"
+    ]
+  },
+  {
+    "id": "DU-25",
+    "name": "Augustus Media Office",
+    "sector": "Office",
+    "emirate": "Dubai",
+    "area": "12,000",
+    "year": "2022",
+    "slug": "fit-out/37-augustus-media-office",
+    "description": "Workplace fit-out of approximately 12,000 sq ft in Dubai, documented as complete in 2022. Workstations, meeting and reception areas were completed as one programme, with finishes chosen for daily corporate use.",
+    "images": [
+      "/images/projects/102-fitout-53ba020fac341fdd27f889b791873122a9969f21.webp",
+      "/images/projects/296-fitout-f4c9ad4ff2f6ee35f0a170d709e15b9c2e225194.webp",
+      "/images/projects/203-fitout-b0d519c61b128b23b65d699fddd6619ac3db01ad.webp",
+      "/images/projects/90-fitout-4a476a57f601284e83dbabcd576b2f74f4e4d05c.webp",
+      "/images/projects/255-fitout-d3c17fccec4155d46daf4ed9c59f32bfdc7f70f7.webp"
+    ]
+  },
+  {
+    "id": "DU-26",
+    "name": "En Fuego Restaurant - Atlantis The Palm",
+    "sector": "F&B",
+    "emirate": "Dubai",
+    "area": "10,495",
+    "year": "2022",
+    "slug": "fit-out/20-hotel-restaurant-interior",
+    "description": "Restaurant and cafe fit-out of approximately 10,495 sq ft in Dubai, documented as complete in 2022. Dining spaces, service points and support areas were completed as a single coordinated package.",
+    "images": [
+      "/images/projects/277-fitout-e2127a1ef8e110f3e05e5092a5fc603a2160bedb.webp",
+      "/images/projects/13-fitout-08a0edda7ca6e646c34c7e7a7ce08b6e6b260ef3.webp",
+      "/images/projects/239-fitout-c5ef344668a558bb9cca4ac66364698d1a6eb4dd.webp",
+      "/images/projects/290-fitout-ef40a34fca954461e46ce6b2b687ec8bea60e3f1.webp",
+      "/images/projects/91-fitout-4b10e8d66555859a2cacc16cfb936c799a24d7f6.webp"
+    ]
+  },
+  {
+    "id": "DU-27",
+    "name": "1Rebel Fitness Studio",
+    "sector": "Fitness & Leisure",
+    "emirate": "Dubai",
+    "area": "10,000",
+    "year": "2022",
+    "slug": "fit-out/26-fitness-studio-interior",
+    "description": "Fitness and leisure facility fit-out of approximately 10,000 sq ft in Dubai, documented as complete in 2022. Workout floors, studios and support spaces were fitted out to operator standards.",
+    "images": [
+      "/images/projects/16-fitout-0c4d77712adf47bc71cf52221c595abad4be544c.webp",
+      "/images/projects/168-fitout-97d502fdefc9ad22473932641731b7c9372265e7.webp",
+      "/images/projects/300-fitout-f88845d20b9354d760109ef36ab8794d1af15eb8.webp",
+      "/images/projects/270-fitout-dbf5a7d2609a35196e296db855c33aba178fd871.webp",
+      "/images/projects/210-fitout-b6491f175e8102cbcd131314aabd9de068b3bd8c.webp"
+    ]
+  },
+  {
+    "id": "DU-28",
+    "name": "American Hospital Clinic, Dubai Hills",
+    "sector": "Healthcare",
+    "emirate": "Dubai",
+    "area": "6,867",
+    "year": "2022",
+    "slug": "fit-out/28-healthcare-clinic-interior",
+    "description": "Clinical fit-out of approximately 6,867 sq ft in Dubai, documented as complete in 2022. The layout separates public reception flows from clinical treatment areas.",
+    "images": [
+      "/images/projects/96-fitout-4d59f51e4198cdeccf796cbf13dfb3f794a9b3bd.webp",
+      "/images/projects/20-fitout-103cb11cfb11c54b3bab77ffaee0e889711ce6d3.webp",
+      "/images/projects/279-fitout-e3f17914842f32df8272af8f3bfee43e0ebad8e4.webp",
+      "/images/projects/253-fitout-d242d61d83bfcba4fce46cd787cdb7d430485e20.webp",
+      "/images/projects/183-fitout-a253c6a65dcf5d31789c7fdad9fecdfade7df7e5.webp"
+    ]
+  },
+  {
+    "id": "DU-29",
+    "name": "Bushra by Buddha Bar & Restaurant - Grosvenor House",
+    "sector": "F&B",
+    "emirate": "Dubai",
+    "area": "6,673",
+    "year": "2022",
+    "slug": "fit-out/21-hotel-restaurant-interior",
+    "description": "Restaurant and cafe fit-out of approximately 6,673 sq ft in Dubai, documented as complete in 2022. Seating zones, service counters and kitchen support areas were delivered to operational standards.",
+    "images": [
+      "/images/projects/54-fitout-2e5bb6eef4ff2dd4119ff08b368a43a2662fe3bf.webp",
+      "/images/projects/267-fitout-d90b4d1d67db0bea25ecefbb05289d9f25248acb.webp",
+      "/images/projects/82-fitout-45cdc560a9da30bd97ce880a2779c6120d64b6bf.webp",
+      "/images/projects/106-fitout-5554d6f529af95d337e5612f9aa5ae58b0bf9cf4.webp",
+      "/images/projects/124-fitout-611a0ddfa6e8a82d4129489d420d940926404bf0.webp"
+    ]
+  },
+  {
+    "id": "DU-30",
+    "name": "ATTIKO Restaurant",
+    "sector": "F&B",
+    "emirate": "Dubai",
+    "area": "6,458",
+    "year": "2022",
+    "slug": "fit-out/19-attiko-restaurant",
+    "description": "Restaurant and cafe fit-out of approximately 6,458 sq ft in Dubai, documented as complete in 2022. Front-of-house dining and back-of-house support areas were delivered together, with finishes selected for heavy daily use.",
+    "images": [
+      "/images/projects/249-fitout-d0b5b29e5ff06c5c78467aed3e1dc1af04df774d.webp",
+      "/images/projects/12-fitout-083326945a28e26dcce364ee1c3fff52c36ba3cb.webp",
+      "/images/projects/237-fitout-c2b7675625e1ae25666c70bceac2f9d32da00062.webp",
+      "/images/projects/241-fitout-c7f2895da08761a1f1dfc938d972ff8f6089a396.webp",
+      "/images/projects/107-fitout-5555e0b2e4fece59849dc3c25dc727e8c2402ff1.webp"
+    ]
+  },
+  {
+    "id": "DU-31",
+    "name": "Delvaux Boutique",
+    "sector": "Retail",
+    "emirate": "Dubai",
+    "area": "2,000",
+    "year": "2022",
+    "slug": "fit-out/50-luxury-boutique-interior",
+    "description": "Retail unit fit-out of approximately 2,000 sq ft in Dubai, documented as complete in 2022. The layout guides customers from entrance display zones through to the point of sale.",
+    "images": [
+      "/images/projects/180-fitout-a186d47116def53f256e40986495ed285898e557.webp",
+      "/images/projects/66-fitout-3ddd7e75f05efddafcadbab1c43bc55123fe395b.webp",
+      "/images/projects/122-fitout-5fc5fb723e9dd6ff2177fc23c60f25b7a2acaaa9.webp",
+      "/images/projects/83-fitout-464137a63084f82440aba0c0a7ba5e26a383ed24.webp",
+      "/images/projects/84-fitout-4666b2a1773389a1b946b1ba3cd091d2a03e0b4e.webp"
+    ]
+  },
+  {
+    "id": "DU-32",
+    "name": "Brooks Brothers Store, Dubai Hills Mall",
+    "sector": "Retail",
+    "emirate": "Dubai",
+    "area": "1,937",
+    "year": "2022",
+    "slug": "fit-out/49-retail-store-interior",
+    "description": "Retail unit fit-out of approximately 1,937 sq ft in Dubai, documented as complete in 2022. Sales floor, display and point-of-sale zones are arranged to support customer flow and merchandising.",
+    "images": [
+      "/images/projects/245-fitout-cb0541d41cb28ae3079848959e758ad67ff08321.webp",
+      "/images/projects/177-fitout-a02978a3324d4556784ec3eb41a96d7dcf000848.webp",
+      "/images/projects/259-fitout-d65c6474bd8308b383ca34f0b53142ae96d8d6e2.webp",
+      "/images/projects/219-fitout-bc41dff584fec367becab5c5f0395ba2bb645629.webp",
+      "/images/projects/166-fitout-960176dfe6f2d37239002b23cc9be92d1340dab3.webp"
+    ]
+  },
+  {
+    "id": "DU-33",
+    "name": "Ewow Suite, W Hotel Dubai",
     "sector": "Hospitality",
-    "emirate": "Ras Al Khaimah",
-    "area": null,
-    "year": "2025",
-    "slug": "fit-out/55-resort-interior",
-    "description": "Resort interior · Hospitality · Ras Al Khaimah, UAE · 2025."
+    "emirate": "Dubai",
+    "area": "1,722",
+    "year": "2022",
+    "slug": "fit-out/32-hotel-suite-interior",
+    "description": "Hospitality interior renovation of approximately 1,722 sq ft in Dubai, documented as complete in 2022. Lobby, dining and support areas were refurbished to the operator's standards.",
+    "images": [
+      "/images/projects/228-fitout-c0963de6ca0376fddfe5315dfaae427446f11b55.webp",
+      "/images/projects/165-fitout-9574fc730ac62ddcc39f0adb5d5fe984166fa350.webp",
+      "/images/projects/33-fitout-1c3a4af13152c3fb2f08222204b4ba4198c20679.webp",
+      "/images/projects/172-fitout-9ae815f55e341e8eb3de483494b547bbacec023f.webp",
+      "/images/projects/146-fitout-80e883325f344204f0b47d5bf89c6e6d2d804bb2.webp"
+    ]
   },
   {
-    "name": "Hotel interior",
+    "id": "DU-34",
+    "name": "Bentley Villa",
+    "sector": "Residential",
+    "emirate": "Dubai",
+    "area": "26,910",
+    "year": "2021",
+    "slug": "fit-out/43-private-villa-interior",
+    "description": "Private residential fit-out and refurbishment of approximately 26,910 sq ft in Dubai, documented as complete in 2021. The interiors pair custom joinery with a calm, neutral material palette.",
+    "images": [
+      "/images/projects/151-fitout-8837fc533c3f2468223747e482c456e794620ad4.webp",
+      "/images/projects/5-fitout-04ff45899eddd90629fe6e731d247d61f06c3c0b.webp",
+      "/images/projects/179-fitout-a0c244ae4a689e550389a13de0b2a7378cb1ec68.webp",
+      "/images/projects/80-fitout-433f3942d785a0698efccefd5f39af13be30ebcc.webp",
+      "/images/projects/287-fitout-ed429012ea077105449e74d5dcc940797603f49a.webp"
+    ]
+  },
+  {
+    "id": "DU-35",
+    "name": "ORO24 Real Estate Developments Head Office, Sheikh Zayed Rd",
+    "sector": "Office",
+    "emirate": "Dubai",
+    "area": "12,000",
+    "year": "2021",
+    "slug": "fit-out/34-oro24-real-estate-developments-head-office-sheikh-zayed-rd",
+    "description": "Workplace fit-out of approximately 12,000 sq ft in Dubai, documented as complete in 2021. The layout balances open working space with enclosed meeting and quiet areas.",
+    "images": [
+      "/images/projects/144-fitout-7bbc761eeec4e036f1ecda560783049ce9027132.webp",
+      "/images/projects/32-fitout-1b2ea2b5b5800c1bec85aa2d79efe992f6f4a97d.webp",
+      "/images/projects/160-fitout-9105bf915c3d76379a6e96b187da668d132b7a73.webp",
+      "/images/projects/194-fitout-a8131448677fa31792d3cb49195547b25b619b29.webp",
+      "/images/projects/3-fitout-043a7ea71ef2fbc3003b2c306060cc0180b3dc8b.webp"
+    ]
+  },
+  {
+    "id": "DU-36",
+    "name": "Bar Buci, Jumeirah Al Qasr Hotel Dubai",
     "sector": "Hospitality",
-    "emirate": "Ras Al Khaimah",
-    "area": null,
-    "year": "2025",
-    "slug": "fit-out/56-hotel-interior",
-    "description": "Hotel interior · Hospitality · Ras Al Khaimah, UAE · 2025."
+    "emirate": "Dubai",
+    "area": "6,361",
+    "year": "2021",
+    "slug": "fit-out/31-hotel-restaurant-interior",
+    "description": "Hospitality interior renovation of approximately 6,361 sq ft in Dubai, documented as complete in 2021. Public areas were upgraded while the property remained in operation.",
+    "images": [
+      "/images/projects/141-fitout-78e0b35217cbfb38052cc25070d52b051cc75b50.webp",
+      "/images/projects/37-fitout-1e4d9bf91f6247dd5317e78ab2c08f118c19e475.webp",
+      "/images/projects/236-fitout-c25a53483b47c473ff239649af7224d2348b3eca.webp",
+      "/images/projects/117-fitout-5b4c439a8d3143db1b417a091ab4acb658923e17.webp",
+      "/images/projects/68-fitout-3e5bfba868c1ea9567b8df38a3e28f166c1cd1f4.webp"
+    ]
   },
   {
+    "id": "DU-37",
+    "name": "Century Bank Brokers Office",
+    "sector": "Banking & Finance",
+    "emirate": "Dubai",
+    "area": "6,000",
+    "year": "2021",
+    "slug": "fit-out/16-century-bank-brokers-office",
+    "description": "Financial-services interior fit-out of approximately 6,000 sq ft in Dubai, documented as complete in 2021. Client-facing and operational areas were delivered within a single programme.",
+    "images": [
+      "/images/projects/159-fitout-901e1585da0c7e60d05c8244fbc71886e5f20505.webp",
+      "/images/projects/127-fitout-659d524d046b7d26101586094e87bbe1a3cd328e.webp",
+      "/images/projects/198-fitout-ac4bf753943bc6b35a2ac1a80b4a22a3003ca76f.webp",
+      "/images/projects/46-fitout-2654a7d236f5231651b7f68909ff6d90e4aae6cf.webp",
+      "/images/projects/81-fitout-45595b41f25e610d4236efc9b00e7256bf751b20.webp"
+    ]
+  },
+  {
+    "id": "RK-01",
     "name": "RAK Julphar Avenue and Towers - Public Areas",
     "sector": "Mixed-Use",
     "emirate": "Ras Al Khaimah",
     "area": "33,000",
     "year": "2025",
     "slug": "fit-out/57-rak-julphar-avenue-and-towers-public-areas",
-    "description": "RAK Julphar Avenue and Towers - Public Areas · Mixed-Use · Ras Al Khaimah, UAE · 2025."
+    "description": "Mixed-use interior programme of approximately 33,000 sq ft in Ras Al Khaimah, documented as complete in 2025. Public and back-of-house areas were completed as one coordinated delivery.",
+    "images": [
+      "/images/projects/211-fitout-b6f1f17c028c8b6f29ea3b43ddb121680e1785e3.webp",
+      "/images/projects/264-fitout-d86a20147f02fbda934d75899416d52e4a53f886.webp",
+      "/images/projects/9-fitout-05a7acbcaeb233c296212fbaddb7410b11ddb1f1.webp",
+      "/images/projects/199-fitout-ad851e6ded4739bce40114aad0651cdefd72e73e.webp",
+      "/images/projects/26-fitout-1566aeaaf2d811d6904695956eac2ad9eac0c684.webp"
+    ]
   },
   {
-    "name": "Seaside Serenity Villa",
-    "sector": "Residential",
-    "emirate": "Ras Al Khaimah",
-    "area": "3,900",
-    "year": "2023",
-    "slug": "fit-out/58-seaside-serenity-villa",
-    "description": "Seaside Serenity Villa · Residential · Ras Al Khaimah, UAE · 2023."
-  },
-  {
-    "name": "Private villa interiors",
-    "sector": "Residential",
-    "emirate": "Ras Al Khaimah",
-    "area": "25,000",
-    "year": "2024",
-    "slug": "fit-out/59-private-villa-interiors",
-    "description": "Private villa interiors · Residential · Ras Al Khaimah, UAE · 2024."
-  },
-  {
-    "name": "Al Hamra Village Home",
-    "sector": "Residential",
-    "emirate": "Ras Al Khaimah",
-    "area": "3,900",
-    "year": "2025",
-    "slug": "fit-out/60-al-hamra-village-home",
-    "description": "Al Hamra Village Home · Residential · Ras Al Khaimah, UAE · 2025."
-  },
-  {
-    "name": "Retail store interior",
-    "sector": "Retail",
-    "emirate": "Ras Al Khaimah",
-    "area": "1,857",
-    "year": "2024",
-    "slug": "fit-out/61-retail-store-interior",
-    "description": "Retail store interior · Retail · Ras Al Khaimah, UAE · 2024."
-  },
-  {
+    "id": "RK-02",
     "name": "African + Eastern Store",
     "sector": "Retail",
     "emirate": "Ras Al Khaimah",
     "area": "9,000",
     "year": "2025",
     "slug": "fit-out/62-african-eastern-store",
-    "description": "African + Eastern Store · Retail · Ras Al Khaimah, UAE · 2025."
+    "description": "Retail unit fit-out of approximately 9,000 sq ft in Ras Al Khaimah, documented as complete in 2025. Sales floor, display and point-of-sale zones are arranged to support customer flow and merchandising.",
+    "images": [
+      "/images/projects/155-fitout-8d27aa9a0bc6ef43f7bade8790dc84fa773e5aec.webp",
+      "/images/projects/97-fitout-4e1c76dbc652924fd6b9ff00e16ab0b8eba9b3fa.webp",
+      "/images/projects/148-fitout-8577de83705130ecf81c1c184f02e66cbf7053b2.webp",
+      "/images/projects/149-fitout-86ac30b51e839868aef522f96fa9ae442aa7cd33.webp"
+    ]
+  },
+  {
+    "id": "RK-03",
+    "name": "Al Hamra Village Home",
+    "sector": "Residential",
+    "emirate": "Ras Al Khaimah",
+    "area": "3,900",
+    "year": "2025",
+    "slug": "fit-out/60-al-hamra-village-home",
+    "description": "Private residential fit-out and refurbishment of approximately 3,900 sq ft in Ras Al Khaimah, documented as complete in 2025. Living and support spaces were refurbished to a bespoke, move-in-ready standard.",
+    "images": [
+      "/images/projects/140-fitout-770cca3a9b42f87f6d5c095a0776b2527b113f62.webp",
+      "/images/projects/116-fitout-5ae088dcc51feb88257c12de4742962d17233300.webp",
+      "/images/projects/147-fitout-82792e8bc7f531cfceb7f8faae904add70f798cf.webp",
+      "/images/projects/164-fitout-94b89c9c5ef70852c5b7ddc9af4a20304c4ac7d5.webp",
+      "/images/projects/217-fitout-b9f78e86e9a055fc7b58159a566bf66cc68fee9c.webp"
+    ]
+  },
+  {
+    "id": "RK-04",
+    "name": "Pullman Resort - Al Marjan Island",
+    "sector": "Hospitality",
+    "emirate": "Ras Al Khaimah",
+    "area": null,
+    "year": "2025",
+    "slug": "fit-out/55-resort-interior",
+    "description": "Hospitality interior renovation in Ras Al Khaimah, documented as complete in 2025. Guest-facing areas were refurbished using durable, operator-grade finishes.",
+    "images": [
+      "/images/projects/234-fitout-c2352d672ce44293797ebe09ea9aff47dfe10d47.webp",
+      "/images/projects/227-fitout-c049c2caf0fd53eedbd9199a23824eeef0fb9f7c.webp",
+      "/images/projects/181-fitout-a1983d5889dfa8928d8cbaa463bf8e5203c12b94.webp",
+      "/images/projects/133-fitout-6d4ff47f86fd3ce1758fabc671aec1e3793ac028.webp",
+      "/images/projects/6-fitout-05017b7496ac3bcddf3401378934c8a963b52478.webp"
+    ]
+  },
+  {
+    "id": "RK-05",
+    "name": "Rove Al Marjan Island",
+    "sector": "Hospitality",
+    "emirate": "Ras Al Khaimah",
+    "area": null,
+    "year": "2025",
+    "slug": "fit-out/56-hotel-interior",
+    "description": "Hospitality interior renovation in Ras Al Khaimah, documented as complete in 2025. Lobby, dining and support areas were refurbished to the operator's standards.",
+    "images": [
+      "/images/projects/212-fitout-b7ca059e58f6256e124849fb046f565c2df313bd.webp",
+      "/images/projects/175-fitout-a00fecd9c67cb1cdd56f5b54f32cd0bb22e8a83e.webp",
+      "/images/projects/174-fitout-9e1aa8c195b8c9df434d0e0c6a987145760bea49.webp",
+      "/images/projects/368-fitout-411ee84ecc58440e75d2c2452d1352b54161b6ea.webp",
+      "/images/projects/70-fitout-3eddb6c998b464f0102fe84aba7723cdc6d1f85f.webp"
+    ]
+  },
+  {
+    "id": "RK-06",
+    "name": "The Ritz Carlton Residences - Signature Villas",
+    "sector": "Residential",
+    "emirate": "Ras Al Khaimah",
+    "area": "25,000",
+    "year": "2024",
+    "slug": "fit-out/59-private-villa-interiors",
+    "description": "Private residential fit-out and refurbishment of approximately 25,000 sq ft in Ras Al Khaimah, documented as complete in 2024. Joinery, finishes and fittings across the interiors were delivered to a bespoke standard.",
+    "images": [
+      "/images/projects/30-fitout-187a87b720b893919831aa0b7cbd0c5a68a05f1b.webp",
+      "/images/projects/43-fitout-235a1ae9fddfb917a3b0a9e630f0ba02941a3ea7.webp",
+      "/images/projects/130-fitout-680f842bf0834f9c2015720f70caa46fb4aa3a33.webp",
+      "/images/projects/4-fitout-0498d4cf361c8876bc3dbe6bd0a62930fb140d90.webp"
+    ]
+  },
+  {
+    "id": "RK-07",
+    "name": "Lush - Manar Mall",
+    "sector": "Retail",
+    "emirate": "Ras Al Khaimah",
+    "area": "1,857",
+    "year": "2024",
+    "slug": "fit-out/61-retail-store-interior",
+    "description": "Retail unit fit-out of approximately 1,857 sq ft in Ras Al Khaimah, documented as complete in 2024. Fixtures, lighting and finishes were coordinated to present the brand's products clearly.",
+    "images": [
+      "/images/projects/136-fitout-6f143da73d8bb42fd8ac4e5aa2adde91d9944a35.webp",
+      "/images/projects/61-fitout-39d5ed34b23e19868c27f99079ba634f40dba330.webp",
+      "/images/projects/282-fitout-e4cb671a1aee0d51603688cd42c030f019f5a09a.webp",
+      "/images/projects/103-fitout-54460caee8fe595a2d7be6bf185028355cbb6d33.webp",
+      "/images/projects/67-fitout-3e4bd257943ff936e6cb8dbb6e7470a4f239763a.webp"
+    ]
+  },
+  {
+    "id": "RK-08",
+    "name": "Seaside Serenity Villa",
+    "sector": "Residential",
+    "emirate": "Ras Al Khaimah",
+    "area": "3,900",
+    "year": "2023",
+    "slug": "fit-out/58-seaside-serenity-villa",
+    "description": "Private residential fit-out and refurbishment of approximately 3,900 sq ft in Ras Al Khaimah, documented as complete in 2023. The interiors pair custom joinery with a calm, neutral material palette.",
+    "images": [
+      "/images/projects/99-fitout-4ffc81b2d5fb3bcd6984a6b82cdd31150a8da157.webp",
+      "/images/projects/240-fitout-c623a997025c23ce8e89acc46196756eb5ca525b.webp",
+      "/images/projects/40-fitout-210c8b036f64674137cdcb11c2eb347417fa7de6.webp",
+      "/images/projects/278-fitout-e286b9f870d209a456f7cfe60f03ea316cc8394d.webp",
+      "/images/projects/195-fitout-a8b47d35442dcc35cf54b465f79ebcff5c803815.webp"
+    ]
+  },
+  {
+    "id": "RK-09",
+    "name": "Kibba Wa Tabbola Restaurant",
+    "sector": "F&B",
+    "emirate": "Ras Al Khaimah",
+    "area": "4,306",
+    "year": "2022",
+    "slug": "fit-out/53-kibba-wa-tabbola-restaurant",
+    "description": "Restaurant and cafe fit-out of approximately 4,306 sq ft in Ras Al Khaimah, documented as complete in 2022. Front-of-house dining and back-of-house support areas were delivered together, with finishes selected for heavy daily use.",
+    "images": [
+      "/images/projects/27-fitout-15a87a73000bccdf89378600fcf69149a7138eb8.webp",
+      "/images/projects/292-fitout-f1f270654e17c8289dde7d43506ce5b0dc65e243.webp",
+      "/images/projects/114-fitout-59090013b203bb9a67e4e838e0958157d6a92ba4.webp",
+      "/images/projects/113-fitout-58dabb142a0a3eb55af89a47f3b632d406ca0b23.webp",
+      "/images/projects/131-fitout-6a7be1b63543cfd03911c80de36ad249061d50dc.webp"
+    ]
+  },
+  {
+    "id": "RK-10",
+    "name": "Vida Churascaria & Bar, Hilton Ras Al Khaimah",
+    "sector": "F&B",
+    "emirate": "Ras Al Khaimah",
+    "area": null,
+    "year": "2022",
+    "slug": "fit-out/54-hotel-restaurant-interior",
+    "description": "Restaurant and cafe fit-out in Ras Al Khaimah, documented as complete in 2022. Dining spaces, service points and support areas were completed as a single coordinated package.",
+    "images": [
+      "/images/projects/209-fitout-b3cd7ae242ebde8088c87d2a32670abdf98a8af0.webp",
+      "/images/projects/238-fitout-c4aa631cfbe4c9f5b4e6fea7bdbad3c628a39dcf.webp",
+      "/images/projects/247-fitout-cc9fd543e363cb95b77b94087f9af4a259f76d99.webp",
+      "/images/projects/190-fitout-a6e1dd3570d6a656061334e2cca19b2744e7fae1.webp",
+      "/images/projects/51-fitout-2bc00ba9444346bac4daa30d5d31af87db27e8af.webp"
+    ]
   }
 ]
