@@ -427,3 +427,15 @@ html.light .ads-landing-page section { color: #f5f2eb; }
 html.light .ads-landing-page .text-white,
 html.light .ads-landing-page .text-gray-300 { color: #f5f2eb; }
 html.light .ads-landing-page .hover\:text-white:hover { color: #f5f2eb; }
+
+/* Explicit theme surfaces keep portfolio text and brand legible in both palettes. */
+.portfolio-surface { background: #0f0f0f; color: #f5f5f5; color-scheme: dark; }
+.portfolio-surface .portfolio-body { color: #d4d4d8; }
+.portfolio-surface .portfolio-muted { color: #b4b4bc; }
+.fann-brand-wordmark { color: #c9a962; -webkit-text-fill-color: #c9a962; background: none; }
+html.dark { color-scheme: dark; }
+html.dark body { color-scheme: dark; }
+html.light .portfolio-surface { background: #faf8f4; color: #171717; color-scheme: light; }
+html.light .portfolio-surface .portfolio-body { color: #3f3f46; }
+html.light .portfolio-surface .portfolio-muted { color: #52525b; }
+html.light .fann-brand-wordmark { color: #8f6e2a; -webkit-text-fill-color: #8f6e2a; }
