@@ -41,6 +41,7 @@ const fieldClass = 'mt-1 w-full rounded-sm border border-white/20 bg-[#171717] p
 
 export default function ExhibitionAdsLandingPage() {
   const [form, setForm] = useState({ name: '', phone: '', email: '', showName: '', standSize: '', openSides: '' });
+  const [floorPlan, setFloorPlan] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
@@ -49,11 +50,29 @@ export default function ExhibitionAdsLandingPage() {
     if (busy || sent) return;
     setBusy(true); setError('');
     try {
+      let floorPlanUrl = '';
+      if (floorPlan) {
+        const ext = floorPlan.name.split('.').pop()?.toLowerCase() || '';
+        const types: Record<string, string> = { pdf: 'application/pdf', jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp', gif: 'image/gif' };
+        const request = async (body: unknown) => {
+          const r = await fetch('/api/floor-plan-upload', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+          const d = await r.json();
+          if (!r.ok || !d.success) throw new Error(d.error || 'Floor plan upload failed. Your request has not been sent.');
+          return d;
+        };
+        const start = await request({ action: 'start', name: floorPlan.name, size: floorPlan.size, type: types[ext] });
+        const multipart = new FormData(); multipart.append('cacheControl', '0'); multipart.append('', new Blob([floorPlan], { type: types[ext] }), floorPlan.name);
+        const upload = await fetch(start.uploadUrl, { method: 'PUT', body: multipart });
+        if (!upload.ok) throw new Error('Floor plan upload failed. Your request has not been sent. Please retry.');
+        const finish = await request({ action: 'finish', path: start.path });
+        floorPlanUrl = finish.downloadUrl;
+      }
       await submitLead({
         formType: 'Google Ads exhibition landing - 24h concept and quote',
         name: form.name.trim(), phone: form.phone.trim(), email: form.email.trim(),
         details: {
           source: 'Google Ads exhibition landing',
+          floorPlan: floorPlanUrl, floorPlanFilename: floorPlan?.name || '', floorPlanLinkExpires: floorPlanUrl ? '30 days' : '',
           offer: '3D stand concept + full quote within 24 hours',
           showName: form.showName.trim(), standSize: form.standSize.trim(), openSides: form.openSides,
           campaign: new URLSearchParams(window.location.search).get('utm_campaign') || '',
@@ -94,7 +113,8 @@ export default function ExhibitionAdsLandingPage() {
               {fields.map(({key,label,type='text',hint}) => <label key={key} className="text-xs font-medium text-[#e4dfd7] md:text-sm">{label} *<input className={fieldClass} name={key} type={type} placeholder={hint} autoComplete={key === 'name' ? 'name' : key === 'phone' ? 'tel' : key === 'email' ? 'email' : undefined} required value={form[key]} onChange={e => setForm({ ...form, [key]: e.target.value })} /></label>)}
               <label className="text-xs font-medium text-[#e4dfd7] md:text-sm">Open sides *<select name="openSides" className={fieldClass} required value={form.openSides} onChange={e => setForm({ ...form, openSides: e.target.value })}><option value="">Select</option>{openSideOptions.map(option => <option key={option.value} value={option.value}>{option.value}</option>)}</select></label>
               <div className="col-span-2"><div className="grid grid-cols-2 gap-2">{openSideOptions.map(option => <div key={option.value} className={`flex items-center gap-2 rounded border p-2 text-xs ${form.openSides === option.value ? 'border-[#c9a962] bg-[#171717]' : 'border-white/15'}`}><StandDiagram closed={option.closed}/><span>{option.value}</span></div>)}</div><p className="mt-2 text-xs text-[#aaa49b]">Solid white = closed wall. Dashed gold = open side. Diagrams show the layout type; tell us the exact orientation when we discuss your brief.</p></div>
-              <div className="sm:col-span-2"><button disabled={busy} type="submit" className="mt-2 w-full rounded-sm bg-[#c9a962] px-5 py-4 font-bold text-black hover:bg-[#dfc488] disabled:opacity-60">{busy ? 'Sending...' : 'Request my concept + quote'}</button>
+              <label className="col-span-2 text-xs font-medium text-[#e4dfd7] md:text-sm">Floor plan (optional)<input className={fieldClass} name="floorPlan" type="file" accept=".pdf,.jpg,.jpeg,.png,.webp,.gif" onChange={e => { const file = e.target.files?.[0] || null; if (file && (file.size > 5 * 1024 * 1024 || !/\.(pdf|jpe?g|png|webp|gif)$/i.test(file.name))) { setFloorPlan(null); e.target.value = ''; setError('Please choose a PDF, JPG, PNG, WebP or GIF up to 5 MB.'); return; } setError(''); setFloorPlan(file); }} /><span className="mt-1 block text-xs text-[#aaa49b]">PDF, JPG, PNG, WebP or GIF, up to 5 MB. Stored privately; FANN receives a download link valid for 30 days.</span></label>
+              <div className="col-span-2"><button disabled={busy} type="submit" className="mt-2 w-full rounded-sm bg-[#c9a962] px-5 py-4 font-bold text-black hover:bg-[#dfc488] disabled:opacity-60">{busy ? 'Sending...' : 'Request my concept + quote'}</button>
               {error && <p role="alert" className="mt-3 text-sm text-red-300">{error}</p>}
               <p className="mt-3 text-xs leading-relaxed text-[#aaa49b]">Your details go to FANN for this request. <Link to="/privacy-policy" className="underline">Privacy policy</Link>.</p></div>
             </form>
