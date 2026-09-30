@@ -991,6 +991,59 @@ async function handleLead(req: VercelRequest, res: VercelResponse, defaultType: 
   }
 }
 
+// Floor plans stay private. Only server-side credentials can sign upload/download links.
+const FLOORPLAN_STORAGE = 'https://sflpefzxngixkqvvwdmk.supabase.co';
+const FLOORPLAN_TYPES: Record<string, string> = { pdf: 'application/pdf', jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp', gif: 'image/gif' };
+const FLOORPLAN_MAX = 5 * 1024 * 1024;
+
+async function floorPlanUpload(req: VercelRequest, res: VercelResponse) {
+  res.setHeader('Cache-Control', 'no-store');
+  if (req.method !== 'POST') return res.status(405).json({ success: false });
+  const origin = req.headers.origin || '';
+  if (origin !== 'https://fann.ae' && origin !== 'https://www.fann.ae' && !(process.env.VERCEL_URL && origin === `https://${process.env.VERCEL_URL}`)) return res.status(403).json({ success: false, error: 'Please upload through the FANN form.' });
+  const key = process.env.FANN_FLOORPLAN_STORAGE_KEY;
+  if (!key) return res.status(503).json({ success: false, error: 'Floor plan upload is unavailable. Please try again later.' });
+  const b = req.body || {};
+  const ip = clean(req.headers['x-forwarded-for'], 100).split(',')[0];
+  if (isRateLimited('floorplan:' + ip)) return res.status(429).json({ success: false, error: 'Too many upload attempts. Please try again later.' });
+  const headers = { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' };
+  const storage = async (path: string, body: unknown) => {
+    const response = await fetch(`${FLOORPLAN_STORAGE}/storage/v1${path}`, { method: 'POST', headers, body: JSON.stringify(body) });
+    const data: any = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error('Storage request failed');
+    return data;
+  };
+  try {
+    if (b.action === 'start') {
+      const ext = String(b.name || '').split('.').pop()?.toLowerCase() || '';
+      const size = Number(b.size);
+      if (!FLOORPLAN_TYPES[ext] || !Number.isInteger(size) || size < 1 || size > FLOORPLAN_MAX || b.type !== FLOORPLAN_TYPES[ext]) return res.status(400).json({ success: false, error: 'Choose a PDF, JPG, PNG, WebP or GIF up to 5 MB.' });
+      const { randomUUID } = await import('node:crypto');
+      const path = `${randomUUID()}.${ext}`;
+      const data = await storage(`/object/upload/sign/floor-plans/${path}`, {});
+      return res.status(200).json({ success: true, path, uploadUrl: `${FLOORPLAN_STORAGE}/storage/v1${data.url}` });
+    }
+    if (b.action === 'finish') {
+      const path = String(b.path || '');
+      if (!/^[0-9a-f-]{36}\.(pdf|jpe?g|png|webp|gif)$/.test(path)) return res.status(400).json({ success: false, error: 'Invalid upload.' });
+      const file = await fetch(`${FLOORPLAN_STORAGE}/storage/v1/object/authenticated/floor-plans/${path}`, { headers });
+      if (!file.ok) throw new Error('Upload missing');
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      const ext = path.split('.').pop()!;
+      const magic = ext === 'pdf' ? Buffer.from(bytes.slice(0,5)).toString() === '%PDF-' : ['jpg','jpeg'].includes(ext) ? bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255 : ext === 'png' ? Buffer.from(bytes.slice(0,8)).equals(Buffer.from([137,80,78,71,13,10,26,10])) : ext === 'gif' ? /^GIF8[79]a$/.test(Buffer.from(bytes.slice(0,6)).toString()) : Buffer.from(bytes.slice(0,4)).toString() === 'RIFF' && Buffer.from(bytes.slice(8,12)).toString() === 'WEBP';
+      if (!magic || bytes.length < 1 || bytes.length > FLOORPLAN_MAX) {
+        await fetch(`${FLOORPLAN_STORAGE}/storage/v1/object/floor-plans`, { method: 'DELETE', headers, body: JSON.stringify({ prefixes: [path] }) });
+        return res.status(400).json({ success: false, error: 'That file is not a valid supported floor plan. Please choose another file.' });
+      }
+      const signed = await storage(`/object/sign/floor-plans/${path}`, { expiresIn: 2592000 });
+      return res.status(200).json({ success: true, downloadUrl: `${FLOORPLAN_STORAGE}/storage/v1${signed.signedURL}`, expires: '30 days' });
+    }
+    return res.status(400).json({ success: false, error: 'Invalid upload action.' });
+  } catch {
+    return res.status(502).json({ success: false, error: 'Floor plan upload could not be confirmed. Your request has not been sent. Please retry.' });
+  }
+}
+
 // SEO files
 const SITE = 'https://fann.ae';
 const SITEMAP_PATHS = [
@@ -1132,6 +1185,8 @@ export default async function mainHandler(req: VercelRequest, res: VercelRespons
         return await generateTemplate(req, res);
       case 'generate-exhibition-guide':
         return await generateExhibitionGuide(req, res);
+      case 'floor-plan-upload':
+        return await floorPlanUpload(req, res);
       case 'lead':
         return await handleLead(req, res, 'Website enquiry');
       case 'send-inquiry':
