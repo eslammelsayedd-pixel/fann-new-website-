@@ -16,7 +16,7 @@ for (const item of fitOutReferences) {
   const schema = {
     '@context': 'https://schema.org', '@type': 'CreativeWork', name: item.name,
     description: item.description, url: SITE + route, about: item.sector,
-    dateCreated: item.year, contentLocation: { '@type': 'Place', name: item.emirate },
+    image: item.images.map(image => SITE + image), dateCreated: item.year, contentLocation: { '@type': 'Place', name: item.emirate },
   };
   const text = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   routes[route] = {
@@ -24,9 +24,14 @@ for (const item of fitOutReferences) {
     description: item.description,
     robots: 'index, follow',
     jsonld: JSON.stringify(schema),
-    body: `<main><nav><a href="/portfolio">Back to portfolio</a></nav><p>Interior fit-out &amp; renovation · Project reference</p><h1>${text(item.name)}</h1><p>Location: ${text(item.emirate)}, UAE</p><p>Sector: ${text(item.sector)}</p><p>Year: ${text(item.year)}</p><h2>Project overview</h2><p>${text(item.description)}</p>${item.area ? `<p>Area: ${text(item.area)} sq ft.</p>` : ''}<a href="/portfolio">Explore more projects</a><a href="/contact">Discuss a fit-out project</a></main>`,
+    body: `<main><nav><a href="/portfolio">Back to portfolio</a></nav><p>Interior fit-out &amp; renovation · Project reference</p><h1>${text(item.name)}</h1><p>Location: ${text(item.emirate)}, UAE</p><p>Sector: ${text(item.sector)}</p><p>Year: ${text(item.year)}</p><h2>Project overview</h2><p>${text(item.description)}</p>${item.images.map((image, index) => `<img src="${text(image)}" alt="${text(item.name)} - photo ${index + 1}" loading="lazy">`).join('')}${item.area ? `<p>Area: ${text(item.area)} sq ft.</p>` : ''}<a href="/portfolio">Explore more projects</a><a href="/contact">Discuss a fit-out project</a></main>`,
   };
 }
+// Keep the portfolio's crawler view in sync with real project names and photo covers.
+const escapePortfolio = value => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const portfolioRoute = routes['/portfolio'];
+portfolioRoute.body = `<main><h1>FANN Portfolio</h1><h2>Fit-out and renovation projects</h2>${fitOutReferences.map(item => `<article><a href="/portfolio/${item.slug}"><img src="${escapePortfolio(item.images[0])}" alt="${escapePortfolio(item.name)}" loading="lazy"><h3>${escapePortfolio(item.name)}</h3></a><p>${escapePortfolio(item.emirate)} · ${escapePortfolio(item.sector)} · ${item.area ? escapePortfolio(item.area) + ' sq ft' : 'Area not disclosed'} · ${item.year}</p></article>`).join('')}<a href="/portfolio/icons-of-porsche-2025-dubai">Icons of Porsche</a><a href="/portfolio/national-expression-adek-abu-dhabi">National Expression, ADEK</a><a href="/contact">Discuss your project</a></main>`;
+portfolioRoute.jsonld = JSON.stringify({'@context':'https://schema.org','@type':'CollectionPage',name:'FANN Portfolio',url:SITE+'/portfolio',mainEntity:{'@type':'ItemList',numberOfItems:fitOutReferences.length,itemListElement:fitOutReferences.map((item,index)=>({'@type':'ListItem',position:index+1,url:SITE+'/portfolio/'+item.slug,name:item.name,image:SITE+item.images[0]}))}});
 const esc = (s = '') => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 for (const [route, r] of Object.entries(routes)) {
