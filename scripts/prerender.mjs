@@ -9,6 +9,9 @@ const SITE = 'https://fann.ae';
 const dist = path.resolve('dist');
 const template = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
 const routes = JSON.parse(fs.readFileSync(path.resolve('scripts/prerender-routes.json'), 'utf8'));
+// Keep buyer-page discovery links in server HTML as well as rendered hubs.
+routes['/fit-out-dubai'].body += '<section><h2>Explore fit-out and renovation services</h2><ul><li><a href="/restaurant-fit-out-dubai">Restaurant fit-out in Dubai</a></li><li><a href="/clinic-fit-out-dubai">Clinic fit-out in Dubai</a></li><li><a href="/villa-renovation-dubai">Villa renovation in Dubai</a></li></ul></section>';
+routes['/services'].body += '<section><h2>Exhibition services</h2><p><a href="/exhibition-stands-abu-dhabi">Exhibition stands in Abu Dhabi</a></p></section>';
 const fitOutReferences = JSON.parse(fs.readFileSync(path.resolve('data/fitOutReferences.json'), 'utf8'));
 // Keep the server-rendered fit-out reference pages in sync with the approved reference data.
 for (const item of fitOutReferences) {

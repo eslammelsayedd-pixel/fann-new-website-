@@ -14,11 +14,12 @@ interface ServiceSectionProps {
   services: string[];
   imagePosition?: 'left' | 'right';
   link: string;
+  relatedLink?: { path: string; label: string };
 }
 
 const buttonTransition = { type: 'spring', stiffness: 400, damping: 17 } as const;
 
-const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, description, image, services, imagePosition = 'right', link }) => {
+const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, description, image, services, imagePosition = 'right', link, relatedLink }) => {
   const imageVariants = {
     offscreen: { opacity: 0, x: imagePosition === 'right' ? 40 : -40 },
     onscreen: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 50, duration: 0.8 } }
@@ -62,6 +63,7 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({ icon, title, descriptio
                   <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
               </motion.button>
           </Link>
+          {relatedLink && <p className="mt-6"><Link to={relatedLink.path} className="text-fann-gold underline underline-offset-4">{relatedLink.label}</Link></p>}
         </motion.div>
         <motion.div className={`order-1 ${imagePosition === 'left' ? 'md:order-1' : 'md:order-2'}`} variants={imageVariants}>
           <picture>
@@ -90,7 +92,8 @@ const servicesData = [
         image: "https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=800&q=75",
         services: [ "Custom Stand Design & Build", "Modular & Reusable Systems", "Turnkey Project Management", "In-House Fabrication & Production", "Premium Interior Fit-Out" ],
         imagePosition: "right" as "right",
-        link: "/portfolio?category=exhibition"
+        link: "/portfolio?category=exhibition",
+        relatedLink: { path: "/exhibition-stands-abu-dhabi", label: "Exhibition stands in Abu Dhabi" }
     },
     {
         icon: <Calendar size={40} />,
