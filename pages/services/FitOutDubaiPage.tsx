@@ -134,6 +134,14 @@ const FitOutDubaiPage: React.FC = () => (
         <Link to="/contact" className="bg-fann-gold text-black font-bold py-3 px-8 rounded-full uppercase tracking-wider inline-block">Send your drawings</Link>
       </div>
 
+      <h2>Explore fit-out and renovation services</h2>
+      <p>Find the service that fits your space:</p>
+      <ul>
+        <li><Link to="/restaurant-fit-out-dubai">Restaurant fit-out in Dubai</Link></li>
+        <li><Link to="/clinic-fit-out-dubai">Clinic fit-out in Dubai</Link></li>
+        <li><Link to="/villa-renovation-dubai">Villa renovation in Dubai</Link></li>
+      </ul>
+
       <h2>Frequently asked questions</h2>
       <FaqAccordion faqs={faqs} />
 
