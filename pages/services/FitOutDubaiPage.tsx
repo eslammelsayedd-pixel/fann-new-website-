@@ -23,9 +23,24 @@ const deliver = [
 ];
 
 const proof = [
-  { img: '/images/projects/icons-of-porsche/06.webp', alt: 'Timber slat entrance at the Icons of Porsche 2025 event build', caption: 'Event build: Icons of Porsche 2025, Dubai Design District', link: '/portfolio/icons-of-porsche-2025-dubai' },
-  { img: '/images/projects/national-expression-adek/01.webp', alt: 'Curved gallery walls at the ADEK National Expression exhibition', caption: 'Exhibition build: National Expression for ADEK, Abu Dhabi', link: '/portfolio/national-expression-adek-abu-dhabi' },
-  { img: '/images/projects/icons-of-porsche/37.webp', alt: 'Community Village timber entrance at dusk at Icons of Porsche 2025', caption: 'Event build: Community Village entrance, Icons of Porsche 2025', link: '/portfolio/icons-of-porsche-2025-dubai' },
+  {
+    "img": "/images/projects/182-fitout-a1a8a8232334eb205ddcd9c1aeff8301078aab74.webp",
+    "alt": "AB Prime Realty Office interior from FANN project archive",
+    "caption": "AB Prime Realty Office - Dubai, 2025 - 10,118 sq ft",
+    "link": "/portfolio/fit-out/42-ab-prime-realty-office"
+  },
+  {
+    "img": "/images/projects/186-fitout-a321ed2036ac59ab5156d5f635b75a44b9dbd8b3.webp",
+    "alt": "Adaline Restaurant interior from FANN project archive",
+    "caption": "Adaline Restaurant - Dubai, 2024 - 6,000 sq ft",
+    "link": "/portfolio/fit-out/24-adaline-restaurant"
+  },
+  {
+    "img": "/images/projects/109-fitout-572a19833891731b140968ccbb6bd3b78b4570f9.webp",
+    "alt": "Aspris Clinic - City Walk interior from FANN project archive",
+    "caption": "Aspris Clinic - City Walk - Dubai, 2024 - 5,490 sq ft",
+    "link": "/portfolio/fit-out/30-aspris-clinic-city-walk"
+  }
 ];
 
 const concepts = [
@@ -93,8 +108,8 @@ const FitOutDubaiPage: React.FC = () => (
       <h2>Why in-house matters</h2>
       <p>Our production facility means no third-party joinery lead times, one consistent specification across every site, and changes turned around in days, not weeks. For operators opening more than one location, that is how every site opens to the same standard.</p>
 
-      <h2>Proven on immovable deadlines</h2>
-      <p>FANN builds exhibition stands and event environments for opening dates that cannot move - including work for Icons of Porsche and ADEK. A store or restaurant opening runs on the same clock. We plan backwards from your opening date and deliver to it.</p>
+      <h2>Completed commercial fit-outs in Dubai</h2>
+      <p>Explore documented office, restaurant and healthcare interiors from FANN's project archive. Each project links to its own photographs and details, so you can review work relevant to your space rather than rely on concept images.</p>
       <div className="not-prose grid md:grid-cols-3 gap-6 my-8">
         {proof.map(p => (
           <Link key={p.img} to={p.link} className="block bg-fann-charcoal-light border border-white/10 rounded-lg overflow-hidden hover:border-fann-gold transition-colors">
@@ -109,6 +124,19 @@ const FitOutDubaiPage: React.FC = () => (
 
       <h2>How we quote</h2>
       <p>Per site, itemised, and fast. Send us drawings or a BOQ and we return a clear scope and quotation without a long tender process.</p>
+
+      <h2>Prepare your fit-out brief</h2>
+      <p>A useful brief lets us separate the work your site needs from assumptions. Send what you have; tell us which drawings or site details are still missing.</p>
+      <ul>
+        <li><strong>Site and use:</strong> Location, floor area, whether the space is an office, restaurant, clinic or another commercial use, and its current condition.</li>
+        <li><strong>Drawings and scope:</strong> Floor plans or a BOQ, the areas being changed, and any existing finishes or equipment that must stay.</li>
+        <li><strong>Design and joinery:</strong> Brand guidelines, reference images, reception or counter needs, storage and furniture requirements.</li>
+        <li><strong>Building constraints:</strong> Landlord fit-out guidance, access hours and any known submission or site restrictions. Approval needs are checked for your specific site.</li>
+        <li><strong>Budget and opening date:</strong> Your working budget, target handover date and whether the site will remain occupied during works.</li>
+      </ul>
+      <h3>Agree what the quote covers</h3>
+      <p>Ask for the scope to distinguish partitions, ceilings, flooring, joinery, MEP coordination and finishes. Confirm what is included, excluded or dependent on a site survey, along with the drawings, approval steps and handover plan. The quote should reflect your actual site, not a generic price per square foot.</p>
+      <p><Link to="/contact">Send your fit-out brief</Link>, or email drawings to <a href="mailto:sales@fann.ae">sales@fann.ae</a>. For specialist spaces, review our <Link to="/restaurant-fit-out-dubai">restaurant</Link> and <Link to="/clinic-fit-out-dubai">clinic fit-out</Link> pages.</p>
 
       <h2 id="design-concepts">Design concepts</h2>
       <p>These are design concepts created by FANN to show how we approach clinic, restaurant and retail interiors. They are concept visuals, not photos of completed projects. We design every fit-out around your brand, site and budget, and we can prepare a concept like this for your space before you commit.</p>
@@ -142,7 +170,6 @@ const FitOutDubaiPage: React.FC = () => (
         <li><Link to="/villa-renovation-dubai">Villa renovation in Dubai</Link></li>
       </ul>
 
-      <h2>Frequently asked questions</h2>
       <FaqAccordion faqs={faqs} />
 
       <p className="mt-8">We also deliver office, clinic and school fit-out and renovation projects across Dubai and Abu Dhabi. <Link to="/contact">Tell us about your space</Link>.</p>
