@@ -953,6 +953,67 @@ async function persistLeadReceipt(fetcher: typeof fetch, base: string, key: stri
 }
 
 
+// Persists an enquiry after browser delivery. It never sends a second email.
+// Vercel Cron authenticates with a dedicated server-only CRON_SECRET.
+async function cleanupLeadReceipts(req: VercelRequest, res: VercelResponse) {
+  res.setHeader('Cache-Control', 'no-store');
+  const secret = process.env.CRON_SECRET;
+  if (!secret || req.headers.authorization !== `Bearer ${secret}`) return res.status(401).json({ success: false });
+  if (req.method !== 'GET') return res.status(405).json({ success: false });
+  const key = process.env.FANN_FLOORPLAN_STORAGE_KEY;
+  if (!key) return res.status(503).json({ success: false });
+  try {
+    const cutoff = new Date(Date.now() - 30 * 86400000).toISOString();
+    const response = await fetch(`${FLOORPLAN_STORAGE}/rest/v1/fann_lead_receipts?created_at=lt.${encodeURIComponent(cutoff)}`, {
+      method: 'DELETE', headers: { apikey: key, Authorization: `Bearer ${key}`, Prefer: 'return=minimal' },
+    });
+    if (!response.ok) throw new Error('Cleanup unavailable');
+    return res.status(200).json({ success: true });
+  } catch { return res.status(502).json({ success: false }); }
+}
+
+async function leadReceipt(req: VercelRequest, res: VercelResponse) {
+  res.setHeader('Cache-Control', 'no-store');
+  if (req.method !== 'POST') return res.status(405).json({ persisted: false });
+  const origin = req.headers.origin || '';
+  if (origin !== 'https://fann.ae' && origin !== 'https://www.fann.ae' && !(process.env.VERCEL_URL && origin === `https://${process.env.VERCEL_URL}`)) return res.status(403).json({ persisted: false });
+  if (process.env.FANN_OPENAI_LEAD_RECEIPTS_ENABLED !== 'true') return res.status(503).json({ persisted: false });
+  const key = process.env.FANN_FLOORPLAN_STORAGE_KEY;
+  if (!key) return res.status(503).json({ persisted: false });
+  const b = req.body || {};
+  if (JSON.stringify(b).length > 65536) return res.status(413).json({ persisted: false });
+  if (clean(b.website) || b.deliveryConfirmed !== true) return res.status(400).json({ persisted: false });
+  const ip = clean(req.headers['x-forwarded-for'], 100).split(',')[0];
+  if (isRateLimited('receipt:' + ip)) return res.status(429).json({ persisted: false });
+  const email = clean(b.email, 160), phone = clean(b.phone, 40);
+  if (!clean(b.formType, 80)) return res.status(400).json({ persisted: false });
+  if ((!email && !phone) || (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))) return res.status(400).json({ persisted: false });
+  // Client token is only for idempotency, never the conversion event ID.
+  const requestToken = clean(b.requestToken, 80);
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(requestToken)) return res.status(400).json({ persisted: false });
+  const submission = { formType: clean(b.formType, 80), name: clean(b.name, 120), email, phone,
+    company: clean(b.company, 160), message: clean(b.message, 5000),
+    details: Object.fromEntries(Object.entries(typeof b.details === 'object' && b.details ? b.details : {}).slice(0,40).map(([k,v])=>[clean(k,100), clean(typeof v === 'object' ? JSON.stringify(v) : v,1000)])) };
+  try {
+    const { randomUUID, createHash } = await import('node:crypto');
+    const requestHash = createHash('sha256').update(requestToken).digest('hex');
+    const headers = { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' };
+    const endpoint = `${FLOORPLAN_STORAGE}/rest/v1/fann_lead_receipts`;
+    const response = await fetch(endpoint + '?on_conflict=request_hash', { method: 'POST',
+      headers: { ...headers, Prefer: 'resolution=ignore-duplicates,return=representation' },
+      body: JSON.stringify({ submission_id: randomUUID(), request_hash: requestHash, event_name: 'lead_created', submission }) });
+    if (!response.ok) throw new Error('Receipt insert unavailable');
+    let rows: any = await response.json();
+    if (!rows.length) {
+      const existing = await fetch(`${endpoint}?request_hash=eq.${requestHash}&select=submission_id`, { headers });
+      if (!existing.ok) throw new Error('Receipt lookup unavailable');
+      rows = await existing.json();
+    }
+    if (!Array.isArray(rows) || rows.length !== 1 || !/^[0-9a-f-]{36}$/i.test(rows[0].submission_id)) throw new Error('Receipt not confirmed');
+    return res.status(200).json({ persisted: true, submissionId: rows[0].submission_id });
+  } catch { console.error('Private receipt unavailable; conversion suppressed.'); return res.status(502).json({ persisted: false }); }
+}
+
 async function handleLead(req: VercelRequest, res: VercelResponse, defaultType: string) {
   if (req.method !== 'POST') return res.status(405).json({ success: false, error: 'Method Not Allowed' });
   const b: any = req.body || {};
@@ -1211,6 +1272,10 @@ export default async function mainHandler(req: VercelRequest, res: VercelRespons
         return await generateExhibitionGuide(req, res);
       case 'floor-plan-upload':
         return await floorPlanUpload(req, res);
+      case 'lead-receipts-cleanup':
+        return await cleanupLeadReceipts(req, res);
+      case 'lead-receipt':
+        return await leadReceipt(req, res);
       case 'lead':
         return await handleLead(req, res, 'Website enquiry');
       case 'send-inquiry':
