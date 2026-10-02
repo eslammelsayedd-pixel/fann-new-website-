@@ -76,5 +76,11 @@
       "source": "/portfolio/:path*",
       "destination": "/index.html"
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/lead-receipts-cleanup",
+      "schedule": "17 * * * *"
+    }
   ]
 }
