@@ -30,6 +30,9 @@ const PrivacyPage: React.FC = () => (
       <H>Cookies</H>
       <p>Analytics and advertising tools set cookies in your browser. You can block or delete cookies in your browser settings; the site will still work.</p>
 
+      <H>ChatGPT ads measurement choices</H>
+      <p>The ChatGPT measurement setting controls only OpenAI advertising measurement, separately from the existing Google and Meta tools above. It is off unless you allow it, and you can change your choice using the settings button. This integration is currently staged and disabled. When enabled after review, it can record ad click references, confirmed enquiry conversions and WhatsApp clicks. A WhatsApp click is not a submitted enquiry. No form contact details are manually passed to OpenAI. Any automatic advanced matching is subject to a separate review before activation.</p>
+
       <H>Who we share it with</H>
       <p>Only with service providers that help us run the website and handle enquiries (hosting, email delivery, analytics and advertising platforms), and where the law requires it.</p>
 
