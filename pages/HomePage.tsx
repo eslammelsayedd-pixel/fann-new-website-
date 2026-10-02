@@ -250,6 +250,24 @@ const ServicesSection: React.FC = () => (
                     index={3}
                 />
             </div>
+            <ScrollReveal className="mt-16 border-t border-white/10 pt-12">
+                <h3 className="text-2xl font-serif text-white mb-3">Fit-out and renovation in Dubai</h3>
+                <p className="text-gray-400 mb-8 max-w-2xl">Explore the service that fits your site, see completed FANN projects and prepare the details we need to scope your brief.</p>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {[
+                        { title: "Interior fit-out", to: "/fit-out-dubai", detail: "Commercial interiors, project proof and a fit-out briefing checklist." },
+                        { title: "Restaurant fit-out", to: "/restaurant-fit-out-dubai", detail: "Restaurant and hospitality interiors with documented Dubai project references." },
+                        { title: "Clinic fit-out", to: "/clinic-fit-out-dubai", detail: "Healthcare interiors, reception spaces and clinic project references." },
+                        { title: "Villa renovation", to: "/villa-renovation-dubai", detail: "Residential renovation scope, project references and handover planning." },
+                    ].map(service => (
+                        <Link key={service.to} to={service.to} className="group border border-white/10 p-6 hover:border-fann-gold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-fann-gold">
+                            <h4 className="text-lg text-white mb-3 group-hover:text-fann-gold">{service.title}</h4>
+                            <p className="text-sm text-gray-400 leading-relaxed">{service.detail}</p>
+                            <span className="text-xs uppercase tracking-widest text-fann-gold mt-5 block">Explore service &rarr;</span>
+                        </Link>
+                    ))}
+                </div>
+            </ScrollReveal>
         </div>
     </section>
 );
