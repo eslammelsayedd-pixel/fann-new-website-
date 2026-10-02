@@ -9,6 +9,8 @@ const SITE = 'https://fann.ae';
 const dist = path.resolve('dist');
 const template = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
 const routes = JSON.parse(fs.readFileSync(path.resolve('scripts/prerender-routes.json'), 'utf8'));
+// Homepage sector paths also reach crawlers before JavaScript loads.
+routes['/'].body += '<section><h2>Fit-out and renovation in Dubai</h2><p>Explore the service that fits your site, see completed FANN projects and prepare the details we need to scope your brief.</p><ul><li><a href="/fit-out-dubai">Interior fit-out</a>: Commercial interiors, project proof and a fit-out briefing checklist.</li><li><a href="/restaurant-fit-out-dubai">Restaurant fit-out</a>: Restaurant and hospitality interiors with documented Dubai project references.</li><li><a href="/clinic-fit-out-dubai">Clinic fit-out</a>: Healthcare interiors, reception spaces and clinic project references.</li><li><a href="/villa-renovation-dubai">Villa renovation</a>: Residential renovation scope, project references and handover planning.</li></ul></section>';
 // Keep buyer-page discovery links in server HTML as well as rendered hubs.
 routes['/fit-out-dubai'].body += '<section><h2>Explore fit-out and renovation services</h2><ul><li><a href="/restaurant-fit-out-dubai">Restaurant fit-out in Dubai</a></li><li><a href="/clinic-fit-out-dubai">Clinic fit-out in Dubai</a></li><li><a href="/villa-renovation-dubai">Villa renovation in Dubai</a></li></ul></section>';
 routes['/services'].body += '<section><h2>Exhibition services</h2><p><a href="/exhibition-stands-abu-dhabi">Exhibition stands in Abu Dhabi</a></p></section>';
