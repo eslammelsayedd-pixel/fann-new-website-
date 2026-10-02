@@ -1,7 +1,7 @@
-/* Staged only. Release requires owner approval, consent UI and durable server receipts. */
+/* Consent-gated OpenAI measurement. Lead events require durable server receipts. */
 (function (w, d) {
   'use strict';
-  var ENABLED = false; // Keep false until the reviewed release prerequisites are met.
+  var ENABLED = true; // Owner-approved matching; visitor consent is still required.
   var consent = false;
   var initialized = false;
   var sent = new Set();
