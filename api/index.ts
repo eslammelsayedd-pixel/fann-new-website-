@@ -963,13 +963,17 @@ async function cleanupLeadReceipts(req: VercelRequest, res: VercelResponse) {
   const key = process.env.FANN_FLOORPLAN_STORAGE_KEY;
   if (!key) return res.status(503).json({ success: false });
   try {
+    const headers = { apikey: key, Authorization: `Bearer ${key}` };
+    const read = await fetch(`${FLOORPLAN_STORAGE}/rest/v1/fann_lead_receipts?select=submission_id&limit=1`, { headers });
+    if (!read.ok) { console.error('Private receipt cleanup read failed', read.status); return res.status(502).json({ success: false }); }
     const cutoff = new Date(Date.now() - 30 * 86400000).toISOString();
     const response = await fetch(`${FLOORPLAN_STORAGE}/rest/v1/fann_lead_receipts?created_at=lt.${encodeURIComponent(cutoff)}`, {
       method: 'DELETE', headers: { apikey: key, Authorization: `Bearer ${key}`, Prefer: 'return=minimal' },
     });
-    if (!response.ok) throw new Error('Cleanup unavailable');
+    if (!response.ok) { console.error('Private receipt cleanup delete failed', response.status); return res.status(502).json({ success: false }); }
+    console.log('Private receipt cleanup completed', response.status);
     return res.status(200).json({ success: true });
-  } catch { return res.status(502).json({ success: false }); }
+  } catch { console.error('Private receipt cleanup network failure'); return res.status(502).json({ success: false }); }
 }
 
 async function leadReceipt(req: VercelRequest, res: VercelResponse) {
