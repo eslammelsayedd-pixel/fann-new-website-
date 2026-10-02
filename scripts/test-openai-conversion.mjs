@@ -41,3 +41,6 @@ clicks.handlers.click(click); assert.equal(clicks.window.oaiq.q.at(-1)[3].custom
 assert.equal(clicks.window.oaiq.q.at(-1)[3].opt_out,true);
 clicks.hook.setConsent(false); const count=clicks.window.oaiq.q.length; clicks.handlers.click(click);assert.equal(clicks.window.oaiq.q.length,count);
 console.log('PASS: intentional WhatsApp click only; custom not lead; consent gate');
+
+on.hook.setConsent(true); assert.deepEqual(calls().at(-1), ['consent',true]); assert.equal(on.scripts.length,1);
+console.log('PASS: regrant restores SDK consent without loading twice');
