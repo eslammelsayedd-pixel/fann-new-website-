@@ -54,7 +54,7 @@ export async function submitLead(payload: LeadPayload): Promise<void> {
     }
     let d: any = {};
     try { d = await r.json(); } catch { /* ignore */ }
-    if (!r.ok || d.success === false) {
+    if (!r.ok || d.success !== true) {
       throw new Error('Sorry, your message could not be sent right now. Please WhatsApp us on +971 50 566 7502 or email sales@fann.ae.');
     }
   } else {
@@ -73,13 +73,7 @@ export async function submitLead(payload: LeadPayload): Promise<void> {
     if (!response.ok || !data.success) {
       throw new Error(data.error || 'Sorry, your message could not be sent. Please WhatsApp us on +971 50 566 7502 or email sales@fann.ae.');
     }
-    // Email delivery alone is not durable persistence. Current server has no such receipt,
-    // so the staged hook stays silent. Do not synthesize an ID in the browser.
-    try {
-      (window as any).fannOpenAIConversion?.measurePersistedLead({
-        persisted: data.persisted === true, submissionId: data.submissionId,
-      });
-    } catch { /* optional measurement must never break lead delivery */ }
+
   }
   try {
     const w = window as any;
@@ -87,4 +81,20 @@ export async function submitLead(payload: LeadPayload): Promise<void> {
     if (typeof w.fbq === 'function') w.fbq('track', 'Lead', { content_name: payload.formType });
     (w.dataLayer = w.dataLayer || []).push({ event: 'lead_submitted', form_type: payload.formType });
   } catch { /* tracking must never break the form */ }
+  // Provider delivery succeeded. Persist privately without sending another email.
+  // A receipt failure must not turn a delivered enquiry into a form error.
+  try {
+    if (typeof window !== 'undefined' && typeof window.crypto?.randomUUID === 'function') {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 5000);
+      let receipt: Response;
+      try { receipt = await fetch('/api/lead-receipt', {
+        signal: controller.signal, method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ ...payload, deliveryConfirmed: true, requestToken: window.crypto.randomUUID() }),
+      }); } finally { clearTimeout(timeout); }
+      const data = await receipt.json();
+      if (receipt.ok && data.persisted === true) (window as any).fannOpenAIConversion?.measurePersistedLead(data);
+    }
+  } catch { /* delivered enquiry stays successful; no conversion without committed receipt */ }
+
 }
