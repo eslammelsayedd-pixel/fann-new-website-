@@ -1,0 +1,447 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+  background-color: rgb(var(--fann-charcoal));
+}
+
+body {
+  overflow-x: hidden;
+  background-color: rgb(var(--fann-charcoal));
+  color: rgb(var(--fann-grey));
+  font-family: 'Manrope', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Custom Selection */
+::selection {
+  background: #C9A962;
+  color: #000000;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(var(--fann-charcoal));
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+  border: 1px solid rgb(var(--fann-charcoal));
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #C9A962;
+}
+
+/* --- PREMIUM UTILITIES --- */
+
+/* Architectural Glass Panel */
+.glass-premium {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-premium:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(201, 169, 98, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* Premium Button */
+.btn-gold {
+  @apply relative overflow-hidden bg-fann-gold text-black font-bold py-3 px-8 transition-all duration-300 rounded-sm uppercase tracking-widest text-xs shadow-md;
+}
+
+.btn-gold:hover {
+  @apply bg-white text-black;
+  box-shadow: 0 0 25px rgba(201, 169, 98, 0.4);
+}
+
+.btn-outline {
+  @apply relative overflow-hidden border border-white/30 text-white font-bold py-3 px-8 transition-all duration-300 rounded-sm uppercase tracking-widest text-xs;
+}
+
+.btn-outline:hover {
+  @apply border-fann-gold text-fann-gold;
+}
+
+/* Input Styles - High Contrast */
+.input-field {
+  @apply w-full bg-fann-charcoal-light border border-white/10 py-4 px-4 text-white placeholder-gray-500 transition-all duration-300 focus:outline-none focus:border-fann-gold focus:bg-black rounded-sm font-medium;
+}
+
+/* Link Underline Animation */
+.link-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 1px;
+  bottom: -2px;
+  left: 0;
+  background-color: #C9A962;
+  transform-origin: bottom right;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.link-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* ========================================
+   CLICKABLE PROJECT CARDS
+   ======================================== */
+
+.project-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  height: 100%;
+}
+
+.project-card {
+  background: #1a1a1a;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card-link:hover {
+  transform: translateY(-8px);
+}
+
+.project-card-link:hover .project-card {
+  border-color: rgba(198, 166, 100, 0.5);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.project-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: #0a0a0a;
+}
+
+.project-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.project-card-link:hover .project-image-wrapper img {
+  transform: scale(1.1);
+}
+
+.project-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(198, 166, 100, 0.9) 0%, rgba(180, 140, 70, 0.9) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.project-card-link:hover .project-overlay {
+  opacity: 1;
+}
+
+.view-project-icon {
+  color: #000;
+  transform: translateX(-20px);
+  opacity: 0;
+  transition: all 0.4s ease 0.1s;
+}
+
+.project-card-link:hover .view-project-icon {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.view-project-text {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #000;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.4s ease 0.2s;
+}
+
+.project-card-link:hover .view-project-text {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.project-card-content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1;
+}
+
+/* ========================================
+   PROJECT PAGE STYLES
+   ======================================== */
+
+.detail-item {
+  @apply flex flex-col gap-1 text-center p-4 bg-white/5 border border-white/5 rounded-sm;
+}
+
+.detail-label {
+  @apply text-[10px] font-bold uppercase tracking-widest text-fann-gold;
+}
+
+.detail-value {
+  @apply text-lg font-medium text-white;
+}
+
+.case-study-block {
+  @apply p-8 md:p-12 bg-white/5 border border-white/10 rounded-sm relative overflow-hidden mb-8;
+}
+
+.challenge-list li {
+  @apply relative pl-6 mb-2 text-gray-300 leading-relaxed;
+}
+
+.challenge-list li::before {
+  content: '→';
+  @apply absolute left-0 text-fann-gold font-bold;
+}
+
+.spec-category {
+  @apply p-8 bg-fann-charcoal-light border border-white/10 rounded-sm hover:border-fann-gold/50 transition-colors;
+}
+
+.gallery-item {
+  @apply relative overflow-hidden rounded-sm bg-black cursor-zoom-in;
+}
+
+.gallery-overlay {
+  @apply absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 transition-opacity duration-300;
+}
+
+.gallery-item:hover .gallery-overlay {
+  @apply opacity-100;
+}
+
+/* ========================================
+   THEME VARIABLES (day/night toggle)
+   Dark is the default palette; html.light
+   remaps every token to the day theme.
+   ======================================== */
+:root, html.dark {
+  --fann-charcoal: 15 15 15;
+  --fann-charcoal-light: 26 26 26;
+  --fann-charcoal-lighter: 38 38 38;
+  --fann-grey: 229 229 229;
+  --fann-grey-muted: 163 163 163;
+  --fann-gold: 201 169 98;
+  --fann-gold-light: 229 197 128;
+  --fann-white: 255 255 255;
+  --fann-border: rgba(255, 255, 255, 0.1);
+  --fann-peach: 15 15 15;
+  --fann-teal: 229 229 229;
+  --fann-teal-dark: 10 10 10;
+  --fann-accent-teal: 201 169 98;
+  --fann-light-gray: 212 212 212;
+  --fann-gradient-subtle: radial-gradient(circle at center, #1F1F1F 0%, #0F0F0F 100%);
+  color-scheme: dark;
+}
+
+html.light {
+  --fann-charcoal: 250 248 244;
+  --fann-charcoal-light: 255 255 255;
+  --fann-charcoal-lighter: 240 235 226;
+  --fann-grey: 23 23 23;
+  --fann-grey-muted: 92 84 66;
+  --fann-gold: 143 110 42;
+  --fann-gold-light: 176 141 63;
+  --fann-white: 255 255 255;
+  --fann-border: rgba(23, 23, 23, 0.12);
+  --fann-peach: 250 248 244;
+  --fann-teal: 23 23 23;
+  --fann-teal-dark: 255 255 255;
+  --fann-accent-teal: 143 110 42;
+  --fann-light-gray: 61 61 61;
+  --fann-gradient-subtle: radial-gradient(circle at center, #FFFFFF 0%, #F4EFE6 100%);
+  color-scheme: light;
+}
+
+/* ---- Light mode: raw utility remaps ---- */
+html.light .text-white { color: #171717; }
+html.light .text-white\/50 { color: rgba(23, 23, 23, 0.5); }
+html.light .text-gray-200 { color: #27272A; }
+html.light .text-gray-300 { color: #3F3F46; }
+html.light .text-gray-400 { color: #52525B; }
+html.light .text-gray-500 { color: #52525B; }
+html.light .hover\:text-white:hover { color: #171717; }
+html.light .group:hover .group-hover\:text-white { color: #171717; }
+
+html.light .bg-black { background-color: #FFFFFF; }
+html.light .bg-black\/10 { background-color: rgba(0, 0, 0, 0.05); }
+html.light .bg-black\/20 { background-color: rgba(255, 255, 255, 0.5); }
+html.light .bg-black\/30 { background-color: rgba(255, 255, 255, 0.55); }
+html.light .bg-black\/40 { background-color: rgba(255, 255, 255, 0.6); }
+html.light .bg-black\/50 { background-color: rgba(255, 255, 255, 0.6); }
+html.light .bg-black\/80 { background-color: rgba(250, 248, 244, 0.9); }
+html.light .hover\:bg-black\/10:hover { background-color: rgba(0, 0, 0, 0.08); }
+html.light .group:hover .group-hover\:bg-black\/40 { background-color: rgba(255, 255, 255, 0.6); }
+
+html.light .bg-white\/5 { background-color: rgba(0, 0, 0, 0.045); }
+html.light .bg-white\/10 { background-color: rgba(0, 0, 0, 0.07); }
+html.light .bg-white\/20 { background-color: rgba(0, 0, 0, 0.12); }
+html.light .hover\:bg-white:hover { background-color: #171717; }
+html.light .hover\:bg-white\/5:hover { background-color: rgba(0, 0, 0, 0.05); }
+html.light .hover\:bg-white\/10:hover { background-color: rgba(0, 0, 0, 0.08); }
+html.light .hover\:bg-white\/50:hover { background-color: rgba(0, 0, 0, 0.25); }
+html.light .hover\:text-black:hover { color: #FAF8F4; }
+
+html.light .border-white { border-color: rgba(23, 23, 23, 0.2); }
+html.light .border-white\/5 { border-color: rgba(23, 23, 23, 0.06); }
+html.light .border-white\/10 { border-color: rgba(23, 23, 23, 0.1); }
+html.light .border-white\/20 { border-color: rgba(23, 23, 23, 0.18); }
+html.light .border-white\/30 { border-color: rgba(23, 23, 23, 0.28); }
+html.light .hover\:border-white\/30:hover { border-color: rgba(23, 23, 23, 0.3); }
+
+html.light .placeholder-gray-500::placeholder,
+html.light .placeholder-gray-600::placeholder,
+html.light .input-field::placeholder { color: #8A8378; }
+
+html.light .bg-gray-50 { background-color: #F6F2EA; }
+html.light .bg-gray-700 { background-color: #E8E2D6; }
+html.light .bg-gray-800 { background-color: #EFE9DE; }
+html.light .bg-gray-900 { background-color: #FFFFFF; }
+html.light .hover\:bg-gray-200:hover { background-color: #EFE9DE; }
+html.light .hover\:bg-gray-300\/50:hover { background-color: rgba(0, 0, 0, 0.08); }
+
+/* gradient utilities */
+html.light .from-white {
+  --tw-gradient-from: #171717 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(23 23 23 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+html.light .from-gray-800 {
+  --tw-gradient-from: #EFE9DE var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(239 233 222 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+html.light .via-gray-200 {
+  --tw-gradient-via: #3F3F46 var(--tw-gradient-via-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-via), var(--tw-gradient-to);
+}
+html.light .to-gray-500 { --tw-gradient-to: #52525B var(--tw-gradient-to-position); }
+html.light .to-black { --tw-gradient-to: #FAF8F4 var(--tw-gradient-to-position); }
+html.light .to-black\/40 { --tw-gradient-to: rgb(250 248 244 / 0.4) var(--tw-gradient-to-position); }
+
+/* ---- Light mode: component-class remaps ---- */
+html.light .glass-premium {
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(23, 23, 23, 0.1);
+}
+html.light .glass-premium:hover {
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+}
+html.light .btn-outline {
+  border-color: rgba(23, 23, 23, 0.35);
+  color: #171717;
+}
+html.light .btn-gold:hover {
+  background-color: #171717;
+  color: #E5C580;
+}
+html.light .input-field { color: #171717; }
+html.light .input-field:focus { background-color: #FFFFFF; }
+html.light .detail-item,
+html.light .case-study-block {
+  background-color: rgba(0, 0, 0, 0.04);
+  border-color: rgba(23, 23, 23, 0.1);
+}
+html.light .detail-value { color: #171717; }
+html.light .challenge-list li { color: #3F3F46; }
+html.light .gallery-item { background-color: #FFFFFF; }
+html.light .gallery-overlay { background-color: rgba(250, 248, 244, 0.55); }
+html.light .project-card {
+  background: #FFFFFF;
+  border-color: rgba(23, 23, 23, 0.1);
+}
+html.light .project-card-link:hover .project-card {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+html.light .project-image-wrapper { background: #EFE9DE; }
+html.light ::-webkit-scrollbar-thumb {
+  background: #C9C2B4;
+}
+
+/* Paid-traffic landing keeps a dark, high-contrast canvas in either site theme.
+   Route-specific header overrides the global light-theme remaps without changing other pages. */
+.ads-landing-header { background-color: #111 !important; color-scheme: dark; }
+.ads-landing-page { color-scheme: dark; }
+html.light .ads-landing-header .text-white,
+html.light .ads-landing-header .text-gray-300 { color: #f5f2eb; }
+html.light .ads-landing-header .text-gray-400 { color: #d4d1cb; }
+html.light .ads-landing-header button[aria-label^="Switch to"] { background-color: #282828; }
+html.light .ads-landing-header button[aria-label^="Switch to"] svg { color: #f5e8bf; }
+html.light .ads-landing-header .btn-gold { background-color: #c9a962; color: #111; }
+
+html.light .ads-landing-page { background: #111; }
+html.light .ads-landing-page section { color: #f5f2eb; }
+html.light .ads-landing-page .text-white,
+html.light .ads-landing-page .text-gray-300 { color: #f5f2eb; }
+html.light .ads-landing-page .hover\:text-white:hover { color: #f5f2eb; }
+
+/* Explicit theme surfaces keep portfolio text and brand legible in both palettes. */
+.portfolio-surface { background: #0f0f0f; color: #f5f5f5; color-scheme: dark; }
+.portfolio-surface .portfolio-body { color: #d4d4d8; }
+.portfolio-surface .portfolio-muted { color: #b4b4bc; }
+.fann-brand-wordmark { color: #c9a962; -webkit-text-fill-color: #c9a962; background: none; }
+html.dark { color-scheme: dark; }
+html.dark body { color-scheme: dark; }
+html.light .portfolio-surface { background: #faf8f4; color: #171717; color-scheme: light; }
+html.light .portfolio-surface .portfolio-body { color: #3f3f46; }
+html.light .portfolio-surface .portfolio-muted { color: #52525b; }
+html.light .fann-brand-wordmark { color: #8f6e2a; -webkit-text-fill-color: #8f6e2a; }
+
+/* Explicit contrast in both site themes for the staged consent controls. */
+#fann-openai-consent, #fann-openai-consent *, #fann-openai-settings {
+  color: #fff !important;
+}
+#fann-openai-consent, #fann-openai-settings { background-color: #171717 !important; }
