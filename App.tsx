@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
 import Layout from './components/Layout';
+import OpenAIConsent from './components/OpenAIConsent';
 import HomePage from './pages/HomePage';
 const ServicesPage = lazy(() => import('./pages/ServicesPage'));
 const PortfolioPage = lazy(() => import('./pages/PortfolioPage'));
@@ -93,6 +94,7 @@ const App: React.FC = () => {
                 </AnimatePresence>
                 </Suspense>
             </Layout>
+            <OpenAIConsent />
         </ApiKeyProvider>
     );
 };
