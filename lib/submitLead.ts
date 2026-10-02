@@ -73,6 +73,13 @@ export async function submitLead(payload: LeadPayload): Promise<void> {
     if (!response.ok || !data.success) {
       throw new Error(data.error || 'Sorry, your message could not be sent. Please WhatsApp us on +971 50 566 7502 or email sales@fann.ae.');
     }
+    // Email delivery alone is not durable persistence. Current server has no such receipt,
+    // so the staged hook stays silent. Do not synthesize an ID in the browser.
+    try {
+      (window as any).fannOpenAIConversion?.measurePersistedLead({
+        persisted: data.persisted === true, submissionId: data.submissionId,
+      });
+    } catch { /* optional measurement must never break lead delivery */ }
   }
   try {
     const w = window as any;
