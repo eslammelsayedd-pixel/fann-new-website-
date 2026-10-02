@@ -940,6 +940,19 @@ async function deliverLead(subject: string, text: string, replyTo?: string): Pro
   throw new Error('No lead delivery method configured (set WEB3FORMS_ACCESS_KEY or SMTP_* env vars)');
 }
 
+// Server only. The UUID is issued by the server, never supplied by the browser.
+async function persistLeadReceipt(fetcher: typeof fetch, base: string, key: string, submissionId: string, submission: Record<string, unknown>): Promise<boolean> {
+  const response = await fetcher(`${base}/rest/v1/fann_lead_receipts`, {
+    method: 'POST',
+    headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', Prefer: 'return=representation' },
+    body: JSON.stringify({ submission_id: submissionId, event_name: 'lead_created', submission }),
+  });
+  if (!response.ok) return false;
+  const records = await response.json().catch(() => null);
+  return Array.isArray(records) && records.length === 1 && records[0].submission_id === submissionId;
+}
+
+
 async function handleLead(req: VercelRequest, res: VercelResponse, defaultType: string) {
   if (req.method !== 'POST') return res.status(405).json({ success: false, error: 'Method Not Allowed' });
   const b: any = req.body || {};
@@ -984,7 +997,18 @@ async function handleLead(req: VercelRequest, res: VercelResponse, defaultType: 
   try {
     await deliverLead(`[fann.ae] ${formType}${name ? ' - ' + name : ''}${company ? ' (' + company + ')' : ''}`, text, email || undefined);
     console.log(`Lead delivered: ${formType}`);
-    return res.status(200).json({ success: true, message: 'Thank you - we received your request.' });
+    // Disabled unless separately configured after table/security review. Delivery stays intact.
+    let persisted = false;
+    let submissionId: string | undefined;
+    if (process.env.FANN_OPENAI_LEAD_RECEIPTS_ENABLED === 'true' && process.env.FANN_LEADS_SUPABASE_URL && process.env.FANN_LEADS_SUPABASE_SERVICE_KEY) {
+      try {
+        const { randomUUID } = await import('node:crypto');
+        const id = randomUUID();
+        persisted = await persistLeadReceipt(fetch, process.env.FANN_LEADS_SUPABASE_URL, process.env.FANN_LEADS_SUPABASE_SERVICE_KEY, id, { formType, name, email, phone, company, message, details: extra });
+        if (persisted) submissionId = id;
+      } catch { console.error('Lead receipt persistence unavailable; conversion suppressed.'); }
+    }
+    return res.status(200).json({ success: true, message: 'Thank you - we received your request.', ...(persisted ? { persisted: true, submissionId } : {}) });
   } catch (err: any) {
     console.error('Lead delivery failed:', err?.message, '\n', text);
     return res.status(502).json({ success: false, error: 'Sorry, your message could not be sent right now. Please WhatsApp us on +971 50 566 7502 or email sales@fann.ae.' });
