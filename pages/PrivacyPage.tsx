@@ -31,6 +31,7 @@ const PrivacyPage: React.FC = () => (
       <p>Analytics and advertising tools set cookies in your browser. You can block or delete cookies in your browser settings; the site will still work.</p>
 
       <H>ChatGPT ads measurement choices</H>
+      <p>After a successful website enquiry, we keep a private submission receipt for up to 30 days plus the next hourly cleanup. It contains the submitted contact and enquiry details and is accessible only to our server and authorized account administrators. The receipt confirms that the enquiry was saved; it does not expose your details publicly.</p>
       <p>The ChatGPT measurement setting controls only OpenAI advertising measurement, separately from the existing Google and Meta tools above. It is off unless you allow it, and you can change your choice using the settings button. When enabled, it can record ad click references, confirmed enquiry conversions and WhatsApp clicks. A WhatsApp click is not a submitted enquiry. When you allow this measurement and the integration is enabled, automatic advanced matching can detect supported contact information on the page, normalize it and hash it in your browser using SHA-256 to help match conversions to ads. The hashed information can be included with conversion events; raw contact information is not sent through automatic advanced matching. No form contact details are manually passed to OpenAI.</p>
 
       <H>Who we share it with</H>
