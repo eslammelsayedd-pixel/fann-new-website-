@@ -15,7 +15,7 @@ Not approved for production deployment. No existing Google Ads, GTM, Meta or for
 - The lead_created event uses type:customer_action, event_id and opt_out:true. Per-page duplicate IDs are suppressed. Revoking consent stops further events.
 
 ## Release blockers
-1. Owner decision on advanced matching and reviewed SDK privacy behavior. No matching arguments or manual personal information are staged. The SDK's automatic behavior has not been verified.
+1. Advanced matching approved by the owner October 2 at12:05, replying Yes to the standard-matching disclosure. Privacy wording now explains browser SHA-256 contact hashing. Production remains blocked by the launch package, backend setup and explicit deployment approval. No manual personal fields are passed to the pixel.
 2. Reviewed affirmative-consent UI and privacy disclosure, including withdrawal. The hook alone is not a consent system.
 3. Durable server persistence, issuing submissionId only after an actual committed record, with retries/idempotency and receipt-contract tests. Do not equate SMTP delivery or HTTP200 with persistence.
 4. Review preview and enable flag, then explicit deployment approval. No production merge/deploy from this PR.
@@ -23,7 +23,7 @@ Not approved for production deployment. No existing Google Ads, GTM, Meta or for
 Tests: node scripts/test-openai-conversion.mjs. Tests use a fake document and no network. No test form submission or QA email is sent.
 
 ## Expanded staging
-An OpenAI-only banner and a persistent settings button are staged. Existing Google/Meta loaders remain unchanged and the copy explicitly says they are not controlled by this setting. The privacy page contains a short staged disclosure; matching-approved wording must be finalized with the owner's decision before release.
+An OpenAI-only banner and a persistent settings button are staged. Existing Google/Meta loaders remain unchanged and the copy explicitly says they are not controlled by this setting. The privacy page contains a short staged disclosure; matching-approved wording now describes browser SHA-256 contact hashing, subject to visitor consent and later enablement.
 
 SQL proposal: private public.fann_lead_receipts(submission_id uuid primary key, created_at timestamptz, event_name lead_created, submission jsonb). RLS enabled, anon/authenticated access revoked, service-role insert/select only. Includes a private JSON submission (sanitized form type/name/email/phone/company/message/details), so this is a durable form submission, not merely an event marker. No IP/referrer is stored. Personal fields are never sent to the pixel. Access and retention must be reviewed before applying. Retention proposal:30 days, implemented by a reviewed backend cleanup job before release. No migration or credentials have been applied.
 
