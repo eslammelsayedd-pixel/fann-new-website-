@@ -41,6 +41,7 @@
     setConsent: function (granted) {
       consent = granted === true;
       if (!consent && initialized) w.oaiq('consent', false);
+      if (consent && initialized) w.oaiq('consent', true);
       if (consent) initialize();
     },
     measurePersistedLead: function (receipt) {
