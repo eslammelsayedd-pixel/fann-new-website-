@@ -5,7 +5,7 @@ const source = fs.readFileSync('public/openai-conversion.js', 'utf8');
 const receipt = { persisted: true, submissionId: 'd149d322-cfb2-4c63-a781-6ce28014a352' };
 function run(enabled) {
   const scripts = [], window = {crypto:{randomUUID:()=>receipt.submissionId}}, handlers = {};
-  vm.runInNewContext(enabled ? source.replace('var ENABLED = false;', 'var ENABLED = true;') : source,
+  vm.runInNewContext(source.replace(/var ENABLED = (true|false);/, 'var ENABLED = ' + enabled + ';'),
     {window, document: {addEventListener:(n,cb)=>handlers[n]=cb, createElement: () => ({}), head: {appendChild: s => scripts.push(s)}}, Set, URL});
   return {window, scripts, handlers, hook: window.fannOpenAIConversion};
 }
