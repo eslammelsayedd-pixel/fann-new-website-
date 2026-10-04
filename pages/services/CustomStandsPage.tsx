@@ -74,6 +74,12 @@ const CustomStandsPage: React.FC = () => (
       pageDescription="Design, fabrication and installation planned around your show, floor plan and opening date."
       breadcrumbs={breadcrumbs}
     >
+      <section aria-labelledby="dubai-stand-answer" className="not-prose my-10 rounded-xl border border-fann-gold/30 bg-fann-charcoal-light p-6 sm:p-8">
+        <h2 id="dubai-stand-answer" className="font-serif text-2xl sm:text-3xl text-white mb-4">Exhibition stands in Dubai: design, build and installation</h2>
+        <p className="text-gray-300 leading-relaxed">FANN is an exhibition stand contractor in Dubai, with a Dubai office and an in-house workshop in Umm Al Quwain. We design, fabricate and install stands around your show, floor plan and opening date. The quote sets out the agreed materials, graphics, venue submissions, installation and any dismantling, rather than assuming every project includes the same scope.</p>
+        <p className="text-gray-300 leading-relaxed mt-4">See documented Dubai stands: <Link to="/portfolio/trevos-light-middle-east" className="text-fann-gold underline underline-offset-4">TREVOS at Light Middle East (2023)</Link>, <Link to="/portfolio/bayara-gulfood" className="text-fann-gold underline underline-offset-4">Bayara at Gulfood (2020)</Link> and <Link to="/portfolio/geven-aircraft-interiors" className="text-fann-gold underline underline-offset-4">Geven at Aircraft Interiors Middle East (2025)</Link>.</p>
+        <p className="text-gray-300 leading-relaxed mt-4">For a stand proposal, send the show and venue, stand dimensions, number of open sides, floor plan, deadline and what the stand needs to do. <Link to="/exhibition-stand-quote" className="text-fann-gold underline underline-offset-4">Share your stand brief and optional floor plan</Link>.</p>
+      </section>
       <h2>Built around the show brief</h2>
       <p>A custom stand starts with the space you have and the work it needs to do: product display, visitor flow, meetings or a demonstration area. FANN develops the design and build scope around your stand allocation, brand materials and venue requirements. If a reusable approach is a better fit, we can also discuss <Link to="/services/modular-exhibition-systems-dubai">modular exhibition systems</Link>.</p>
       <p>Our Dubai office coordinates the project; fabrication is supported by our workshop in Umm Al Quwain. We plan the build and installation against your show deadline rather than assuming every venue has the same access or approval process.</p>
