@@ -16,6 +16,7 @@ interface ServicePageLayoutProps {
   pageDescription: string;
   breadcrumbs: Breadcrumb[];
   children: React.ReactNode;
+  heroAction?: { label: string; path: string };
 }
 
 const buttonTransition = { type: 'spring', stiffness: 400, damping: 17 } as const;
@@ -27,6 +28,7 @@ const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
   pageDescription,
   breadcrumbs,
   children,
+  heroAction,
 }) => {
   return (
     <div className="bg-fann-charcoal text-white">
@@ -44,13 +46,14 @@ const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
             height="750"
           />
         </picture>
-        <div className="relative z-10 p-4 w-full container mx-auto">
+        <div className={`relative z-10 p-4 w-full container mx-auto ${heroAction ? 'pt-20 md:pt-12' : ''}`}>
           <h1 className="text-4xl md:text-6xl font-serif font-bold leading-tight text-fann-gold drop-shadow-md">
             {pageTitle}
           </h1>
           <p className="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-gray-200 drop-shadow">
             {pageDescription}
           </p>
+          {heroAction && <Link to={heroAction.path} className="mt-6 inline-flex min-h-[48px] items-center justify-center rounded-full bg-fann-gold px-7 py-3 text-base font-bold text-black hover:bg-fann-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">{heroAction.label}</Link>}
         </div>
       </section>
 
