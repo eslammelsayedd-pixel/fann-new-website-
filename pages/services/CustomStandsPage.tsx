@@ -72,6 +72,7 @@ const CustomStandsPage: React.FC = () => (
       heroAltText="TREVOS exhibition stand at Light Middle East, Dubai (2023), from FANN's supplied project archive"
       pageTitle="Exhibition Stand Builder & Contractor in Dubai"
       pageDescription="Design, fabrication and installation planned around your show, floor plan and opening date."
+      heroAction={{ label: "Share your show brief", path: "/exhibition-stand-quote" }}
       breadcrumbs={breadcrumbs}
     >
       <section aria-labelledby="dubai-stand-answer" className="not-prose my-10 rounded-xl border border-fann-gold/30 bg-fann-charcoal-light p-6 sm:p-8">
@@ -120,7 +121,7 @@ const CustomStandsPage: React.FC = () => (
       <h2>Request a stand proposal</h2>
       <p>Tell us your <strong>show, venue, stand size and deadline</strong>. Include a floor plan or brief if you have one. We can then discuss the design and build scope and prepare a quote for your project.</p>
       <div className="my-8 text-center">
-        <Link to="/contact" className="bg-fann-gold text-black font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider inline-block">Send your show brief</Link>
+        <Link to="/exhibition-stand-quote" className="bg-fann-gold text-black font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider inline-block">Send your show brief</Link>
       </div>
       <FaqAccordion faqs={faqs} />
     </ServicePageLayout>
