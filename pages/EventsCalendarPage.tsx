@@ -1,16 +1,33 @@
 import React, { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import SEO from '../components/SEO';
 import calendar from '../data/exhibitionCalendar.json';
 
 const formatDate = (date: string) => new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(new Date(date + 'T12:00:00Z'));
 const EventsCalendarPage: React.FC = () => {
+  const location = useLocation();
+  const guide = calendar.guides.find(item => item.path === location.pathname);
   const [country, setCountry] = useState('All');
   const [industry, setIndustry] = useState('All');
   const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Dubai', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
   const upcoming = useMemo(() => calendar.events.filter(event => event.endDate >= today), [today]);
   const visible = upcoming.filter(event => (country === 'All' || event.country === country) && (industry === 'All' || event.industry === industry));
   const schema = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'UAE & Saudi Arabia exhibitions calendar 2026-2027', url: 'https://fann.ae/events-calendar', dateModified: calendar.checkedOn, mainEntity: { '@type': 'ItemList', numberOfItems: upcoming.length, itemListElement: upcoming.map((event, index) => ({ '@type': 'ListItem', position: index + 1, name: event.name, url: event.source })) } };
+  if (guide) return <main className="bg-fann-charcoal min-h-screen text-white pt-32 pb-48 md:pb-24">
+    <SEO title={`${guide.name} Exhibition Stand Planning | FANN`} description={guide.intro} schema={{'@context':'https://schema.org','@type':'Article',headline:`${guide.name} exhibition stand planning`,dateModified:calendar.checkedOn,author:{'@type':'Organization',name:'FANN'},mainEntityOfPage:`https://fann.ae${guide.path}`}} />
+    <article className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+      <Link to="/events-calendar" className="inline-flex min-h-[48px] items-center text-fann-gold underline mb-6">Back to exhibitions calendar</Link>
+      <p className="text-fann-gold font-bold mb-4">Dates checked {formatDate(calendar.checkedOn)} | {guide.date}</p>
+      <h1 className="text-4xl md:text-5xl font-serif font-bold leading-tight mb-6">{guide.name} exhibition stand planning</h1>
+      <p className="text-lg text-gray-300 mb-4">{guide.venue}</p><p className="text-lg text-gray-300 leading-relaxed mb-8">{guide.intro}</p>
+      <Link to="/exhibition-stand-quote" className="inline-flex min-h-[48px] items-center justify-center bg-fann-gold text-black font-bold px-6 py-3 mb-10">Share your show brief</Link>
+      {guide.sections.map(section => <section key={section.heading} className="mb-10"><h2 className="text-2xl md:text-3xl font-serif font-bold mb-4">{section.heading}</h2><p className="text-gray-300 leading-relaxed">{section.text}</p></section>)}
+      <section className="border-y border-white/15 py-8 mb-10"><h2 className="text-2xl font-serif font-bold mb-4">What to send for a scoped quote</h2><p className="text-gray-300 leading-relaxed">Send the show, hall and stand allocation, dimensions, open sides, floor plan, products and demonstrations, utilities, brand assets, meeting/storage needs and your actual submission and installation deadlines. Agree design, materials, graphics, venue submissions, fabrication, transport, installation and any dismantling as separate scope items.</p><p className="text-gray-400 leading-relaxed mt-4">FANN is an independent stand design-and-build company, not the show organiser or an appointed official contractor. This guide does not replace your current exhibitor manual. No stand size, price, permit, deadline or utility capacity is inferred from the show dates.</p></section>
+      {!!guide.proof.length && <section className="mb-10"><h2 className="text-2xl font-serif font-bold mb-4">Documented stand reference</h2>{guide.proof.map(proof => <Link key={proof.path} to={proof.path} className="block min-h-[48px] text-fann-gold underline leading-relaxed">{proof.label}</Link>)}</section>}
+      <section className="mb-10"><h2 className="text-2xl font-serif font-bold mb-4">Official planning sources</h2>{guide.sources.map(source => <a key={source.url} href={source.url} target="_blank" rel="noopener noreferrer" className="block min-h-[48px] text-fann-gold underline leading-relaxed">{source.label} (opens a new tab)</a>)}</section>
+      <div className="flex flex-wrap gap-5"><Link to="/exhibition-stand-quote" className="inline-flex min-h-[48px] items-center bg-fann-gold text-black font-bold px-6 py-3">Get a scoped stand quote</Link><Link to={guide.name === 'ADIPEC 2026' ? '/exhibition-stands-abu-dhabi' : '/services/custom-exhibition-stands-dubai'} className="inline-flex min-h-[48px] items-center text-fann-gold underline">Explore stand design and build</Link></div>
+    </article>
+  </main>;
   return <main className="bg-fann-charcoal min-h-screen text-white pt-32 pb-48 md:pb-24">
     <SEO title="UAE & Saudi Exhibitions Calendar 2026-2027 | Dates & Venues" description="Selected upcoming trade shows in Dubai, Abu Dhabi, Riyadh and Jeddah, with organiser date sources and an exhibition stand planning checklist." schema={schema} />
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
@@ -30,6 +47,7 @@ const EventsCalendarPage: React.FC = () => {
           <p className="text-fann-gold font-bold mb-3"><time dateTime={event.startDate}>{formatDate(event.startDate)}</time> - <time dateTime={event.endDate}>{formatDate(event.endDate)}</time></p>
           <h3 className="text-2xl font-bold mb-3">{event.name}</h3>
           <p className="text-gray-300 leading-relaxed">{event.venue}</p><p className="text-gray-400 mt-2 mb-5">{event.country} | {event.industry}</p>
+          {calendar.guides.filter(guide => guide.name.startsWith(event.name)).map(guide => <Link key={guide.path} to={guide.path} className="block min-h-[48px] text-fann-gold underline font-bold mb-2">Exhibitor stand planning guide</Link>)}
           <a href={event.source} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[48px] items-center text-fann-gold underline underline-offset-4">Official dates and venue <span className="sr-only">for {event.name} (opens a new tab)</span></a>
         </article>)}</div>
         {!visible.length && <p className="text-gray-300 border border-white/15 p-6">No verified upcoming shows match these filters. Choose another country or industry.</p>}
