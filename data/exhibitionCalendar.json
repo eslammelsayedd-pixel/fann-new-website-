@@ -118,5 +118,117 @@
       "industry": "Food & beverage",
       "source": "https://www.gulfood.com/"
     }
+  ],
+  "guides": [
+    {
+      "path": "/exhibitions/gulfood-manufacturing-2026-stand-planning",
+      "name": "Gulfood Manufacturing 2026",
+      "date": "3-5 November 2026",
+      "venue": "Dubai World Trade Centre",
+      "intro": "Plan a Gulfood Manufacturing stand around the equipment or ingredients visitors need to inspect, the demonstrations you intend to run and the utilities those demonstrations need. The official venue listing confirms DWTC; a show date alone is not an approval or delivery deadline.",
+      "sections": [
+        {
+          "heading": "Machinery and demonstration brief",
+          "text": "List each machine or display with its footprint, weight, delivery dimensions and service needs. Identify whether demonstrations involve moving equipment, compressed air, water, drainage, heat or food samples. These are questions to resolve in your brief, not a statement that every stand requires those services."
+        },
+        {
+          "heading": "Separate visitor flow from equipment access",
+          "text": "Mark the demonstration area, viewing space, reception, storage and delivery route on your floor plan. Check how equipment will enter the allocated hall and stand before the layout is frozen. Describe samples, packaging and ingredient displays separately so they do not compete with machinery access."
+        },
+        {
+          "heading": "Use the current show documents",
+          "text": "Get your allocation, current exhibitor manual, service order forms and contractor submission requirements from the organiser. The public show listing verifies dates and halls, but it does not establish your stand height allowance, floor loading, electrical capacity, move-in slot or submission deadline."
+        }
+      ],
+      "sources": [
+        {
+          "label": "Official organiser dates and venue",
+          "url": "https://gulfoodmanufacturing.com/"
+        },
+        {
+          "label": "DWTC show and hall listing",
+          "url": "https://www.dwtc.com/en/events/gulfood-manufacturing-2026/"
+        }
+      ],
+      "proof": [
+        {
+          "label": "Bayara at Gulfood 2020: food-product stand reference, a different show",
+          "path": "/portfolio/bayara-gulfood"
+        }
+      ]
+    },
+    {
+      "path": "/exhibitions/adipec-2026-stand-planning",
+      "name": "ADIPEC 2026",
+      "date": "2-5 November 2026",
+      "venue": "ADNEC Centre, Abu Dhabi",
+      "intro": "An ADIPEC stand brief should separate technical-product display, demonstrations and business conversations. Confirm the exact ADNEC allocation and use the current exhibitor manual for stand setup. FANN can scope a proposal around those requirements rather than assume a standard stand package.",
+      "sections": [
+        {
+          "heading": "Technical displays and business meetings",
+          "text": "Identify full-size products, models, screens and demonstration equipment. Provide dimensions and weights, identify anything that moves or needs utilities, and say what visitors should be able to inspect. Size the reception, meeting space and storage from the actual team and product brief, not a guessed visitor forecast."
+        },
+        {
+          "heading": "Allocation and installation interfaces",
+          "text": "Check the hall, stand dimensions, open sides and neighbouring boundaries before approving a layout. Ask who supplies venue power, lifting, delivery access and any overhead services. A double-deck or overhead feature needs event-specific review; this guide states no universal height, loading or structural allowance."
+        },
+        {
+          "heading": "Where the official setup instructions live",
+          "text": "ADIPEC’s official FAQ directs exhibitors to log in to the Exhibitor Manual for stand setup and badges. Obtain the current manual and submission/service deadlines from that route. The venue map helps locate your allocation, but is not permission to install or an approved contractor drawing."
+        }
+      ],
+      "sources": [
+        {
+          "label": "Official dates and venue",
+          "url": "https://www.adipec.com/visit"
+        },
+        {
+          "label": "Official exhibitor setup and manual FAQ",
+          "url": "https://www.adipec.com/frequently-asked-questions/"
+        },
+        {
+          "label": "Official venue map",
+          "url": "https://www.adipec.com/exhibition/floor-plan/"
+        }
+      ],
+      "proof": []
+    },
+    {
+      "path": "/exhibitions/automechanika-dubai-2026-stand-planning",
+      "name": "Automechanika Dubai 2026",
+      "date": "10-12 November 2026",
+      "venue": "Dubai Exhibition Centre, Expo City Dubai",
+      "intro": "Automechanika Dubai moves to Dubai Exhibition Centre at Expo City for 2026. Do not reuse a previous DWTC delivery plan without checking the new allocation, hall access and organiser instructions. Plan the stand around the parts, tools, equipment or vehicles your buyers need to examine.",
+      "sections": [
+        {
+          "heading": "Product and vehicle display requirements",
+          "text": "List product sizes, weights and display security needs. If a vehicle or heavy equipment is proposed, supply delivery dimensions and the intended demonstration. Check display permissions, loading, movement and access with the organiser before the design is frozen; vehicle approval is not assumed."
+        },
+        {
+          "heading": "The DEC move changes the logistics brief",
+          "text": "Confirm the exact hall and stand allocation at DEC, delivery route, access slots, storage and return transport. Exhibiting dates are not your contractor move-in or dismantling schedule. Agree which venue services and transport tasks the stand quote includes, and which are ordered separately."
+        },
+        {
+          "heading": "Official exhibitor and safety information",
+          "text": "Use the organiser’s exhibitor planning page and its current guide. That page states that exhibitors and contractors must follow hall-access safety rules, including high-visibility vests and safety shoes during build-up and tear-down. Read the linked current Hall Access and PPE Policy for full instructions and timings."
+        }
+      ],
+      "sources": [
+        {
+          "label": "Official exhibitor guide and safety links",
+          "url": "https://automechanikadubai.ae.messefrankfurt.com/dubai/en/planning/exhibitors.html"
+        },
+        {
+          "label": "Official DEC venue and move information",
+          "url": "https://automechanikadubai.ae.messefrankfurt.com/dubai/en/planning/grounds.html"
+        }
+      ],
+      "proof": [
+        {
+          "label": "Apollo Tyres at Automechanika 2016: historical stand photograph, not the 2026 venue",
+          "path": "/portfolio/apollo-tyres-automechanika"
+        }
+      ]
+    }
   ]
 }
