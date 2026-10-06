@@ -88,6 +88,26 @@ const ProjectDetailPage: React.FC = () => {
         {/* CASE STUDY SECTIONS */}
         <div className="max-w-5xl mx-auto">
           
+          {project.slug === 'trevos-light-middle-east' && (
+            <section className="mb-16 border border-fann-gold/20 bg-white/5 p-6 md:p-8" aria-labelledby="trevos-proof-heading">
+              <h2 id="trevos-proof-heading" className="text-3xl font-serif font-bold text-white mb-5">Lighting exhibition stand: what the project photo shows</h2>
+              <p className="text-gray-300 leading-relaxed mb-6">TREVOS at Light Middle East, Dubai, 2023. This completed-stand photograph shows the brand, product displays and visitor-facing areas together, rather than a design render.</p>
+              <ul className="space-y-3 text-gray-300 leading-relaxed mb-6 list-disc pl-5">
+                <li>A large overhead TREVOS identity feature above the stand.</li>
+                <li>Vertical illuminated product displays set into wall panels.</li>
+                <li>A branded reception counter at the front of the stand.</li>
+                <li>A separate table-and-stool area for conversations beside the displays.</li>
+              </ul>
+              <h3 className="text-xl font-bold text-white mb-3">Use the reference to brief your stand</h3>
+              <p className="text-gray-300 leading-relaxed mb-4">For a lighting or technical-product exhibition, identify which products need to be displayed, their sizes and power needs, where visitors will approach, and whether you need a reception or meeting area. Send your show, stand dimensions, open sides and floor plan so the proposed layout can be checked against your actual space.</p>
+              <p className="text-gray-400 text-sm leading-relaxed mb-6">The photograph is a visual reference, not a specification. Stand dimensions, material grades, rigging loads, electrical capacity, project cost and visitor results are not stated here. Any overhead feature, product connection and installation scope must be checked for your event and agreed in your quote.</p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link to="/services/custom-exhibition-stands-dubai" className="inline-flex items-center justify-center min-h-[48px] border border-fann-gold text-fann-gold px-5 py-3 hover:bg-fann-gold/10">Explore custom exhibition stands</Link>
+                <Link to="/exhibition-stand-quote" className="inline-flex items-center justify-center min-h-[48px] bg-fann-gold text-black font-bold px-5 py-3 hover:bg-yellow-400">Share your show brief</Link>
+              </div>
+            </section>
+          )}
+
           {/* Challenge */}
           {project.challenge && (
             <div className="case-study-block">
