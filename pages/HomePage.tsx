@@ -253,6 +253,7 @@ const ServicesSection: React.FC = () => (
             <p className="mt-8 text-gray-400 text-center">
                 Planning a stand at ADNEC? Explore our <Link to="/exhibition-stands-abu-dhabi" className="text-fann-gold underline underline-offset-4 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-fann-gold">exhibition stands in Abu Dhabi</Link> for design, build and venue planning.
             </p>
+            <p className="text-gray-400 max-w-3xl mx-auto mt-5">Choosing your next show? Check our <Link to="/events-calendar" className="text-fann-gold underline underline-offset-4 hover:text-white">UAE and Saudi Arabia exhibitions calendar</Link> for sourced dates and venues, then prepare your stand brief.</p>
             <ScrollReveal className="mt-16 border-t border-white/10 pt-12">
                 <h3 className="text-2xl font-serif text-white mb-3">Fit-out and renovation in Dubai</h3>
                 <p className="text-gray-400 mb-8 max-w-2xl">Explore the service that fits your site, see completed FANN projects and prepare the details we need to scope your brief.</p>
