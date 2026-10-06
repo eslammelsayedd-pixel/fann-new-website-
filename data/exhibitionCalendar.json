@@ -1,0 +1,122 @@
+{
+  "checkedOn": "2026-10-06",
+  "events": [
+    {
+      "name": "Beautyworld Dubai",
+      "startDate": "2026-10-06",
+      "endDate": "2026-10-08",
+      "venue": "Dubai World Trade Centre",
+      "country": "UAE",
+      "industry": "Beauty & wellness",
+      "source": "https://beautyworld-dubai.ae.messefrankfurt.com/dubai/en.html"
+    },
+    {
+      "name": "WETEX",
+      "startDate": "2026-10-20",
+      "endDate": "2026-10-22",
+      "venue": "Dubai World Trade Centre",
+      "country": "UAE",
+      "industry": "Water, energy & environment",
+      "source": "https://www.wetex.ae/en/"
+    },
+    {
+      "name": "ADIPEC",
+      "startDate": "2026-11-02",
+      "endDate": "2026-11-05",
+      "venue": "ADNEC Centre, Abu Dhabi",
+      "country": "UAE",
+      "industry": "Energy",
+      "source": "https://www.adipec.com/visit"
+    },
+    {
+      "name": "Saudi Build",
+      "startDate": "2026-11-02",
+      "endDate": "2026-11-05",
+      "venue": "Riyadh International Convention & Exhibition Center (RICEC)",
+      "country": "Saudi Arabia",
+      "industry": "Construction",
+      "source": "https://saudi-build.com/"
+    },
+    {
+      "name": "Gulfood Manufacturing",
+      "startDate": "2026-11-03",
+      "endDate": "2026-11-05",
+      "venue": "Dubai World Trade Centre",
+      "country": "UAE",
+      "industry": "Food manufacturing",
+      "source": "https://gulfoodmanufacturing.com/"
+    },
+    {
+      "name": "Automechanika Dubai",
+      "startDate": "2026-11-10",
+      "endDate": "2026-11-12",
+      "venue": "Dubai Exhibition Centre, Expo City Dubai",
+      "country": "UAE",
+      "industry": "Automotive",
+      "source": "https://automechanika-dubai.ae.messefrankfurt.com/dubai/en.html"
+    },
+    {
+      "name": "Cityscape Global",
+      "startDate": "2026-11-16",
+      "endDate": "2026-11-19",
+      "venue": "Riyadh Exhibition & Convention Centre, Malham",
+      "country": "Saudi Arabia",
+      "industry": "Real estate",
+      "source": "https://cityscapeglobal.com/"
+    },
+    {
+      "name": "Foodex Saudi",
+      "startDate": "2026-11-23",
+      "endDate": "2026-11-25",
+      "venue": "Jeddah International Exhibition & Convention Center (JIECC)",
+      "country": "Saudi Arabia",
+      "industry": "Food & beverage",
+      "source": "https://www.foodexsaudiexpo.com/en"
+    },
+    {
+      "name": "Big 5 Global",
+      "startDate": "2026-11-23",
+      "endDate": "2026-11-26",
+      "venue": "Dubai World Trade Centre",
+      "country": "UAE",
+      "industry": "Construction",
+      "source": "https://www.big5global.com/"
+    },
+    {
+      "name": "GITEX Global exhibition",
+      "startDate": "2026-12-08",
+      "endDate": "2026-12-11",
+      "venue": "Dubai Exhibition Centre, Expo City Dubai",
+      "country": "UAE",
+      "industry": "Technology",
+      "source": "https://www.dubaiexhibitioncentre.com/en/whats-on/gitex-global-2026"
+    },
+    {
+      "name": "Intersec Global",
+      "startDate": "2027-01-12",
+      "endDate": "2027-01-14",
+      "venue": "Dubai World Trade Centre",
+      "country": "UAE",
+      "industry": "Security, safety & fire",
+      "source": "https://intersec.ae.messefrankfurt.com/dubai/en/about.html"
+    },
+    {
+      "name": "World Health Expo Dubai (formerly Arab Health)",
+      "startDate": "2027-01-25",
+      "endDate": "2027-01-28",
+      "venue": "Dubai Exhibition Centre, Expo City Dubai & Dubai World Trade Centre",
+      "country": "UAE",
+      "industry": "Healthcare",
+      "source": "https://www.worldhealthexpo.com/events/healthcare/dubai/overview/general-event-faqs/"
+    },
+    {
+      "name": "Gulfood",
+      "startDate": "2027-03-15",
+      "endDate": "2027-03-19",
+      "venue": "Dubai World Trade Centre & Dubai Exhibition Centre",
+      "country": "UAE",
+      "industry": "Food & beverage",
+      "source": "https://www.gulfood.com/"
+    }
+  ]
+}
