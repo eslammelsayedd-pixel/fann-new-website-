@@ -47,7 +47,7 @@ const EventsCalendarPage: React.FC = () => {
           <p className="text-fann-gold font-bold mb-3"><time dateTime={event.startDate}>{formatDate(event.startDate)}</time> - <time dateTime={event.endDate}>{formatDate(event.endDate)}</time></p>
           <h3 className="text-2xl font-bold mb-3">{event.name}</h3>
           <p className="text-gray-300 leading-relaxed">{event.venue}</p><p className="text-gray-400 mt-2 mb-5">{event.country} | {event.industry}</p>
-          {calendar.guides.filter(guide => guide.name.startsWith(event.name)).map(guide => <Link key={guide.path} to={guide.path} className="block min-h-[48px] text-fann-gold underline font-bold mb-2">Exhibitor stand planning guide</Link>)}
+          {calendar.guides.filter(guide => guide.name === event.name + ' 2026').map(guide => <Link key={guide.path} to={guide.path} className="block min-h-[48px] text-fann-gold underline font-bold mb-2">Exhibitor stand planning guide</Link>)}
           <a href={event.source} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[48px] items-center text-fann-gold underline underline-offset-4">Official dates and venue <span className="sr-only">for {event.name} (opens a new tab)</span></a>
         </article>)}</div>
         {!visible.length && <p className="text-gray-300 border border-white/15 p-6">No verified upcoming shows match these filters. Choose another country or industry.</p>}
