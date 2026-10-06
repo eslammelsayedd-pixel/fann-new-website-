@@ -1,301 +1,46 @@
-
-import React, { useState, useEffect, useMemo } from 'react';
-import AnimatedPage from '../components/AnimatedPage';
-import { regionalEvents } from '../constants';
-import { Event } from '../types';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import calendar from '../data/exhibitionCalendar.json';
 
-interface DateRange {
-  start: Date;
-  end: Date;
-}
-
-const parseDateRange = (dateStr: string): DateRange => {
-  try {
-    const cleanStr = dateStr.replace(/\(TBC\)/i, '').trim();
-    const yearMatch = cleanStr.match(/\b(\d{4})\b/);
-    if (!yearMatch) throw new Error("Year not found");
-    const year = yearMatch[1];
-    const datePart = cleanStr.replace(`, ${year}`, '').trim();
-    const parts = datePart.split('-').map(p => p.trim());
-    const startPart = parts[0];
-
-    if (parts.length === 1) {
-      const date = new Date(`${startPart} ${year}`);
-      if (isNaN(date.getTime())) throw new Error(`Invalid single date: "${startPart} ${year}"`);
-      const endDate = new Date(date);
-      endDate.setHours(23, 59, 59, 999);
-      return { start: date, end: endDate };
-    }
-
-    const endPart = parts[1];
-    const startMonthMatch = startPart.match(/([A-Za-z]{3,})/);
-    if (!startMonthMatch) throw new Error(`Could not find month in start part: "${startPart}"`);
-    const startMonth = startMonthMatch[1];
-    const endMonth = endPart.match(/([A-Za-z]{3,})/) ? endPart.match(/([A-Za-z]{3,})/)![0] : startMonth;
-    const startDate = new Date(`${startPart}, ${year}`);
-    const endDay = endPart.replace(/[A-Za-z]{3,}\s?/, '');
-    const endDate = new Date(`${endMonth} ${endDay}, ${year}`);
-
-    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-      throw new Error("Could not construct valid date from parts");
-    }
-    
-    endDate.setHours(23, 59, 59, 999);
-    return { start: startDate, end: endDate };
-
-  } catch (error) {
-    // console.error(`Error parsing date string "${dateStr}":`, error);
-    const invalidDate = new Date(0);
-    return { start: invalidDate, end: invalidDate };
-  }
-};
-
-const containerVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.05 } },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, x: -30 },
-  visible: { opacity: 1, x: 0 },
-};
-
-const EventCard: React.FC<{ event: Event }> = ({ event }) => {
-    const [isExpanded, setIsExpanded] = useState(false);
-
-    return (
-        <motion.div 
-            variants={itemVariants}
-            className="bg-fann-charcoal-light border border-white/5 p-6 rounded-lg flex flex-col sm:flex-row justify-between items-start border-l-4 border-l-fann-gold hover:bg-white/5 transition-colors cursor-pointer"
-            onClick={() => setIsExpanded(!isExpanded)}
-        >
-            <div className="flex-grow pr-4">
-                <div className="flex justify-between items-start w-full sm:hidden mb-2">
-                     <p className="text-lg font-semibold text-fann-gold">{event.date}</p>
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-1">{event.name}</h3>
-                <p className="text-gray-400">{event.venue}, {event.country}</p>
-                <p className="text-sm text-gray-500 mt-1">{event.industry}</p>
-                
-                <AnimatePresence>
-                    {isExpanded && event.description && (
-                        <motion.div 
-                            initial={{ height: 0, opacity: 0, marginTop: 0 }}
-                            animate={{ height: 'auto', opacity: 1, marginTop: 16 }}
-                            exit={{ height: 0, opacity: 0, marginTop: 0 }}
-                            className="overflow-hidden text-sm text-gray-300 leading-relaxed"
-                        >
-                            {event.description}
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </div>
-            <div className="mt-4 sm:mt-0 text-left sm:text-right flex-shrink-0 flex flex-col items-end justify-between h-full gap-4">
-                <div className="hidden sm:block">
-                    <p className="text-lg font-semibold text-fann-gold">{event.date}</p>
-                </div>
-                {event.description && (
-                    <button className="text-fann-gold/70 hover:text-fann-gold transition-colors">
-                        {isExpanded ? <ChevronUp size={20}/> : <ChevronDown size={20}/>}
-                    </button>
-                )}
-            </div>
-        </motion.div>
-    );
-};
-
+const formatDate = (date: string) => new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(new Date(date + 'T12:00:00Z'));
 const EventsCalendarPage: React.FC = () => {
-  const displayableEvents = useMemo(() => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return regionalEvents
-      .map(event => ({ event, parsedDate: parseDateRange(event.date) }))
-      .filter(({ parsedDate }) => parsedDate.end >= today || parsedDate.start.getTime() === 0) // Keep TBC events
-      .sort((a, b) => {
-          if (a.parsedDate.start.getTime() === 0) return 1; // Push TBC to end
-          if (b.parsedDate.start.getTime() === 0) return -1;
-          return a.parsedDate.start.getTime() - b.parsedDate.start.getTime();
-      })
-      .map(({ event }) => event);
-  }, []);
-
-  const [filteredEvents, setFilteredEvents] = useState<Event[]>(displayableEvents);
-  const [selectedCountry, setSelectedCountry] = useState<string>('All');
-  const [selectedIndustry, setSelectedIndustry] = useState<string>('All');
-  const [selectedDateRange, setSelectedDateRange] = useState<string>('All');
-
-  const industries = useMemo(() => ['All', ...Array.from(new Set(displayableEvents.map(event => event.industry)))].sort(), [displayableEvents]);
-  const countries = ['All', 'UAE', 'KSA'];
-  const dateRanges = ['All', 'Next 3 Months', 'Next 6 Months', 'This Year'];
-  
-  const calendarPageSchema = useMemo(() => {
-    const validEvents = displayableEvents.filter(e => parseDateRange(e.date).start.getTime() !== 0);
-    return {
-        "@context": "https://schema.org",
-        "@type": "CollectionPage",
-        "name": "UAE & KSA Events Calendar | FANN",
-        "description": "Your complete guide to upcoming exhibitions and trade shows in Dubai, Abu Dhabi, and Saudi Arabia. Filter by industry, country, and date to plan your next event with FANN.",
-        "url": "https://fann.ae/events-calendar",
-        "mainEntity": {
-            "@type": "ItemList",
-            "numberOfItems": validEvents.length,
-            "itemListElement": validEvents.map((event, index) => {
-                const { start, end } = parseDateRange(event.date);
-                return {
-                    "@type": "ListItem",
-                    "position": index + 1,
-                    "item": {
-                        "@type": "Event",
-                        "name": event.name,
-                        "startDate": start.getTime() !== 0 ? start.toISOString().split('T')[0] : undefined,
-                        "endDate": end.getTime() !== 0 ? end.toISOString().split('T')[0] : undefined,
-                        "location": {
-                            "@type": "Place",
-                            "name": event.venue,
-                            "address": {
-                                "@type": "PostalAddress",
-                                "addressCountry": event.country
-                            }
-                        },
-                        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-                        "description": event.description || `A leading ${event.industry} event held at ${event.venue}.`
-                    }
-                };
-            })
-        }
-    };
-  }, [displayableEvents]);
-
-  useEffect(() => {
-    let events = [...displayableEvents];
-
-    if (selectedCountry !== 'All') {
-      events = events.filter(event => event.country === selectedCountry);
-    }
-
-    if (selectedIndustry !== 'All') {
-      events = events.filter(event => event.industry === selectedIndustry);
-    }
-
-    if (selectedDateRange !== 'All') {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      let rangeEndDate: Date | null = null;
-
-      if (selectedDateRange === 'Next 3 Months') {
-        rangeEndDate = new Date(today);
-        rangeEndDate.setMonth(today.getMonth() + 3);
-      } else if (selectedDateRange === 'Next 6 Months') {
-        rangeEndDate = new Date(today);
-        rangeEndDate.setMonth(today.getMonth() + 6);
-      } else if (selectedDateRange === 'This Year') {
-        rangeEndDate = new Date(today.getFullYear(), 11, 31);
-      }
-
-      if (rangeEndDate) {
-        events = events.filter(event => {
-          const eventStartDate = parseDateRange(event.date).start;
-          // Include TBC events if range is 'All' or keep them out for specific ranges?
-          // Usually specific ranges filter out TBCs as they have date 0
-          if (eventStartDate.getTime() === 0) return false;
-          return eventStartDate >= today && eventStartDate <= rangeEndDate!;
-        });
-      }
-    }
-
-    setFilteredEvents(events);
-  }, [selectedCountry, selectedIndustry, selectedDateRange, displayableEvents]);
-
-  return (
-    <AnimatedPage>
-        <SEO 
-            title="UAE & Saudi Exhibitions Calendar 2026-2027 | Trade Show Dates"
-            description="Your complete guide to upcoming exhibitions and trade shows in Dubai, Abu Dhabi, and Saudi Arabia. Filter by industry, country, and date to plan your next event with FANN."
-            schema={calendarPageSchema}
-        />
-      <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-                <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">Events Calendar</h1>
-                <p className="text-xl text-gray-400">Your guide to the most important exhibitions and trade shows in the UAE & KSA.</p>
-            </div>
-            
-            <div className="max-w-6xl mx-auto bg-fann-charcoal-light border border-white/10 p-4 rounded-lg mb-8 grid grid-cols-1 md:grid-cols-3 gap-6 shadow-2xl">
-                <div>
-                    <label className="block text-sm font-normal text-gray-400 mb-2">Country</label>
-                    <div className="grid grid-cols-3 gap-2">
-                         {countries.map(country => (
-                            <button
-                                key={country}
-                                onClick={() => setSelectedCountry(country)}
-                                className={`w-full text-sm font-semibold py-2 px-1 rounded-md transition-colors ${selectedCountry === country ? 'bg-fann-gold text-black' : 'bg-black/30 text-gray-300 hover:bg-white/5'}`}
-                            >
-                                {country}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-                 <div>
-                    <label htmlFor="industry-filter" className="block text-sm font-normal text-gray-400 mb-2">Industry</label>
-                    <select
-                        id="industry-filter"
-                        value={selectedIndustry}
-                        onChange={(e) => setSelectedIndustry(e.target.value)}
-                        className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fann-gold text-white"
-                    >
-                        {industries.map(industry => (
-                            <option key={industry} value={industry}>{industry}</option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    <label className="block text-sm font-normal text-gray-400 mb-2">Date Range</label>
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
-                         {dateRanges.map(range => (
-                            <button
-                                key={range}
-                                onClick={() => setSelectedDateRange(range)}
-                                className={`w-full text-sm font-semibold py-2 px-1 rounded-md transition-colors ${selectedDateRange === range ? 'bg-fann-gold text-black' : 'bg-black/30 text-gray-300 hover:bg-white/5'}`}
-                            >
-                                {range}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            <div className="max-w-4xl mx-auto">
-                <motion.div 
-                    className="space-y-6"
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
-                >
-                    {filteredEvents.length > 0 ? (
-                      filteredEvents.map((event, idx) => (
-                          <EventCard key={`${event.name}-${idx}`} event={event} />
-                      ))
-                    ) : (
-                      <motion.div 
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="text-center py-16 bg-fann-charcoal-light rounded-lg border border-white/10"
-                      >
-                        <h3 className="text-2xl font-serif text-fann-gold">No Events Found</h3>
-                        <p className="text-gray-400 mt-2">Try adjusting your filters to find more events.</p>
-                      </motion.div>
-                    )}
-                </motion.div>
-            </div>
-
+  const [country, setCountry] = useState('All');
+  const [industry, setIndustry] = useState('All');
+  const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Dubai', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+  const upcoming = useMemo(() => calendar.events.filter(event => event.endDate >= today), [today]);
+  const visible = upcoming.filter(event => (country === 'All' || event.country === country) && (industry === 'All' || event.industry === industry));
+  const schema = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'UAE & Saudi Arabia exhibitions calendar 2026-2027', url: 'https://fann.ae/events-calendar', dateModified: calendar.checkedOn, mainEntity: { '@type': 'ItemList', numberOfItems: upcoming.length, itemListElement: upcoming.map((event, index) => ({ '@type': 'ListItem', position: index + 1, name: event.name, url: event.source })) } };
+  return <main className="bg-fann-charcoal min-h-screen text-white pt-32 pb-48 md:pb-24">
+    <SEO title="UAE & Saudi Exhibitions Calendar 2026-2027 | Dates & Venues" description="Selected upcoming trade shows in Dubai, Abu Dhabi, Riyadh and Jeddah, with organiser date sources and an exhibition stand planning checklist." schema={schema} />
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+      <p className="text-fann-gold text-sm font-bold mb-4">Exhibitor planning | Dates checked {formatDate(calendar.checkedOn)}</p>
+      <h1 className="text-4xl md:text-6xl font-serif font-bold leading-tight mb-6">UAE & Saudi Arabia exhibitions calendar</h1>
+      <p className="text-lg text-gray-300 leading-relaxed max-w-3xl mb-5">Planning an exhibition stand in Dubai, Abu Dhabi, Riyadh or Jeddah? Use this selected 2026-2027 trade-show calendar to match your show, venue and opening date to your stand brief.</p>
+      <p className="text-gray-400 leading-relaxed max-w-3xl mb-8">Dates and venues below were checked against organiser or venue pages. This is not a complete regional calendar. Dates can change: confirm with the organiser before booking travel, exhibition space or production. FANN is not the organiser of these shows.</p>
+      <Link to="/exhibition-stand-quote" className="inline-flex min-h-[48px] items-center justify-center bg-fann-gold text-black font-bold px-6 py-3 mb-12">Share your show brief</Link>
+      <section aria-labelledby="calendar-heading">
+        <h2 id="calendar-heading" className="text-3xl font-serif font-bold mb-6">Upcoming exhibitions and trade shows</h2>
+        <div className="grid sm:grid-cols-2 gap-5 mb-7">
+          <label className="text-gray-300">Country<select aria-label="Country" value={country} onChange={e => setCountry(e.target.value)} className="block w-full bg-fann-charcoal-light text-white border border-white/20 px-4 py-3 mt-2 min-h-[48px]"><option>All</option><option>UAE</option><option>Saudi Arabia</option></select></label>
+          <label className="text-gray-300">Industry<select aria-label="Industry" value={industry} onChange={e => setIndustry(e.target.value)} className="block w-full bg-fann-charcoal-light text-white border border-white/20 px-4 py-3 mt-2 min-h-[48px]"><option>All</option>{[...new Set(upcoming.map(event => event.industry))].sort().map(value => <option key={value}>{value}</option>)}</select></label>
         </div>
-      </div>
-    </AnimatedPage>
-  );
+        <p className="text-gray-400 mb-5" aria-live="polite">{visible.length} selected shows</p>
+        <div className="grid md:grid-cols-2 gap-6">{visible.map(event => <article key={event.name} className="border border-white/15 bg-fann-charcoal-light p-6 rounded-lg">
+          <p className="text-fann-gold font-bold mb-3"><time dateTime={event.startDate}>{formatDate(event.startDate)}</time> - <time dateTime={event.endDate}>{formatDate(event.endDate)}</time></p>
+          <h3 className="text-2xl font-bold mb-3">{event.name}</h3>
+          <p className="text-gray-300 leading-relaxed">{event.venue}</p><p className="text-gray-400 mt-2 mb-5">{event.country} | {event.industry}</p>
+          <a href={event.source} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[48px] items-center text-fann-gold underline underline-offset-4">Official dates and venue <span className="sr-only">for {event.name} (opens a new tab)</span></a>
+        </article>)}</div>
+        {!visible.length && <p className="text-gray-300 border border-white/15 p-6">No verified upcoming shows match these filters. Choose another country or industry.</p>}
+      </section>
+      <section className="mt-16 border-t border-white/15 pt-10 max-w-4xl" aria-labelledby="brief-heading">
+        <h2 id="brief-heading" className="text-3xl font-serif font-bold mb-6">Turn a show date into a stand brief</h2>
+        <ol className="list-decimal pl-6 space-y-4 text-gray-300 leading-relaxed"><li>Confirm the show, exact venue and your allocated stand dimensions and open sides.</li><li>Get the current exhibitor manual and submission deadlines. Show opening dates are not design, approval or move-in deadlines.</li><li>List products, display sizes, power needs, storage, reception and meeting areas. Add your floor plan if available.</li><li>Agree what the quote includes: design, materials, graphics, venue submissions, installation and any dismantling. Do not assume venue services or overhead rigging are included.</li></ol>
+        <p className="text-gray-400 leading-relaxed mt-6">For multi-venue shows, check the hall and venue on your allocation. The GITEX card lists the exhibition days, 8-11 December; its separate summit day is not a stand-installation deadline.</p>
+        <div className="flex flex-wrap gap-5 mt-8"><Link to="/exhibition-stand-quote" className="inline-flex min-h-[48px] items-center bg-fann-gold text-black font-bold px-6 py-3">Get a scoped stand quote</Link><Link to="/services/custom-exhibition-stands-dubai" className="inline-flex min-h-[48px] items-center text-fann-gold underline">Dubai stand design and build</Link><Link to="/exhibition-stands-abu-dhabi" className="inline-flex min-h-[48px] items-center text-fann-gold underline">Abu Dhabi exhibition stands</Link></div>
+      </section>
+    </div>
+  </main>;
 };
-
 export default EventsCalendarPage;
