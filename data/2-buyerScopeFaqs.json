@@ -1,0 +1,88 @@
+{
+  "/services/custom-exhibition-stands-dubai": [
+    {
+      "question": "What details do you need to quote a custom stand?",
+      "answer": "Send us the show name, venue, stand size and deadline. A floor plan, brand guidelines and the functions your stand needs will help us shape the brief and quote."
+    },
+    {
+      "question": "How does the design and build process work?",
+      "answer": "We start with your brief and site requirements, develop a concept, agree the scope and drawings, then fabricate and install the approved build. Venue requirements and the installation window are checked for each project."
+    },
+    {
+      "question": "Can FANN build and install the stand?",
+      "answer": "FANN offers design, fabrication and on-site installation for exhibition projects. The exact scope, venue submissions and handover schedule are agreed for your show."
+    },
+    {
+      "question": "When should I get in touch?",
+      "answer": "As soon as you have a show, venue and stand allocation. Lead times vary with the design, approvals, production scope and venue access, so share your deadline rather than relying on a standard turnaround."
+    },
+    {
+      "question": "Is a custom build different from a modular stand?",
+      "answer": "A custom build is designed around your specific layout and use. A modular system uses reusable components. We can discuss which approach fits the floor plan, brief and future show plans."
+    },
+    {
+      "question": "What should the stand quote include and exclude?",
+      "answer": "Ask for an itemised scope covering the agreed design, structure, graphics, lighting, installation and any dismantling. Confirm separately who supplies furniture, AV, internet and venue services, and whether organiser charges, rigging, storage or later changes are included. Do not assume a package covers them unless the quote says so."
+    },
+    {
+      "question": "Does a stand quote guarantee venue approval?",
+      "answer": "No. The design and submission responsibilities must be agreed against the current exhibitor manual and the venue requirements. Share the manual, floor plan and submission dates before production. Approval remains subject to the organiser or venue review; dimensions, structural loads and electrical needs cannot be inferred from a past project photo."
+    }
+  ],
+  "/fit-out-dubai": [
+    {
+      "question": "Which areas do you cover?",
+      "answer": "We deliver commercial fit-outs across Dubai and Abu Dhabi."
+    },
+    {
+      "question": "What do you need from us to quote?",
+      "answer": "Drawings or a BOQ, the site location and your target opening date. We return a clear, itemised scope and quotation per site, without a long tender process."
+    },
+    {
+      "question": "Do you make the joinery yourselves?",
+      "answer": "Yes. Every joinery piece is produced in our own workshop in Umm Al Quwain, so quality and lead times stay in our hands."
+    },
+    {
+      "question": "Can you handle more than one site?",
+      "answer": "Yes. One team and one specification across every site, with an itemised quote for each location."
+    },
+    {
+      "question": "Who handles landlord and authority coordination?",
+      "answer": "Landlord and authority coordination responsibilities are agreed for the site and build scope. Share the landlord requirements, existing drawings and approval status so submissions, fees and dependencies can be stated in the quote."
+    },
+    {
+      "question": "What should a commercial fit-out quote include and exclude?",
+      "answer": "Use the drawings or BOQ to agree demolition, partitions, finishes, joinery and any MEP work, with quantities and responsibilities stated. Confirm landlord and authority submissions, fees, equipment supplied by others, access hours, waste removal and handover documents separately. A reference project does not establish what your site quote includes."
+    },
+    {
+      "question": "Can you confirm the opening date before a site review?",
+      "answer": "The schedule needs the site condition, agreed scope, access window and approval requirements. Share your target opening date, drawings and landlord requirements early. The project programme should identify dependencies and what must be approved before work starts; a target date is not an unconditional completion promise."
+    }
+  ],
+  "/event-setup-dubai": [
+    {
+      "question": "What information do you need for an event setup quote?",
+      "answer": "Send the event date, venue, floor plan if available, the areas to be built, brand assets and your installation and dismantling windows. We can then define the build scope and price."
+    },
+    {
+      "question": "Do you work on outdoor and indoor events?",
+      "answer": "We can review briefs for both. The build plan depends on the venue, site conditions, access and the agreed technical scope."
+    },
+    {
+      "question": "Can you handle only part of an event build?",
+      "answer": "Yes. Share the elements you need, such as a stage, display area or branded installation, and we will define what FANN will supply and install."
+    },
+    {
+      "question": "When should we contact you?",
+      "answer": "Once the event date, venue and brief are known. Lead time depends on the design, approvals, fabrication and site access, so we will check the schedule against your scope."
+    },
+    {
+      "question": "What is included in an event setup quote?",
+      "answer": "The quote should name the build elements, graphics, installation, handover and any dismantling FANN will supply. Confirm AV, power, internet, furniture, transport, storage, venue charges and equipment supplied by others separately. State the interfaces and exclusions rather than assuming all event services are included."
+    },
+    {
+      "question": "Who confirms event access and build approvals?",
+      "answer": "Agree the submission and coordination responsibilities with the organiser and venue for this event. Share the floor plan, site rules, installation and dismantling windows, and the technical requirements of each build element. Outdoor conditions, loads, power and any permits need project-specific checks; a previous event photo is not approval for the new site."
+    }
+  ]
+}
