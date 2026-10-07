@@ -1,3 +1,4 @@
+import buyerFaqs from '../../data/buyerScopeFaqs.json';
 import React from 'react';
 import AnimatedPage from '../../components/AnimatedPage';
 import SEO from '../../components/SEO';
@@ -25,13 +26,7 @@ const standPhotos = [
   { file: '9-abbott-arab-health', name: 'Abbott', event: 'Arab Health', place: 'Dubai' }
 ];
 
-const faqs = [
-  { question: 'What details do you need to quote a custom stand?', answer: 'Send us the show name, venue, stand size and deadline. A floor plan, brand guidelines and the functions your stand needs will help us shape the brief and quote.' },
-  { question: 'How does the design and build process work?', answer: 'We start with your brief and site requirements, develop a concept, agree the scope and drawings, then fabricate and install the approved build. Venue requirements and the installation window are checked for each project.' },
-  { question: 'Can FANN build and install the stand?', answer: 'FANN offers design, fabrication and on-site installation for exhibition projects. The exact scope, venue submissions and handover schedule are agreed for your show.' },
-  { question: 'When should I get in touch?', answer: 'As soon as you have a show, venue and stand allocation. Lead times vary with the design, approvals, production scope and venue access, so share your deadline rather than relying on a standard turnaround.' },
-  { question: 'Is a custom build different from a modular stand?', answer: 'A custom build is designed around your specific layout and use. A modular system uses reusable components. We can discuss which approach fits the floor plan, brief and future show plans.' }
-];
+const faqs = buyerFaqs['/services/custom-exhibition-stands-dubai'];
 
 const schema = {
   '@context': 'https://schema.org',
