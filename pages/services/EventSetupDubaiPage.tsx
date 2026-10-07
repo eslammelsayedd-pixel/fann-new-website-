@@ -1,3 +1,4 @@
+import buyerFaqs from '../../data/buyerScopeFaqs.json';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import AnimatedPage from '../../components/AnimatedPage';
@@ -11,12 +12,7 @@ const breadcrumbs = [
   { name: 'Services', path: '/services' },
   { name: 'Event Setup Dubai', path },
 ];
-const faqs = [
-  { question: 'What information do you need for an event setup quote?', answer: 'Send the event date, venue, floor plan if available, the areas to be built, brand assets and your installation and dismantling windows. We can then define the build scope and price.' },
-  { question: 'Do you work on outdoor and indoor events?', answer: 'We can review briefs for both. The build plan depends on the venue, site conditions, access and the agreed technical scope.' },
-  { question: 'Can you handle only part of an event build?', answer: 'Yes. Share the elements you need, such as a stage, display area or branded installation, and we will define what FANN will supply and install.' },
-  { question: 'When should we contact you?', answer: 'Once the event date, venue and brief are known. Lead time depends on the design, approvals, fabrication and site access, so we will check the schedule against your scope.' },
-];
+const faqs = buyerFaqs['/event-setup-dubai'];
 const schema = {
   '@context': 'https://schema.org',
   '@graph': [

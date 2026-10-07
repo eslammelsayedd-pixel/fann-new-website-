@@ -93,6 +93,18 @@ portfolioRoute.body = `<main><h1>Portfolio</h1><p>Fit-out, exhibitions and event
 portfolioRoute.jsonld = JSON.stringify({'@context':'https://schema.org','@type':'CollectionPage',name:'FANN Portfolio',url:SITE+'/portfolio',mainEntity:{'@type':'ItemList',numberOfItems:portfolioItems.length,itemListElement:portfolioItems.map((item,index)=>({'@type':'ListItem',position:index+1,url:SITE+'/portfolio/'+item.slug,name:item.name,image:SITE+item.images[0]}))}});
 // Keep the staged OpenAI disclosure in the no-JavaScript privacy page too.
 if (routes['/privacy-policy']) routes['/privacy-policy'].body += '<section><h2>ChatGPT ads measurement choices</h2><p>After a successful website enquiry, we keep a private submission receipt for up to 30 days plus the next hourly cleanup. It contains submitted contact and enquiry details and is accessible only to our server and authorized account administrators. Your details are not public.</p><p>The ChatGPT measurement setting controls only OpenAI advertising measurement, separately from existing Google and Meta tools. It is off unless you allow it; use the settings button to change your choice. When enabled, it can record ad click references, confirmed enquiries and WhatsApp clicks. A WhatsApp click is not a submitted enquiry. When you allow this measurement and the integration is enabled, automatic advanced matching can detect supported contact information on the page, normalize it and hash it in your browser using SHA-256 to help match conversions to ads. The hashed information can be included with conversion events; raw contact information is not sent through automatic advanced matching. No form contact details are manually passed to OpenAI.</p></section>';
+// One source keeps visible buyer answers and FAQ markup aligned with React.
+const buyerFaqs = JSON.parse(fs.readFileSync(path.resolve('data/buyerScopeFaqs.json'), 'utf8'));
+const escapeFaq = value => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+for (const [route, faqs] of Object.entries(buyerFaqs)) {
+  const r = routes[route];
+  r.body = r.body.replace(/<h2>Frequently [Aa]sked [Qq]uestions<\/h2>/g, '');
+  r.body += `<section><h2>Frequently asked questions</h2>${faqs.map(f => `<h3>${escapeFaq(f.question)}</h3><p>${escapeFaq(f.answer)}</p>`).join('')}</section>`;
+  const schema = JSON.parse(r.jsonld);
+  const faqSchema = schema['@graph'].find(item => item['@type'] === 'FAQPage');
+  faqSchema.mainEntity = faqs.map(f => ({'@type':'Question',name:f.question,acceptedAnswer:{'@type':'Answer',text:f.answer}}));
+  r.jsonld = JSON.stringify(schema);
+}
 const esc = (s = '') => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 for (const [route, r] of Object.entries(routes)) {

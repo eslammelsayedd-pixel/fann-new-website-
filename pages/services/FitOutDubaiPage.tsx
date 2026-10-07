@@ -1,3 +1,4 @@
+import buyerFaqs from '../../data/buyerScopeFaqs.json';
 import React from 'react';
 import AnimatedPage from '../../components/AnimatedPage';
 import SEO from '../../components/SEO';
@@ -49,13 +50,7 @@ const concepts = [
   { img: '/images/concepts/retail.webp', title: 'Boutique retail', text: 'Travertine display table, backlit oak niches, brass rails and a curved fitting room in a warm neutral palette.' },
 ];
 
-const faqs = [
-  { question: 'Which areas do you cover?', answer: 'We deliver commercial fit-outs across Dubai and Abu Dhabi.' },
-  { question: 'What do you need from us to quote?', answer: 'Drawings or a BOQ, the site location and your target opening date. We return a clear, itemised scope and quotation per site, without a long tender process.' },
-  { question: 'Do you make the joinery yourselves?', answer: 'Yes. Every joinery piece is produced in our own workshop in Umm Al Quwain, so quality and lead times stay in our hands.' },
-  { question: 'Can you handle more than one site?', answer: 'Yes. One team and one specification across every site, with an itemised quote for each location.' },
-  { question: 'Who handles landlord and authority coordination?', answer: 'We do. Venue and authority coordination is part of every build.' },
-];
+const faqs = buyerFaqs['/fit-out-dubai'];
 
 const schema = {
   '@context': 'https://schema.org',
