@@ -84,5 +84,31 @@
       "question": "Who confirms event access and build approvals?",
       "answer": "Agree the submission and coordination responsibilities with the organiser and venue for this event. Share the floor plan, site rules, installation and dismantling windows, and the technical requirements of each build element. Outdoor conditions, loads, power and any permits need project-specific checks; a previous event photo is not approval for the new site."
     }
+  ],
+  "/services/exhibition-stand-fabrication-dubai": [
+    {
+      "question": "Where is the fabrication workshop?",
+      "answer": "FANN coordinates exhibition projects from its Dubai office, with an in-house joinery workshop in Umm Al Quwain. The workshop is not in Dubai; site installation is planned for the venue named in your brief."
+    },
+    {
+      "question": "What do you need to quote fabrication?",
+      "answer": "Send the show and venue, stand dimensions, open sides, floor plan, design or drawings, graphics requirements and installation deadline. State whether you need fabrication only or also design, transport, installation and dismantling so the quote names the responsibilities."
+    },
+    {
+      "question": "Which materials and finishes will be used?",
+      "answer": "Materials, finishes and any sample approval are agreed against your design and itemised quote. A project photograph does not establish the timber grade, fire rating, metal specification or finish for a new build. Required certificates and technical checks need to be confirmed for the actual venue and materials."
+    },
+    {
+      "question": "How long does fabrication take?",
+      "answer": "There is no fixed turnaround for every stand. The programme depends on approved drawings, materials, graphics, the build scope and venue access. Share the opening date and submission deadlines early so production and installation dependencies can be checked before commitment."
+    },
+    {
+      "question": "Does fabrication include venue approval and installation?",
+      "answer": "Only when stated in the agreed scope. Confirm who prepares and submits drawings, who pays organiser or venue charges, and who handles transport, site installation and dismantling. Approval remains subject to the organiser or venue review; fabrication alone is not a compliance certificate."
+    },
+    {
+      "question": "Can the design change after production starts?",
+      "answer": "Changes need a scope, cost and schedule review before they are agreed. New dimensions, materials, graphics or technical requirements can affect production and approvals. Do not assume a late change is included or can be made without moving the programme."
+    }
   ]
 }
