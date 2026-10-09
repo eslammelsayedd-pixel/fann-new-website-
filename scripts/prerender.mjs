@@ -4,6 +4,7 @@
 // Regenerate scripts/prerender-routes.json after changing page copy (see scripts/README).
 import fs from 'node:fs';
 import path from 'node:path';
+import { buyerPageSchema } from '../data/buyerPageSchema.js';
 
 const SITE = 'https://fann.ae';
 const dist = path.resolve('dist');
@@ -115,6 +116,14 @@ for (const [route, faqs] of Object.entries(buyerFaqs)) {
   faqSchema.mainEntity = faqs.map(f => ({'@type':'Question',name:f.question,acceptedAnswer:{'@type':'Answer',text:f.answer}}));
   r.jsonld = JSON.stringify(schema);
 }
+// New buyer intents share content and schema with the rendered page.
+const buyerPages = JSON.parse(fs.readFileSync(path.resolve('data/buyerPages.json'),'utf8'));
+for (const [route,page] of Object.entries(buyerPages)) {
+ const E=escapeFaq;
+ routes[route]={title:page.title,description:page.description,robots:'index, follow',jsonld:JSON.stringify(buyerPageSchema(route,page)),body:`<h1>${E(page.heading)}</h1><p>${E(page.heroCaption)}</p><p>${E(page.intro)}</p><a href="/exhibition-stand-quote">${E(page.action)}</a>${page.sections.map(section=>`<section><h2>${E(section.heading)}</h2><p>${E(section.text)}</p>${section.items?`<ul>${section.items.map(item=>`<li>${E(item)}</li>`).join('')}</ul>`:''}</section>`).join('')}<h2>Completed stands to inform your design brief</h2><p>${E(page.proofNote)}</p>${page.proof.map(proof=>`<article><a href="${proof.path}"><img src="${proof.image}" alt="${E(proof.name+', '+proof.location)}"><h3>${E(proof.name)}</h3><p>${E(proof.location)}</p><p>${E(proof.text)}</p>View completed stand</a></article>`).join('')}<h2>Turn the design brief into a scoped proposal</h2><p>Share the show, dimensions, open sides, products and deadlines. Add your floor plan if available.</p><a href="/exhibition-stand-quote">${E(page.action)}</a><h2>Frequently asked questions</h2>${page.faqs.map(f=>`<h3>${E(f.question)}</h3><p>${E(f.answer)}</p>`).join('')}<h2>Continue planning your exhibition stand</h2><ul>${page.related.map(link=>`<li><a href="${link.path}">${E(link.label)}</a></li>`).join('')}</ul><h2>Venue planning source</h2>${page.sources.map(source=>`<p><a href="${source.url}">${E(source.label)}</a> ${E(source.note)}</p>`).join('')}`};
+}
+routes['/'].body += '<p>Working on the layout before choosing the build scope? Explore our <a href="/exhibition-stand-design-abu-dhabi">Abu Dhabi exhibition stand design guide</a> for product displays, meeting areas and the information needed for venue submissions.</p>';
+routes['/portfolio'].body += '<p>Use completed stands to brief your next design: <a href="/exhibition-stand-design-abu-dhabi">exhibition stand design in Abu Dhabi</a>, with layout choices and the scope to confirm before production.</p>';
 const esc = (s = '') => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 for (const [route, r] of Object.entries(routes)) {
