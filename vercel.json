@@ -35,6 +35,11 @@
   },
   "redirects": [
     {
+      "source": "/stands/quote",
+      "destination": "/exhibition-stand-quote",
+      "permanent": true
+    },
+    {
       "source": "/:path*",
       "has": [
         {
