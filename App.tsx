@@ -5,6 +5,7 @@ import { AnimatePresence } from 'framer-motion';
 import Layout from './components/Layout';
 import OpenAIConsent from './components/OpenAIConsent';
 import HomePage from './pages/HomePage';
+const BuyerIntentPage = lazy(() => import('./pages/services/BuyerIntentPage'));
 const ServicesPage = lazy(() => import('./pages/ServicesPage'));
 const PortfolioPage = lazy(() => import('./pages/PortfolioPage'));
 const ExhibitionAdsLandingPage = lazy(() => import('./pages/ExhibitionAdsLandingPage'));
@@ -52,6 +53,7 @@ const App: React.FC = () => {
                 <AnimatePresence mode="wait">
                     <Routes location={location} key={location.pathname}>
                         <Route path="/" element={<HomePage />} />
+                        <Route path="/exhibition-stand-design-abu-dhabi" element={<BuyerIntentPage />} />
                         <Route path="/services" element={<ServicesPage />} />
                         {/* Service Detail Pages */}
                         <Route path="/services/custom-exhibition-stands-dubai" element={<CustomStandsPage />} />

@@ -70,6 +70,7 @@ const PortfolioPage: React.FC = () => {
               <h1 id="portfolio-title" className="text-4xl md:text-5xl font-serif font-bold text-fann-gold mb-4">Portfolio</h1>
               <p className="portfolio-body">Fit-out, exhibitions and events across the UAE. Explore our project photography and details.</p>
             </div>
+            <p className="portfolio-body mb-8">Use completed stands to brief your next design: <Link to="/exhibition-stand-design-abu-dhabi" className="text-fann-gold underline underline-offset-4">exhibition stand design in Abu Dhabi</Link>, with layout choices and the scope to confirm before production.</p>
             <div className="flex flex-wrap gap-4 mb-8">
               <label className="text-sm portfolio-body">Project type<select value={projectType} onChange={e => setProjectType(e.target.value)} className="block mt-2 bg-fann-charcoal-light border border-white/25 rounded px-3 py-3 text-white"><option>All</option><option>Fit-out &amp; renovation</option><option>Events &amp; exhibitions</option></select></label>
               <label className="text-sm portfolio-body">Emirate<select value={emirate} onChange={e => setEmirate(e.target.value)} className="block mt-2 bg-fann-charcoal-light border border-white/25 rounded px-3 py-3 text-white"><option>All</option>{Array.from(new Set(allProjects.map(item => item.emirate))).map(value => <option key={value}>{value}</option>)}</select></label>
