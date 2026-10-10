@@ -55,8 +55,8 @@ const schema = {
 const ExhibitionStandsAbuDhabiPage: React.FC = () => (
   <AnimatedPage>
     <SEO
-      title="Exhibition Stand Contractor Abu Dhabi | FANN"
-      description="Custom exhibition stands in Abu Dhabi, designed and built in-house with our own joinery workshop. Turnkey service from design to dismantle. Itemised quotes."
+      title="Exhibition Stand Builders Abu Dhabi | Design & Build | FANN"
+      description="Exhibition stand design company in Abu Dhabi. Custom stands designed and built in our own joinery workshop, turnkey from design to dismantle. Itemised quotes."
       schema={schema}
     />
     <ServicePageLayout
