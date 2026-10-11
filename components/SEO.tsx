@@ -32,6 +32,18 @@ const SEO: React.FC<SEOProps> = ({ title, description, schema, image, noindex, c
     if (document.title !== fullTitle) document.title = fullTitle;
 
     const url = `${SITE}${pathname === '/' ? '/' : pathname.replace(/\/$/, '')}`;
+    const arabicPath = '/ar/exhibition-stands-dubai';
+    const englishPath = '/services/custom-exhibition-stands-dubai';
+    document.documentElement.lang = pathname === arabicPath ? 'ar' : 'en';
+    document.head.querySelectorAll('link[data-fann-language-alternate]').forEach(el => el.remove());
+    if (pathname === arabicPath || pathname === englishPath) {
+      for (const [lang, path] of [['ar', arabicPath], ['en', englishPath], ['x-default', englishPath]]) {
+        const alternate = document.createElement('link');
+        alternate.rel = 'alternate'; alternate.hreflang = lang; alternate.href = SITE + path;
+        alternate.setAttribute('data-fann-language-alternate', 'true'); document.head.appendChild(alternate);
+      }
+    }
+
     let canonical = document.head.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
     if (!canonical) {
       canonical = document.createElement('link');
