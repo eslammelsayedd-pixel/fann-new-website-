@@ -118,6 +118,7 @@ const CustomStandsPage: React.FC = () => (
       <div className="my-8 text-center">
         <Link to="/exhibition-stand-quote" className="bg-fann-gold text-black font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider inline-block">Send your show brief</Link>
       </div>
+      <p lang="ar" dir="rtl"><Link to="/ar/exhibition-stands-dubai" className="text-fann-gold underline">اقرأ دليل أجنحة المعارض باللغة العربية</Link></p>
       <FaqAccordion faqs={faqs} />
     </ServicePageLayout>
   </AnimatedPage>

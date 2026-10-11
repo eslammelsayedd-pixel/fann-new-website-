@@ -9,9 +9,10 @@ interface FaqItem {
 
 interface FaqAccordionProps {
   faqs: FaqItem[];
+  heading?: string;
 }
 
-const FaqAccordion: React.FC<FaqAccordionProps> = ({ faqs }) => {
+const FaqAccordion: React.FC<FaqAccordionProps> = ({ faqs, heading }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
 
   const toggleAccordion = (index: number) => {
@@ -20,7 +21,7 @@ const FaqAccordion: React.FC<FaqAccordionProps> = ({ faqs }) => {
 
   return (
     <div className="space-y-4 mt-16">
-       <h2 className="text-4xl font-serif font-bold text-center text-fann-accent-teal dark:text-fann-gold mb-8">Frequently Asked Questions</h2>
+       <h2 className="text-4xl font-serif font-bold text-center text-fann-accent-teal dark:text-fann-gold mb-8">{heading || "Frequently Asked Questions"}</h2>
       {faqs.map((faq, index) => (
         <div key={index} className="border-b border-fann-teal/10 dark:border-fann-border last:border-b-0">
           <button

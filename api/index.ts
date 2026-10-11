@@ -1151,7 +1151,7 @@ const SITEMAP_PATHS = [
   '/about', '/contact', '/privacy-policy',
   '/insights', '/events-calendar', '/exhibitions/gulfood-manufacturing-2026-stand-planning', '/exhibitions/adipec-2026-stand-planning', '/exhibitions/automechanika-dubai-2026-stand-planning', '/fann-studio', '/book-consultation', '/resources/cost-calculator',
   '/resources/exhibition-guide', '/roi-calculator',
-  '/portfolio/icons-of-porsche-2025-dubai', '/portfolio/special-olympics-uae-unified-champion-schools-2025', '/portfolio/national-expression-adek-abu-dhabi', '/fit-out-dubai', '/restaurant-fit-out-dubai', '/clinic-fit-out-dubai', '/villa-renovation-dubai', '/exhibition-stands-abu-dhabi', '/exhibition-stand-design-abu-dhabi', '/medical-centre-fit-out-dubai',
+  '/portfolio/icons-of-porsche-2025-dubai', '/portfolio/special-olympics-uae-unified-champion-schools-2025', '/portfolio/national-expression-adek-abu-dhabi', '/fit-out-dubai', '/restaurant-fit-out-dubai', '/clinic-fit-out-dubai', '/villa-renovation-dubai', '/exhibition-stands-abu-dhabi', '/exhibition-stand-design-abu-dhabi', '/medical-centre-fit-out-dubai', '/ar/exhibition-stands-dubai',
   '/portfolio/fit-out/01-school-interior',
   '/portfolio/fit-out/02-event-hospitality-interior',
   '/portfolio/fit-out/03-itch-cafe',

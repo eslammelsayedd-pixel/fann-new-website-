@@ -55,6 +55,7 @@ const App: React.FC = () => {
                         <Route path="/" element={<HomePage />} />
                         <Route path="/exhibition-stand-design-abu-dhabi" element={<BuyerIntentPage />} />
                         <Route path="/medical-centre-fit-out-dubai" element={<BuyerIntentPage />} />
+                        <Route path="/ar/exhibition-stands-dubai" element={<BuyerIntentPage />} />
                         <Route path="/services" element={<ServicesPage />} />
                         {/* Service Detail Pages */}
                         <Route path="/services/custom-exhibition-stands-dubai" element={<CustomStandsPage />} />
