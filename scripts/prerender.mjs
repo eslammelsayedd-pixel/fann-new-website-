@@ -120,17 +120,26 @@ for (const [route, faqs] of Object.entries(buyerFaqs)) {
 const buyerPages = JSON.parse(fs.readFileSync(path.resolve('data/buyerPages.json'),'utf8'));
 for (const [route,page] of Object.entries(buyerPages)) {
  const E=escapeFaq;
- routes[route]={title:page.title,description:page.description,robots:'index, follow',jsonld:JSON.stringify(buyerPageSchema(route,page)),body:`<h1>${E(page.heading)}</h1><p>${E(page.heroCaption)}</p><p>${E(page.intro)}</p><a href="${page.actionPath || "/exhibition-stand-quote"}">${E(page.action)}</a>${page.sections.map(section=>`<section><h2>${E(section.heading)}</h2><p>${E(section.text)}</p>${section.items?`<ul>${section.items.map(item=>`<li>${E(item)}</li>`).join('')}</ul>`:''}</section>`).join('')}<h2>${E(page.proofHeading || "Completed stands to inform your design brief")}</h2><p>${E(page.proofNote)}</p>${page.proof.map(proof=>`<article><a href="${proof.path}"><img src="${proof.image}" alt="${E(proof.name+', '+proof.location)}"><h3>${E(proof.name)}</h3><p>${E(proof.location)}</p><p>${E(proof.text)}</p>${E(page.proofLinkLabel || "View completed stand")}</a></article>`).join('')}<h2>${E(page.proposalHeading || "Turn the design brief into a scoped proposal")}</h2><p>${E(page.proposalText || "Share the show, dimensions, open sides, products and deadlines. Add your floor plan if available.")}</p><a href="${page.actionPath || "/exhibition-stand-quote"}">${E(page.action)}</a><h2>Frequently asked questions</h2>${page.faqs.map(f=>`<h3>${E(f.question)}</h3><p>${E(f.answer)}</p>`).join('')}<h2>${E(page.relatedHeading || "Continue planning your exhibition stand")}</h2><ul>${page.related.map(link=>`<li><a href="${link.path}">${E(link.label)}</a></li>`).join('')}</ul><h2>${E(page.sourcesHeading || "Venue planning source")}</h2>${page.sources.map(source=>`<p><a href="${source.url}">${E(source.label)}</a> ${E(source.note)}</p>`).join('')}`};
+ routes[route]={lang:page.lang || 'en',direction:page.direction || 'ltr',title:page.title,description:page.description,robots:'index, follow',jsonld:JSON.stringify(buyerPageSchema(route,page)),body:`<h1>${E(page.heading)}</h1><p>${E(page.heroCaption)}</p><p>${E(page.intro)}</p><a href="${page.actionPath || "/exhibition-stand-quote"}">${E(page.action)}</a>${page.sections.map(section=>`<section><h2>${E(section.heading)}</h2><p>${E(section.text)}</p>${section.items?`<ul>${section.items.map(item=>`<li>${E(item)}</li>`).join('')}</ul>`:''}</section>`).join('')}<h2>${E(page.proofHeading || "Completed stands to inform your design brief")}</h2><p>${E(page.proofNote)}</p>${page.proof.map(proof=>`<article><a href="${proof.path}"><img src="${proof.image}" alt="${E(proof.name+', '+proof.location)}"><h3>${E(proof.name)}</h3><p>${E(proof.location)}</p><p>${E(proof.text)}</p>${E(page.proofLinkLabel || "View completed stand")}</a></article>`).join('')}<h2>${E(page.proposalHeading || "Turn the design brief into a scoped proposal")}</h2><p>${E(page.proposalText || "Share the show, dimensions, open sides, products and deadlines. Add your floor plan if available.")}</p><a href="${page.actionPath || "/exhibition-stand-quote"}">${E(page.action)}</a><h2>${E(page.faqHeading || "Frequently asked questions")}</h2>${page.faqs.map(f=>`<h3>${E(f.question)}</h3><p>${E(f.answer)}</p>`).join('')}<h2>${E(page.relatedHeading || "Continue planning your exhibition stand")}</h2><ul>${page.related.map(link=>`<li><a href="${link.path}">${E(link.label)}</a></li>`).join('')}</ul><h2>${E(page.sourcesHeading || "Venue planning source")}</h2>${page.sources.map(source=>`<p><a href="${source.url}">${E(source.label)}</a> ${E(source.note)}</p>`).join('')}`};
 }
 routes['/'].body += '<p>Working on the layout before choosing the build scope? Explore our <a href="/exhibition-stand-design-abu-dhabi">Abu Dhabi exhibition stand design guide</a> for product displays, meeting areas and the information needed for venue submissions.</p>';
 routes['/portfolio'].body += '<p>Use completed stands to brief your next design: <a href="/exhibition-stand-design-abu-dhabi">exhibition stand design in Abu Dhabi</a>, with layout choices and the scope to confirm before production.</p>';
 routes['/'].body += '<p>Planning several healthcare rooms? Read our <a href="/medical-centre-fit-out-dubai">medical centre fit-out Dubai operator brief</a> for room schedules, specialist interfaces and the responsibilities to confirm before pricing.</p>';
 routes['/portfolio'].body += '<p>Preparing a healthcare site brief? See our <a href="/medical-centre-fit-out-dubai">medical centre fit-out Dubai guide</a>, with healthcare gallery references and a room-by-room scope checklist.</p>';
+routes['/'].body += '<p lang="ar" dir="rtl">تبحث عن جناح معرض في دبي؟ اقرأ <a href="/ar/exhibition-stands-dubai">دليل تصميم وتنفيذ أجنحة المعارض في دبي</a>.</p>';
+routes['/portfolio'].body += '<p lang="ar" dir="rtl">استخدم المشاريع مرجعاً لموجزك: <a href="/ar/exhibition-stands-dubai">أجنحة المعارض في دبي باللغة العربية</a>.</p>';
+routes['/services/custom-exhibition-stands-dubai'].body += '<p lang="ar" dir="rtl"><a href="/ar/exhibition-stands-dubai">اقرأ دليل أجنحة المعارض باللغة العربية</a></p>';
 const esc = (s = '') => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 for (const [route, r] of Object.entries(routes)) {
   const url = SITE + (route === '/' ? '/' : route);
   let html = template;
+  html = html.replace(/<html lang="en"/, `<html lang="${r.lang || 'en'}"`);
+  if (route === '/ar/exhibition-stands-dubai' || route === '/services/custom-exhibition-stands-dubai') {
+    const alternates = [['ar','/ar/exhibition-stands-dubai'],['en','/services/custom-exhibition-stands-dubai'],['x-default','/services/custom-exhibition-stands-dubai']];
+    html = html.replace('</head>', alternates.map(([lang,path])=>`<link rel="alternate" hreflang="${lang}" href="${SITE+path}" data-fann-language-alternate="true">`).join('\n')+'</head>');
+  }
+
   html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(r.title)}</title>`);
   html = html.replace(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${url}">`);
   html = html.replace(/<meta name="description"[^>]*>/, '');
@@ -147,7 +156,7 @@ for (const [route, r] of Object.entries(routes)) {
     ...(r.jsonld ? [`<script id="json-ld-schema" type="application/ld+json">${r.jsonld.replace(/<\//g, '<\\/')}</script>`] : []),
   ].join('\n    ');
   html = html.replace('</head>', `    ${head}\n  </head>`);
-  html = html.replace(/<div id="root"><\/div>/, `<div id="root"><main class="prerender">${r.body}</main></div>`);
+  html = html.replace(/<div id="root"><\/div>/, `<div id="root"><main class="prerender" lang="${r.lang || 'en'}" dir="${r.direction || 'ltr'}">${r.body}</main></div>`);
   const out = route === '/' ? path.join(dist, 'index.html') : path.join(dist, route.slice(1), 'index.html');
   fs.mkdirSync(path.dirname(out), { recursive: true });
   fs.writeFileSync(out, html);
