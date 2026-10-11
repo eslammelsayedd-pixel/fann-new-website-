@@ -66,8 +66,8 @@ const schema = {
 const ClinicFitOutDubaiPage: React.FC = () => (
   <AnimatedPage>
     <SEO
-      title="Clinic Fit-Out Contractor Dubai | FANN"
-      description="Clinic and medical-centre fit-out in Dubai and Abu Dhabi with one accountable team and our own joinery workshop. Reception desks, treatment-room cabinetry, MEP coordination, finishes. Itemised quotes."
+      title="Medical Clinic Fit-Out Dubai | Clinic Fit-Out Company | FANN"
+      description="Medical clinic and medical center fit-out in Dubai and Abu Dhabi. One accountable team and our own joinery workshop: reception desks, treatment-room cabinetry, MEP, finishes. Itemised quotes."
       schema={schema}
     />
     <ServicePageLayout
