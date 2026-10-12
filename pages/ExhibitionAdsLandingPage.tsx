@@ -38,7 +38,7 @@ function StandDiagram({ closed }: { closed: string[] }) {
   return <svg viewBox="0 0 48 48" className="h-10 w-10 shrink-0" aria-hidden="true"><rect x="8" y="8" width="32" height="32" fill="#171717" />{Object.entries(edges).map(([side, points]) => <line key={side} x1={points[0]} y1={points[1]} x2={points[2]} y2={points[3]} stroke={closed.includes(side) ? '#f5f2eb' : '#c9a962'} strokeWidth={closed.includes(side) ? 4 : 2} strokeDasharray={closed.includes(side) ? undefined : '3 3'} />)}</svg>;
 }
 
-const fieldClass = 'mt-1 w-full rounded-sm border border-white/20 bg-[#171717] px-2 py-2.5 text-sm text-[#f5f2eb] md:px-3 md:py-3 placeholder:text-white/40 focus:border-[#c9a962] focus:outline-none';
+const fieldClass = 'mt-1 w-full rounded-sm border border-white/20 bg-[#171717] px-2 py-2.5 text-base text-[#f5f2eb] md:px-3 md:py-3 placeholder:text-white/40 focus:border-[#c9a962] focus:outline-none';
 
 export default function ExhibitionAdsLandingPage() {
   const [form, setForm] = useState({ name: '', phone: '', email: '', showName: '', standSize: '', openSides: '' });
@@ -90,36 +90,38 @@ export default function ExhibitionAdsLandingPage() {
     { key: 'name', label: 'Name', hint: 'Your name' },
     { key: 'phone', label: 'Phone (or add email)', type: 'tel', hint: '+971...' },
     { key: 'email', label: 'Email (or add phone)', type: 'email', hint: 'you@company.com' },
-    { key: 'showName', label: 'Show name', hint: 'e.g. GITEX' },
-    { key: 'standSize', label: 'Stand size', hint: 'e.g. 6 x 3 m or 18 sqm' },
+    { key: 'showName', label: 'Show (optional)', hint: 'e.g. GITEX' },
+    { key: 'standSize', label: 'Size (optional)', hint: 'e.g. 6 x 3 m or 18 sqm' },
   ];
   return <>
     <SEO title="3D Exhibition Stand Concept + Quote in 24 Hours" description="FANN designs and builds custom exhibition stands. Send your show brief for a 3D stand concept and full quote within 24 hours." />
     <div className="ads-landing-page">
-    <section className="bg-[#111111] px-5 pb-10 pt-28 text-[#f5f2eb] md:pb-14 md:pt-36">
-      <div className="mx-auto grid max-w-6xl items-start gap-6 lg:grid-cols-[1fr_440px] lg:gap-12">
-        <div className="lg:pt-10">
+    <section className="bg-[#111111] px-5 pb-10 pt-[5.5rem] text-[#f5f2eb] md:pb-14 md:pt-28">
+      <div className="mx-auto grid max-w-6xl items-start gap-5 lg:grid-cols-[1fr_440px] lg:gap-12">
+        <div className="lg:pt-3">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[.22em] text-[#c9a962]">Custom exhibition stands</p>
-          <h1 className="max-w-2xl font-serif text-4xl font-bold leading-[1.12] md:text-5xl lg:text-[3.5rem]">3D Stand Concept + Full Quote in 24 Hours</h1>
-          <p className="mt-4 max-w-xl text-base md:mt-6 md:text-lg leading-relaxed text-[#d4d1cb]">Tell us your name, how to reach you, show and stand size. Our team will discuss your brief and put together a concept and complete quote.</p>
-          <p className="mt-4 text-sm text-[#e1c78d]">Scope and price agreed before production. Any requested changes are confirmed before work proceeds.</p>
-          <div className="mt-5 flex flex-wrap gap-2 md:mt-8 md:gap-3">
+          <h1 className="max-w-2xl font-serif text-[1.75rem] font-bold leading-[1.12] md:text-5xl lg:text-[3.5rem]">3D Stand Concept + Full Quote in 24 Hours</h1>
+          <p className="mt-3 max-w-xl text-sm md:text-base md:mt-6 md:text-lg leading-relaxed text-[#d4d1cb]">Share your contact details. Add your show and size if known.</p>
+          <p className="mt-2 text-xs md:text-sm text-[#e1c78d]">Dubai office. In-house workshop in Umm Al Quwain. Scope and price agreed before production.</p><a href="#brief" className="mt-4 inline-flex min-h-[48px] items-center rounded-sm bg-[#c9a962] px-5 py-3 font-bold text-black">Request your concept + quote</a>
+          <div className="mt-3 flex flex-wrap gap-2 md:mt-5 md:gap-3">
             <a href="tel:+971505667502" data-track="ads-call" className="rounded-sm border border-[#c9a962] px-3 py-2 text-sm font-semibold md:px-5 md:py-3 md:text-base text-[#e1c78d] hover:bg-[#c9a962] hover:text-black">Call +971 50 566 7502</a>
-            <a href={whatsappUrl} data-track="ads-whatsapp" target="_blank" rel="noopener noreferrer" className="rounded-sm bg-[#25d366] px-5 py-3 text-base font-bold text-[#071b0e] hover:bg-[#50e080]">WhatsApp your brief - skip the form</a>
+            <a href={whatsappUrl} data-track="ads-whatsapp" target="_blank" rel="noopener noreferrer" className="rounded-sm bg-[#25d366] px-3 py-2 text-sm font-bold text-[#071b0e] hover:bg-[#50e080]">WhatsApp instead</a>
           </div>
+          <Link to="/portfolio/trevos-light-middle-east" className="mt-3 flex items-center gap-3 text-xs md:text-sm text-[#d4d1cb]"><img src="/images/stands/1-trevos-light-middle-east.webp" alt="Completed FANN TREVOS stand at Light Middle East 2023" width="120" height="68" className="hidden md:block h-16 w-28 object-cover"/><span>Real FANN work: TREVOS, Light Middle East 2023</span></Link>
         </div>
         <div id="brief" className="scroll-mt-28 rounded-sm border border-[#c9a962]/40 bg-[#222] p-4 shadow-2xl md:p-7">
           {sent ? <div role="status" className="py-10 text-center"><h2 className="font-serif text-3xl text-[#e1c78d]">Request received</h2><p className="mt-4 text-[#d4d1cb]">Thank you. FANN will contact you about your show brief.</p></div> : <>
             <h2 className="font-serif text-2xl text-[#f5f2eb]">Get your concept and quote</h2>
-            <p className="mt-2 text-sm text-[#d4d1cb]">Start with your name, phone or email, show and stand size. Open sides and a floor plan are optional.</p>
-            <form onSubmit={send} className="mt-4 grid grid-cols-2 gap-2 md:mt-5 md:gap-3">
-              {fields.map(({key,label,type='text',hint}) => <label key={key} className="text-xs font-medium text-[#e4dfd7] md:text-sm">{label}{['name', 'showName', 'standSize'].includes(key) ? ' *' : ''}<input className={fieldClass} name={key} type={type} placeholder={hint} autoComplete={key === 'name' ? 'name' : key === 'phone' ? 'tel' : key === 'email' ? 'email' : undefined} required={['name', 'showName', 'standSize'].includes(key)} value={form[key]} onChange={e => setForm({ ...form, [key]: e.target.value })} /></label>)}
-              <label className="text-xs font-medium text-[#e4dfd7] md:text-sm">Open sides (optional)<select name="openSides" className={fieldClass} value={form.openSides} onChange={e => setForm({ ...form, openSides: e.target.value })}><option value="">Select</option>{openSideOptions.map(option => <option key={option.value} value={option.value}>{option.value}</option>)}</select></label>
-              <div className="col-span-2"><div className="grid grid-cols-2 gap-2">{openSideOptions.map(option => <div key={option.value} className={`flex items-center gap-2 rounded border p-2 text-xs ${form.openSides === option.value ? 'border-[#c9a962] bg-[#171717]' : 'border-white/15'}`}><StandDiagram closed={option.closed}/><span>{option.value}</span></div>)}</div><p className="mt-2 text-xs text-[#aaa49b]">Not sure? Leave open sides blank. Solid white = closed wall. Dashed gold = open side. Front = bottom edge of each diagram.</p></div>
-              <label className="col-span-2 text-xs font-medium text-[#e4dfd7] md:text-sm">Floor plan (optional)<input className={fieldClass} name="floorPlan" type="file" accept=".pdf,.jpg,.jpeg,.png,.webp,.gif" onChange={e => { const file = e.target.files?.[0] || null; if (file && (file.size > 5 * 1024 * 1024 || !/\.(pdf|jpe?g|png|webp|gif)$/i.test(file.name))) { setFloorPlan(null); e.target.value = ''; setError('Please choose a PDF, JPG, PNG, WebP or GIF up to 5 MB.'); return; } setError(''); setFloorPlan(file); }} /><span className="mt-1 block text-xs text-[#aaa49b]">PDF, JPG, PNG, WebP or GIF, up to 5 MB. Stored privately; FANN receives a download link valid for 30 days.</span></label>
+            <p className="mt-2 text-sm text-[#d4d1cb]">Name + one contact method are enough to start. Show, size and floor plan are optional.</p>
+            <form onSubmit={send} className="mt-3 grid grid-cols-2 gap-2 md:mt-5 md:gap-3">
+              {fields.map(({key,label,type='text',hint}) => <label key={key} className="text-xs font-medium text-[#e4dfd7] md:text-sm">{label}{key === 'name' ? ' *' : ''}<input className={fieldClass} name={key} type={type} placeholder={hint} autoComplete={key === 'name' ? 'name' : key === 'phone' ? 'tel' : key === 'email' ? 'email' : undefined} required={key === 'name'} value={form[key]} onChange={e => setForm({ ...form, [key]: e.target.value })} /></label>)}
               <div className="col-span-2"><button disabled={busy} type="submit" className="mt-2 w-full rounded-sm bg-[#c9a962] px-5 py-4 font-bold text-black hover:bg-[#dfc488] disabled:opacity-60">{busy ? 'Sending...' : 'Request my concept + quote'}</button>
               {error && <p role="alert" className="mt-3 text-sm text-red-300">{error}</p>}
               <p className="mt-3 text-xs leading-relaxed text-[#aaa49b]">Your details go to FANN for this request. <Link to="/privacy-policy" className="underline">Privacy policy</Link>.</p></div>
+              <details className="col-span-2 mt-2 border-t border-white/15 pt-3"><summary className="cursor-pointer py-2 text-sm text-[#e1c78d]">Add open sides or floor plan (optional)</summary><div className="mt-3 space-y-4">              <label className="block text-xs font-medium text-[#e4dfd7] md:text-sm">Open sides (optional)<select name="openSides" className={fieldClass} value={form.openSides} onChange={e => setForm({ ...form, openSides: e.target.value })}><option value="">Select</option>{openSideOptions.map(option => <option key={option.value} value={option.value}>{option.value}</option>)}</select></label>
+              <div className="col-span-2"><div className="grid grid-cols-2 gap-2">{openSideOptions.map(option => <div key={option.value} className={`flex items-center gap-2 rounded border p-2 text-xs ${form.openSides === option.value ? 'border-[#c9a962] bg-[#171717]' : 'border-white/15'}`}><StandDiagram closed={option.closed}/><span>{option.value}</span></div>)}</div><p className="mt-2 text-xs text-[#aaa49b]">Not sure? Leave open sides blank. Solid white = closed wall. Dashed gold = open side. Front = bottom edge of each diagram.</p></div>
+              <label className="col-span-2 text-xs font-medium text-[#e4dfd7] md:text-sm">Floor plan (optional)<input className={fieldClass} name="floorPlan" type="file" accept=".pdf,.jpg,.jpeg,.png,.webp,.gif" onChange={e => { const file = e.target.files?.[0] || null; if (file && (file.size > 5 * 1024 * 1024 || !/\.(pdf|jpe?g|png|webp|gif)$/i.test(file.name))) { setFloorPlan(null); e.target.value = ''; setError('Please choose a PDF, JPG, PNG, WebP or GIF up to 5 MB.'); return; } setError(''); setFloorPlan(file); }} /><span className="mt-1 block text-xs text-[#aaa49b]">PDF, JPG, PNG, WebP or GIF, up to 5 MB. Stored privately; FANN receives a download link valid for 30 days.</span></label>
+</div></details>
             </form>
           </>}
         </div>
