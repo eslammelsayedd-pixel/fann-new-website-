@@ -298,7 +298,6 @@ const WhyChooseUs: React.FC = () => (
                 <div className="lg:col-span-8">
                     <div className="grid md:grid-cols-2 gap-12">
                         {[
-                            { title: "Venue Certified", desc: "Fully accredited and authorized to operate in DWTC, ADNEC, and all major regional exhibition centers." },
                             { title: "In-House Fabrication", desc: "Complete control over quality and timelines with our dedicated workshop." },
                             { title: "Turnkey Management", desc: "A single point of contact for design, build, logistics, and approvals." },
                             { title: "Strategic Design", desc: "Concepts rooted in marketing strategy to maximize your ROI." }
