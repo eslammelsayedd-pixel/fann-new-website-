@@ -399,5 +399,127 @@
         "note": "مرجع خدمات الموقع فقط. أكد المتطلبات والمواعيد والمسؤوليات من دليل العارضين الحالي، ولا تعتبره موافقة على تصميم جناحك."
       }
     ]
+  },
+  "/gitex-exhibition-stand-design-dubai": {
+    "title": "GITEX Exhibition Stand Design Dubai | Demo & Build Brief | FANN",
+    "description": "Plan a GITEX exhibition stand for live demos, meetings and product displays. Confirm the 2026 Expo City allocation, power and data needs, then request a scoped FANN proposal.",
+    "heading": "GITEX exhibition stand design in Dubai",
+    "city": "Dubai",
+    "breadcrumb": "GITEX stand design Dubai",
+    "subheading": "Plan the live demo, visitor route and service brief before the stand goes into production.",
+    "intro": "A technology stand has to make the demonstration work, not only look good in a render. FANN can develop an exhibition stand design and build proposal around your GITEX allocation, live demos, displays and meeting needs. Our Dubai office coordinates the brief and our Umm Al Quwain joinery workshop supports the agreed fabrication. We are an independent contractor, not the GITEX organiser or an appointed official contractor.",
+    "hero": "/images/stands/1-trevos-light-middle-east.webp",
+    "heroAlt": "Completed TREVOS exhibition stand at Light Middle East in Dubai, 2023",
+    "heroCaption": "Completed FANN stand: TREVOS, Light Middle East, Dubai, 2023. A product-display reference, not a GITEX project.",
+    "action": "Share your GITEX stand brief",
+    "sections": [
+      {
+        "heading": "GITEX 2026: confirm the exhibition venue, not only the event name",
+        "text": "Official sources checked on 12 October 2026 list the exhibition and conferences for 8-11 December at Expo City Dubai, with the venue listing identifying Dubai Exhibition Centre. The separate GITEX Summit is on 7 December at Dubai World Trade Centre. Send the venue, hall and stand allocation on your exhibitor documents. These public event dates are not build-up, submission or dismantling deadlines."
+      },
+      {
+        "heading": "Start with the actual demonstration",
+        "text": "List what each demo needs to show and what visitors need to do. A screen-led software demonstration, a device display and a staffed hands-on experience need different space and service briefs. Work from the actual equipment and presenter positions, then plan the display, viewing space and queue without blocking entry.",
+        "items": [
+          "Demo equipment: dimensions, weights and operating requirements supplied by the equipment owner.",
+          "Display and AV: screen positions, mounting requirements, sound and who supplies or operates each item.",
+          "Services: equipment loads, sockets, connectivity and any specialist interfaces to be checked with the relevant suppliers.",
+          "Staff and visitors: presenter positions, access, waiting space and nearby meeting areas."
+        ]
+      },
+      {
+        "heading": "Separate power and data from the joinery scope",
+        "text": "Identify the equipment, service requirements and responsible supplier before the layout is signed off. Confirm organiser service-order routes and deadlines from the current exhibitor manual. Dedicated internet, Wi-Fi, AV and electrical services should not be assumed to be included in a stand build. A demonstration that depends on connectivity also needs a fallback agreed by your technical team; FANN does not promise network speed or uptime."
+      },
+      {
+        "heading": "Keep meetings and lead capture out of the demo queue",
+        "text": "Decide whether the stand needs short aisle conversations, seated sales meetings or a more private discussion area. Place reception, storage and equipment access so they do not compete with the main demo. Your team should specify the lead-capture process, devices and privacy requirements. The layout can support this workflow, but it does not guarantee traffic, leads or sales."
+      },
+      {
+        "heading": "Use the current exhibitor manual for production and site access",
+        "text": "Provide the manual, allocated stand plan and submission or service deadlines. Agree the owners of drawings, approvals, utilities, installation access, on-site support and dismantling. Confirm materials, graphics, equipment interfaces and any specialist structure before production. Do not reuse a previous venue assumption or treat a 3D concept as a structural approval."
+      },
+      {
+        "heading": "Compare a named scope, not a vague package",
+        "text": "The proposal should identify design deliverables, stand elements, graphics, logistics, installation and any support or dismantling. State separately which services come from the organiser or specialist suppliers. Send your budget range and required dates with the brief; no fixed price, completion duration or approval outcome is assumed."
+      }
+    ],
+    "proofHeading": "Completed Dubai stands as design references",
+    "proofNote": "These are documented FANN portfolio projects at other Dubai shows. They are not evidence of GITEX experience, an official appointment or results achieved at GITEX.",
+    "proof": [
+      {
+        "name": "TREVOS - Light Middle East",
+        "location": "Dubai, 2023",
+        "image": "/images/stands/1-trevos-light-middle-east.webp",
+        "path": "/portfolio/trevos-light-middle-east",
+        "text": "Completed stand photograph with an overhead identity feature, product displays and visitor-facing space. Use it to discuss the relationship between brand visibility and the floor layout."
+      },
+      {
+        "name": "Geven - Aircraft Interiors Middle East",
+        "location": "Dubai, 2025",
+        "image": "/images/stands/6-geven-aircraft-interiors.webp",
+        "path": "/portfolio/geven-aircraft-interiors",
+        "text": "Completed aircraft-interiors exhibition stand reference. Share your own product dimensions and access needs rather than copying another exhibitor's layout."
+      }
+    ],
+    "proposalHeading": "Turn your GITEX allocation into a scoped proposal",
+    "proposalText": "Send your hall and stand plan, dimensions and open sides, demos and equipment, meeting needs, brand assets, current manual, budget range and dates. Add a floor plan if available.",
+    "faqs": [
+      {
+        "question": "Where is the GITEX Global exhibition in 2026?",
+        "answer": "Official sources checked on 12 October 2026 list the exhibition and conferences on 8-11 December at Expo City Dubai; the venue listing identifies Dubai Exhibition Centre. The GITEX Summit is separately on 7 December at Dubai World Trade Centre. Confirm the actual hall and stand allocation on your exhibitor documents."
+      },
+      {
+        "question": "What should I send for a GITEX stand design quote?",
+        "answer": "Send the show and venue, hall, stand dimensions and open sides, allocation plan, demo equipment, display and meeting needs, brand assets, current exhibitor manual, budget range and required dates."
+      },
+      {
+        "question": "Are internet, AV and electricity automatically included?",
+        "answer": "No. Name each requirement and the responsible supplier in the agreed proposal. Organiser service orders, electrical work, connectivity and AV may have separate requirements and deadlines. No network performance guarantee is assumed."
+      },
+      {
+        "question": "Can FANN design a stand around live technology demos?",
+        "answer": "FANN can develop the layout and build proposal around the demo brief, equipment and visitor workflow. Equipment operation, service requirements and specialist interfaces must be provided and checked with the relevant technical suppliers."
+      },
+      {
+        "question": "Does this page show completed GITEX projects?",
+        "answer": "No. The TREVOS and Geven photographs are completed FANN stands at other Dubai shows, labelled as design references. This page does not claim past GITEX work or official contractor status."
+      },
+      {
+        "question": "Are public event dates the installation deadlines?",
+        "answer": "No. Use the current exhibitor manual and your allocation for build-up, submission, utility-order and dismantling deadlines. The public event dates alone do not establish those windows."
+      },
+      {
+        "question": "Do you handle all approvals and dismantling?",
+        "answer": "Only the services stated in the agreed scope are included. Identify the owner of each drawing, submission, approval, installation task and dismantling item. No blanket approval outcome or universal turnkey package is claimed."
+      }
+    ],
+    "related": [
+      {
+        "path": "/services/custom-exhibition-stands-dubai",
+        "label": "Dubai exhibition stand design and build"
+      },
+      {
+        "path": "/events-calendar",
+        "label": "UAE and Saudi exhibition planning calendar"
+      },
+      {
+        "path": "/ar/exhibition-stands-dubai",
+        "label": "أجنحة المعارض في دبي - دليل التصميم والتنفيذ"
+      }
+    ],
+    "sourcesHeading": "Official GITEX date and venue sources",
+    "sources": [
+      {
+        "url": "https://www.gitex.com/conference-overview",
+        "label": "GITEX conference overview",
+        "note": "Checked 12 October 2026: separates the 7 December DWTC summit from the 8-11 December Expo City exhibition and conferences."
+      },
+      {
+        "url": "https://www.dubaiexhibitioncentre.com/en/whats-on/gitex-global-2026",
+        "label": "Dubai Exhibition Centre: GITEX Global 2026",
+        "note": "Checked 12 October 2026: venue listing gives 8-11 December 2026. Use your exhibitor manual for operational deadlines."
+      }
+    ]
   }
 }
