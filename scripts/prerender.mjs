@@ -33,7 +33,6 @@ routes['/exhibition-stand-quote'].body = '<main><h1>3D Stand Concept + Full Quot
 // The Dubai stand buyer answer is present in the crawler view as well as React.
 const standBuyerAnswer = '<section><h2>Exhibition stands in Dubai: design, build and installation</h2><p>FANN is an exhibition stand contractor in Dubai, with a Dubai office and an in-house workshop in Umm Al Quwain. We design, fabricate and install stands around your show, floor plan and opening date. The quote sets out the agreed materials, graphics, venue submissions, installation and any dismantling, rather than assuming every project includes the same scope.</p><p>See documented Dubai stands: <a href="/portfolio/trevos-light-middle-east">TREVOS at Light Middle East (2023)</a>, <a href="/portfolio/bayara-gulfood">Bayara at Gulfood (2020)</a> and <a href="/portfolio/geven-aircraft-interiors">Geven at Aircraft Interiors Middle East (2025)</a>.</p><p>For a stand proposal, send the show and venue, stand dimensions, number of open sides, floor plan, deadline and what the stand needs to do. <a href="/exhibition-stand-quote">Share your stand brief and optional floor plan</a>.</p></section>';
 routes['/'].body += '<p>Exhibiting technology? Use our <a href="/gitex-exhibition-stand-design-dubai">GITEX exhibition stand design brief</a> to plan demos, power and data responsibilities, meetings and the 2026 venue allocation.</p>';
-routes['/portfolio'].body += '<p>Exhibiting technology? Use our <a href="/gitex-exhibition-stand-design-dubai">GITEX exhibition stand design brief</a> to plan demos, power and data responsibilities, meetings and the 2026 venue allocation.</p>';
 routes['/services/custom-exhibition-stands-dubai'].body = routes['/services/custom-exhibition-stands-dubai'].body.replace('<h2>Built around the show brief</h2>', standBuyerAnswer + '<h2>Built around the show brief</h2>');
 // Keep the stand service's scoped quote actions aligned with the React view.
 const standRoute = routes['/services/custom-exhibition-stands-dubai'];
@@ -131,6 +130,7 @@ routes['/portfolio'].body += '<p>Preparing a healthcare site brief? See our <a h
 routes['/'].body += '<p lang="ar" dir="rtl">تبحث عن جناح معرض في دبي؟ اقرأ <a href="/ar/exhibition-stands-dubai">دليل تصميم وتنفيذ أجنحة المعارض في دبي</a>.</p>';
 routes['/portfolio'].body += '<p lang="ar" dir="rtl">استخدم المشاريع مرجعاً لموجزك: <a href="/ar/exhibition-stands-dubai">أجنحة المعارض في دبي باللغة العربية</a>.</p>';
 routes['/services/custom-exhibition-stands-dubai'].body += '<p lang="ar" dir="rtl"><a href="/ar/exhibition-stands-dubai">اقرأ دليل أجنحة المعارض باللغة العربية</a></p>';
+routes['/portfolio'].body += '<p>Exhibiting technology? Use our <a href="/gitex-exhibition-stand-design-dubai">GITEX exhibition stand design brief</a> to plan demos, power and data responsibilities, meetings and the 2026 venue allocation.</p>';
 const adPage = JSON.parse(fs.readFileSync(path.resolve('data/abuDhabiStandPage.json'),'utf8'));
 const adPath = '/exhibition-stands-abu-dhabi';
 const AE = value=>String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
