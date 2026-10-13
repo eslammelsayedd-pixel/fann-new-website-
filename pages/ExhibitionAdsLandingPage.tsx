@@ -102,7 +102,7 @@ export default function ExhibitionAdsLandingPage() {
           <p className="mb-3 text-xs font-semibold uppercase tracking-[.22em] text-[#c9a962]">Custom exhibition stands</p>
           <h1 className="max-w-2xl font-serif text-[1.75rem] font-bold leading-[1.12] md:text-5xl lg:text-[3.5rem]">3D Stand Concept + Full Quote in 24 Hours</h1>
           <p className="mt-3 max-w-xl text-sm md:text-base md:mt-6 md:text-lg leading-relaxed text-[#d4d1cb]">Share your contact details. Add your show and size if known.</p>
-          <p className="mt-2 text-xs md:text-sm text-[#e1c78d]">Dubai office. In-house workshop in Umm Al Quwain. Scope and price agreed before production.</p><a href="#brief" className="mt-4 inline-flex min-h-[48px] items-center rounded-sm bg-[#c9a962] px-5 py-3 font-bold text-black">Request your concept + quote</a>
+          <p className="mt-2 text-xs md:text-sm text-[#e1c78d]">In-house production. Scope and price agreed before production.</p><a href="#brief" className="mt-4 inline-flex min-h-[48px] items-center rounded-sm bg-[#c9a962] px-5 py-3 font-bold text-black">Request your concept + quote</a>
           <div className="mt-3 flex flex-wrap gap-2 md:mt-5 md:gap-3">
             <a href="tel:+971505667502" data-track="ads-call" className="rounded-sm border border-[#c9a962] px-3 py-2 text-sm font-semibold md:px-5 md:py-3 md:text-base text-[#e1c78d] hover:bg-[#c9a962] hover:text-black">Call +971 50 566 7502</a>
             <a href={whatsappUrl} data-track="ads-whatsapp" target="_blank" rel="noopener noreferrer" className="rounded-sm bg-[#25d366] px-3 py-2 text-sm font-bold text-[#071b0e] hover:bg-[#50e080]">WhatsApp instead</a>
@@ -131,4 +131,4 @@ export default function ExhibitionAdsLandingPage() {
     <section className="bg-[#111] px-5 py-14 text-[#f5f2eb]"><div className="mx-auto max-w-6xl"><h2 className="font-serif text-3xl">One team, from brief to build</h2><p className="mt-4 max-w-2xl text-[#d4d1cb]">3D concept, detailed quote, fabrication and on-site installation. We coordinate venue and authority submissions as part of the build.</p><a href="#brief" className="mt-6 inline-block rounded-sm bg-[#c9a962] px-6 py-3 font-bold text-black">Tell us about your stand</a></div></section>
     </div>
   </>;
-}
+                }
