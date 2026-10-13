@@ -133,6 +133,8 @@ routes['/portfolio'].body += '<p>Preparing a healthcare site brief? See our <a h
 routes['/'].body += '<p lang="ar" dir="rtl">تبحث عن جناح معرض في دبي؟ اقرأ <a href="/ar/exhibition-stands-dubai">دليل تصميم وتنفيذ أجنحة المعارض في دبي</a>.</p>';
 routes['/portfolio'].body += '<p lang="ar" dir="rtl">استخدم المشاريع مرجعاً لموجزك: <a href="/ar/exhibition-stands-dubai">أجنحة المعارض في دبي باللغة العربية</a>.</p>';
 routes['/services/custom-exhibition-stands-dubai'].body += '<p lang="ar" dir="rtl"><a href="/ar/exhibition-stands-dubai">اقرأ دليل أجنحة المعارض باللغة العربية</a></p>';
+routes['/'].body += '<p>Taking construction products to Big 5? Use our <a href="/big-5-exhibition-stand-design-dubai">Big 5 exhibition stand design brief</a> to plan samples, displays, utilities and buyer meetings.</p>';
+routes['/portfolio'].body += '<p>Taking construction products to Big 5? Read our <a href="/big-5-exhibition-stand-design-dubai">Big 5 stand design brief</a>, with Awazel and Saudi Ceramics archive references and a product-display scope checklist.</p>';
 routes['/portfolio'].body += '<p>Exhibiting technology? Use our <a href="/gitex-exhibition-stand-design-dubai">GITEX exhibition stand design brief</a> to plan demos, power and data responsibilities, meetings and the 2026 venue allocation.</p>';
 const adPage = JSON.parse(fs.readFileSync(path.resolve('data/abuDhabiStandPage.json'),'utf8'));
 const adPath = '/exhibition-stands-abu-dhabi';
