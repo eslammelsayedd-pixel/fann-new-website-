@@ -10,8 +10,8 @@ interface Breadcrumb {
 }
 
 interface ServicePageLayoutProps {
-  heroImage: string;
-  heroAltText: string;
+  heroImage?: string;
+  heroAltText?: string;
   pageTitle: string;
   pageDescription: string;
   breadcrumbs: Breadcrumb[];
@@ -34,18 +34,18 @@ const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
     <div className="bg-fann-charcoal text-white">
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[450px] flex items-center justify-center text-center text-white overflow-hidden bg-fann-charcoal">
-        <picture>
+        {heroImage && <picture>
           {heroImage.includes("?") && <source srcSet={`${heroImage}&fm=webp`} type="image/webp" />}
           {heroImage.includes("?") && <source srcSet={heroImage} type="image/jpeg" />}
           <img
             src={heroImage}
-            alt={heroAltText}
+            alt={heroAltText || pageTitle}
             className="absolute inset-0 w-full h-full object-cover opacity-30"
             loading="eager"
             width="1260"
             height="750"
           />
-        </picture>
+        </picture>}
         <div className={`relative z-10 p-4 w-full container mx-auto ${heroAction ? 'pt-20 md:pt-12' : ''}`}>
           <h1 className="text-4xl md:text-6xl font-serif font-bold leading-tight text-fann-gold drop-shadow-md">
             {pageTitle}
