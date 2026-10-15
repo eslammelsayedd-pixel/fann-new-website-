@@ -1153,6 +1153,7 @@ const SITEMAP_PATHS = [
   '/resources/exhibition-guide', '/roi-calculator',
   '/portfolio/icons-of-porsche-2025-dubai', '/portfolio/special-olympics-uae-unified-champion-schools-2025', '/portfolio/national-expression-adek-abu-dhabi', '/fit-out-dubai', '/restaurant-fit-out-dubai', '/clinic-fit-out-dubai', '/villa-renovation-dubai', '/exhibition-stands-abu-dhabi', '/exhibition-stand-design-abu-dhabi', '/medical-centre-fit-out-dubai', '/ar/exhibition-stands-dubai', '/gitex-exhibition-stand-design-dubai', '/big-5-exhibition-stand-design-dubai',
     '/gulfood-exhibition-stand-design-dubai',
+    '/exhibition-stand-builders-dubai',
   '/portfolio/fit-out/01-school-interior',
   '/portfolio/fit-out/02-event-hospitality-interior',
   '/portfolio/fit-out/03-itch-cafe',
