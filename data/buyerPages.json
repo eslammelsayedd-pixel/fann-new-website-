@@ -792,5 +792,153 @@
         "note": "Confirms the two-venue footprint, including Dubai Exhibition Centre at Expo City. Obtain the current manual through your booked exhibitor route before agreeing operational requirements."
       }
     ]
+  },
+  "/exhibition-stand-builders-dubai": {
+    "title": "Exhibition Stand Builders Dubai | Design & Build Contractor | FANN",
+    "description": "Exhibition stand builders in Dubai for design, fabrication, installation and dismantling. See real FANN Dubai stand photographs and send your venue, hall and floor plan for a scoped quote.",
+    "heading": "Exhibition stand builders in Dubai",
+    "city": "Dubai",
+    "breadcrumb": "Exhibition stand builders Dubai",
+    "subheading": "One contractor for stand design, fabrication, installation and dismantling in Dubai.",
+    "intro": "FANN is an exhibition stand design and build contractor for exhibitors in Dubai. A build brief starts with your booked venue, hall, stand number and floor plan, then agrees the design, materials, graphics, transport, installation and handover scope. FANN is an independent contractor, not an organiser-appointed or official contractor for any Dubai venue or show.",
+    "hero": "/images/stands/1-trevos-light-middle-east.webp",
+    "heroAlt": "TREVOS stand at Light Middle East, Dubai, 2023, completed by FANN, with overhead identity feature and product displays",
+    "heroCaption": "Completed FANN project: TREVOS at Light Middle East, Dubai, 2023. Use it to discuss brand visibility and floor layout; it does not establish a venue appointment or measured visitor result.",
+    "action": "Send your Dubai stand brief",
+    "sections": [
+      {
+        "heading": "Builder and contractor: what the scope covers",
+        "text": "An exhibition stand builder turns an agreed design into a physical stand. A design and build contractor takes the brief from concept through fabrication, transport, installation and dismantling. For your quote, FANN states which parts are included: design, fabrication, graphics, lighting, furniture, AV coordination, transport, installation, handover checks and dismantling are listed separately so you can compare like with like.",
+        "items": [
+          "Agree the full scope in writing before production starts.",
+          "Identify organiser services, utilities and approvals as separate items supplied by others.",
+          "Ask who is responsible for on-site changes and what they cost."
+        ]
+      },
+      {
+        "heading": "What to send for a Dubai stand quote",
+        "text": "The fastest route to a useful quote is the information a fabricator actually needs. Show names alone are not enough: the same exhibition can run in different halls and venues with different access, build-up windows and service arrangements. Send what you have; the floor plan and booking details can follow.",
+        "items": [
+          "Booked venue, hall, stand number, dimensions and open sides.",
+          "Shell scheme or space-only allocation, plus the current floor plan if available.",
+          "Brand files, product list, display quantities and any storage or meeting needs.",
+          "Your deadline and the current exhibitor manual when available."
+        ]
+      },
+      {
+        "heading": "Dubai venues and shows: your booking decides the rules",
+        "text": "Dubai exhibitions run across venues including Dubai World Trade Centre and Dubai Exhibition Centre at Expo City. Each venue and organiser sets its own submission, service-order, access and build-up arrangements. Public show dates are not build-up or dismantling windows, and a stand photograph from a past edition is not a current approval. Confirm the current exhibitor manual through your booking before fixing operational details.",
+        "items": [
+          "Use your own booking and the current exhibitor manual for deadlines and service orders.",
+          "Treat venue access, rigging, power and water as items to confirm, not assume.",
+          "Plan design and production time backwards from your confirmed build-up window."
+        ]
+      },
+      {
+        "heading": "Design first or build only: choose the starting point",
+        "text": "If you already have approved design drawings, FANN can quote fabrication, transport and installation against them. If you are starting from a product list and a floor plan, the design stage comes first and the build quote follows the agreed design. Either way, materials, finishes and structural details are agreed before production, and no structural capacity or approval is inferred from archive photographs."
+      },
+      {
+        "heading": "What belongs in a stand-build quote",
+        "text": "Ask for a scoped quote covering design, fabrication, graphics, lighting, furniture, transport, installation, handover checks and dismantling, with organiser services, utilities, AV, cleaning, waste and storage marked as included, excluded or supplied by others. Agree change costs and responsibilities before production. A lower quote that excludes installation or dismantling is not the same offer.",
+        "items": [
+          "Compare quotes on identical scope, not headline price.",
+          "Check who orders and pays for utilities and organiser services.",
+          "Confirm the handover condition and snag-check arrangement before show opening."
+        ]
+      }
+    ],
+    "proofHeading": "Real Dubai stands from the FANN archive",
+    "proofNote": "These are completed Dubai stands from FANN’s supplied project archive. They are layout and finish references for your brief, not evidence of a current venue appointment, material grade, structural capacity or measured visitor result.",
+    "proofLinkLabel": "View project reference",
+    "proof": [
+      {
+        "path": "/portfolio/trevos-light-middle-east",
+        "image": "/images/stands/1-trevos-light-middle-east.webp",
+        "name": "TREVOS - Light Middle East",
+        "location": "Dubai, 2023",
+        "text": "Completed stand with an overhead identity feature, product displays and visitor-facing space. Use it to discuss the relationship between brand visibility and floor layout."
+      },
+      {
+        "path": "/portfolio/geven-aircraft-interiors",
+        "image": "/images/stands/6-geven-aircraft-interiors.webp",
+        "name": "Geven - Aircraft Interiors Middle East",
+        "location": "Dubai, 2025",
+        "text": "Completed aircraft-interiors exhibition stand reference. Share your own product dimensions and access needs rather than copying another exhibitor’s layout."
+      },
+      {
+        "path": "/portfolio/bayara-gulfood",
+        "image": "/images/stands/2-bayara-gulfood.webp",
+        "name": "Bayara - Gulfood",
+        "location": "Dubai, 2020",
+        "text": "The photograph shows Bayara identity, labelled product-category shelving and front-facing counters. Some fixtures and products are covered, so this is not evidence of a visitor-ready display or food-handling activity."
+      }
+    ],
+    "proposalHeading": "Turn your booking into a scoped stand proposal",
+    "proposalText": "Start with your name and one contact method. Add the venue, hall, stand number, dimensions, open sides, floor plan, product list and deadline if known. The quote form lets you add a floor plan optionally.",
+    "faqs": [
+      {
+        "question": "What does an exhibition stand builder in Dubai do?",
+        "answer": "A stand builder fabricates and installs the physical stand: structure, finishes, graphics, lighting and furniture, then dismantles it after the show. A design and build contractor also handles the concept and design stage before fabrication. The quote should state which parts are included."
+      },
+      {
+        "question": "What should I send to get a stand quote?",
+        "answer": "Send your name and phone or email, then the booked venue, hall, stand number, dimensions, open sides and allocation type. Add the floor plan, brand files, product list and deadline when available. The current exhibitor manual helps fix submission and service details."
+      },
+      {
+        "question": "Which Dubai venues do you build at?",
+        "answer": "The FANN archive includes completed stands at Dubai exhibitions, including TREVOS at Light Middle East 2023, Geven at Aircraft Interiors Middle East 2025 and Bayara at Gulfood 2020. Your booking and the current exhibitor manual control venue rules; FANN does not claim venue accreditation or appointment."
+      },
+      {
+        "question": "Are utilities, organiser services and approvals included?",
+        "answer": "Only if the quote states them. Power, water, rigging, cleaning, waste and organiser service orders are identified separately as included, excluded or supplied by others, with named responsibility for ordering and payment."
+      },
+      {
+        "question": "Do you have real Dubai stand photographs?",
+        "answer": "Yes. The supplied archive includes TREVOS at Light Middle East, Dubai 2023, Geven at Aircraft Interiors Middle East, Dubai 2025, and Bayara at Gulfood, Dubai 2020. Bayara shows some covered fixtures. The photographs support layout discussion, not capacity, approval or results claims."
+      },
+      {
+        "question": "Can you build from my existing design drawings?",
+        "answer": "Yes. With approved drawings, FANN can quote fabrication, transport, installation and dismantling against them. Materials, finishes and structural details are agreed before production; no structural capacity is inferred from photographs."
+      },
+      {
+        "question": "Is FANN an official or appointed contractor?",
+        "answer": "FANN is an independent exhibition stand design and build contractor. This page does not claim an organiser appointment, venue accreditation or official-contractor status for any Dubai show or venue."
+      }
+    ],
+    "related": [
+      {
+        "path": "/services/custom-exhibition-stands-dubai",
+        "label": "Custom exhibition stand design and build service"
+      },
+      {
+        "path": "/services/exhibition-stand-fabrication-dubai",
+        "label": "Exhibition stand fabrication in Dubai"
+      },
+      {
+        "path": "/ar/exhibition-stands-dubai",
+        "label": "تصميم وبناء أجنحة المعارض في دبي"
+      },
+      {
+        "path": "/exhibition-stand-design-abu-dhabi",
+        "label": "Exhibition stand design company in Abu Dhabi"
+      },
+      {
+        "path": "/events-calendar",
+        "label": "Exhibition dates and venue calendar"
+      },
+      {
+        "path": "/portfolio",
+        "label": "FANN project portfolio"
+      }
+    ],
+    "sourcesHeading": "Venue source and planning limits",
+    "sources": [
+      {
+        "url": "https://www.dwtc.com/en",
+        "label": "Dubai World Trade Centre official site",
+        "note": "Checked 15 October 2026: venue homepage resolves. Your show booking and the current exhibitor manual control submissions, services and deadlines; confirm them through your organiser before relying on any date or rule."
+      }
+    ]
   }
 }
