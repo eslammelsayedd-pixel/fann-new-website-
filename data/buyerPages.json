@@ -1160,5 +1160,149 @@
     "note": "Fit-out approval requirements depend on your building and jurisdiction. Confirm the current process with your building management and the relevant authority."
    }
   ]
+ },
+ "/wetex-exhibition-stand-design-dubai": {
+  "title": "WETEX Exhibition Stand Design Dubai | 20-22 Oct 2026 Brief | FANN",
+  "description": "Exhibition stand design and build for WETEX 2026 exhibitors: 20-22 October, Dubai World Trade Centre. See completed FANN stands at DWTC shows and send your hall and floor plan for a scoped quote.",
+  "heading": "WETEX exhibition stand design in Dubai",
+  "city": "Dubai",
+  "breadcrumb": "WETEX stand design Dubai",
+  "subheading": "Stand design, fabrication and installation for WETEX exhibitors, 20-22 October 2026.",
+  "intro": "FANN designs and builds exhibition stands for WETEX exhibitors at Dubai World Trade Centre. WETEX 2026 runs 20-22 October, organised by the Dubai Electricity and Water Authority (DEWA). A build brief starts with your booked hall, stand number and floor plan, then agrees the design, materials, graphics, transport, installation and handover scope. FANN is an independent contractor, not an organiser-appointed or DEWA-appointed contractor.",
+  "hero": "/images/stands/1-trevos-light-middle-east.webp",
+  "heroAlt": "TREVOS stand at Light Middle East, Dubai World Trade Centre, 2023, completed by FANN, with overhead identity feature and product displays",
+  "heroCaption": "Completed FANN project at a Dubai World Trade Centre show: TREVOS at Light Middle East, Dubai, 2023. It documents DWTC show experience; it does not establish a WETEX appointment, a past WETEX edition or a measured visitor result.",
+  "action": "Send your WETEX stand brief",
+  "sections": [
+   {
+    "heading": "What a WETEX stand scope covers",
+    "text": "A stand builder turns an agreed design into a physical stand; a design and build contractor takes the brief from concept through fabrication, transport, installation and dismantling. For your WETEX quote, FANN states which parts are included: design, fabrication, graphics, lighting, furniture, AV coordination, transport, installation, handover checks and dismantling are listed separately so you can compare like with like.",
+    "items": [
+     "Agree the full scope in writing before production starts.",
+     "Identify organiser services, utilities and approvals as separate items supplied by others.",
+     "Ask who is responsible for on-site changes and what they cost."
+    ]
+   },
+   {
+    "heading": "What to send for a WETEX stand quote",
+    "text": "The fastest route to a useful quote is the information a fabricator actually needs. The show name alone is not enough: WETEX runs across halls at Dubai World Trade Centre, and each hall and allocation carries its own access, build-up window and service arrangements. Send what you have; the floor plan and booking details can follow.",
+    "items": [
+     "Booked hall, stand number, dimensions and open sides.",
+     "Shell scheme or space-only allocation, plus the current floor plan if available.",
+     "Brand files, product or technology list, display quantities and any water, power or demonstration needs.",
+     "Your deadline and the current exhibitor manual when available."
+    ]
+   },
+   {
+    "heading": "WETEX 2026: dates, venue and organiser",
+    "text": "WETEX 2026 runs 20-22 October 2026 at Dubai World Trade Centre, organised by the Dubai Electricity and Water Authority (DEWA); these details were checked against the official show and venue pages on 15 October 2026. Public show dates are not build-up or dismantling windows, and each exhibitor's manual controls submission, service-order and access arrangements. Confirm the current manual through your booking before fixing operational details.",
+    "items": [
+     "Use your own booking and the current exhibitor manual for deadlines and service orders.",
+     "Treat venue access, rigging, power and water as items to confirm, not assume.",
+     "Plan design and production time backwards from your confirmed build-up window."
+    ]
+   },
+   {
+    "heading": "Design first or build only: choose the starting point",
+    "text": "If you already have approved design drawings, FANN can quote fabrication, transport and installation against them. If you are starting from a product or technology list and a floor plan, the design stage comes first and the build quote follows the agreed design. Either way, materials, finishes and structural details are agreed before production, and no structural capacity or approval is inferred from archive photographs."
+   },
+   {
+    "heading": "What belongs in a WETEX stand-build quote",
+    "text": "Ask for a scoped quote covering design, fabrication, graphics, lighting, furniture, transport, installation, handover checks and dismantling, with organiser services, utilities, AV, cleaning, waste and storage marked as included, excluded or supplied by others. Agree change costs and responsibilities before production. A lower quote that excludes installation or dismantling is not the same offer.",
+    "items": [
+     "Compare quotes on identical scope, not headline price.",
+     "Check who orders and pays for utilities and organiser services.",
+     "Confirm the handover condition and snag-check arrangement before show opening."
+    ]
+   }
+  ],
+  "proofHeading": "Completed FANN stands at Dubai World Trade Centre shows",
+  "proofNote": "These are completed FANN stands at other Dubai World Trade Centre shows, where WETEX also takes place. They document stand design and build work at this venue; they are not photographs of a past WETEX edition and not evidence of a current appointment, material grade, structural capacity or measured visitor result.",
+  "proofLinkLabel": "View project reference",
+  "proof": [
+   {
+    "path": "/portfolio/trevos-light-middle-east",
+    "image": "/images/stands/1-trevos-light-middle-east.webp",
+    "name": "TREVOS - Light Middle East",
+    "location": "Dubai, 2023",
+    "text": "Completed stand at Dubai World Trade Centre with an overhead identity feature, product displays and visitor-facing space. Use it to discuss the relationship between brand visibility and floor layout."
+   },
+   {
+    "path": "/portfolio/bayara-gulfood",
+    "image": "/images/stands/2-bayara-gulfood.webp",
+    "name": "Bayara - Gulfood",
+    "location": "Dubai, 2020",
+    "text": "Completed stand at Dubai World Trade Centre with labelled product-category shelving and front-facing counters. Some fixtures and products are covered, so this is not evidence of a visitor-ready display."
+   },
+   {
+    "path": "/portfolio/awazel-big-5",
+    "image": "/images/stands/3-awazel-big-5.webp",
+    "name": "Awazel - The Big 5",
+    "location": "Dubai, 2012",
+    "text": "Completed stand at Dubai World Trade Centre for an industrial exhibitor. Use it to discuss durable finishes and product-led layouts rather than copying another exhibitor's layout."
+   }
+  ],
+  "proposalHeading": "Turn your WETEX booking into a scoped stand proposal",
+  "proposalText": "Start with your name and one contact method. Add the hall, stand number, dimensions, open sides, floor plan, product or technology list and deadline if known. The quote form lets you add a floor plan optionally.",
+  "faqs": [
+   {
+    "question": "What does a WETEX exhibition stand builder do?",
+    "answer": "A stand builder fabricates and installs the physical stand: structure, finishes, graphics, lighting and furniture, then dismantles it after the show. A design and build contractor also handles the concept and design stage before fabrication. The quote should state which parts are included."
+   },
+   {
+    "question": "When and where is WETEX 2026?",
+    "answer": "WETEX 2026 runs 20-22 October 2026 at Dubai World Trade Centre, organised by the Dubai Electricity and Water Authority (DEWA). These details were checked against the official show and venue pages on 15 October 2026; confirm current details through your exhibitor booking."
+   },
+   {
+    "question": "What should I send to get a WETEX stand quote?",
+    "answer": "Send your name and phone or email, then the booked hall, stand number, dimensions, open sides and allocation type. Add the floor plan, brand files, product or technology list and deadline when available. The current exhibitor manual helps fix submission and service details."
+   },
+   {
+    "question": "Do you have real stand photographs from this venue?",
+    "answer": "Yes. The FANN archive includes completed stands at Dubai World Trade Centre shows, including TREVOS at Light Middle East 2023, Bayara at Gulfood 2020 and Awazel at The Big 5 2012. They document stand work at this venue; they are not photographs of a past WETEX edition and support layout discussion, not capacity, approval or results claims."
+   },
+   {
+    "question": "Can you build from my existing design drawings?",
+    "answer": "Yes. With approved drawings, FANN can quote fabrication, transport, installation and dismantling against them. Materials, finishes and structural details are agreed before production; no structural capacity is inferred from photographs."
+   },
+   {
+    "question": "Are utilities, organiser services and approvals included?",
+    "answer": "Only if the quote states them. Power, water, rigging, cleaning, waste and organiser service orders are identified separately as included, excluded or supplied by others, with named responsibility for ordering and payment."
+   },
+   {
+    "question": "Is FANN an official or DEWA-appointed contractor?",
+    "answer": "FANN is an independent exhibition stand design and build contractor. This page does not claim an organiser appointment, venue accreditation or official-contractor status for WETEX, DEWA or Dubai World Trade Centre."
+   }
+  ],
+  "related": [
+   {
+    "path": "/exhibition-stand-builders-dubai",
+    "label": "Exhibition stand builders Dubai briefing guide"
+   },
+   {
+    "path": "/gitex-exhibition-stand-design-dubai",
+    "label": "GITEX exhibition stand design guide"
+   },
+   {
+    "path": "/big-5-exhibition-stand-design-dubai",
+    "label": "Big 5 exhibition stand design guide"
+   },
+   {
+    "path": "/events-calendar",
+    "label": "UAE exhibitions calendar"
+   }
+  ],
+  "sources": [
+   {
+    "url": "https://www.wetex.ae/en/",
+    "label": "WETEX official event page",
+    "note": "Checked 15 October 2026: WETEX 2026, 20-22 October, Dubai World Trade Centre. Obtain the current exhibitor manual through your booked route before agreeing operational requirements."
+   },
+   {
+    "url": "https://www.dwtc.com/en/events/wetex-2026/",
+    "label": "Dubai World Trade Centre WETEX 2026 listing",
+    "note": "Confirms 20-22 October 2026 and DEWA as organiser. Your allocation controls your hall and access arrangements."
+   }
+  ]
  }
 }
