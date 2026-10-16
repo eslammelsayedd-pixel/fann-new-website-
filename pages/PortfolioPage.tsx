@@ -74,15 +74,7 @@ const PortfolioPage: React.FC = () => {
               <h1 id="portfolio-title" className="text-4xl md:text-5xl font-serif font-bold text-fann-gold mb-4">Portfolio</h1>
               <p className="portfolio-body">Fit-out, exhibitions and events across the UAE. Explore our project photography and details.</p>
             </div>
-            <p className="portfolio-body mb-8">Use completed stands to brief your next design: <Link to="/exhibition-stand-design-abu-dhabi" className="text-fann-gold underline underline-offset-4">exhibition stand design in Abu Dhabi</Link>, with layout choices and the scope to confirm before production.</p>
-<p className="portfolio-body mb-8">Preparing a healthcare site brief? See our <Link to="/medical-centre-fit-out-dubai" className="text-fann-gold underline underline-offset-4">medical centre fit-out Dubai guide</Link>, with healthcare gallery references and a room-by-room scope checklist.</p>
-<p lang="ar" dir="rtl" className="portfolio-body mb-8">استخدم المشاريع مرجعاً لموجزك: <Link to="/ar/exhibition-stands-dubai" className="text-fann-gold underline">أجنحة المعارض في دبي باللغة العربية</Link>.</p>
-<p className="portfolio-body mb-8">Need a Dubai stand built? Read our <Link to="/exhibition-stand-builders-dubai" className="text-fann-gold underline">exhibition stand builders Dubai brief</Link>, with TREVOS, Geven and Bayara completed-project references and a quote-scope checklist.</p>
-        <p className="portfolio-body mb-8">Planning an office or commercial interior? Read our <Link to="/fit-out-company-dubai" className="text-fann-gold underline">fit out company Dubai brief</Link>, with 17 real office interior photographs and a fit-out quote checklist.</p>
-<p className="portfolio-body mb-8">Taking food products to Gulfood? Read our <Link to="/gulfood-exhibition-stand-design-dubai" className="text-fann-gold underline">Gulfood stand design brief</Link>, with Bayara and India Pavilion archive references and a food-product scope checklist.</p>
-        <p className="portfolio-body mb-8">Exhibiting at WETEX? Read our <Link to="/wetex-exhibition-stand-design-dubai" className="text-fann-gold underline">WETEX exhibition stand design Dubai brief</Link>, with TREVOS, Bayara and Awazel completed-project references at the same venue.</p>
-<p className="portfolio-body mb-8">Taking construction products to Big 5? Read our <Link to="/big-5-exhibition-stand-design-dubai" className="text-fann-gold underline">Big 5 stand design brief</Link>, with Awazel and Saudi Ceramics archive references and a product-display scope checklist.</p>
-<p className="portfolio-body mb-8">Exhibiting technology? Use our <Link to="/gitex-exhibition-stand-design-dubai" className="text-fann-gold underline">GITEX exhibition stand design brief</Link> to plan demos, power and data responsibilities, meetings and the 2026 venue allocation.</p>
+            
             <div className="flex flex-wrap gap-4 mb-8">
               <label className="text-sm portfolio-body">Project type<select value={projectType} onChange={e => setProjectType(e.target.value)} className="block mt-2 bg-fann-charcoal-light border border-white/25 rounded px-3 py-3 text-white"><option>All</option><option>Fit-out &amp; renovation</option><option>Events &amp; exhibitions</option></select></label>
               <label className="text-sm portfolio-body">Emirate<select value={emirate} onChange={e => setEmirate(e.target.value)} className="block mt-2 bg-fann-charcoal-light border border-white/25 rounded px-3 py-3 text-white"><option>All</option>{Array.from(new Set(allProjects.map(item => item.emirate))).map(value => <option key={value}>{value}</option>)}</select></label>
@@ -96,6 +88,20 @@ const PortfolioPage: React.FC = () => {
               </Link>)}
             </div>
             {!entries.length && <p className="portfolio-body py-10">No projects match these filters. Choose another emirate or sector.</p>}
+          </section>
+          <section aria-labelledby="portfolio-guides-title" className="max-w-6xl mx-auto mb-20">
+            <h2 id="portfolio-guides-title" className="text-2xl md:text-3xl font-serif font-bold text-fann-gold mb-4 md:mb-6">Guides for your next project</h2>
+            <div className="space-y-3 md:space-y-6 text-xs sm:text-sm md:text-base">
+<p className="portfolio-body mb-0">Use completed stands to brief your next design: <Link to="/exhibition-stand-design-abu-dhabi" className="text-fann-gold underline underline-offset-4">exhibition stand design in Abu Dhabi</Link>, with layout choices and the scope to confirm before production.</p>
+<p className="portfolio-body mb-0">Preparing a healthcare site brief? See our <Link to="/medical-centre-fit-out-dubai" className="text-fann-gold underline underline-offset-4">medical centre fit-out Dubai guide</Link>, with healthcare gallery references and a room-by-room scope checklist.</p>
+<p lang="ar" dir="rtl" className="portfolio-body mb-0">استخدم المشاريع مرجعاً لموجزك: <Link to="/ar/exhibition-stands-dubai" className="text-fann-gold underline">أجنحة المعارض في دبي باللغة العربية</Link>.</p>
+<p className="portfolio-body mb-0">Need a Dubai stand built? Read our <Link to="/exhibition-stand-builders-dubai" className="text-fann-gold underline">exhibition stand builders Dubai brief</Link>, with TREVOS, Geven and Bayara completed-project references and a quote-scope checklist.</p>
+        <p className="portfolio-body mb-0">Planning an office or commercial interior? Read our <Link to="/fit-out-company-dubai" className="text-fann-gold underline">fit out company Dubai brief</Link>, with 17 real office interior photographs and a fit-out quote checklist.</p>
+<p className="portfolio-body mb-0">Taking food products to Gulfood? Read our <Link to="/gulfood-exhibition-stand-design-dubai" className="text-fann-gold underline">Gulfood stand design brief</Link>, with Bayara and India Pavilion archive references and a food-product scope checklist.</p>
+        <p className="portfolio-body mb-0">Exhibiting at WETEX? Read our <Link to="/wetex-exhibition-stand-design-dubai" className="text-fann-gold underline">WETEX exhibition stand design Dubai brief</Link>, with TREVOS, Bayara and Awazel completed-project references at the same venue.</p>
+<p className="portfolio-body mb-0">Taking construction products to Big 5? Read our <Link to="/big-5-exhibition-stand-design-dubai" className="text-fann-gold underline">Big 5 stand design brief</Link>, with Awazel and Saudi Ceramics archive references and a product-display scope checklist.</p>
+<p className="portfolio-body mb-0">Exhibiting technology? Use our <Link to="/gitex-exhibition-stand-design-dubai" className="text-fann-gold underline">GITEX exhibition stand design brief</Link> to plan demos, power and data responsibilities, meetings and the 2026 venue allocation.</p>
+            </div>
           </section>
           <section id="project-photo-gallery" className="max-w-6xl mx-auto mb-20" aria-labelledby="gallery-title">
             <h2 id="gallery-title" className="text-3xl md:text-4xl font-serif font-bold text-fann-gold mb-4">Project photo gallery</h2>

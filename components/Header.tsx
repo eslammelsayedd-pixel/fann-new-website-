@@ -22,12 +22,16 @@ const Header: React.FC = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // Mobile: solid background, no backdrop-blur. iOS Safari can drop a fixed
+    // header that carries backdrop-filter during momentum scroll, which made the
+    // hamburger unreachable mid-page. Blur stays desktop-only.
     const headerClasses = scrolled
-        ? 'bg-fann-charcoal/90 backdrop-blur-md border-b border-white/5 py-4'
+        ? 'bg-fann-charcoal border-b border-white/5 py-4 lg:bg-fann-charcoal/90 lg:backdrop-blur-md'
         : 'bg-transparent py-6';
 
     return (
         <header 
+            style={{ transform: 'translateZ(0)' }}
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isAdsLanding ? 'ads-landing-header bg-[#111] border-b border-white/10 py-4' : headerClasses}`}
         >
             <div className="container mx-auto flex items-center justify-between">
