@@ -94,20 +94,20 @@ export default function ExhibitionAdsLandingPage() {
     { key: 'standSize', label: 'Size (optional)', hint: 'e.g. 6 x 3 m or 18 sqm' },
   ];
   return <>
-    <SEO title="3D Exhibition Stand Concept + Quote in 24 Hours" description="FANN designs and builds custom exhibition stands. Send your show brief for a 3D stand concept and full quote within 24 hours." />
+    <SEO title="Exhibition Stand Builders in the UAE | 3D Concept + Quote in 24 Hours" description="FANN designs and builds custom exhibition stands in the UAE. Send your show brief for a 3D stand concept and full quote within 24 hours." />
     <div className="ads-landing-page">
     <section className="bg-[#111111] px-5 pb-10 pt-[5.5rem] text-[#f5f2eb] md:pb-14 md:pt-28">
       <div className="mx-auto grid max-w-6xl items-start gap-5 lg:grid-cols-[1fr_440px] lg:gap-12">
         <div className="lg:pt-3">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[.22em] text-[#c9a962]">Custom exhibition stands</p>
-          <h1 className="max-w-2xl font-serif text-[1.75rem] font-bold leading-[1.12] md:text-5xl lg:text-[3.5rem]">3D Stand Concept + Full Quote in 24 Hours</h1>
-          <p className="mt-3 max-w-xl text-sm md:text-base md:mt-6 md:text-lg leading-relaxed text-[#d4d1cb]">Share your contact details. Add your show and size if known.</p>
-          <p className="mt-2 text-xs md:text-sm text-[#e1c78d]">In-house production. Scope and price agreed before production.</p><a href="#brief" className="mt-4 inline-flex min-h-[48px] items-center rounded-sm bg-[#c9a962] px-5 py-3 font-bold text-black">Request your concept + quote</a>
+          <h1 className="max-w-2xl font-serif text-[1.75rem] font-bold leading-[1.12] md:text-5xl lg:text-[3.5rem]">Exhibition Stand Builders in the UAE</h1>
+          <p className="mt-3 max-w-xl text-sm md:text-base md:mt-6 md:text-lg leading-relaxed text-[#d4d1cb]">3D stand concept and full quote within 24 hours. Share your contact details. Add your show and size if known.</p>
+          <p className="mt-2 text-xs md:text-sm text-[#e1c78d]">In-house design, fabrication and installation across the UAE. Scope and price agreed before production.</p><a href="#brief" className="mt-4 inline-flex min-h-[48px] items-center rounded-sm bg-[#c9a962] px-5 py-3 font-bold text-black">Request your concept + quote</a>
           <div className="mt-3 flex flex-wrap gap-2 md:mt-5 md:gap-3">
             <a href="tel:+971505667502" data-track="ads-call" className="rounded-sm border border-[#c9a962] px-3 py-2 text-sm font-semibold md:px-5 md:py-3 md:text-base text-[#e1c78d] hover:bg-[#c9a962] hover:text-black">Call +971 50 566 7502</a>
             <a href={whatsappUrl} data-track="ads-whatsapp" target="_blank" rel="noopener noreferrer" className="rounded-sm bg-[#25d366] px-3 py-2 text-sm font-bold text-[#071b0e] hover:bg-[#50e080]">WhatsApp instead</a>
           </div>
-          <Link to="/portfolio/trevos-light-middle-east" className="mt-3 flex items-center gap-3 text-xs md:text-sm text-[#d4d1cb]"><img src="/images/stands/1-trevos-light-middle-east.webp" alt="Completed FANN TREVOS stand at Light Middle East 2023" width="120" height="68" className="hidden md:block h-16 w-28 object-cover"/><span>Real FANN work: TREVOS, Light Middle East 2023</span></Link>
+          <Link to="/portfolio/trevos-light-middle-east" className="mt-3 hidden md:flex items-center gap-3 text-xs md:text-sm text-[#d4d1cb]"><img loading="lazy" decoding="async" src="/images/stands/1-trevos-light-middle-east.webp" alt="Completed FANN TREVOS stand at Light Middle East 2023" width="120" height="68" className="hidden md:block h-16 w-28 object-cover"/><span>Real FANN work: TREVOS, Light Middle East 2023</span></Link>
         </div>
         <div id="brief" className="scroll-mt-28 rounded-sm border border-[#c9a962]/40 bg-[#222] p-4 shadow-2xl md:p-7">
           {sent ? <div role="status" className="py-10 text-center"><h2 className="font-serif text-3xl text-[#e1c78d]">Request received</h2><p className="mt-4 text-[#d4d1cb]">Thank you. FANN will contact you about your show brief.</p></div> : <>
@@ -128,7 +128,7 @@ export default function ExhibitionAdsLandingPage() {
       </div>
     </section>
     <section className="bg-[#1b1b1b] px-5 py-14 text-[#f5f2eb]"><div className="mx-auto max-w-6xl"><div className="mb-7 flex flex-wrap items-end justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-[.2em] text-[#c9a962]">Built by FANN</p><h2 className="mt-2 font-serif text-3xl">Selected work</h2></div><Link to="/portfolio" className="text-sm text-[#e1c78d] underline">Explore the portfolio</Link></div><div className="grid gap-5 sm:grid-cols-3">{photos.map(photo => <Link key={photo.src} to={photo.link} className="group block"><img loading="lazy" decoding="async" src={photo.src} alt={photo.alt} width="816" height="464" className="aspect-[4/3] w-full object-cover"/><span className="mt-3 block font-medium text-[#e4dfd7] group-hover:text-[#e1c78d]">{photo.title}</span></Link>)}</div><p className="mt-6 text-xs text-[#aaa49b]">Project photography from FANN's portfolio. Examples of completed work, not a preview of your stand.</p></div></section>
-    <section className="bg-[#111] px-5 py-14 text-[#f5f2eb]"><div className="mx-auto max-w-6xl"><h2 className="font-serif text-3xl">One team, from brief to build</h2><p className="mt-4 max-w-2xl text-[#d4d1cb]">3D concept, detailed quote, fabrication and on-site installation. We coordinate venue and authority submissions as part of the build.</p><a href="#brief" className="mt-6 inline-block rounded-sm bg-[#c9a962] px-6 py-3 font-bold text-black">Tell us about your stand</a></div></section>
+    <section className="bg-[#111] px-5 py-14 text-[#f5f2eb]"><div className="mx-auto max-w-6xl"><h2 className="font-serif text-3xl">Exhibition stand builders: one team, from brief to build</h2><p className="mt-4 max-w-2xl text-[#d4d1cb]">3D concept, detailed quote, fabrication and on-site installation. We coordinate venue and authority submissions as part of the build.</p><a href="#brief" className="mt-6 inline-block rounded-sm bg-[#c9a962] px-6 py-3 font-bold text-black">Tell us about your stand</a></div></section>
     </div>
   </>;
                 }
