@@ -54,6 +54,7 @@ const App: React.FC = () => {
                     <Routes location={location} key={location.pathname}>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/exhibition-stand-design-abu-dhabi" element={<BuyerIntentPage />} />
+                        <Route path="/exhibition-stand-design-dubai" element={<BuyerIntentPage />} />
                         <Route path="/medical-centre-fit-out-dubai" element={<BuyerIntentPage />} />
                         <Route path="/ar/exhibition-stands-dubai" element={<BuyerIntentPage />} />
                         <Route path="/gitex-exhibition-stand-design-dubai" element={<BuyerIntentPage />} />
