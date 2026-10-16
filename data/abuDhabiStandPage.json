@@ -1,8 +1,15 @@
 {
   "title": "Exhibition Stand Builders Abu Dhabi | Design & Build | FANN",
-  "description": "Plan an Abu Dhabi exhibition stand with FANN. Dubai office, in-house joinery workshop in Umm Al Quwain, and design, fabrication and installation scoped to your show.",
+  "description": "Exhibition stand builders and contractors for Abu Dhabi shows. FANN: Dubai office, in-house Umm Al Quwain joinery workshop, and design, fabrication and installation scoped to your ADNEC allocation.",
   "heading": "Exhibition stand builders for Abu Dhabi shows",
-  "intro": "FANN designs and builds exhibition stands for Abu Dhabi shows, coordinated from our Dubai office with fabrication supported by our in-house joinery workshop in Umm Al Quwain. Send your show, stand allocation and opening date so design, production and installation can be scoped around the actual venue requirements. We do not present an Abu Dhabi office or a universal turnkey package.",
+  "city": "Abu Dhabi",
+  "breadcrumb": "Exhibition Stands Abu Dhabi",
+  "subheading": "Dubai office, Umm Al Quwain workshop, and a scope planned for your actual show.",
+  "intro": "FANN is an independent Dubai studio with its own joinery workshop in Umm Al Quwain, building exhibition stands for Abu Dhabi shows. This page is about scope and responsibility, not a claim to be an official ADNEC contractor: for each project we agree who prepares drawings, submits them to the organiser and venue, orders services, installs the stand and removes it after the show. Our Abu Dhabi work includes the National Expression exhibition for ADEK. Completed Dubai stands are labelled as Dubai work wherever they appear as references.",
+  "hero": "/images/projects/national-expression-adek/03.webp",
+  "heroAlt": "Completed FANN installation for the ADEK National Expression exhibition in Abu Dhabi, with curved gallery walls and spotlit student artwork",
+  "heroCaption": "Completed FANN project: the National Expression exhibition for ADEK in Abu Dhabi. A gallery installation, not proof of venue appointment or approval.",
+  "action": "Share your stand brief",
   "sections": [
     {
       "heading": "Design and build around the actual stand allocation",
@@ -25,6 +32,32 @@
       "text": "Use the same drawings and scope when comparing stand builders. Identify materials, graphics, logistics, venue submissions, exclusions and changes after design approval. A concept image is not a structural specification. Your project is priced against the agreed brief rather than a standard rate."
     }
   ],
+  "proofHeading": "Real projects from the FANN archive",
+  "proofNote": "The Abu Dhabi reference below is named by location; the Dubai references document the same design and build process and are labelled as Dubai work, not Abu Dhabi projects.",
+  "proofLinkLabel": "Open the full portfolio",
+  "proof": [
+    {
+      "name": "National Expression - ADEK",
+      "location": "Abu Dhabi, 2025",
+      "image": "/images/projects/national-expression-adek/01.webp",
+      "path": "/portfolio/national-expression-adek-abu-dhabi",
+      "text": "Completed Abu Dhabi reference: a walk-through student art gallery for the Abu Dhabi Department of Education and Knowledge, with curved walls, striped canopies, spotlit displays, seating islands and outdoor LED screens."
+    },
+    {
+      "name": "TREVOS - Light Middle East",
+      "location": "Dubai, 2023",
+      "image": "/images/stands/1-trevos-light-middle-east.webp",
+      "path": "/portfolio/trevos-light-middle-east",
+      "text": "Dubai archive reference, labelled as Dubai work: overhead identity feature, product displays and visitor-facing space. Use it to discuss the relationship between brand visibility and the floor layout."
+    },
+    {
+      "name": "Geven - Aircraft Interiors Middle East",
+      "location": "Dubai, 2025",
+      "image": "/images/stands/6-geven-aircraft-interiors.webp",
+      "path": "/portfolio/geven-aircraft-interiors",
+      "text": "Dubai archive reference, labelled as Dubai work: a completed aircraft-interiors exhibition stand. Share your own product dimensions and access needs rather than copying another exhibitor's layout."
+    }
+  ],
   "faqs": [
     {
       "question": "Where are your office and workshop?",
@@ -43,12 +76,49 @@
       "answer": "Agree the responsible party for each submission and approval in the scope. The requirements depend on your show and actual design. No blanket approval guarantee or official-contractor status is claimed."
     },
     {
+      "question": "Do you have real Abu Dhabi project photographs?",
+      "answer": "Yes. The National Expression gallery for ADEK in Abu Dhabi has a full photographed case study in our portfolio. Other archive references on this page are completed Dubai work and are labelled as such."
+    },
+    {
       "question": "Is dismantling included automatically?",
       "answer": "No. Dismantling, transport after the show, storage and reuse are included only when stated in the agreed scope."
     },
     {
       "question": "Can I review design choices before requesting a quote?",
       "answer": "Yes. The Abu Dhabi stand design guide covers visitor routes, product displays, meeting areas and the information needed before production. Completed Dubai stand references are labelled as Dubai work, not Abu Dhabi projects."
+    }
+  ],
+  "related": [
+    {
+      "path": "/services/custom-exhibition-stands-dubai",
+      "label": "Custom exhibition stands Dubai"
+    },
+    {
+      "path": "/exhibition-stand-builders-dubai",
+      "label": "Exhibition stand builders Dubai"
+    },
+    {
+      "path": "/exhibition-stand-design-abu-dhabi",
+      "label": "Abu Dhabi stand design guide"
+    },
+    {
+      "path": "/events-calendar",
+      "label": "UAE exhibition calendar"
+    },
+    {
+      "path": "/exhibitions/adipec-2026-stand-planning",
+      "label": "ADIPEC 2026 stand planning"
+    },
+    {
+      "path": "/portfolio",
+      "label": "Project portfolio"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.adnec.ae/",
+      "label": "ADNEC Group official venue and event information",
+      "note": "Check your show's exhibitor manual and venue rules on the official site before agreeing submission responsibilities."
     }
   ]
 }

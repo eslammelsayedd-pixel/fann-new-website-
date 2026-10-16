@@ -101,6 +101,7 @@ const PortfolioPage: React.FC = () => {
         <p className="portfolio-body mb-0">Exhibiting at WETEX? Read our <Link to="/wetex-exhibition-stand-design-dubai" className="text-fann-gold underline">WETEX exhibition stand design Dubai brief</Link>, with TREVOS, Bayara and Awazel completed-project references at the same venue.</p>
 <p className="portfolio-body mb-0">Taking construction products to Big 5? Read our <Link to="/big-5-exhibition-stand-design-dubai" className="text-fann-gold underline">Big 5 stand design brief</Link>, with Awazel and Saudi Ceramics archive references and a product-display scope checklist.</p>
 <p className="portfolio-body mb-0">Exhibiting technology? Use our <Link to="/gitex-exhibition-stand-design-dubai" className="text-fann-gold underline">GITEX exhibition stand design brief</Link> to plan demos, power and data responsibilities, meetings and the 2026 venue allocation.</p>
+<p className="portfolio-body mb-0">Exhibiting in Abu Dhabi? Read our <Link to="/exhibition-stands-abu-dhabi" className="text-fann-gold underline">exhibition stand builders Abu Dhabi brief</Link>, with the completed ADEK National Expression gallery and a scope checklist for ADNEC shows.</p>
             </div>
           </section>
           <section id="project-photo-gallery" className="max-w-6xl mx-auto mb-20" aria-labelledby="gallery-title">
