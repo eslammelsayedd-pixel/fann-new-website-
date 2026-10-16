@@ -1,3 +1,39 @@
+// Passive, session-scoped enquiry attribution. No analytics request or conversion is fired.
+// Click references are evidence for reconciliation, not proof of a completed call or qualified lead.
+const ATTRIBUTION_KEY = 'fann-enquiry-attribution-v1';
+const ATTRIBUTION_FIELDS = ['gclid', 'gbraid', 'wbraid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'] as const;
+type EnquiryAttribution = { captured_at: string; landing_path: string; fields: Record<string, string> };
+let visitAttribution: EnquiryAttribution | null = null;
+export function captureLeadAttribution(): EnquiryAttribution | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    if (visitAttribution && Date.now() - Date.parse(visitAttribution.captured_at) >= 86400000) visitAttribution = null;
+    const params = new URLSearchParams(window.location.search);
+    const fields: Record<string, string> = {};
+    for (const field of ATTRIBUTION_FIELDS) {
+      const value = (params.get(field) || '').replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, 512);
+      if (value) fields[field] = value;
+    }
+    if (Object.keys(fields).length) {
+      visitAttribution = { captured_at: new Date().toISOString(), landing_path: window.location.pathname.slice(0, 300), fields };
+      try { window.sessionStorage.setItem(ATTRIBUTION_KEY, JSON.stringify(visitAttribution)); } catch { /* this page still has its reference */ }
+    } else if (!visitAttribution) {
+      try {
+        const saved = JSON.parse(window.sessionStorage.getItem(ATTRIBUTION_KEY) || 'null');
+        const age = Date.now() - Date.parse(saved?.captured_at || '');
+        if (saved && age >= 0 && age < 86400000 && typeof saved.landing_path === 'string' && saved.fields && typeof saved.fields === 'object') {
+          const allowed: Record<string, string> = {};
+          for (const field of ATTRIBUTION_FIELDS) if (typeof saved.fields[field] === 'string') allowed[field] = saved.fields[field].slice(0, 512);
+          if (Object.keys(allowed).length) visitAttribution = { captured_at: saved.captured_at, landing_path: saved.landing_path.slice(0, 300), fields: allowed };
+        }
+      } catch { /* unavailable storage must never break delivery */ }
+    }
+  } catch { /* URL parsing must never break delivery */ }
+  return visitAttribution;
+}
+// App imports this module on entry so an internal navigation cannot discard the landing reference.
+captureLeadAttribution();
+
 // Single client-side entry point for every website form.
 // Sends via Web3Forms from the browser when VITE_WEB3FORMS_ACCESS_KEY is set, otherwise via /api/lead (SMTP).
 // Only resolves when delivery is confirmed.
@@ -13,8 +49,11 @@ export interface LeadPayload {
 }
 
 export async function submitLead(payload: LeadPayload): Promise<void> {
+  const attribution = captureLeadAttribution();
+  const details = { ...(payload.details || {}), ...(attribution ? { enquiry_attribution: attribution } : {}) };
   const body = {
     ...payload,
+    details,
     page: typeof window !== 'undefined' ? window.location.pathname : '',
     referrer: typeof document !== 'undefined' ? document.referrer : '',
   };
@@ -24,7 +63,7 @@ export async function submitLead(payload: LeadPayload): Promise<void> {
     // Web3Forms must be called from the browser (server-side calls are blocked on the free plan).
     // The access key is designed to be public; submissions go to the inbox it was created with (sales@fann.ae).
     const name = payload.name || '';
-    const details = Object.entries(payload.details || {})
+    const details = Object.entries(details)
       .filter(([, v]) => v !== '' && v !== null && v !== undefined)
       .map(([k, v]) => `${k}: ${typeof v === 'object' ? JSON.stringify(v) : String(v)}`);
     const text = [
@@ -90,7 +129,7 @@ export async function submitLead(payload: LeadPayload): Promise<void> {
       let receipt: Response;
       try { receipt = await fetch('/api/lead-receipt', {
         signal: controller.signal, method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ ...payload, deliveryConfirmed: true, requestToken: window.crypto.randomUUID() }),
+        body: JSON.stringify({ ...body, deliveryConfirmed: true, requestToken: window.crypto.randomUUID() }),
       }); } finally { clearTimeout(timeout); }
       const data = await receipt.json();
       if (receipt.ok && data.persisted === true) (window as any).fannOpenAIConversion?.measurePersistedLead(data);
