@@ -63,14 +63,14 @@ export async function submitLead(payload: LeadPayload): Promise<void> {
     // Web3Forms must be called from the browser (server-side calls are blocked on the free plan).
     // The access key is designed to be public; submissions go to the inbox it was created with (sales@fann.ae).
     const name = payload.name || '';
-    const details = Object.entries(details)
+    const detailLines = Object.entries(details)
       .filter(([, v]) => v !== '' && v !== null && v !== undefined)
       .map(([k, v]) => `${k}: ${typeof v === 'object' ? JSON.stringify(v) : String(v)}`);
     const text = [
       `New ${payload.formType} from fann.ae`, '',
       `Name: ${name || '-'}`, `Email: ${payload.email || '-'}`, `Phone: ${payload.phone || '-'}`, `Company: ${payload.company || '-'}`, '',
       payload.message ? `Message:\n${payload.message}\n` : '',
-      details.length ? `Details:\n${details.join('\n')}\n` : '',
+      detailLines.length ? `Details:\n${detailLines.join('\n')}\n` : '',
       `Page: ${body.page || '-'}`, `Referrer: ${body.referrer || '-'}`,
     ].join('\n');
     if (!payload.email && !payload.phone) throw new Error('Please add an email or phone number so we can reach you.');
