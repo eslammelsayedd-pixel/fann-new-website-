@@ -1,4 +1,5 @@
 import React, { lazy, Suspense } from 'react';
+import './lib/submitLead'; // Capture the landing reference before route navigation.
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
