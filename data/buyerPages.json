@@ -1584,5 +1584,120 @@
         "note": "Confirms 20-22 October 2026 and DEWA as organiser. Your allocation controls your hall and access arrangements."
       }
     ]
+  },
+  "/arab-health-exhibition-stand-design-dubai": {
+    "title": "Arab Health (WHX Dubai) Exhibition Stand Design | 25-28 Jan 2027 | FANN",
+    "description": "Exhibition stand design and build for WHX Dubai 2027, formerly Arab Health: 25-28 January at Dubai Exhibition Centre, Expo City and Dubai World Trade Centre. See FANN healthcare-show archive references and send your hall and floor plan for a scoped quote.",
+    "heading": "Arab Health (WHX Dubai) exhibition stand design in Dubai",
+    "city": "Dubai",
+    "breadcrumb": "Arab Health stand design Dubai",
+    "subheading": "Stand design, fabrication and installation for WHX Dubai exhibitors, 25-28 January 2027.",
+    "intro": "FANN designs and builds exhibition stands for exhibitors at WHX Dubai 2027, the show formerly known as Arab Health. WHX Dubai 2027 runs 25-28 January 2027 across Dubai Exhibition Centre, Expo City and Dubai World Trade Centre, organised by Informa Markets. A build brief starts with your booked venue, hall, stand number and floor plan, then agrees the design, materials, graphics, transport, installation and handover scope. FANN is an independent contractor, not an organiser-appointed or Informa-appointed contractor.",
+    "hero": "/images/stands/9-abbott-arab-health.webp",
+    "heroAlt": "Abbott stand at a past Arab Health edition in Dubai, from FANN supplied project archive, with healthcare product displays",
+    "heroCaption": "FANN archive reference: Abbott at Arab Health, Dubai. No year is stated for this reference; it documents a past healthcare-show layout, not a WHX 2027 appointment, a completed visitor-ready display or a measured visitor result.",
+    "action": "Send your WHX Dubai stand brief",
+    "sections": [
+      {
+        "heading": "WHX Dubai 2027: two venues, confirm your booked allocation",
+        "text": "WHX Dubai 2027 spans two sites: Dubai Exhibition Centre at Expo City and Dubai World Trade Centre on Sheikh Zayed Road. Your booking states which venue and hall you are in, and each venue carries its own access routes, build-up windows, service arrangements and contractor rules. Design and logistics decisions follow the booked allocation, not the show name alone.",
+        "items": [
+          "Confirm venue, hall, stand number, dimensions and open sides from your booking before design starts.",
+          "Check the organiser manual for your hall's build-up, submission and dismantling deadlines.",
+          "Share the current floor plan as soon as it is issued; layouts are priced against it."
+        ]
+      },
+      {
+        "heading": "Design around the product and the demonstration",
+        "text": "Healthcare stands succeed on clarity: what the product is, who it serves and where a visitor can see it working. The layout follows your device or product list, the demonstration plan and the number of buyer conversations you expect at once. Enclosed meeting rooms, open consultation counters and demonstration bays each change structure, power, lighting and queuing space.",
+        "items": [
+          "List every product or device to be displayed, with dimensions and weight.",
+          "State which items are demonstrated live and what each demonstration needs.",
+          "Decide how many parallel meetings the stand must host."
+        ]
+      },
+      {
+        "heading": "Approvals, utilities and clinical claims stay with their owners",
+        "text": "Organiser approvals, utility orders and any clinical or regulatory wording on graphics belong to the exhibitor and the organiser, not to the stand contractor. FANN builds to the agreed design and states which items it supplies; product compliance, promotional claims and organiser permissions are identified as separate responsibilities in the quote.",
+        "items": [
+          "Order power, water, compressed air or data through the organiser's official channels.",
+          "Approve all graphic wording through your own regulatory process before print.",
+          "Ask the organiser which stand designs need advance permission."
+        ]
+      },
+      {
+        "heading": "Plan storage, samples and buyer meetings",
+        "text": "A working healthcare stand needs behind-scenes space: secure storage for samples and literature, a replenishment route that does not cross visitor areas, and meeting space sized to your team. These are layout decisions taken at design stage, not additions on site.",
+        "items": [
+          "Quantify literature, samples and giveaways that need lockable storage.",
+          "Plan staff numbers per shift so meeting and circulation space match.",
+          "Agree cleaning, waste and daily reset responsibilities in writing."
+        ]
+      },
+      {
+        "heading": "What belongs in a WHX Dubai stand-build quote",
+        "text": "A comparable quote lists every element separately so you can see what is included and what is supplied by others. FANN itemises design, fabrication, graphics, lighting, furniture, AV coordination, transport, installation, handover checks and dismantling, and flags organiser services and utilities as separate items.",
+        "items": [
+          "Agree the full scope in writing before production starts.",
+          "Identify organiser services, utilities and approvals as items supplied by others.",
+          "Ask who is responsible for on-site changes and what they cost."
+        ]
+      }
+    ],
+    "proofHeading": "Past healthcare-show photographs: what they show",
+    "proofNote": "These are FANN supplied archive references, not 2027 appointments or evidence of clinical, regulatory or organiser-approval scope. No year is stated for the Abbott reference. Use visible layout features to explain your own brief.",
+    "proofLinkLabel": "View archive stand reference",
+    "proof": [
+      {
+        "path": "/portfolio/abbott-arab-health",
+        "image": "/images/stands/9-abbott-arab-health.webp",
+        "name": "Abbott - Arab Health",
+        "location": "Dubai",
+        "text": "The photograph shows Abbott identity and healthcare product displays from a past Arab Health edition. It does not establish a completed visitor-ready display, a WHX 2027 appointment or any clinical or regulatory claim."
+      }
+    ],
+    "proposalHeading": "Turn your product list and allocation into a scoped proposal",
+    "proposalText": "Start with your name and one contact method. Add the venue, hall, floor plan, product or device list, demonstration activity, storage and buyer meetings if known. The quote form lets you add a floor plan optionally.",
+    "faqs": [
+      {
+        "question": "When and where is WHX Dubai 2027 (formerly Arab Health)?",
+        "answer": "The organiser currently lists 25-28 January 2027 across Dubai Exhibition Centre, Expo City and Dubai World Trade Centre. Confirm your booked venue and hall separately. Show dates do not establish build-up, submission or dismantling deadlines."
+      },
+      {
+        "question": "What should I send for a WHX Dubai stand-design proposal?",
+        "answer": "Send your name, company, one contact method, booked venue, hall, stand number, dimensions, allocation type and the current floor plan if issued. Add your product or device list, demonstration needs, storage and meeting requirements when known."
+      },
+      {
+        "question": "Does FANN handle organiser approvals and utilities?",
+        "answer": "Organiser approvals, utility orders and clinical or regulatory wording remain with the exhibitor and the organiser. FANN itemises what it supplies in the quote and identifies organiser services as separate items so responsibilities are clear."
+      }
+    ],
+    "related": [
+      {
+        "path": "/medical-centre-fit-out-dubai",
+        "label": "Medical centre fit-out in Dubai"
+      },
+      {
+        "path": "/exhibition-stand-builders-dubai",
+        "label": "Exhibition stand builders in Dubai"
+      },
+      {
+        "path": "/exhibition-stand-design-dubai",
+        "label": "Exhibition stand design in Dubai"
+      }
+    ],
+    "sourcesHeading": "Organiser sources and planning limits",
+    "sources": [
+      {
+        "url": "https://www.worldhealthexpo.com/events/healthcare/dubai/",
+        "label": "WHX Dubai official event page",
+        "note": "Checked 17 October 2026: 25-28 January 2027, Dubai Exhibition Centre, Expo City and Dubai World Trade Centre; formerly Arab Health; Informa Markets. Your allocation controls your venue."
+      },
+      {
+        "url": "https://www.worldhealthexpo.com/events/healthcare/dubai/overview/travel-venue/",
+        "label": "WHX Dubai official travel and venue page",
+        "note": "Confirms the two-venue footprint and venue addresses for 2027."
+      }
+    ]
   }
 }
