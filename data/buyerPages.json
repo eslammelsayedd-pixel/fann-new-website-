@@ -3419,5 +3419,115 @@
         "note": "Checked 17 October 2026: Halls S17 and S19, Dubai Exhibition Centre, Expo City, 4-6 May 2027."
       }
     ]
+  },
+  "/seamless-middle-east-exhibition-stand-design": {
+    "title": "Seamless Middle East Exhibition Stand Design Dubai | 24-26 May 2027 | FANN",
+    "description": "Exhibition stand design and build for Seamless Middle East 2027 exhibitors: 24-26 May at Dubai World Trade Centre. See completed FANN stands at Dubai trade shows and send your hall and floor plan for a scoped quote.",
+    "heading": "Seamless Middle East exhibition stand design in Dubai",
+    "city": "Dubai",
+    "breadcrumb": "Seamless Middle East stand design Dubai",
+    "subheading": "Stand design, fabrication and installation for Seamless Middle East exhibitors, 24-26 May 2027.",
+    "intro": "FANN designs and builds exhibition stands for Seamless Middle East exhibitors. Seamless Middle East 2027 runs 24-26 May 2027 at Dubai World Trade Centre. A build brief starts with your booked hall, stand number and floor plan, then agrees the design, materials, graphics, transport, installation and handover scope. FANN is an independent contractor, not an organiser-appointed contractor.",
+    "hero": "/images/stands/1-trevos-light-middle-east.webp",
+    "heroAlt": "TREVOS stand at Light Middle East, Dubai World Trade Centre, 2023, completed by FANN, with overhead identity feature and product displays",
+    "heroCaption": "Completed FANN project at a Dubai World Trade Centre show: TREVOS at Light Middle East, Dubai, 2023. It documents Dubai show experience; it does not establish a Seamless Middle East appointment, a past Seamless edition or a measured visitor result.",
+    "action": "Send your Seamless Middle East stand brief",
+    "sections": [
+      {
+        "heading": "Seamless Middle East 2027: confirm your hall before the layout",
+        "text": "Seamless Middle East 2027 runs 24-26 May at Dubai World Trade Centre. Each hall and allocation carries its own access, build-up window and service arrangements, so design and logistics follow your booking and the exhibitor manual, not the show name alone.",
+        "items": [
+          "Confirm hall, stand number, dimensions and open sides from your booking before design starts.",
+          "Check the exhibitor manual for your hall's build-up, submission and dismantling deadlines.",
+          "Share the current floor plan as soon as it is issued; layouts are priced against it."
+        ]
+      },
+      {
+        "heading": "Design around live fintech demos, screens and meeting demand",
+        "text": "Payments, e-commerce and retail-technology stands are demo-led: checkout flows on screens, POS and payment terminals running live, and dense meeting schedules with banks, merchants and platforms. The layout follows your demo plan and how many conversations happen at once, from open demo counters to enclosed meeting rooms.",
+        "items": [
+          "List every demo station, terminal or screen with dimensions, weight and utility needs.",
+          "State which demos run live and what each needs for power and data.",
+          "Decide how many parallel meetings the stand must host, and at what privacy level."
+        ]
+      },
+      {
+        "heading": "Power, data and screen loads are settled before production",
+        "text": "Demo walls and live terminals concentrate power and data in one footprint. Load calculations, data cabling routes and any rigging are agreed with the venue and organiser against your final layout before fabrication starts.",
+        "items": [
+          "Calculate total electrical load for all screens and live systems early.",
+          "Confirm data, rigging and utility rules for your hall with the organiser.",
+          "Lock the final layout before production so utility positions match the build."
+        ]
+      },
+      {
+        "heading": "Approvals, utilities and product claims stay with their owners",
+        "text": "Organiser approvals, utility orders and any technical, regulatory or certification wording on graphics belong to the exhibitor and the organiser, not to the stand contractor. FANN builds to the agreed design and states which items it supplies; permissions and claims are identified as separate responsibilities in the quote.",
+        "items": [
+          "Approve all graphic wording through your own compliance review before print.",
+          "Ask the organiser which stand designs and live demos need advance permission.",
+          "Keep certificates and regulatory claims with your own compliance owner."
+        ]
+      },
+      {
+        "heading": "What belongs in a Seamless Middle East stand-build quote",
+        "text": "A comparable quote lists every element separately so you can see what is included and what is supplied by others. FANN itemises design, fabrication, graphics, lighting, furniture, AV coordination, transport, installation, handover checks and dismantling, and flags organiser services and utilities as separate items.",
+        "items": [
+          "Agree the full scope in writing before production starts.",
+          "Identify organiser services, utilities and approvals as items supplied by others.",
+          "Ask who is responsible for on-site changes and what they cost."
+        ]
+      }
+    ],
+    "proofHeading": "Past Dubai show photographs: what they show",
+    "proofNote": "These are FANN supplied project references, not 2027 appointments or evidence of organiser-approval scope. Use visible layout features to explain your own brief.",
+    "proofLinkLabel": "View completed stand project",
+    "proof": [
+      {
+        "path": "/portfolio/trevos-light-middle-east",
+        "image": "/images/stands/1-trevos-light-middle-east.webp",
+        "name": "TREVOS - Light Middle East",
+        "location": "Dubai, 2023",
+        "text": "The photograph shows the completed TREVOS stand at Light Middle East 2023, with overhead identity feature and product displays. It documents Dubai show experience; it does not establish a Seamless Middle East appointment or a measured visitor result."
+      }
+    ],
+    "proposalHeading": "Turn your demo plan and allocation into a scoped proposal",
+    "proposalText": "Start with your name and one contact method. Add the hall, floor plan, demo and screen list with utility needs, storage and meeting counts if known. The quote form lets you add a floor plan optionally.",
+    "faqs": [
+      {
+        "question": "When and where is Seamless Middle East 2027?",
+        "answer": "The venue currently lists 24-26 May 2027 at Dubai World Trade Centre. Confirm your booked hall separately. Show dates do not establish build-up, submission or dismantling deadlines."
+      },
+      {
+        "question": "What should I send for a Seamless Middle East stand-design proposal?",
+        "answer": "Send your name, company, one contact method, booked hall, stand number, dimensions, allocation type and the current floor plan if issued. Add the demo and screen list with utility needs, and storage and meeting requirements when known."
+      },
+      {
+        "question": "Does FANN handle organiser approvals and utilities?",
+        "answer": "Organiser approvals, utility orders and compliance wording remain with the exhibitor and the organiser. FANN itemises what it supplies in the quote and identifies organiser services as separate items so responsibilities are clear."
+      }
+    ],
+    "related": [
+      {
+        "path": "/exhibition-stand-builders-dubai",
+        "label": "Exhibition stand builders in Dubai"
+      },
+      {
+        "path": "/gitex-exhibition-stand-design-dubai",
+        "label": "GITEX stand design"
+      },
+      {
+        "path": "/cabsat-exhibition-stand-design-dubai",
+        "label": "CABSAT stand design"
+      }
+    ],
+    "sourcesHeading": "Organiser sources and planning limits",
+    "sources": [
+      {
+        "url": "https://www.dwtc.com/en/events/seamless-2027/",
+        "label": "Dubai World Trade Centre event listing",
+        "note": "Checked 17 October 2026: 24-26 May 2027 at Dubai World Trade Centre."
+      }
+    ]
   }
 }
