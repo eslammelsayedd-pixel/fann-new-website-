@@ -3079,5 +3079,120 @@
         "note": "Checked 17 October 2026: 3-5 November 2026, Dubai World Trade Centre, co-located with Gulfood Manufacturing, ISM Middle East and Private Label Middle East."
       }
     ]
+  },
+  "/arabplast-exhibition-stand-design-dubai": {
+    "title": "ArabPlast Exhibition Stand Design Dubai | 24-26 Mar 2027 | FANN",
+    "description": "Exhibition stand design and build for ArabPlast 2027 exhibitors: 24-26 March at Dubai World Trade Centre, Halls 1-8. See completed FANN stands at Dubai trade shows and send your hall and floor plan for a scoped quote.",
+    "heading": "ArabPlast exhibition stand design in Dubai",
+    "city": "Dubai",
+    "breadcrumb": "ArabPlast stand design Dubai",
+    "subheading": "Stand design, fabrication and installation for ArabPlast exhibitors, 24-26 March 2027.",
+    "intro": "FANN designs and builds exhibition stands for ArabPlast exhibitors. ArabPlast 2027 runs 24-26 March 2027 at Dubai World Trade Centre, Halls 1-8. A build brief starts with your booked hall, stand number and floor plan, then agrees the design, materials, graphics, transport, installation and handover scope. FANN is an independent contractor, not an organiser-appointed contractor.",
+    "hero": "/images/stands/1-trevos-light-middle-east.webp",
+    "heroAlt": "TREVOS stand at Light Middle East, Dubai World Trade Centre, 2023, completed by FANN, with overhead identity feature and product displays",
+    "heroCaption": "Completed FANN project at a Dubai World Trade Centre show: TREVOS at Light Middle East, Dubai, 2023. It documents Dubai show experience; it does not establish an ArabPlast appointment, a past ArabPlast edition or a measured visitor result.",
+    "action": "Send your ArabPlast stand brief",
+    "sections": [
+      {
+        "heading": "ArabPlast 2027: confirm your hall before the layout",
+        "text": "ArabPlast 2027 runs 24-26 March at Dubai World Trade Centre across Halls 1-8. Each hall and allocation carries its own access, build-up window and service arrangements, so design and logistics follow your booking and the exhibitor manual, not the show name alone.",
+        "items": [
+          "Confirm hall, stand number, dimensions and open sides from your booking before design starts.",
+          "Check the exhibitor manual for your hall's build-up, submission and dismantling deadlines.",
+          "Share the current floor plan as soon as it is issued; layouts are priced against it."
+        ]
+      },
+      {
+        "heading": "Design around machinery, materials displays and technical buyers",
+        "text": "Plastics and rubber stands range from raw material and masterbatch displays to running machinery and recycling lines. The layout follows what you show: product walls and sample counters need lighting and graphic support, while live machines need floor loading, power, compressed air and safe viewing distances.",
+        "items": [
+          "List every machine or product unit with dimensions, weight and utility needs.",
+          "State which machines run live and what each needs for power, air, water and extraction.",
+          "Decide how many parallel buyer conversations the stand must host, and at what privacy level."
+        ]
+      },
+      {
+        "heading": "Heavy machinery logistics are settled before production",
+        "text": "Running injection moulding, extrusion or recycling machinery concentrates weight and utilities in one footprint. Floor loading, rigging, power and compressed air points are agreed with the venue and organiser against your final layout before fabrication starts.",
+        "items": [
+          "Calculate total electrical and compressed-air load for all live machinery early.",
+          "Confirm floor loading, rigging and utility rules for your hall with the organiser.",
+          "Lock the final layout before production so utility positions match the build."
+        ]
+      },
+      {
+        "heading": "Approvals, utilities and technical claims stay with their owners",
+        "text": "Organiser approvals, utility orders and any technical or certification wording on graphics belong to the exhibitor and the organiser, not to the stand contractor. FANN builds to the agreed design and states which items it supplies; permissions and claims are identified as separate responsibilities in the quote.",
+        "items": [
+          "Approve all graphic wording through your own technical review before print.",
+          "Ask the organiser which stand designs and live machinery demos need advance permission.",
+          "Keep certificates and technical claims with your own compliance owner."
+        ]
+      },
+      {
+        "heading": "What belongs in an ArabPlast stand-build quote",
+        "text": "A comparable quote lists every element separately so you can see what is included and what is supplied by others. FANN itemises design, fabrication, graphics, lighting, furniture, AV coordination, transport, installation, handover checks and dismantling, and flags organiser services and utilities as separate items.",
+        "items": [
+          "Agree the full scope in writing before production starts.",
+          "Identify organiser services, utilities and approvals as items supplied by others.",
+          "Ask who is responsible for on-site changes and what they cost."
+        ]
+      }
+    ],
+    "proofHeading": "Past Dubai show photographs: what they show",
+    "proofNote": "These are FANN supplied project references, not 2027 appointments or evidence of organiser-approval scope. Use visible layout features to explain your own brief.",
+    "proofLinkLabel": "View completed stand project",
+    "proof": [
+      {
+        "path": "/portfolio/trevos-light-middle-east",
+        "image": "/images/stands/1-trevos-light-middle-east.webp",
+        "name": "TREVOS - Light Middle East",
+        "location": "Dubai, 2023",
+        "text": "The photograph shows the completed TREVOS stand at Light Middle East 2023, with overhead identity feature and product displays. It documents Dubai show experience; it does not establish an ArabPlast appointment or a measured visitor result."
+      }
+    ],
+    "proposalHeading": "Turn your machine list and allocation into a scoped proposal",
+    "proposalText": "Start with your name and one contact method. Add the hall, floor plan, machine or product list with utility needs, storage and meeting counts if known. The quote form lets you add a floor plan optionally.",
+    "faqs": [
+      {
+        "question": "When and where is ArabPlast 2027?",
+        "answer": "The organiser currently lists 24-26 March 2027 at Dubai World Trade Centre, Halls 1-8. Confirm your booked hall separately. Show dates do not establish build-up, submission or dismantling deadlines."
+      },
+      {
+        "question": "What should I send for an ArabPlast stand-design proposal?",
+        "answer": "Send your name, company, one contact method, booked hall, stand number, dimensions, allocation type and the current floor plan if issued. Add the machine or product list with utility needs, and storage and meeting requirements when known."
+      },
+      {
+        "question": "Does FANN handle organiser approvals and utilities?",
+        "answer": "Organiser approvals, utility orders and technical wording remain with the exhibitor and the organiser. FANN itemises what it supplies in the quote and identifies organiser services as separate items so responsibilities are clear."
+      }
+    ],
+    "related": [
+      {
+        "path": "/exhibition-stand-builders-dubai",
+        "label": "Exhibition stand builders in Dubai"
+      },
+      {
+        "path": "/big-5-exhibition-stand-design-dubai",
+        "label": "Big 5 exhibition stand design"
+      },
+      {
+        "path": "/automechanika-dubai-exhibition-stand-design",
+        "label": "Automechanika Dubai stand design"
+      }
+    ],
+    "sourcesHeading": "Organiser sources and planning limits",
+    "sources": [
+      {
+        "url": "https://www.arabplast.info/",
+        "label": "ArabPlast official event page",
+        "note": "Checked 17 October 2026: 24-26 March 2027, Halls 1-8, Dubai World Trade Centre."
+      },
+      {
+        "url": "https://www.dwtc.com/en/events/arabplast-2027/",
+        "label": "Dubai World Trade Centre event listing",
+        "note": "Checked 17 October 2026: confirms 24-26 March 2027 at DWTC."
+      }
+    ]
   }
 }
