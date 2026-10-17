@@ -66,6 +66,7 @@ const App: React.FC = () => {
                         <Route path="/arab-health-exhibition-stand-design-dubai" element={<BuyerIntentPage />} />
                         <Route path="/arabian-travel-market-exhibition-stand-design-dubai" element={<BuyerIntentPage />} />
                         <Route path="/automechanika-dubai-exhibition-stand-design-dubai" element={<BuyerIntentPage />} />
+                        <Route path="/adipec-exhibition-stand-design-abu-dhabi" element={<BuyerIntentPage />} />
                         <Route path="/exhibition-stand-builders-dubai" element={<BuyerIntentPage />} />
                         <Route path="/fit-out-company-dubai" element={<BuyerIntentPage />} />
                         <Route path="/services" element={<ServicesPage />} />
