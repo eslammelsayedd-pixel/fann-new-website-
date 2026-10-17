@@ -1929,5 +1929,120 @@
         "note": "Confirms 10-12 November 2026 at DEC, Expo City."
       }
     ]
+  },
+  "/adipec-exhibition-stand-design-abu-dhabi": {
+    "title": "ADIPEC Exhibition Stand Design Abu Dhabi | 2-5 Nov 2026 | FANN",
+    "description": "Exhibition stand design and build for ADIPEC 2026 exhibitors: 2-5 November at ADNEC Centre Abu Dhabi. See completed FANN stands at UAE trade shows and send your hall and floor plan for a scoped quote.",
+    "heading": "ADIPEC exhibition stand design in Abu Dhabi",
+    "city": "Abu Dhabi",
+    "breadcrumb": "ADIPEC stand design Abu Dhabi",
+    "subheading": "Stand design, fabrication and installation for ADIPEC exhibitors, 2-5 November 2026.",
+    "intro": "FANN designs and builds exhibition stands for ADIPEC exhibitors at ADNEC Centre Abu Dhabi. ADIPEC 2026 runs 2-5 November 2026, organised by dmg events. A build brief starts with your booked hall, stand number and floor plan, then agrees the design, materials, graphics, transport, installation and handover scope. FANN is an independent contractor, not an organiser-appointed or dmg-appointed contractor. Its Dubai office and Umm Al Quwain workshop support builds in Abu Dhabi.",
+    "hero": "/images/stands/1-trevos-light-middle-east.webp",
+    "heroAlt": "TREVOS stand at Light Middle East, Dubai World Trade Centre, 2023, completed by FANN, with overhead identity feature and product displays",
+    "heroCaption": "Completed FANN project at a Dubai World Trade Centre show: TREVOS at Light Middle East, Dubai, 2023. It documents UAE show experience; it does not establish an ADIPEC appointment, a past ADIPEC edition or a measured visitor result.",
+    "action": "Send your ADIPEC stand brief",
+    "sections": [
+      {
+        "heading": "ADIPEC 2026: confirm your hall before the layout",
+        "text": "ADIPEC runs across halls at ADNEC Centre Abu Dhabi, 2-5 November 2026. Each hall and allocation carries its own access, build-up window and service arrangements, so design and logistics follow your booking and the exhibitor manual, not the show name alone.",
+        "items": [
+          "Confirm hall, stand number, dimensions and open sides from your booking before design starts.",
+          "Check the exhibitor manual for your hall's build-up, submission and dismantling deadlines.",
+          "Share the current floor plan as soon as it is issued; layouts are priced against it."
+        ]
+      },
+      {
+        "heading": "Design around equipment, technology and delegations",
+        "text": "Energy stands mix heavy equipment, technical models and screen-led demonstrations with high-protocol meeting space for delegations. The layout follows your equipment list, demonstration plan and how many conversations happen at once, from open counters to enclosed majlis-style rooms.",
+        "items": [
+          "List every equipment item or model on display, with dimensions and weight.",
+          "State which technologies are demonstrated live and what each demonstration needs.",
+          "Decide how many parallel meetings the stand must host, and at what privacy level."
+        ]
+      },
+      {
+        "heading": "Approvals, utilities and technical claims stay with their owners",
+        "text": "Organiser approvals, utility orders and any technical or certification wording on graphics belong to the exhibitor and the organiser, not to the stand contractor. FANN builds to the agreed design and states which items it supplies; permissions and claims are identified as separate responsibilities in the quote.",
+        "items": [
+          "Order power, water, rigging and data through the organiser's official channels.",
+          "Approve all graphic wording through your own technical review before print.",
+          "Ask the organiser which stand designs and equipment displays need advance permission."
+        ]
+      },
+      {
+        "heading": "Storage, hospitality and protocol are design decisions",
+        "text": "ADIPEC stands carry literature, gifts and serious hospitality. Lockable storage, a replenishment route that does not cross visitor areas, catering handover space and agreed cleaning and reset responsibilities are settled at design stage, not on site.",
+        "items": [
+          "Quantify literature, gifts and hospitality stock that need lockable storage.",
+          "Plan staff numbers per shift so meeting and circulation space match.",
+          "Agree cleaning, waste and daily reset responsibilities in writing."
+        ]
+      },
+      {
+        "heading": "What belongs in an ADIPEC stand-build quote",
+        "text": "A comparable quote lists every element separately so you can see what is included and what is supplied by others. FANN itemises design, fabrication, graphics, lighting, furniture, AV coordination, transport, installation, handover checks and dismantling, and flags organiser services and utilities as separate items.",
+        "items": [
+          "Agree the full scope in writing before production starts.",
+          "Identify organiser services, utilities and approvals as items supplied by others.",
+          "Ask who is responsible for on-site changes and what they cost."
+        ]
+      }
+    ],
+    "proofHeading": "Past UAE show photographs: what they show",
+    "proofNote": "These are FANN supplied project references, not 2026 appointments or evidence of organiser-approval scope. Use visible layout features to explain your own brief.",
+    "proofLinkLabel": "View completed stand project",
+    "proof": [
+      {
+        "path": "/portfolio/trevos-light-middle-east",
+        "image": "/images/stands/1-trevos-light-middle-east.webp",
+        "name": "TREVOS - Light Middle East",
+        "location": "Dubai, 2023",
+        "text": "The photograph shows the completed TREVOS stand at Light Middle East 2023, with overhead identity feature and product displays. It documents UAE show experience; it does not establish an ADIPEC appointment or a measured visitor result."
+      }
+    ],
+    "proposalHeading": "Turn your equipment list and allocation into a scoped proposal",
+    "proposalText": "Start with your name and one contact method. Add the hall, floor plan, equipment list, demonstration and hospitality plans, storage and meeting needs if known. The quote form lets you add a floor plan optionally.",
+    "faqs": [
+      {
+        "question": "When and where is ADIPEC 2026?",
+        "answer": "The organiser currently lists 2-5 November 2026 at ADNEC Centre Abu Dhabi. Confirm your booked hall separately. Show dates do not establish build-up, submission or dismantling deadlines."
+      },
+      {
+        "question": "What should I send for an ADIPEC stand-design proposal?",
+        "answer": "Send your name, company, one contact method, booked hall, stand number, dimensions, allocation type and the current floor plan if issued. Add your equipment list, demonstration, hospitality and storage requirements when known."
+      },
+      {
+        "question": "Does FANN build in Abu Dhabi?",
+        "answer": "Yes. FANN's Dubai office and Umm Al Quwain workshop support builds across the UAE, including ADNEC Centre Abu Dhabi. Organiser approvals, utilities and graphic wording remain with the exhibitor and the organiser."
+      }
+    ],
+    "related": [
+      {
+        "path": "/exhibition-stand-design-abu-dhabi",
+        "label": "Exhibition stand design in Abu Dhabi"
+      },
+      {
+        "path": "/exhibition-stand-builders-dubai",
+        "label": "Exhibition stand builders in Dubai"
+      },
+      {
+        "path": "/exhibition-stand-design-dubai",
+        "label": "Exhibition stand design in Dubai"
+      }
+    ],
+    "sourcesHeading": "Organiser sources and planning limits",
+    "sources": [
+      {
+        "url": "https://www.adipec.com/",
+        "label": "ADIPEC official event page",
+        "note": "Checked 17 October 2026: 2-5 November 2026, ADNEC Centre Abu Dhabi; dmg events."
+      },
+      {
+        "url": "https://www.adnec.ae/en/eventlisting/adipec-2026",
+        "label": "ADNEC Centre event listing",
+        "note": "Confirms 2-5 November 2026 at ADNEC Centre Abu Dhabi."
+      }
+    ]
   }
 }
