@@ -55,7 +55,7 @@ export const blogPosts: BlogPost[] = [
     author: 'FANN Editorial',
     date: 'Oct 24, 2025',
     category: 'Guides',
-    image: 'https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: '/images/stands/2-bayara-gulfood.webp',
     excerpt: 'Finding a reliable contractor for GITEX or Gulfood can be daunting. We break down the top 5 things to look for in a Dubai partner.',
     content: `
       ## Why Experience in Dubai Venues Matters

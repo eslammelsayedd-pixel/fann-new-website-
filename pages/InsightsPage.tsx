@@ -35,7 +35,7 @@ const insightTopics: InsightTopic[] = [
         prompt: "Write an insightful blog post about the latest trends in sustainable and eco-friendly exhibition stand design, with a specific focus on the UAE and Saudi Arabia for 2024. Cover innovative materials, modularity for events like GITEX and LEAP, and energy efficiency standards at venues like DWTC and Riyadh Front.",
         category: 'Exhibitions',
         icon: Building2,
-        image: 'https://images.pexels.com/photos/7437488/pexels-photo-7437488.jpeg?auto=compress&cs=tinysrgb&w=600&q=75'
+        image: '/images/stands/4-saudi-ceramics-big-5.webp'
     },
     {
         title: "Audience Engagement Tech at Dubai Events",
@@ -43,7 +43,7 @@ const insightTopics: InsightTopic[] = [
         prompt: "As an expert event management agency, write a blog post detailing the most innovative audience engagement technologies being used at corporate events in Dubai. Discuss AR, VR, and smart networking tools with examples from recent major UAE events. Focus on ROI for exhibitors.",
         category: 'Events',
         icon: BrainCircuit,
-        image: 'https://images.pexels.com/photos/6187640/pexels-photo-6187640.jpeg?auto=compress&cs=tinysrgb&w=600&q=75'
+        image: '/images/projects/special-olympics-ucs-2025/03.webp'
     },
     {
         title: "Biophilic Design in Dubai & Riyadh Workspaces",
@@ -51,7 +51,7 @@ const insightTopics: InsightTopic[] = [
         prompt: "For an interior design firm's blog, write an article on the rise of Biophilic Design in modern workspaces and luxury commercial environments in Dubai and Riyadh. Explain the principles and highlight the benefits for employee well-being, citing examples from areas like DIFC and KAFD.",
         category: 'Interior Design',
         icon: Lightbulb,
-        image: 'https://images.pexels.com/photos/1918291/pexels-photo-1918291.jpeg?auto=compress&cs=tinysrgb&w=600&q=75'
+        image: '/images/projects/10-fitout-066e67fc787765c5f47bcdeb06c94ff0445fd66c.webp'
     },
 ];
 

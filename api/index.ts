@@ -239,12 +239,12 @@ Rules: each description must contain at least three concrete dimensions. No empt
 
     const result = JSON.parse(response.text?.trim() || '{}');
 
-    // Premium curated fallbacks from Unsplash (architecture and exhibition designs)
+    // Real FANN project photos as fallbacks (no stock media)
     const fallbackImages = [
-      'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=compress&cs=tinysrgb&w=800&q=75',
-      'https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=compress&cs=tinysrgb&w=800&q=75',
-      'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=compress&cs=tinysrgb&w=800&q=75',
-      'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=compress&cs=tinysrgb&w=800&q=75'
+      '/images/stands/1-trevos-light-middle-east.webp',
+      '/images/stands/2-bayara-gulfood.webp',
+      '/images/stands/3-awazel-big-5.webp',
+      '/images/stands/4-saudi-ceramics-big-5.webp'
     ];
 
     result.conceptA.image = fallbackImages[0];
@@ -384,10 +384,10 @@ Rules: detailedDescription must include at least three concrete dimensions and t
     const result = JSON.parse(response.text?.trim() || '{}');
 
     const fallbackImages = [
-      'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=compress&cs=tinysrgb&w=800&q=75',
-      'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=compress&cs=tinysrgb&w=800&q=75',
-      'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=compress&cs=tinysrgb&w=800&q=75',
-      'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=compress&cs=tinysrgb&w=800&q=75'
+      '/images/stands/5-apollo-tyres-automechanika.webp',
+      '/images/stands/6-geven-aircraft-interiors.webp',
+      '/images/stands/7-dubai-properties-cityscape.webp',
+      '/images/stands/8-india-pavilion-gulfood.webp'
     ];
 
     result.conceptA.image = fallbackImages[0];
@@ -486,7 +486,7 @@ Rules: detailedDescription must cite at least three real dimensions and the zoni
     });
 
     const result = JSON.parse(response.text?.trim() || '{}');
-    result.image = 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=compress&cs=tinysrgb&w=800&q=75';
+    result.image = '/images/stands/1-trevos-light-middle-east.webp';
 
     try {
       const concept = result.designConcept;
