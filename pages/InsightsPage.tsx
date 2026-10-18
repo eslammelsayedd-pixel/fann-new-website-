@@ -133,7 +133,7 @@ const InsightsPage: React.FC = () => {
         }
     }, [selectedTopic, selectedBlog]);
 
-    const staticGuides = articlesData;
+    const staticGuides = (articlesData as Array<(typeof articlesData)[number] & { lang?: string }>).filter(g => g.lang !== 'ar');
 
     const renderTopicSelection = () => (
         <div className="text-center">

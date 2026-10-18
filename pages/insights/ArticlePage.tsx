@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import AnimatedPage from '../../components/AnimatedPage';
 import SEO from '../../components/SEO';
@@ -22,7 +22,10 @@ interface ArticleDef {
 
 const ArticlePage: React.FC = () => {
     const { slug } = useParams<{ slug: string }>();
-    const article = (articles as ArticleDef[]).find(a => a.slug === slug);
+    const location = useLocation();
+    // Arabic routes share the English slug; match the full path first so /ar/insights/:slug resolves the -ar article
+    const article = (articles as ArticleDef[]).find(a => a.path === location.pathname)
+        ?? (articles as ArticleDef[]).find(a => a.slug === slug);
 
     if (!article) {
         return (
