@@ -258,20 +258,44 @@ const ServicesSection: React.FC = () => (
                     index={3}
                 />
             </div>
-            <p className="mt-8 text-gray-400 text-center">
-                Planning a stand at ADNEC? Explore our <Link to="/exhibition-stands-abu-dhabi" className="text-fann-gold underline underline-offset-4 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-fann-gold">exhibition stands in Abu Dhabi</Link> for design, build and venue planning.
-            </p>
-            <p className="text-gray-400 max-w-3xl mx-auto mt-5">Choosing your next show? Check our <Link to="/events-calendar" className="text-fann-gold underline underline-offset-4 hover:text-white">UAE and Saudi Arabia exhibitions calendar</Link> for sourced dates and venues, then prepare your stand brief.</p>
-            <p className="text-gray-400 max-w-3xl mx-auto mt-5">Working on the layout before choosing the build scope? Explore our <Link to="/exhibition-stand-design-abu-dhabi" className="text-fann-gold underline underline-offset-4 hover:text-white">Abu Dhabi exhibition stand design guide</Link> for product displays, meeting areas and the information needed for venue submissions.</p>
-<p className="text-gray-400 max-w-3xl mx-auto mt-5">Planning several healthcare rooms? Read our <Link to="/medical-centre-fit-out-dubai" className="text-fann-gold underline underline-offset-4 hover:text-white">medical centre fit-out Dubai operator brief</Link> for room schedules, specialist interfaces and the responsibilities to confirm before pricing.</p>
-<p lang="ar" dir="rtl" className="text-gray-400 max-w-3xl mx-auto mt-5">تبحث عن جناح معرض في دبي؟ اقرأ <Link to="/ar/exhibition-stands-dubai" className="text-fann-gold underline">دليل تصميم وتنفيذ أجنحة المعارض في دبي</Link>.</p>
-<p className="text-gray-400 max-w-3xl mx-auto mt-5">Exhibiting in Dubai? Talk to <Link to="/exhibition-stand-builders-dubai" className="text-fann-gold underline">FANN as your exhibition stand builders in Dubai</Link> for design, fabrication, installation and dismantling under one scoped quote.</p>
-<p className="text-gray-400 max-w-3xl mx-auto mt-3">Start with the layout: our <Link to="/exhibition-stand-design-dubai" className="text-fann-gold underline">exhibition stand design Dubai guide</Link> plans the visitor journey, graphics and build scope around your actual allocation, with real completed Dubai stands.</p>
-          <p className="text-gray-400 max-w-3xl mx-auto mt-3">Fitting out a workplace? Talk to <Link to="/fit-out-company-dubai" className="text-fann-gold underline">FANN as your fit out company in Dubai</Link> for office and commercial interiors, with real archive office photographs and a scoped quote.</p>
-<p className="text-gray-400 max-w-3xl mx-auto mt-5">Taking food products to Gulfood? Use our <Link to="/gulfood-exhibition-stand-design-dubai" className="text-fann-gold underline">Gulfood stand design brief</Link> to plan product ranges, sampling responsibilities, storage and buyer meetings.</p>
-          <p className="text-gray-400 max-w-3xl mx-auto mt-3">Exhibiting at WETEX, 20-22 October? Use our <Link to="/wetex-exhibition-stand-design-dubai" className="text-fann-gold underline">WETEX exhibition stand design Dubai brief</Link>, with completed Dubai World Trade Centre stand references and a quote-scope checklist.</p>
-<p className="text-gray-400 max-w-3xl mx-auto mt-5">Taking construction products to Big 5? Use our <Link to="/big-5-exhibition-stand-design-dubai" className="text-fann-gold underline">Big 5 exhibition stand design brief</Link> to plan samples, displays, utilities and buyer meetings.</p>
-<p className="text-gray-400 max-w-3xl mx-auto mt-5">Exhibiting technology? Use our <Link to="/gitex-exhibition-stand-design-dubai" className="text-fann-gold underline">GITEX exhibition stand design brief</Link> to plan demos, power and data responsibilities, meetings and the 2026 venue allocation.</p>
+            <ScrollReveal className="mt-16 border-t border-white/10 pt-12">
+                <h3 className="text-2xl font-serif text-white mb-3">Explore FANN by show or service</h3>
+                <p className="text-gray-400 mb-8 max-w-2xl">Stand briefs for the UAE's biggest shows, plus the guides and services behind them.</p>
+                <div className="flex flex-wrap gap-3 mb-10">
+                    {[
+                        { label: "GITEX", to: "/gitex-exhibition-stand-design-dubai" },
+                        { label: "Gulfood", to: "/gulfood-exhibition-stand-design-dubai" },
+                        { label: "Big 5", to: "/big-5-exhibition-stand-design-dubai" },
+                        { label: "WETEX", to: "/wetex-exhibition-stand-design-dubai" },
+                        { label: "ADNEC Abu Dhabi", to: "/exhibition-stands-abu-dhabi" },
+                        { label: "Events calendar", to: "/events-calendar" },
+                    ].map(show => (
+                        <Link key={show.to} to={show.to} className="px-5 py-2.5 border border-white/15 text-sm text-gray-300 hover:border-fann-gold hover:text-fann-gold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-fann-gold">
+                            {show.label}
+                        </Link>
+                    ))}
+                </div>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {[
+                        { title: "Exhibition stand builders in Dubai", to: "/exhibition-stand-builders-dubai", detail: "Design, fabrication, installation and dismantling under one scoped quote." },
+                        { title: "Exhibition stand design Dubai guide", to: "/exhibition-stand-design-dubai", detail: "Visitor journey, graphics and build scope around your allocation, with completed Dubai stands." },
+                        { title: "Abu Dhabi stand design guide", to: "/exhibition-stand-design-abu-dhabi", detail: "Product displays, meeting areas and the details needed for venue submissions." },
+                        { title: "Fit out company in Dubai", to: "/fit-out-company-dubai", detail: "Office and commercial interiors with real archive photographs and a scoped quote." },
+                        { title: "Medical centre fit-out brief", to: "/medical-centre-fit-out-dubai", detail: "Room schedules, specialist interfaces and responsibilities to confirm before pricing." },
+                    ].map(item => (
+                        <Link key={item.to} to={item.to} className="group border border-white/10 p-6 hover:border-fann-gold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-fann-gold">
+                            <h4 className="text-lg text-white mb-3 group-hover:text-fann-gold">{item.title}</h4>
+                            <p className="text-sm text-gray-400 leading-relaxed">{item.detail}</p>
+                            <span className="text-xs uppercase tracking-widest text-fann-gold mt-5 block">Explore &rarr;</span>
+                        </Link>
+                    ))}
+                    <Link to="/ar/exhibition-stands-dubai" lang="ar" dir="rtl" className="group border border-white/10 p-6 hover:border-fann-gold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-fann-gold">
+                        <h4 className="text-lg text-white mb-3 group-hover:text-fann-gold">دليل تصميم وتنفيذ أجنحة المعارض في دبي</h4>
+                        <p className="text-sm text-gray-400 leading-relaxed">تبحث عن جناح معرض في دبي؟ اقرأ دليلنا الكامل للتصميم والتنفيذ.</p>
+                        <span className="text-xs uppercase tracking-widest text-fann-gold mt-5 block">اقرأ الدليل &larr;</span>
+                    </Link>
+                </div>
+            </ScrollReveal>
             <ScrollReveal className="mt-16 border-t border-white/10 pt-12">
                 <h3 className="text-2xl font-serif text-white mb-3">Fit-out and renovation in Dubai</h3>
                 <p className="text-gray-400 mb-8 max-w-2xl">Explore the service that fits your site, see completed FANN projects and prepare the details we need to scope your brief.</p>
