@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
     ArrowLeft, BookOpen, BrainCircuit, Building2, Globe, Lightbulb, 
@@ -8,6 +8,7 @@ import {
     Calendar, User, Newspaper
 } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
+import articlesData from '../data/articles.json';
 import SEO from '../components/SEO';
 import { useApiKey } from '../context/ApiKeyProvider';
 import { blogPosts } from '../constants';
@@ -132,12 +133,35 @@ const InsightsPage: React.FC = () => {
         }
     }, [selectedTopic, selectedBlog]);
 
+    const staticGuides = articlesData;
+
     const renderTopicSelection = () => (
         <div className="text-center">
             <h1 className="text-5xl font-serif font-bold text-fann-gold mb-4">Insights &amp; Guides</h1>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-12">
                 Practical guides from our exhibition, events and fit-out team in Dubai.
             </p>
+
+            {/* Static FANN guides (real experience, indexable) */}
+            <div className="mb-20">
+                <h2 className="text-left text-2xl font-serif font-bold text-white mb-8">FANN Guides</h2>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {staticGuides.map((guide) => (
+                        <Link
+                            key={guide.slug}
+                            to={guide.path}
+                            className="bg-fann-charcoal-light border border-white/10 rounded-lg overflow-hidden hover:border-fann-gold transition-all block"
+                        >
+                            <img src={guide.hero.src} className="w-full h-48 object-cover opacity-80" alt={guide.hero.alt} />
+                            <div className="p-6 text-left">
+                                <span className="text-xs font-bold uppercase text-fann-gold">FANN Guide</span>
+                                <h3 className="text-xl font-bold text-white mt-2 mb-3">{guide.title}</h3>
+                                <p className="text-sm text-gray-400 line-clamp-2">{guide.description}</p>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            </div>
 
             {/* Featured Blog Posts (Contractor Content) */}
             <div className="mb-20">

@@ -28,6 +28,30 @@ for (const guide of calendar.guides) {
   routes[guide.path] = { title:guide.name+' Exhibition Stand Planning | FANN',description:guide.intro,robots:'index, follow',jsonld:JSON.stringify({'@context':'https://schema.org','@type':'Article',headline:guide.name+' exhibition stand planning',dateModified:calendar.checkedOn,author:{'@type':'Organization',name:'FANN'},mainEntityOfPage:SITE+guide.path}),body:`<main><a href="/events-calendar">Back to exhibitions calendar</a><h1>${E(guide.name)} exhibition stand planning</h1><p>Dates checked ${calendarDate(calendar.checkedOn)} | ${E(guide.date)} | ${E(guide.venue)}</p><p>${E(guide.intro)}</p><a href="/exhibition-stand-quote">Share your show brief</a>${guide.sections.map(section=>`<section><h2>${E(section.heading)}</h2><p>${E(section.text)}</p></section>`).join('')}<h2>What to send for a scoped quote</h2><p>Send the show, hall and stand allocation, dimensions, open sides, floor plan, products and demonstrations, utilities, brand assets, meeting/storage needs and your actual submission and installation deadlines. Agree design, materials, graphics, venue submissions, fabrication, transport, installation and any dismantling as separate scope items.</p><p>FANN is an independent stand design-and-build company, not the show organiser or an appointed official contractor. This guide does not replace your current exhibitor manual. No stand size, price, permit, deadline or utility capacity is inferred from the show dates.</p>${guide.proof.length?'<h2>Documented stand reference</h2>':''}${guide.proof.map(proof=>`<a href="${proof.path}">${E(proof.label)}</a>`).join('')}<h2>Official planning sources</h2>${guide.sources.map(source=>`<a href="${E(source.url)}">${E(source.label)}</a>`).join('')}<a href="/exhibition-stand-quote">Get a scoped stand quote</a><a href="${guide.name==='ADIPEC 2026'?'/exhibition-stands-abu-dhabi':'/services/custom-exhibition-stands-dubai'}">Explore stand design and build</a></main>`};
   routes['/events-calendar'].body = routes['/events-calendar'].body.replace('</main>',`<p><a href="${guide.path}">${E(guide.name)} exhibitor stand planning guide</a></p></main>`);
 }
+// Static insight articles (real FANN experience only): crawler HTML + Article/FAQ JSON-LD.
+const insightArticles = JSON.parse(fs.readFileSync(path.resolve('data/articles.json'), 'utf8'));
+if (routes['/insights']) {
+  // Hub stays noindex by design (AI-generated cards); the static articles below are the indexable guides.
+  routes['/insights'].body = (routes['/insights'].body || '') + '<h2>FANN guides</h2>';
+}
+for (const article of insightArticles) {
+  const E = calendarEscape;
+  const faqLd = article.faqs.map(f=>({'@type':'Question',name:f.q,acceptedAnswer:{'@type':'Answer',text:f.a}}));
+  routes[article.path] = {
+    title: article.title + ' | FANN',
+    description: article.description,
+    robots: 'index, follow',
+    jsonld: JSON.stringify({'@context':'https://schema.org','@graph':[
+      {'@type':'Article',headline:article.title,description:article.description,datePublished:article.datePublished,dateModified:article.datePublished,author:{'@type':'Organization',name:'FANN',url:SITE+'/'},publisher:{'@type':'Organization',name:'FANN',url:SITE+'/',logo:{'@type':'ImageObject',url:SITE+'/logo.png'}},mainEntityOfPage:SITE+article.path,image:SITE+article.hero.src},
+      {'@type':'FAQPage',mainEntity:faqLd}
+    ]}),
+    body: `<main><a href="/insights">All FANN guides</a><article><h1>${E(article.title)}</h1><p>FANN guides | Updated ${E(article.datePublished)}</p><img src="${E(article.hero.src)}" alt="${E(article.hero.alt)}"/>${article.sections.map(section=>`<section><h2>${E(section.heading)}</h2>${section.paras.map(para=>`<p>${E(para)}</p>`).join('')}</section>`).join('')}<section><h2>Common questions</h2>${article.faqs.map(f=>`<h3>${E(f.q)}</h3><p>${E(f.a)}</p>`).join('')}</section><nav><h2>Next steps</h2>${article.related.map(r=>`<a href="${E(r.path)}">${E(r.label)}</a>`).join('')}</nav></article></main>`
+  };
+  if (routes['/insights']) {
+    routes['/insights'].body = (routes['/insights'].body || '') + `<p><a href="${article.path}">${E(article.title)}</a></p>`;
+  }
+}
+
 // Quote landing copy and real stand proof also reach no-JavaScript visitors.
 routes['/exhibition-stand-quote'].body = '<main><h1>Exhibition Stand Builders in the UAE</h1><p>3D stand concept and full quote within 24 hours. Start with your name and phone or email. Show, stand size, open sides and a floor plan are optional. In-house design, fabrication and installation across the UAE.</p><p>Scope and price agreed before production. Any requested changes are confirmed before work proceeds.</p><a href="https://wa.me/971505667502">WhatsApp your brief - skip the form</a><a href="tel:+971505667502">Call FANN</a><h2>Selected work</h2><a href="/portfolio/trevos-light-middle-east"><img src="/images/stands/1-trevos-light-middle-east.webp" alt="TREVOS stand at Light Middle East 2023">TREVOS - Light Middle East 2023</a><a href="/portfolio/bayara-gulfood"><img src="/images/stands/2-bayara-gulfood.webp" alt="Bayara stand at Gulfood 2020">Bayara - Gulfood 2020</a><a href="/portfolio/geven-aircraft-interiors"><img src="/images/stands/6-geven-aircraft-interiors.webp" alt="Geven stand at Aircraft Interiors Middle East 2025">Geven - Aircraft Interiors Middle East 2025</a><h2>Exhibition stand builders: one team, from brief to build</h2><p>3D concept, detailed quote, fabrication and on-site installation. FANN coordinates venue and authority submissions as part of the build.</p><p>Enable JavaScript to send the quote form. You can also email <a href="mailto:sales@fann.ae">sales@fann.ae</a>.</p></main>';
 // The Dubai stand buyer answer is present in the crawler view as well as React.

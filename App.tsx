@@ -23,6 +23,7 @@ const EventsCalendarPage = lazy(() => import('./pages/EventsCalendarPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 const InsightsPage = lazy(() => import('./pages/InsightsPage'));
+const InsightArticlePage = lazy(() => import('./pages/insights/ArticlePage'));
 import { ApiKeyProvider } from './context/ApiKeyProvider';
 const ROICalculatorPage = lazy(() => import('./pages/ROICalculatorPage'));
 const CustomStandsPage = lazy(() => import('./pages/services/CustomStandsPage'));
@@ -115,6 +116,7 @@ const App: React.FC = () => {
                         <Route path="/about" element={<AboutPage />} />
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/insights" element={<InsightsPage />} />
+                        <Route path="/insights/:slug" element={<InsightArticlePage />} />
                         <Route path="/roi-calculator" element={<ROICalculatorPage />} />
                         
                         {/* Resources & Lead Magnets */}
