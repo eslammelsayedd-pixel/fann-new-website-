@@ -105,6 +105,10 @@
       {
         "label": "Show dates and exhibitor planning",
         "path": "/events-calendar"
+      },
+      {
+        "path": "/insights/exhibition-stand-brief-checklist",
+        "label": "The stand brief checklist for an accurate quote"
       }
     ],
     "sources": [
@@ -248,6 +252,10 @@
       {
         "path": "/contact",
         "label": "Send your healthcare fit-out enquiry"
+      },
+      {
+        "path": "/insights/exhibition-stand-brief-checklist",
+        "label": "The stand brief checklist for an accurate quote"
       }
     ],
     "sources": [
@@ -506,6 +514,10 @@
       {
         "path": "/ar/exhibition-stands-dubai",
         "label": "أجنحة المعارض في دبي - دليل التصميم والتنفيذ"
+      },
+      {
+        "path": "/insights/custom-exhibition-stand-process-dubai",
+        "label": "How a custom stand gets built, brief to installation"
       }
     ],
     "sourcesHeading": "Official GITEX date and venue sources",
@@ -644,6 +656,10 @@
       {
         "path": "/portfolio",
         "label": "FANN project portfolio"
+      },
+      {
+        "path": "/insights/custom-exhibition-stand-process-dubai",
+        "label": "How a custom stand gets built, brief to installation"
       }
     ],
     "sourcesHeading": "Event source and planning limits",
@@ -777,6 +793,10 @@
       {
         "path": "/portfolio",
         "label": "FANN project portfolio"
+      },
+      {
+        "path": "/insights/custom-exhibition-stand-process-dubai",
+        "label": "How a custom stand gets built, brief to installation"
       }
     ],
     "sourcesHeading": "Organiser sources and planning limits",
@@ -938,6 +958,10 @@
       {
         "path": "/portfolio",
         "label": "FANN project portfolio"
+      },
+      {
+        "path": "/insights/exhibition-stand-brief-checklist",
+        "label": "The stand brief checklist for an accurate quote"
       }
     ],
     "sourcesHeading": "Venue source and planning limits",
@@ -1163,6 +1187,10 @@
       {
         "path": "/portfolio",
         "label": "Project photo gallery"
+      },
+      {
+        "path": "/insights/exhibition-stand-brief-checklist",
+        "label": "The stand brief checklist for an accurate quote"
       }
     ],
     "sources": [
@@ -1302,6 +1330,10 @@
       {
         "path": "/events-calendar",
         "label": "UAE exhibitions calendar"
+      },
+      {
+        "path": "/insights/shell-scheme-vs-custom-vs-modular-stands",
+        "label": "Shell scheme vs custom vs modular stands"
       }
     ],
     "sources": [
@@ -1431,6 +1463,10 @@
       {
         "path": "/portfolio",
         "label": "Completed stands portfolio"
+      },
+      {
+        "path": "/insights/exhibition-stand-brief-checklist",
+        "label": "The stand brief checklist for an accurate quote"
       }
     ],
     "sources": [
@@ -1570,6 +1606,10 @@
       {
         "path": "/events-calendar",
         "label": "UAE exhibitions calendar"
+      },
+      {
+        "path": "/insights/shell-scheme-vs-custom-vs-modular-stands",
+        "label": "Shell scheme vs custom vs modular stands"
       }
     ],
     "sources": [
@@ -1684,6 +1724,10 @@
       {
         "path": "/exhibition-stand-design-dubai",
         "label": "Exhibition stand design in Dubai"
+      },
+      {
+        "path": "/insights/custom-exhibition-stand-process-dubai",
+        "label": "How a custom stand gets built, brief to installation"
       }
     ],
     "sourcesHeading": "Organiser sources and planning limits",
@@ -1799,6 +1843,10 @@
       {
         "path": "/gulfood-exhibition-stand-design-dubai",
         "label": "Gulfood exhibition stand design"
+      },
+      {
+        "path": "/insights/custom-exhibition-stand-process-dubai",
+        "label": "How a custom stand gets built, brief to installation"
       }
     ],
     "sourcesHeading": "Organiser sources and planning limits",
@@ -1914,6 +1962,10 @@
       {
         "path": "/intersec-exhibition-stand-design-dubai",
         "label": "Intersec exhibition stand design"
+      },
+      {
+        "path": "/insights/shell-scheme-vs-custom-vs-modular-stands",
+        "label": "Shell scheme vs custom vs modular stands"
       }
     ],
     "sourcesHeading": "Organiser sources and planning limits",
@@ -2029,6 +2081,10 @@
       {
         "path": "/exhibition-stand-design-dubai",
         "label": "Exhibition stand design in Dubai"
+      },
+      {
+        "path": "/insights/custom-exhibition-stand-process-dubai",
+        "label": "How a custom stand gets built, brief to installation"
       }
     ],
     "sourcesHeading": "Organiser sources and planning limits",
@@ -2609,6 +2665,10 @@
       {
         "path": "/index-dubai-exhibition-stand-design",
         "label": "INDEX Dubai stand design"
+      },
+      {
+        "path": "/insights/shell-scheme-vs-custom-vs-modular-stands",
+        "label": "Shell scheme vs custom vs modular stands"
       }
     ],
     "sourcesHeading": "Organiser sources and planning limits",
@@ -2839,6 +2899,10 @@
       {
         "path": "/index-dubai-exhibition-stand-design",
         "label": "INDEX Dubai stand design"
+      },
+      {
+        "path": "/insights/shell-scheme-vs-custom-vs-modular-stands",
+        "label": "Shell scheme vs custom vs modular stands"
       }
     ],
     "sourcesHeading": "Organiser sources and planning limits",
@@ -3069,6 +3133,10 @@
       {
         "path": "/hotel-show-dubai-exhibition-stand-design",
         "label": "Hotel Show Dubai stand design"
+      },
+      {
+        "path": "/insights/shell-scheme-vs-custom-vs-modular-stands",
+        "label": "Shell scheme vs custom vs modular stands"
       }
     ],
     "sourcesHeading": "Organiser sources and planning limits",
