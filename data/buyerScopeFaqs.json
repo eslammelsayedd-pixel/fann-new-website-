@@ -1,6 +1,10 @@
 {
   "/services/custom-exhibition-stands-dubai": [
     {
+      "question": "What drives the cost of an exhibition stand in Dubai?",
+      "answer": "Stand cost is driven by size and structure (open sides, height, double deck), build type (shell scheme dressing, modular system or custom fabrication), materials and finishes, graphics and AV, venue services (power, rigging, cleaning) and logistics. FANN quotes each project against the actual brief with scope itemised line by line, and does not publish fixed prices because no two stands share the same scope."
+    },
+    {
       "question": "What details do you need to quote a custom stand?",
       "answer": "Send us the show name, venue, stand size and deadline. A floor plan, brand guidelines and the functions your stand needs will help us shape the brief and quote."
     },
@@ -86,6 +90,10 @@
     }
   ],
   "/services/exhibition-stand-fabrication-dubai": [
+    {
+      "question": "What drives the cost of an exhibition stand in Dubai?",
+      "answer": "Stand cost is driven by size and structure (open sides, height, double deck), build type (shell scheme dressing, modular system or custom fabrication), materials and finishes, graphics and AV, venue services (power, rigging, cleaning) and logistics. FANN quotes each project against the actual brief with scope itemised line by line, and does not publish fixed prices because no two stands share the same scope."
+    },
     {
       "question": "Where is the fabrication workshop?",
       "answer": "FANN coordinates exhibition projects from its Dubai office, with an in-house joinery workshop in Umm Al Quwain. The workshop is not in Dubai; site installation is planned for the venue named in your brief."
