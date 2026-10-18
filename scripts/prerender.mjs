@@ -188,8 +188,15 @@ for (const [route, r] of Object.entries(routes)) {
   let html = template;
   html = html.replace(/<html lang="en"/, `<html lang="${r.lang || 'en'}"`);
   if (r.direction === 'rtl') html = html.replace(/<html lang="/, '<html dir="rtl" lang="');
-  if (route === '/insights/exhibition-stand-brief-checklist' || route === '/ar/insights/exhibition-stand-brief-checklist') {
-    const alternates = [['en','/insights/exhibition-stand-brief-checklist'],['ar','/ar/insights/exhibition-stand-brief-checklist'],['x-default','/insights/exhibition-stand-brief-checklist']];
+  const guidePairs = [
+    ['/insights/exhibition-stand-brief-checklist', '/ar/insights/exhibition-stand-brief-checklist'],
+    ['/insights/custom-exhibition-stand-process-dubai', '/ar/insights/custom-exhibition-stand-process-dubai'],
+    ['/insights/shell-scheme-vs-custom-vs-modular-stands', '/ar/insights/shell-scheme-vs-custom-vs-modular-stands']
+  ];
+  const guidePair = guidePairs.find(([en, ar]) => route === en || route === ar);
+  if (guidePair) {
+    const [enPath, arPath] = guidePair;
+    const alternates = [['en',enPath],['ar',arPath],['x-default',enPath]];
     html = html.replace('</head>', alternates.map(([lang,path])=>`<link rel="alternate" hreflang="${lang}" href="${SITE+path}" data-fann-language-alternate="true">`).join('\n')+'</head>');
   }
   if (route === '/ar/exhibition-stands-dubai' || route === '/services/custom-exhibition-stands-dubai') {
