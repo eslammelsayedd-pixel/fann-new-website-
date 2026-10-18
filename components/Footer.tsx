@@ -54,9 +54,6 @@ const Footer: React.FC = () => {
         </div>
         <div className="border-t border-white/10 mt-8 pt-6 text-center text-sm text-gray-500">
           <p>&copy; {new Date().getFullYear()} FANN. All Rights Reserved. | <Link to="/privacy-policy" className="hover:text-fann-gold">Privacy Policy</Link></p>
-          <a href="https://www.launchdub.ai" title="Featured on LaunchDubai" data-launchdub-badge="" className="inline-block mt-4 opacity-80 hover:opacity-100 transition-opacity">
-            <img src="https://www.launchdub.ai/badge/launchdubai-badge-dark.svg" alt="Featured on LaunchDubai" width={216} height={64} className="h-8 w-auto" loading="lazy" />
-          </a>
           
         </div>
       </div>
