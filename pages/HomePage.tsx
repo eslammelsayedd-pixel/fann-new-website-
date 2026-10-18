@@ -15,8 +15,8 @@ const heroSlides = [
         tagline: "Exhibitions",
         headline: "Architecture for Brands",
         description: "We design and build custom exhibition stands for GITEX, ADIPEC, Gulfood and other UAE trade shows, from 3D concept to on-site build.",
-        video: "https://cdn.pixabay.com/video/2020/02/16/32378-392290092_large.mp4", // Generic tech/structure background
-        image: "https://images.unsplash.com/photo-1550305080-4e029753abcf?w=1920&q=90", // Fancy double decker structure
+        video: "/images/projects/icons-of-porsche/walkthrough.mp4", // Real FANN project: Icons of Porsche stand walkthrough
+        image: "/images/projects/icons-of-porsche/01.webp", // Real FANN project: Icons of Porsche
         link: "/services/custom-exhibition-stands-dubai"
     },
     {
@@ -24,8 +24,8 @@ const heroSlides = [
         tagline: "Events",
         headline: "Immersive Experiences",
         description: "From corporate summits to product launches, we engineer events that captivate audiences and amplify your message.",
-        video: "https://cdn.pixabay.com/video/2023/10/22/186175-877199342_large.mp4", // Stage/Event lighting
-        image: "https://images.pexels.com/photos/2608516/pexels-photo-2608516.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        video: null,
+        image: "/images/projects/special-olympics-ucs-2025/01.webp", // Real FANN event: Special Olympics UCS 2025
         link: "/portfolio"
     },
     {
@@ -33,8 +33,8 @@ const heroSlides = [
         tagline: "Interiors",
         headline: "Visionary Spaces",
         description: "Turnkey interior fit-out solutions for commercial headquarters and luxury residential projects across the UAE.",
-        video: "https://cdn.pixabay.com/video/2020/05/25/40149-424930038_large.mp4", // Interior/Architectural walk
-        image: "https://images.pexels.com/photos/3797991/pexels-photo-3797991.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        video: null,
+        image: "/images/projects/1-fitout-0154ddac9e41ce9dd7ada0badd457a3dbe38a3f1.webp", // Real FANN interior fit-out
         link: "/services/interior-fitout-exhibition-spaces-dubai"
     }
 ];
@@ -116,16 +116,24 @@ const HeroSection: React.FC = () => {
                     transition={{ duration: 1 }}
                     className="absolute inset-0 z-0"
                 >
-                    <video 
-                        autoPlay 
-                        loop 
-                        muted 
-                        playsInline 
-                        className="w-full h-full object-cover opacity-50"
-                        poster={heroSlides[currentSlide].image}
-                    >
-                        <source src={heroSlides[currentSlide].video} type="video/mp4" /> 
-                    </video>
+                    {heroSlides[currentSlide].video ? (
+                        <video 
+                            autoPlay 
+                            loop 
+                            muted 
+                            playsInline 
+                            className="w-full h-full object-cover opacity-50"
+                            poster={heroSlides[currentSlide].image}
+                        >
+                            <source src={heroSlides[currentSlide].video} type="video/mp4" /> 
+                        </video>
+                    ) : (
+                        <img
+                            src={heroSlides[currentSlide].image}
+                            alt={heroSlides[currentSlide].headline}
+                            className="w-full h-full object-cover opacity-50"
+                        />
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-fann-charcoal via-fann-charcoal/40 to-black/40"></div>
                 </motion.div>
             </AnimatePresence>
