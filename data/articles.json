@@ -5,24 +5,76 @@
     "title": "How a Custom Exhibition Stand Gets Built in Dubai: Brief to Installation",
     "description": "The real sequence behind a custom exhibition stand in Dubai: brief, 3D design, venue submissions, workshop fabrication, graphics, transport, installation and dismantling.",
     "datePublished": "2026-10-18",
-    "hero": {"src": "/images/stands/1-trevos-light-middle-east.webp", "alt": "Custom exhibition stand designed and built by FANN at a Dubai trade show"},
+    "hero": {
+      "src": "/images/stands/1-trevos-light-middle-east.webp",
+      "alt": "Custom exhibition stand designed and built by FANN at a Dubai trade show"
+    },
     "sections": [
-      {"heading": "The brief decides everything", "paras": ["Every stand starts from the show, the hall and the allocated space. The useful brief names the show and venue, the stand dimensions, the number of open sides, and what the stand must do: display products, host meetings, run demonstrations, store stock. A floor plan from the organiser turns guesswork into decisions, because power points, columns and rigging points are fixed by the venue, not by the design.", "This is also when scope is agreed line by line: design, materials, graphics, venue submissions, transport, installation and dismantling are separate items, and a quote that lists them separately is the one you can actually compare."]},
-      {"heading": "Concept and 3D design", "paras": ["Design starts with layout, not decoration. Visitor flow, sightlines from the aisles, the position of meeting areas and storage, and where branding reads from a distance all come before finishes. A 3D concept lets you walk the stand before anything is cut, and it is the moment to change your mind, because changes on screen cost nothing and changes in the workshop cost real money."]},
-      {"heading": "Venue and organiser submissions", "paras": ["Space-only stands in UAE venues are not simply built and delivered. The organiser and venue require design submissions for approval before fabrication, and larger or double-deck structures face additional review. Submission deadlines sit weeks before opening day, and they are the dates that actually govern the project. A contractor who handles submissions as part of the build removes the most common failure point: a design that is finished but not approved."]},
-      {"heading": "Fabrication in the workshop", "paras": ["Custom stands are built as joinery: frames, walls, platforms, counters and display elements fabricated to the approved drawings. FANN runs its own production workshop in Umm Al Quwain, which means the same company that drew the stand cuts the timber, and questions get answered by walking across the floor rather than across a subcontractor chain. In-house fabrication also makes pre-build checks possible: elements can be assembled and inspected before they leave for the venue."]},
-      {"heading": "Graphics, finishing and AV", "paras": ["Printed graphics, lighting and screens go in after the structure. Artwork needs to be supplied at production size and resolution well before the show, because reprinting on site is the most avoidable cost in exhibitions. Lighting is not decoration either: it is how products and graphics read under hall lighting."]},
-      {"heading": "Transport, installation and dismantling", "paras": ["Move-in windows at UAE venues are short and shared with every other exhibitor's contractor. Installation is planned around the venue schedule: structure first, then finishes, graphics and AV, with a snag check before handover. After the show, dismantling happens in an equally tight window, and reusable elements can go to storage for the next show instead of a skip. Agreeing dismantling and storage in the original scope avoids a last conversation on a closing night."]}
+      {
+        "heading": "The brief decides everything",
+        "paras": [
+          "Every stand starts from the show, the hall and the allocated space. The useful brief names the show and venue, the stand dimensions, the number of open sides, and what the stand must do: display products, host meetings, run demonstrations, store stock. A floor plan from the organiser turns guesswork into decisions, because power points, columns and rigging points are fixed by the venue, not by the design.",
+          "This is also when scope is agreed line by line: design, materials, graphics, venue submissions, transport, installation and dismantling are separate items, and a quote that lists them separately is the one you can actually compare."
+        ]
+      },
+      {
+        "heading": "Concept and 3D design",
+        "paras": [
+          "Design starts with layout, not decoration. Visitor flow, sightlines from the aisles, the position of meeting areas and storage, and where branding reads from a distance all come before finishes. A 3D concept lets you walk the stand before anything is cut, and it is the moment to change your mind, because changes on screen cost nothing and changes in the workshop cost real money."
+        ]
+      },
+      {
+        "heading": "Venue and organiser submissions",
+        "paras": [
+          "Space-only stands in UAE venues are not simply built and delivered. The organiser and venue require design submissions for approval before fabrication, and larger or double-deck structures face additional review. Submission deadlines sit weeks before opening day, and they are the dates that actually govern the project. A contractor who handles submissions as part of the build removes the most common failure point: a design that is finished but not approved."
+        ]
+      },
+      {
+        "heading": "Fabrication in the workshop",
+        "paras": [
+          "Custom stands are built as joinery: frames, walls, platforms, counters and display elements fabricated to the approved drawings. FANN runs its own production workshop in Umm Al Quwain, which means the same company that drew the stand cuts the timber, and questions get answered by walking across the floor rather than across a subcontractor chain. In-house fabrication also makes pre-build checks possible: elements can be assembled and inspected before they leave for the venue."
+        ]
+      },
+      {
+        "heading": "Graphics, finishing and AV",
+        "paras": [
+          "Printed graphics, lighting and screens go in after the structure. Artwork needs to be supplied at production size and resolution well before the show, because reprinting on site is the most avoidable cost in exhibitions. Lighting is not decoration either: it is how products and graphics read under hall lighting."
+        ]
+      },
+      {
+        "heading": "Transport, installation and dismantling",
+        "paras": [
+          "Move-in windows at UAE venues are short and shared with every other exhibitor's contractor. Installation is planned around the venue schedule: structure first, then finishes, graphics and AV, with a snag check before handover. After the show, dismantling happens in an equally tight window, and reusable elements can go to storage for the next show instead of a skip. Agreeing dismantling and storage in the original scope avoids a last conversation on a closing night."
+        ]
+      }
     ],
     "faqs": [
-      {"q": "Who approves exhibition stand designs in Dubai?", "a": "The show organiser and venue review and approve stand designs before fabrication, through the submission process in the exhibitor manual. Your stand contractor normally prepares and submits the drawings as part of the build scope."},
-      {"q": "What should an exhibition stand quote include?", "a": "Design, materials, graphics, venue submissions, transport, installation and dismantling, listed as separate scope items. Itemised quotes are the only ones you can compare across contractors."},
-      {"q": "Does FANN fabricate its own stands?", "a": "Yes. FANN fabricates in its own production workshop in Umm Al Quwain and installs at venues across the UAE, with the Dubai office managing design and submissions."}
+      {
+        "q": "Who approves exhibition stand designs in Dubai?",
+        "a": "The show organiser and venue review and approve stand designs before fabrication, through the submission process in the exhibitor manual. Your stand contractor normally prepares and submits the drawings as part of the build scope."
+      },
+      {
+        "q": "What should an exhibition stand quote include?",
+        "a": "Design, materials, graphics, venue submissions, transport, installation and dismantling, listed as separate scope items. Itemised quotes are the only ones you can compare across contractors."
+      },
+      {
+        "q": "Does FANN fabricate its own stands?",
+        "a": "Yes. FANN fabricates in its own production workshop in Umm Al Quwain and installs at venues across the UAE, with the Dubai office managing design and submissions."
+      }
     ],
     "related": [
-      {"path": "/services/custom-exhibition-stands-dubai", "label": "Custom exhibition stands in Dubai"},
-      {"path": "/exhibition-stand-builders-dubai", "label": "Exhibition stand builders in Dubai"},
-      {"path": "/exhibition-stand-quote", "label": "Get a scoped stand quote"}
+      {
+        "path": "/services/custom-exhibition-stands-dubai",
+        "label": "Custom exhibition stands in Dubai"
+      },
+      {
+        "path": "/exhibition-stand-builders-dubai",
+        "label": "Exhibition stand builders in Dubai"
+      },
+      {
+        "path": "/exhibition-stand-quote",
+        "label": "Get a scoped stand quote"
+      }
     ]
   },
   {
@@ -31,23 +83,69 @@
     "title": "How to Brief an Exhibition Stand Contractor: The Checklist That Gets an Accurate Quote",
     "description": "What to send a stand contractor before asking for a price: show and hall, dimensions, open sides, floor plan, stand job, utilities, deadlines and scope items to agree line by line.",
     "datePublished": "2026-10-18",
-    "hero": {"src": "/images/stands/2-bayara-gulfood.webp", "alt": "FANN-built exhibition stand with product displays and reception counter"},
+    "hero": {
+      "src": "/images/stands/2-bayara-gulfood.webp",
+      "alt": "FANN-built exhibition stand with product displays and reception counter"
+    },
     "sections": [
-      {"heading": "Why briefs come back with wild price gaps", "paras": ["Two contractors quoting the same stand can return very different numbers, and usually the difference is not greed or generosity - it is that each one assumed a different scope. One included graphics and venue submissions, the other did not. One allowed for a reception counter and storage, the other quoted four walls. The fix is a brief that pins down the same facts for everyone."]},
-      {"heading": "The facts every contractor needs", "paras": ["Show, venue and hall. Stand number if you have it. Exact dimensions and the number of open sides - a corner stand and an island stand of the same square metres are different builds. The organiser floor plan, because columns, power ducts and rigging points are fixed by the venue. And your real deadlines: not the opening day, but the design submission and move-in dates in the exhibitor manual."]},
-      {"heading": "What the stand must do", "paras": ["List the jobs before the look: products on display and their sizes, live demonstrations and their power needs, meeting space for how many people, storage for stock and literature, reception or hospitality. A contractor designing around function will ask these questions anyway; answering them up front removes a week of back-and-forth."]},
-      {"heading": "Scope items to agree line by line", "paras": ["Ask for design, materials, graphics, venue and authority submissions, transport, installation and dismantling as separate lines. Then ask what is not included: venue services such as power connection and cleaning are commonly excluded and commonly assumed. The comparison you want is not three totals, it is three identical lists."]},
-      {"heading": "What to attach", "paras": ["The floor plan, brand guidelines and logos at production resolution, photos of past stands if you have them, and two or three reference stands you like with a sentence on why. References communicate taste faster than adjectives."]}
+      {
+        "heading": "Why briefs come back with wild price gaps",
+        "paras": [
+          "Two contractors quoting the same stand can return very different numbers, and usually the difference is not greed or generosity - it is that each one assumed a different scope. One included graphics and venue submissions, the other did not. One allowed for a reception counter and storage, the other quoted four walls. The fix is a brief that pins down the same facts for everyone."
+        ]
+      },
+      {
+        "heading": "The facts every contractor needs",
+        "paras": [
+          "Show, venue and hall. Stand number if you have it. Exact dimensions and the number of open sides - a corner stand and an island stand of the same square metres are different builds. The organiser floor plan, because columns, power ducts and rigging points are fixed by the venue. And your real deadlines: not the opening day, but the design submission and move-in dates in the exhibitor manual."
+        ]
+      },
+      {
+        "heading": "What the stand must do",
+        "paras": [
+          "List the jobs before the look: products on display and their sizes, live demonstrations and their power needs, meeting space for how many people, storage for stock and literature, reception or hospitality. A contractor designing around function will ask these questions anyway; answering them up front removes a week of back-and-forth."
+        ]
+      },
+      {
+        "heading": "Scope items to agree line by line",
+        "paras": [
+          "Ask for design, materials, graphics, venue and authority submissions, transport, installation and dismantling as separate lines. Then ask what is not included: venue services such as power connection and cleaning are commonly excluded and commonly assumed. The comparison you want is not three totals, it is three identical lists."
+        ]
+      },
+      {
+        "heading": "What to attach",
+        "paras": [
+          "The floor plan, brand guidelines and logos at production resolution, photos of past stands if you have them, and two or three reference stands you like with a sentence on why. References communicate taste faster than adjectives."
+        ]
+      }
     ],
     "faqs": [
-      {"q": "What is the minimum a stand contractor needs to quote?", "a": "Show and venue, stand dimensions, number of open sides, and what the stand needs to do. A floor plan and your submission deadlines make the quote accurate rather than approximate."},
-      {"q": "Should I send my budget to a stand contractor?", "a": "A range helps. It lets the contractor propose materials and scope that fit instead of designing something you cannot buy, and it makes the itemised quote more useful."},
-      {"q": "How do I compare stand quotes fairly?", "a": "Line by line, not total by total. Agree the same scope items with every contractor - design, materials, graphics, submissions, transport, installation, dismantling - and compare what each line includes."}
+      {
+        "q": "What is the minimum a stand contractor needs to quote?",
+        "a": "Show and venue, stand dimensions, number of open sides, and what the stand needs to do. A floor plan and your submission deadlines make the quote accurate rather than approximate."
+      },
+      {
+        "q": "Should I send my budget to a stand contractor?",
+        "a": "A range helps. It lets the contractor propose materials and scope that fit instead of designing something you cannot buy, and it makes the itemised quote more useful."
+      },
+      {
+        "q": "How do I compare stand quotes fairly?",
+        "a": "Line by line, not total by total. Agree the same scope items with every contractor - design, materials, graphics, submissions, transport, installation, dismantling - and compare what each line includes."
+      }
     ],
     "related": [
-      {"path": "/exhibition-stand-quote", "label": "Send your stand brief"},
-      {"path": "/resources/cost-calculator", "label": "Stand cost calculator"},
-      {"path": "/events-calendar", "label": "UAE and Saudi exhibitions calendar"}
+      {
+        "path": "/exhibition-stand-quote",
+        "label": "Send your stand brief"
+      },
+      {
+        "path": "/resources/cost-calculator",
+        "label": "Stand cost calculator"
+      },
+      {
+        "path": "/events-calendar",
+        "label": "UAE and Saudi exhibitions calendar"
+      }
     ]
   },
   {
@@ -56,23 +154,142 @@
     "title": "Shell Scheme vs Custom Build vs Modular: Choosing a Stand Type for a UAE Show",
     "description": "The three stand types at UAE exhibitions, what each one actually is, and how exhibitors should choose between shell scheme, modular systems and custom build.",
     "datePublished": "2026-10-18",
-    "hero": {"src": "/images/stands/5-apollo-tyres-automechanika.webp", "alt": "Large custom exhibition stand built by FANN at a Dubai motoring show"},
+    "hero": {
+      "src": "/images/stands/5-apollo-tyres-automechanika.webp",
+      "alt": "Large custom exhibition stand built by FANN at a Dubai motoring show"
+    },
     "sections": [
-      {"heading": "Shell scheme: the organiser's standard package", "paras": ["A shell scheme is the stand the organiser includes with space: system walls, a fascia name board, basic carpet and lighting. It is the fastest way in, and for a first show or a small allocation it can be the right answer. Its limits are uniformity - every neighbour has the same walls - and you dress it rather than design it: graphics, furniture and product display do the work."]},
-      {"heading": "Custom build: designed around your brief", "paras": ["A custom stand is designed and fabricated for your space alone: structure, meeting rooms, product displays, lighting and graphics built as one piece of joinery. It is how a brand becomes visible from across the hall, and how awkward spaces - corners, columns, unusual shapes - become advantages instead of problems. Custom stands on space-only plots require design approval from the organiser before fabrication, so the timeline is governed by submission deadlines, not just build time."]},
-      {"heading": "Modular systems: reusable structure, tailored skin", "paras": ["Modular systems use engineered frames and panels that assemble in different configurations, then take custom graphics and finishes. For companies exhibiting at several shows a year, the same system can be reconfigured for different space sizes, which changes the economics of exhibiting: you invest once in structure and refresh the skin. The trade-off is that system geometry is visible unless the design works to hide it."]},
-      {"heading": "How to choose", "paras": ["Start from the show's role, not the stand. If this show is a test - new market, first year - a well-dressed shell scheme learns what you need to know. If the show is a fixture and the brand must be found in a crowded hall, custom build pays for its difference. If the calendar holds several shows a year with changing space sizes, modular earns its keep in reuse. Many exhibitors end up hybrid: modular structure with custom-made counters, displays and meeting elements, which is a combination a fabrication workshop handles naturally."]},
-      {"heading": "What stays constant whichever type you pick", "paras": ["The brief. Show, hall, dimensions, open sides, floor plan, what the stand must do, and the real deadlines from the exhibitor manual. And the scope discipline: design, materials, graphics, submissions, transport, installation and dismantling agreed line by line, whatever structure sits underneath."]}
+      {
+        "heading": "Shell scheme: the organiser's standard package",
+        "paras": [
+          "A shell scheme is the stand the organiser includes with space: system walls, a fascia name board, basic carpet and lighting. It is the fastest way in, and for a first show or a small allocation it can be the right answer. Its limits are uniformity - every neighbour has the same walls - and you dress it rather than design it: graphics, furniture and product display do the work."
+        ]
+      },
+      {
+        "heading": "Custom build: designed around your brief",
+        "paras": [
+          "A custom stand is designed and fabricated for your space alone: structure, meeting rooms, product displays, lighting and graphics built as one piece of joinery. It is how a brand becomes visible from across the hall, and how awkward spaces - corners, columns, unusual shapes - become advantages instead of problems. Custom stands on space-only plots require design approval from the organiser before fabrication, so the timeline is governed by submission deadlines, not just build time."
+        ]
+      },
+      {
+        "heading": "Modular systems: reusable structure, tailored skin",
+        "paras": [
+          "Modular systems use engineered frames and panels that assemble in different configurations, then take custom graphics and finishes. For companies exhibiting at several shows a year, the same system can be reconfigured for different space sizes, which changes the economics of exhibiting: you invest once in structure and refresh the skin. The trade-off is that system geometry is visible unless the design works to hide it."
+        ]
+      },
+      {
+        "heading": "How to choose",
+        "paras": [
+          "Start from the show's role, not the stand. If this show is a test - new market, first year - a well-dressed shell scheme learns what you need to know. If the show is a fixture and the brand must be found in a crowded hall, custom build pays for its difference. If the calendar holds several shows a year with changing space sizes, modular earns its keep in reuse. Many exhibitors end up hybrid: modular structure with custom-made counters, displays and meeting elements, which is a combination a fabrication workshop handles naturally."
+        ]
+      },
+      {
+        "heading": "What stays constant whichever type you pick",
+        "paras": [
+          "The brief. Show, hall, dimensions, open sides, floor plan, what the stand must do, and the real deadlines from the exhibitor manual. And the scope discipline: design, materials, graphics, submissions, transport, installation and dismantling agreed line by line, whatever structure sits underneath."
+        ]
+      }
     ],
     "faqs": [
-      {"q": "Is a shell scheme stand worth customising?", "a": "Yes, within its limits. Full-width graphics, considered lighting, good furniture and planned product display change how a shell scheme reads without changing its structure."},
-      {"q": "Can a modular stand look custom?", "a": "Mostly, yes. With custom graphics, integrated lighting and purpose-built counters and displays, the system frame disappears behind the finish. The remaining tells are structural geometry and standard connection points."},
-      {"q": "Which stand type does FANN build?", "a": "All three. FANN designs and builds custom stands, supplies modular systems, and upgrades shell schemes with graphics, counters and displays - fabricated in its own Umm Al Quwain workshop."}
+      {
+        "q": "Is a shell scheme stand worth customising?",
+        "a": "Yes, within its limits. Full-width graphics, considered lighting, good furniture and planned product display change how a shell scheme reads without changing its structure."
+      },
+      {
+        "q": "Can a modular stand look custom?",
+        "a": "Mostly, yes. With custom graphics, integrated lighting and purpose-built counters and displays, the system frame disappears behind the finish. The remaining tells are structural geometry and standard connection points."
+      },
+      {
+        "q": "Which stand type does FANN build?",
+        "a": "All three. FANN designs and builds custom stands, supplies modular systems, and upgrades shell schemes with graphics, counters and displays - fabricated in its own Umm Al Quwain workshop."
+      }
     ],
     "related": [
-      {"path": "/services/modular-exhibition-systems-dubai", "label": "Modular exhibition systems in Dubai"},
-      {"path": "/services/custom-exhibition-stands-dubai", "label": "Custom exhibition stands in Dubai"},
-      {"path": "/exhibition-stand-quote", "label": "Get a scoped stand quote"}
+      {
+        "path": "/services/modular-exhibition-systems-dubai",
+        "label": "Modular exhibition systems in Dubai"
+      },
+      {
+        "path": "/services/custom-exhibition-stands-dubai",
+        "label": "Custom exhibition stands in Dubai"
+      },
+      {
+        "path": "/exhibition-stand-quote",
+        "label": "Get a scoped stand quote"
+      }
+    ]
+  },
+  {
+    "slug": "exhibition-stand-brief-checklist-ar",
+    "path": "/ar/insights/exhibition-stand-brief-checklist",
+    "lang": "ar",
+    "direction": "rtl",
+    "title": "كيف تحضّر موجزاً لمقاول أجنحة المعارض: قائمة التحقق للحصول على عرض سعر دقيق",
+    "description": "ما الذي ترسله لمقاول أجنحة المعارض قبل طلب السعر: المعرض والقاعة، الأبعاد، الجهات المفتوحة، مخطط الأرضية، مهام الجناح، المرافق، المواعيد النهائية، وبنود النطاق المتفق عليها.",
+    "datePublished": "2026-10-18",
+    "hero": {
+      "src": "/images/stands/2-bayara-gulfood.webp",
+      "alt": "جناح معرض من تنفيذ فَن مع منصات عرض للمنتجات وكاونتر استقبال"
+    },
+    "sections": [
+      {
+        "heading": "لماذا تعود عروض الأسعار بفوارق كبيرة؟",
+        "paras": [
+          "قد يقدّم مقاولان عرضين لنفس الجناح بأرقام مختلفة جداً، وعادة لا يكون السبب فارقاً في الربح، بل أن كل واحد منهما افترض نطاق عمل مختلفاً: أحدهما شمل الطباعة والرسومات وموافقات الجهة المنظمة، والآخر لم يشملها؛ أحدهما احتسب كاونتر استقبال ومخزناً، والآخر سعّر أربعة جدران فقط. الحل هو موجز يثبّت نفس الحقائق للجميع."
+        ]
+      },
+      {
+        "heading": "الحقائق التي يحتاجها كل مقاول",
+        "paras": [
+          "اسم المعرض والمكان والقاعة، ورقم الجناح إن توفر. الأبعاد الدقيقة وعدد الجهات المفتوحة، فجناح الزاوية والجناح الجزيرة بنفس المساحة بناءان مختلفان. مخطط الأرضية من الجهة المنظمة، لأن الأعمدة ونقاط الكهرباء والتعليق ثابتة من المكان وليست من التصميم. ومواعيدك النهائية الحقيقية: ليس يوم الافتتاح، بل موعد تقديم التصميم للاعتماد وموعد الدخول للتركيب كما يرد في دليل العارض."
+        ]
+      },
+      {
+        "heading": "ما الذي يجب أن يحققه الجناح",
+        "paras": [
+          "حدّد المهام قبل الشكل: المنتجات المعروضة وأحجامها، العروض الحية واحتياجاتها من الكهرباء، مساحة الاجتماعات وعدد الأشخاص، مخزن البضائع والمطبوعات، الاستقبال أو الضيافة. المقاول الذي يصمم حول الوظيفة سيطرح هذه الأسئلة على أي حال، والإجابة عنها مسبقاً توفر أسبوعاً من المراسلات."
+        ]
+      },
+      {
+        "heading": "بنود النطاق التي تُتفق عليها بنداً بنداً",
+        "paras": [
+          "اطلب أن يرد التصميم والمواد والرسومات والطباعة وموافقات الجهة المنظمة والمكان والنقل والتركيب والتفكيك كبنود منفصلة. ثم اسأل عمّا هو غير مشمول: خدمات المكان مثل توصيل الكهرباء والتنظيف يُستبعد كثيراً ويُفترض كثيراً. المقارنة الصحيحة ليست بين ثلاثة إجماليات، بل بين ثلاث قوائم متطابقة."
+        ]
+      },
+      {
+        "heading": "ما الذي ترفقه مع الموجز",
+        "paras": [
+          "مخطط الأرضية، دليل الهوية البصرية والشعارات بدقة الطباعة، صور أجنحة سابقة إن وجدت، واثنان أو ثلاثة أمثلة لأجنحة تعجبك مع جملة عن السبب. الأمثلة تنقل الذوق أسرع من الصفات."
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "ما الحد الأدنى الذي يحتاجه مقاول الأجنحة لتقديم عرض سعر؟",
+        "a": "المعرض والمكان، أبعاد الجناح، عدد الجهات المفتوحة، وما يجب أن يحققه الجناح. مخطط الأرضية ومواعيد التقديم النهائية تجعل العرض دقيقاً لا تقريبياً."
+      },
+      {
+        "q": "هل أخبر المقاول بميزانيتي؟",
+        "a": "تحديد نطاق يساعد؛ فهو يتيح للمقاول اقتراح مواد ونطاق يناسبانها بدلاً من تصميم لا يمكنك شراؤه، ويجعل العرض التفصيلي أكثر فائدة."
+      },
+      {
+        "q": "كيف أقارن عروض أسعار الأجنحة بعدل؟",
+        "a": "بنداً ببند وليس إجمالياً بإجمالي. اتفق على بنود النطاق نفسها مع كل مقاول - التصميم والمواد والرسومات والموافقات والنقل والتركيب والتفكيك - وقارن ما يشمله كل بند."
+      }
+    ],
+    "related": [
+      {
+        "path": "/ar/exhibition-stands-dubai",
+        "label": "أجنحة المعارض في دبي"
+      },
+      {
+        "path": "/exhibition-stand-quote",
+        "label": "أرسل موجز جناحك"
+      },
+      {
+        "path": "/insights/exhibition-stand-brief-checklist",
+        "label": "English version of this checklist"
+      }
     ]
   }
 ]

@@ -1181,6 +1181,7 @@ const SITEMAP_PATHS = [
   '/insights/custom-exhibition-stand-process-dubai',
   '/insights/exhibition-stand-brief-checklist',
   '/insights/shell-scheme-vs-custom-vs-modular-stands',
+  '/ar/insights/exhibition-stand-brief-checklist',
   '/portfolio/fit-out/02-event-hospitality-interior',
   '/portfolio/fit-out/03-itch-cafe',
   '/portfolio/fit-out/04-break-al-qana-restaurant',

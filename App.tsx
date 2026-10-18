@@ -117,6 +117,7 @@ const App: React.FC = () => {
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/insights" element={<InsightsPage />} />
                         <Route path="/insights/:slug" element={<InsightArticlePage />} />
+                        <Route path="/ar/insights/:slug" element={<InsightArticlePage />} />
                         <Route path="/roi-calculator" element={<ROICalculatorPage />} />
                         
                         {/* Resources & Lead Magnets */}

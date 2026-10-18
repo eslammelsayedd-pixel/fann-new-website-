@@ -38,6 +38,8 @@ for (const article of insightArticles) {
   const E = calendarEscape;
   const faqLd = article.faqs.map(f=>({'@type':'Question',name:f.q,acceptedAnswer:{'@type':'Answer',text:f.a}}));
   routes[article.path] = {
+    lang: article.lang || 'en',
+    direction: article.direction || 'ltr',
     title: article.title + ' | FANN',
     description: article.description,
     robots: 'index, follow',
@@ -185,6 +187,11 @@ for (const [route, r] of Object.entries(routes)) {
   const url = SITE + (route === '/' ? '/' : route);
   let html = template;
   html = html.replace(/<html lang="en"/, `<html lang="${r.lang || 'en'}"`);
+  if (r.direction === 'rtl') html = html.replace(/<html lang="/, '<html dir="rtl" lang="');
+  if (route === '/insights/exhibition-stand-brief-checklist' || route === '/ar/insights/exhibition-stand-brief-checklist') {
+    const alternates = [['en','/insights/exhibition-stand-brief-checklist'],['ar','/ar/insights/exhibition-stand-brief-checklist'],['x-default','/insights/exhibition-stand-brief-checklist']];
+    html = html.replace('</head>', alternates.map(([lang,path])=>`<link rel="alternate" hreflang="${lang}" href="${SITE+path}" data-fann-language-alternate="true">`).join('\n')+'</head>');
+  }
   if (route === '/ar/exhibition-stands-dubai' || route === '/services/custom-exhibition-stands-dubai') {
     const alternates = [['ar','/ar/exhibition-stands-dubai'],['en','/services/custom-exhibition-stands-dubai'],['x-default','/services/custom-exhibition-stands-dubai']];
     html = html.replace('</head>', alternates.map(([lang,path])=>`<link rel="alternate" hreflang="${lang}" href="${SITE+path}" data-fann-language-alternate="true">`).join('\n')+'</head>');

@@ -9,6 +9,8 @@ interface ArticleFaq { q: string; a: string }
 interface ArticleDef {
     slug: string;
     path: string;
+    lang?: string;
+    direction?: string;
     title: string;
     description: string;
     datePublished: string;
@@ -59,7 +61,7 @@ const ArticlePage: React.FC = () => {
         <AnimatedPage>
             <div className="min-h-screen bg-fann-charcoal pt-28 pb-20">
                 <SEO title={article.title} description={article.description} schema={schema} />
-                <article className="max-w-3xl mx-auto px-6">
+                <article className="max-w-3xl mx-auto px-6" dir={article.direction === 'rtl' ? 'rtl' : 'ltr'} lang={article.lang || 'en'}>
                     <Link to="/insights" className="inline-flex items-center gap-2 text-fann-gold text-sm mb-8 hover:underline"><ArrowLeft size={15} aria-hidden="true" /> All guides</Link>
                     <h1 className="text-3xl md:text-5xl font-serif font-bold text-fann-gold mb-4 leading-tight">{article.title}</h1>
                     <p className="text-sm text-gray-400 mb-8">FANN guides · Updated {new Date(article.datePublished + 'T12:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
