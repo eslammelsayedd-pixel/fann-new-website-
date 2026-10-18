@@ -239,21 +239,21 @@ const ServicesSection: React.FC = () => (
                 <ServiceCard 
                     title="Exhibition Stands" 
                     description="Custom, modular, and hybrid stands designed to dominate the trade show floor. Full turnkey service from design to dismantling."
-                    image="/images/stands/2-bayara-gulfood.webp"
+                    image="/images/cards/service-exhibitions.webp"
                     link="/services/custom-exhibition-stands-dubai"
                     index={1}
                 />
                 <ServiceCard 
                     title="Corporate Events" 
                     description="Event setup and production build for stages, displays and branded installations. See our documented Dubai event work."
-                    image="/images/projects/special-olympics-ucs-2025/02.webp"
+                    image="/images/cards/service-events.webp"
                     link="/event-setup-dubai"
                     index={2}
                 />
                 <ServiceCard 
                     title="Interior Fit-Out" 
                     description="Luxury commercial and residential interior design and build. Creating functional, inspiring workspaces and homes."
-                    image="/images/projects/12-fitout-083326945a28e26dcce364ee1c3fff52c36ba3cb.webp"
+                    image="/images/cards/service-fitout.webp"
                     link="/services/interior-fitout-exhibition-spaces-dubai"
                     index={3}
                 />
