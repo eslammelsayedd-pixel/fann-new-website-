@@ -398,6 +398,18 @@
       {
         "path": "/events-calendar",
         "label": "تقويم المعارض والفعاليات"
+      },
+      {
+        "path": "/ar/insights/custom-exhibition-stand-process-dubai",
+        "label": "كيف يُبنى جناح المعرض المخصص في دبي"
+      },
+      {
+        "path": "/ar/insights/exhibition-stand-brief-checklist",
+        "label": "قائمة تحقق موجز الجناح للحصول على عرض دقيق"
+      },
+      {
+        "path": "/ar/insights/shell-scheme-vs-custom-vs-modular-stands",
+        "label": "الجناح القياسي أم المخصص أم المعياري"
       }
     ],
     "sources": [
