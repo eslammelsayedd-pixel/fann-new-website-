@@ -6,7 +6,7 @@ import FaqAccordion from '../../components/FaqAccordion';
 import { Link } from 'react-router-dom';
 
 const pageTitle = "Modular Exhibition Systems Dubai";
-const heroImage = "https://images.pexels.com/photos/7533347/pexels-photo-7533347.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
+const heroImage = "/images/stands/6-geven-aircraft-interiors.webp";
 
 const breadcrumbs = [
   { name: 'Home', path: '/' },

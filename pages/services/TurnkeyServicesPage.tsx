@@ -6,7 +6,7 @@ import FaqAccordion from '../../components/FaqAccordion';
 import { Link } from 'react-router-dom';
 
 const pageTitle = "Turnkey Exhibition Services UAE";
-const heroImage = "https://images.pexels.com/photos/8199563/pexels-photo-8199563.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
+const heroImage = "/images/stands/7-dubai-properties-cityscape.webp";
 
 const breadcrumbs = [
   { name: 'Home', path: '/' },

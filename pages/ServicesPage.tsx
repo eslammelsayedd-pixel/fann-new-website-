@@ -89,7 +89,7 @@ const servicesData = [
         icon: <Layers size={40} />,
         title: "Exhibition Services",
         description: "From custom stands to versatile modular systems, our exhibition services are comprehensive. We offer turnkey solutions, managing everything from design and in-house fabrication to logistics and on-site installation, ensuring a powerful and stress-free presence at any trade show.",
-        image: "https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=800&q=75",
+        image: "/images/stands/2-bayara-gulfood.webp",
         services: [ "Custom Stand Design & Build", "Modular & Reusable Systems", "Turnkey Project Management", "In-House Fabrication & Production", "Premium Interior Fit-Out" ],
         imagePosition: "right" as "right",
         link: "/portfolio?category=exhibition",
@@ -99,7 +99,7 @@ const servicesData = [
         icon: <Calendar size={40} />,
         title: "Corporate Event Management",
         description: "Event setup and production build around your venue, audience flow and opening date. See a documented Dubai event build and send us the structures, floor plan and technical brief you need.",
-        image: "https://images.pexels.com/photos/1181438/pexels-photo-1181438.jpeg?auto=compress&cs=tinysrgb&w=800&q=75",
+        image: "/images/projects/special-olympics-ucs-2025/02.webp",
         services: [ "Stage & Scenic Structures", "Branded Installations", "Display & Demonstration Areas", "Fabrication & Site Installation" ],
         imagePosition: "left" as "left",
         link: "/event-setup-dubai"
@@ -108,7 +108,7 @@ const servicesData = [
         icon: <PenTool size={40} />,
         title: "Interior Design & Commercial Fit-Out",
         description: "Our design and build philosophy for interiors centers on creating spaces that are both beautiful and functional. We manage the entire process from concept to completion, designing and constructing inspiring commercial environments and luxurious residential properties that reflect your unique identity.",
-        image: "https://images.pexels.com/photos/3797991/pexels-photo-3797991.jpeg?auto=compress&cs=tinysrgb&w=800&q=75",
+        image: "/images/projects/12-fitout-083326945a28e26dcce364ee1c3fff52c36ba3cb.webp",
         services: [ "Comprehensive Space Planning", "Concept & Mood Board Development", "Custom Furniture & Joinery Design", "Complete Fit-Out & Project Management", "Turnkey Design & Build Solutions" ],
         imagePosition: "right" as "right",
         link: "/fit-out-dubai"

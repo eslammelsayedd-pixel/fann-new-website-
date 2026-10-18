@@ -6,7 +6,7 @@ import FaqAccordion from '../../components/FaqAccordion';
 import { Link } from 'react-router-dom';
 
 const pageTitle = "Interior Fit-Out for Exhibition Spaces Dubai";
-const heroImage = "https://images.pexels.com/photos/271639/pexels-photo-271639.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
+const heroImage = "/images/projects/11-fitout-072b09f5c3b46b77c42689e72fd0f32045d2f2e6.webp";
 
 const breadcrumbs = [
   { name: 'Home', path: '/' },

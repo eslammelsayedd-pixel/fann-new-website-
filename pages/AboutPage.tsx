@@ -36,7 +36,7 @@ const itemVariants = {
 
 
 const AboutPage: React.FC = () => {
-    const aboutImageUrl = "https://images.pexels.com/photos/8199563/pexels-photo-8199563.jpeg?auto=compress&cs=tinysrgb&w=1260&q=75";
+    const aboutImageUrl = "/images/stands/9-abbott-arab-health.webp";
   return (
     <AnimatedPage>
         <SEO
