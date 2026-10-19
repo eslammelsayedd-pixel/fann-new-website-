@@ -3829,5 +3829,96 @@
         "note": "Checked 17 October 2026: GulfHost 3-5 November 2026 at Dubai World Trade Centre, co-located with Gulfood Manufacturing, ISM Middle East and Private Label Middle East."
       }
     ]
+  },
+  "/gulf-print-pack-exhibition-stand-design-dubai": {
+    "title": "Gulf Print & Pack Stand Design Dubai | Machinery Demos | FANN",
+    "description": "Plan a Gulf Print & Pack 2027 stand for live print and packaging machinery. Confirm your DWTC allocation, power and rigging needs, then request a scoped FANN proposal.",
+    "heading": "Gulf Print & Pack exhibition stand design in Dubai",
+    "city": "Dubai",
+    "breadcrumb": "Gulf Print & Pack stand design",
+    "subheading": "Plan the live machinery demonstration, visitor route and service brief before the stand goes into production.",
+    "intro": "A print and packaging stand lives or fails on the running machine, not the render. FANN can develop an exhibition stand design and build proposal around your Gulf Print & Pack allocation, live equipment demonstrations, sample displays and meeting needs. Our Dubai office coordinates the brief and our Umm Al Quwain workshop supports the agreed fabrication. We are an independent contractor, not the Gulf Print & Pack organiser or an appointed official contractor.",
+    "hero": "/images/stands/5-apollo-tyres-automechanika.webp",
+    "heroAlt": "Completed Apollo Tyres exhibition stand at Automechanika Dubai",
+    "heroCaption": "Completed FANN stand: Apollo Tyres, Automechanika Dubai. An equipment-display reference, not a Gulf Print & Pack project.",
+    "action": "Share your Gulf Print & Pack stand brief",
+    "sections": [
+      {
+        "heading": "Gulf Print & Pack 2027: confirm the dates and your allocation",
+        "text": "The organiser lists the 15th edition for 12-14 January 2027 at Dubai World Trade Centre, checked on the official event site on 19 October 2026. Send the hall and stand number, dimensions and open sides from your exhibitor documents. Public show dates are not build-up, submission or dismantling deadlines; those come from your exhibitor manual."
+      },
+      {
+        "heading": "Start with the running machine",
+        "text": "List every machine that will run on the stand and what visitors need to see it do. A live digital press, a packaging line section and a static sample display each need different space, power and safety briefs. Work from the actual machine footprint, operator positions and visitor viewing line, then plan sample storage, counters and meeting space around it.",
+        "items": [
+          "Machinery: dimensions, weights, operating loads and any rigging or floor-loading requirements supplied by the equipment owner.",
+          "Services: power rating per machine, compressed air, water or extraction needs to be checked against the venue order forms.",
+          "Demonstration flow: operator access, visitor viewing distance, sample take-away and queue space that does not block gangways."
+        ]
+      },
+      {
+        "heading": "Samples, meetings and storage in a working stand",
+        "text": "Print and packaging buyers expect to leave with samples. Plan sample production, storage and display so the stand does not fill with cartons, and keep at least one enclosed or semi-enclosed meeting area for specification and price discussions away from machine noise."
+      },
+      {
+        "heading": "One scoped contract from design to dismantling",
+        "text": "FANN takes the agreed design into fabrication in our own workshop, then logistics, installation and dismantling at the venue. You get one scoped contract and one accountable team from concept to handover."
+      }
+    ],
+    "proof": [
+      {
+        "path": "/portfolio/apollo-tyres-automechanika",
+        "image": "/images/stands/5-apollo-tyres-automechanika.webp",
+        "name": "Apollo Tyres - Automechanika",
+        "location": "Dubai",
+        "text": "The photograph shows Apollo Tyres identity and tyre product displays from a past Automechanika Dubai edition. It does not establish a completed visitor-ready display, a 2026 appointment or a measured visitor result."
+      }
+    ],
+    "proofHeading": "A completed equipment stand to inform your brief",
+    "proofNote": "Real FANN project photographs. Use them to discuss display, branding and enquiry space; display loads and material grades are not documented.",
+    "faqs": [
+      {
+        "question": "When and where is Gulf Print & Pack 2027?",
+        "answer": "The organiser lists 12-14 January 2027 at Dubai World Trade Centre. Confirm your actual hall, stand allocation and current exhibitor manual separately. Show dates are not build-up or dismantling windows."
+      },
+      {
+        "question": "What should I send for a Gulf Print & Pack stand proposal?",
+        "answer": "Send your name and one contact method, then the hall and stand number, dimensions, open sides, the machines you will run, sample and meeting needs, brand files and your deadline if known. Include machine weights, footprints and utility requirements before detailed design and pricing."
+      },
+      {
+        "question": "What does a print and packaging stand cost?",
+        "answer": "Cost depends on stand size, structure, machinery support requirements, graphics, AV, flooring and services ordered through the venue. Share your allocation and machine list and FANN will return a scoped proposal instead of a guess."
+      }
+    ],
+    "related": [
+      {
+        "path": "/exhibition-stand-design-dubai",
+        "label": "Exhibition stand design in Dubai"
+      },
+      {
+        "path": "/services/custom-exhibition-stands-dubai",
+        "label": "Custom exhibition stand design and build"
+      },
+      {
+        "path": "/services/exhibition-stand-fabrication-dubai",
+        "label": "Exhibition stand fabrication scope"
+      },
+      {
+        "path": "/gulfood-manufacturing-exhibition-stand-design",
+        "label": "Gulfood Manufacturing stand design"
+      }
+    ],
+    "sources": [
+      {
+        "url": "https://www.gulfprintpack.com/",
+        "label": "Gulf Print & Pack official event site",
+        "note": "Checked 19 October 2026: 15th edition, 12-14 January 2027, Dubai World Trade Centre. Obtain the current exhibitor manual through your booked exhibitor route for operational requirements."
+      },
+      {
+        "url": "https://www.dwtc.com/en/events",
+        "label": "Dubai World Trade Centre events calendar",
+        "note": "Venue event calendar for cross-checking show dates and halls."
+      }
+    ]
   }
 }
