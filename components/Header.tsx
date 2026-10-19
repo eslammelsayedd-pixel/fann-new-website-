@@ -87,7 +87,7 @@ const Header: React.FC = () => {
                 {/* RIGHT ACTIONS */}
                 <div className="hidden lg:flex items-center gap-4 xl:gap-6">
                     <ThemeToggle />
-                    <a href="tel:+971505667502" className="text-xs font-semibold text-fann-gold hover:text-white transition-colors whitespace-nowrap" aria-label="Call FANN at +971 50 566 7502">+971 50 566 7502</a>
+                    <a href="tel:+971505667502" dir="ltr" className="text-xs font-semibold text-fann-gold hover:text-white transition-colors whitespace-nowrap" aria-label="Call FANN at +971 50 566 7502">+971 50 566 7502</a>
                     <Link to="/contact" className="hover-trigger">
                       <button 
                           className="btn-gold"
