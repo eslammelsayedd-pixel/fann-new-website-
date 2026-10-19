@@ -3920,5 +3920,96 @@
         "note": "Venue event calendar for cross-checking show dates and halls."
       }
     ]
+  },
+  "/idex-exhibition-stand-design-abu-dhabi": {
+    "title": "IDEX Exhibition Stand Design Abu Dhabi | Defence Shows | FANN",
+    "description": "Plan an IDEX 2027 stand for defence equipment displays, meetings and hospitality. Confirm your ADNEC allocation and technical needs, then request a scoped FANN proposal.",
+    "heading": "IDEX exhibition stand design in Abu Dhabi",
+    "city": "Abu Dhabi",
+    "breadcrumb": "IDEX stand design Abu Dhabi",
+    "subheading": "Plan the equipment display, delegation route and meeting brief before the stand goes into production.",
+    "intro": "A defence exhibition stand has to carry real equipment, private meetings and protocol-level hospitality at the same time. FANN can develop an exhibition stand design and build proposal around your IDEX allocation, equipment displays, demonstration needs and meeting programme. Our Dubai office coordinates the brief and our Umm Al Quwain workshop supports the agreed fabrication. We are an independent contractor, not the IDEX organiser or an appointed official contractor.",
+    "hero": "/images/stands/6-geven-aircraft-interiors.webp",
+    "heroAlt": "Completed Geven aircraft interiors exhibition stand built by FANN",
+    "heroCaption": "Completed FANN stand: Geven, aircraft interiors. An engineering-sector reference, not an IDEX project.",
+    "action": "Share your IDEX stand brief",
+    "sections": [
+      {
+        "heading": "IDEX 2027: confirm the dates and your allocation",
+        "text": "The organiser lists the 17th edition for 25-29 January 2027 at ADNEC Centre Abu Dhabi, checked on the official event site on 19 October 2026. Send the hall and stand number, dimensions and open sides from your exhibitor documents. Public show dates are not build-up, submission or dismantling deadlines; those come from your exhibitor manual."
+      },
+      {
+        "heading": "Start with the equipment and the delegation route",
+        "text": "List what will be displayed - vehicles, weapons systems, electronics or scale models - and what each item needs in weight, floor loading, power and security. Plan the visitor route from the public edge of the stand to controlled demonstration areas, so casual visitors, invited delegations and VVIP protocol visits each get the right level of access without crossing paths.",
+        "items": [
+          "Equipment: dimensions, weights, floor-loading and power requirements supplied by the equipment owner.",
+          "Access control: open display areas, invitation-only demonstration zones and secure brief rooms separated by design, not by improvised barriers.",
+          "Services: power, data, compressed air or specialist interfaces to be checked against the venue order forms."
+        ]
+      },
+      {
+        "heading": "Meetings and hospitality at protocol level",
+        "text": "Defence programmes are discussed in private. Plan enclosed meeting rooms, a majlis or hospitality lounge and catering support into the footprint from the start, with acoustic separation from demonstration areas. Double-deck structures can add private meeting capacity above a working ground floor, subject to venue approval."
+      },
+      {
+        "heading": "One scoped contract from design to dismantling",
+        "text": "FANN takes the agreed design into fabrication in our own workshop, then logistics, installation and dismantling at the venue. You get one scoped contract and one accountable team from concept to handover."
+      }
+    ],
+    "proof": [
+      {
+        "path": "/portfolio/trevos-light-middle-east",
+        "image": "/images/stands/1-trevos-light-middle-east.webp",
+        "name": "TREVOS - Light Middle East",
+        "location": "Dubai, 2023",
+        "text": "The photograph shows the completed TREVOS stand at Light Middle East 2023, with overhead identity feature and product displays. It documents UAE show experience; it does not establish an ADIPEC appointment or a measured visitor result."
+      }
+    ],
+    "proofHeading": "A completed UAE show stand to inform your brief",
+    "proofNote": "Real FANN project photographs. Use them to discuss display, branding and meeting space; they document UAE show experience, not an IDEX appointment.",
+    "faqs": [
+      {
+        "question": "When and where is IDEX 2027?",
+        "answer": "The organiser lists 25-29 January 2027 at ADNEC Centre Abu Dhabi. Confirm your actual hall, stand allocation and current exhibitor manual separately. Show dates are not build-up or dismantling windows."
+      },
+      {
+        "question": "What should I send for an IDEX stand proposal?",
+        "answer": "Send your name and one contact method, then the hall and stand number, dimensions, open sides, the equipment you will display, meeting and hospitality needs, brand files and your deadline if known. Include equipment weights, footprints and utility requirements before detailed design and pricing."
+      },
+      {
+        "question": "Can FANN build double-deck stands for IDEX?",
+        "answer": "Double-deck structures are possible subject to venue approval and the exhibitor manual rules for the show. Share your allocation and requirements and FANN will confirm feasibility inside the scoped proposal."
+      }
+    ],
+    "related": [
+      {
+        "path": "/exhibition-stand-design-abu-dhabi",
+        "label": "Exhibition stand design in Abu Dhabi"
+      },
+      {
+        "path": "/exhibition-stands-abu-dhabi",
+        "label": "Exhibition stands in Abu Dhabi"
+      },
+      {
+        "path": "/adipec-exhibition-stand-design-abu-dhabi",
+        "label": "ADIPEC stand design Abu Dhabi"
+      },
+      {
+        "path": "/exhibition-stand-design-dubai",
+        "label": "Exhibition stand design in Dubai"
+      }
+    ],
+    "sources": [
+      {
+        "url": "https://www.idexuae.ae/",
+        "label": "IDEX official event site",
+        "note": "Checked 19 October 2026: 17th edition, 25-29 January 2027, ADNEC Centre Abu Dhabi. Obtain the current exhibitor manual through your booked exhibitor route for operational requirements."
+      },
+      {
+        "url": "https://www.adnecgroup.ae/",
+        "label": "ADNEC Group venue site",
+        "note": "Venue operator site for cross-checking event dates and halls."
+      }
+    ]
   }
 }
