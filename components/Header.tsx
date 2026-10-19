@@ -43,9 +43,9 @@ const Header: React.FC = () => {
                 </Link>
 
                 {/* DESKTOP NAVIGATION */}
-                <nav className="hidden lg:flex items-center space-x-10">
+                <nav className="hidden lg:flex items-center space-x-6 xl:space-x-10">
                     {navLinks.map((link) => (
-                        <div key={link.name} className={`relative group h-full ${link.name === 'FANN Studio' ? 'lg:border-l lg:border-white/20 lg:pl-8' : ''}`}>
+                        <div key={link.name} className={`relative group h-full ${link.name === 'FANN Studio' ? 'lg:border-l lg:border-white/20 lg:pl-4 xl:pl-8' : ''}`}>
                             {link.children ? (
                                 <button 
                                     className="flex items-center gap-1 text-xs font-semibold uppercase tracking-widest text-gray-300 hover:text-fann-gold transition-colors py-2 hover-trigger"
@@ -85,7 +85,7 @@ const Header: React.FC = () => {
                 </nav>
 
                 {/* RIGHT ACTIONS */}
-                <div className="hidden lg:flex items-center gap-6">
+                <div className="hidden lg:flex items-center gap-4 xl:gap-6">
                     <ThemeToggle />
                     <a href="tel:+971505667502" className="text-xs font-semibold text-fann-gold hover:text-white transition-colors whitespace-nowrap" aria-label="Call FANN at +971 50 566 7502">+971 50 566 7502</a>
                     <Link to="/contact" className="hover-trigger">
