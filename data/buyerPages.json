@@ -1457,6 +1457,10 @@
         "label": "Plan a stand at Dubai World Trade Centre"
       },
       {
+        "path": "/dec-expo-city-exhibition-stand-design-dubai",
+        "label": "Plan a stand at Dubai Exhibition Centre, Expo City"
+      },
+      {
         "path": "/exhibition-stand-builders-dubai",
         "label": "Exhibition stand builders Dubai"
       },
@@ -4841,6 +4845,10 @@
         "label": "Exhibition stand builders in Dubai"
       },
       {
+        "path": "/dec-expo-city-exhibition-stand-design-dubai",
+        "label": "Plan a stand at Dubai Exhibition Centre, Expo City"
+      },
+      {
         "path": "/adnec-exhibition-stand-design-abu-dhabi",
         "label": "Plan a stand at ADNEC Centre Abu Dhabi"
       },
@@ -4864,6 +4872,210 @@
         "url": "https://www.dwtc.com/",
         "label": "Dubai World Trade Centre official site",
         "note": "Venue information; DWTC states it hosts more than 400 events and 2.9 million visitors a year."
+      }
+    ]
+  },
+  "/dec-expo-city-exhibition-stand-design-dubai": {
+    "title": "Dubai Exhibition Centre (Expo City) Stand Design & Build | FANN",
+    "description": "Plan a custom exhibition stand at Dubai Exhibition Centre, Expo City Dubai: allocation, exhibitor manual, venue services and approvals. FANN designs, fabricates and installs with one scoped contract.",
+    "heading": "Exhibition stand design and build at Dubai Exhibition Centre, Expo City",
+    "city": "Dubai",
+    "breadcrumb": "DEC Expo City stand design",
+    "subheading": "From your confirmed allocation to an approved, installed stand - one scoped contract.",
+    "intro": "Dubai Exhibition Centre at Expo City Dubai now hosts some of the region's largest exhibitions, including GITEX Global, Automechanika Dubai, World Health Expo and Gulfood. FANN designs and builds custom exhibition stands for exhibitors at the venue: the brief starts from your confirmed allocation and exhibitor manual, moves through 3D design visuals, and continues into fabrication at our Umm Al Quwain workshop, delivery, installation and dismantling. We are an independent Dubai contractor, not DEC, the show organiser or an appointed official contractor.",
+    "hero": "/images/stands/6-geven-aircraft-interiors.webp",
+    "heroAlt": "Completed exhibition stand built by FANN for a Dubai trade show exhibitor",
+    "heroCaption": "Completed FANN stand: Geven, aircraft interiors. A real project reference, not a DEC venue image.",
+    "action": "Share your DEC stand brief",
+    "sections": [
+      {
+        "heading": "Start from the allocation and the exhibitor manual",
+        "text": "Every stand at Dubai Exhibition Centre is governed by the show's exhibitor manual: build-up and dismantling windows, submission deadlines for drawings, height limits and service order cut-offs. Several large shows now span both DEC and Dubai World Trade Centre - your booking states which venue and hall you are in, and the logistics differ. Send us the venue, hall and stand number, dimensions, open sides and the current manual. Public show dates are not build-up, submission or dismantling deadlines; those come from your manual.",
+        "items": [
+          "Allocation: venue (DEC or DWTC), hall, stand number, dimensions, open sides and any adjoining structures.",
+          "Submissions: stand drawings and risk documents to the organiser or venue by the stated deadline, with a named owner on our side.",
+          "Deadlines: service orders and approval submissions carry their own cut-off dates, separate from the show dates."
+        ]
+      },
+      {
+        "heading": "Venue services and appointing your own contractor",
+        "text": "Utilities, rigging and venue services at DEC are ordered through the organiser's official manuals and order forms, with early-order deadlines. Exhibitors with space-only allocations commonly appoint their own stand contractor for a custom build; confirm the current rules, nomination forms and any venue approval steps for an independent contractor in your exhibitor manual. FANN works to whichever appointment route your show requires.",
+        "items": [
+          "Utilities and services: power, water, compressed air, internet and rigging via the official order forms, with early-bird deadlines.",
+          "Rigging and overhead structures: only with venue approval and certified rigging points; plan loads and drawings early.",
+          "Double-deck stands: possible in principle, subject to venue approval, structural drawings and the manual's conditions."
+        ]
+      },
+      {
+        "heading": "A new venue with new logistics",
+        "text": "Shows relocating from DWTC to DEC bring new hall layouts, access routes, marshalling and build-up patterns. We plan transport, installation crew scheduling and dismantling around the venue's actual access rules rather than assumptions carried over from previous editions at other venues."
+      },
+      {
+        "heading": "One scoped contract from design to dismantling",
+        "text": "FANN takes the agreed design into fabrication in our own workshop, then logistics, installation and dismantling at the venue. You get one scoped contract and one accountable team from concept to handover, with the itemised scope in writing before work begins."
+      }
+    ],
+    "eventsHeading": "Upcoming events at Dubai Exhibition Centre, Expo City",
+    "eventsNote": "As listed on DEC's official What's On page, checked 19 October 2026, soonest first, with halls as listed. Where we have a planning page for the show, the event name links to it. The GITEX Global Summit on 7 December takes place at Dubai World Trade Centre; the exhibition days at DEC are 8-11 December.",
+    "eventsList": [
+      {
+        "dates": "22-24 Oct 2026",
+        "name": "Baby & Kids Expo",
+        "hall": "South Halls"
+      },
+      {
+        "dates": "24-25 Oct 2026",
+        "name": "The School & Nursery Show",
+        "hall": "South Halls"
+      },
+      {
+        "dates": "27-29 Oct 2026",
+        "name": "Jewellery, Gem & Technology in Dubai",
+        "hall": "North Halls"
+      },
+      {
+        "dates": "10-12 Nov 2026",
+        "name": "Automechanika Dubai",
+        "path": "/automechanika-dubai-exhibition-stand-design-dubai",
+        "hall": "North and South Halls"
+      },
+      {
+        "dates": "14-15 Nov 2026",
+        "name": "1st ICAI GGC Annual International Conference",
+        "hall": "South Halls"
+      },
+      {
+        "dates": "27-28 Nov 2026",
+        "name": "HYROX Dubai",
+        "hall": "North Halls"
+      },
+      {
+        "dates": "8-10 Dec 2026",
+        "name": "Expand North Star",
+        "hall": "North Halls"
+      },
+      {
+        "dates": "8-11 Dec 2026",
+        "name": "GITEX Global 2026",
+        "path": "/gitex-exhibition-stand-design-dubai",
+        "hall": "North and South Halls"
+      },
+      {
+        "dates": "25-28 Jan 2027",
+        "name": "World Health Expo Dubai (WHX)",
+        "path": "/arab-health-exhibition-stand-design-dubai",
+        "hall": "North and South Halls",
+        "note": "spans DEC and DWTC - check your booking"
+      },
+      {
+        "dates": "15-19 Mar 2027",
+        "name": "Gulfood",
+        "path": "/gulfood-exhibition-stand-design-dubai",
+        "hall": "North and South Halls",
+        "note": "spans DEC and DWTC - check your booking"
+      },
+      {
+        "dates": "4-6 May 2027",
+        "name": "GISEC Global",
+        "path": "/gisec-exhibition-stand-design-dubai",
+        "hall": "South Halls"
+      },
+      {
+        "dates": "11-13 May 2027",
+        "name": "Middle East Energy",
+        "path": "/middle-east-energy-exhibition-stand-design-dubai",
+        "hall": "North and South Halls"
+      },
+      {
+        "dates": "25-27 May 2027",
+        "name": "National Service Career Fair",
+        "hall": "South Halls"
+      }
+    ],
+    "proofHeading": "Real FANN projects to inform your DEC brief",
+    "proofNote": "Documented completed projects from the FANN archive. The Geven stand was built for Aircraft Interiors Middle East; the same design-and-build process applies at DEC.",
+    "proofLinkLabel": "View completed project",
+    "proof": [
+      {
+        "path": "/portfolio/geven-aircraft-interiors",
+        "image": "/images/stands/6-geven-aircraft-interiors.webp",
+        "name": "Geven - Aircraft Interiors Middle East",
+        "location": "Dubai",
+        "text": "Engineering-sector stand with real equipment displays and enclosed meeting rooms."
+      },
+      {
+        "path": "/portfolio/trevos-light-middle-east",
+        "image": "/images/stands/1-trevos-light-middle-east.webp",
+        "name": "TREVOS - Light Middle East",
+        "location": "Dubai",
+        "text": "Custom lighting-sector stand: product displays, meeting space and storage planned around the allocation."
+      },
+      {
+        "path": "/portfolio/national-expression-adek-abu-dhabi",
+        "image": "/images/projects/national-expression-adek/01.webp",
+        "name": "National Expression - ADEK",
+        "location": "Abu Dhabi",
+        "text": "A national celebration project delivered by FANN in Abu Dhabi - the same design-and-build process applies at DEC."
+      }
+    ],
+    "proposalHeading": "Turn your DEC allocation into a scoped proposal",
+    "proposalText": "Share the show, hall and stand number, dimensions, open sides, products and deadlines. Add your floor plan and the exhibitor manual if available.",
+    "faqs": [
+      {
+        "question": "Can FANN build my stand at Dubai Exhibition Centre, Expo City?",
+        "answer": "Yes. We design, fabricate and install custom exhibition stands at DEC as an independent Dubai contractor. The appointment route and any nomination forms come from your show's exhibitor manual; we work to whichever route the organiser requires."
+      },
+      {
+        "question": "My show spans DEC and DWTC - how does that change the stand plan?",
+        "answer": "World Health Expo Dubai and Gulfood 2027 both span the two venues. Your booking states which venue and hall you are in; access routes, marshalling, build-up patterns and service orders differ between them, so we plan logistics around your actual venue rather than assumptions from previous editions."
+      },
+      {
+        "question": "What should I send for a DEC stand proposal?",
+        "answer": "Send the show name, hall and stand number, dimensions, open sides, planned products and activities, brand assets and required dates. Include the current exhibitor manual and any floor plan or drawings already available."
+      },
+      {
+        "question": "Can you build a double-deck stand at DEC?",
+        "answer": "Double-deck structures are possible in principle, subject to venue approval, structural drawings and the conditions in the exhibitor manual. We prepare the drawings and manage the submission when the design calls for a second level."
+      }
+    ],
+    "relatedHeading": "Continue planning your Dubai stand",
+    "related": [
+      {
+        "path": "/exhibition-stand-design-dubai",
+        "label": "Dubai exhibition stand design guide"
+      },
+      {
+        "path": "/dwtc-exhibition-stand-design-dubai",
+        "label": "Plan a stand at Dubai World Trade Centre"
+      },
+      {
+        "path": "/adnec-exhibition-stand-design-abu-dhabi",
+        "label": "Plan a stand at ADNEC Centre Abu Dhabi"
+      },
+      {
+        "path": "/exhibition-stand-builders-dubai",
+        "label": "Exhibition stand builders in Dubai"
+      },
+      {
+        "path": "/events-calendar",
+        "label": "UAE exhibitions calendar 2026-2027"
+      },
+      {
+        "path": "/portfolio",
+        "label": "FANN project portfolio"
+      }
+    ],
+    "sourcesHeading": "Venue planning sources",
+    "sources": [
+      {
+        "url": "https://www.dubaiexhibitioncentre.com/en/whats-on",
+        "label": "DEC official What's On page",
+        "note": "Checked 19 October 2026: upcoming event names, dates and halls as listed by the venue."
+      },
+      {
+        "url": "https://www.gitex.com/",
+        "label": "GITEX Global official site",
+        "note": "Checked 19 October 2026: 7-11 December 2026 - summit day 7 December at DWTC, exhibition 8-11 December at DEC Expo City."
       }
     ]
   }
