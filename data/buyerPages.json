@@ -4274,5 +4274,132 @@
         "note": "Checked 19 October 2026: 14th edition, 23-25 November 2026, Jeddah Center for Exhibitions and Events. Obtain the current exhibitor manual through your booked exhibitor route for operational requirements."
       }
     ]
+  },
+  "/adnec-exhibition-stand-design-abu-dhabi": {
+    "title": "ADNEC Exhibition Stand Design & Build Abu Dhabi | FANN",
+    "description": "Plan a custom exhibition stand at ADNEC Centre Abu Dhabi: allocation, exhibitor manual, venue services and approvals. FANN designs, fabricates and installs with one scoped contract.",
+    "heading": "Exhibition stand design and build at ADNEC Centre Abu Dhabi",
+    "city": "Abu Dhabi",
+    "breadcrumb": "ADNEC stand design Abu Dhabi",
+    "subheading": "From your confirmed allocation to an approved, installed stand - one scoped contract.",
+    "intro": "ADNEC Centre Abu Dhabi hosts the capital's largest trade shows, congresses and national celebration events. FANN designs and builds custom exhibition stands for exhibitors at the venue: the brief starts from your confirmed allocation and exhibitor manual, moves through 3D design visuals, and continues into fabrication at our Umm Al Quwain workshop, delivery, installation and dismantling. We are an independent contractor, not ADNEC, the show organiser or an appointed official contractor.",
+    "hero": "/images/stands/6-geven-aircraft-interiors.webp",
+    "heroAlt": "Completed exhibition stand built by FANN for an Abu Dhabi trade show exhibitor",
+    "heroCaption": "Completed FANN stand: Geven, aircraft interiors. A real project reference, not an ADNEC venue image.",
+    "action": "Share your ADNEC stand brief",
+    "sections": [
+      {
+        "heading": "Start from the allocation and the exhibitor manual",
+        "text": "Every stand at ADNEC Centre Abu Dhabi is governed by the show's exhibitor manual: build-up and dismantling windows, submission deadlines for drawings, height limits and service order cut-offs. Send us the hall and stand number, dimensions, open sides and the current manual. Public show dates are not build-up, submission or dismantling deadlines; those come from your manual.",
+        "items": [
+          "Allocation: hall, stand number, dimensions, open sides and any adjoining structures.",
+          "Submissions: stand drawings and risk documents to the organiser or venue by the stated deadline, with a named owner on our side.",
+          "Deadlines: service orders and approval submissions carry their own cut-off dates, separate from the show dates."
+        ]
+      },
+      {
+        "heading": "Venue services and the official contractor",
+        "text": "ADNEC Group operates its own official services arm, Capital 360, which offers stand services at the venue. Exhibitors with space-only allocations commonly appoint their own stand contractor for a custom build; confirm the current rules, nomination forms and any venue approval steps for an independent contractor in your exhibitor manual. FANN works to whichever appointment route your show requires.",
+        "items": [
+          "Utilities and services: power, water, compressed air, internet and rigging are ordered through the venue or organiser order forms, with early-order deadlines.",
+          "Rigging and overhead structures: only with venue approval and certified rigging points; plan loads and drawings early.",
+          "Double-deck stands: possible in principle, subject to venue approval, structural drawings and the manual's conditions."
+        ]
+      },
+      {
+        "heading": "National celebration events: Eid Al Etihad at Abu Dhabi venues",
+        "text": "Around 2 December, Eid Al Etihad brings national celebration events to Abu Dhabi, and exhibitors need stands with heritage-led design, interactive areas and precise approvals. Our completed National Expression project for ADEK in Abu Dhabi is a documented reference for this kind of celebration build. We scope these stands the same way as trade-show projects: brief, 3D visuals, in-house fabrication, installation and dismantling agreed in writing."
+      },
+      {
+        "heading": "One scoped contract from design to dismantling",
+        "text": "FANN takes the agreed design into fabrication in our own workshop, then logistics, installation and dismantling at the venue. You get one scoped contract and one accountable team from concept to handover, with the itemised scope in writing before work begins."
+      }
+    ],
+    "proofHeading": "Real FANN projects to inform your ADNEC brief",
+    "proofNote": "Documented completed projects from the FANN archive. The ADEK project was built in Abu Dhabi; the others are Dubai references that show the same design-and-build process.",
+    "proofLinkLabel": "View completed project",
+    "proof": [
+      {
+        "path": "/portfolio/national-expression-adek-abu-dhabi",
+        "image": "/images/projects/national-expression-adek/01.webp",
+        "name": "National Expression - ADEK",
+        "location": "Abu Dhabi",
+        "text": "A national celebration project for ADEK in Abu Dhabi: heritage-led design, visitor areas and full build delivered by FANN."
+      },
+      {
+        "path": "/portfolio/trevos-light-middle-east",
+        "image": "/images/stands/1-trevos-light-middle-east.webp",
+        "name": "TREVOS - Light Middle East",
+        "location": "Dubai",
+        "text": "Custom lighting-sector stand: product displays, meeting space and storage planned around the allocation."
+      },
+      {
+        "path": "/portfolio/geven-aircraft-interiors",
+        "image": "/images/stands/6-geven-aircraft-interiors.webp",
+        "name": "Geven - Aircraft Interiors Middle East",
+        "location": "Dubai",
+        "text": "Engineering-sector stand with real equipment displays and enclosed meeting rooms."
+      }
+    ],
+    "proposalHeading": "Turn your ADNEC allocation into a scoped proposal",
+    "proposalText": "Share the show, hall and stand number, dimensions, open sides, products and deadlines. Add your floor plan and the exhibitor manual if available.",
+    "faqs": [
+      {
+        "question": "Can FANN build my stand at ADNEC Centre Abu Dhabi?",
+        "answer": "Yes. We design, fabricate and install custom exhibition stands at ADNEC Group venues in Abu Dhabi as an independent contractor. The appointment route and any nomination forms come from your show's exhibitor manual; we work to whichever route the organiser requires."
+      },
+      {
+        "question": "Who is the official stand contractor at ADNEC?",
+        "answer": "ADNEC Group operates its own official services arm, Capital 360, for stand services at the venue. You are not limited to a shell scheme: space-only exhibitors commonly appoint their own contractor for a custom stand. Confirm the current rules in your exhibitor manual."
+      },
+      {
+        "question": "What should I send for an ADNEC stand proposal?",
+        "answer": "Send the show name, hall and stand number, dimensions, open sides, planned products and activities, brand assets and required dates. Include the current exhibitor manual and any floor plan or drawings already available."
+      },
+      {
+        "question": "Can you build a double-deck stand at ADNEC?",
+        "answer": "Double-deck structures are possible in principle, subject to venue approval, structural drawings and the conditions in the exhibitor manual. We prepare the drawings and manage the submission when the design calls for a second level."
+      },
+      {
+        "question": "Do you build stands for Eid Al Etihad events in Abu Dhabi?",
+        "answer": "Yes. We design and build national celebration stands around the 2 December Eid Al Etihad events at Abu Dhabi venues. Our completed National Expression project for ADEK in Abu Dhabi is a documented reference for heritage-led celebration builds."
+      }
+    ],
+    "relatedHeading": "Continue planning your Abu Dhabi stand",
+    "related": [
+      {
+        "path": "/exhibition-stands-abu-dhabi",
+        "label": "Exhibition stand builders for Abu Dhabi shows"
+      },
+      {
+        "path": "/exhibition-stand-design-abu-dhabi",
+        "label": "Abu Dhabi exhibition stand design guide"
+      },
+      {
+        "path": "/adipec-exhibition-stand-design-abu-dhabi",
+        "label": "ADIPEC stand design at ADNEC"
+      },
+      {
+        "path": "/idex-exhibition-stand-design-abu-dhabi",
+        "label": "IDEX stand design at ADNEC"
+      },
+      {
+        "path": "/portfolio",
+        "label": "FANN project portfolio"
+      }
+    ],
+    "sourcesHeading": "Venue planning sources",
+    "sources": [
+      {
+        "url": "https://www.adnec.ae/",
+        "label": "ADNEC Group official site",
+        "note": "Checked 19 October 2026: venue information for ADNEC Centre Abu Dhabi and group services."
+      },
+      {
+        "url": "https://www.adnec.ae/en/eventlisting/adipec-2026",
+        "label": "ADNEC Centre event listing",
+        "note": "ADNEC's own event listings confirm shows and dates at the venue."
+      }
+    ]
   }
 }
