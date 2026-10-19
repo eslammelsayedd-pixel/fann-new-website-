@@ -1453,6 +1453,10 @@
     ],
     "related": [
       {
+        "path": "/dwtc-exhibition-stand-design-dubai",
+        "label": "Plan a stand at Dubai World Trade Centre"
+      },
+      {
         "path": "/exhibition-stand-builders-dubai",
         "label": "Exhibition stand builders Dubai"
       },
@@ -4399,6 +4403,466 @@
         "url": "https://www.adnec.ae/en/eventlisting/adipec-2026",
         "label": "ADNEC Centre event listing",
         "note": "ADNEC's own event listings confirm shows and dates at the venue."
+      }
+    ],
+    "eventsHeading": "Upcoming events at ADNEC Centre Abu Dhabi",
+    "eventsNote": "As listed on ADNEC Centre's official What's On page, checked 19 October 2026, soonest first. IDEX 2027 dates come from the official IDEX site, checked 19 October 2026. Where we have a planning page for the show, the event name links to it.",
+    "eventsList": [
+      {
+        "dates": "18-21 Oct 2026",
+        "name": "Najah Abu Dhabi",
+        "hall": "Halls 8-9"
+      },
+      {
+        "dates": "19-20 Oct 2026",
+        "name": "Forbes ME Sustainability Leaders Summit",
+        "hall": "Halls 10-11"
+      },
+      {
+        "dates": "20-22 Oct 2026",
+        "name": "Abu Dhabi Future Health Summit",
+        "hall": "Halls 1-4 & Atrium"
+      },
+      {
+        "dates": "21 Oct 2026",
+        "name": "Emirati Education Forum",
+        "hall": "ICC Hall"
+      },
+      {
+        "dates": "22 Oct 2026",
+        "name": "UAE Warriors 74",
+        "hall": "Marina Hall 1"
+      },
+      {
+        "dates": "23-25 Oct 2026",
+        "name": "HYROX Abu Dhabi",
+        "hall": "Halls 7-10"
+      },
+      {
+        "dates": "26 Oct 2026",
+        "name": "The Arabian AI & Agentic Summit",
+        "hall": "Conference Hall B"
+      },
+      {
+        "dates": "2-5 Nov 2026",
+        "name": "ADIPEC 2026",
+        "path": "/adipec-exhibition-stand-design-abu-dhabi",
+        "hall": "Full Venue"
+      },
+      {
+        "dates": "9-13 Nov 2026",
+        "name": "46th ICMM World Congress of Military Medicine",
+        "hall": "Halls 10-11 & ICC Hall"
+      },
+      {
+        "dates": "10-12 Nov 2026",
+        "name": "International Real Estate & Investment Show 2026",
+        "hall": "Hall 6"
+      },
+      {
+        "dates": "10-13 Nov 2026",
+        "name": "Wa'ad Luxury Event",
+        "hall": "Marina Hall 2"
+      },
+      {
+        "dates": "11-15 Nov 2026",
+        "name": "Jewellery & Watch Show Abu Dhabi (JWS)",
+        "hall": "Halls 1-3"
+      },
+      {
+        "dates": "11-12 Nov 2026",
+        "name": "Revive ME",
+        "hall": "Marina Hall"
+      },
+      {
+        "dates": "17-19 Nov 2026",
+        "name": "Tawdheef x Zaheb",
+        "hall": "Halls 7-9"
+      },
+      {
+        "dates": "19 Nov 2026",
+        "name": "Emirates Labour Market Award",
+        "hall": "ICC Hall"
+      },
+      {
+        "dates": "19-22 Nov 2026",
+        "name": "Abu Dhabi International Boat Show (ADIBS)",
+        "hall": "Marina Hall"
+      },
+      {
+        "dates": "16-20 Dec 2026",
+        "name": "Rakish Expo",
+        "hall": "Marina Hall 2"
+      },
+      {
+        "dates": "25-29 Jan 2027",
+        "name": "IDEX 2027",
+        "path": "/idex-exhibition-stand-design-abu-dhabi",
+        "note": "dates from the official IDEX site, checked 19 October 2026"
+      }
+    ]
+  },
+  "/dwtc-exhibition-stand-design-dubai": {
+    "title": "DWTC Exhibition Stand Design & Build Dubai | FANN",
+    "description": "Plan a custom exhibition stand at Dubai World Trade Centre: allocation, exhibitor manual, venue services and approvals. FANN designs, fabricates and installs with one scoped contract.",
+    "heading": "Exhibition stand design and build at Dubai World Trade Centre",
+    "city": "Dubai",
+    "breadcrumb": "DWTC stand design Dubai",
+    "subheading": "From your confirmed allocation to an approved, installed stand - one scoped contract.",
+    "intro": "Dubai World Trade Centre hosts hundreds of events a year, including many of the region's largest trade exhibitions. FANN designs and builds custom exhibition stands for exhibitors at the venue: the brief starts from your confirmed allocation and exhibitor manual, moves through 3D design visuals, and continues into fabrication at our Umm Al Quwain workshop, delivery, installation and dismantling. We are an independent Dubai contractor, not DWTC, the show organiser or an appointed official contractor.",
+    "hero": "/images/stands/1-trevos-light-middle-east.webp",
+    "heroAlt": "Completed exhibition stand built by FANN at a Dubai World Trade Centre show",
+    "heroCaption": "Completed FANN stand: TREVOS at Light Middle East, Dubai World Trade Centre. A real project at this venue.",
+    "action": "Share your DWTC stand brief",
+    "sections": [
+      {
+        "heading": "Start from the allocation and the exhibitor manual",
+        "text": "Every stand at Dubai World Trade Centre is governed by the show's exhibitor manual: build-up and dismantling windows, submission deadlines for drawings, height limits and service order cut-offs. Send us the hall and stand number, dimensions, open sides and the current manual. Public show dates are not build-up, submission or dismantling deadlines; those come from your manual.",
+        "items": [
+          "Allocation: hall, stand number, dimensions, open sides and any adjoining structures.",
+          "Submissions: stand drawings and risk documents to the organiser or venue by the stated deadline, with a named owner on our side.",
+          "Deadlines: service orders and approval submissions carry their own cut-off dates, separate from the show dates."
+        ]
+      },
+      {
+        "heading": "Venue services and appointing your own contractor",
+        "text": "Utilities, rigging and venue services at DWTC are ordered through the organiser's official manuals and order forms, with early-order deadlines. Exhibitors with space-only allocations commonly appoint their own stand contractor for a custom build; confirm the current rules, nomination forms and any venue approval steps for an independent contractor in your exhibitor manual. FANN works to whichever appointment route your show requires.",
+        "items": [
+          "Utilities and services: power, water, compressed air, internet and rigging via the official order forms, with early-bird deadlines.",
+          "Rigging and overhead structures: only with venue approval and certified rigging points; plan loads and drawings early.",
+          "Double-deck stands: possible in principle, subject to venue approval, structural drawings and the manual's conditions."
+        ]
+      },
+      {
+        "heading": "Built in our own workshop, installed by our own team",
+        "text": "FANN takes the agreed design into fabrication in our Umm Al Quwain workshop, then logistics, installation and dismantling at DWTC. You get one scoped contract and one accountable team from concept to handover, with the itemised scope in writing before work begins."
+      }
+    ],
+    "eventsHeading": "Upcoming events at Dubai World Trade Centre",
+    "eventsNote": "As listed on DWTC's official What's On calendar, checked 19 October 2026, soonest first. Where we have a planning page for the show, the event name links to it. DWTC notes it hosts more than 400 events a year; later 2027 shows are added to its calendar as they are confirmed.",
+    "eventsList": [
+      {
+        "dates": "19-21 Oct 2026",
+        "name": "Accessabilities Expo"
+      },
+      {
+        "dates": "20-22 Oct 2026",
+        "name": "WETEX",
+        "path": "/wetex-exhibition-stand-design-dubai"
+      },
+      {
+        "dates": "21-22 Oct 2026",
+        "name": "World Green Economy Summit"
+      },
+      {
+        "dates": "25-27 Oct 2026",
+        "name": "Najah Exhibition"
+      },
+      {
+        "dates": "26-28 Oct 2026",
+        "name": "Arablab+"
+      },
+      {
+        "dates": "3-5 Nov 2026",
+        "name": "Gulfood Manufacturing",
+        "path": "/exhibitions/gulfood-manufacturing-2026-stand-planning"
+      },
+      {
+        "dates": "3-5 Nov 2026",
+        "name": "ISM Middle East"
+      },
+      {
+        "dates": "3-5 Nov 2026",
+        "name": "Private Label Middle East"
+      },
+      {
+        "dates": "3-5 Nov 2026",
+        "name": "Gulf Host"
+      },
+      {
+        "dates": "10-12 Nov 2026",
+        "name": "World Vape Show"
+      },
+      {
+        "dates": "10-11 Nov 2026",
+        "name": "World Tobacco Middle East"
+      },
+      {
+        "dates": "10-12 Nov 2026",
+        "name": "GESS - Global Educational Supplies & Solutions"
+      },
+      {
+        "dates": "10-12 Nov 2026",
+        "name": "EV World Show"
+      },
+      {
+        "dates": "16-18 Nov 2026",
+        "name": "World Police Summit"
+      },
+      {
+        "dates": "16-18 Nov 2026",
+        "name": "Paper Arabia"
+      },
+      {
+        "dates": "16-17 Nov 2026",
+        "name": "The Mining Show"
+      },
+      {
+        "dates": "16-18 Nov 2026",
+        "name": "Middle East Organic and Natural Products Expo"
+      },
+      {
+        "dates": "16-18 Nov 2026",
+        "name": "International Apparel & Textile Fair"
+      },
+      {
+        "dates": "16-17 Nov 2026",
+        "name": "Dubai International Food Safety Conference 2026"
+      },
+      {
+        "dates": "19-22 Nov 2026",
+        "name": "World Art Dubai 2026"
+      },
+      {
+        "dates": "23-26 Nov 2026",
+        "name": "Big 5 Global",
+        "path": "/big-5-exhibition-stand-design-dubai"
+      },
+      {
+        "dates": "23-26 Nov 2026",
+        "name": "GeoWorld"
+      },
+      {
+        "dates": "23-26 Nov 2026",
+        "name": "Future FM"
+      },
+      {
+        "dates": "23-26 Nov 2026",
+        "name": "HVACR World"
+      },
+      {
+        "dates": "3-6 Dec 2026",
+        "name": "Jewellery & Bride Arabia"
+      },
+      {
+        "dates": "3-5 Dec 2026",
+        "name": "EPOMEC 2026 (Ophthalmology Middle East Conference)"
+      },
+      {
+        "dates": "4-8 Dec 2026",
+        "name": "Gitex Global Summit",
+        "note": "listed by DWTC; the GITEX Global exhibition is listed separately at Expo City Dubai for 8-11 December 2026"
+      },
+      {
+        "dates": "7-9 Dec 2026",
+        "name": "Sign & Graphic Imaging Middle East"
+      },
+      {
+        "dates": "14-15 Dec 2026",
+        "name": "International Summit for Aviation Training (ISAT)"
+      },
+      {
+        "dates": "15-17 Dec 2026",
+        "name": "Asia Baby Children Maternity Exhibition"
+      },
+      {
+        "dates": "15-17 Dec 2026",
+        "name": "International Appliance and Electronics Show"
+      },
+      {
+        "dates": "15-17 Dec 2026",
+        "name": "China Home Life"
+      },
+      {
+        "dates": "12-14 Jan 2027",
+        "name": "Intersec Global",
+        "path": "/intersec-exhibition-stand-design-dubai"
+      },
+      {
+        "dates": "12-14 Jan 2027",
+        "name": "Light + Intelligent Building Middle East"
+      },
+      {
+        "dates": "12-14 Jan 2027",
+        "name": "Gulf Pack & Gulf Print",
+        "path": "/gulf-print-pack-exhibition-stand-design-dubai"
+      },
+      {
+        "dates": "18-20 Jan 2027",
+        "name": "Entertainment & Leisure MENA"
+      },
+      {
+        "dates": "19-21 Jan 2027",
+        "name": "AEEDC Dubai (UAE International Dental Conference)"
+      },
+      {
+        "dates": "25-28 Jan 2027",
+        "name": "World Health Expo Dubai (WHX, formerly Arab Health)",
+        "path": "/arab-health-exhibition-stand-design-dubai"
+      },
+      {
+        "dates": "25-28 Jan 2027",
+        "name": "World Health Expo Labs Dubai"
+      },
+      {
+        "dates": "25-28 Jan 2027",
+        "name": "World Health Expo Tech (WHX)"
+      },
+      {
+        "dates": "26-28 Jan 2027",
+        "name": "World of Coffee Dubai"
+      },
+      {
+        "dates": "2-3 Feb 2027",
+        "name": "Aircraft Interiors Middle East (AIME) & MRO Middle East"
+      },
+      {
+        "dates": "2-3 Feb 2027",
+        "name": "Breakbulk Middle East"
+      },
+      {
+        "dates": "15-19 Mar 2027",
+        "name": "Gulfood",
+        "path": "/gulfood-exhibition-stand-design-dubai"
+      },
+      {
+        "dates": "23-25 Mar 2027",
+        "name": "The Elevator Show"
+      },
+      {
+        "dates": "24-25 Mar 2027",
+        "name": "IFX Exhibition"
+      },
+      {
+        "dates": "24-26 Mar 2027",
+        "name": "Arabplast"
+      },
+      {
+        "dates": "6-8 Apr 2027",
+        "name": "Dubai International Wood & Wood Machinery Show"
+      },
+      {
+        "dates": "6-8 Apr 2027",
+        "name": "Dubai Derma (World Dermatology and Laser Conference)"
+      },
+      {
+        "dates": "13-15 Apr 2027",
+        "name": "Lubricant Expo Middle East"
+      },
+      {
+        "dates": "17-18 Apr 2027",
+        "name": "Petworld Arabia 2027"
+      },
+      {
+        "dates": "24-25 Apr 2027",
+        "name": "VisionPlus Expo"
+      },
+      {
+        "dates": "27-29 Apr 2027",
+        "name": "FESPA Middle East"
+      },
+      {
+        "dates": "3-6 May 2027",
+        "name": "Arabian Travel Market",
+        "path": "/arabian-travel-market-exhibition-stand-design-dubai"
+      },
+      {
+        "dates": "4-6 May 2027",
+        "name": "DIHAD (Humanitarian Aid & Development)"
+      },
+      {
+        "dates": "4-6 May 2027",
+        "name": "Seatrade Maritime"
+      },
+      {
+        "dates": "24-26 May 2027",
+        "name": "OS+H Middle East"
+      },
+      {
+        "dates": "24-26 May 2027",
+        "name": "Seamless Middle East"
+      }
+    ],
+    "proofHeading": "Real FANN projects to inform your DWTC brief",
+    "proofNote": "Documented completed projects from the FANN archive. TREVOS and Geven were built for shows at Dubai World Trade Centre.",
+    "proofLinkLabel": "View completed project",
+    "proof": [
+      {
+        "path": "/portfolio/trevos-light-middle-east",
+        "image": "/images/stands/1-trevos-light-middle-east.webp",
+        "name": "TREVOS - Light Middle East",
+        "location": "Dubai World Trade Centre",
+        "text": "Custom lighting-sector stand at DWTC: product displays, meeting space and storage planned around the allocation."
+      },
+      {
+        "path": "/portfolio/geven-aircraft-interiors",
+        "image": "/images/stands/6-geven-aircraft-interiors.webp",
+        "name": "Geven - Aircraft Interiors Middle East",
+        "location": "Dubai World Trade Centre",
+        "text": "Engineering-sector stand at DWTC with real equipment displays and enclosed meeting rooms."
+      },
+      {
+        "path": "/portfolio/national-expression-adek-abu-dhabi",
+        "image": "/images/projects/national-expression-adek/01.webp",
+        "name": "National Expression - ADEK",
+        "location": "Abu Dhabi",
+        "text": "A national celebration project delivered by FANN in Abu Dhabi - the same design-and-build process applies at DWTC."
+      }
+    ],
+    "proposalHeading": "Turn your DWTC allocation into a scoped proposal",
+    "proposalText": "Share the show, hall and stand number, dimensions, open sides, products and deadlines. Add your floor plan and the exhibitor manual if available.",
+    "faqs": [
+      {
+        "question": "Can FANN build my stand at Dubai World Trade Centre?",
+        "answer": "Yes. We design, fabricate and install custom exhibition stands at DWTC as an independent Dubai contractor. The appointment route and any nomination forms come from your show's exhibitor manual; we work to whichever route the organiser requires."
+      },
+      {
+        "question": "What should I send for a DWTC stand proposal?",
+        "answer": "Send the show name, hall and stand number, dimensions, open sides, planned products and activities, brand assets and required dates. Include the current exhibitor manual and any floor plan or drawings already available."
+      },
+      {
+        "question": "Can you build a double-deck stand at DWTC?",
+        "answer": "Double-deck structures are possible in principle, subject to venue approval, structural drawings and the conditions in the exhibitor manual. We prepare the drawings and manage the submission when the design calls for a second level."
+      },
+      {
+        "question": "Which upcoming DWTC shows do you have planning pages for?",
+        "answer": "We maintain planning pages for WETEX, Gulfood Manufacturing, Big 5 Global, Intersec, Gulf Print & Pack, World Health Expo (formerly Arab Health), Gulfood and Arabian Travel Market. Each page lists verified dates and what to send for a scoped proposal."
+      }
+    ],
+    "relatedHeading": "Continue planning your Dubai stand",
+    "related": [
+      {
+        "path": "/exhibition-stand-design-dubai",
+        "label": "Dubai exhibition stand design guide"
+      },
+      {
+        "path": "/exhibition-stand-builders-dubai",
+        "label": "Exhibition stand builders in Dubai"
+      },
+      {
+        "path": "/adnec-exhibition-stand-design-abu-dhabi",
+        "label": "Plan a stand at ADNEC Centre Abu Dhabi"
+      },
+      {
+        "path": "/events-calendar",
+        "label": "UAE exhibitions calendar 2026-2027"
+      },
+      {
+        "path": "/portfolio",
+        "label": "FANN project portfolio"
+      }
+    ],
+    "sourcesHeading": "Venue planning sources",
+    "sources": [
+      {
+        "url": "https://www.dwtc.com/en/events",
+        "label": "DWTC official What's On calendar",
+        "note": "Checked 19 October 2026: upcoming event names, dates and halls as listed by the venue."
+      },
+      {
+        "url": "https://www.dwtc.com/",
+        "label": "Dubai World Trade Centre official site",
+        "note": "Venue information; DWTC states it hosts more than 400 events and 2.9 million visitors a year."
       }
     ]
   }
