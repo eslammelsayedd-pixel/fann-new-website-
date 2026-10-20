@@ -192,6 +192,10 @@
     ],
     "faqs": [
       {
+        "q": "What is the difference between a shell scheme and a custom exhibition stand?",
+        "a": "A shell scheme is the organiser's standard package of walls, fascia and basic fittings, while a custom stand is designed and built for your brand and space. Shell schemes are quicker and simpler; custom stands allow full control of layout, height and materials."
+      },
+      {
         "q": "Is a shell scheme stand worth customising?",
         "a": "Yes, within its limits. Full-width graphics, considered lighting, good furniture and planned product display change how a shell scheme reads without changing its structure."
       },
@@ -442,6 +446,142 @@
       {
         "path": "/insights/shell-scheme-vs-custom-vs-modular-stands",
         "label": "English version of this guide"
+      }
+    ]
+  },
+  {
+    "slug": "exhibition-stand-cost-dubai",
+    "path": "/insights/exhibition-stand-cost-dubai",
+    "title": "Exhibition Stand Cost in Dubai: What Drives the Price",
+    "description": "What decides the cost of an exhibition stand in Dubai: size, stand type, materials, venue services, graphics, transport and dismantling, and how to compare quotes.",
+    "datePublished": "2026-10-20",
+    "hero": {
+      "src": "/images/stands/1-trevos-light-middle-east.webp",
+      "alt": "Exhibition stand built by FANN at Light Middle East, Dubai"
+    },
+    "sections": [
+      {
+        "heading": "The short answer",
+        "paras": [
+          "Stand cost in Dubai is set by floor area, stand type, build complexity and what the quote includes beyond the structure. Two quotes for the same space can differ widely because one lists design, venue submissions, power and dismantling and the other does not."
+        ]
+      },
+      {
+        "heading": "Size and stand type",
+        "paras": [
+          "Floor area is the base of every quote. Stand type then moves the price: a shell scheme upgrade is the lightest, a modular system sits in the middle, and a fully custom build costs most because it is fabricated in a workshop to your design. Open sides, double-deck structures and ceiling or hanging elements add structure and approvals."
+        ]
+      },
+      {
+        "heading": "Materials, finishes and lighting",
+        "paras": [
+          "Timber joinery, printed fabric, solid-surface counters, metal and glass all cost differently, and so do the labour hours to finish them. Lighting, AV, LED screens and furniture are usually separate lines. Ask for them itemised so you can trade one against another."
+        ]
+      },
+      {
+        "heading": "Costs people forget to compare",
+        "paras": [
+          "Venue and organiser services such as power, water, rigging, cleaning and waste are often ordered separately from the stand builder. Design submissions, transport to the venue, installation, dismantling and storage are also separate items. A cheaper quote may simply leave these to you."
+        ]
+      },
+      {
+        "heading": "How to get a quote you can compare",
+        "paras": [
+          "Send the show, venue, hall, stand number, dimensions, open sides and deadline, plus brand files and any must-have features. With that brief a contractor can scope design, build, graphics, installation and dismantling line by line, and you can compare like with like."
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "How much does an exhibition stand cost in Dubai?",
+        "a": "It depends on stand area, stand type, materials and the services included, so it is quoted per project rather than from a fixed rate. FANN gives a scoped quote after the show, venue, dimensions and open sides are known."
+      },
+      {
+        "q": "What makes one stand quote higher than another?",
+        "a": "Usually scope: design, venue submissions, lighting, AV, transport, installation and dismantling may be included in one quote and left out of another. Build complexity and materials also change the price."
+      },
+      {
+        "q": "Are venue power and organiser services included in the stand price?",
+        "a": "Only if the quote says so. Power, water, rigging, cleaning and waste are often ordered separately, so ask for each to be marked as included, excluded or supplied by others."
+      }
+    ],
+    "related": [
+      {
+        "path": "/services/custom-exhibition-stands-dubai",
+        "label": "Custom exhibition stands in Dubai"
+      },
+      {
+        "path": "/services/modular-exhibition-systems-dubai",
+        "label": "Modular exhibition systems in Dubai"
+      },
+      {
+        "path": "/exhibition-stand-quote",
+        "label": "Get a scoped stand quote"
+      }
+    ]
+  },
+  {
+    "slug": "custom-vs-modular-exhibition-stand-dubai",
+    "path": "/insights/custom-vs-modular-exhibition-stand-dubai",
+    "title": "Custom vs Modular Exhibition Stand in Dubai: Which Fits Your Show",
+    "description": "Custom build or modular system for a Dubai exhibition: how they differ on design freedom, reuse, lead time and venue approvals, and when each one fits.",
+    "datePublished": "2026-10-20",
+    "hero": {
+      "src": "/images/stands/1-trevos-light-middle-east.webp",
+      "alt": "Exhibition stand built by FANN at Light Middle East, Dubai"
+    },
+    "sections": [
+      {
+        "heading": "The short answer",
+        "paras": [
+          "Choose a custom stand when the design, layout or brand needs to be unique to one show. Choose a modular system when you exhibit often, want to reuse the structure and can accept a standard frame under a tailored finish."
+        ]
+      },
+      {
+        "heading": "Custom build",
+        "paras": [
+          "A custom stand is designed for your space and fabricated in a workshop, so layout, height, materials and brand features are open. It takes longer because it needs a design, venue submissions and fabrication time, and it is mostly built for one show or a short series."
+        ]
+      },
+      {
+        "heading": "Modular system",
+        "paras": [
+          "A modular stand uses a reusable frame that is reconfigured for different spaces, with graphics, counters and lighting adapted per show. It suits teams that exhibit several times a year and want faster setup and storage between shows."
+        ]
+      },
+      {
+        "heading": "How to decide",
+        "paras": [
+          "Count the shows you will use it at, check how much design freedom the brand needs, and look at your timeline to the submission deadline. A single flagship show usually points to custom. A recurring calendar usually points to modular, sometimes with a custom hero element."
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Is a custom or modular stand better for a Dubai exhibition?",
+        "a": "Custom is better for a one-off show that needs a unique design and layout. Modular is better when you exhibit often and want to reuse the structure."
+      },
+      {
+        "q": "Can a modular stand look custom?",
+        "a": "Mostly, yes. Custom graphics, integrated lighting and purpose-built counters hide the frame, though structural geometry stays more standard than a custom build."
+      },
+      {
+        "q": "Which takes longer, custom or modular?",
+        "a": "Custom takes longer because design, venue submissions and workshop fabrication come first. A modular stand built from an existing system can be ready sooner, but graphics and fittings still need lead time."
+      }
+    ],
+    "related": [
+      {
+        "path": "/services/custom-exhibition-stands-dubai",
+        "label": "Custom exhibition stands in Dubai"
+      },
+      {
+        "path": "/services/modular-exhibition-systems-dubai",
+        "label": "Modular exhibition systems in Dubai"
+      },
+      {
+        "path": "/exhibition-stand-quote",
+        "label": "Get a scoped stand quote"
       }
     ]
   }

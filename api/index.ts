@@ -1188,6 +1188,8 @@ const SITEMAP_PATHS = [
   '/portfolio/fit-out/01-school-interior',
   '/insights/custom-exhibition-stand-process-dubai',
   '/insights/exhibition-stand-brief-checklist',
+  '/insights/exhibition-stand-cost-dubai',
+  '/insights/custom-vs-modular-exhibition-stand-dubai',
   '/insights/shell-scheme-vs-custom-vs-modular-stands',
   '/ar/insights/exhibition-stand-brief-checklist',
   '/ar/insights/custom-exhibition-stand-process-dubai',
