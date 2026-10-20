@@ -206,6 +206,14 @@
       {
         "q": "Which stand type does FANN build?",
         "a": "All three. FANN designs and builds custom stands, supplies modular systems, and upgrades shell schemes with graphics, counters and displays - fabricated in its own Umm Al Quwain workshop."
+      },
+      {
+        "q": "When is a shell scheme the right choice?",
+        "a": "When budget and speed matter more than a distinctive look, such as a first show or a small stand. Graphics, lighting and furniture can still lift it."
+      },
+      {
+        "q": "Can a shell scheme be upgraded?",
+        "a": "Yes, within the organiser rules. Full-width graphics, lighting, furniture and display units change how it reads without changing the structure."
       }
     ],
     "related": [
@@ -503,6 +511,22 @@
       {
         "q": "Are venue power and organiser services included in the stand price?",
         "a": "Only if the quote says so. Power, water, rigging, cleaning and waste are often ordered separately, so ask for each to be marked as included, excluded or supplied by others."
+      },
+      {
+        "q": "Is a custom stand more expensive than a modular stand in Dubai?",
+        "a": "Usually yes, because a custom stand is designed and fabricated for one space, while a modular stand reuses a standard frame. The gap narrows if the modular stand needs heavy custom graphics, counters and lighting."
+      },
+      {
+        "q": "Does stand size change the price per square metre?",
+        "a": "Often, yes. Larger stands spread fixed costs such as design and submissions across more area, while complex features like double decks, hanging elements and meeting rooms add cost per square metre."
+      },
+      {
+        "q": "What is usually left out of a low stand quote?",
+        "a": "Design, venue submissions, power and organiser services, transport, installation and dismantling are the items most often left out. Ask for each to be marked as included, excluded or supplied by others."
+      },
+      {
+        "q": "Can I reduce stand cost without hurting the design?",
+        "a": "Yes. Simplify the structure, reuse graphics, limit bespoke joinery to one hero feature and fix the brief early so changes do not reach the workshop."
       }
     ],
     "related": [
@@ -568,6 +592,22 @@
       {
         "q": "Which takes longer, custom or modular?",
         "a": "Custom takes longer because design, venue submissions and workshop fabrication come first. A modular stand built from an existing system can be ready sooner, but graphics and fittings still need lead time."
+      },
+      {
+        "q": "Is modular cheaper over several shows?",
+        "a": "It can be, because the frame is reused and only graphics and fittings change. It depends on how many shows you attend and how different each stand space is."
+      },
+      {
+        "q": "Do UAE venues approve modular stands differently?",
+        "a": "Both types go through the organiser and venue design submission process. Larger or double-deck structures face extra review whichever type you choose."
+      },
+      {
+        "q": "Can I start modular and add a custom feature?",
+        "a": "Yes. A common approach is a modular frame with one custom hero element such as a counter, feature wall or product plinth."
+      },
+      {
+        "q": "How early should I decide between custom and modular?",
+        "a": "Before the organiser submission deadline, which sits weeks before opening day. Custom needs the most lead time because design and fabrication come first."
       }
     ],
     "related": [
