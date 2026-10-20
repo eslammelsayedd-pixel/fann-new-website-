@@ -34,6 +34,56 @@ export function captureLeadAttribution(): EnquiryAttribution | null {
 // App imports this module on entry so an internal navigation cannot discard the landing reference.
 captureLeadAttribution();
 
+
+// First-party lead-source cookies: first touch (90 days) and last touch (30 days).
+// Passive only: no network request, no analytics event. Stored values are the external referrer host,
+// landing path, UTMs and click ids from the visitor's own URL. Last touch changes only on a tagged or external-referral visit.
+const FIRST_TOUCH_COOKIE = 'fann_ft';
+const LAST_TOUCH_COOKIE = 'fann_lt';
+type Touch = { at: string; landing: string; referrer: string; f: Record<string, string> };
+function readTouch(name: string): Touch | null {
+  try {
+    const m = document.cookie.split('; ').find(c => c.startsWith(name + '='));
+    if (!m) return null;
+    const t = JSON.parse(decodeURIComponent(m.slice(name.length + 1)));
+    if (!t || typeof t.at !== 'string' || typeof t.landing !== 'string') return null;
+    const f: Record<string, string> = {};
+    for (const k of ATTRIBUTION_FIELDS) if (t.f && typeof t.f[k] === 'string') f[k] = t.f[k].slice(0, 200);
+    return { at: t.at.slice(0, 30), landing: t.landing.slice(0, 200), referrer: String(t.referrer || '').slice(0, 120), f };
+  } catch { return null; }
+}
+function writeTouch(name: string, t: Touch, days: number) {
+  try {
+    const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+    document.cookie = `${name}=${encodeURIComponent(JSON.stringify(t))}; Max-Age=${days * 86400}; Path=/; SameSite=Lax${secure}`;
+  } catch { /* cookies unavailable: enquiry still sends */ }
+}
+export function captureLeadSource(): void {
+  if (typeof window === 'undefined' || typeof document === 'undefined') return;
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const f: Record<string, string> = {};
+    for (const k of ATTRIBUTION_FIELDS) {
+      const v = (params.get(k) || '').replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, 200);
+      if (v) f[k] = v;
+    }
+    let ref = '';
+    try {
+      const u = new URL(document.referrer);
+      if (u.hostname && u.hostname.replace(/^www\./, '') !== window.location.hostname.replace(/^www\./, '')) ref = u.hostname.slice(0, 120);
+    } catch { /* no referrer */ }
+    const touch: Touch = { at: new Date().toISOString(), landing: (window.location.pathname || '/').slice(0, 200), referrer: ref, f };
+    if (!readTouch(FIRST_TOUCH_COOKIE)) writeTouch(FIRST_TOUCH_COOKIE, touch, 90);
+    if (ref || Object.keys(f).length || !readTouch(LAST_TOUCH_COOKIE)) writeTouch(LAST_TOUCH_COOKIE, touch, 30);
+  } catch { /* never break the page */ }
+}
+function describeTouch(t: Touch | null): string {
+  if (!t) return 'unknown';
+  const parts = [`referrer=${t.referrer || 'direct'}`, `landing=${t.landing}`, ...Object.entries(t.f).map(([k, v]) => `${k}=${v}`), `at=${t.at}`];
+  return parts.join(' | ').slice(0, 800);
+}
+captureLeadSource();
+
 // Single client-side entry point for every website form.
 // Sends via Web3Forms from the browser when VITE_WEB3FORMS_ACCESS_KEY is set, otherwise via /api/lead (SMTP).
 // Only resolves when delivery is confirmed.
@@ -50,7 +100,8 @@ export interface LeadPayload {
 
 export async function submitLead(payload: LeadPayload): Promise<void> {
   const attribution = captureLeadAttribution();
-  const details = { ...(payload.details || {}), ...(attribution ? { enquiry_attribution: attribution } : {}) };
+  captureLeadSource();
+  const details = { ...(payload.details || {}), ...(attribution ? { enquiry_attribution: attribution } : {}), lead_source_first_touch: describeTouch(readTouch(FIRST_TOUCH_COOKIE)), lead_source_last_touch: describeTouch(readTouch(LAST_TOUCH_COOKIE)) };
   const body = {
     ...payload,
     details,
