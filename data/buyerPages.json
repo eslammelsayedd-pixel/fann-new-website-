@@ -520,6 +520,14 @@
         "label": "Dubai exhibition stand design and build"
       },
       {
+        "path": "/dec-expo-city-exhibition-stand-design-dubai",
+        "label": "Plan a stand at Dubai Exhibition Centre, Expo City"
+      },
+      {
+        "path": "/dwtc-exhibition-stand-design-dubai",
+        "label": "Plan a stand at Dubai World Trade Centre"
+      },
+      {
         "path": "/events-calendar",
         "label": "UAE and Saudi exhibition planning calendar"
       },
@@ -652,6 +660,10 @@
       {
         "path": "/services/custom-exhibition-stands-dubai",
         "label": "Custom exhibition stand design and build"
+      },
+      {
+        "path": "/dwtc-exhibition-stand-design-dubai",
+        "label": "Plan a stand at Dubai World Trade Centre"
       },
       {
         "path": "/services/exhibition-stand-fabrication-dubai",
@@ -789,6 +801,10 @@
       {
         "path": "/services/custom-exhibition-stands-dubai",
         "label": "Custom exhibition stand design and build"
+      },
+      {
+        "path": "/dwtc-exhibition-stand-design-dubai",
+        "label": "Plan a stand at Dubai World Trade Centre"
       },
       {
         "path": "/exhibitions/gulfood-manufacturing-2026-stand-planning",
@@ -1330,6 +1346,10 @@
       {
         "path": "/exhibition-stand-builders-dubai",
         "label": "Exhibition stand builders Dubai briefing guide"
+      },
+      {
+        "path": "/dwtc-exhibition-stand-design-dubai",
+        "label": "Plan a stand at Dubai World Trade Centre"
       },
       {
         "path": "/gitex-exhibition-stand-design-dubai",
