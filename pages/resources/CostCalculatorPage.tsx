@@ -1,5 +1,6 @@
 
 import { submitLead } from '../../lib/submitLead';
+import AttributionFields from '../../components/AttributionFields';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calculator, DollarSign, MapPin, Box, Check, Loader2, ArrowRight, AlertTriangle, Info, PieChart, Download, Share2, RotateCcw, Mail, User, Phone, Building } from 'lucide-react';
@@ -335,6 +336,7 @@ const CostCalculatorPage: React.FC = () => {
                                             <input type="text" name="eventName" placeholder="Event Name (Optional)" value={state.contact.eventName} onChange={handleContactChange} className="w-full bg-black/50 border border-white/20 rounded-lg p-3 text-white focus:border-fann-gold outline-none placeholder-gray-500"/>
                                         </div>
                                     </div>
+                                    <AttributionFields />
 
                                     {error && <div className="text-red-400 text-sm text-center bg-red-900/20 p-2 rounded">{error}</div>}
 
@@ -430,3 +432,4 @@ const CostCalculatorPage: React.FC = () => {
 };
 
 export default CostCalculatorPage;
+

@@ -29,6 +29,7 @@ const PrivacyPage: React.FC = () => (
 
       <H>Cookies</H>
       <p>Analytics and advertising tools set cookies in your browser. You can block or delete cookies in your browser settings; the site will still work.</p>
+      <p>We also set two first-party cookies (fann_ft and fann_lt) that remember how you arrived at fann.ae - for example a campaign link, an ad click reference, or the site that referred you - and the first page you visited. They contain no name or contact details, are never sent to advertising networks, and are only attached to an enquiry you choose to send us so we can see which page or campaign brought you to us. They expire after 90 days (first visit) and 30 days (latest visit), and blocking them does not affect the website.</p>
 
       <H>ChatGPT ads measurement choices</H>
       <p>After a successful website enquiry, we keep a private submission receipt for up to 30 days plus the next hourly cleanup. It contains the submitted contact and enquiry details and is accessible only to our server and authorized account administrators. The receipt confirms that the enquiry was saved; it does not expose your details publicly.</p>
@@ -50,3 +51,4 @@ const PrivacyPage: React.FC = () => (
 );
 
 export default PrivacyPage;
+

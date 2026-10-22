@@ -188,3 +188,33 @@ export async function submitLead(payload: LeadPayload): Promise<void> {
   } catch { /* delivered enquiry stays successful; no conversion without committed receipt */ }
 
 }
+
+
+// Snapshot of every first-party source field, used to fill hidden form inputs.
+// Values come only from the visitor's own URL, referrer and the first-party cookies above.
+export function getLeadSourceSnapshot(): Record<string, string> {
+  if (typeof window === 'undefined') return {};
+  const out: Record<string, string> = {};
+  try {
+    const attribution = captureLeadAttribution();
+    if (attribution) {
+      for (const [k, v] of Object.entries(attribution.fields)) out[k] = v;
+      out.landing_page = attribution.landing_path;
+      out.attribution_captured_at = attribution.captured_at;
+    }
+    const first = readTouch(FIRST_TOUCH_COOKIE);
+    const last = readTouch(LAST_TOUCH_COOKIE);
+    if (first) out.first_touch = describeTouch(first);
+    if (last) out.last_touch = describeTouch(last);
+    let refHost = last?.referrer || first?.referrer || '';
+    if (!refHost) {
+      try {
+        const u = new URL(document.referrer);
+        if (u.hostname && u.hostname.replace(/^www\./, '') !== window.location.hostname.replace(/^www\./, '')) refHost = u.hostname;
+      } catch { /* no referrer */ }
+    }
+    if (refHost) out.referrer = refHost.slice(0, 120);
+    if (!out.landing_page) out.landing_page = (last?.landing || first?.landing || window.location.pathname || '/').slice(0, 300);
+  } catch { /* attribution must never break the form */ }
+  return out;
+}

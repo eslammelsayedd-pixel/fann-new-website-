@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 import { submitLead } from '../lib/submitLead';
+import AttributionFields from '../components/AttributionFields';
 import { Mail, Phone, MapPin, Loader2, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -163,6 +164,7 @@ const ContactPage: React.FC = () => {
                     <>
                         <h2 className="text-3xl font-serif text-white mb-8" style={{ fontWeight: 600}}>Send a Message</h2>
                         <form onSubmit={handleSubmit} className="space-y-6">
+                           <AttributionFields />
                            <div>
                                <input type="text" name="name" placeholder="Your Name" required className="w-full bg-black/30 border border-white/10 rounded-md px-4 py-3 text-white focus:outline-none focus:border-fann-gold transition-colors" />
                            </div>
@@ -196,3 +198,4 @@ const ContactPage: React.FC = () => {
 };
 
 export default ContactPage;
+
