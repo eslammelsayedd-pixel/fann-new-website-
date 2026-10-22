@@ -1018,6 +1018,129 @@ async function leadReceipt(req: VercelRequest, res: VercelResponse) {
   } catch { console.error('Private receipt unavailable; conversion suppressed.'); return res.status(502).json({ persisted: false }); }
 }
 
+// Automatic owner-approved follow-up to every fann.ae lead (owner instruction 22 Oct 2026).
+// Inert unless AUTOREPLY_ENABLED=true AND AUTOREPLY_SMTP_* are set. Never breaks lead delivery.
+const AUTOREPLY_CC = process.env.AUTOREPLY_CC || 'islam@fann.ae';
+const AUTOREPLY_FREEMAIL = new Set(['gmail.com','googlemail.com','yahoo.com','ymail.com','hotmail.com','outlook.com','live.com','icloud.com','me.com','aol.com','proton.me','protonmail.com','mail.com','gmx.com']);
+const AUTOREPLY_SIGNATURE = [
+  'Best regards,',
+  'Hassan Omar (HE/HIS)',
+  'Account Manager',
+  '+971505667502',
+  'sales@fann.ae',
+  'www.fann.ae',
+  'office No.508-Dusseldorf B.C.-Albarsha-Dubai',
+  'Warehouse No10-Um Dera-Um Alquwain',
+].join('\n');
+
+function autoReplyOpenSides(configuration: string): string {
+  const c = configuration.toLowerCase();
+  return c === 'inline' ? 'one' : c === 'corner' ? 'two' : c === 'peninsula' ? 'three' : c === 'island' ? 'four' : '';
+}
+
+function autoReplyShortLocation(location: string): string {
+  const m = location.match(/\(([A-Za-z]{2,10})\)\s*$/);
+  return m ? m[1] : location;
+}
+
+async function autoReplyWebsiteCheck(domain: string): Promise<boolean> {
+  try {
+    const controller = new AbortController();
+    const t = setTimeout(() => controller.abort(), 4000);
+    const r = await fetch(`https://${domain}`, { method: 'GET', redirect: 'follow', signal: controller.signal });
+    clearTimeout(t);
+    return r.status >= 200 && r.status < 400;
+  } catch { return false; }
+}
+
+async function autoReplyLead(args: { formType: string; name: string; email: string; extra: Record<string, unknown>; est: any }): Promise<void> {
+  if (process.env.AUTOREPLY_ENABLED !== 'true') return;
+  const host = process.env.AUTOREPLY_SMTP_HOST, user = process.env.AUTOREPLY_SMTP_USER, pass = process.env.AUTOREPLY_SMTP_PASS;
+  if (!host || !user || !pass) return;
+  const email = args.email.toLowerCase().trim();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+  if (email.endsWith('@fann.ae')) return;
+  const company = clean((args.extra as any).company || '', 160);
+  const eventName = clean((args.extra as any).eventName || '', 160);
+  if (/test|qa|do not action/i.test(`${args.name} ${company} ${eventName}`)) return;
+  const key = process.env.FANN_FLOORPLAN_STORAGE_KEY;
+  if (!key) { console.error('AutoReply skipped: dedupe store key missing'); return; }
+  const headers: Record<string, string> = { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' };
+  const endpoint = `${FLOORPLAN_STORAGE}/rest/v1/fann_lead_receipts`;
+  const cutoff = new Date(Date.now() - 86400000).toISOString();
+  const dup = await fetch(`${endpoint}?event_name=eq.autoreply_sent&created_at=gte.${encodeURIComponent(cutoff)}&submission->>lead_email=eq.${encodeURIComponent(email)}&select=submission_id&limit=1`, { headers });
+  if (!dup.ok) { console.error('AutoReply skipped: dedupe check failed', dup.status); return; }
+  if ((await dup.json().catch(() => [])).length) { console.log(`AutoReply skipped: 24h duplicate for ${email}`); return; }
+
+  const firstName = (args.name.trim().split(/\s+/)[0] || 'there');
+  const domain = email.split('@')[1];
+  let websiteLine = '';
+  if (domain && !AUTOREPLY_FREEMAIL.has(domain) && await autoReplyWebsiteCheck(domain)) {
+    websiteLine = `\nWe also took a quick look at ${domain} so we understand your business before we reply.\n`;
+  }
+
+  let subject: string, body: string;
+  const est = args.est;
+  if (est && typeof est === 'object' && est.estimatedCost) {
+    const aed = (n: any) => `AED ${Number(n || 0).toLocaleString('en-US')}`;
+    const standType = clean((args.extra as any).standType || '', 60).toLowerCase();
+    const configuration = clean((args.extra as any).configuration || '', 60).toLowerCase();
+    const dims: any = (args.extra as any).dimensions || {};
+    const location = clean((args.extra as any).location || '', 160);
+    const sides = autoReplyOpenSides(configuration);
+    subject = `Your stand enquiry at ${autoReplyShortLocation(location)} - FANN, Dubai`;
+    body = [
+      `Dear ${firstName},`,
+      '',
+      `Thank you for using the cost calculator on our website. We received your request for a ${standType} ${configuration} stand, ${Number(dims.width || 0)} m x ${Number(dims.length || 0)} m, at ${location}.`,
+      '',
+      `Your indicative budget range on the calculator was ${aed(est.estimatedCost.min)} - ${aed(est.estimatedCost.max)}. This is an indicative range for the stand structure and design; venue fees and services (for example electrical connections, rigging and permits) are charged separately by the venue.`,
+      '',
+      'To prepare a design and a proper quotation, could you please tell us:',
+      '1. Which show is this for, and what are the build-up and show dates?',
+      `2. How many sides are open? Your calculator entry says ${configuration}${sides ? `, so we assume ${sides} open side${sides === 'one' ? '' : 's'}` : ''}. Please confirm.`,
+      '3. What branding do you need? For example fascia name, logo wall, graphics, a TV or screen, and any product display.',
+      '4. Your stand number, if you already have it.',
+      '',
+      'If you have a floor plan or the exhibitor manual, please send it. We will return a 3D concept and a quotation within two working days of your reply.',
+      websiteLine,
+      AUTOREPLY_SIGNATURE,
+    ].join('\n').replace(/\n{3,}/g, '\n\n');
+  } else {
+    subject = 'Your enquiry - FANN, Dubai';
+    body = [
+      `Dear ${firstName},`,
+      '',
+      'Thank you for contacting FANN. We received your enquiry and we would like to prepare a proper answer.',
+      '',
+      'Could you share:',
+      '1. Your project location and target dates.',
+      '2. The approximate size or scope.',
+      '3. Any drawings, floor plans or reference photos.',
+      '',
+      'We will come back to you within one working day.',
+      websiteLine,
+      AUTOREPLY_SIGNATURE,
+    ].join('\n').replace(/\n{3,}/g, '\n\n');
+  }
+
+  const nodemailer = (await import('nodemailer')).default;
+  const transport = nodemailer.createTransport({
+    host,
+    port: Number(process.env.AUTOREPLY_SMTP_PORT || 587),
+    secure: Number(process.env.AUTOREPLY_SMTP_PORT || 0) === 465,
+    auth: { user, pass },
+  });
+  await transport.sendMail({ from: `Hassan Omar <${user}>`, to: email, cc: AUTOREPLY_CC, subject, text: body });
+
+  const { randomUUID, createHash } = await import('node:crypto');
+  const requestHash = createHash('sha256').update(`autoreply:${email}:${cutoff.slice(0, 10)}`).digest('hex');
+  const ins = await fetch(endpoint, { method: 'POST', headers: { ...headers, Prefer: 'return=minimal' },
+    body: JSON.stringify({ submission_id: randomUUID(), request_hash: requestHash, event_name: 'autoreply_sent', submission: { lead_email: email, form_type: args.formType, subject } }) });
+  if (!ins.ok) console.error('AutoReply dedupe log insert failed', ins.status);
+  console.log(`AutoReply sent to ${email}`);
+}
+
 async function handleLead(req: VercelRequest, res: VercelResponse, defaultType: string) {
   if (req.method !== 'POST') return res.status(405).json({ success: false, error: 'Method Not Allowed' });
   const b: any = req.body || {};
@@ -1076,6 +1199,14 @@ async function handleLead(req: VercelRequest, res: VercelResponse, defaultType: 
   try {
     await deliverLead(`[fann.ae] ${formType}${name ? ' - ' + name : ''}${company ? ' (' + company + ')' : ''}`, text, email || undefined);
     console.log(`Lead delivered: ${formType}`);
+    if (email) {
+      try {
+        await Promise.race([
+          autoReplyLead({ formType, name, email, extra, est }),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('autoreply timeout')), 9000)),
+        ]);
+      } catch (replyErr: any) { console.error('AutoReply failed (lead delivery intact):', replyErr?.message); }
+    }
     // Disabled unless separately configured after table/security review. Delivery stays intact.
     let persisted = false;
     let submissionId: string | undefined;
