@@ -1040,6 +1040,19 @@ async function handleLead(req: VercelRequest, res: VercelResponse, defaultType: 
   const skip = new Set(['formType','type','name','firstName','lastName','email','phone','company','message','website','details','page','referrer']);
   const extra: Record<string, unknown> = { ...(typeof b.details === 'object' && b.details ? b.details : {}) };
   for (const k of Object.keys(b)) if (!skip.has(k)) extra[k] = b[k];
+  // Cost-calculator estimates are labelled explicitly in AED in the lead email.
+  const est: any = (extra as any).estimate;
+  let estimateBlock = '';
+  if (est && typeof est === 'object' && est.estimatedCost) {
+    const aed = (n: any) => `AED ${Number(n || 0).toLocaleString('en-US')}`;
+    const estLines = [
+      `Estimated budget range: ${aed(est.estimatedCost.min)} - ${aed(est.estimatedCost.max)}`,
+      ...(Array.isArray(est.breakdown) ? est.breakdown.map((it: any) => `${it.category}: ${aed(it.amount)}`) : []),
+      ...(est.total != null ? [`Average total: ${aed(est.total)}`] : []),
+    ];
+    estimateBlock = `Estimate (all figures AED):\n${estLines.join('\n')}\n`;
+    delete (extra as any).estimate;
+  }
   const extraLines = Object.entries(extra)
     .filter(([, v]) => v !== '' && v !== null && v !== undefined)
     .map(([k, v]) => `${k}: ${clean(typeof v === 'object' ? JSON.stringify(v) : v, 1000)}`);
@@ -1053,6 +1066,7 @@ async function handleLead(req: VercelRequest, res: VercelResponse, defaultType: 
     `Company: ${company || '-'}`,
     '',
     message ? `Message:\n${message}\n` : '',
+    estimateBlock,
     extraLines.length ? `Details:\n${extraLines.join('\n')}\n` : '',
     `Page: ${clean(b.page, 300) || '-'}`,
     `Referrer: ${clean(b.referrer, 300) || '-'}`,
