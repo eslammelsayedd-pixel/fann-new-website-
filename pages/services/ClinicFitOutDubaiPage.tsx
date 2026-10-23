@@ -133,7 +133,6 @@ const ClinicFitOutDubaiPage: React.FC = () => (
         <Link to="/contact" className="bg-fann-gold text-black font-bold py-3 px-8 rounded-full uppercase tracking-wider inline-block">Send your drawings</Link>
       </div>
 
-      <h2>Frequently asked questions</h2>
       <FaqAccordion faqs={faqs} />
 
       <p className="mt-8">We also deliver <Link to="/fit-out-dubai">commercial fit-out</Link> and <Link to="/restaurant-fit-out-dubai">restaurant fit-out</Link> across Dubai and Abu Dhabi. <Link to="/contact">Tell us about your space</Link>.</p>
