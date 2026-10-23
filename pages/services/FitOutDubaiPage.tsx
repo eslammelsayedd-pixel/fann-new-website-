@@ -131,7 +131,7 @@ const FitOutDubaiPage: React.FC = () => (
       </ul>
       <h3>Agree what the quote covers</h3>
       <p>Ask for the scope to distinguish partitions, ceilings, flooring, joinery, MEP coordination and finishes. Confirm what is included, excluded or dependent on a site survey, along with the drawings, approval steps and handover plan. The quote should reflect your actual site, not a generic price per square foot.</p>
-      <p><Link to="/contact">Send your fit-out brief</Link>, or email drawings to <a href="mailto:sales@fann.ae">sales@fann.ae</a>. For specialist spaces, review our <Link to="/restaurant-fit-out-dubai">restaurant</Link> and <Link to="/clinic-fit-out-dubai">clinic fit-out</Link> pages.</p>
+      <p><Link to="/contact">Send your fit-out brief</Link>, or email drawings to <a href="mailto:sales@fann.ae">sales@fann.ae</a>. For office and commercial interiors, see our <Link to="/fit-out-company-dubai">fit-out company page</Link> with real office project photographs; for specialist spaces, review our <Link to="/restaurant-fit-out-dubai">restaurant</Link> and <Link to="/clinic-fit-out-dubai">clinic fit-out</Link> pages.</p>
 
       <h2 id="design-concepts">Design concepts</h2>
       <p>These are design concepts created by FANN to show how we approach clinic, restaurant and retail interiors. They are concept visuals, not photos of completed projects. We design every fit-out around your brand, site and budget, and we can prepare a concept like this for your space before you commit.</p>
