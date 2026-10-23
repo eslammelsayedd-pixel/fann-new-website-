@@ -357,7 +357,7 @@ const CostCalculatorPage: React.FC = () => {
                                         <div className="text-4xl md:text-5xl font-mono font-bold text-fann-gold mb-2">
                                             {formatCurrency(result.estimatedCost.min)} - {formatCurrency(result.estimatedCost.max)}
                                         </div>
-                                        <p className="text-xs text-gray-500">*Includes structure, labor, logistics, and hidden venue fees.</p>
+                                        <p className="text-xs text-gray-500">*Estimate covers stand design, build, technology and project management. Venue fees are charged separately by the venue - see below.</p>
                                     </div>
 
                                     <div className="bg-white/5 p-6 rounded-xl border border-white/10">
@@ -373,7 +373,7 @@ const CostCalculatorPage: React.FC = () => {
                                     </div>
 
                                     <div className="bg-red-900/10 border border-red-900/30 p-4 rounded-xl">
-                                        <h4 className="text-red-400 text-sm font-bold mb-2 flex items-center gap-2"><Info size={16}/> Hidden Venue Costs Included</h4>
+                                        <h4 className="text-red-400 text-sm font-bold mb-2 flex items-center gap-2"><Info size={16}/> Venue Costs Charged Separately</h4>
                                         <ul className="text-xs text-gray-400 space-y-1 list-disc list-inside">
                                             {result.hiddenCosts.map((cost: string, i: number) => (
                                                 <li key={i}>{cost}</li>
@@ -420,7 +420,7 @@ const CostCalculatorPage: React.FC = () => {
                             <div className="bg-blue-900/20 border border-blue-500/30 p-6 rounded-xl">
                                 <h3 className="text-blue-400 font-bold mb-2 text-sm flex items-center gap-2"><Info size={16}/> Why this tool?</h3>
                                 <p className="text-xs text-gray-300 leading-relaxed">
-                                    Most online calculators ignore venue-specific hidden fees like rigging permits and waste disposal. Our ranges include venue fees from DWTC & ADNEC to give you a realistic budget, not just a construction quote.
+                                    Most online calculators ignore venue-specific hidden fees like rigging permits and waste disposal. Our ranges cover stand design and build only; venue fees at DWTC & ADNEC are charged separately by the venue, and we list them in your estimate so your budget stays realistic.
                                 </p>
                             </div>
                         </div>
