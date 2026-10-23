@@ -8,7 +8,7 @@ for r in routes:
     g=lambda sel,attr='content': (s.select_one(sel) or {}).get(attr,'') if s.select_one(sel) else ''
     t0=s.select_one('#json-ld-schema'); ld=t0.string if t0 and t0.string else ''
     root=s.select_one('#root')
-    for bad in root.select('script,style,svg,noscript,form,button,[aria-hidden="true"]'): bad.decompose()
+    for bad in root.select('script,style,svg,noscript,form,button,[aria-hidden="true"],[id^="fann-openai-"]'): bad.decompose()  # fann-openai-*: consent banner (OpenAIConsent.tsx) is UI chrome, never page content
     parts=[];seen=set();n=0
     for el in root.find_all(['h1','h2','h3','p','li','a']):
         t=' '.join(el.get_text(' ',strip=True).split())
