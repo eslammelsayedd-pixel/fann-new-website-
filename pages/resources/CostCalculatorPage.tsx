@@ -147,7 +147,7 @@ const CostCalculatorPage: React.FC = () => {
 
     return (
         <AnimatedPage>
-            <SEO title="Exhibition Cost Calculator Dubai | FANN" description="Get indicative exhibition stand costs for DWTC, ADNEC and Riyadh Front." />
+            <SEO title="Exhibition Cost Calculator Dubai | FANN" description="Get indicative exhibition stand costs for DWTC and ADNEC." />
             <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
                 <div className="container mx-auto px-4 max-w-5xl">
                     
