@@ -980,6 +980,7 @@ async function deliverLead(subject: string, text: string, replyTo?: string): Pro
 // Server only. The UUID is issued by the server, never supplied by the browser.
 async function persistLeadReceipt(fetcher: typeof fetch, base: string, key: string, submissionId: string, submission: Record<string, unknown>): Promise<boolean> {
   // request_hash is NOT NULL in the store (server-side persists failed 23502 without it).
+  const { createHash } = await import('node:crypto');
   const requestHash = createHash('sha256').update(submissionId).digest('hex');
   const response = await fetcher(`${base}/rest/v1/fann_lead_receipts`, {
     method: 'POST',
