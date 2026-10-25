@@ -369,6 +369,11 @@ Rules: each description must contain at least three concrete dimensions. No empt
     result.conceptD.image = fallbackImages[3];
     result.conceptA.isFallback = result.conceptB.isFallback = result.conceptC.isFallback = result.conceptD.isFallback = true;
 
+    // Text-only mode (validation/dry-run): skip paid image generation entirely; concepts carry their gate results.
+    if (formData.textOnly === true) {
+      return res.status(200).json({ ...result, textOnly: true });
+    }
+
     // Try custom visual concept generation using gemini-3.1-flash-image
     try {
       const imgPromises = ['conceptA', 'conceptB', 'conceptC', 'conceptD'].map(async (key) => {
