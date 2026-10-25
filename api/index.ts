@@ -979,10 +979,12 @@ async function deliverLead(subject: string, text: string, replyTo?: string): Pro
 
 // Server only. The UUID is issued by the server, never supplied by the browser.
 async function persistLeadReceipt(fetcher: typeof fetch, base: string, key: string, submissionId: string, submission: Record<string, unknown>): Promise<boolean> {
+  // request_hash is NOT NULL in the store (server-side persists failed 23502 without it).
+  const requestHash = createHash('sha256').update(submissionId).digest('hex');
   const response = await fetcher(`${base}/rest/v1/fann_lead_receipts`, {
     method: 'POST',
     headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', Prefer: 'return=representation' },
-    body: JSON.stringify({ submission_id: submissionId, event_name: 'lead_created', submission }),
+    body: JSON.stringify({ submission_id: submissionId, request_hash: requestHash, event_name: 'lead_created', submission }),
   });
   if (!response.ok) return false;
   const records = await response.json().catch(() => null);
@@ -1267,7 +1269,18 @@ async function handleLead(req: VercelRequest, res: VercelResponse, defaultType: 
     }
     return res.status(200).json({ success: true, message: 'Thank you - we received your request.', ...(persisted ? { persisted: true, submissionId } : {}) });
   } catch (err: any) {
-    console.error('Lead delivery failed:', err?.message, '\n', text);
+    // Minimal logging: no full enquiry text in function logs (PII).
+    console.error(`Lead delivery failed: ${formType}: ${err?.message}`);
+    // Persist the failed enquiry to the same authorised private receipts store so it is
+    // recoverable instead of lost. No auto-resend and no customer ack: the response below
+    // stays the honest failure state either way.
+    const failedKey = process.env.FANN_FLOORPLAN_STORAGE_KEY;
+    if (process.env.FANN_OPENAI_LEAD_RECEIPTS_ENABLED === 'true' && failedKey) {
+      try {
+        const { randomUUID } = await import('node:crypto');
+        await persistLeadReceipt(fetch, FLOORPLAN_STORAGE, failedKey, randomUUID(), { formType, name, email, phone, company, message, details: extra, deliveryStatus: 'failed', deliveryError: clean(err?.message || 'delivery failed', 200) });
+      } catch { console.error('Failed-lead persistence unavailable.'); }
+    }
     return res.status(502).json({ success: false, error: 'Sorry, your message could not be sent right now. Please WhatsApp us on +971 50 566 7502 or email sales@fann.ae.' });
   }
 }
