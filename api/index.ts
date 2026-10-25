@@ -950,17 +950,8 @@ function isRateLimited(ip: string, limit = 8): boolean {
 }
 
 async function deliverLead(subject: string, text: string, replyTo?: string): Promise<void> {
-  const web3Key = process.env.WEB3FORMS_ACCESS_KEY;
-  if (web3Key) {
-    const r = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ access_key: web3Key, subject, from_name: 'FANN Website', replyto: replyTo, message: text }),
-    });
-    const d: any = await r.json().catch(() => ({}));
-    if (!r.ok || d.success === false) throw new Error(`Web3Forms failed: ${r.status} ${d.message || ''}`);
-    return;
-  }
+  // SMTP first when configured: Web3Forms blocks server-side calls on the free plan (403), so the
+  // server fallback only becomes a working delivery path once SMTP_* env is set.
   if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
     const nodemailer = (await import('nodemailer')).default;
     const transport = nodemailer.createTransport({
@@ -970,6 +961,17 @@ async function deliverLead(subject: string, text: string, replyTo?: string): Pro
       auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
     });
     await transport.sendMail({ from: `FANN Website <${process.env.SMTP_USER}>`, to: LEAD_TO, replyTo, subject, text });
+    return;
+  }
+  const web3Key = process.env.WEB3FORMS_ACCESS_KEY;
+  if (web3Key) {
+    const r = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ access_key: web3Key, subject, from_name: 'FANN Website', replyto: replyTo, message: text }),
+    });
+    const d: any = await r.json().catch(() => ({}));
+    if (!r.ok || d.success === false) throw new Error(`Web3Forms failed: ${r.status} ${d.message || ''}`);
     return;
   }
   throw new Error('No lead delivery method configured (set WEB3FORMS_ACCESS_KEY or SMTP_* env vars)');

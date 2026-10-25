@@ -146,34 +146,45 @@ export async function submitLead(payload: LeadPayload): Promise<void> {
     let d: any = {};
     try { d = await r.json(); } catch { /* ignore */ }
     if (!r.ok || d.success !== true) {
-      throw new Error('Sorry, your message could not be sent right now. Please WhatsApp us on +971 50 566 7502 or email sales@fann.ae.');
+      // Browser-to-Web3Forms failed (vendor block, adblocker, key issue): fall back to the server route
+      // instead of losing the enquiry outright.
+      return await submitViaServer(body);
     }
   } else {
-    let response: Response;
-    try {
-      response = await fetch('/api/lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(body),
-      });
-    } catch {
-      throw new Error('Network error - please check your connection and try again, or WhatsApp us on +971 50 566 7502.');
-    }
-    let data: any = {};
-    try { data = await response.json(); } catch { /* ignore */ }
-    if (!response.ok || !data.success) {
-      throw new Error(data.error || 'Sorry, your message could not be sent. Please WhatsApp us on +971 50 566 7502 or email sales@fann.ae.');
-    }
-
+    return await submitViaServer(body);
   }
+  await afterDelivery(body);
+  return;
+}
+
+async function submitViaServer(body: any): Promise<void> {
+  let response: Response;
+  try {
+    response = await fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(body),
+    });
+  } catch {
+    throw new Error('Network error - please check your connection and try again, or WhatsApp us on +971 50 566 7502.');
+  }
+  let data: any = {};
+  try { data = await response.json(); } catch { /* ignore */ }
+  if (!response.ok || !data.success) {
+    throw new Error(data.error || 'Sorry, your message could not be sent. Please WhatsApp us on +971 50 566 7502 or email sales@fann.ae.');
+  }
+  await afterDelivery(body);
+}
+
+// Shared post-delivery tail for BOTH delivery paths: conversion tracking + private receipt persist.
+// A receipt failure must never turn a delivered enquiry into a form error.
+async function afterDelivery(body: any): Promise<void> {
   try {
     const w = window as any;
-    if (typeof w.gtag === 'function') w.gtag('event', 'generate_lead', { form_type: payload.formType });
-    if (typeof w.fbq === 'function') w.fbq('track', 'Lead', { content_name: payload.formType });
-    (w.dataLayer = w.dataLayer || []).push({ event: 'lead_submitted', form_type: payload.formType });
+    if (typeof w.gtag === 'function') w.gtag('event', 'generate_lead', { form_type: body.formType });
+    if (typeof w.fbq === 'function') w.fbq('track', 'Lead', { content_name: body.formType });
+    (w.dataLayer = w.dataLayer || []).push({ event: 'lead_submitted', form_type: body.formType });
   } catch { /* tracking must never break the form */ }
-  // Provider delivery succeeded. Persist privately without sending another email.
-  // A receipt failure must not turn a delivered enquiry into a form error.
   try {
     if (typeof window !== 'undefined' && typeof window.crypto?.randomUUID === 'function') {
       const controller = new AbortController();
@@ -187,7 +198,6 @@ export async function submitLead(payload: LeadPayload): Promise<void> {
       if (receipt.ok && data.persisted === true) (window as any).fannOpenAIConversion?.measurePersistedLead(data);
     }
   } catch { /* delivered enquiry stays successful; no conversion without committed receipt */ }
-
 }
 
 
