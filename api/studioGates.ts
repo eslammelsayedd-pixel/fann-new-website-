@@ -9,8 +9,8 @@ export function validateExhibitionInput(formData: any): InputProblem[] {
   const w = Number(formData.standWidth), l = Number(formData.standLength), h = Number(formData.standHeight);
   if (!Number.isFinite(w) || w <= 0 || w > 60) problems.push({ field: 'standWidth', issue: `invalid width "${formData.standWidth}"`, question: 'What is the stand width in metres?' });
   if (!Number.isFinite(l) || l <= 0 || l > 60) problems.push({ field: 'standLength', issue: `invalid length "${formData.standLength}"`, question: 'What is the stand length in metres?' });
-  if (!Number.isFinite(h) || h <= 0) problems.push({ field: 'standHeight', issue: `missing height "${formData.standHeight}"`, question: 'What is the maximum stand height in metres allowed for your stand?' });
-  else if (h > 6) problems.push({ field: 'standHeight', issue: `declared height ${h}m exceeds the GCC single-storey venue cap (6m)`, question: 'Venues cap single-storey builds at 6m. What height within 6m applies to your stand?' });
+  if (!Number.isFinite(h) || h <= 0) problems.push({ field: 'standHeight', issue: `missing height "${formData.standHeight}"`, question: 'What is the maximum build height in metres your organiser allows for this stand?' });
+  else if (h > 12) problems.push({ field: 'standHeight', issue: `entered height ${h}m looks implausible for a stand (technical sanity check only - not a venue rule)`, question: `You entered ${h}m. Please confirm the maximum build height in metres from your organiser manual.` });
   const company = String(formData.companyName || '').trim();
   if (!company) problems.push({ field: 'companyName', issue: 'missing company name', question: 'What exact company or brand name must appear on the stand?' });
   const features = Array.isArray(formData.features) ? formData.features.filter((f: any) => typeof f === 'string' && f.trim()) : [];
@@ -57,6 +57,16 @@ export function gateExhibitionConcept(concept: any, formData: any): GateResult {
 
   // 4. Brand presence: the declared company name must appear in the concept text.
   if (company && !text.toLowerCase().includes(company)) failures.push(`declared brand "${formData.companyName}" absent from concept text`);
+
+  // 5. Unsupported technical authority: precision/compliance claims must not appear without a named source.
+  const claimPatterns: [RegExp, string][] = [
+    [/\b\d+(?:\.\d+)?\s*dB\b/i, 'acoustic rating (dB) stated without a tested assembly source'],
+    [/\b(?:class|fire[- ]rated|non[- ]combustible|B1|ASTM|EN\s*13501)\b/i, 'fire/compliance classification stated without a named applicable source'],
+    [/\b(?:certified|engineered|approved)\b/i, 'certification/engineering claim stated without a named source']
+  ];
+  for (const [re, label] of claimPatterns) {
+    if (re.test(text) && !/subject to|to be verified|proposed, pending|source:/i.test(text)) failures.push(`unsupported claim: ${label}`);
+  }
 
   const unique = [...new Set(failures)];
   return { pass: unique.length === 0, failures: unique };
