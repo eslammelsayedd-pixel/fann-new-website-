@@ -120,7 +120,7 @@ const CONTRACTS = [
   },
   {
     route: 'generate-exhibition-design', ai: true, // consumed by pages/ExhibitionStudioPage.tsx -> DesignResultPage.tsx
-    body: { companyName: 'Contract Test Co', boothSize: 36 },
+    body: { companyName: 'Contract Test Co', standWidth: 6, standLength: 6, standHeight: 4, boothSize: 36, boothType: 'Island', features: ['Meeting Room', 'Reception Desk'], sides: { front: 'open', back: 'open', left: 'open', right: 'open' } },
     expect: ['industry', 'conceptA.conceptName', 'conceptA.image', 'conceptD.image'],
     patterns: { 'conceptA.image': /^(data:image\/|https?:\/\/)/ }, // double data-URL prefix bug must stay dead
   },
