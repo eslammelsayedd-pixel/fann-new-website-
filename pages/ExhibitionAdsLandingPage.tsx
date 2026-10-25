@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { submitLead } from '../lib/submitLead';
+import { validateLeadPhone, isWorkEmail, WORK_EMAIL_ERROR } from '../lib/leadValidation';
+import PhoneInput from '../components/PhoneInput';
 
 // Existing gtag loader is in index.html. This route adds only the Ads destination.
 const ADS_CONVERSION_LABEL = 'AW-17220461597/VUwgCIrGhoYdEJ3IrZNA';
@@ -49,7 +51,11 @@ export default function ExhibitionAdsLandingPage() {
   async function send(e: React.FormEvent) {
     e.preventDefault();
     if (busy || sent) return;
-    if (!form.phone.trim() && !form.email.trim()) { setError('Add a phone number or email so we can reply.'); return; }
+    if (!form.phone.trim()) { setError('Phone number is required.'); return; }
+    if (!form.email.trim()) { setError('Email is required.'); return; }
+    const phoneError = validateLeadPhone(form.phone, (form as any).phoneCountry || 'AE');
+    if (phoneError) { setError(phoneError); return; }
+    if (!isWorkEmail(form.email)) { setError(WORK_EMAIL_ERROR); return; }
     setBusy(true); setError('');
     try {
       let floorPlanUrl = '';
@@ -71,7 +77,7 @@ export default function ExhibitionAdsLandingPage() {
       }
       await submitLead({
         formType: 'Google Ads exhibition landing - 24h concept and quote',
-        name: form.name.trim(), phone: form.phone.trim(), email: form.email.trim(),
+        name: form.name.trim(), phone: form.phone.trim(), phoneCountry: (form as any).phoneCountry || 'AE', email: form.email.trim(),
         details: {
           source: 'Google Ads exhibition landing',
           floorPlan: floorPlanUrl, floorPlanFilename: floorPlan?.name || '', floorPlanLinkExpires: floorPlanUrl ? '30 days' : '',
@@ -88,8 +94,8 @@ export default function ExhibitionAdsLandingPage() {
   }
   const fields: { key: keyof typeof form; label: string; type?: string; hint?: string }[] = [
     { key: 'name', label: 'Name', hint: 'Your name' },
-    { key: 'phone', label: 'Phone (or add email)', type: 'tel', hint: '+971...' },
-    { key: 'email', label: 'Email (or add phone)', type: 'email', hint: 'you@company.com' },
+    { key: 'phone', label: 'Phone', type: 'tel', hint: '+971 50 123 4567' },
+    { key: 'email', label: 'Work email', type: 'email', hint: 'you@company.com' },
     { key: 'showName', label: 'Show (optional)', hint: 'e.g. GITEX' },
     { key: 'standSize', label: 'Size (optional)', hint: 'e.g. 6 x 3 m or 18 sqm' },
   ];
@@ -112,9 +118,11 @@ export default function ExhibitionAdsLandingPage() {
         <div id="brief" className="scroll-mt-28 rounded-sm border border-[#c9a962]/40 bg-[#222] p-4 shadow-2xl md:p-7">
           {sent ? <div role="status" className="py-10 text-center"><h2 className="font-serif text-3xl text-[#e1c78d]">Request received</h2><p className="mt-4 text-[#d4d1cb]">Thank you. FANN will contact you about your show brief.</p></div> : <>
             <h2 className="font-serif text-2xl text-[#f5f2eb]">Get your concept and quote</h2>
-            <p className="mt-2 text-sm text-[#d4d1cb]">Name + one contact method are enough to start. Show, size and floor plan are optional.</p>
+            <p className="mt-2 text-sm text-[#d4d1cb]">Name, phone and work email are enough to start. Show, size and floor plan are optional.</p>
             <form onSubmit={send} className="mt-3 grid grid-cols-2 gap-2 md:mt-5 md:gap-3">
-              {fields.map(({key,label,type='text',hint}) => <label key={key} className="text-xs font-medium text-[#e4dfd7] md:text-sm">{label}{key === 'name' ? ' *' : ''}<input className={fieldClass} name={key} type={type} placeholder={hint} autoComplete={key === 'name' ? 'name' : key === 'phone' ? 'tel' : key === 'email' ? 'email' : undefined} required={key === 'name'} value={form[key]} onChange={e => setForm({ ...form, [key]: e.target.value })} /></label>)}
+              {fields.map(({key,label,type='text',hint}) => <label key={key} className={`text-xs font-medium text-[#e4dfd7] md:text-sm${key === 'phone' ? ' col-span-2' : ''}`}>{label}{['name','phone','email'].includes(key) ? ' *' : ''}{key === 'phone'
+                ? <PhoneInput name="phone" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} onCountryChange={c => setForm(f => ({ ...f, phoneCountry: c }))} className={fieldClass} />
+                : <input className={fieldClass} name={key} type={type} placeholder={hint} autoComplete={key === 'name' ? 'name' : key === 'email' ? 'email' : undefined} required={['name','phone','email'].includes(key)} value={form[key]} onChange={e => setForm({ ...form, [key]: e.target.value })} />}</label>)}
               <div className="col-span-2"><button disabled={busy} type="submit" className="mt-2 w-full rounded-sm bg-[#c9a962] px-5 py-4 font-bold text-black hover:bg-[#dfc488] disabled:opacity-60">{busy ? 'Sending...' : 'Request my concept + quote'}</button>
               {error && <p role="alert" className="mt-3 text-sm text-red-300">{error}</p>}
               <p className="mt-3 text-xs leading-relaxed text-[#aaa49b]">Your details go to FANN for this request. <Link to="/privacy-policy" className="underline">Privacy policy</Link>.</p></div>

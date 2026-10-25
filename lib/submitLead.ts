@@ -92,6 +92,7 @@ export interface LeadPayload {
   name?: string;
   email?: string;
   phone?: string;
+  phoneCountry?: string;    // ISO region selected in PhoneInput; drives per-country validation
   company?: string;
   message?: string;
   details?: Record<string, unknown>;

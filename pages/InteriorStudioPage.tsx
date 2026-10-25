@@ -1,5 +1,7 @@
 
 import { submitLead } from '../lib/submitLead';
+import { validateLeadPhone, isWorkEmail, WORK_EMAIL_ERROR } from '../lib/leadValidation';
+import PhoneInput from '../components/PhoneInput';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -148,6 +150,10 @@ const InteriorStudioPage: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        const phoneError = validateLeadPhone(formData.phone, (formData as any).phoneCountry || 'AE');
+        if (phoneError) { alert(phoneError); return; }
+        if (!formData.email) { alert('Email is required.'); return; }
+        if (!isWorkEmail(formData.email)) { alert(WORK_EMAIL_ERROR); return; }
         try {
             await submitLead({ formType: 'Interior Studio design request', name: formData.clientName, email: formData.email, phone: formData.phone, message: formData.projectName, details: { ...formData } });
         } catch (err: any) {
@@ -172,7 +178,10 @@ const InteriorStudioPage: React.FC = () => {
                             <InputField label="Project Name" icon={<FileText size={20}/>} name="projectName" value={formData.projectName} onChange={handleInputChange} required placeholder="e.g. Downtown HQ" />
                             <InputField label="Client Name" icon={<User size={20}/>} name="clientName" value={formData.clientName} onChange={handleInputChange} required placeholder="Your Name or Company" />
                             <InputField label="Email" icon={<Mail size={20}/>} type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="email@domain.com" />
-                            <InputField label="Phone" icon={<Phone size={20}/>} type="tel" name="phone" value={formData.phone} onChange={handleInputChange} placeholder="+971..." />
+                            <div className="space-y-2">
+                                <label className="text-sm font-bold text-fann-gold ml-1 uppercase tracking-wider">Phone</label>
+                                <PhoneInput name="phone" value={formData.phone} onChange={handleInputChange} onCountryChange={c => setFormData((prev: any) => ({ ...prev, phoneCountry: c }))} className="w-full bg-black/30 border border-white/10 rounded-xl py-4 px-4 text-white placeholder-gray-500 focus:outline-none focus:border-fann-gold transition-colors" />
+                            </div>
                         </div>
                     </div>
                 );

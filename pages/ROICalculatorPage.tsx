@@ -1,5 +1,7 @@
 
 import { submitLead } from '../lib/submitLead';
+import { validateLeadPhone, isWorkEmail, WORK_EMAIL_ERROR } from '../lib/leadValidation';
+import PhoneInput from '../components/PhoneInput';
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -101,7 +103,7 @@ const ROICalculatorPage: React.FC = () => {
     const [activeScenario, setActiveScenario] = useState<'conservative' | 'realistic' | 'optimistic'>('realistic');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [leadForm, setLeadForm] = useState({ name: '', email: '', company: '' });
+    const [leadForm, setLeadForm] = useState({ name: '', email: '', company: '', phone: '' });
     const [isDownloading, setIsDownloading] = useState(false);
 
     const totalInvestment = formData.stand_cost + formData.staff_cost + formData.marketing_cost + formData.logistics_cost;
@@ -139,8 +141,11 @@ const ROICalculatorPage: React.FC = () => {
     const handleDownloadReport = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!leadForm.email) { alert('Please enter your email to download the report.'); return; }
+        const phoneError = validateLeadPhone(leadForm.phone, (leadForm as any).phoneCountry || 'AE');
+        if (phoneError) { alert(phoneError); return; }
+        if (!isWorkEmail(leadForm.email)) { alert(WORK_EMAIL_ERROR); return; }
         setIsDownloading(true);
-        submitLead({ formType: 'ROI Calculator report', name: leadForm.name, email: leadForm.email, company: leadForm.company, details: { inputs: formData, results } }).catch(err => console.error('Lead delivery failed', err));
+        submitLead({ formType: 'ROI Calculator report', name: leadForm.name, email: leadForm.email, phone: leadForm.phone, phoneCountry: (leadForm as any).phoneCountry || 'AE', company: leadForm.company, details: { inputs: formData, results } }).catch(err => console.error('Lead delivery failed', err));
         try {
             const response = await fetch('/api/generate-roi-pdf', {
                 method: 'POST',
@@ -413,7 +418,8 @@ const ROICalculatorPage: React.FC = () => {
                                             <h3 className="text-white font-bold mb-4">Download Full Report</h3>
                                             <div className="space-y-3">
                                                 <input type="text" placeholder="Name" className="w-full bg-black/50 border border-white/20 rounded p-2 text-sm text-white focus:border-fann-gold outline-none placeholder-gray-500" onChange={e => setLeadForm({...leadForm, name: e.target.value})} />
-                                                <input type="email" placeholder="Email" className="w-full bg-black/50 border border-white/20 rounded p-2 text-sm text-white focus:border-fann-gold outline-none placeholder-gray-500" onChange={e => setLeadForm({...leadForm, email: e.target.value})} />
+                                                <input type="email" placeholder="Work Email" className="w-full bg-black/50 border border-white/20 rounded p-2 text-sm text-white focus:border-fann-gold outline-none placeholder-gray-500" onChange={e => setLeadForm({...leadForm, email: e.target.value})} />
+                                                <PhoneInput name="phone" value={leadForm.phone} onChange={e => setLeadForm({...leadForm, phone: e.target.value})} onCountryChange={c => setLeadForm(f => ({ ...f, phoneCountry: c }))} className="w-full bg-black/50 border border-white/20 rounded p-2 text-sm text-white focus:border-fann-gold outline-none placeholder-gray-500" />
                                                 <input type="text" placeholder="Company" className="w-full bg-black/50 border border-white/20 rounded p-2 text-sm text-white focus:border-fann-gold outline-none placeholder-gray-500" onChange={e => setLeadForm({...leadForm, company: e.target.value})} />
                                                 <button onClick={handleDownloadReport} disabled={isDownloading} className="w-full btn-gold flex items-center justify-center gap-2 mt-2">
                                                     {isDownloading ? <Loader2 className="animate-spin" size={16}/> : <Download size={16}/>} Export PDF

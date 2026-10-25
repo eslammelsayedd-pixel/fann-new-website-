@@ -1,5 +1,7 @@
 
 import { submitLead } from '../../lib/submitLead';
+import { validateLeadPhone, isWorkEmail, WORK_EMAIL_ERROR } from '../../lib/leadValidation';
+import PhoneInput from '../../components/PhoneInput';
 import AttributionFields from '../../components/AttributionFields';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -99,6 +101,9 @@ const CostCalculatorPage: React.FC = () => {
             setError("Please fill in all required contact fields.");
             return;
         }
+        const phoneError = validateLeadPhone(state.contact.phone, (state.contact as any).phoneCountry || 'AE');
+        if (phoneError) { setError(phoneError); return; }
+        if (!isWorkEmail(state.contact.email)) { setError(WORK_EMAIL_ERROR); return; }
         
         setIsCalculating(true);
         setError(null);
@@ -113,7 +118,7 @@ const CostCalculatorPage: React.FC = () => {
             if (!response.ok) throw new Error("Calculation failed");
             const data = await response.json();
             setResult(data);
-            submitLead({ formType: 'Cost Calculator estimate', name: state.contact.name, email: state.contact.email, phone: state.contact.phone, company: state.contact.company, details: { ...state, estimate: data } }).catch(err => console.error('Lead delivery failed', err));
+            submitLead({ formType: 'Cost Calculator estimate', name: state.contact.name, email: state.contact.email, phone: state.contact.phone, phoneCountry: (state.contact as any).phoneCountry || 'AE', company: state.contact.company, details: { ...state, estimate: data } }).catch(err => console.error('Lead delivery failed', err));
         } catch (err: any) {
             setError(err.message || "Something went wrong");
         } finally {
@@ -328,8 +333,7 @@ const CostCalculatorPage: React.FC = () => {
                                                 <input type="email" name="email" placeholder="Work Email *" value={state.contact.email} onChange={handleContactChange} className="w-full pl-10 bg-black/50 border border-white/20 rounded-lg p-3 text-white focus:border-fann-gold outline-none placeholder-gray-500"/>
                                             </div>
                                             <div className="relative">
-                                                <Phone className="absolute left-3 top-3 text-gray-500" size={16}/>
-                                                <input type="text" name="phone" placeholder="Phone Number *" value={state.contact.phone} onChange={handleContactChange} className="w-full pl-10 bg-black/50 border border-white/20 rounded-lg p-3 text-white focus:border-fann-gold outline-none placeholder-gray-500"/>
+                                                <PhoneInput name="phone" value={state.contact.phone} onChange={handleContactChange} onCountryChange={c => setState(prev => ({ ...prev, contact: { ...prev.contact, phoneCountry: c } }))} className="w-full bg-black/50 border border-white/20 rounded-lg p-3 text-white focus:border-fann-gold outline-none placeholder-gray-500"/>
                                             </div>
                                         </div>
                                         <div className="relative">

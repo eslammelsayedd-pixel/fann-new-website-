@@ -1,5 +1,6 @@
 
 import { submitLead } from '../lib/submitLead';
+import { validateLeadPhone } from '../lib/leadValidation';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -167,7 +168,9 @@ const EventStudioPage: React.FC = () => {
         } else if (step === 3) {
             if (!formData.firstName) newErrors.firstName = true;
             if (!formData.lastName) newErrors.lastName = true;
-            if (!formData.phone) newErrors.phone = true;
+            const phoneInput = (formData as any).countryCode && (formData as any).countryCode !== 'Other' ? `${(formData as any).countryCode} ${formData.phone}` : formData.phone;
+            const phoneErr = validateLeadPhone(phoneInput);
+            if (phoneErr) newErrors.phone = phoneErr;
             if (!formData.email) {
                 newErrors.email = true;
             } else if (!isWorkEmail(formData.email)) {
@@ -199,7 +202,7 @@ const EventStudioPage: React.FC = () => {
             
             try {
                 // Fire lead inquiry
-                await submitLead({ formType: 'Event Studio concept request', name: [ (formData as any).firstName, (formData as any).lastName ].filter(Boolean).join(' ') || (formData as any).name, email: (formData as any).email, phone: (formData as any).phone, company: (formData as any).company || (formData as any).companyName, details: { 
+                await submitLead({ formType: 'Event Studio concept request', name: [ (formData as any).firstName, (formData as any).lastName ].filter(Boolean).join(' ') || (formData as any).name, email: (formData as any).email, phone: (formData as any).countryCode && (formData as any).countryCode !== 'Other' ? `${(formData as any).countryCode} ${(formData as any).phone}` : (formData as any).phone, company: (formData as any).company || (formData as any).companyName, details: { 
                         type: 'Event Studio Concept Request',
                         ...formData
                     } });
@@ -388,7 +391,7 @@ const EventStudioPage: React.FC = () => {
                                                 </select>
                                                 <div className="relative flex-grow">
                                                     <Phone className="absolute left-0 top-3 text-gray-500" size={16}/>
-                                                    <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className={`${getInputClass('phone')} pl-6`} placeholder="Phone Number *" />
+                                                    <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className={`${getInputClass('phone')} pl-6`} placeholder="50 123 4567 *" />
                                                 </div>
                                             </div>
                                         </div>

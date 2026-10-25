@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 import { submitLead } from '../lib/submitLead';
+import { validateLeadPhone, isWorkEmail, WORK_EMAIL_ERROR } from '../lib/leadValidation';
+import PhoneInput from '../components/PhoneInput';
 import AttributionFields from '../components/AttributionFields';
 import { Mail, Phone, MapPin, Loader2, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -37,10 +39,15 @@ const ContactPage: React.FC = () => {
     const formData = new FormData(e.currentTarget);
     const name = formData.get('name') as string;
     const email = formData.get('email') as string;
+    const phone = formData.get('phone') as string;
     const message = formData.get('message') as string;
 
+    const phoneError = validateLeadPhone(phone, (formData.get('phoneCountry') as string) || 'AE');
+    if (phoneError) { setError(phoneError); setIsSending(false); return; }
+    if (!isWorkEmail(email)) { setError(WORK_EMAIL_ERROR); setIsSending(false); return; }
+
     try {
-        await submitLead({ formType: 'Contact form', name, email, phone: (formData.get('phone') as string) || '', message, website: (formData.get('website') as string) || '' });
+        await submitLead({ formType: 'Contact form', name, email, phone: (formData.get('phone') as string) || '', phoneCountry: (formData.get('phoneCountry') as string) || 'AE', message, website: (formData.get('website') as string) || '' });
         setIsSent(true);
     } catch (err: any) {
         setError(err.message);
@@ -163,13 +170,16 @@ const ContactPage: React.FC = () => {
                 ) : (
                     <>
                         <h2 className="text-3xl font-serif text-white mb-8" style={{ fontWeight: 600}}>Send a Message</h2>
-                        <form onSubmit={handleSubmit} className="space-y-6">
+                        <form onSubmit={handleSubmit} onInput={() => setError(null)} className="space-y-6">
                            <AttributionFields />
                            <div>
                                <input type="text" name="name" placeholder="Your Name" required className="w-full bg-black/30 border border-white/10 rounded-md px-4 py-3 text-white focus:outline-none focus:border-fann-gold transition-colors" />
                            </div>
                            <div>
-                               <input type="email" name="email" placeholder="Your Email" required className="w-full bg-black/30 border border-white/10 rounded-md px-4 py-3 text-white focus:outline-none focus:border-fann-gold transition-colors" />
+                               <input type="email" name="email" placeholder="Your Work Email" required className="w-full bg-black/30 border border-white/10 rounded-md px-4 py-3 text-white focus:outline-none focus:border-fann-gold transition-colors" />
+                           </div>
+                           <div>
+                               <PhoneInput name="phone" required className="w-full bg-black/30 border border-white/10 rounded-md px-4 py-3 text-white focus:outline-none focus:border-fann-gold transition-colors" />
                            </div>
                            <div>
                                <textarea name="message" placeholder="Your Message" rows={5} required className="w-full bg-black/30 border border-white/10 rounded-md px-4 py-3 text-white focus:outline-none focus:border-fann-gold transition-colors"></textarea>

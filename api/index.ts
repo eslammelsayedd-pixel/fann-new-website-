@@ -1,5 +1,34 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import url from 'url';
+import { parsePhoneNumberFromString, getCountryCallingCode } from 'libphonenumber-js/min';
+
+// --- Inlined from lib/leadValidation.ts (contract-check transpiles this file standalone;
+// a relative ../lib import breaks the build gate - keep both copies in sync) ---
+function describeLeadPhone(raw: string, country?: string): { valid: boolean; error: string | null; actualCountry?: string; international?: string } {
+  const input = (raw || '').trim();
+  if (!input) return { valid: false, error: 'Phone number is required.' };
+  const region = !country || country === 'OTHER' ? undefined : (country as any);
+  const phone = parsePhoneNumberFromString(input, region);
+  if (!phone || !phone.isPossible() || !phone.isValid()) {
+    let example = ' (type the full international number starting with +)';
+    if (region) {
+      try { example = `, e.g. +${getCountryCallingCode(region)} followed by the full national number`; } catch { /* keep generic */ }
+    }
+    return { valid: false, error: `Enter a complete phone number${example}.` };
+  }
+  return { valid: true, error: null, actualCountry: phone.country, international: phone.formatInternational() };
+}
+function validateLeadPhone(raw: string, country?: string): string | null {
+  return describeLeadPhone(raw, country).error;
+}
+const PUBLIC_EMAIL_DOMAINS = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com', 'aol.com', 'live.com', 'me.com', 'protonmail.com'];
+function isWorkEmail(email: string): boolean {
+  if (!email || !email.includes('@')) return false;
+  const domain = email.split('@')[1].toLowerCase().trim();
+  return !!domain && !PUBLIC_EMAIL_DOMAINS.includes(domain);
+}
+const WORK_EMAIL_ERROR = 'Please use your work email for business enquiries.';
+// --- end inlined lead validation ---
 import { GoogleGenAI, Type } from "@google/genai";
 
 // Initialize the Google GenAI SDK with server-side API Key
@@ -1158,7 +1187,17 @@ async function handleLead(req: VercelRequest, res: VercelResponse, defaultType: 
 
   const emailOk = !email || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   if (!emailOk) return res.status(400).json({ success: false, error: 'Please enter a valid email address.' });
-  if (!email && !phone) return res.status(400).json({ success: false, error: 'Please add an email or phone number so we can reach you.' });
+  // Lead magnets stay email-only; every enquiry form requires phone + work email.
+  const PHONE_OPTIONAL_TYPES = new Set(['Resource download', 'Trends Report 2026 download']);
+  if (PHONE_OPTIONAL_TYPES.has(formType)) {
+    if (!email && !phone) return res.status(400).json({ success: false, error: 'Please add an email or phone number so we can reach you.' });
+  } else {
+    if (!email) return res.status(400).json({ success: false, error: 'Please add your email address.' });
+    if (!isWorkEmail(email)) return res.status(400).json({ success: false, error: WORK_EMAIL_ERROR });
+    const phoneCountry = clean(b.phoneCountry || (typeof b.details === 'object' && b.details ? (b.details as any).phoneCountry : '') || 'AE', 4);
+    const phoneErr = validateLeadPhone(phone, phoneCountry);
+    if (phoneErr) return res.status(400).json({ success: false, error: phoneErr });
+  }
 
   const skip = new Set(['formType','type','name','firstName','lastName','email','phone','company','message','website','details','page','referrer']);
   const extra: Record<string, unknown> = { ...(typeof b.details === 'object' && b.details ? b.details : {}) };

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 import { submitLead } from '../lib/submitLead';
+import { validateLeadPhone, isWorkEmail, WORK_EMAIL_ERROR } from '../lib/leadValidation';
+import PhoneInput from '../components/PhoneInput';
 import { Clock, Video, Award, Phone, Mail, AlertCircle, Calendar, Loader2, CheckCircle } from 'lucide-react';
 
 const ConsultationPage: React.FC = () => {
@@ -21,8 +23,12 @@ const ConsultationPage: React.FC = () => {
         const company = formData.get('company') as string;
         const details = formData.get('details') as string;
 
+        const phoneError = validateLeadPhone(phone, (formData.get('phoneCountry') as string) || 'AE');
+        if (phoneError) { setError(phoneError); setIsSending(false); return; }
+        if (!isWorkEmail(email)) { setError(WORK_EMAIL_ERROR); setIsSending(false); return; }
+
         try {
-            await submitLead({ formType: 'Consultation request', name, email, phone, company, message: details, website: (formData.get('website') as string) || '' });
+            await submitLead({ formType: 'Consultation request', name, email, phone, phoneCountry: (formData.get('phoneCountry') as string) || 'AE', company, message: details, website: (formData.get('website') as string) || '' });
             setIsSent(true);
         } catch (err: any) {
             setError(err.message);
@@ -65,12 +71,6 @@ const ConsultationPage: React.FC = () => {
                                 ))}
                             </div>
 
-                            <div className="p-6 border-l-4 border-fann-gold bg-fann-charcoal-light border-y border-r border-white/5">
-                                <p className="italic text-sm text-gray-300">
-                                    "The consultation gave us more clarity in 30 minutes than we had in weeks of internal meetings."
-                                </p>
-                                <p className="mt-2 font-bold text-xs uppercase tracking-wider text-fann-gold">- Marketing Director, FinTech Hive</p>
-                            </div>
                         </div>
 
                         {/* Right: Booking Form */}
@@ -91,7 +91,7 @@ const ConsultationPage: React.FC = () => {
                                         </button>
                                     </div>
                                 ) : (
-                                    <form onSubmit={handleSubmit} className="space-y-6 text-gray-800">
+                                    <form onSubmit={handleSubmit} onInput={() => setError(null)} className="space-y-6 text-gray-800">
                                         <div className="text-center mb-8">
                                             <h2 className="text-2xl font-bold text-gray-900 mb-2">Request a Consultation</h2>
                                             <p className="text-gray-500">Fill out the form below and we'll be in touch to schedule your session.</p>
@@ -118,7 +118,7 @@ const ConsultationPage: React.FC = () => {
                                         <div className="grid md:grid-cols-2 gap-6">
                                             <div>
                                                 <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
-                                                <input type="tel" id="phone" name="phone" required className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-fann-gold focus:border-transparent transition-all text-gray-900" placeholder="+971 50 000 0000" />
+                                                <PhoneInput name="phone" required className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-fann-gold focus:border-transparent transition-all text-gray-900" />
                                             </div>
                                             <div>
                                                 <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
