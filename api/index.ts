@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { validateExhibitionInput, gateExhibitionConcept } from './studioGates';
 import url from 'url';
 import dns from 'node:dns/promises';
 import { parsePhoneNumberFromString, getCountryCallingCode } from 'libphonenumber-js/min';
@@ -246,10 +247,15 @@ async function generateExhibitionDesign(req: VercelRequest, res: VercelResponse)
   const formData = req.body || {};
 
   try {
-    const sides = formData.sides || {};
-    if (!(sides.front && sides.back && sides.left && sides.right)) {
-      return res.status(400).json({ error: 'Open/closed sides are required before concepts can be generated. Please go back and set each of the front, back, left and right sides as open, partially open or closed.' });
+    const inputProblems = validateExhibitionInput(formData);
+    if (inputProblems.length > 0) {
+      return res.status(400).json({
+        error: 'clarification_needed',
+        message: 'Some required details are missing or inconsistent before concepts can be generated.',
+        problems: inputProblems
+      });
     }
+    const sides = formData.sides || {};
     const brandContext = formData.websiteUrl ? await fetchWebsiteContext(String(formData.websiteUrl)) : { used: false as const, note: 'no website URL provided' };
     const boundaryLines = (sides.front && sides.back && sides.left && sides.right)
       ? `Declared stand boundaries (visitor-declared - never infer open or closed sides from the booth type):
@@ -342,6 +348,9 @@ Rules: each description must contain at least three concrete dimensions. No empt
     });
 
     const result = JSON.parse(response.text?.trim() || '{}');
+    for (const key of ['conceptA', 'conceptB', 'conceptC', 'conceptD']) {
+      if (result[key]) result[key].gate = gateExhibitionConcept(result[key], formData);
+    }
     result.brandContext = brandContext.used
       ? { used: true, sourceUrl: brandContext.sourceUrl }
       : { used: false, note: brandContext.note || 'website context unavailable' };
