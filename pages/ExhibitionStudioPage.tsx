@@ -110,6 +110,8 @@ const ExhibitionStudioPage: React.FC = () => {
         standLength: 3,
         standHeight: 4,
         boothType: 'Island', 
+        sides: { front: '', back: '', left: '', right: '' } as Record<string, string>,
+        entranceSide: '',
         features: [] as string[],
         // Step 3 (Lead)
         firstName: '',
@@ -245,6 +247,11 @@ const ExhibitionStudioPage: React.FC = () => {
             if (!formData.companyName) newErrors.companyName = true;
             if (!formData.websiteUrl) newErrors.websiteUrl = true;
             if (!formData.eventName) newErrors.eventName = true;
+        } else if (step === 2) {
+            const sideLabels: Record<string, string> = { front: 'Front', back: 'Back', left: 'Left', right: 'Right' };
+            const unset = Object.keys(sideLabels).filter(k => !formData.sides[k]);
+            if (unset.length > 0) newErrors.sides = `Please set each side as open, partially open or closed: ${unset.map(k => sideLabels[k]).join(', ')}.`;
+            if (!formData.entranceSide) newErrors.entranceSide = 'Please tell us which side faces the main visitor aisle.';
         } else if (step === 3) {
             if (!formData.firstName) newErrors.firstName = true;
             if (!formData.lastName) newErrors.lastName = true;
@@ -526,6 +533,48 @@ const ExhibitionStudioPage: React.FC = () => {
                                                         </button>
                                                     ))}
                                                 </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Open / Closed Sides - declared, never inferred from layout type */}
+                                        <div className="mt-8">
+                                            <h3 className="text-fann-gold text-xs font-bold uppercase tracking-widest mb-2">Open &amp; Closed Sides</h3>
+                                            <p className="text-gray-500 text-xs mb-4">Tell us exactly which sides are open, partially open or closed. We design to your declared boundaries - we never guess them from the layout type above.</p>
+                                            <div className="grid md:grid-cols-2 gap-4">
+                                                {(['front', 'back', 'left', 'right'] as const).map(side => (
+                                                    <div key={side} className="border border-white/10 p-3 rounded-sm">
+                                                        <div className="text-white text-xs uppercase tracking-wider mb-2 capitalize">{side} side</div>
+                                                        <div className="flex gap-2">
+                                                            {(['open', 'partial', 'closed'] as const).map(state => (
+                                                                <button
+                                                                    key={state}
+                                                                    type="button"
+                                                                    onClick={() => setFormData({...formData, sides: {...formData.sides, [side]: state}})}
+                                                                    className={`flex-1 px-2 py-2 text-xs uppercase tracking-wider border transition-all rounded-sm ${formData.sides[side] === state ? 'bg-fann-gold text-black border-fann-gold font-bold' : 'border-white/10 text-gray-500 hover:text-white hover:border-white/30'}`}
+                                                                >
+                                                                    {state === 'partial' ? 'Partial' : state}
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            {errors.sides && <p className="text-red-500 text-xs mt-2">{errors.sides}</p>}
+                                            <div className="mt-4">
+                                                <div className="text-white text-xs uppercase tracking-wider mb-2">Which side faces the main visitor aisle?</div>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {(['front', 'back', 'left', 'right'] as const).map(side => (
+                                                        <button
+                                                            key={side}
+                                                            type="button"
+                                                            onClick={() => setFormData({...formData, entranceSide: side})}
+                                                            className={`px-4 py-2 text-xs uppercase tracking-wider border transition-all rounded-sm ${formData.entranceSide === side ? 'bg-white text-black border-white font-bold' : 'border-white/10 text-gray-500 hover:text-white hover:border-white/30'}`}
+                                                        >
+                                                            {side}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                                {errors.entranceSide && <p className="text-red-500 text-xs mt-2">{errors.entranceSide}</p>}
                                             </div>
                                         </div>
                                     </motion.div>

@@ -141,6 +141,13 @@ const DesignResultPage: React.FC = () => {
                                         Industry: {result.industry}
                                     </span>
                                     <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-2">Your 4 Concepts</h1>
+                                    {result.brandContext && (
+                                        <p className="text-gray-500 text-xs mt-2">
+                                            {result.brandContext.used
+                                                ? <>Concept copy used brand text from your website ({result.brandContext.sourceUrl}). Verify brand details before use.</>
+                                                : <>Generated without your website context{result.brandContext.note ? ` (${result.brandContext.note})` : ''} - concepts are based on your form answers only.</>}
+                                        </p>
+                                    )}
                                 </div>
 
                                 {/* Tab Switcher */}
