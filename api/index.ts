@@ -1489,6 +1489,14 @@ export default async function mainHandler(req: VercelRequest, res: VercelRespons
 
     console.log(`Routing request for API path: /api/${routeName}`);
 
+    // Spend-bearing Gemini routes share the lead-form limiter (8 req / 10 min / IP).
+    // Guards the 180s maxDuration ceiling from abuse-driven compute + API spend.
+    const AI_SPEND_ROUTES = new Set(['detect-industry', 'extract-colors', 'chat', 'generate-insights', 'generate-exhibition-design', 'generate-event-design', 'generate-interior-design', 'generate-exhibition-guide']);
+    if (AI_SPEND_ROUTES.has(routeName)) {
+      const aiIp = clean((req.headers['x-forwarded-for'] as string) || '', 100).split(',')[0] || 'unknown';
+      if (isRateLimited('ai:' + aiIp)) return res.status(429).json({ error: 'Too many requests. Please try again in a few minutes.' });
+    }
+
     switch (routeName) {
       case 'detect-industry':
         return await detectIndustry(req, res);
