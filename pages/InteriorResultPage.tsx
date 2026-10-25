@@ -16,6 +16,7 @@ interface DesignConcept {
 interface GeneratedDesign {
     designConcept: DesignConcept;
     image: string; // base64
+    isFallback?: boolean;
 }
 
 const InfoCard = ({ icon: Icon, title, items }: { icon: React.ElementType, title: string, items: string[] | string }) => (
@@ -111,7 +112,7 @@ const InteriorResultPage: React.FC = () => {
                                     <h1 className="text-5xl font-serif font-bold text-fann-gold mb-2">{design.designConcept.conceptName}</h1>
                                     <p className="text-xl text-gray-300">Your FANN-Generated 3D Render for {formData.projectName}</p>
                                 </div>
-                                <div className="bg-black/50 p-2 rounded-lg shadow-2xl mb-12 border border-white/10">
+                                <div className="bg-black/50 p-2 rounded-lg shadow-2xl mb-12 border border-white/10 relative">
                                     <img 
                                         src={design.image.startsWith('data:') || design.image.startsWith('http') ? design.image : `data:image/jpeg;base64,${design.image}`} 
                                         alt={design.designConcept.conceptName} 
@@ -121,6 +122,11 @@ const InteriorResultPage: React.FC = () => {
                                         height="639"
                                         loading="lazy"
                                     />
+                                        {design.isFallback && (
+                                            <div className="absolute top-2 left-2 bg-black/85 text-amber-400 text-xs font-bold px-3 py-2 border border-amber-500/40 max-w-xs">
+                                                Portfolio example shown - live concept image unavailable. The design text is generated for you; the photo is a real FANN project, not this design.
+                                            </div>
+                                        )}
                                 </div>
                                 
                                 <div className="max-w-4xl mx-auto text-center mb-12">

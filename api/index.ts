@@ -280,6 +280,7 @@ Rules: each description must contain at least three concrete dimensions. No empt
     result.conceptB.image = fallbackImages[1];
     result.conceptC.image = fallbackImages[2];
     result.conceptD.image = fallbackImages[3];
+    result.conceptA.isFallback = result.conceptB.isFallback = result.conceptC.isFallback = result.conceptD.isFallback = true;
 
     // Try custom visual concept generation using gemini-3.1-flash-image
     try {
@@ -304,6 +305,7 @@ Rules: each description must contain at least three concrete dimensions. No empt
         for (const part of imageResponse.candidates?.[0]?.content?.parts || []) {
           if (part.inlineData?.data) {
             concept.image = `data:image/png;base64,${part.inlineData.data}`;
+            concept.isFallback = false;
             break;
           }
         }
@@ -423,6 +425,7 @@ Rules: detailedDescription must include at least three concrete dimensions and t
     result.conceptB.image = fallbackImages[1];
     result.conceptC.image = fallbackImages[2];
     result.conceptD.image = fallbackImages[3];
+    result.conceptA.isFallback = result.conceptB.isFallback = result.conceptC.isFallback = result.conceptD.isFallback = true;
 
     try {
       const imgPromises = ['conceptA', 'conceptB', 'conceptC', 'conceptD'].map(async (key) => {
@@ -446,6 +449,7 @@ Rules: detailedDescription must include at least three concrete dimensions and t
         for (const part of imageResponse.candidates?.[0]?.content?.parts || []) {
           if (part.inlineData?.data) {
             concept.image = `data:image/png;base64,${part.inlineData.data}`;
+            concept.isFallback = false;
             break;
           }
         }
@@ -516,6 +520,7 @@ Rules: detailedDescription must cite at least three real dimensions and the zoni
 
     const result = JSON.parse(response.text?.trim() || '{}');
     result.image = '/images/stands/1-trevos-light-middle-east.webp';
+    result.isFallback = true;
 
     try {
       const concept = result.designConcept;
@@ -538,6 +543,7 @@ Rules: detailedDescription must cite at least three real dimensions and the zoni
       for (const part of imageResponse.candidates?.[0]?.content?.parts || []) {
         if (part.inlineData?.data) {
           result.image = `data:image/png;base64,${part.inlineData.data}`;
+          result.isFallback = false;
           break;
         }
       }

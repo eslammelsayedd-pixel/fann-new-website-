@@ -13,6 +13,7 @@ interface Concept {
     lighting: string;
     engagementTech: string[];
     image: string; // base64
+    isFallback?: boolean;
 }
 
 interface GeneratedResult {
@@ -182,6 +183,11 @@ const EventResultPage: React.FC = () => {
                                             ) : (
                                                 <div className="w-full aspect-video flex items-center justify-center bg-gray-900 text-gray-600">
                                                     Image generation unavailable.
+                                                </div>
+                                            )}
+                                            {activeConcept.isFallback && (
+                                                <div className="absolute top-2 left-2 bg-black/85 text-amber-400 text-xs font-bold px-3 py-2 border border-amber-500/40 max-w-xs z-10">
+                                                    Portfolio example shown - live concept image unavailable. The concept text is generated for you; the photo is a real FANN project, not this design.
                                                 </div>
                                             )}
                                             <div className="absolute top-6 right-6 bg-black/80 backdrop-blur-md text-fann-gold border border-fann-gold/30 px-6 py-2 text-xs font-bold uppercase tracking-widest">
