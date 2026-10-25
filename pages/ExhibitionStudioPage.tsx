@@ -112,6 +112,7 @@ const ExhibitionStudioPage: React.FC = () => {
         boothType: 'Island', 
         sides: { front: '', back: '', left: '', right: '' } as Record<string, string>,
         entranceSide: '',
+        sidesExtent: { front: '', back: '', left: '', right: '' } as Record<string, string>,
         features: [] as string[],
         // Step 3 (Lead)
         firstName: '',
@@ -251,7 +252,20 @@ const ExhibitionStudioPage: React.FC = () => {
             const sideLabels: Record<string, string> = { front: 'Front', back: 'Back', left: 'Left', right: 'Right' };
             const unset = Object.keys(sideLabels).filter(k => !formData.sides[k]);
             if (unset.length > 0) newErrors.sides = `Please set each side as open, partially open or closed: ${unset.map(k => sideLabels[k]).join(', ')}.`;
+            const partialNoExtent = Object.keys(sideLabels).filter(k => formData.sides[k] === 'partial' && !formData.sidesExtent[k].trim());
+            if (partialNoExtent.length > 0) newErrors.sides = `Describe the opening for each partially open side: ${partialNoExtent.map(k => sideLabels[k]).join(', ')}.`;
+            const closedCount = ['front','back','left','right'].filter(k => formData.sides[k] === 'closed').length;
+            const expectedClosed: Record<string, number> = { Island: 0, Peninsula: 1, Corner: 2, Inline: 3 };
+            const expected = expectedClosed[formData.boothType];
+            if (unset.length === 0 && expected !== undefined && closedCount !== expected) {
+                newErrors.sides = `Contradiction: the ${formData.boothType} layout has ${4 - expected} open side(s), but you marked ${closedCount} side(s) closed. Change the layout above or correct the sides - we will not guess which is right.`;
+            } else if (unset.length === 0 && formData.boothType === 'Corner' && closedCount === 2) {
+                const closed = ['front','back','left','right'].filter(k => formData.sides[k] === 'closed');
+                const opposite = (closed.includes('front') && closed.includes('back')) || (closed.includes('left') && closed.includes('right'));
+                if (opposite) newErrors.sides = 'A corner stand has two ADJACENT closed sides (for example back + left), not opposite ones. Correct the sides or choose another layout.';
+            }
             if (!formData.entranceSide) newErrors.entranceSide = 'Please tell us which side faces the main visitor aisle.';
+            if (formData.entranceSide && formData.sides[formData.entranceSide] === 'closed') newErrors.entranceSide = 'The main visitor aisle cannot face a closed side. Pick an open or partially open side.';
         } else if (step === 3) {
             if (!formData.firstName) newErrors.firstName = true;
             if (!formData.lastName) newErrors.lastName = true;
@@ -556,6 +570,15 @@ const ExhibitionStudioPage: React.FC = () => {
                                                                 </button>
                                                             ))}
                                                         </div>
+                                                        {formData.sides[side] === 'partial' && (
+                                                            <input
+                                                                type="text"
+                                                                value={formData.sidesExtent[side]}
+                                                                onChange={(e) => setFormData({...formData, sidesExtent: {...formData.sidesExtent, [side]: e.target.value}})}
+                                                                placeholder="Which part is open? e.g. left 3m open, rest solid wall"
+                                                                className="mt-2 w-full bg-transparent border-b border-white/20 py-2 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-fann-gold"
+                                                            />
+                                                        )}
                                                     </div>
                                                 ))}
                                             </div>
