@@ -30,16 +30,16 @@ if (!AI_KEYS_SET) process.env.GEMINI_API_KEY = 'contract-check-placeholder';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 // 1. Transpile api/index.ts to CJS (no type-check) and load the router.
-const ts = require('typescript');
-const src = readFileSync(join(root, 'api', 'index.ts'), 'utf8');
-const { outputText } = ts.transpileModule(src, {
-  compilerOptions: {
-    module: ts.ModuleKind.CommonJS,
-    target: ts.ScriptTarget.ES2020,
-    esModuleInterop: true,
-  },
-  fileName: 'index.ts',
-});
+// Bundle (not single-file transpile) so local imports like ./studioGates resolve; platform deps stay external.
+const esbuild = require('esbuild');
+const outputText = esbuild.buildSync({
+  entryPoints: [join(root, 'api', 'index.ts')],
+  bundle: true,
+  platform: 'node',
+  format: 'cjs',
+  write: false,
+  external: ['@google/genai'],
+}).outputFiles[0].text;
 // Bundle lives inside the project so require('@google/genai') resolves from node_modules.
 import { mkdirSync } from 'fs';
 mkdirSync(join(root, 'node_modules', '.cache'), { recursive: true });
