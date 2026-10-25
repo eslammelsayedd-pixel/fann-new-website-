@@ -81,7 +81,7 @@ export default function ExhibitionAdsLandingPage() {
         details: {
           source: 'Google Ads exhibition landing',
           floorPlan: floorPlanUrl, floorPlanFilename: floorPlan?.name || '', floorPlanLinkExpires: floorPlanUrl ? '30 days' : '',
-          offer: '3D stand concept + full quote within 24 hours',
+          offer: '3D stand concepts from your show brief',
           showName: form.showName.trim(), standSize: form.standSize.trim(), openSides: form.openSides,
           campaign: new URLSearchParams(window.location.search).get('utm_campaign') || '',
         },
@@ -100,14 +100,14 @@ export default function ExhibitionAdsLandingPage() {
     { key: 'standSize', label: 'Size (optional)', hint: 'e.g. 6 x 3 m or 18 sqm' },
   ];
   return <>
-    <SEO title="Exhibition Stand Builders in the UAE | 3D Concept + Quote in 24 Hours" description="FANN designs and builds custom exhibition stands in the UAE. Send your show brief for a 3D stand concept and full quote within 24 hours." />
+    <SEO title="Exhibition Stand Builders in the UAE | 3D Stand Concepts" description="FANN designs and builds custom exhibition stands in the UAE. Send your show brief and get 3D stand concepts. A quote follows once you pick your concept." />
     <div className="ads-landing-page">
     <section className="bg-[#111111] px-5 pb-10 pt-[5.5rem] text-[#f5f2eb] md:pb-14 md:pt-28">
       <div className="mx-auto grid max-w-6xl items-start gap-5 lg:grid-cols-[1fr_440px] lg:gap-12">
         <div className="lg:pt-3">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[.22em] text-[#c9a962]">Custom exhibition stands</p>
           <h1 className="max-w-2xl font-serif text-[1.75rem] font-bold leading-[1.12] md:text-5xl lg:text-[3.5rem]">Exhibition Stand Builders in the UAE</h1>
-          <p className="mt-3 max-w-xl text-sm md:text-base md:mt-6 md:text-lg leading-relaxed text-[#d4d1cb]">3D stand concept and full quote within 24 hours. Share your contact details. Add your show and size if known.</p>
+          <p className="mt-3 max-w-xl text-sm md:text-base md:mt-6 md:text-lg leading-relaxed text-[#d4d1cb]">3D stand concepts from your show brief. Share your contact details. Add your show and size if known.</p>
           <p className="mt-2 text-xs md:text-sm text-[#e1c78d]">In-house design, fabrication and installation across the UAE. Scope and price agreed before production.</p><a href="#brief" className="mt-4 inline-flex min-h-[48px] items-center rounded-sm bg-[#c9a962] px-5 py-3 font-bold text-black">Request your concept + quote</a>
           <div className="mt-3 flex flex-wrap gap-2 md:mt-5 md:gap-3">
             <a href="tel:+971505667502" data-track="ads-call" className="rounded-sm border border-[#c9a962] px-3 py-2 text-sm font-semibold md:px-5 md:py-3 md:text-base text-[#e1c78d] hover:bg-[#c9a962] hover:text-black">Call +971 50 566 7502</a>

@@ -935,12 +935,12 @@ function clean(v: unknown, max = 2000): string {
   return String(v).replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, max);
 }
 
-function isRateLimited(ip: string): boolean {
+function isRateLimited(ip: string, limit = 8): boolean {
   const now = Date.now();
   const hits = (rateBucket.get(ip) || []).filter(t => now - t < 10 * 60 * 1000);
   hits.push(now);
   rateBucket.set(ip, hits);
-  return hits.length > 8;
+  return hits.length > limit;
 }
 
 async function deliverLead(subject: string, text: string, replyTo?: string): Promise<void> {
@@ -1489,12 +1489,18 @@ export default async function mainHandler(req: VercelRequest, res: VercelRespons
 
     console.log(`Routing request for API path: /api/${routeName}`);
 
-    // Spend-bearing Gemini routes share the lead-form limiter (8 req / 10 min / IP).
-    // Guards the 180s maxDuration ceiling from abuse-driven compute + API spend.
-    const AI_SPEND_ROUTES = new Set(['detect-industry', 'extract-colors', 'chat', 'generate-insights', 'generate-exhibition-design', 'generate-event-design', 'generate-interior-design', 'generate-exhibition-guide']);
-    if (AI_SPEND_ROUTES.has(routeName)) {
+    // Spend-bearing Gemini routes, throttled per IP in tiered buckets so an ordinary
+    // visitor journey (detect-industry + extract-colors + 1-2 generations + chat) never
+    // self-blocks, while abuse-driven compute + API spend stays bounded under the 180s
+    // ceiling. In-memory per instance: a throttle, not a global cost cap.
+    const GEN_ROUTES = new Set(['generate-insights', 'generate-exhibition-design', 'generate-event-design', 'generate-interior-design', 'generate-exhibition-guide']);
+    const ASSIST_ROUTES = new Set(['detect-industry', 'extract-colors']);
+    if (GEN_ROUTES.has(routeName) || ASSIST_ROUTES.has(routeName) || routeName === 'chat') {
       const aiIp = clean((req.headers['x-forwarded-for'] as string) || '', 100).split(',')[0] || 'unknown';
-      if (isRateLimited('ai:' + aiIp)) return res.status(429).json({ error: 'Too many requests. Please try again in a few minutes.' });
+      const bucket = GEN_ROUTES.has(routeName) ? 'gen' : (routeName === 'chat' ? 'chat' : 'assist');
+      if (isRateLimited(bucket + ':' + aiIp, GEN_ROUTES.has(routeName) ? 5 : 20)) {
+        return res.status(429).json({ error: 'You have hit the rate limit for AI features. Please wait a few minutes and try again.' });
+      }
     }
 
     switch (routeName) {
