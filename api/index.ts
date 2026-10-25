@@ -369,6 +369,12 @@ Rules: each description must contain at least three concrete dimensions. No empt
     result.conceptD.image = fallbackImages[3];
     result.conceptA.isFallback = result.conceptB.isFallback = result.conceptC.isFallback = result.conceptD.isFallback = true;
 
+    // Gate-failure abort (validation runs): never spend image generation on concepts that already fail the text gates.
+    const failedGateKeys = ['conceptA', 'conceptB', 'conceptC', 'conceptD'].filter(k => result[k]?.gate && !result[k].gate.pass);
+    if (formData.abortOnGateFailure === true && failedGateKeys.length > 0) {
+      return res.status(200).json({ ...result, aborted: 'gate_failure', failedGates: failedGateKeys, textOnly: true });
+    }
+
     // Text-only mode (validation/dry-run): skip paid image generation entirely; concepts carry their gate results.
     if (formData.textOnly === true) {
       return res.status(200).json({ ...result, textOnly: true });
