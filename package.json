@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/contract-check.mjs && vite build && node scripts/prerender.mjs",
+    "build": "node scripts/check-buyer-page-sources.mjs && node scripts/contract-check.mjs && vite build && node scripts/prerender.mjs",
     "preview": "vite preview",
     "optimize-images": "node scripts/optimize-images.mjs",
     "contract-check": "node scripts/contract-check.mjs"
