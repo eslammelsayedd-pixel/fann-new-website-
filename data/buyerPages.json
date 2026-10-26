@@ -1635,8 +1635,8 @@
         "answer": "Only if the quote states them. Power, water, rigging, cleaning, waste and organiser service orders are identified separately as included, excluded or supplied by others, with named responsibility for ordering and payment."
       },
       {
-        "question": "Is FANN an official or DEWA-appointed contractor?",
-        "answer": "FANN is an independent exhibition stand design and build contractor. This page does not claim an organiser appointment, venue accreditation or official-contractor status for Intersec, DEWA or Dubai World Trade Centre."
+        "question": "Is FANN an official or organiser-appointed contractor?",
+        "answer": "FANN is an independent exhibition stand design and build contractor. This page does not claim an organiser appointment, venue accreditation or official-contractor status for Intersec, Messe Frankfurt Middle East or Dubai World Trade Centre."
       }
     ],
     "related": [
@@ -1663,14 +1663,14 @@
     ],
     "sources": [
       {
-        "url": "https://www.wetex.ae/en/",
         "label": "Intersec official event page",
-        "note": "Checked 15 October 2026: Intersec 2026, 20-22 October, Dubai World Trade Centre. Obtain the current exhibitor manual through your booked route before agreeing operational requirements."
+        "url": "https://intersec.ae.messefrankfurt.com/dubai/en.html",
+        "note": "Checked 26 October 2026: Intersec, 12-14 January 2027, Dubai. Obtain the current exhibitor manual through your booked route before agreeing operational requirements."
       },
       {
-        "url": "https://www.dwtc.com/en/events/wetex-2026/",
-        "label": "Dubai World Trade Centre Intersec 2026 listing",
-        "note": "Confirms 20-22 October 2026 and DEWA as organiser. Your allocation controls your hall and access arrangements."
+        "label": "Dubai World Trade Centre Intersec listing",
+        "url": "https://www.dwtc.com/en/events/intersec-exhibition-2027/",
+        "note": "Venue listing for Intersec Global at Dubai World Trade Centre. Your allocation controls your hall and access arrangements."
       }
     ]
   },
