@@ -14,6 +14,12 @@ export function upcomingVenueEvents(events, today = new Intl.DateTimeFormat('en-
 }
 export function buyerPageSchema(path, page) {
  if (page.eventsList) page.eventsList = upcomingVenueEvents(page.eventsList);
+ // Repair stale related destinations without creating duplicate show pages.
+ const relatedRepairs = {
+  '/arabplast-exhibition-stand-design-dubai': {'/automechanika-dubai-exhibition-stand-design': {path: '/automechanika-dubai-exhibition-stand-design-dubai', label: 'Automechanika Dubai stand design'}},
+  '/cabsat-exhibition-stand-design-dubai': {'/integrate-middle-east-exhibition-stand-design': {path: '/dec-expo-city-exhibition-stand-design-dubai', label: 'DEC and Expo City stand planning'}}
+ }[path];
+ if (relatedRepairs) page.related = page.related.map(link => relatedRepairs[link.path] || link);
  // Specific show briefs should lead directly to their current venue-planning guide.
  // This adapter runs before both React rendering and crawler prerendering.
  const venueGuide = {
