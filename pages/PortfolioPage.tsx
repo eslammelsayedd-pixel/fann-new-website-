@@ -9,6 +9,8 @@ import { ArrowRight } from 'lucide-react';
 
 import fitOutReferences from '../data/fitOutReferences.json';
 
+const adipecBuildUpPhotos = [{"src": "/images/1-adipec-2026-falcor-build-up.webp", "caption": "FALCOR - ADIPEC 2026 build-up", "width": 1200, "height": 1600}, {"src": "/images/2-adipec-2026-oilserv-build-up-front.webp", "caption": "OILSERV - ADIPEC 2026 build-up, front view", "width": 1600, "height": 1200}, {"src": "/images/3-adipec-2026-oilserv-build-up-fins.webp", "caption": "OILSERV - ADIPEC 2026 build-up, illuminated fins", "width": 1200, "height": 1600}, {"src": "/images/4-adipec-2026-mitsubishi-build-up-installation.webp", "caption": "Mitsubishi Heavy Industries - ADIPEC 2026 build-up, installation view", "width": 1200, "height": 1600}, {"src": "/images/5-adipec-2026-mitsubishi-build-up-led.webp", "caption": "Mitsubishi Heavy Industries - ADIPEC 2026 build-up, LED column", "width": 1200, "height": 1600}];
+
 const portfolioPageSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -69,6 +71,14 @@ const PortfolioPage: React.FC = () => {
       />
       <div className="portfolio-surface min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <section id="adipec-2026" className="max-w-6xl mx-auto mb-16" aria-labelledby="adipec-2026-title">
+            <h2 id="adipec-2026-title" className="text-3xl md:text-4xl font-serif font-bold text-fann-gold mb-4">ADIPEC 2026 - stand build-up</h2>
+            <p className="portfolio-body mb-6">FANN stand builds for FALCOR, OILSERV and Mitsubishi Heavy Industries at ADIPEC 2026. These five photographs show installation in progress, not finished stands or handover.</p>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">{adipecBuildUpPhotos.map(photo => <figure key={photo.src} className="rounded-lg bg-fann-charcoal-light border border-white/10 overflow-hidden">
+              <a href={photo.src} target="_blank" rel="noopener noreferrer" className="block p-2"><img src={photo.src} alt={photo.caption} width={photo.width} height={photo.height} loading="lazy" decoding="async" className="w-full h-auto"/></a>
+              <figcaption className="p-4 text-sm portfolio-body">{photo.caption}<span className="block mt-2 text-xs portfolio-muted">Installation in progress. Open photo for full size.</span></figcaption>
+            </figure>)}</div>
+          </section>
           <section id="fit-out-references" className="max-w-6xl mx-auto mb-20" aria-labelledby="portfolio-title">
             <div className="max-w-3xl mb-8">
               <h1 id="portfolio-title" className="text-4xl md:text-5xl font-serif font-bold text-fann-gold mb-4">Portfolio</h1>
