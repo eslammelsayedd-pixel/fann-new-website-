@@ -14,6 +14,16 @@ export function upcomingVenueEvents(events, today = new Intl.DateTimeFormat('en-
 }
 export function buyerPageSchema(path, page) {
  if (page.eventsList) page.eventsList = upcomingVenueEvents(page.eventsList);
+ // Specific show briefs should lead directly to their current venue-planning guide.
+ // This adapter runs before both React rendering and crawler prerendering.
+ const venueGuide = {
+  '/adipec-exhibition-stand-design-abu-dhabi': {path: '/adnec-exhibition-stand-design-abu-dhabi', label: 'ADNEC stand planning in Abu Dhabi'},
+  '/automechanika-dubai-exhibition-stand-design-dubai': {path: '/dec-expo-city-exhibition-stand-design-dubai', label: 'DEC and Expo City stand planning'},
+  '/intersec-exhibition-stand-design-dubai': {path: '/dwtc-exhibition-stand-design-dubai', label: 'DWTC stand planning in Dubai'}
+ }[path];
+ if (venueGuide && !page.related.some(link => link.path === venueGuide.path)) {
+  page.related = [venueGuide, ...page.related];
+ }
  // Keep rendered copy and FAQ schema aligned with the quote form's required fields.
  // Limit this correction to UAE pages; Saudi pages are outside this content pass.
  if (!/riyadh|jeddah/.test(path)) {
