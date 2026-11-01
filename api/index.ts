@@ -1342,6 +1342,25 @@ async function floorPlanUpload(req: VercelRequest, res: VercelResponse) {
 // SEO files
 const SITE = 'https://fann.ae';
 const SITEMAP_PATHS = [
+  '/portfolio/falcor-adipec-2026',
+  '/portfolio/oilserv-adipec-2026',
+  '/portfolio/mitsubishi-heavy-industries-adipec-2026',
+  '/portfolio/heat-and-control-gulfood-manufacturing-2026',
+  '/portfolio/ishida-gulfood-manufacturing-2026',
+  '/portfolio/rondo-gulfood-manufacturing-2026',
+  '/portfolio/amf-reading-bakery-systems-gulfood-manufacturing-2026',
+  '/portfolio/kanoo-machinery-gulfood-manufacturing-2026',
+  '/portfolio/hipermak-gulfood-manufacturing-2026',
+  '/portfolio/anasia-gulfood-manufacturing-2026',
+  '/portfolio/sipa-gulfood-manufacturing-2026',
+  '/portfolio/flow-line-controls-teco-tms-adipec-2026',
+  '/portfolio/acumen-safety-pewag-adipec-2026',
+  '/portfolio/young-adipec-university-area-adipec-2026',
+  '/portfolio/raah-solutions-saier-nico-adipec-2026',
+  '/portfolio/skm-adipec-2026',
+  '/portfolio/serh-group-adipec-2026',
+  '/portfolio/inoxium-tubi-adipec-2026',
+
   '/', '/services', '/event-setup-dubai', '/services/custom-exhibition-stands-dubai', '/services/exhibition-stand-fabrication-dubai',
   '/services/interior-fitout-exhibition-spaces-dubai', '/services/modular-exhibition-systems-dubai',
   '/services/turnkey-exhibition-services-uae', '/portfolio',
