@@ -350,5 +350,162 @@
         "caption": "Inoxium Tubi - ADIPEC 2026"
       }
     ]
+  },
+  {
+    "id": 218,
+    "slug": "hitachi-adipec",
+    "title": "Hitachi - ADIPEC",
+    "client": "Hitachi",
+    "category": "exhibition",
+    "industry": "Exhibition stands",
+    "location": "Abu Dhabi",
+    "image": "/images/1-1-portfolio-hitachi.webp",
+    "description": "FANN exhibition stand for Hitachi at ADIPEC, Abu Dhabi.",
+    "gallery": [
+      {
+        "image": "/images/1-1-portfolio-hitachi.webp",
+        "caption": "Hitachi - ADIPEC"
+      }
+    ]
+  },
+  {
+    "id": 219,
+    "slug": "crescent-engineering-adipec",
+    "title": "Crescent Engineering - ADIPEC",
+    "client": "Crescent Engineering",
+    "category": "exhibition",
+    "industry": "Exhibition stands",
+    "location": "Abu Dhabi",
+    "image": "/images/2-2-portfolio-crescent-engineering.webp",
+    "description": "FANN exhibition stand for Crescent Engineering at ADIPEC, Abu Dhabi.",
+    "gallery": [
+      {
+        "image": "/images/2-2-portfolio-crescent-engineering.webp",
+        "caption": "Crescent Engineering - ADIPEC"
+      }
+    ]
+  },
+  {
+    "id": 220,
+    "slug": "innio-adipec",
+    "title": "INNIO - ADIPEC",
+    "client": "INNIO",
+    "category": "exhibition",
+    "industry": "Exhibition stands",
+    "location": "Abu Dhabi",
+    "image": "/images/3-3-portfolio-innio.webp",
+    "description": "FANN exhibition stand for INNIO at ADIPEC, Abu Dhabi.",
+    "gallery": [
+      {
+        "image": "/images/3-3-portfolio-innio.webp",
+        "caption": "INNIO - ADIPEC"
+      }
+    ]
+  },
+  {
+    "id": 221,
+    "slug": "gulftech-adipec",
+    "title": "Gulftech - ADIPEC",
+    "client": "Gulftech",
+    "category": "exhibition",
+    "industry": "Exhibition stands",
+    "location": "Abu Dhabi",
+    "image": "/images/4-4-portfolio-gulftech.webp",
+    "description": "FANN exhibition stand for Gulftech at ADIPEC, Abu Dhabi.",
+    "gallery": [
+      {
+        "image": "/images/4-4-portfolio-gulftech.webp",
+        "caption": "Gulftech - ADIPEC"
+      }
+    ]
+  },
+  {
+    "id": 222,
+    "slug": "meraki-global-energy-nem-adipec",
+    "title": "Meraki Global Energy / NEM - ADIPEC",
+    "client": "Meraki Global Energy / NEM",
+    "category": "exhibition",
+    "industry": "Exhibition stands",
+    "location": "Abu Dhabi",
+    "image": "/images/5-5-portfolio-meraki-global-energy-nem-front.webp",
+    "description": "FANN exhibition stand for Meraki Global Energy / NEM at ADIPEC, Abu Dhabi.",
+    "gallery": [
+      {
+        "image": "/images/5-5-portfolio-meraki-global-energy-nem-front.webp",
+        "caption": "Meraki Global Energy / NEM - ADIPEC, front view"
+      },
+      {
+        "image": "/images/7-7-portfolio-meraki-global-energy-nem-angle.webp",
+        "caption": "Meraki Global Energy / NEM - ADIPEC, second view"
+      }
+    ]
+  },
+  {
+    "id": 223,
+    "slug": "habshan-trading-adipec",
+    "title": "Habshan Trading - ADIPEC",
+    "client": "Habshan Trading",
+    "category": "exhibition",
+    "industry": "Exhibition stands",
+    "location": "Abu Dhabi",
+    "image": "/images/6-6-portfolio-habshan-trading.webp",
+    "description": "FANN exhibition stand for Habshan Trading at ADIPEC, Abu Dhabi.",
+    "gallery": [
+      {
+        "image": "/images/6-6-portfolio-habshan-trading.webp",
+        "caption": "Habshan Trading - ADIPEC"
+      }
+    ]
+  },
+  {
+    "id": 224,
+    "slug": "cnpc-cptdc-adipec",
+    "title": "CNPC / CPTDC - ADIPEC",
+    "client": "CNPC / CPTDC",
+    "category": "exhibition",
+    "industry": "Exhibition stands",
+    "location": "Abu Dhabi",
+    "image": "/images/8-8-portfolio-cnpc-cptdc.webp",
+    "description": "FANN exhibition stand for CNPC / CPTDC at ADIPEC, Abu Dhabi.",
+    "gallery": [
+      {
+        "image": "/images/8-8-portfolio-cnpc-cptdc.webp",
+        "caption": "CNPC / CPTDC - ADIPEC"
+      }
+    ]
+  },
+  {
+    "id": 225,
+    "slug": "hilong-adipec",
+    "title": "Hilong - ADIPEC",
+    "client": "Hilong",
+    "category": "exhibition",
+    "industry": "Exhibition stands",
+    "location": "Abu Dhabi",
+    "image": "/images/9-9-portfolio-hilong.webp",
+    "description": "FANN exhibition stand for Hilong at ADIPEC, Abu Dhabi.",
+    "gallery": [
+      {
+        "image": "/images/9-9-portfolio-hilong.webp",
+        "caption": "Hilong - ADIPEC"
+      }
+    ]
+  },
+  {
+    "id": 226,
+    "slug": "star-technofit-flowline-valves-genetech-adipec",
+    "title": "Star Technofit / Flowline Valves / Genetech - ADIPEC",
+    "client": "Star Technofit / Flowline Valves / Genetech",
+    "category": "exhibition",
+    "industry": "Exhibition stands",
+    "location": "Abu Dhabi",
+    "image": "/images/10-10-portfolio-star-technofit-flowline-valves-genetech.webp",
+    "description": "FANN exhibition stand for Star Technofit / Flowline Valves / Genetech at ADIPEC, Abu Dhabi.",
+    "gallery": [
+      {
+        "image": "/images/10-10-portfolio-star-technofit-flowline-valves-genetech.webp",
+        "caption": "Star Technofit / Flowline Valves / Genetech - ADIPEC"
+      }
+    ]
   }
 ]
