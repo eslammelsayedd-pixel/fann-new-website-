@@ -1,5 +1,6 @@
 
 import { Project, Event, Testimonial, NavLink } from './types';
+import recentPortfolioProjects from './data/recentPortfolioProjects.json';
 
 // New interface for Blog Content
 export interface BlogPost {
@@ -86,6 +87,7 @@ export const supportedLanguages = [
 // Portfolio: only real FANN projects with the client's permission and real photos go here.
 // Previous placeholder entries (brand-name projects) were removed on the owner's instruction.
 export const projects: Project[] = [
+...recentPortfolioProjects.map(p => ({...p, category: 'exhibition' as const})),
 {"id": 101, "slug": "trevos-light-middle-east", "title": "TREVOS - Light Middle East", "client": "TREVOS", "category": "exhibition", "industry": "Exhibition stands", "location": "Dubai", "year": 2023, "image": "/images/stands/1-trevos-light-middle-east.webp", "description": "TREVOS exhibition stand at Light Middle East, Dubai (2023).", "gallery": [{"image": "/images/stands/1-trevos-light-middle-east.webp", "caption": "TREVOS exhibition stand at Light Middle East, Dubai (2023)."}]},
 {"id": 102, "slug": "bayara-gulfood", "title": "Bayara - Gulfood", "client": "Bayara", "category": "exhibition", "industry": "Exhibition stands", "location": "Dubai", "year": 2020, "image": "/images/stands/2-bayara-gulfood.webp", "description": "Bayara exhibition stand at Gulfood, Dubai (2020).", "gallery": [{"image": "/images/stands/2-bayara-gulfood.webp", "caption": "Bayara exhibition stand at Gulfood, Dubai (2020)."}]},
 {"id": 103, "slug": "awazel-big-5", "title": "Awazel - The Big 5", "client": "Awazel", "category": "exhibition", "industry": "Exhibition stands", "location": "Dubai", "year": 2012, "image": "/images/stands/3-awazel-big-5.webp", "description": "Awazel exhibition stand at The Big 5, Dubai (2012).", "gallery": [{"image": "/images/stands/3-awazel-big-5.webp", "caption": "Awazel exhibition stand at The Big 5, Dubai (2012)."}]},
