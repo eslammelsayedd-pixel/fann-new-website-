@@ -9,6 +9,8 @@ import { ArrowRight } from 'lucide-react';
 
 import fitOutReferences from '../data/fitOutReferences.json';
 
+const gulfoodManufacturingPhotos = [{"src": "/images/1-gulfood-manufacturing-2026-01-heat-and-control-front.webp", "caption": "Heat and Control - Gulfood Manufacturing, DWTC Dubai", "width": 1200, "height": 1600}, {"src": "/images/2-gulfood-manufacturing-2026-02-heat-and-control-angle.webp", "caption": "Heat and Control, second view - Gulfood Manufacturing, DWTC Dubai", "width": 1200, "height": 1600}, {"src": "/images/3-gulfood-manufacturing-2026-03-ishida.webp", "caption": "Ishida - Gulfood Manufacturing, DWTC Dubai", "width": 1200, "height": 1600}, {"src": "/images/4-gulfood-manufacturing-2026-04-rondo.webp", "caption": "Rondo - Gulfood Manufacturing, DWTC Dubai", "width": 1600, "height": 1200}, {"src": "/images/5-gulfood-manufacturing-2026-05-amf-reading-bakery-systems-front.webp", "caption": "AMF / Reading Bakery Systems - Gulfood Manufacturing, DWTC Dubai", "width": 1600, "height": 1200}, {"src": "/images/6-gulfood-manufacturing-2026-06-amf-reading-bakery-systems-angle.webp", "caption": "AMF / Reading Bakery Systems, second view - Gulfood Manufacturing, DWTC Dubai", "width": 1600, "height": 1200}, {"src": "/images/7-gulfood-manufacturing-2026-07-kanoo-machinery.webp", "caption": "Kanoo Machinery - Gulfood Manufacturing, DWTC Dubai", "width": 1200, "height": 1600}, {"src": "/images/8-gulfood-manufacturing-2026-08-hipermak.webp", "caption": "Hipermak - Gulfood Manufacturing, DWTC Dubai", "width": 1600, "height": 1200}, {"src": "/images/9-gulfood-manufacturing-2026-09-anasia.webp", "caption": "Anasia - Gulfood Manufacturing, DWTC Dubai", "width": 1600, "height": 1200}, {"src": "/images/10-gulfood-manufacturing-2026-10-sipa.webp", "caption": "SIPA - Gulfood Manufacturing, DWTC Dubai", "width": 1600, "height": 1200}];
+
 const adipecBuildUpPhotos = [{"src": "/images/1-adipec-2026-falcor-build-up.webp", "caption": "FALCOR - ADIPEC 2026", "width": 1200, "height": 1600}, {"src": "/images/2-adipec-2026-oilserv-build-up-front.webp", "caption": "OILSERV - ADIPEC 2026, front view", "width": 1600, "height": 1200}, {"src": "/images/3-adipec-2026-oilserv-build-up-fins.webp", "caption": "OILSERV - ADIPEC 2026, illuminated fins", "width": 1200, "height": 1600}, {"src": "/images/4-adipec-2026-mitsubishi-build-up-installation.webp", "caption": "Mitsubishi Heavy Industries - ADIPEC 2026, stand view", "width": 1200, "height": 1600}, {"src": "/images/5-adipec-2026-mitsubishi-build-up-led.webp", "caption": "Mitsubishi Heavy Industries - ADIPEC 2026, LED column", "width": 1200, "height": 1600}];
 
 const portfolioPageSchema = {
@@ -71,6 +73,14 @@ const PortfolioPage: React.FC = () => {
       />
       <div className="portfolio-surface min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <section id="gulfood-manufacturing-2026" className="scroll-mt-28 max-w-6xl mx-auto mb-16" aria-labelledby="gulfood-manufacturing-2026-title">
+            <h2 id="gulfood-manufacturing-2026-title" className="text-3xl md:text-4xl font-serif font-bold text-fann-gold mb-4">Gulfood Manufacturing - FANN stands at DWTC Dubai</h2>
+            <p className="portfolio-body mb-6">FANN stand builds at Gulfood Manufacturing, Dubai World Trade Centre. Ten photographs showing eight stands, including different views of Heat and Control and AMF / Reading Bakery Systems.</p>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">{gulfoodManufacturingPhotos.map(photo => <figure key={photo.src} className="rounded-lg bg-fann-charcoal-light border border-white/10 overflow-hidden">
+              <a href={photo.src} target="_blank" rel="noopener noreferrer" className="block p-2"><img src={photo.src} alt={photo.caption} width={photo.width} height={photo.height} loading="lazy" decoding="async" className="w-full h-auto"/></a>
+              <figcaption className="p-4 text-sm portfolio-body">{photo.caption}<span className="block mt-2 text-xs portfolio-muted">Open photo for full size.</span></figcaption>
+            </figure>)}</div>
+          </section>
           <section id="adipec-2026" className="max-w-6xl mx-auto mb-16" aria-labelledby="adipec-2026-title">
             <h2 id="adipec-2026-title" className="text-3xl md:text-4xl font-serif font-bold text-fann-gold mb-4">ADIPEC 2026 - FANN stands</h2>
             <p className="portfolio-body mb-6">FANN stand builds for FALCOR, OILSERV and Mitsubishi Heavy Industries at ADIPEC 2026. Five photographs of FANN stands from the show.</p>
