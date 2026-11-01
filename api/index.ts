@@ -1342,6 +1342,16 @@ async function floorPlanUpload(req: VercelRequest, res: VercelResponse) {
 // SEO files
 const SITE = 'https://fann.ae';
 const SITEMAP_PATHS = [
+  '/portfolio/hitachi-adipec',
+  '/portfolio/crescent-engineering-adipec',
+  '/portfolio/innio-adipec',
+  '/portfolio/gulftech-adipec',
+  '/portfolio/meraki-global-energy-nem-adipec',
+  '/portfolio/habshan-trading-adipec',
+  '/portfolio/cnpc-cptdc-adipec',
+  '/portfolio/hilong-adipec',
+  '/portfolio/star-technofit-flowline-valves-genetech-adipec',
+
   '/portfolio/falcor-adipec-2026',
   '/portfolio/oilserv-adipec-2026',
   '/portfolio/mitsubishi-heavy-industries-adipec-2026',
