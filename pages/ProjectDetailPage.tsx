@@ -53,7 +53,7 @@ const ProjectDetailPage: React.FC = () => {
         <img 
           src={project.heroImage || project.image} 
           alt={project.title} 
-          className="w-full h-full object-cover opacity-80"
+          className={`w-full h-full ${project.id >= 200 ? 'object-contain' : 'object-cover'} opacity-80`}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-fann-charcoal via-transparent to-black/40"></div>
         
@@ -208,7 +208,7 @@ const ProjectDetailPage: React.FC = () => {
                 className={`gallery-item group aspect-[4/3] ${item.featured ? 'md:col-span-2 aspect-[2/1]' : ''}`}
                 onClick={() => openLightbox(i)}
               >
-                <img src={item.image} alt={item.caption} loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <img src={item.image} alt={item.caption} loading="lazy" decoding="async" className={`w-full h-full ${project.id >= 200 ? 'object-contain' : 'object-cover'} transition-transform duration-700 group-hover:scale-110`} />
                 <div className="gallery-overlay">
                   <ZoomIn className="text-white w-10 h-10" />
                 </div>
