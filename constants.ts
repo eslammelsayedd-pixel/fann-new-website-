@@ -87,7 +87,7 @@ export const supportedLanguages = [
 // Portfolio: only real FANN projects with the client's permission and real photos go here.
 // Previous placeholder entries (brand-name projects) were removed on the owner's instruction.
 export const projects: Project[] = [
-...recentPortfolioProjects.map(p => ({...p, category: 'exhibition' as const})),
+...recentPortfolioProjects.map(p => ({...p, category: p.category as Project['category']})),
 {"id": 101, "slug": "trevos-light-middle-east", "title": "TREVOS - Light Middle East", "client": "TREVOS", "category": "exhibition", "industry": "Exhibition stands", "location": "Dubai", "year": 2023, "image": "/images/stands/1-trevos-light-middle-east.webp", "description": "TREVOS exhibition stand at Light Middle East, Dubai (2023).", "gallery": [{"image": "/images/stands/1-trevos-light-middle-east.webp", "caption": "TREVOS exhibition stand at Light Middle East, Dubai (2023)."}]},
 {"id": 102, "slug": "bayara-gulfood", "title": "Bayara - Gulfood", "client": "Bayara", "category": "exhibition", "industry": "Exhibition stands", "location": "Dubai", "year": 2020, "image": "/images/stands/2-bayara-gulfood.webp", "description": "Bayara exhibition stand at Gulfood, Dubai (2020).", "gallery": [{"image": "/images/stands/2-bayara-gulfood.webp", "caption": "Bayara exhibition stand at Gulfood, Dubai (2020)."}]},
 {"id": 103, "slug": "awazel-big-5", "title": "Awazel - The Big 5", "client": "Awazel", "category": "exhibition", "industry": "Exhibition stands", "location": "Dubai", "year": 2012, "image": "/images/stands/3-awazel-big-5.webp", "description": "Awazel exhibition stand at The Big 5, Dubai (2012).", "gallery": [{"image": "/images/stands/3-awazel-big-5.webp", "caption": "Awazel exhibition stand at The Big 5, Dubai (2012)."}]},
@@ -123,6 +123,11 @@ export const projects: Project[] = [
     eventType: 'Outdoor festival',
     video: { src: '/images/projects/icons-of-porsche/walkthrough.mp4', poster: '/images/projects/icons-of-porsche/video-poster.webp', caption: 'Walk-through of the Icons of Porsche 2025 build at night' },
     gallery: [
+      {"image": "/images/gallery/173-portfolio-p09-01.jpg", "caption": "Icons of Porsche - Outdoor Cinema Screens"},
+      {"image": "/images/gallery/174-portfolio-p09-02.jpg", "caption": "Icons of Porsche - Community Entrance Gate"},
+      {"image": "/images/gallery/175-portfolio-p09-03.jpg", "caption": "Icons of Porsche - 911 Dakar Container Display"},
+      {"image": "/images/gallery/176-portfolio-p09-04.jpg", "caption": "Icons of Porsche - Outdoor Vehicle and Info Displays"},
+
       { image: '/images/projects/icons-of-porsche/01.webp', caption: 'Porsche 99X Electric display with custom totems', featured: true },
       { image: '/images/projects/icons-of-porsche/02.webp', caption: 'Electric Field entrance truss with LED wall' },
       { image: '/images/projects/icons-of-porsche/03.webp', caption: 'Lounge and esports arena stage' },
