@@ -41,7 +41,7 @@ const AboutPage: React.FC = () => {
     <AnimatedPage>
         <SEO
             title="About FANN | Exhibition & Fit-Out Contractor in Dubai"
-            description="FANN is a Dubai design and build company for exhibition stands, events and interior fit-out, with an office in Al Barsha and its own workshop in Umm Al Quwain. 200+ projects since 2019."
+            description="FANN is a Dubai design and build company for exhibition stands, events and interior fit-out, with an office in Al Barsha and its own workshop in Umm Al Quwain. 200+ projects since 2021."
             schema={aboutPageSchema}
         />
       <div className="min-h-screen bg-fann-charcoal pt-32 pb-20 text-white">
@@ -54,7 +54,7 @@ const AboutPage: React.FC = () => {
           <div className="text-center">
             <motion.h1 variants={itemVariants} className="text-5xl font-serif font-bold text-fann-gold mb-4">About FANN</motion.h1>
             <motion.p variants={itemVariants} className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Founded in Dubai in 2019, FANN was born from a passion for transforming visions into tangible, unforgettable realities. As a full-service design and build company, we believe that a well-executed project—from initial concept to final construction—has the power to inspire, connect, and drive success.
+              Founded in Dubai in 2021, FANN was born from a passion for transforming visions into tangible, unforgettable realities. As a full-service design and build company, we believe that a well-executed project—from initial concept to final construction—has the power to inspire, connect, and drive success.
             </motion.p>
           </div>
            <motion.div variants={itemVariants} className="mt-12 mb-16">
