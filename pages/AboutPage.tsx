@@ -59,11 +59,10 @@ const AboutPage: React.FC = () => {
           </div>
            <motion.div variants={itemVariants} className="mt-12 mb-16">
             <picture>
-                <source srcSet={`${aboutImageUrl}&fm=webp`} type="image/webp" />
-                <source srcSet={aboutImageUrl} type="image/jpeg" />
+                <source srcSet={aboutImageUrl} type="image/webp" />
                 <img 
                     src={aboutImageUrl} 
-                    alt="The diverse FANN team of Arab and Indian professionals collaborating in a modern Dubai office." 
+                    alt="Abbott exhibition stand at Arab Health." 
                     className="rounded-lg shadow-2xl mx-auto opacity-90" 
                     loading="lazy"
                     width="1260"
