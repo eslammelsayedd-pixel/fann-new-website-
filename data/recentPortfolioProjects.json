@@ -507,5 +507,1732 @@
         "caption": "Star Technofit / Flowline Valves / Genetech - ADIPEC"
       }
     ]
+  },
+  {
+    "id": 300,
+    "slug": "interactive-workshop-pavilion-cultural-activation",
+    "title": "Interactive Workshop Pavilion - Cultural Activation",
+    "client": "Interactive Workshop Pavilion",
+    "category": "exhibition",
+    "industry": "Exhibition stands",
+    "location": "",
+    "image": "/images/gallery/154-portfolio-p03-01.jpg",
+    "description": "Photographs from FANN's Interactive Workshop Pavilion - Cultural Activation portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/154-portfolio-p03-01.jpg",
+        "caption": "Interactive Workshop Pavilion - Cultural Activation"
+      }
+    ]
+  },
+  {
+    "id": 301,
+    "slug": "let-s-read-now-interactive-reading-pavilion",
+    "title": "Let's Read Now - Interactive Reading Pavilion",
+    "client": "Let's Read Now",
+    "category": "exhibition",
+    "industry": "Exhibition stands",
+    "location": "",
+    "image": "/images/gallery/155-portfolio-p03-02.jpg",
+    "description": "Photographs from FANN's Let's Read Now - Interactive Reading Pavilion portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/155-portfolio-p03-02.jpg",
+        "caption": "Let's Read Now - Interactive Reading Pavilion"
+      }
+    ]
+  },
+  {
+    "id": 302,
+    "slug": "cultural-lab-2-interactive-cultural-pavilion",
+    "title": "Cultural Lab 2 - Interactive Cultural Pavilion",
+    "client": "Cultural Lab 2",
+    "category": "exhibition",
+    "industry": "Exhibition stands",
+    "location": "",
+    "image": "/images/gallery/156-portfolio-p03-03.jpg",
+    "description": "Photographs from FANN's Cultural Lab 2 - Interactive Cultural Pavilion portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/156-portfolio-p03-03.jpg",
+        "caption": "Cultural Lab 2 - Interactive Cultural Pavilion"
+      }
+    ]
+  },
+  {
+    "id": 303,
+    "slug": "uflex-asepto-product-exhibition-stand",
+    "title": "UFLEX Asepto - Product Exhibition Stand",
+    "client": "UFLEX Asepto",
+    "category": "exhibition",
+    "industry": "Exhibition stands",
+    "location": "",
+    "image": "/images/gallery/157-portfolio-p04-01.jpg",
+    "description": "Photographs from FANN's UFLEX Asepto - Product Exhibition Stand portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/157-portfolio-p04-01.jpg",
+        "caption": "UFLEX Asepto - Product Exhibition Stand"
+      },
+      {
+        "image": "/images/gallery/158-portfolio-p04-02.jpg",
+        "caption": "UFLEX Asepto - Product Exhibition Stand"
+      },
+      {
+        "image": "/images/gallery/159-portfolio-p04-03.jpg",
+        "caption": "UFLEX Asepto - Product Exhibition Stand"
+      }
+    ]
+  },
+  {
+    "id": 304,
+    "slug": "vns-technologies-technology-exhibition-stand",
+    "title": "VNS Technologies - Technology Exhibition Stand",
+    "client": "VNS Technologies",
+    "category": "exhibition",
+    "industry": "Exhibition stands",
+    "location": "",
+    "image": "/images/gallery/160-portfolio-p05-01.jpg",
+    "description": "Photographs from FANN's VNS Technologies - Technology Exhibition Stand portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/160-portfolio-p05-01.jpg",
+        "caption": "VNS Technologies - Technology Exhibition Stand"
+      },
+      {
+        "image": "/images/gallery/161-portfolio-p05-02.jpg",
+        "caption": "VNS Technologies - Technology Exhibition Stand"
+      },
+      {
+        "image": "/images/gallery/162-portfolio-p05-03.jpg",
+        "caption": "VNS Technologies - Technology Exhibition Stand"
+      }
+    ]
+  },
+  {
+    "id": 305,
+    "slug": "experts-computer-technology-exhibition-stand",
+    "title": "Experts Computer - Technology Exhibition Stand",
+    "client": "Experts Computer",
+    "category": "exhibition",
+    "industry": "Exhibition stands",
+    "location": "",
+    "image": "/images/gallery/163-portfolio-p06-01.jpg",
+    "description": "Photographs from FANN's Experts Computer - Technology Exhibition Stand portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/163-portfolio-p06-01.jpg",
+        "caption": "Experts Computer - Technology Exhibition Stand"
+      },
+      {
+        "image": "/images/gallery/164-portfolio-p06-02.jpg",
+        "caption": "Experts Computer - Technology Exhibition Stand"
+      }
+    ]
+  },
+  {
+    "id": 306,
+    "slug": "bahri-logistics-exhibition-stand-and-meeting-area",
+    "title": "Bahri Logistics - Exhibition Stand and Meeting Area",
+    "client": "Bahri Logistics",
+    "category": "exhibition",
+    "industry": "Exhibition stands",
+    "location": "",
+    "image": "/images/gallery/165-portfolio-p07-01.jpg",
+    "description": "Photographs from FANN's Bahri Logistics - Exhibition Stand and Meeting Area portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/165-portfolio-p07-01.jpg",
+        "caption": "Bahri Logistics - Exhibition Stand and Meeting Area"
+      },
+      {
+        "image": "/images/gallery/166-portfolio-p07-02.jpg",
+        "caption": "Bahri Logistics - Exhibition Stand and Meeting Area"
+      },
+      {
+        "image": "/images/gallery/167-portfolio-p07-03.jpg",
+        "caption": "Bahri Logistics - Exhibition Stand and Meeting Area"
+      }
+    ]
+  },
+  {
+    "id": 307,
+    "slug": "swyp-beach-canteen-dubai-food-festival",
+    "title": "SWYP Beach Canteen - Dubai Food Festival",
+    "client": "SWYP Beach Canteen",
+    "category": "event",
+    "industry": "Events & installations",
+    "location": "",
+    "image": "/images/gallery/168-portfolio-p08-01.jpg",
+    "description": "Photographs from FANN's SWYP Beach Canteen - Dubai Food Festival portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/168-portfolio-p08-01.jpg",
+        "caption": "SWYP Beach Canteen - Dubai Food Festival"
+      },
+      {
+        "image": "/images/gallery/169-portfolio-p08-02.jpg",
+        "caption": "SWYP Beach Canteen - Dubai Food Festival"
+      },
+      {
+        "image": "/images/gallery/170-portfolio-p08-03.jpg",
+        "caption": "SWYP Beach Canteen - Dubai Food Festival"
+      },
+      {
+        "image": "/images/gallery/171-portfolio-p08-04.jpg",
+        "caption": "SWYP Beach Canteen - Dubai Food Festival"
+      },
+      {
+        "image": "/images/gallery/172-portfolio-p08-05.jpg",
+        "caption": "SWYP Beach Canteen - Dubai Food Festival"
+      }
+    ]
+  },
+  {
+    "id": 309,
+    "slug": "awards-gala-stage-and-backdrop",
+    "title": "Awards Gala - Stage and Backdrop",
+    "client": "Awards Gala",
+    "category": "event",
+    "industry": "Events & installations",
+    "location": "",
+    "image": "/images/gallery/181-portfolio-p11-01.jpg",
+    "description": "Photographs from FANN's Awards Gala - Stage and Backdrop portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/181-portfolio-p11-01.jpg",
+        "caption": "Awards Gala Stage - Ballroom Event Production"
+      },
+      {
+        "image": "/images/gallery/182-portfolio-p11-02.jpg",
+        "caption": "Awards Gala Backdrop - Ballroom Event Production"
+      },
+      {
+        "image": "/images/gallery/183-portfolio-p11-03.jpg",
+        "caption": "Awards Gala Stage - Ballroom Event Production"
+      },
+      {
+        "image": "/images/gallery/184-portfolio-p11-04.jpg",
+        "caption": "Awards Gala Stage - Ballroom Event Production"
+      }
+    ]
+  },
+  {
+    "id": 310,
+    "slug": "al-souq-al-mahalli-heritage-souq-installation",
+    "title": "Al Souq Al Mahalli - Heritage Souq Installation",
+    "client": "Al Souq Al Mahalli",
+    "category": "event",
+    "industry": "Events & installations",
+    "location": "",
+    "image": "/images/gallery/185-portfolio-p12-01.jpg",
+    "description": "Photographs from FANN's Al Souq Al Mahalli - Heritage Souq Installation portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/185-portfolio-p12-01.jpg",
+        "caption": "Al Souq Al Mahalli - Heritage Souq Installation"
+      },
+      {
+        "image": "/images/gallery/186-portfolio-p12-02.jpg",
+        "caption": "Al Souq Al Mahalli - Heritage Souq Installation"
+      },
+      {
+        "image": "/images/gallery/187-portfolio-p12-03.jpg",
+        "caption": "Al Souq Al Mahalli - Heritage Souq Installation"
+      },
+      {
+        "image": "/images/gallery/188-portfolio-p12-04.jpg",
+        "caption": "Al Souq Al Mahalli - Heritage Souq Installation"
+      }
+    ]
+  },
+  {
+    "id": 311,
+    "slug": "splash-island-stage-and-runway",
+    "title": "Splash Island - Stage and Runway",
+    "client": "Splash Island",
+    "category": "event",
+    "industry": "Events & installations",
+    "location": "",
+    "image": "/images/gallery/189-portfolio-p13-01.jpg",
+    "description": "Photographs from FANN's Splash Island - Stage and Runway portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/189-portfolio-p13-01.jpg",
+        "caption": "Splash Island - Fashion Event Stage and Runway"
+      },
+      {
+        "image": "/images/gallery/190-portfolio-p13-02.jpg",
+        "caption": "Splash Island - Runway and Tiered Audience Seating"
+      },
+      {
+        "image": "/images/gallery/191-portfolio-p13-03.jpg",
+        "caption": "Splash Island - Purple-Lit Event Interior"
+      }
+    ]
+  },
+  {
+    "id": 312,
+    "slug": "leonardo-airshow-exhibition-chalet",
+    "title": "Leonardo - Airshow Exhibition Chalet",
+    "client": "Leonardo",
+    "category": "exhibition",
+    "industry": "Exhibition stands",
+    "location": "",
+    "image": "/images/gallery/192-portfolio-p14-01.jpg",
+    "description": "Photographs from FANN's Leonardo - Airshow Exhibition Chalet portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/192-portfolio-p14-01.jpg",
+        "caption": "Leonardo - Airshow Exhibition Chalet"
+      },
+      {
+        "image": "/images/gallery/193-portfolio-p14-02.jpg",
+        "caption": "Leonardo - Airshow Exhibition Chalet"
+      },
+      {
+        "image": "/images/gallery/194-portfolio-p14-03.jpg",
+        "caption": "Leonardo - Airshow Hospitality Interior"
+      }
+    ]
+  },
+  {
+    "id": 313,
+    "slug": "dubai-fitness-challenge-30x30-event-arch-installation",
+    "title": "Dubai Fitness Challenge 30x30 - Event Arch Installation",
+    "client": "Dubai Fitness Challenge 30x30",
+    "category": "event",
+    "industry": "Events & installations",
+    "location": "",
+    "image": "/images/gallery/195-portfolio-p15-01.jpg",
+    "description": "Photographs from FANN's Dubai Fitness Challenge 30x30 - Event Arch Installation portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/195-portfolio-p15-01.jpg",
+        "caption": "Dubai Fitness Challenge 30x30 - Event Arch Installation"
+      },
+      {
+        "image": "/images/gallery/196-portfolio-p15-02.jpg",
+        "caption": "Dubai Fitness Challenge 30x30 - Event Arch Installation"
+      },
+      {
+        "image": "/images/gallery/197-portfolio-p15-03.jpg",
+        "caption": "Dubai Fitness Challenge 30x30 - Event Arch Installation"
+      }
+    ]
+  },
+  {
+    "id": 314,
+    "slug": "splash-the-neon-room-multi-level-container-installation",
+    "title": "Splash The Neon Room - Multi-Level Container Installation",
+    "client": "Splash The Neon Room",
+    "category": "event",
+    "industry": "Events & installations",
+    "location": "",
+    "image": "/images/gallery/198-portfolio-p16-01.jpg",
+    "description": "Photographs from FANN's Splash The Neon Room - Multi-Level Container Installation portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/198-portfolio-p16-01.jpg",
+        "caption": "Splash The Neon Room - Multi-Level Container Installation"
+      },
+      {
+        "image": "/images/gallery/199-portfolio-p16-02.jpg",
+        "caption": "Splash The Neon Room - Multi-Level Container Installation"
+      },
+      {
+        "image": "/images/gallery/200-portfolio-p16-03.jpg",
+        "caption": "Splash The Neon Room - Multi-Level Container Installation"
+      }
+    ]
+  },
+  {
+    "id": 315,
+    "slug": "dubai-tram-mall-activation-installation",
+    "title": "Dubai Tram - Mall Activation Installation",
+    "client": "Dubai Tram",
+    "category": "event",
+    "industry": "Events & installations",
+    "location": "",
+    "image": "/images/gallery/201-portfolio-p17-01.jpg",
+    "description": "Photographs from FANN's Dubai Tram - Mall Activation Installation portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/201-portfolio-p17-01.jpg",
+        "caption": "Dubai Tram - Mall Activation Installation"
+      },
+      {
+        "image": "/images/gallery/202-portfolio-p17-02.jpg",
+        "caption": "Dubai Tram - Mall Activation Installation"
+      }
+    ]
+  },
+  {
+    "id": 316,
+    "slug": "immersive-digital-event-installation",
+    "title": "Immersive Digital Event Installation",
+    "client": "Immersive Digital Event Installation",
+    "category": "event",
+    "industry": "Events & installations",
+    "location": "",
+    "image": "/images/gallery/203-portfolio-p18-01.jpg",
+    "description": "Photographs from FANN's Immersive Digital Event Installation portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/203-portfolio-p18-01.jpg",
+        "caption": "Immersive Digital Corridor - Event Installation"
+      },
+      {
+        "image": "/images/gallery/204-portfolio-p18-02.jpg",
+        "caption": "Immersive Digital Event Installation"
+      },
+      {
+        "image": "/images/gallery/205-portfolio-p18-03.jpg",
+        "caption": "Immersive Digital Event Installation"
+      },
+      {
+        "image": "/images/gallery/206-portfolio-p18-04.jpg",
+        "caption": "Immersive Digital Event Installation"
+      }
+    ]
+  },
+  {
+    "id": 317,
+    "slug": "notch-event-display-counter",
+    "title": "Notch - Event Display Counter",
+    "client": "Notch",
+    "category": "event",
+    "industry": "Events & installations",
+    "location": "",
+    "image": "/images/gallery/207-portfolio-p19-01.jpg",
+    "description": "Photographs from FANN's Notch - Event Display Counter portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/207-portfolio-p19-01.jpg",
+        "caption": "Notch - Event Display Counter"
+      }
+    ]
+  },
+  {
+    "id": 318,
+    "slug": "nas-summit-dxb-2023",
+    "title": "Nas Summit DXB 2023",
+    "client": "Nas Summit DXB 2023",
+    "category": "event",
+    "industry": "Events & installations",
+    "location": "",
+    "image": "/images/gallery/208-portfolio-p19-02.jpg",
+    "description": "Photographs from FANN's Nas Summit DXB 2023 portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/208-portfolio-p19-02.jpg",
+        "caption": "Nas Summit DXB 2023 - Summit Stage and Display"
+      },
+      {
+        "image": "/images/gallery/209-portfolio-p19-03.jpg",
+        "caption": "Nas Summit DXB 2023 - Freestanding Event Lettering"
+      }
+    ]
+  },
+  {
+    "id": 319,
+    "slug": "bring-me-home-event-product-showcase",
+    "title": "Bring Me Home - Event Product Showcase",
+    "client": "Bring Me Home",
+    "category": "event",
+    "industry": "Events & installations",
+    "location": "",
+    "image": "/images/gallery/210-portfolio-p19-04.jpg",
+    "description": "Photographs from FANN's Bring Me Home - Event Product Showcase portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/210-portfolio-p19-04.jpg",
+        "caption": "Bring Me Home - Event Product Showcase"
+      }
+    ]
+  },
+  {
+    "id": 320,
+    "slug": "aws-distribution-double-deck-exhibition-stand",
+    "title": "AWS Distribution - Double-Deck Exhibition Stand",
+    "client": "AWS Distribution",
+    "category": "exhibition",
+    "industry": "Exhibition stands",
+    "location": "",
+    "image": "/images/gallery/211-portfolio-p20-01.jpg",
+    "description": "Photographs from FANN's AWS Distribution - Double-Deck Exhibition Stand portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/211-portfolio-p20-01.jpg",
+        "caption": "AWS Distribution - Double-Deck Exhibition Stand"
+      }
+    ]
+  },
+  {
+    "id": 321,
+    "slug": "canada-pavilion-food-exhibition-display",
+    "title": "Canada Pavilion - Food Exhibition Display",
+    "client": "Canada Pavilion",
+    "category": "exhibition",
+    "industry": "Exhibition stands",
+    "location": "",
+    "image": "/images/gallery/212-portfolio-p20-02.jpg",
+    "description": "Photographs from FANN's Canada Pavilion - Food Exhibition Display portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/212-portfolio-p20-02.jpg",
+        "caption": "Canada Pavilion - Food Exhibition Display"
+      },
+      {
+        "image": "/images/gallery/213-portfolio-p20-03.jpg",
+        "caption": "Canada Pavilion - Food Exhibition Display"
+      }
+    ]
+  },
+  {
+    "id": 322,
+    "slug": "festive-bauble-installation-with-reception-counter-seasonal-event",
+    "title": "Festive Bauble Installation with Reception Counter - Seasonal Event",
+    "client": "Festive Bauble Installation with Reception Counter",
+    "category": "event",
+    "industry": "Events & installations",
+    "location": "",
+    "image": "/images/gallery/214-portfolio-p21-01.jpg",
+    "description": "Photographs from FANN's Festive Bauble Installation with Reception Counter - Seasonal Event portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/214-portfolio-p21-01.jpg",
+        "caption": "Festive Bauble Installation with Reception Counter - Seasonal Event"
+      }
+    ]
+  },
+  {
+    "id": 323,
+    "slug": "walk-through-giant-bauble-festive-installation",
+    "title": "Walk-Through Giant Bauble - Festive Installation",
+    "client": "Walk-Through Giant Bauble",
+    "category": "event",
+    "industry": "Events & installations",
+    "location": "",
+    "image": "/images/gallery/215-portfolio-p21-02.jpg",
+    "description": "Photographs from FANN's Walk-Through Giant Bauble - Festive Installation portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/215-portfolio-p21-02.jpg",
+        "caption": "Walk-Through Giant Bauble - Festive Installation"
+      }
+    ]
+  },
+  {
+    "id": 324,
+    "slug": "decorative-outdoor-service-kiosk-themed-fabrication",
+    "title": "Decorative Outdoor Service Kiosk - Themed Fabrication",
+    "client": "Decorative Outdoor Service Kiosk",
+    "category": "event",
+    "industry": "Themed fabrication",
+    "location": "",
+    "image": "/images/gallery/216-portfolio-p22-01.jpg",
+    "description": "Photographs from FANN's Decorative Outdoor Service Kiosk - Themed Fabrication portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/216-portfolio-p22-01.jpg",
+        "caption": "Decorative Outdoor Service Kiosk - Themed Fabrication"
+      },
+      {
+        "image": "/images/gallery/217-portfolio-p22-02.jpg",
+        "caption": "Decorative Outdoor Service Kiosk - Themed Fabrication"
+      },
+      {
+        "image": "/images/gallery/221-portfolio-p22-06.jpg",
+        "caption": "Decorative Outdoor Service Kiosk - Themed Fabrication"
+      }
+    ]
+  },
+  {
+    "id": 325,
+    "slug": "turquoise-outdoor-service-kiosk-themed-fabrication",
+    "title": "Turquoise Outdoor Service Kiosk - Themed Fabrication",
+    "client": "Turquoise Outdoor Service Kiosk",
+    "category": "event",
+    "industry": "Themed fabrication",
+    "location": "",
+    "image": "/images/gallery/218-portfolio-p22-03.jpg",
+    "description": "Photographs from FANN's Turquoise Outdoor Service Kiosk - Themed Fabrication portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/218-portfolio-p22-03.jpg",
+        "caption": "Turquoise Outdoor Service Kiosk - Themed Fabrication"
+      }
+    ]
+  },
+  {
+    "id": 326,
+    "slug": "striped-outdoor-timber-kiosk-themed-fabrication",
+    "title": "Striped Outdoor Timber Kiosk - Themed Fabrication",
+    "client": "Striped Outdoor Timber Kiosk",
+    "category": "event",
+    "industry": "Themed fabrication",
+    "location": "",
+    "image": "/images/gallery/219-portfolio-p22-04.jpg",
+    "description": "Photographs from FANN's Striped Outdoor Timber Kiosk - Themed Fabrication portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/219-portfolio-p22-04.jpg",
+        "caption": "Striped Outdoor Timber Kiosk - Themed Fabrication"
+      }
+    ]
+  },
+  {
+    "id": 327,
+    "slug": "decorative-freestanding-kiosk-structure-themed-fabrication",
+    "title": "Decorative Freestanding Kiosk Structure - Themed Fabrication",
+    "client": "Decorative Freestanding Kiosk Structure",
+    "category": "event",
+    "industry": "Themed fabrication",
+    "location": "",
+    "image": "/images/gallery/220-portfolio-p22-05.jpg",
+    "description": "Photographs from FANN's Decorative Freestanding Kiosk Structure - Themed Fabrication portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/220-portfolio-p22-05.jpg",
+        "caption": "Decorative Freestanding Kiosk Structure - Themed Fabrication"
+      }
+    ]
+  },
+  {
+    "id": 328,
+    "slug": "multi-storey-scenic-building-facade-scenic-fabrication",
+    "title": "Multi-Storey Scenic Building Facade - Scenic Fabrication",
+    "client": "Multi-Storey Scenic Building Facade",
+    "category": "event",
+    "industry": "Themed fabrication",
+    "location": "",
+    "image": "/images/gallery/222-portfolio-p23-01.jpg",
+    "description": "Photographs from FANN's Multi-Storey Scenic Building Facade - Scenic Fabrication portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/222-portfolio-p23-01.jpg",
+        "caption": "Multi-Storey Scenic Building Facade - Scenic Fabrication"
+      }
+    ]
+  },
+  {
+    "id": 329,
+    "slug": "architectural-scenic-facade-panels-scenic-fabrication",
+    "title": "Architectural Scenic Facade Panels - Scenic Fabrication",
+    "client": "Architectural Scenic Facade Panels",
+    "category": "event",
+    "industry": "Themed fabrication",
+    "location": "",
+    "image": "/images/gallery/223-portfolio-p23-02.jpg",
+    "description": "Photographs from FANN's Architectural Scenic Facade Panels - Scenic Fabrication portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/223-portfolio-p23-02.jpg",
+        "caption": "Architectural Scenic Facade Panels - Scenic Fabrication"
+      }
+    ]
+  },
+  {
+    "id": 330,
+    "slug": "brick-effect-scenic-building-facade-scenic-fabrication",
+    "title": "Brick-Effect Scenic Building Facade - Scenic Fabrication",
+    "client": "Brick-Effect Scenic Building Facade",
+    "category": "event",
+    "industry": "Themed fabrication",
+    "location": "",
+    "image": "/images/gallery/224-portfolio-p23-03.jpg",
+    "description": "Photographs from FANN's Brick-Effect Scenic Building Facade - Scenic Fabrication portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/224-portfolio-p23-03.jpg",
+        "caption": "Brick-Effect Scenic Building Facade - Scenic Fabrication"
+      }
+    ]
+  },
+  {
+    "id": 331,
+    "slug": "rock-effect-themed-interior-scenic-fabrication",
+    "title": "Rock-Effect Themed Interior - Scenic Fabrication",
+    "client": "Rock-Effect Themed Interior",
+    "category": "event",
+    "industry": "Themed fabrication",
+    "location": "",
+    "image": "/images/gallery/225-portfolio-p23-04.jpg",
+    "description": "Photographs from FANN's Rock-Effect Themed Interior - Scenic Fabrication portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/225-portfolio-p23-04.jpg",
+        "caption": "Rock-Effect Themed Interior - Scenic Fabrication"
+      }
+    ]
+  },
+  {
+    "id": 332,
+    "slug": "pastel-scenic-house-facade-scenic-fabrication",
+    "title": "Pastel Scenic House Facade - Scenic Fabrication",
+    "client": "Pastel Scenic House Facade",
+    "category": "event",
+    "industry": "Themed fabrication",
+    "location": "",
+    "image": "/images/gallery/226-portfolio-p23-05.jpg",
+    "description": "Photographs from FANN's Pastel Scenic House Facade - Scenic Fabrication portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/226-portfolio-p23-05.jpg",
+        "caption": "Pastel Scenic House Facade - Scenic Fabrication"
+      }
+    ]
+  },
+  {
+    "id": 333,
+    "slug": "painted-scenic-porch-and-facade-themed-fabrication",
+    "title": "Painted Scenic Porch and Facade - Themed Fabrication",
+    "client": "Painted Scenic Porch and Facade",
+    "category": "event",
+    "industry": "Themed fabrication",
+    "location": "",
+    "image": "/images/gallery/227-portfolio-p24-01.jpg",
+    "description": "Photographs from FANN's Painted Scenic Porch and Facade - Themed Fabrication portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/227-portfolio-p24-01.jpg",
+        "caption": "Painted Scenic Porch and Facade - Themed Fabrication"
+      }
+    ]
+  },
+  {
+    "id": 334,
+    "slug": "woodland-themed-display-surround-themed-fabrication",
+    "title": "Woodland-Themed Display Surround - Themed Fabrication",
+    "client": "Woodland-Themed Display Surround",
+    "category": "event",
+    "industry": "Themed fabrication",
+    "location": "",
+    "image": "/images/gallery/228-portfolio-p24-02.jpg",
+    "description": "Photographs from FANN's Woodland-Themed Display Surround - Themed Fabrication portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/228-portfolio-p24-02.jpg",
+        "caption": "Woodland-Themed Display Surround - Themed Fabrication"
+      }
+    ]
+  },
+  {
+    "id": 335,
+    "slug": "decorative-theatre-style-entrance-canopy-themed-fabrication",
+    "title": "Decorative Theatre-Style Entrance Canopy - Themed Fabrication",
+    "client": "Decorative Theatre-Style Entrance Canopy",
+    "category": "event",
+    "industry": "Themed fabrication",
+    "location": "",
+    "image": "/images/gallery/229-portfolio-p24-03.jpg",
+    "description": "Photographs from FANN's Decorative Theatre-Style Entrance Canopy - Themed Fabrication portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/229-portfolio-p24-03.jpg",
+        "caption": "Decorative Theatre-Style Entrance Canopy - Themed Fabrication"
+      }
+    ]
+  },
+  {
+    "id": 336,
+    "slug": "rock-effect-entrance-with-timber-look-surround-themed-fabrication",
+    "title": "Rock-Effect Entrance with Timber-Look Surround - Themed Fabrication",
+    "client": "Rock-Effect Entrance with Timber-Look Surround",
+    "category": "event",
+    "industry": "Themed fabrication",
+    "location": "",
+    "image": "/images/gallery/230-portfolio-p24-04.jpg",
+    "description": "Photographs from FANN's Rock-Effect Entrance with Timber-Look Surround - Themed Fabrication portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/230-portfolio-p24-04.jpg",
+        "caption": "Rock-Effect Entrance with Timber-Look Surround - Themed Fabrication"
+      }
+    ]
+  },
+  {
+    "id": 337,
+    "slug": "decorative-facade-and-entrance-themed-fabrication",
+    "title": "Decorative Facade and Entrance - Themed Fabrication",
+    "client": "Decorative Facade and Entrance",
+    "category": "event",
+    "industry": "Themed fabrication",
+    "location": "",
+    "image": "/images/gallery/231-portfolio-p25-01.jpg",
+    "description": "Photographs from FANN's Decorative Facade and Entrance - Themed Fabrication portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/231-portfolio-p25-01.jpg",
+        "caption": "Decorative Facade and Entrance - Themed Fabrication"
+      },
+      {
+        "image": "/images/gallery/234-portfolio-p25-04.jpg",
+        "caption": "Decorative Facade and Entrance - Themed Fabrication"
+      }
+    ]
+  },
+  {
+    "id": 338,
+    "slug": "decorative-peacock-gate-themed-entrance-installation",
+    "title": "Decorative Peacock Gate - Themed Entrance Installation",
+    "client": "Decorative Peacock Gate",
+    "category": "event",
+    "industry": "Themed fabrication",
+    "location": "",
+    "image": "/images/gallery/232-portfolio-p25-02.jpg",
+    "description": "Photographs from FANN's Decorative Peacock Gate - Themed Entrance Installation portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/232-portfolio-p25-02.jpg",
+        "caption": "Decorative Peacock Gate - Themed Entrance Installation"
+      }
+    ]
+  },
+  {
+    "id": 339,
+    "slug": "sculpted-elephant-entrance-features-themed-fabrication",
+    "title": "Sculpted Elephant Entrance Features - Themed Fabrication",
+    "client": "Sculpted Elephant Entrance Features",
+    "category": "event",
+    "industry": "Themed fabrication",
+    "location": "",
+    "image": "/images/gallery/233-portfolio-p25-03.jpg",
+    "description": "Photographs from FANN's Sculpted Elephant Entrance Features - Themed Fabrication portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/233-portfolio-p25-03.jpg",
+        "caption": "Sculpted Elephant Entrance Features - Themed Fabrication"
+      }
+    ]
+  },
+  {
+    "id": 340,
+    "slug": "ornate-gold-toned-exterior-facade-themed-fabrication",
+    "title": "Ornate Gold-Toned Exterior Facade - Themed Fabrication",
+    "client": "Ornate Gold-Toned Exterior Facade",
+    "category": "event",
+    "industry": "Themed fabrication",
+    "location": "",
+    "image": "/images/gallery/235-portfolio-p25-05.jpg",
+    "description": "Photographs from FANN's Ornate Gold-Toned Exterior Facade - Themed Fabrication portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/235-portfolio-p25-05.jpg",
+        "caption": "Ornate Gold-Toned Exterior Facade - Themed Fabrication"
+      }
+    ]
+  },
+  {
+    "id": 341,
+    "slug": "new-season-fashion-a-w-2019-retail-window-and-floor-display",
+    "title": "New Season Fashion A/W 2019 - Retail Window and Floor Display",
+    "client": "New Season Fashion A/W 2019",
+    "category": "event",
+    "industry": "Retail displays",
+    "location": "",
+    "image": "/images/gallery/236-portfolio-p26-01.jpg",
+    "description": "Photographs from FANN's New Season Fashion A/W 2019 - Retail Window and Floor Display portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/236-portfolio-p26-01.jpg",
+        "caption": "New Season Fashion A/W 2019 - Retail Window and Floor Display"
+      },
+      {
+        "image": "/images/gallery/237-portfolio-p26-02.jpg",
+        "caption": "New Season Fashion A/W 2019 - Retail Window and Floor Display"
+      },
+      {
+        "image": "/images/gallery/238-portfolio-p26-03.jpg",
+        "caption": "New Season Fashion A/W 2019 - Retail Window and Floor Display"
+      }
+    ]
+  },
+  {
+    "id": 342,
+    "slug": "splash-at-centrepoint-fashion-fast-retail-display",
+    "title": "Splash at Centrepoint - Fashion Fast Retail Display",
+    "client": "Splash at Centrepoint",
+    "category": "event",
+    "industry": "Retail displays",
+    "location": "",
+    "image": "/images/gallery/239-portfolio-p27-01.jpg",
+    "description": "Photographs from FANN's Splash at Centrepoint - Fashion Fast Retail Display portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/239-portfolio-p27-01.jpg",
+        "caption": "Splash at Centrepoint - Fashion Fast Retail Display"
+      }
+    ]
+  },
+  {
+    "id": 343,
+    "slug": "xxl-retail-fashion-display-wall",
+    "title": "XXL - Retail Fashion Display Wall",
+    "client": "XXL",
+    "category": "event",
+    "industry": "Retail displays",
+    "location": "",
+    "image": "/images/gallery/240-portfolio-p27-02.jpg",
+    "description": "Photographs from FANN's XXL - Retail Fashion Display Wall portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/240-portfolio-p27-02.jpg",
+        "caption": "XXL - Retail Fashion Display Wall"
+      }
+    ]
+  },
+  {
+    "id": 344,
+    "slug": "just-arrived-retail-fashion-display",
+    "title": "Just Arrived - Retail Fashion Display",
+    "client": "Just Arrived",
+    "category": "event",
+    "industry": "Retail displays",
+    "location": "",
+    "image": "/images/gallery/241-portfolio-p27-03.jpg",
+    "description": "Photographs from FANN's Just Arrived - Retail Fashion Display portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/241-portfolio-p27-03.jpg",
+        "caption": "Just Arrived - Retail Fashion Display"
+      }
+    ]
+  },
+  {
+    "id": 345,
+    "slug": "suspended-bicycle-retail-display-installation",
+    "title": "Suspended Bicycle - Retail Display Installation",
+    "client": "Suspended Bicycle",
+    "category": "event",
+    "industry": "Retail displays",
+    "location": "",
+    "image": "/images/gallery/242-portfolio-p27-04.jpg",
+    "description": "Photographs from FANN's Suspended Bicycle - Retail Display Installation portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/242-portfolio-p27-04.jpg",
+        "caption": "Suspended Bicycle - Retail Display Installation"
+      }
+    ]
+  },
+  {
+    "id": 346,
+    "slug": "geometric-illuminated-ceiling-retail-feature-installation",
+    "title": "Geometric Illuminated Ceiling - Retail Feature Installation",
+    "client": "Geometric Illuminated Ceiling",
+    "category": "event",
+    "industry": "Retail displays",
+    "location": "",
+    "image": "/images/gallery/243-portfolio-p27-05.jpg",
+    "description": "Photographs from FANN's Geometric Illuminated Ceiling - Retail Feature Installation portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/243-portfolio-p27-05.jpg",
+        "caption": "Geometric Illuminated Ceiling - Retail Feature Installation"
+      }
+    ]
+  },
+  {
+    "id": 347,
+    "slug": "destination-denim-at-shoemart-retail-promotional-display",
+    "title": "Destination Denim at ShoeMart - Retail Promotional Display",
+    "client": "Destination Denim at ShoeMart",
+    "category": "event",
+    "industry": "Retail displays",
+    "location": "",
+    "image": "/images/gallery/244-portfolio-p28-01.jpg",
+    "description": "Photographs from FANN's Destination Denim at ShoeMart - Retail Promotional Display portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/244-portfolio-p28-01.jpg",
+        "caption": "Destination Denim at ShoeMart - Retail Promotional Display"
+      },
+      {
+        "image": "/images/gallery/245-portfolio-p28-02.jpg",
+        "caption": "Destination Denim at ShoeMart - Retail Promotional Display"
+      },
+      {
+        "image": "/images/gallery/246-portfolio-p28-03.jpg",
+        "caption": "Destination Denim at ShoeMart - Retail Promotional Display"
+      }
+    ]
+  },
+  {
+    "id": 348,
+    "slug": "office-reception-and-breakout-interior",
+    "title": "Office reception and breakout interior",
+    "client": "Office reception and breakout interior",
+    "category": "interior",
+    "industry": "Office interiors",
+    "location": "",
+    "image": "/images/gallery/247-portfolio-p29-01.jpg",
+    "description": "Photographs from FANN's Office reception and breakout interior portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/247-portfolio-p29-01.jpg",
+        "caption": "Office reception and breakout interior"
+      }
+    ]
+  },
+  {
+    "id": 349,
+    "slug": "timber-finish-office-breakout-counter",
+    "title": "Timber-finish office breakout counter",
+    "client": "Timber-finish office breakout counter",
+    "category": "interior",
+    "industry": "Office interiors",
+    "location": "",
+    "image": "/images/gallery/248-portfolio-p29-02.jpg",
+    "description": "Photographs from FANN's Timber-finish office breakout counter portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/248-portfolio-p29-02.jpg",
+        "caption": "Timber-finish office breakout counter"
+      }
+    ]
+  },
+  {
+    "id": 350,
+    "slug": "office-dining-and-breakout-area",
+    "title": "Office dining and breakout area",
+    "client": "Office dining and breakout area",
+    "category": "interior",
+    "industry": "Office interiors",
+    "location": "",
+    "image": "/images/gallery/249-portfolio-p29-03.jpg",
+    "description": "Photographs from FANN's Office dining and breakout area portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/249-portfolio-p29-03.jpg",
+        "caption": "Office dining and breakout area"
+      }
+    ]
+  },
+  {
+    "id": 351,
+    "slug": "timber-wall-with-planting-and-accent-lighting",
+    "title": "Timber wall with planting and accent lighting",
+    "client": "Timber wall with planting and accent lighting",
+    "category": "interior",
+    "industry": "Office interiors",
+    "location": "",
+    "image": "/images/gallery/250-portfolio-p29-04.jpg",
+    "description": "Photographs from FANN's Timber wall with planting and accent lighting portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/250-portfolio-p29-04.jpg",
+        "caption": "Timber wall with planting and accent lighting"
+      }
+    ]
+  },
+  {
+    "id": 352,
+    "slug": "office-reception-and-wall-detail-interior-fit-out",
+    "title": "Office Reception and Wall Detail - Interior Fit-Out",
+    "client": "Office Reception and Wall Detail",
+    "category": "interior",
+    "industry": "Office interiors",
+    "location": "",
+    "image": "/images/gallery/251-portfolio-p30-01.jpg",
+    "description": "Photographs from FANN's Office Reception and Wall Detail - Interior Fit-Out portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/251-portfolio-p30-01.jpg",
+        "caption": "Office Reception and Wall Detail - Interior Fit-Out"
+      },
+      {
+        "image": "/images/gallery/252-portfolio-p30-02.jpg",
+        "caption": "Office Reception and Wall Detail - Interior Fit-Out"
+      }
+    ]
+  },
+  {
+    "id": 353,
+    "slug": "office-reception-and-lounge-interior-fit-out",
+    "title": "Office Reception and Lounge - Interior Fit-Out",
+    "client": "Office Reception and Lounge",
+    "category": "interior",
+    "industry": "Office interiors",
+    "location": "",
+    "image": "/images/gallery/253-portfolio-p31-01.jpg",
+    "description": "Photographs from FANN's Office Reception and Lounge - Interior Fit-Out portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/253-portfolio-p31-01.jpg",
+        "caption": "Office Reception and Lounge - Interior Fit-Out"
+      },
+      {
+        "image": "/images/gallery/362-portfolio-p31-02.jpg",
+        "caption": "Office Reception and Lounge - Interior Fit-Out"
+      }
+    ]
+  },
+  {
+    "id": 354,
+    "slug": "office-lounge-with-planting-wall-interior-fit-out",
+    "title": "Office Lounge with Planting Wall - Interior Fit-Out",
+    "client": "Office Lounge with Planting Wall",
+    "category": "interior",
+    "industry": "Office interiors",
+    "location": "",
+    "image": "/images/gallery/363-portfolio-p31-03.jpg",
+    "description": "Photographs from FANN's Office Lounge with Planting Wall - Interior Fit-Out portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/363-portfolio-p31-03.jpg",
+        "caption": "Office Lounge with Planting Wall - Interior Fit-Out"
+      }
+    ]
+  },
+  {
+    "id": 355,
+    "slug": "reception-desk-with-dark-wall-panels-interior-fit-out",
+    "title": "Reception Desk with Dark Wall Panels - Interior Fit-Out",
+    "client": "Reception Desk with Dark Wall Panels",
+    "category": "interior",
+    "industry": "Office interiors",
+    "location": "",
+    "image": "/images/gallery/364-portfolio-p32-01.jpg",
+    "description": "Photographs from FANN's Reception Desk with Dark Wall Panels - Interior Fit-Out portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/364-portfolio-p32-01.jpg",
+        "caption": "Reception Desk with Dark Wall Panels - Interior Fit-Out"
+      }
+    ]
+  },
+  {
+    "id": 356,
+    "slug": "reception-counter-and-full-height-curtains-interior-fit-out",
+    "title": "Reception Counter and Full-Height Curtains - Interior Fit-Out",
+    "client": "Reception Counter and Full-Height Curtains",
+    "category": "interior",
+    "industry": "Office interiors",
+    "location": "",
+    "image": "/images/gallery/365-portfolio-p32-02.jpg",
+    "description": "Photographs from FANN's Reception Counter and Full-Height Curtains - Interior Fit-Out portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/365-portfolio-p32-02.jpg",
+        "caption": "Reception Counter and Full-Height Curtains - Interior Fit-Out"
+      }
+    ]
+  },
+  {
+    "id": 357,
+    "slug": "training-room-with-timber-ceiling-interior-fit-out",
+    "title": "Training Room with Timber Ceiling - Interior Fit-Out",
+    "client": "Training Room with Timber Ceiling",
+    "category": "interior",
+    "industry": "Office interiors",
+    "location": "",
+    "image": "/images/gallery/366-portfolio-p32-03.jpg",
+    "description": "Photographs from FANN's Training Room with Timber Ceiling - Interior Fit-Out portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/366-portfolio-p32-03.jpg",
+        "caption": "Training Room with Timber Ceiling - Interior Fit-Out"
+      }
+    ]
+  },
+  {
+    "id": 358,
+    "slug": "meeting-room-with-timber-wall-interior-fit-out",
+    "title": "Meeting Room with Timber Wall - Interior Fit-Out",
+    "client": "Meeting Room with Timber Wall",
+    "category": "interior",
+    "industry": "Office interiors",
+    "location": "",
+    "image": "/images/gallery/367-portfolio-p32-04.jpg",
+    "description": "Photographs from FANN's Meeting Room with Timber Wall - Interior Fit-Out portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/367-portfolio-p32-04.jpg",
+        "caption": "Meeting Room with Timber Wall - Interior Fit-Out"
+      }
+    ]
+  },
+  {
+    "id": 359,
+    "slug": "open-plan-office-with-collaborative-seating-interior-fit-out",
+    "title": "Open-Plan Office with Collaborative Seating - Interior Fit-Out",
+    "client": "Open-Plan Office with Collaborative Seating",
+    "category": "interior",
+    "industry": "Office interiors",
+    "location": "",
+    "image": "/images/gallery/368-portfolio-p33-01.jpg",
+    "description": "Photographs from FANN's Open-Plan Office with Collaborative Seating - Interior Fit-Out portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/368-portfolio-p33-01.jpg",
+        "caption": "Open-Plan Office with Collaborative Seating - Interior Fit-Out"
+      }
+    ]
+  },
+  {
+    "id": 360,
+    "slug": "meeting-room-with-feature-carpet-interior-fit-out",
+    "title": "Meeting Room with Feature Carpet - Interior Fit-Out",
+    "client": "Meeting Room with Feature Carpet",
+    "category": "interior",
+    "industry": "Office interiors",
+    "location": "",
+    "image": "/images/gallery/369-portfolio-p33-02.jpg",
+    "description": "Photographs from FANN's Meeting Room with Feature Carpet - Interior Fit-Out portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/369-portfolio-p33-02.jpg",
+        "caption": "Meeting Room with Feature Carpet - Interior Fit-Out"
+      }
+    ]
+  },
+  {
+    "id": 361,
+    "slug": "office-reception-with-geometric-feature-wall-interior-fit-out",
+    "title": "Office Reception with Geometric Feature Wall - Interior Fit-Out",
+    "client": "Office Reception with Geometric Feature Wall",
+    "category": "interior",
+    "industry": "Office interiors",
+    "location": "",
+    "image": "/images/gallery/370-portfolio-p33-03.jpg",
+    "description": "Photographs from FANN's Office Reception with Geometric Feature Wall - Interior Fit-Out portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/370-portfolio-p33-03.jpg",
+        "caption": "Office Reception with Geometric Feature Wall - Interior Fit-Out"
+      }
+    ]
+  },
+  {
+    "id": 362,
+    "slug": "glazed-office-corridor-interior-fit-out",
+    "title": "Glazed Office Corridor - Interior Fit-Out",
+    "client": "Glazed Office Corridor",
+    "category": "interior",
+    "industry": "Office interiors",
+    "location": "",
+    "image": "/images/gallery/371-portfolio-p33-04.jpg",
+    "description": "Photographs from FANN's Glazed Office Corridor - Interior Fit-Out portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/371-portfolio-p33-04.jpg",
+        "caption": "Glazed Office Corridor - Interior Fit-Out"
+      }
+    ]
+  },
+  {
+    "id": 363,
+    "slug": "emaar-annual-broker-awards-2018-event-stage-and-display",
+    "title": "Emaar Annual Broker Awards 2018 - Event Stage and Display",
+    "client": "Emaar Annual Broker Awards 2018",
+    "category": "event",
+    "industry": "Events & installations",
+    "location": "",
+    "image": "/images/gallery/372-portfolio-p34-01.jpg",
+    "description": "Photographs from FANN's Emaar Annual Broker Awards 2018 - Event Stage and Display portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/372-portfolio-p34-01.jpg",
+        "caption": "Emaar Annual Broker Awards 2018 - Event Stage and Display"
+      },
+      {
+        "image": "/images/gallery/373-portfolio-p34-02.jpg",
+        "caption": "Emaar Annual Broker Awards 2018 - Event Stage and Display"
+      },
+      {
+        "image": "/images/gallery/374-portfolio-p34-03.jpg",
+        "caption": "Emaar Annual Broker Awards 2018 - Event Stage and Display"
+      },
+      {
+        "image": "/images/gallery/375-portfolio-p34-04.jpg",
+        "caption": "Emaar Annual Broker Awards 2018 - Event Stage and Display"
+      },
+      {
+        "image": "/images/gallery/376-portfolio-p34-05.jpg",
+        "caption": "Emaar Annual Broker Awards 2018 - Event Stage and Display"
+      }
+    ]
+  },
+  {
+    "id": 364,
+    "slug": "conference-stage-and-exhibition-display-ballroom-event",
+    "title": "Conference Stage and Exhibition Display - Ballroom Event",
+    "client": "Conference Stage and Exhibition Display",
+    "category": "event",
+    "industry": "Events & installations",
+    "location": "",
+    "image": "/images/gallery/377-portfolio-p35-01.jpg",
+    "description": "Photographs from FANN's Conference Stage and Exhibition Display - Ballroom Event portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/377-portfolio-p35-01.jpg",
+        "caption": "Conference Stage and Exhibition Display - Ballroom Event"
+      }
+    ]
+  },
+  {
+    "id": 365,
+    "slug": "illuminated-exhibition-display-tables-ballroom-event",
+    "title": "Illuminated Exhibition Display Tables - Ballroom Event",
+    "client": "Illuminated Exhibition Display Tables",
+    "category": "event",
+    "industry": "Events & installations",
+    "location": "",
+    "image": "/images/gallery/378-portfolio-p35-02.jpg",
+    "description": "Photographs from FANN's Illuminated Exhibition Display Tables - Ballroom Event portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/378-portfolio-p35-02.jpg",
+        "caption": "Illuminated Exhibition Display Tables - Ballroom Event"
+      }
+    ]
+  },
+  {
+    "id": 366,
+    "slug": "conference-seating-and-stage-ballroom-event",
+    "title": "Conference Seating and Stage - Ballroom Event",
+    "client": "Conference Seating and Stage",
+    "category": "event",
+    "industry": "Events & installations",
+    "location": "",
+    "image": "/images/gallery/379-portfolio-p35-03.jpg",
+    "description": "Photographs from FANN's Conference Seating and Stage - Ballroom Event portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/379-portfolio-p35-03.jpg",
+        "caption": "Conference Seating and Stage - Ballroom Event"
+      }
+    ]
+  },
+  {
+    "id": 367,
+    "slug": "my-baby-expert-retail-signage",
+    "title": "My Baby Expert - Retail Signage",
+    "client": "My Baby Expert",
+    "category": "event",
+    "industry": "Signage & graphics",
+    "location": "",
+    "image": "/images/gallery/380-portfolio-p36-01.jpg",
+    "description": "Photographs from FANN's My Baby Expert - Retail Signage portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/380-portfolio-p36-01.jpg",
+        "caption": "My Baby Expert - Illuminated Retail Lettering and Display Panel"
+      },
+      {
+        "image": "/images/gallery/381-portfolio-p36-m01.jpg",
+        "caption": "My Baby Expert - Illuminated Hanging Retail Lettering"
+      },
+      {
+        "image": "/images/gallery/382-portfolio-p36-m02.jpg",
+        "caption": "My Baby Expert - Illuminated Retail Category Sign"
+      },
+      {
+        "image": "/images/gallery/383-portfolio-p36-m03.jpg",
+        "caption": "My Baby Expert - Illuminated Lettering above Retail Display"
+      }
+    ]
+  },
+  {
+    "id": 368,
+    "slug": "the-pointe-outdoor-illuminated-lettering-installation",
+    "title": "The Pointe - Outdoor Illuminated Lettering Installation",
+    "client": "The Pointe",
+    "category": "event",
+    "industry": "Signage & graphics",
+    "location": "",
+    "image": "/images/gallery/384-portfolio-p37-01.jpg",
+    "description": "Photographs from FANN's The Pointe - Outdoor Illuminated Lettering Installation portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/384-portfolio-p37-01.jpg",
+        "caption": "The Pointe - Outdoor Illuminated Lettering Installation"
+      },
+      {
+        "image": "/images/gallery/385-portfolio-p37-02.jpg",
+        "caption": "The Pointe - Outdoor Illuminated Lettering Installation"
+      },
+      {
+        "image": "/images/gallery/386-portfolio-p37-03.jpg",
+        "caption": "The Pointe - Outdoor Illuminated Lettering Installation"
+      }
+    ]
+  },
+  {
+    "id": 369,
+    "slug": "large-format-printing-fann-production-workshop",
+    "title": "Large-Format Printing - FANN Production Workshop",
+    "client": "Large-Format Printing",
+    "category": "event",
+    "industry": "Production workshop",
+    "location": "",
+    "image": "/images/gallery/391-portfolio-p39-01.jpg",
+    "description": "Photographs from FANN's Large-Format Printing - FANN Production Workshop portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/391-portfolio-p39-01.jpg",
+        "caption": "Large-Format Printing - FANN Production Workshop"
+      },
+      {
+        "image": "/images/gallery/392-portfolio-p39-02.jpg",
+        "caption": "Large-Format Printing - FANN Production Workshop"
+      },
+      {
+        "image": "/images/gallery/393-portfolio-p39-03.jpg",
+        "caption": "Large-Format Printing - FANN Production Workshop"
+      },
+      {
+        "image": "/images/gallery/394-portfolio-p39-04.jpg",
+        "caption": "Large-Format Printing - FANN Production Workshop"
+      }
+    ]
+  },
+  {
+    "id": 370,
+    "slug": "printed-retail-graphics-large-format-installation",
+    "title": "Printed Retail Graphics - Large-Format Installation",
+    "client": "Printed Retail Graphics",
+    "category": "event",
+    "industry": "Signage & graphics",
+    "location": "",
+    "image": "/images/gallery/395-portfolio-p40-01.jpg",
+    "description": "Photographs from FANN's Printed Retail Graphics - Large-Format Installation portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/395-portfolio-p40-01.jpg",
+        "caption": "Printed Retail Graphics - Large-Format Installation"
+      },
+      {
+        "image": "/images/gallery/396-portfolio-p40-02.jpg",
+        "caption": "Printed Retail Graphics - Large-Format Installation"
+      },
+      {
+        "image": "/images/gallery/397-portfolio-p40-03.jpg",
+        "caption": "Printed Retail Graphics - Large-Format Installation"
+      },
+      {
+        "image": "/images/gallery/398-portfolio-p40-m01.jpg",
+        "caption": "Printed Retail Graphics - Large-Format Installation"
+      }
+    ]
+  },
+  {
+    "id": 371,
+    "slug": "workshop-fabrication-equipment-fann-production-workshop",
+    "title": "Workshop Fabrication Equipment - FANN Production Workshop",
+    "client": "Workshop Fabrication Equipment",
+    "category": "event",
+    "industry": "Production workshop",
+    "location": "",
+    "image": "/images/gallery/399-portfolio-p41-01.jpg",
+    "description": "Photographs from FANN's Workshop Fabrication Equipment - FANN Production Workshop portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/399-portfolio-p41-01.jpg",
+        "caption": "Workshop Fabrication Equipment - FANN Production Workshop"
+      },
+      {
+        "image": "/images/gallery/400-portfolio-p41-02.jpg",
+        "caption": "Workshop Fabrication Equipment - FANN Production Workshop"
+      }
+    ]
+  },
+  {
+    "id": 372,
+    "slug": "decorative-fabricated-entrance-themed-fabrication",
+    "title": "Decorative Fabricated Entrance - Themed Fabrication",
+    "client": "Decorative Fabricated Entrance",
+    "category": "event",
+    "industry": "Production workshop",
+    "location": "",
+    "image": "/images/gallery/401-portfolio-p41-03.jpg",
+    "description": "Photographs from FANN's Decorative Fabricated Entrance - Themed Fabrication portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/401-portfolio-p41-03.jpg",
+        "caption": "Decorative Fabricated Entrance - Themed Fabrication"
+      }
+    ]
+  },
+  {
+    "id": 373,
+    "slug": "geometric-illuminated-ceiling-detail-retail-feature",
+    "title": "Geometric Illuminated Ceiling Detail - Retail Feature",
+    "client": "Geometric Illuminated Ceiling Detail",
+    "category": "event",
+    "industry": "Retail displays",
+    "location": "",
+    "image": "/images/gallery/402-portfolio-p42-01.jpg",
+    "description": "Photographs from FANN's Geometric Illuminated Ceiling Detail - Retail Feature portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/402-portfolio-p42-01.jpg",
+        "caption": "Geometric Illuminated Ceiling Detail - Retail Feature"
+      }
+    ]
+  },
+  {
+    "id": 374,
+    "slug": "outdoor-slatted-entrance-retail-feature-installation",
+    "title": "Outdoor Slatted Entrance - Retail Feature Installation",
+    "client": "Outdoor Slatted Entrance",
+    "category": "event",
+    "industry": "Retail displays",
+    "location": "",
+    "image": "/images/gallery/403-portfolio-p42-02.jpg",
+    "description": "Photographs from FANN's Outdoor Slatted Entrance - Retail Feature Installation portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/403-portfolio-p42-02.jpg",
+        "caption": "Outdoor Slatted Entrance - Retail Feature Installation"
+      }
+    ]
+  },
+  {
+    "id": 375,
+    "slug": "retail-product-display-fixtures-retail-installation",
+    "title": "Retail Product Display Fixtures - Retail Installation",
+    "client": "Retail Product Display Fixtures",
+    "category": "event",
+    "industry": "Retail displays",
+    "location": "",
+    "image": "/images/gallery/404-portfolio-p42-04.jpg",
+    "description": "Photographs from FANN's Retail Product Display Fixtures - Retail Installation portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/404-portfolio-p42-04.jpg",
+        "caption": "Retail Product Display Fixtures - Retail Installation"
+      }
+    ]
+  },
+  {
+    "id": 376,
+    "slug": "retail-display-with-framed-illuminated-screen-retail-installation",
+    "title": "Retail Display with Framed Illuminated Screen - Retail Installation",
+    "client": "Retail Display with Framed Illuminated Screen",
+    "category": "event",
+    "industry": "Retail displays",
+    "location": "",
+    "image": "/images/gallery/405-portfolio-p42-05.jpg",
+    "description": "Photographs from FANN's Retail Display with Framed Illuminated Screen - Retail Installation portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/405-portfolio-p42-05.jpg",
+        "caption": "Retail Display with Framed Illuminated Screen - Retail Installation"
+      }
+    ]
+  },
+  {
+    "id": 377,
+    "slug": "wedding-stage-and-entrance",
+    "title": "Wedding - Stage and Entrance",
+    "client": "Wedding",
+    "category": "event",
+    "industry": "Events & installations",
+    "location": "",
+    "image": "/images/gallery/387-portfolio-p38-01.jpg",
+    "description": "Photographs from FANN's Wedding - Stage and Entrance portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/387-portfolio-p38-01.jpg",
+        "caption": "Wedding Stage with Floral Canopy - Private Event"
+      },
+      {
+        "image": "/images/gallery/388-portfolio-p38-02.jpg",
+        "caption": "Wedding Entrance Entertainment - Private Event"
+      },
+      {
+        "image": "/images/gallery/389-portfolio-p38-03.jpg",
+        "caption": "Wedding Aisle and Floral Stage - Private Event"
+      },
+      {
+        "image": "/images/gallery/390-portfolio-p38-04.jpg",
+        "caption": "Wedding Stage with Gold-Toned Features - Private Event"
+      }
+    ]
+  },
+  {
+    "id": 378,
+    "slug": "moving-head-lights-and-flight-cases-event-lighting-and-av",
+    "title": "Moving-Head Lights and Flight Cases - Event Lighting and AV",
+    "client": "Moving-Head Lights and Flight Cases",
+    "category": "event",
+    "industry": "Event lighting & AV",
+    "location": "",
+    "image": "/images/gallery/406-portfolio-p43-01.jpg",
+    "description": "Photographs from FANN's Moving-Head Lights and Flight Cases - Event Lighting and AV portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/406-portfolio-p43-01.jpg",
+        "caption": "Moving-Head Lights and Flight Cases - Event Lighting and AV"
+      }
+    ]
+  },
+  {
+    "id": 379,
+    "slug": "purple-stage-lighting-event-lighting-installation",
+    "title": "Purple Stage Lighting - Event Lighting Installation",
+    "client": "Purple Stage Lighting",
+    "category": "event",
+    "industry": "Event lighting & AV",
+    "location": "",
+    "image": "/images/gallery/407-portfolio-p43-02.jpg",
+    "description": "Photographs from FANN's Purple Stage Lighting - Event Lighting Installation portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/407-portfolio-p43-02.jpg",
+        "caption": "Purple Stage Lighting - Event Lighting Installation"
+      }
+    ]
+  },
+  {
+    "id": 380,
+    "slug": "red-and-blue-stage-lighting-event-lighting-installation",
+    "title": "Red and Blue Stage Lighting - Event Lighting Installation",
+    "client": "Red and Blue Stage Lighting",
+    "category": "event",
+    "industry": "Event lighting & AV",
+    "location": "",
+    "image": "/images/gallery/408-portfolio-p43-03.jpg",
+    "description": "Photographs from FANN's Red and Blue Stage Lighting - Event Lighting Installation portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/408-portfolio-p43-03.jpg",
+        "caption": "Red and Blue Stage Lighting - Event Lighting Installation"
+      }
+    ]
+  },
+  {
+    "id": 381,
+    "slug": "gala-stage-with-led-screen-event-production",
+    "title": "Gala Stage with LED Screen - Event Production",
+    "client": "Gala Stage with LED Screen",
+    "category": "event",
+    "industry": "Event lighting & AV",
+    "location": "",
+    "image": "/images/gallery/410-portfolio-p44-01.jpg",
+    "description": "Photographs from FANN's Gala Stage with LED Screen - Event Production portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/410-portfolio-p44-01.jpg",
+        "caption": "Gala Stage with LED Screen - Event Production"
+      }
+    ]
+  },
+  {
+    "id": 382,
+    "slug": "multi-panel-video-wall-event-production",
+    "title": "Multi-Panel Video Wall - Event Production",
+    "client": "Multi-Panel Video Wall",
+    "category": "event",
+    "industry": "Event lighting & AV",
+    "location": "",
+    "image": "/images/gallery/411-portfolio-p44-02.jpg",
+    "description": "Photographs from FANN's Multi-Panel Video Wall - Event Production portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/411-portfolio-p44-02.jpg",
+        "caption": "Multi-Panel Video Wall - Event Production"
+      }
+    ]
+  },
+  {
+    "id": 383,
+    "slug": "gaming-summit",
+    "title": "Gaming Summit",
+    "client": "Gaming Summit",
+    "category": "event",
+    "industry": "Events & installations",
+    "location": "",
+    "image": "/images/gallery/177-portfolio-p10-m01.jpg",
+    "description": "Photographs from FANN's Gaming Summit portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/177-portfolio-p10-m01.jpg",
+        "caption": "Gaming Summit - Conference Lounge"
+      },
+      {
+        "image": "/images/gallery/178-portfolio-p10-m02.jpg",
+        "caption": "Gaming Summit - Branded Event Wall"
+      },
+      {
+        "image": "/images/gallery/179-portfolio-p10-m03.jpg",
+        "caption": "Gaming Summit - Conference Stage and Screen"
+      },
+      {
+        "image": "/images/gallery/180-portfolio-p10-m04.jpg",
+        "caption": "Gaming Summit - Conference Stage and Seating"
+      }
+    ]
+  },
+  {
+    "id": 384,
+    "slug": "event-lighting-and-audio-equipment-event-av",
+    "title": "Event Lighting and Audio Equipment - Event AV",
+    "client": "Event Lighting and Audio Equipment",
+    "category": "event",
+    "industry": "Event lighting & AV",
+    "location": "",
+    "image": "/images/gallery/409-portfolio-p43-m01.jpg",
+    "description": "Photographs from FANN's Event Lighting and Audio Equipment - Event AV portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/409-portfolio-p43-m01.jpg",
+        "caption": "Event Lighting and Audio Equipment - Event AV"
+      }
+    ]
+  },
+  {
+    "id": 385,
+    "slug": "afc-annual-awards-gala-stage-with-led-screens",
+    "title": "AFC Annual Awards - Gala Stage with LED Screens",
+    "client": "AFC Annual Awards",
+    "category": "event",
+    "industry": "Event lighting & AV",
+    "location": "",
+    "image": "/images/gallery/412-portfolio-p44-m01.jpg",
+    "description": "Photographs from FANN's AFC Annual Awards - Gala Stage with LED Screens portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/412-portfolio-p44-m01.jpg",
+        "caption": "AFC Annual Awards - Gala Stage with LED Screens"
+      }
+    ]
+  },
+  {
+    "id": 386,
+    "slug": "lexus-vehicle-display-with-projection-screen",
+    "title": "Lexus - Vehicle Display with Projection Screen",
+    "client": "Lexus",
+    "category": "event",
+    "industry": "Event lighting & AV",
+    "location": "",
+    "image": "/images/gallery/413-portfolio-p44-m02.jpg",
+    "description": "Photographs from FANN's Lexus - Vehicle Display with Projection Screen portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/413-portfolio-p44-m02.jpg",
+        "caption": "Lexus - Vehicle Display with Projection Screen"
+      }
+    ]
+  },
+  {
+    "id": 387,
+    "slug": "projector-and-flight-case-event-av-kit",
+    "title": "Projector and Flight Case - Event AV Kit",
+    "client": "Projector and Flight Case",
+    "category": "event",
+    "industry": "Event lighting & AV",
+    "location": "",
+    "image": "/images/gallery/414-portfolio-p44-m03.jpg",
+    "description": "Photographs from FANN's Projector and Flight Case - Event AV Kit portfolio reference.",
+    "gallery": [
+      {
+        "image": "/images/gallery/414-portfolio-p44-m03.jpg",
+        "caption": "Projector and Flight Case - Event AV Kit"
+      }
+    ]
   }
 ]
