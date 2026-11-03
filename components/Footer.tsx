@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import OpenAIConsent from './OpenAIConsent';
 import { Facebook, Instagram, Linkedin } from 'lucide-react';
 
 const QuoraIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -54,7 +55,7 @@ const Footer: React.FC = () => {
         </div>
         <div className="border-t border-white/10 mt-8 pt-6 text-center text-sm text-gray-500">
           <p>&copy; {new Date().getFullYear()} FANN. All Rights Reserved. | <Link to="/privacy-policy" className="hover:text-fann-gold">Privacy Policy</Link></p>
-          
+          <OpenAIConsent />
         </div>
       </div>
     </footer>
