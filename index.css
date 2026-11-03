@@ -441,7 +441,7 @@ html.light .portfolio-surface .portfolio-muted { color: #52525b; }
 html.light .fann-brand-wordmark { color: #8f6e2a; -webkit-text-fill-color: #8f6e2a; }
 
 /* Explicit contrast in both site themes for the staged consent controls. */
-#fann-openai-consent, #fann-openai-consent *, #fann-openai-settings {
+#fann-openai-consent, #fann-openai-consent * {
   color: #fff !important;
 }
-#fann-openai-consent, #fann-openai-settings { background-color: #171717 !important; }
+#fann-openai-consent { background-color: #171717 !important; }
