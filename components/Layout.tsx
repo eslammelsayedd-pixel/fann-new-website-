@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
+import OpenAIConsent from './OpenAIConsent';
 import WhatsAppButton from './WhatsAppButton';
 import MetaPixelTracker from './MetaPixelTracker';
 import MobileActionBar from './MobileActionBar';
@@ -39,7 +40,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Header />
       <MetaPixelTracker />
       <main className="flex-grow">{children}</main>
-      {isAdsLanding ? <footer className="border-t border-white/10 bg-[#111] px-5 py-8 text-center text-sm text-[#aaa49b]">FANN · <a href="tel:+971505667502" className="underline">+971 50 566 7502</a> · <a href="mailto:sales@fann.ae" className="underline">sales@fann.ae</a></footer> : <div className="pb-16 md:pb-0"><Footer /></div>}
+      {isAdsLanding ? <footer className="border-t border-white/10 bg-[#111] px-5 py-8 text-center text-sm text-[#aaa49b]">FANN · <a href="tel:+971505667502" className="underline">+971 50 566 7502</a> · <a href="mailto:sales@fann.ae" className="underline">sales@fann.ae</a><OpenAIConsent /></footer> : <div className="pb-16 md:pb-0"><Footer /></div>}
       
       {/* Conversion Tools */}
       {!isAdsLanding && <WhatsAppButton />}
