@@ -21,7 +21,7 @@ function gtag_report_conversion(url?: string) {
   return false;
 }
 
-const whatsappUrl = 'https://wa.me/971505667502?text=Hi+FANN%2C+I%27d+like+a+3D+stand+concept+and+full+quote+for+my+upcoming+exhibition.+My+show%2C+stand+size+and+open+sides+are%3A';
+const whatsappUrl = 'https://wa.me/971505667502?text=Hi+FANN%2C+I%27d+like+five+free+exhibition+stand+designs.+My+show%2C+stand+size+and+brief+are%3A';
 const photos = [
   { src: '/images/stands/1-trevos-light-middle-east.webp', alt: 'TREVOS exhibition stand at Light Middle East, Dubai (2023), built by FANN', title: 'TREVOS - Light Middle East 2023', link: '/portfolio/trevos-light-middle-east' },
   { src: '/images/stands/2-bayara-gulfood.webp', alt: 'Bayara exhibition stand at Gulfood, Dubai (2020), built by FANN', title: 'Bayara - Gulfood 2020', link: '/portfolio/bayara-gulfood' },
@@ -100,15 +100,15 @@ export default function ExhibitionAdsLandingPage() {
     { key: 'standSize', label: 'Size (optional)', hint: 'e.g. 6 x 3 m or 18 sqm' },
   ];
   return <>
-    <SEO title="Exhibition Stand Builders in the UAE | 3D Stand Concepts" description="FANN designs and builds custom exhibition stands in the UAE. Send your show brief and get 3D stand concepts. A quote follows once you pick your concept." />
+    <SEO title="Get 5 Free Exhibition Stand Designs" description="Get five free exhibition stand designs from your brief. Choose the design you want, then receive a quote. FANN designs and builds exhibition stands in the UAE." />
     <div className="ads-landing-page">
     <section className="bg-[#111111] px-5 pb-10 pt-[5.5rem] text-[#f5f2eb] md:pb-14 md:pt-28">
       <div className="mx-auto grid max-w-6xl items-start gap-5 lg:grid-cols-[1fr_440px] lg:gap-12">
         <div className="lg:pt-3">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[.22em] text-[#c9a962]">Custom exhibition stands</p>
-          <h1 className="max-w-2xl font-serif text-[1.75rem] font-bold leading-[1.12] md:text-5xl lg:text-[3.5rem]">Exhibition Stand Builders in the UAE</h1>
-          <p className="mt-3 max-w-xl text-sm md:text-base md:mt-6 md:text-lg leading-relaxed text-[#d4d1cb]">3D stand concepts from your show brief. Share your contact details. Add your show and size if known.</p>
-          <p className="mt-2 text-xs md:text-sm text-[#e1c78d]">In-house design, fabrication and installation across the UAE. Scope and price agreed before production.</p><a href="#brief" className="mt-4 inline-flex min-h-[48px] items-center rounded-sm bg-[#c9a962] px-5 py-3 font-bold text-black">Request your concept + quote</a>
+          <h1 className="max-w-2xl font-serif text-[1.75rem] font-bold leading-[1.12] md:text-5xl lg:text-[3.5rem]">Get 5 Free Exhibition Stand Designs</h1>
+          <p className="mt-3 max-w-xl text-sm md:text-base md:mt-6 md:text-lg leading-relaxed text-[#d4d1cb]">Send your event brief. We'll create five free stand designs. Choose the one you want, then receive a quote for that design.</p>
+          <p className="mt-2 text-xs md:text-sm text-[#e1c78d]">In-house design, fabrication and installation across the UAE. Scope and price agreed before production.</p><a href="#brief" className="mt-4 inline-flex min-h-[48px] items-center rounded-sm bg-[#c9a962] px-5 py-3 font-bold text-black">Get My 5 Free Designs</a>
           <div className="mt-3 flex flex-wrap gap-2 md:mt-5 md:gap-3">
             <a href="tel:+971505667502" data-track="ads-call" className="rounded-sm border border-[#c9a962] px-3 py-2 text-sm font-semibold md:px-5 md:py-3 md:text-base text-[#e1c78d] hover:bg-[#c9a962] hover:text-black">Call +971 50 566 7502</a>
             <a href={whatsappUrl} data-track="ads-whatsapp" target="_blank" rel="noopener noreferrer" className="rounded-sm bg-[#25d366] px-3 py-2 text-sm font-bold text-[#071b0e] hover:bg-[#50e080]">WhatsApp instead</a>
@@ -116,14 +116,14 @@ export default function ExhibitionAdsLandingPage() {
           <Link to="/portfolio/trevos-light-middle-east" className="mt-3 hidden md:flex items-center gap-3 text-xs md:text-sm text-[#d4d1cb]"><img loading="lazy" decoding="async" src="/images/stands/1-trevos-light-middle-east.webp" alt="Completed FANN TREVOS stand at Light Middle East 2023" width="120" height="68" className="hidden md:block h-16 w-28 object-cover"/><span>Real FANN work: TREVOS, Light Middle East 2023</span></Link>
         </div>
         <div id="brief" className="scroll-mt-28 rounded-sm border border-[#c9a962]/40 bg-[#222] p-4 shadow-2xl md:p-7">
-          {sent ? <div role="status" className="py-10 text-center"><h2 className="font-serif text-3xl text-[#e1c78d]">Request received</h2><p className="mt-4 text-[#d4d1cb]">Thank you. FANN will contact you about your show brief.</p></div> : <>
-            <h2 className="font-serif text-2xl text-[#f5f2eb]">Get your concept and quote</h2>
-            <p className="mt-2 text-sm text-[#d4d1cb]">Name, phone and work email are enough to start. Show, size and floor plan are optional.</p>
+          {sent ? <div role="status" className="py-10 text-center"><h2 className="font-serif text-3xl text-[#e1c78d]">Your request has been sent</h2><p className="mt-4 text-[#d4d1cb]">Thank you. FANN will contact you about your brief and five free stand designs.</p></div> : <>
+            <h2 className="font-serif text-2xl text-[#f5f2eb]">Tell Us About Your Stand</h2>
+            <p className="mt-2 text-sm text-[#d4d1cb]">Name, phone and work email are required. Show, stand size, open sides and floor plan are optional. We'll create five free designs, then quote for the design you choose.</p>
             <form onSubmit={send} className="mt-3 grid grid-cols-2 gap-2 md:mt-5 md:gap-3">
               {fields.map(({key,label,type='text',hint}) => <label key={key} className={`text-xs font-medium text-[#e4dfd7] md:text-sm${key === 'phone' ? ' col-span-2' : ''}`}>{label}{['name','phone','email'].includes(key) ? ' *' : ''}{key === 'phone'
                 ? <PhoneInput name="phone" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} onCountryChange={c => setForm(f => ({ ...f, phoneCountry: c }))} className={fieldClass} />
                 : <input className={fieldClass} name={key} type={type} placeholder={hint} autoComplete={key === 'name' ? 'name' : key === 'email' ? 'email' : undefined} required={['name','phone','email'].includes(key)} value={form[key]} onChange={e => setForm({ ...form, [key]: e.target.value })} />}</label>)}
-              <div className="col-span-2"><button disabled={busy} type="submit" className="mt-2 w-full rounded-sm bg-[#c9a962] px-5 py-4 font-bold text-black hover:bg-[#dfc488] disabled:opacity-60">{busy ? 'Sending...' : 'Request my concept + quote'}</button>
+              <div className="col-span-2"><button disabled={busy} type="submit" className="mt-2 w-full rounded-sm bg-[#c9a962] px-5 py-4 font-bold text-black hover:bg-[#dfc488] disabled:opacity-60">{busy ? 'Sending...' : 'Request My 5 Free Designs'}</button>
               {error && <p role="alert" className="mt-3 text-sm text-red-300">{error}</p>}
               <p className="mt-3 text-xs leading-relaxed text-[#aaa49b]">Your details go to FANN for this request. <Link to="/privacy-policy" className="underline">Privacy policy</Link>.</p></div>
               <details className="col-span-2 mt-2 border-t border-white/15 pt-3"><summary className="cursor-pointer py-2 text-sm text-[#e1c78d]">Add open sides or floor plan (optional)</summary><div className="mt-3 space-y-4">              <label className="block text-xs font-medium text-[#e4dfd7] md:text-sm">Open sides (optional)<select name="openSides" className={fieldClass} value={form.openSides} onChange={e => setForm({ ...form, openSides: e.target.value })}><option value="">Select</option>{openSideOptions.map(option => <option key={option.value} value={option.value}>{option.value}</option>)}</select></label>
@@ -139,4 +139,4 @@ export default function ExhibitionAdsLandingPage() {
     <section className="bg-[#111] px-5 py-14 text-[#f5f2eb]"><div className="mx-auto max-w-6xl"><h2 className="font-serif text-3xl">Exhibition stand builders: one team, from brief to build</h2><p className="mt-4 max-w-2xl text-[#d4d1cb]">3D concept, detailed quote, fabrication and on-site installation. We coordinate venue and authority submissions as part of the build.</p><a href="#brief" className="mt-6 inline-block rounded-sm bg-[#c9a962] px-6 py-3 font-bold text-black">Tell us about your stand</a></div></section>
     </div>
   </>;
-                }
+}
