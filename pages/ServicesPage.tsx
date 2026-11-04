@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
+import buyerPages from '../data/buyerPages.json';
 import { Layers, Calendar, PenTool, CheckCircle, ArrowRight } from 'lucide-react';
 
 interface ServiceSectionProps {
@@ -160,7 +161,20 @@ const ServicesPage: React.FC = () => {
             </div>
         ))}
         
-         {/* CTA Section */}
+         <section className="container mx-auto px-4 sm:px-6 lg:px-8 mt-16" aria-labelledby="buyer-guides-title">
+          <h2 id="buyer-guides-title" className="text-3xl md:text-4xl font-serif text-fann-gold mb-4">Find a stand or fit-out planning guide</h2>
+          <p className="text-gray-300 max-w-3xl mb-8">Choose your show, venue or service. Each guide explains the brief to prepare, completed project references and the scope to confirm before a quote.</p>
+          {['Dubai', 'Abu Dhabi'].map(city => <div key={city} className="mb-10">
+            <h3 className="text-2xl font-serif text-white mb-4">{city}</h3>
+            <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {Object.entries(buyerPages).filter(([path, page]) => !/riyadh|jeddah/.test(path) && (page.city || 'Abu Dhabi') === city).map(([path, page]) => <li key={path}>
+                <Link to={path} lang={page.lang || 'en'} dir={page.direction || 'ltr'} className="block h-full rounded-lg border border-white/15 px-5 py-4 text-gray-200 hover:text-fann-gold hover:border-fann-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-fann-gold">{page.heading}</Link>
+              </li>)}
+            </ul>
+          </div>)}
+        </section>
+
+        {/* CTA Section */}
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 mt-16">
             <div className="text-center bg-gradient-to-r from-fann-gold/20 to-transparent p-1 rounded-lg border border-fann-gold/20">
                  <div className="bg-black/40 rounded-lg py-16 px-8">
