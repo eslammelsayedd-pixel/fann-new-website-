@@ -19,7 +19,7 @@
  * the other.
  */
 import { createRequire } from 'module';
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -84,6 +84,23 @@ const isQuotaBlock = (text) => /429/.test(text) && /RESOURCE_EXHAUSTED|spending 
 
 // 3. Contracts: exactly the keys each consuming page reads.
 const AI = AI_KEYS_SET;
+// Handlers deliberately return real local FANN photographs when image generation
+// times out. Validate that fallback instead of rejecting a valid root-relative URL.
+const validImage = value => typeof value === 'string' && (
+  /^(data:image\/|https?:\/\/)/.test(value) ||
+  (/^\/images\/(?:stands|projects)\/[A-Za-z0-9_/-]+\.(?:webp|png|jpe?g)$/.test(value) &&
+   !value.includes('..') && existsSync(join(root, 'public', value.slice(1))))
+);
+for (const [value, expected] of [
+  ['/images/stands/1-trevos-light-middle-east.webp', true],
+  ['/images/stands/missing-contract-test.webp', false],
+  ['data:data:image/png;base64,abc', false],
+  ['/images/stands/../secrets.webp', false],
+  ['garbage', false], ['data:image/png;base64,abc', true]
+]) {
+  if (validImage(value) !== expected) throw new Error('Image contract validator regression');
+}
+
 const CONTRACTS = [
   {
     route: 'calculate-roi', // consumed by pages/ROICalculatorPage.tsx
@@ -122,19 +139,19 @@ const CONTRACTS = [
     route: 'generate-exhibition-design', ai: true, // consumed by pages/ExhibitionStudioPage.tsx -> DesignResultPage.tsx
     body: { companyName: 'Contract Test Co', boothSize: 36 },
     expect: ['industry', 'conceptA.conceptName', 'conceptA.image', 'conceptD.image'],
-    patterns: { 'conceptA.image': /^(data:image\/|https?:\/\/)/ }, // double data-URL prefix bug must stay dead
+    patterns: { 'conceptA.image': validImage }, // double data-URL prefix bug must stay dead
   },
   {
     route: 'generate-event-design', ai: true, // consumed by pages/EventStudioPage.tsx -> EventResultPage.tsx
     body: { companyName: 'Contract Test Co', eventType: 'Gala Dinner' },
     expect: ['industry', 'conceptA.conceptName', 'conceptA.image', 'conceptD.image'],
-    patterns: { 'conceptA.image': /^(data:image\/|https?:\/\/)/ },
+    patterns: { 'conceptA.image': validImage },
   },
   {
     route: 'generate-interior-design', ai: true, // consumed by pages/InteriorResultPage.tsx
     body: { companyName: 'Contract Test Co', spaceType: 'Corporate Office' },
     expect: ['designConcept.conceptName', 'image'],
-    patterns: { 'image': /^(data:image\/|https?:\/\/)/ },
+    patterns: { 'image': validImage },
   },
 ];
 
@@ -176,7 +193,7 @@ for (const c of CONTRACTS) {
   }
   const missing = c.expect.filter((p) => get(res.payload, p) === undefined);
   const badPattern = Object.entries(c.patterns || {})
-    .filter(([p, re]) => { const v = get(res.payload, p); return v !== undefined && !re.test(String(v)); })
+    .filter(([p, re]) => { const v = get(res.payload, p); return v !== undefined && !(typeof re === 'function' ? re(v) : re.test(String(v))); })
     .map(([p]) => p);
   if (missing.length || badPattern.length) {
     if (missing.length) console.error(`FAIL  ${c.route}: missing keys -> ${missing.join(', ')}`);
@@ -189,4 +206,3 @@ for (const c of CONTRACTS) {
 
 console.log(`\n${CONTRACTS.length - failures - skips} passed, ${skips} skipped, ${failures} failed`);
 process.exit(failures ? 1 : 0);
-
