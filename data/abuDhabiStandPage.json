@@ -36,10 +36,24 @@
       "text": "Use the same drawings and scope when comparing stand builders. Identify materials, graphics, logistics, venue submissions, exclusions and changes after design approval. A concept image is not a structural specification. Your project is priced against the agreed brief rather than a standard rate."
     }
   ],
-  "proofHeading": "Real projects from the FANN archive",
-  "proofNote": "The Abu Dhabi reference below is named by location; the Dubai references document the same design and build process and are labelled as Dubai work, not Abu Dhabi projects.",
+  "proofHeading": "Abu Dhabi exhibition projects and Dubai stand references",
+  "proofNote": "The ADIPEC 2026 photographs below show stand build-up at ADNEC Abu Dhabi, not visitor-ready handover. The ADEK gallery is a separate completed Abu Dhabi installation. Dubai stand references remain labelled as Dubai work. Photographs do not establish structural approval, stand dimensions or visitor results.",
   "proofLinkLabel": "Open the full portfolio",
   "proof": [
+    {
+      "name": "FALCOR - ADIPEC 2026 build-up",
+      "location": "ADNEC Abu Dhabi, 2026",
+      "image": "/images/1-adipec-2026-falcor-build-up.webp",
+      "path": "/portfolio/falcor-adipec-2026",
+      "text": "Build-up photograph: FALCOR branding on a high fascia, angular display structures and front counters are visible, with scaffolding and installation work still present. Use it to discuss brand visibility and reception placement, not as evidence of completed handover or structural approval."
+    },
+    {
+      "name": "OILSERV - ADIPEC 2026 build-up",
+      "location": "ADNEC Abu Dhabi, 2026",
+      "image": "/images/2-adipec-2026-oilserv-build-up-front.webp",
+      "path": "/portfolio/oilserv-adipec-2026",
+      "text": "Build-up photograph: OILSERV identity, a circular overhead feature, reception counter and large display wall are visible. Workers, tools and unfinished floor areas remain in view. This records installation progress, not a completed visitor-ready stand or measured event results."
+    },
     {
       "name": "National Expression - ADEK",
       "location": "Abu Dhabi, 2025",
@@ -89,7 +103,7 @@
     },
     {
       "question": "Do you have real Abu Dhabi project photographs?",
-      "answer": "Yes. The National Expression gallery for ADEK in Abu Dhabi has a full photographed case study in our portfolio. Other archive references on this page are completed Dubai work and are labelled as such."
+      "answer": "Yes. The portfolio includes FALCOR and OILSERV stand build-up photographs at ADIPEC 2026, ADNEC Abu Dhabi, plus the completed National Expression gallery for ADEK. Build-up views are labelled as installation progress, not completed handover. Other references on this page are Dubai work and labelled as such."
     },
     {
       "question": "Is dismantling included automatically?",
