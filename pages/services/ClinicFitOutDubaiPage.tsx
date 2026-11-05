@@ -108,7 +108,7 @@ const ClinicFitOutDubaiPage: React.FC = () => (
       <p>A clinic interior has to calm patients, work hard for staff and stand up to heavy daily use and frequent cleaning. Our production facility means reception desks, treatment-room cabinetry and panelling are built to one specification, with no third-party joinery lead times and changes turned around in days, not weeks. For operators opening more than one branch, that is how every clinic opens to the same standard.</p>
 
       <h2>Completed clinic fit-out project references in Dubai</h2>
-      <p>Explore the published healthcare project galleries for Aspris Clinic at City Walk, Fayy Health Polyclinic and American Hospital Clinic at Dubai Hills. These are project photographs, separate from the design concept below. Use the reception, waiting-area and circulation references to brief your own site, not to infer medical licensing, authority approval or suitability for a particular treatment.</p>
+      <p>Explore completed healthcare project galleries for Aspris Clinic at City Walk, Fayy Health Polyclinic and American Hospital Clinic at Dubai Hills. Use the reception, waiting-area and circulation photographs to brief your own clinic. The design concept below is shown separately.</p>
       <div className="not-prose grid md:grid-cols-3 gap-6 my-8">
         {proof.map(p => (
           <Link key={p.img} to={p.link} className="block bg-fann-charcoal-light border border-white/10 rounded-lg overflow-hidden hover:border-fann-gold transition-colors">
