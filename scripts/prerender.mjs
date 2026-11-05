@@ -105,10 +105,15 @@ const standProjects = [{"id": 101, "slug": "trevos-light-middle-east", "title": 
 const recentPortfolioProjects = JSON.parse(fs.readFileSync(path.resolve('data/recentPortfolioProjects.json'),'utf8'));
 for (const stand of [...recentPortfolioProjects, ...standProjects]) {
   const route = '/portfolio/' + stand.slug;
+  const handoff = stand.category === 'event'
+    ? {heading:'Planning an event build?',text:'Share your venue, event date, floor plan and the stages, displays or branded installations you need. We will use your brief to define the design and build scope.',label:'Discuss your event build'}
+    : stand.category === 'interior'
+    ? {heading:'Planning a fit-out project?',text:'Share your site location, approximate area, current condition, work needed and target date. Add drawings if available so the fit-out scope can be discussed.',label:'Discuss your fit-out project'}
+    : {heading:'Planning an exhibition stand?',text:'Share your show, venue, stand dimensions, open sides and deadline. Add your floor plan if available so the design and build scope can be discussed.',label:'Discuss your exhibition stand'};
   routes[route] = {
     title: stand.title + ' | FANN Portfolio', description: stand.description, robots: 'index, follow',
     jsonld: JSON.stringify({'@context':'https://schema.org','@type':'CreativeWork',name:stand.title,description:stand.description,image:stand.gallery.map(photo=>SITE+photo.image),url:SITE+route,creator:{'@type':'Organization',name:'FANN'},locationCreated:{'@type':'Place',name:stand.location},...(stand.year ? {dateCreated:String(stand.year)} : {})}),
-    body: `<main><a href="/portfolio">Back to portfolio</a><h1>${escapePortfolio(stand.title)}</h1><p>${escapePortfolio(stand.description)}</p>${stand.gallery.map(photo=>`<figure><a href="${photo.image}"><img src="${photo.image}" alt="${escapePortfolio(photo.caption)}"></a><figcaption>${escapePortfolio(photo.caption)}</figcaption></figure>`).join('')}<a href="/contact">Discuss your exhibition stand</a></main>`,
+    body: `<main><a href="/portfolio">Back to portfolio</a><h1>${escapePortfolio(stand.title)}</h1><p>${escapePortfolio(stand.description)}</p>${stand.gallery.map(photo=>`<figure><a href="${photo.image}"><img src="${photo.image}" alt="${escapePortfolio(photo.caption)}"></a><figcaption>${escapePortfolio(photo.caption)}</figcaption></figure>`).join('')}<section><h2>${handoff.heading}</h2><p>${handoff.text}</p><a href="/contact?ref=${stand.slug}">${handoff.label}</a></section></main>`,
   };
 }
 routes['/portfolio/icons-of-porsche-2025-dubai'].body += "<figure><img src=\"/images/gallery/173-portfolio-p09-01.jpg\" alt=\"Icons of Porsche - Outdoor Cinema Screens\"><figcaption>Icons of Porsche - Outdoor Cinema Screens</figcaption></figure><figure><img src=\"/images/gallery/174-portfolio-p09-02.jpg\" alt=\"Icons of Porsche - Community Entrance Gate\"><figcaption>Icons of Porsche - Community Entrance Gate</figcaption></figure><figure><img src=\"/images/gallery/175-portfolio-p09-03.jpg\" alt=\"Icons of Porsche - 911 Dakar Container Display\"><figcaption>Icons of Porsche - 911 Dakar Container Display</figcaption></figure><figure><img src=\"/images/gallery/176-portfolio-p09-04.jpg\" alt=\"Icons of Porsche - Outdoor Vehicle and Info Displays\"><figcaption>Icons of Porsche - Outdoor Vehicle and Info Displays</figcaption></figure>";
