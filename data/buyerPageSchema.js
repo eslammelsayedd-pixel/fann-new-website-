@@ -13,6 +13,82 @@ export function upcomingVenueEvents(events, today = new Intl.DateTimeFormat('en-
  });
 }
 export function buyerPageSchema(path, page) {
+ // Reuse documented 2025 archive stands on the buyer pages, not only portfolio.
+ const recentProof = {
+ "/exhibition-stand-builders-dubai": [
+  {
+   "path": "/portfolio/trevos-light-middle-east",
+   "image": "/images/stands/1-trevos-light-middle-east.webp",
+   "name": "TREVOS - Light Middle East",
+   "location": "Dubai, 2023",
+   "text": "Completed stand with an overhead identity feature, product displays and visitor-facing space. Use it to discuss the relationship between brand visibility and floor layout."
+  },
+  {
+   "path": "/portfolio/geven-aircraft-interiors",
+   "image": "/images/stands/6-geven-aircraft-interiors.webp",
+   "name": "Geven - Aircraft Interiors Middle East",
+   "location": "Dubai, 2025",
+   "text": "Completed aircraft-interiors exhibition stand reference. Share your own product dimensions and access needs rather than copying another exhibitor’s layout."
+  },
+  {
+   "path": "/portfolio/bayara-gulfood",
+   "image": "/images/stands/2-bayara-gulfood.webp",
+   "name": "Bayara - Gulfood",
+   "location": "Dubai, 2020",
+   "text": "The photograph shows Bayara identity, labelled product-category shelving and front-facing counters. Some fixtures and products are covered, so this is not evidence of a visitor-ready display or food-handling activity."
+  },
+  {
+   "path": "/portfolio/mutaba-food-industries-gulfood-2025",
+   "image": "/images/stands/10-mutaba-food-industries-gulfood-2025.webp",
+   "name": "Mutaba Food Industries Group - Gulfood 2025",
+   "location": "Dubai World Trade Centre, 2025",
+   "text": "A curved overhead brand feature, a large screen facing the aisle and a reception counter are visible in this completed stand photograph. Use it to brief the balance between brand display and a visitor approach, not to infer screen specifications or structural details."
+  }
+ ],
+ "/gulfood-exhibition-stand-design-dubai": [
+  {
+   "path": "/portfolio/mutaba-food-industries-gulfood-2025",
+   "image": "/images/stands/10-mutaba-food-industries-gulfood-2025.webp",
+   "name": "Mutaba Food Industries Group - Gulfood 2025",
+   "location": "Dubai World Trade Centre, 2025",
+   "text": "A curved overhead brand feature, a large screen facing the aisle and a reception counter are visible in this completed stand photograph. Use it to brief the balance between brand display and a visitor approach, not to infer screen specifications or structural details."
+  },
+  {
+   "path": "/portfolio/leiva-gulfood-2025",
+   "image": "/images/stands/11-leiva-gulfood-2025.webp",
+   "name": "Leiva - Gulfood 2025",
+   "location": "Dubai World Trade Centre, 2025",
+   "text": "The photograph shows a branded fascia, wall-mounted product information, seating and a freestanding product display at the aisle. Share your own packaging, display quantities and meeting needs to brief a stand around your products."
+  },
+  {
+   "path": "/portfolio/russia-pavilion-gulfood-2025",
+   "image": "/images/stands/12-russia-pavilion-gulfood-2025.webp",
+   "name": "Russia Pavilion - Gulfood 2025",
+   "location": "Dubai World Trade Centre, 2025",
+   "text": "A shared pavilion identity sits above separate branded product-display areas. Use this archive reference to discuss how several exhibitors can be identified within one pavilion; it does not establish a current country appointment or organiser approval."
+  },
+  {
+   "path": "/portfolio/bayara-gulfood",
+   "image": "/images/stands/2-bayara-gulfood.webp",
+   "name": "Bayara - Gulfood",
+   "location": "Dubai, 2020",
+   "text": "The photograph shows Bayara identity, labelled product-category shelving and several front-facing counters. Some fixtures and products are covered, so this is not evidence of a completed visitor-ready display, tasting activity or operating kitchen."
+  },
+  {
+   "path": "/portfolio/india-pavilion-gulfood",
+   "image": "/images/stands/8-india-pavilion-gulfood.webp",
+   "name": "India Pavilion - Gulfood",
+   "location": "Dubai, year not stated",
+   "text": "The photograph shows a tall India-branded frame, food graphics, counters and seating areas. It is a reference for shared identity and individual product discussions, not proof of pavilion capacity, structural approval, utility provision or visitor results."
+  }
+ ]
+};
+ if (recentProof[path]) page.proof = recentProof[path];
+ if (path === '/gulfood-exhibition-stand-design-dubai') {
+  page.proofHeading = "Gulfood 2025 stands and earlier food-show references";
+  page.proofNote = "Completed stands from the FANN project archive include Mutaba Food Industries Group, Leiva and Russia Pavilion at Gulfood 2025, alongside earlier references below. The photographs show layouts and visible features, not material specifications, structural capacity, measured visitor results or a current organiser appointment.";
+ }
+
  if (page.eventsList) page.eventsList = upcomingVenueEvents(page.eventsList);
  // Repair stale related destinations without creating duplicate show pages.
  const relatedRepairs = {
