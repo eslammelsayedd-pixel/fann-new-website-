@@ -17,6 +17,12 @@ const ProjectDetailPage: React.FC = () => {
     return <Navigate to="/portfolio" replace />;
   }
 
+  const handoff = project.category === 'event'
+    ? { heading: 'Planning an event build?', text: 'Share your venue, event date, floor plan and the stages, displays or branded installations you need. We will use your brief to define the design and build scope.', label: 'Discuss your event build' }
+    : project.category === 'interior'
+    ? { heading: 'Planning a fit-out project?', text: 'Share your site location, approximate area, current condition, work needed and target date. Add drawings if available so the fit-out scope can be discussed.', label: 'Discuss your fit-out project' }
+    : { heading: 'Planning an exhibition stand?', text: 'Share your show, venue, stand dimensions, open sides and deadline. Add your floor plan if available so the design and build scope can be discussed.', label: 'Discuss your exhibition stand' };
+
   // Fallback data if detailed info is missing (ensures page doesn't break for older projects)
   const gallery = project.gallery || [{ image: project.image, caption: project.title }];
   const specs = project.specs || { structure: [{ label: 'Category', value: project.category }, ...(project.year ? [{ label: 'Year', value: project.year.toString() }] : [])] };
@@ -238,11 +244,11 @@ const ProjectDetailPage: React.FC = () => {
 
         {/* CTA */}
         <div className="bg-fann-gold rounded-lg p-12 text-center text-black my-20">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">Want a Stand Like This?</h2>
-          <p className="text-lg mb-8 max-w-2xl mx-auto">Create an unforgettable exhibition presence that drives leads and showcases your brand at its best.</p>
+          <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">{handoff.heading}</h2>
+          <p className="text-lg mb-8 max-w-2xl mx-auto">{handoff.text}</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to={`/contact?ref=${project.slug}`} className="bg-black text-white px-8 py-4 rounded-full font-bold uppercase tracking-wider hover:bg-white hover:text-black transition-all shadow-lg">
-              Request Quote
+              {handoff.label}
             </Link>
             <Link to="/portfolio" className="border-2 border-black px-8 py-4 rounded-full font-bold uppercase tracking-wider hover:bg-black/10 transition-all">
               View More Projects
