@@ -24,9 +24,24 @@ const deliver = [
 ];
 
 const proof = [
-  { img: '/images/projects/icons-of-porsche/06.webp', alt: 'Timber slat entrance at the Icons of Porsche 2025 event build', caption: 'Event build: Icons of Porsche 2025, Dubai Design District', link: '/portfolio/icons-of-porsche-2025-dubai' },
-  { img: '/images/projects/national-expression-adek/01.webp', alt: 'Curved gallery walls at the ADEK National Expression exhibition', caption: 'Exhibition build: National Expression for ADEK, Abu Dhabi', link: '/portfolio/national-expression-adek-abu-dhabi' },
-  { img: '/images/projects/icons-of-porsche/37.webp', alt: 'Community Village timber entrance at dusk at Icons of Porsche 2025', caption: 'Event build: Community Village entrance, Icons of Porsche 2025', link: '/portfolio/icons-of-porsche-2025-dubai' },
+  {
+    "img": "/images/projects/109-fitout-572a19833891731b140968ccbb6bd3b78b4570f9.webp",
+    "alt": "Aspris Clinic - City Walk reception and waiting area",
+    "caption": "Aspris Clinic - City Walk - Dubai, 2024",
+    "link": "/portfolio/fit-out/30-aspris-clinic-city-walk"
+  },
+  {
+    "img": "/images/projects/64-fitout-3bed79aee39856ea7c83d87302447f75b0b90090.webp",
+    "alt": "Fayy Health Polyclinic reception and waiting area",
+    "caption": "Fayy Health Polyclinic - Dubai, 2023",
+    "link": "/portfolio/fit-out/29-fayy-health-polyclinic"
+  },
+  {
+    "img": "/images/projects/96-fitout-4d59f51e4198cdeccf796cbf13dfb3f794a9b3bd.webp",
+    "alt": "American Hospital Clinic, Dubai Hills reception and waiting area",
+    "caption": "American Hospital Clinic, Dubai Hills - Dubai, 2022",
+    "link": "/portfolio/fit-out/28-healthcare-clinic-interior"
+  }
 ];
 
 const concepts = [
@@ -92,8 +107,8 @@ const ClinicFitOutDubaiPage: React.FC = () => (
       <h2>Why in-house matters for clinics</h2>
       <p>A clinic interior has to calm patients, work hard for staff and stand up to heavy daily use and frequent cleaning. Our production facility means reception desks, treatment-room cabinetry and panelling are built to one specification, with no third-party joinery lead times and changes turned around in days, not weeks. For operators opening more than one branch, that is how every clinic opens to the same standard.</p>
 
-      <h2>Proven on immovable deadlines</h2>
-      <p>FANN builds exhibition stands and event environments for opening dates that cannot move - including work for Icons of Porsche and ADEK. A clinic opening runs on the same clock. We plan backwards from your opening date and deliver to it.</p>
+      <h2>Completed clinic fit-out project references in Dubai</h2>
+      <p>Explore the published healthcare project galleries for Aspris Clinic at City Walk, Fayy Health Polyclinic and American Hospital Clinic at Dubai Hills. These are project photographs, separate from the design concept below. Use the reception, waiting-area and circulation references to brief your own site, not to infer medical licensing, authority approval or suitability for a particular treatment.</p>
       <div className="not-prose grid md:grid-cols-3 gap-6 my-8">
         {proof.map(p => (
           <Link key={p.img} to={p.link} className="block bg-fann-charcoal-light border border-white/10 rounded-lg overflow-hidden hover:border-fann-gold transition-colors">
