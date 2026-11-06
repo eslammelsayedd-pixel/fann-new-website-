@@ -5,6 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { buyerPageSchema } from '../data/buyerPageSchema.js';
+import adipecPortfolioLinks from '../data/adipecPortfolioLinks.json' with { type: 'json' };
 
 const SITE = 'https://fann.ae';
 const dist = path.resolve('dist');
@@ -115,6 +116,13 @@ for (const stand of [...recentPortfolioProjects, ...standProjects]) {
     jsonld: JSON.stringify({'@context':'https://schema.org','@type':'CreativeWork',name:stand.title,description:stand.description,image:stand.gallery.map(photo=>SITE+photo.image),url:SITE+route,creator:{'@type':'Organization',name:'FANN'},locationCreated:{'@type':'Place',name:stand.location},...(stand.year ? {dateCreated:String(stand.year)} : {})}),
     body: `<main><a href="/portfolio">Back to portfolio</a><h1>${escapePortfolio(stand.title)}</h1><p>${escapePortfolio(stand.description)}</p>${stand.gallery.map(photo=>`<figure><a href="${photo.image}"><img src="${photo.image}" alt="${escapePortfolio(photo.caption)}"></a><figcaption>${escapePortfolio(photo.caption)}</figcaption></figure>`).join('')}<section><h2>${handoff.heading}</h2><p>${handoff.text}</p><a href="/contact?ref=${stand.slug}">${handoff.label}</a></section></main>`,
   };
+}
+// Keep the two ADIPEC portfolio references linked to relevant Abu Dhabi buyer guides.
+for (const slug of adipecPortfolioLinks.slugs) {
+  const route = routes['/portfolio/' + slug];
+  if (!route) throw new Error('Missing ADIPEC portfolio route: ' + slug);
+  route.body = route.body.replace('<section><h2>Planning an exhibition stand?</h2>', `<section><h2>${escapePortfolio(adipecPortfolioLinks.heading)}</h2><p>${escapePortfolio(adipecPortfolioLinks.intro)}</p>${adipecPortfolioLinks.links.map(link=>`<a href="${link.href}">${escapePortfolio(link.label)}</a>`).join('')}</section><section><h2>Planning an exhibition stand?</h2>`);
+  for (const link of adipecPortfolioLinks.links) if (!route.body.includes(`href="${link.href}"`)) throw new Error('Missing ADIPEC buyer link: ' + slug + link.href);
 }
 routes['/portfolio/icons-of-porsche-2025-dubai'].body += "<figure><img src=\"/images/gallery/173-portfolio-p09-01.jpg\" alt=\"Icons of Porsche - Outdoor Cinema Screens\"><figcaption>Icons of Porsche - Outdoor Cinema Screens</figcaption></figure><figure><img src=\"/images/gallery/174-portfolio-p09-02.jpg\" alt=\"Icons of Porsche - Community Entrance Gate\"><figcaption>Icons of Porsche - Community Entrance Gate</figcaption></figure><figure><img src=\"/images/gallery/175-portfolio-p09-03.jpg\" alt=\"Icons of Porsche - 911 Dakar Container Display\"><figcaption>Icons of Porsche - 911 Dakar Container Display</figcaption></figure><figure><img src=\"/images/gallery/176-portfolio-p09-04.jpg\" alt=\"Icons of Porsche - Outdoor Vehicle and Info Displays\"><figcaption>Icons of Porsche - Outdoor Vehicle and Info Displays</figcaption></figure>";
 // TREVOS proof: visible photograph details, not invented specifications or outcomes.

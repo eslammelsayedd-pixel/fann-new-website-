@@ -4,6 +4,7 @@ import { useParams, Link, Navigate } from 'react-router-dom';
 import { projects } from '../constants';
 import { motion, AnimatePresence } from 'framer-motion';
 import SEO from '../components/SEO';
+import adipecPortfolioLinks from '../data/adipecPortfolioLinks.json';
 import { ArrowLeft, Check, ChevronLeft, ChevronRight, X, ZoomIn, Calendar, MapPin, Maximize2, Target, Zap, BarChart, Layers, User } from 'lucide-react';
 
 const ProjectDetailPage: React.FC = () => {
@@ -114,6 +115,18 @@ const ProjectDetailPage: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/services/custom-exhibition-stands-dubai" className="inline-flex items-center justify-center min-h-[48px] border border-fann-gold text-fann-gold px-5 py-3 hover:bg-fann-gold/10">Explore custom exhibition stands</Link>
                 <Link to="/exhibition-stand-quote" className="inline-flex items-center justify-center min-h-[48px] bg-fann-gold text-black font-bold px-5 py-3 hover:bg-yellow-400">Share your show brief</Link>
+              </div>
+            </section>
+          )}
+
+          {adipecPortfolioLinks.slugs.includes(project.slug) && (
+            <section className="mb-16 border border-fann-gold/20 bg-white/5 p-6 md:p-8" aria-labelledby="adipec-services-heading">
+              <h2 id="adipec-services-heading" className="text-3xl font-serif font-bold text-white mb-5">{adipecPortfolioLinks.heading}</h2>
+              <p className="text-gray-300 leading-relaxed mb-6">{adipecPortfolioLinks.intro}</p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                {adipecPortfolioLinks.links.map(link => (
+                  <Link key={link.href} to={link.href} className="inline-flex items-center justify-center min-h-[48px] border border-fann-gold text-fann-gold px-5 py-3 hover:bg-fann-gold/10">{link.label}</Link>
+                ))}
               </div>
             </section>
           )}
