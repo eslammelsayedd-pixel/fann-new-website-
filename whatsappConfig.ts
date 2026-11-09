@@ -6,7 +6,7 @@ export const MESSAGES = {
   portfolio: "Hi FANN! I saw your portfolio. Can you quote me for a similar stand or event build?",
   services: "Hi FANN! I have questions about modular vs custom exhibition stands. Which is better for my budget?",
   contact: "Hi FANN! I'd like to schedule a visit to your production facility this week. When are you available?",
-  exit_intent: "Hi FANN! I'd like a free 3D design concept for my exhibition stand.",
+  exit_intent: "Hi FANN! I'd like 3 free stand designs within 48 hours for my exhibition stand.",
   default: "Hi FANN! I'm interested in your exhibition stand services in Dubai."
 };
 

@@ -446,7 +446,7 @@ const HomePage: React.FC = () => {
         <div className="bg-fann-charcoal min-h-screen">
             <SEO
                 title="Exhibition Stand Contractor Dubai & Abu Dhabi"
-                description="FANN designs and builds custom exhibition stands, event setups and interior fit-outs in Dubai and Abu Dhabi. In-house workshop, 200+ projects. Get a free 3D concept."
+                description="FANN designs and builds custom exhibition stands, event setups and interior fit-outs in Dubai and Abu Dhabi. In-house workshop, 200+ projects. Get 3 free stand designs within 48 hours."
             />
             
             <HeroSection />
