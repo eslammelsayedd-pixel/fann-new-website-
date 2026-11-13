@@ -48,7 +48,7 @@ const Footer: React.FC = () => {
             <div className="flex space-x-4 text-gray-500 mt-4">
               <a href="https://www.facebook.com/fannuae/" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold transition-colors"><Facebook size={20} /></a>
               <a href="https://www.instagram.com/fann_uae/" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold transition-colors"><Instagram size={20} /></a>
-              <a href="https://ae.linkedin.com/company/fannaedubai" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold transition-colors"><Linkedin size={20} /></a>
+              <a href="https://www.linkedin.com/company/fann-uae/" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold transition-colors"><Linkedin size={20} /></a>
               <a href="https://fannae.quora.com/" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold transition-colors"><QuoraIcon width={20} height={20} /></a>
             </div>
           </div>

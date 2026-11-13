@@ -101,7 +101,7 @@ const FitOutDubaiPage: React.FC = () => (
       <p>Every joinery piece is produced in our own workshop, so quality and lead times stay in our hands.</p>
 
       <h2>Why in-house matters</h2>
-      <p>Our production facility means no third-party joinery lead times, one consistent specification across every site, and changes turned around in days, not weeks. For operators opening more than one location, that is how every site opens to the same standard.</p>
+      <p>Our workshop supports joinery production against the agreed drawings and specification. Materials, quantities and the project schedule are reviewed before production. Any later change needs its scope, cost and timing confirmed rather than a standard turnaround promise.</p>
 
       <h2>Completed commercial fit-outs in Dubai</h2>
       <p>Explore documented office, restaurant and healthcare interiors from FANN's project archive. Each project links to its own photographs and details, so you can review work relevant to your space rather than rely on concept images.</p>
