@@ -86,7 +86,7 @@ const VillaRenovationDubaiPage: React.FC = () => (
       <p>Every kitchen, wardrobe and panelling run is produced in our own workshop, so quality and lead times stay in our hands.</p>
 
       <h2>Why in-house matters for villa renovations</h2>
-      <p>A renovated villa is judged on the details you touch every day - the kitchen, the wardrobes, the panelling. Our production facility means they are built to one specification, with no third-party joinery lead times and changes turned around in days, not weeks. That is how a renovation stays on programme and on one standard.</p>
+      <p>Our workshop supports villa joinery against the agreed drawings, materials and specification. Production timing depends on the quantities, approved details and project schedule. Any requested change is reviewed for its effect on scope, cost and timing before the changed work proceeds.</p>
 
       <h2>Proven on immovable deadlines</h2>
       <p>FANN builds exhibition stands and event environments for opening dates that cannot move - including work for Icons of Porsche and ADEK. A renovation handover runs on the same clock. We plan backwards from your handover date and deliver to it.</p>

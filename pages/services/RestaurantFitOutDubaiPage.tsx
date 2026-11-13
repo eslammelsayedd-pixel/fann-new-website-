@@ -90,7 +90,7 @@ const RestaurantFitOutDubaiPage: React.FC = () => (
       <p>Every banquette, bar counter and shelving unit is produced in our own workshop, so quality and lead times stay in our hands.</p>
 
       <h2>Why in-house matters for restaurants</h2>
-      <p>Restaurant interiors live or die on their joinery: the banquettes guests sit on, the bar they lean on, the panelling they photograph. Our production facility means no third-party joinery lead times, one consistent finish across the whole space, and changes turned around in days, not weeks. For operators opening more than one location, that is how every branch opens to the same standard.</p>
+      <p>Our workshop supports restaurant joinery against the agreed drawings, materials and specification. Production timing depends on the quantities, approved details and project schedule. Any requested change is reviewed for its effect on scope, cost and timing before the changed work proceeds.</p>
 
       <h2>Proven on immovable deadlines</h2>
       <p>FANN builds exhibition stands and event environments for opening dates that cannot move - including work for Icons of Porsche and ADEK. A restaurant opening runs on the same clock. We plan backwards from your opening date and deliver to it.</p>

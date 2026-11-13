@@ -105,7 +105,7 @@ const ClinicFitOutDubaiPage: React.FC = () => (
       <p>Every reception desk, cabinet and panelling run is produced in our own workshop, so quality and lead times stay in our hands.</p>
 
       <h2>Why in-house matters for clinics</h2>
-      <p>A clinic interior has to calm patients, work hard for staff and stand up to heavy daily use and frequent cleaning. Our production facility means reception desks, treatment-room cabinetry and panelling are built to one specification, with no third-party joinery lead times and changes turned around in days, not weeks. For operators opening more than one branch, that is how every clinic opens to the same standard.</p>
+      <p>Our workshop supports clinic joinery against the agreed drawings, materials and specification. Production timing depends on the quantities, approved details and project schedule. Any requested change is reviewed for its effect on scope, cost and timing before the changed work proceeds.</p>
 
       <h2>Completed clinic fit-out project references in Dubai</h2>
       <p>Explore completed healthcare project galleries for Aspris Clinic at City Walk, Fayy Health Polyclinic and American Hospital Clinic at Dubai Hills. Use the reception, waiting-area and circulation photographs to brief your own clinic. The design concept below is shown separately.</p>
