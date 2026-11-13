@@ -35,7 +35,7 @@ const concepts = [
 
 const faqs = [
   { question: 'Which areas do you cover?', answer: 'We deliver restaurant and cafe fit-outs across Dubai and Abu Dhabi.' },
-  { question: 'Do you build banquettes and bar counters yourselves?', answer: 'Yes. Seating booths, bar counters, shelving and panelling are produced in our own joinery workshop in Umm Al Quwain, so quality and lead times stay in our hands.' },
+  { question: 'Do you build banquettes and bar counters yourselves?', answer: 'FANN has a joinery workshop in Umm Al Quwain. Materials, drawings, quantities and the production schedule are reviewed for the project.' },
   { question: 'Who handles mall, landlord and authority coordination?', answer: 'We do. Venue, landlord and authority coordination is part of every build, whether the site is in a mall, a hotel podium or a standalone unit.' },
   { question: 'Do you coordinate kitchen services and MEP?', answer: 'Yes. MEP coordination sits with our team as part of the fit-out, so front-of-house finishes and back-of-house services are planned together.' },
   { question: 'What do you need from us to quote?', answer: 'Drawings or a BOQ, the site location and your target opening date. We return a clear, itemised scope and quotation without a long tender process.' },
@@ -87,7 +87,7 @@ const RestaurantFitOutDubaiPage: React.FC = () => (
       <ul className="columns-1 md:columns-2">
         {deliver.map(d => <li key={d}>{d}</li>)}
       </ul>
-      <p>Every banquette, bar counter and shelving unit is produced in our own workshop, so quality and lead times stay in our hands.</p>
+      <p>The joinery scope, materials and production details are reviewed against the agreed drawings and project schedule.</p>
 
       <h2>Why in-house matters for restaurants</h2>
       <p>Our workshop supports restaurant joinery against the agreed drawings, materials and specification. Production timing depends on the quantities, approved details and project schedule. Any requested change is reviewed for its effect on scope, cost and timing before the changed work proceeds.</p>

@@ -31,7 +31,7 @@ const proof = [
 
 const faqs = [
   { question: 'Which areas do you cover?', answer: 'We renovate villas across Dubai and Abu Dhabi.' },
-  { question: 'Do you build the kitchens and wardrobes yourselves?', answer: 'Yes. Kitchens, wardrobes, walk-in closets, storage and wall panelling are produced in our own joinery workshop in Umm Al Quwain, so quality and lead times stay in our hands.' },
+  { question: 'Do you build the kitchens and wardrobes yourselves?', answer: 'FANN has a joinery workshop in Umm Al Quwain. Materials, drawings, quantities and the production schedule are reviewed for the project.' },
   { question: 'Who handles community and authority coordination?', answer: 'We do. Community, developer and authority coordination is part of every build, whether the villa sits in a managed community or on a standalone plot.' },
   { question: 'Do you coordinate MEP?', answer: 'Yes. MEP coordination sits with our team as part of the renovation, so services and finishes are planned together.' },
   { question: 'What do you need from us to quote?', answer: 'Drawings or photos of the current space, the community and your target handover date. We return a clear, itemised scope and quotation without a long tender process.' },
@@ -83,7 +83,7 @@ const VillaRenovationDubaiPage: React.FC = () => (
       <ul className="columns-1 md:columns-2">
         {deliver.map(d => <li key={d}>{d}</li>)}
       </ul>
-      <p>Every kitchen, wardrobe and panelling run is produced in our own workshop, so quality and lead times stay in our hands.</p>
+      <p>The joinery scope, materials and production details are reviewed against the agreed drawings and project schedule.</p>
 
       <h2>Why in-house matters for villa renovations</h2>
       <p>Our workshop supports villa joinery against the agreed drawings, materials and specification. Production timing depends on the quantities, approved details and project schedule. Any requested change is reviewed for its effect on scope, cost and timing before the changed work proceeds.</p>
