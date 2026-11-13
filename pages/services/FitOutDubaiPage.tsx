@@ -98,7 +98,7 @@ const FitOutDubaiPage: React.FC = () => (
       <ul className="columns-1 md:columns-2">
         {deliver.map(d => <li key={d}>{d}</li>)}
       </ul>
-      <p>Every joinery piece is produced in our own workshop, so quality and lead times stay in our hands.</p>
+      <p>The joinery scope, materials and production details are reviewed against the agreed drawings and project schedule.</p>
 
       <h2>Why in-house matters</h2>
       <p>Our workshop supports joinery production against the agreed drawings and specification. Materials, quantities and the project schedule are reviewed before production. Any later change needs its scope, cost and timing confirmed rather than a standard turnaround promise.</p>
