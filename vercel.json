@@ -35,6 +35,11 @@
   },
   "redirects": [
     {
+      "source": "/quote",
+      "destination": "https://fann.ae/exhibition-stand-quote",
+      "permanent": true
+    },
+    {
       "source": "/stands/quote",
       "destination": "/exhibition-stand-quote",
       "permanent": true
