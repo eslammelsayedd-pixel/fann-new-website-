@@ -66,7 +66,7 @@ const CustomStandsPage: React.FC = () => (
       heroImage={heroImage}
       heroAltText="TREVOS exhibition stand at Light Middle East, Dubai (2023), from FANN's supplied project archive"
       pageTitle="Exhibition Stand Builder & Contractor in Dubai"
-      pageDescription="Design, fabrication and installation planned around your show, floor plan and opening date."
+      pageDescription="FANN designs, fabricates and installs custom exhibition stands for Dubai shows. The layout and build scope are agreed around your stand allocation, venue requirements and opening date."
       heroAction={{ label: "Share your show brief", path: "/exhibition-stand-quote" }}
       breadcrumbs={breadcrumbs}
     >
@@ -80,6 +80,18 @@ const CustomStandsPage: React.FC = () => (
       <p>A custom stand starts with the space you have and the work it needs to do: product display, visitor flow, meetings or a demonstration area. FANN develops the design and build scope around your stand allocation, brand materials and venue requirements. If a reusable approach is a better fit, we can also discuss <Link to="/services/modular-exhibition-systems-dubai">modular exhibition systems</Link>.</p>
       <p>Our Dubai office coordinates the project; fabrication is supported by our workshop in Umm Al Quwain. We plan the build and installation against your show deadline rather than assuming every venue has the same access or approval process.</p>
 
+      <section aria-labelledby="stand-comparison-title" className="not-prose my-10">
+        <h2 id="stand-comparison-title" className="font-serif text-2xl sm:text-3xl text-white mb-4">Compare stand proposals against the same brief</h2>
+        <p className="text-gray-300 leading-relaxed mb-6">Use one checklist for each builder so you can compare the same work. Mark every item as included, excluded or supplied by others before approving the quote.</p>
+        <div className="overflow-x-auto rounded-xl border border-white/15">
+          <table className="w-full text-left text-sm md:text-base">
+            <caption className="p-4 text-left text-gray-300">Stand quote comparison checklist. Swipe horizontally on a small screen.</caption>
+            <thead className="bg-fann-charcoal-light text-fann-gold"><tr><th scope="col" className="p-4">Part of the brief</th><th scope="col" className="p-4">What to confirm</th><th scope="col" className="p-4">Why it matters</th></tr></thead>
+            <tbody><tr className="border-t border-white/10"><th scope="row" className="p-4 align-top font-semibold text-white">Stand allocation</th><td className="p-4 align-top text-gray-300">Show, venue, hall, dimensions and open sides</td><td className="p-4 align-top text-gray-300">Layout and site access must match the allocated space.</td></tr><tr className="border-t border-white/10"><th scope="row" className="p-4 align-top font-semibold text-white">Visitor activity</th><td className="p-4 align-top text-gray-300">Products, demonstrations, reception, meetings and storage</td><td className="p-4 align-top text-gray-300">The design needs to support the work visitors will do.</td></tr><tr className="border-t border-white/10"><th scope="row" className="p-4 align-top font-semibold text-white">Build specification</th><td className="p-4 align-top text-gray-300">Drawings, materials, finishes, graphics and lighting</td><td className="p-4 align-top text-gray-300">Compare the same specification, not only the headline total.</td></tr><tr className="border-t border-white/10"><th scope="row" className="p-4 align-top font-semibold text-white">Other suppliers</th><td className="p-4 align-top text-gray-300">Furniture, AV, internet and venue services</td><td className="p-4 align-top text-gray-300">Name what is included, excluded or supplied by others.</td></tr><tr className="border-t border-white/10"><th scope="row" className="p-4 align-top font-semibold text-white">Submissions and dates</th><td className="p-4 align-top text-gray-300">Current manual, drawing deadlines and installation window</td><td className="p-4 align-top text-gray-300">Confirm responsibilities before production; show opening is not the build-up deadline.</td></tr><tr className="border-t border-white/10"><th scope="row" className="p-4 align-top font-semibold text-white">After the show</th><td className="p-4 align-top text-gray-300">Dismantling, transport, reuse and storage requirements</td><td className="p-4 align-top text-gray-300">Include only the services agreed in the quotation.</td></tr></tbody>
+          </table>
+        </div>
+        <p className="mt-4"><Link to="/insights/shell-scheme-vs-custom-vs-modular-stands" className="text-fann-gold underline underline-offset-4">Compare shell scheme, custom and modular stand approaches</Link></p>
+      </section>
       <h2>From floor plan to handover</h2>
       <ol>
         <li><strong>Brief and site details:</strong> Share your show, venue, stand size, deadline, floor plan and what visitors should be able to do in the space.</li>
