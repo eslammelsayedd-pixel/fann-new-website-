@@ -63,13 +63,22 @@ const FabricationPage: React.FC = () => {
         heroImage={heroImage}
         heroAltText="TREVOS completed stand at Light Middle East, Dubai, 2023. Project reference, not a workshop photograph."
         pageTitle="Exhibition Stand Fabrication for Dubai Shows"
-        pageDescription="Production supported by our workshop in Umm Al Quwain, scoped around your drawings, venue and opening date."
+        pageDescription="FANN fabricates exhibition stands for Dubai shows through its in-house joinery workshop in Umm Al Quwain, coordinated from its Dubai office. The production brief connects approved drawings, agreed materials and graphics to the actual venue access and installation window."
         heroAction={{ label: "Share your fabrication brief", path: "/exhibition-stand-quote" }}
         breadcrumbs={breadcrumbs}
       >
         <h2>From approved drawings to the exhibition floor</h2>
         <p>FANN supports exhibition stand fabrication for Dubai shows through its in-house joinery workshop in Umm Al Quwain. Our Dubai office coordinates the project. The production and installation scope is agreed around the stand allocation, approved design and venue access, rather than a standard promise for every build.</p>
         <p>Send your show, venue, dimensions, open sides, drawings, graphics requirements and deadline. If you need the concept developed as well, see our <Link to="/services/custom-exhibition-stands-dubai">custom exhibition stand design and build service</Link>.</p>
+        <h2>One fabrication brief, three locations</h2>
+        <p>The office, workshop and exhibition hall have different jobs. Use this production-release checklist to connect them without assuming that a finished stand photograph establishes the scope or technical requirements of your new build.</p>
+        <div className="not-prose grid gap-4 my-8 sm:grid-cols-2">
+          <section className="rounded-lg border border-gray-300 dark:border-white/15 p-5"><h3 className="text-lg font-bold text-gray-900 dark:text-fann-gold mb-3">Dubai office: coordinate the brief</h3><p className="text-gray-700 dark:text-gray-300 leading-relaxed">Confirm the show, exact venue, stand allocation, current manual and the people authorised to approve drawings and changes.</p></section>
+          <section className="rounded-lg border border-gray-300 dark:border-white/15 p-5"><h3 className="text-lg font-bold text-gray-900 dark:text-fann-gold mb-3">Umm Al Quwain workshop: define production</h3><p className="text-gray-700 dark:text-gray-300 leading-relaxed">Agree the drawing revision, material and finish specification, quantities, graphics and any sample review before releasing the relevant work.</p></section>
+          <section className="rounded-lg border border-gray-300 dark:border-white/15 p-5"><h3 className="text-lg font-bold text-gray-900 dark:text-fann-gold mb-3">Exhibition venue: plan the handover</h3><p className="text-gray-700 dark:text-gray-300 leading-relaxed">Confirm submission responsibilities, access, transport and installation against the actual organiser and venue instructions. A workshop location is not venue accreditation.</p></section>
+          <section className="rounded-lg border border-gray-300 dark:border-white/15 p-5"><h3 className="text-lg font-bold text-gray-900 dark:text-fann-gold mb-3">After the show: name the next scope</h3><p className="text-gray-700 dark:text-gray-300 leading-relaxed">State any dismantling, return transport, storage and reuse requirements in the quotation. Do not assume they follow automatically from fabrication.</p></section>
+        </div>
+        <p>Looking for a reusable approach instead? Compare the brief with our <Link to="/services/modular-exhibition-systems-dubai">modular exhibition systems</Link>. For a wider project scope, see <Link to="/services/turnkey-exhibition-services-uae">turnkey exhibition services</Link>.</p>
         <h2>Agree the fabrication scope before production</h2>
         <ol>
           <li><strong>Drawings and responsibilities:</strong> Identify what FANN will fabricate and what the exhibitor or another supplier will provide.</li>
