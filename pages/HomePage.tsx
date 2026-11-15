@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Calculator, Download } from 'lucide-react';
 import SEO from '../components/SEO';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import ScrollReveal from '../components/ScrollReveal';
 import OptimizedImage from '../components/OptimizedImage';
 import { projects } from '../constants';
@@ -72,11 +72,14 @@ const ServiceCard: React.FC<{ title: string; description: string; image: string;
     </ScrollReveal>
 );
 
-const ProjectCard: React.FC<{ title: string; category: string; image: string; link?: string }> = ({ title, category, image, link = "/portfolio" }) => (
+const ProjectCard: React.FC<{ title: string; category: string; image: string; link?: string }> = ({ title, category, image, link = "/portfolio" }) => {
+    const imageRef = useRef<HTMLDivElement>(null);
+    const nearViewport = useInView(imageRef, { once: true, margin: '600px 0px' });
+    return (
     <ScrollReveal className="relative group cursor-pointer overflow-hidden">
         <Link to={link}>
-            <div className="aspect-video overflow-hidden bg-gray-900">
-                <img src={image} alt={title} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100" width={600} height={338} />
+            <div ref={imageRef} className="aspect-video overflow-hidden bg-gray-900">
+                <img src={nearViewport ? image : undefined} alt={title} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100" width={600} height={338} />
             </div>
             <div className="mt-4 flex justify-between items-end">
                 <div>
@@ -87,7 +90,8 @@ const ProjectCard: React.FC<{ title: string; category: string; image: string; li
             </div>
         </Link>
     </ScrollReveal>
-);
+    );
+};
 
 // --- SECTIONS ---
 
