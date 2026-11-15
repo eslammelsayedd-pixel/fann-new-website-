@@ -93,13 +93,23 @@ const ProjectCard: React.FC<{ title: string; category: string; image: string; li
 
 const HeroSection: React.FC = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [animateHero, setAnimateHero] = useState(false);
 
     useEffect(() => {
+        const media = window.matchMedia('(min-width: 768px) and (prefers-reduced-motion: no-preference)');
+        const update = () => setAnimateHero(media.matches);
+        update();
+        media.addEventListener('change', update);
+        return () => media.removeEventListener('change', update);
+    }, []);
+
+    useEffect(() => {
+        if (!animateHero) return;
         const timer = setInterval(() => {
             setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
         }, 6000); // Change slide every 6 seconds
         return () => clearInterval(timer);
-    }, []);
+    }, [animateHero]);
 
     const goToSlide = (index: number) => {
         setCurrentSlide(index);
@@ -110,13 +120,13 @@ const HeroSection: React.FC = () => {
             <AnimatePresence mode="wait">
                 <motion.div
                     key={heroSlides[currentSlide].id}
-                    initial={{ opacity: 0 }}
+                    initial={false}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 1 }}
                     className="absolute inset-0 z-0"
                 >
-                    {heroSlides[currentSlide].video ? (
+                    {animateHero && heroSlides[currentSlide].video ? (
                         <video 
                             autoPlay 
                             loop 
@@ -142,10 +152,10 @@ const HeroSection: React.FC = () => {
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={heroSlides[currentSlide].id}
-                        initial={{ opacity: 0, y: 30 }}
+                        initial={false}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                        transition={{ duration: animateHero ? 0.8 : 0 }}
                     >
                         <span className="inline-block py-1 px-3 border border-white/20 rounded-full text-[10px] uppercase tracking-[0.3em] text-fann-gold mb-6 backdrop-blur-sm">
                             {heroSlides[currentSlide].tagline}
