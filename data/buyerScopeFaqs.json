@@ -157,6 +157,26 @@
     {
       "question": "Can the design change after production starts?",
       "answer": "Changes need a scope, cost and schedule review before they are agreed. New dimensions, materials, graphics or technical requirements can affect production and approvals. Do not assume a late change is included or can be made without moving the programme."
+    },
+    {
+      "question": "Can fabrication be planned from an overseas designer's drawings?",
+      "answer": "Yes, the starting point is a review of the drawings and the local build scope. Send dimensions, materials, finishes, graphics and the current exhibitor manual with the design. Identify who supplies the final production information and who reviews revisions. Fabrication, local submissions and installation must have named responsibilities before work proceeds."
+    },
+    {
+      "question": "What should we agree about samples before fabrication?",
+      "answer": "Agree which materials or finishes need a sample review, who approves them and when the decision is needed. Record the accepted specification alongside the drawings and quotation. A photograph is a visual reference, not confirmation of material grade, colour matching, fire documentation or the finish for a new build."
+    },
+    {
+      "question": "How should artwork be handed over for stand production?",
+      "answer": "Hand over the brand guidelines, artwork and graphic requirements against the agreed drawing revision. Identify each graphic location, finished dimensions and the person who signs off the final content. Confirm file requirements and the release date with the project team; a concept image is not automatically production-ready artwork."
+    },
+    {
+      "question": "Do workshop photographs prove a stand is structurally approved?",
+      "answer": "No. Workshop or completed-stand photographs do not establish structural capacity or approval for another design. Check the actual drawings, materials, dimensions and venue requirements, and identify any engineering calculations or certificates required for that build. Confirm who supplies and reviews those documents before treating the structure as ready for production."
+    },
+    {
+      "question": "What should be specified if we want to reuse the stand?",
+      "answer": "Specify the later shows, likely stand allocations and which parts you want to retain before fabrication is agreed. Ask how dismantling, transport, storage, replacement graphics and reinstallation would be scoped. Reuse is a design and logistics decision, not an automatic inclusion or a guarantee that every component fits another venue."
     }
   ]
 }
