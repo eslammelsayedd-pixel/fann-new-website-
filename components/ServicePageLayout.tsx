@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import { testimonials } from '../constants';
 
@@ -19,7 +18,6 @@ interface ServicePageLayoutProps {
   heroAction?: { label: string; path: string };
 }
 
-const buttonTransition = { type: 'spring', stiffness: 400, damping: 17 } as const;
 
 const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
   heroImage,
@@ -33,7 +31,7 @@ const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
   return (
     <div className="bg-fann-charcoal text-white">
       {/* Hero Section */}
-      <section className="relative h-[60vh] min-h-[450px] flex items-center justify-center text-center text-white overflow-hidden bg-fann-charcoal">
+      <section className="relative min-h-[60vh] py-20 flex items-center justify-center text-center text-white overflow-hidden bg-fann-charcoal">
         {heroImage && <picture>
           {heroImage.includes("?") && <source srcSet={`${heroImage}&fm=webp`} type="image/webp" />}
           {heroImage.includes("?") && <source srcSet={heroImage} type="image/jpeg" />}
@@ -109,24 +107,8 @@ const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
                     <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4 text-white">Ready to Start Your Project?</h2>
                     <p className="max-w-2xl mx-auto text-gray-400 mb-8">Let's discuss how our expertise can elevate your brand. Contact us for a complimentary consultation and a detailed quote.</p>
                     <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-                        <Link to="/book-consultation">
-                            <motion.button 
-                                whileHover={{ scale: 1.05, y: -2 }}
-                                whileTap={{ scale: 0.95 }}
-                                transition={buttonTransition}
-                                className="bg-fann-gold text-black font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider w-full sm:w-auto"
-                            >
-                                Book a Consultation
-                            </motion.button>
-                        </Link>
-                         <Link to="/portfolio">
-                            <motion.button 
-                                whileHover={{ scale: 1.05 }}
-                                className="border-2 border-fann-gold text-fann-gold font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider w-full sm:w-auto hover:bg-fann-gold/10"
-                            >
-                                View Our Portfolio
-                            </motion.button>
-                        </Link>
+                        <Link to="/book-consultation" className="inline-flex min-h-[48px] items-center justify-center bg-fann-gold text-black font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider w-full sm:w-auto hover:bg-fann-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Book a Consultation</Link>
+                        <Link to="/portfolio" className="inline-flex min-h-[48px] items-center justify-center border-2 border-fann-gold text-fann-gold font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider w-full sm:w-auto hover:bg-fann-gold/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">View Our Portfolio</Link>
                     </div>
                  </div>
             </div>
