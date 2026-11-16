@@ -178,5 +178,27 @@
       "question": "What should be specified if we want to reuse the stand?",
       "answer": "Specify the later shows, likely stand allocations and which parts you want to retain before fabrication is agreed. Ask how dismantling, transport, storage, replacement graphics and reinstallation would be scoped. Reuse is a design and logistics decision, not an automatic inclusion or a guarantee that every component fits another venue."
     }
+  ],
+  "/services/modular-exhibition-systems-dubai": [
+    {
+      "question": "Can the same modular stand fit different show allocations?",
+      "answer": "Not automatically. Compare each allocation, its open sides and the activities the stand must support before choosing a reusable approach. Record which components would carry forward and which parts need adapting. A different footprint can change the layout, graphics, transport and installation scope, so check the next show rather than assuming compatibility."
+    },
+    {
+      "question": "Is a modular stand always cheaper than a custom build?",
+      "answer": "No saving should be assumed before comparing the same brief and full scope. Review the required layout, finishes, product displays, graphics, transport and future allocations. Ask which components could be reused and what adaptation or replacement would involve. FANN can discuss a modular approach when it fits those requirements."
+    },
+    {
+      "question": "What information helps assess existing stand components for reuse?",
+      "answer": "Send the available drawings, component list, dimensions, photographs and the next stand allocation. Identify the product displays, meeting areas, storage and brand materials needed for that show. Confirm which existing items are proposed for reuse and what must change before treating the previous stand as the specification for a new build."
+    },
+    {
+      "question": "Does choosing modular include rental or climate-controlled storage?",
+      "answer": "No. A modular enquiry does not confirm a rental package, storage facility or particular storage conditions. State whether you need components supplied, retained, transported or stored, then ask the team to confirm the available arrangement in writing. Only the services and conditions agreed in the quotation form the project scope."
+    },
+    {
+      "question": "Can a reusable layout skip the venue submission process?",
+      "answer": "No. Reuse does not replace the current organiser and venue requirements. Send the actual exhibitor manual, allocation and drawings so submission responsibilities can be identified in the proposal. Review the design, materials and installation window for that show; a previous installation is not evidence that the next allocation is approved."
+    }
   ]
 }
