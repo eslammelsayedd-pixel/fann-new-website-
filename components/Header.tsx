@@ -45,9 +45,13 @@ const Header: React.FC = () => {
                 {/* DESKTOP NAVIGATION */}
                 <nav className="hidden lg:flex items-center space-x-6 xl:space-x-10">
                     {navLinks.map((link) => (
-                        <div key={link.name} className={`relative group h-full ${link.name === 'FANN Studio' ? 'lg:border-l lg:border-white/20 lg:pl-4 xl:pl-8' : ''}`}>
+                        <div key={link.name} onMouseEnter={() => link.children && setOpenDropdown(link.name)} onMouseLeave={() => link.children && setOpenDropdown(null)} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node)) setOpenDropdown(null); }} onKeyDown={(event) => { if (event.key === 'Escape') { setOpenDropdown(null); (event.currentTarget.querySelector('button') as HTMLButtonElement)?.focus(); } }} className={`relative group h-full ${link.name === 'FANN Studio' ? 'lg:border-l lg:border-white/20 lg:pl-4 xl:pl-8' : ''}`}>
                             {link.children ? (
-                                <button 
+                                <button
+                                    type="button"
+                                    aria-expanded={openDropdown === link.name}
+                                    aria-controls={'desktop-nav-' + link.name.toLowerCase().replace(/\s+/g, '-')}
+                                    onClick={() => setOpenDropdown(openDropdown === link.name ? null : link.name)}
                                     className="flex items-center gap-1 text-xs font-semibold uppercase tracking-widest text-gray-300 hover:text-fann-gold transition-colors py-2 hover-trigger"
                                 >
                                     {link.name}
@@ -66,7 +70,7 @@ const Header: React.FC = () => {
                             
                             {/* Dropdown */}
                             {link.children && (
-                                <div className="absolute top-full left-1/2 -translate-x-1/2 pt-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                                <div id={'desktop-nav-' + link.name.toLowerCase().replace(/\s+/g, '-')} className={`absolute top-full left-1/2 -translate-x-1/2 pt-6 transition-all duration-300 ${openDropdown === link.name ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
                                     <div className="bg-fann-charcoal border border-white/10 p-4 min-w-[200px] shadow-2xl rounded-sm">
                                         {link.children.map(child => (
                                             <NavLink
@@ -88,13 +92,7 @@ const Header: React.FC = () => {
                 <div className="hidden lg:flex items-center gap-4 xl:gap-6">
                     <ThemeToggle />
                     <a href="tel:+971505667502" dir="ltr" className="text-xs font-semibold text-fann-gold hover:text-white transition-colors whitespace-nowrap" aria-label="Call FANN at +971 50 566 7502">+971 50 566 7502</a>
-                    <Link to="/contact" className="hover-trigger">
-                      <button 
-                          className="btn-gold"
-                      >
-                          Start Project
-                      </button>
-                    </Link>
+                    <Link to="/contact" className="btn-gold hover-trigger inline-flex min-h-[48px] items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Start Project</Link>
                 </div>
 
                 {/* MOBILE TOGGLE */}
