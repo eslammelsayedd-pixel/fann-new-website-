@@ -7,6 +7,7 @@ import path from 'node:path';
 import { buyerPageSchema } from '../data/buyerPageSchema.js';
 import adipecPortfolioLinks from '../data/adipecPortfolioLinks.json' with { type: 'json' };
 
+import turnkeyPage from '../data/turnkeyPage.json' with { type: 'json' };
 const SITE = 'https://fann.ae';
 const dist = path.resolve('dist');
 const template = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
@@ -53,6 +54,12 @@ for (const article of insightArticles) {
   if (routes['/insights']) {
     routes['/insights'].body = (routes['/insights'].body || '') + `<p><a href="${article.path}">${E(article.title)}</a></p>`;
   }
+}
+
+// Turnkey page: the same scoped copy and buyer answers serve React and crawlers.
+{
+ const p=turnkeyPage, E=calendarEscape, url=SITE+'/services/turnkey-exhibition-services-uae';
+ routes['/services/turnkey-exhibition-services-uae']={title:p.title,description:p.description,robots:'index, follow',image:'/images/stands/7-dubai-properties-cityscape.webp',jsonld:JSON.stringify({'@context':'https://schema.org','@graph':[{'@type':'Service',name:p.heading,description:p.intro,serviceType:'Turnkey exhibition services',provider:{'@type':'Organization',name:'FANN'},areaServed:{'@type':'Country',name:'United Arab Emirates'}},{'@type':'BreadcrumbList',itemListElement:[{name:'Home',path:'/'},{name:'Services',path:'/services'},{name:p.heading,path:'/services/turnkey-exhibition-services-uae'}].map((b,i)=>({'@type':'ListItem',position:i+1,name:b.name,item:SITE+b.path}))},{'@type':'FAQPage',mainEntity:p.faqs.map(f=>({'@type':'Question',name:f.question,acceptedAnswer:{'@type':'Answer',text:f.answer}}))}]}),body:`<main><h1>${E(p.heading)}</h1><p>${E(p.intro)}</p><a href="/exhibition-stand-quote">Request a scoped proposal</a><img src="/images/stands/7-dubai-properties-cityscape.webp" alt="Existing exhibition stand photograph from FANN's portfolio, not a project-management or workshop photograph."/><h2>Agree the responsibilities before the build</h2><p>Use the same scope checklist for every proposal. One coordinated project still needs clear decisions about who designs, supplies, orders, approves and hands over each part.</p>${p.sections.map(s=>`<section><h2>${E(s.heading)}</h2><p>${E(s.text)}</p>${s.items?'<ul>'+s.items.map(i=>'<li>'+E(i)+'</li>').join('')+'</ul>':''}</section>`).join('')}<h2>Send the allocation and current manual</h2><p>Add your products, visitor activities, brand files and actual submission and installation dates. Ask for an itemised proposal with responsibilities and exclusions.</p><a href="/exhibition-stand-quote">Request a scoped proposal</a><h2>Common buyer questions</h2>${p.faqs.map(f=>`<h3>${E(f.question)}</h3><p>${E(f.answer)}</p>`).join('')}<h2>Related stand planning</h2><a href="/services/custom-exhibition-stands-dubai">Custom stand design and build</a><a href="/services/exhibition-stand-fabrication-dubai">Fabrication and production release</a><a href="/services/modular-exhibition-systems-dubai">Discuss a modular approach</a><a href="/insights/exhibition-stand-brief-checklist">Stand brief checklist</a></main>`};
 }
 
 // Quote landing copy and real stand proof also reach no-JavaScript visitors.
