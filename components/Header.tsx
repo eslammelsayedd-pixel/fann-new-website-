@@ -45,7 +45,7 @@ const Header: React.FC = () => {
                 {/* DESKTOP NAVIGATION */}
                 <nav className="hidden lg:flex items-center space-x-6 xl:space-x-10">
                     {navLinks.map((link) => (
-                        <div key={link.name} onMouseEnter={() => link.children && setOpenDropdown(link.name)} onMouseLeave={() => link.children && setOpenDropdown(null)} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node)) setOpenDropdown(null); }} onKeyDown={(event) => { if (event.key === 'Escape') { setOpenDropdown(null); (event.currentTarget.querySelector('button') as HTMLButtonElement)?.focus(); } }} className={`relative group h-full ${link.name === 'FANN Studio' ? 'lg:border-l lg:border-white/20 lg:pl-4 xl:pl-8' : ''}`}>
+                        <div key={link.name} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node)) setOpenDropdown(null); }} onKeyDown={(event) => { if (event.key === 'Escape') { setOpenDropdown(null); (event.currentTarget.querySelector('button') as HTMLButtonElement)?.focus(); } }} className={`relative group h-full ${link.name === 'FANN Studio' ? 'lg:border-l lg:border-white/20 lg:pl-4 xl:pl-8' : ''}`}>
                             {link.children ? (
                                 <button
                                     type="button"
@@ -70,7 +70,7 @@ const Header: React.FC = () => {
                             
                             {/* Dropdown */}
                             {link.children && (
-                                <div id={'desktop-nav-' + link.name.toLowerCase().replace(/\s+/g, '-')} className={`absolute top-full left-1/2 -translate-x-1/2 pt-6 transition-all duration-300 ${openDropdown === link.name ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
+                                <div hidden={openDropdown !== link.name} id={'desktop-nav-' + link.name.toLowerCase().replace(/\s+/g, '-')} className={`absolute top-full left-1/2 -translate-x-1/2 pt-6 transition-all duration-300 ${openDropdown === link.name ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
                                     <div className="bg-fann-charcoal border border-white/10 p-4 min-w-[200px] shadow-2xl rounded-sm">
                                         {link.children.map(child => (
                                             <NavLink
