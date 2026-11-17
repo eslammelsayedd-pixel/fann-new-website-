@@ -56,7 +56,7 @@ const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
       </section>
 
       {/* Breadcrumbs */}
-      <nav className="bg-fann-charcoal-light border-b border-white/5 py-3">
+      <nav aria-label="Breadcrumb" className="bg-fann-charcoal-light border-b border-white/5 py-3">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <ol className="flex items-center space-x-2 text-sm">
             {breadcrumbs.map((crumb, index) => (
@@ -78,13 +78,13 @@ const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
       </nav>
 
       {/* Main Content */}
-      <main className="py-16 md:py-24">
+      <div className="py-16 md:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="prose prose-lg dark:prose-invert max-w-4xl mx-auto prose-h2:font-serif prose-h2:text-4xl prose-h2:text-fann-gold prose-h2:mb-4 prose-h2:mt-12 first:prose-h2:mt-0 prose-a:text-fann-gold hover:prose-a:underline prose-strong:text-fann-grey">
                  {children}
             </div>
         </div>
-      </main>
+      </div>
 
        {/* Testimonials Section */}
       {testimonials.length > 0 && (<section className="py-24 bg-fann-charcoal-light border-y border-white/5 text-center">
