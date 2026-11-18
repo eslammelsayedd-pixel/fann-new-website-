@@ -37,9 +37,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   }, []);
   return (
     <div className="flex flex-col min-h-screen bg-fann-charcoal text-fann-grey">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded focus:bg-fann-gold focus:px-5 focus:py-3 focus:font-bold focus:text-black focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-white">Skip to main content</a>
       <Header />
       <MetaPixelTracker />
-      <main className="flex-grow">{children}</main>
+      <main id="main-content" tabIndex={-1} className="flex-grow">{children}</main>
       {isAdsLanding ? <footer className="border-t border-white/10 bg-[#111] px-5 py-8 text-center text-sm text-[#aaa49b]">FANN · <a href="tel:+971505667502" className="underline">+971 50 566 7502</a> · <a href="mailto:sales@fann.ae" className="underline">sales@fann.ae</a><OpenAIConsent /></footer> : <div className="pb-16 md:pb-0"><Footer /></div>}
       
       {/* Conversion Tools */}
