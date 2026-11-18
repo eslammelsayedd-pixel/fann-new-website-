@@ -106,27 +106,23 @@
   "/event-setup-dubai": [
     {
       "question": "What information do you need for an event setup quote?",
-      "answer": "Send the event date, venue, floor plan if available, the areas to be built, brand assets and your installation and dismantling windows. We can then define the build scope and price."
+      "answer": "Send the event date, venue, available floor plan and the areas or structures to be built. Add the visitor activities, brand files, technical contacts and actual installation and dismantling windows. FANN can then define the proposed build scope, interfaces and exclusions rather than quote an assumed all-inclusive event package."
     },
     {
-      "question": "Do you work on outdoor and indoor events?",
-      "answer": "We can review briefs for both. The build plan depends on the venue, site conditions, access and the agreed technical scope."
+      "question": "Can FANN build only one part of an event?",
+      "answer": "Yes. Share the specific stage, display area or branded installation you need, together with its position in the wider event plan. Identify the organiser, venue and other suppliers, then agree who designs, supplies, installs and checks each interface. A partial build should still have a clear handover and dismantling scope."
     },
     {
-      "question": "Can you handle only part of an event build?",
-      "answer": "Yes. Share the elements you need, such as a stage, display area or branded installation, and we will define what FANN will supply and install."
+      "question": "How should we separate the build from AV and venue services?",
+      "answer": "List the physical build and each technical service separately. Confirm who provides screens, lighting, sound, power, rigging, internet and furniture, plus the drawings and access each supplier needs. The proposal should name included items, exclusions and coordination responsibilities so a display structure is not mistaken for a complete production package."
     },
     {
-      "question": "When should we contact you?",
-      "answer": "Once the event date, venue and brief are known. Lead time depends on the design, approvals, fabrication and site access, so we will check the schedule against your scope."
+      "question": "Does a past outdoor event prove the same design suits our site?",
+      "answer": "No. An earlier event photograph is a design reference, not evidence that the same structure, fixing or technical arrangement suits another site. Share the current location, site rules, access information and intended use. Identify the project-specific checks and responsible parties before agreeing the build, submissions and installation programme."
     },
     {
-      "question": "What is included in an event setup quote?",
-      "answer": "The quote should name the build elements, graphics, installation, handover and any dismantling FANN will supply. Confirm AV, power, internet, furniture, transport, storage, venue charges and equipment supplied by others separately. State the interfaces and exclusions rather than assuming all event services are included."
-    },
-    {
-      "question": "Who confirms event access and build approvals?",
-      "answer": "Agree the submission and coordination responsibilities with the organiser and venue for this event. Share the floor plan, site rules, installation and dismantling windows, and the technical requirements of each build element. Outdoor conditions, loads, power and any permits need project-specific checks; a previous event photo is not approval for the new site."
+      "question": "How do we plan installation, handover and removal?",
+      "answer": "Work backwards from the actual opening and access times, then agree the sequence with the venue and other suppliers. Record delivery access, installation responsibilities, checks, handover and any dismantling or return transport. Timing depends on the approved design, materials and site conditions; an event date alone is not a build programme."
     }
   ],
   "/services/exhibition-stand-fabrication-dubai": [
@@ -201,4 +197,4 @@
       "answer": "No. Reuse does not replace the current organiser and venue requirements. Send the actual exhibitor manual, allocation and drawings so submission responsibilities can be identified in the proposal. Review the design, materials and installation window for that show; a previous installation is not evidence that the next allocation is approved."
     }
   ]
-}
+    }
