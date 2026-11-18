@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 
 const pageVariants = {
   initial: {
@@ -31,6 +31,8 @@ interface AnimatedPageProps {
 }
 
 const AnimatedPage: React.FC<AnimatedPageProps> = ({ children }) => {
+  const reduceMotion = useReducedMotion();
+  if (reduceMotion) return <div>{children}</div>;
   return (
     <motion.div
       initial="initial"
