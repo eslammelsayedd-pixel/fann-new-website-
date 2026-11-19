@@ -235,6 +235,17 @@ routes[adPath]={title:adPage.title,description:adPage.description,robots:'index,
  routes['/clinic-fit-out-dubai'].body = routes['/clinic-fit-out-dubai'].body.replace(/<h2>Proven on immovable deadlines<\/h2>[\s\S]*?(?=<h2>One team, start to finish<\/h2>)/, `<section><h2>Completed clinic fit-out project references in Dubai</h2><p>Explore completed healthcare project galleries for Aspris Clinic at City Walk, Fayy Health Polyclinic and American Hospital Clinic at Dubai Hills. Use the reception, waiting-area and circulation photographs to brief your own clinic. The design concept below is shown separately.</p>${clinics.map(ref=>`<a href="/portfolio/${ref.slug}"><img src="${ref.images[0]}" alt="${E(ref.name)} reception and waiting area"><p>${E(ref.name)} - Dubai, ${ref.year}</p></a>`).join('')}</section>`);
 }
 
+// Clinic brief, body and FAQ schema share the same factual source.
+{
+ const p=JSON.parse(fs.readFileSync(path.resolve('data/clinicScopePage.json'),'utf8')), route='/clinic-fit-out-dubai', prior=routes[route].body;
+ const E=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+ const proof=prior.slice(prior.indexOf('<section><h2>Completed clinic'),prior.indexOf('<h2>One team, start to finish</h2>'));
+ const concept=prior.slice(prior.indexOf('<h2>Design concept</h2>'),prior.indexOf('<h2>Frequently Asked Questions</h2>'));
+ routes[route].body='<h1>Clinic Fit-Out in Dubai</h1><p>'+E(p.intro)+'</p><a href="/contact">Discuss your clinic scope</a>'+p.sections.map(s=>'<section><h2>'+E(s.heading)+'</h2><p>'+E(s.text)+'</p></section>').join('')+'<h2>Define the quoted work</h2><p>Reception desks, cabinetry and storage, partitions and ceilings, flooring, MEP coordination and finishes are reviewed for the project. Identify inclusions, exclusions and interfaces in the proposal.</p>'+proof+concept+'<h2>Frequently Asked Questions</h2>'+p.faqs.map(f=>'<h3>'+E(f.question)+'</h3><p>'+E(f.answer)+'</p>').join('')+'<p><a href="/fit-out-dubai">Commercial fit-out</a> | <a href="/restaurant-fit-out-dubai">Restaurant fit-out</a> | <a href="/contact">Discuss your clinic scope</a></p>';
+ routes[route].description='Clinic fit-out in Dubai and Abu Dhabi. Review reception joinery, cabinetry, finishes, equipment interfaces and approval responsibilities before a project-specific quote.';
+ const schema=JSON.parse(routes[route].jsonld);schema['@graph'].find(s=>s['@type']==='FAQPage').mainEntity=p.faqs.map(f=>({'@type':'Question',name:f.question,acceptedAnswer:{'@type':'Answer',text:f.answer}}));routes[route].jsonld=JSON.stringify(schema);
+}
+
 const esc = (s = '') => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 for (const [route, r] of Object.entries(routes)) {
