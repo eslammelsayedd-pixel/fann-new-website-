@@ -181,7 +181,6 @@ async function submitViaServer(body: any): Promise<void> {
 async function afterDelivery(body: any): Promise<void> {
   try {
     const w = window as any;
-    if (typeof w.gtag === 'function') w.gtag('event', 'generate_lead', { form_type: body.formType });
     if (typeof w.fbq === 'function') w.fbq('track', 'Lead', { content_name: body.formType });
     (w.dataLayer = w.dataLayer || []).push({ event: 'lead_submitted', form_type: body.formType });
   } catch { /* tracking must never break the form */ }
