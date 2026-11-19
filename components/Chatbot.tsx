@@ -8,27 +8,26 @@ interface Message {
     sources?: { uri: string, title: string }[];
 }
 
-// Simple markdown parser
-const parseMarkdown = (text: string) => {
-    let html = text
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/(\n\s*-\s)/g, '</li><li>')
-        .replace(/<li>/, '<ul><li>')
-
-    if ((html.match(/<ul>/g) || []).length > (html.match(/<\/ul>/g) || []).length) {
-        html += '</li></ul>';
-    }
-    
-    return html.split('\n').map(line => `<p>${line}</p>`).join('').replace(/<p><\/p>/g, '');
-};
-
+import { parseMarkdown } from '../utils/chatFormatting';
 
 export const Chatbot: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const triggerRef = useRef<HTMLButtonElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const closeChat = () => {
+        setIsOpen(false);
+        requestAnimationFrame(() => triggerRef.current?.focus());
+    };
+    useEffect(() => {
+        if (!isOpen) return;
+        inputRef.current?.focus();
+        const onEscape = (event: KeyboardEvent) => { if (event.key === 'Escape') { event.preventDefault(); closeChat(); } };
+        document.addEventListener('keydown', onEscape);
+        return () => document.removeEventListener('keydown', onEscape);
+    }, [isOpen]);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {
@@ -93,6 +92,12 @@ export const Chatbot: React.FC = () => {
     return (
         <>
             <motion.button
+                ref={triggerRef}
+                type="button"
+                aria-controls="fann-chat-window"
+                aria-expanded={isOpen}
+                aria-hidden={isOpen}
+                tabIndex={isOpen ? -1 : 0}
                 onClick={() => setIsOpen(true)}
                 className="fixed bottom-24 left-6 bg-fann-gold text-black w-16 h-16 rounded-full shadow-lg flex items-center justify-center z-50 hover:shadow-fann-gold/20"
                 variants={fabVariants}
@@ -108,6 +113,10 @@ export const Chatbot: React.FC = () => {
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
+                        id="fann-chat-window"
+                        role="dialog"
+                        aria-modal="false"
+                        aria-labelledby="fann-chat-title"
                         variants={chatWindowVariants}
                         initial="hidden"
                         animate="visible"
@@ -119,14 +128,14 @@ export const Chatbot: React.FC = () => {
                             <div className="flex items-center gap-3">
                                 <Bot className="text-fann-gold" size={24} />
                                 <div className="flex flex-col">
-                                    <h3 className="font-bold text-white">FANN Assistant</h3>
+                                    <h3 id="fann-chat-title" className="font-bold text-white">FANN Assistant</h3>
                                     <p className="text-xs text-gray-400 flex items-center gap-1.5">
                                         <span className="w-2 h-2 rounded-full bg-green-500"></span>
                                         Online
                                     </p>
                                 </div>
                             </div>
-                            <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-white">
+                            <button type="button" aria-label="Close chat" onClick={closeChat} className="min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-fann-gold">
                                 <X size={24} />
                             </button>
                         </header>
@@ -169,6 +178,8 @@ export const Chatbot: React.FC = () => {
                         <footer className="p-4 border-t border-white/10 bg-fann-charcoal-light rounded-b-lg">
                             <div className="flex items-center gap-2">
                                 <input
+                                    ref={inputRef}
+                                    aria-label="Message to FANN Assistant"
                                     type="text"
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
@@ -176,7 +187,7 @@ export const Chatbot: React.FC = () => {
                                     placeholder="Ask about our services..."
                                     className="flex-1 bg-black/30 border border-white/10 rounded-full px-4 py-2 focus:outline-none focus:border-fann-gold text-white placeholder-gray-500"
                                 />
-                                <button onClick={handleSend} disabled={isLoading || !input.trim()} className="bg-fann-gold text-black w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 disabled:opacity-50 hover:bg-white transition-colors">
+                                <button type="button" aria-label="Send message" onClick={handleSend} disabled={isLoading || !input.trim()} className="bg-fann-gold text-black w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 disabled:opacity-50 hover:bg-white transition-colors">
                                     <Send size={20} />
                                 </button>
                             </div>
