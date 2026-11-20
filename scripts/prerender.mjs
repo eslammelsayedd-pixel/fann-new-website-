@@ -246,6 +246,18 @@ routes[adPath]={title:adPage.title,description:adPage.description,robots:'index,
  const schema=JSON.parse(routes[route].jsonld);schema['@graph'].find(s=>s['@type']==='FAQPage').mainEntity=p.faqs.map(f=>({'@type':'Question',name:f.question,acceptedAnswer:{'@type':'Answer',text:f.answer}}));routes[route].jsonld=JSON.stringify(schema);
 }
 
+// Restaurant scope and buyer answers share one source across React and crawler output.
+{
+ const p=JSON.parse(fs.readFileSync(path.resolve('restaurantScopePage.json'),'utf8')), route='/restaurant-fit-out-dubai', prior=routes[route].body;
+ const E=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+ const proof=prior.slice(prior.indexOf('<h2>Proven on immovable deadlines</h2>'),prior.indexOf('<h2>One team, start to finish</h2>'));
+ const cards=(proof.match(/<a href="\/portfolio\/[^>]*>[\s\S]*?<\/a>/g)||[]).join('');
+ const concept=prior.slice(prior.indexOf('<h2>Design concept</h2>'),prior.indexOf('<h2>Frequently Asked Questions</h2>'));
+ routes[route].body='<h1>Restaurant Fit-Out in Dubai</h1><p>'+E(p.intro)+'</p><a href="/contact">Discuss your restaurant scope</a>'+p.sections.map(s=>'<section><h2>'+E(s.heading)+'</h2><p>'+E(s.text)+'</p></section>').join('')+'<h2>Define the quoted work</h2><p>Banquette seating, bar counters, shelving, wall panelling, ceilings, flooring, lighting and MEP coordination, and final finishes are reviewed for the actual unit.</p><h2>Related event and exhibition build references</h2><p>These existing portfolio references show event and exhibition work, not completed restaurant interiors. Keep their project context separate when preparing your restaurant brief.</p>'+cards+concept+'<h2>Frequently Asked Questions</h2>'+p.faqs.map(f=>'<h3>'+E(f.question)+'</h3><p>'+E(f.answer)+'</p>').join('')+'<p><a href="/fit-out-dubai">Commercial fit-out</a> | <a href="/clinic-fit-out-dubai">Clinic fit-out</a> | <a href="/contact">Discuss your restaurant scope</a></p>';
+ routes[route].description='Restaurant and cafe fit-out in Dubai and Abu Dhabi. Define joinery, kitchen interfaces, approval responsibilities, site access and handover before a project-specific quote.';
+ const schema=JSON.parse(routes[route].jsonld);schema['@graph'].find(s=>s['@type']==='FAQPage').mainEntity=p.faqs.map(f=>({'@type':'Question',name:f.question,acceptedAnswer:{'@type':'Answer',text:f.answer}}));routes[route].jsonld=JSON.stringify(schema);
+}
+
 const esc = (s = '') => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 for (const [route, r] of Object.entries(routes)) {
