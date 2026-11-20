@@ -58,13 +58,13 @@ const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
       {/* Breadcrumbs */}
       <nav aria-label="Breadcrumb" className="bg-fann-charcoal-light border-b border-white/5 py-3">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <ol className="flex items-center space-x-2 text-sm">
+          <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
             {breadcrumbs.map((crumb, index) => (
               <li key={crumb.path} className="flex items-center">
-                {index > 0 && <ChevronRight size={16} className="text-gray-500 mx-2" />}
+                {index > 0 && <ChevronRight aria-hidden="true" size={16} className="shrink-0 text-gray-500 mx-2" />}
                 <Link
                   to={crumb.path}
-                  className={`hover:text-fann-gold transition-colors ${
+                  className={`inline-flex min-h-[44px] min-w-[44px] items-center rounded-sm py-2 hover:text-fann-gold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fann-gold ${
                     index === breadcrumbs.length - 1 ? 'font-bold text-fann-gold' : 'text-gray-400'
                   }`}
                   aria-current={index === breadcrumbs.length - 1 ? 'page' : undefined}
