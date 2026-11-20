@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useInView } from 'framer-motion';
+import { motion, useScroll, useTransform, useInView, useReducedMotion } from 'framer-motion';
 
 interface ScrollRevealProps {
   children: React.ReactNode;
@@ -10,6 +10,7 @@ interface ScrollRevealProps {
 
 const ScrollReveal: React.FC<ScrollRevealProps> = ({ children, variant = 'fade-up', delay = 0, className = '' }) => {
   const ref = useRef(null);
+  const reduceMotion = useReducedMotion();
   const isInView = useInView(ref, { once: true, margin: "-10% 0px" });
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -32,6 +33,8 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({ children, variant = 'fade-u
       visible: { opacity: 1, filter: 'blur(0px)', y: 0, transition: { duration: 1, ease: "easeOut", delay } }
     }
   };
+
+  if (reduceMotion) return <div ref={ref} className={className}>{children}</div>;
 
   if (variant === 'parallax') {
     return (
