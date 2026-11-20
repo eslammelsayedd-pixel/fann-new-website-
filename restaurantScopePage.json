@@ -1,0 +1,47 @@
+{
+  "intro": "FANN delivers restaurant and cafe fit-out in Dubai and Abu Dhabi, including banquette seating, counters, joinery and finishes. The quoted work is defined around the actual unit, kitchen equipment, service interfaces and responsibilities for approvals.",
+  "sections": [
+    {
+      "heading": "Brief the unit and the dining operation",
+      "text": "Send the site location, approximate area, existing condition and proposed restaurant or cafe layout. Identify seating, counter service, takeaway collection and storage needs. Add landlord drawings, an equipment schedule and any available BOQ, separating confirmed decisions from items that still need design input."
+    },
+    {
+      "heading": "Map kitchen and front-of-house interfaces",
+      "text": "List who supplies and installs kitchen equipment, counters, lighting and other services. Confirm equipment dimensions and connection information before releasing adjacent joinery. Record interfaces with ventilation, drainage, power and other specialist work in the proposal rather than treating them as automatically included."
+    },
+    {
+      "heading": "Agree approval and site-access responsibilities",
+      "text": "The approval route depends on the unit, landlord and proposed work. Identify required drawings, who prepares and submits them, and which decisions must be settled before site work. Confirm delivery access, working hours and protection of occupied areas for this specific location."
+    },
+    {
+      "heading": "Release joinery against approved details",
+      "text": "Banquettes, bar counters, shelving and wall panelling need agreed dimensions, materials and finishes before production. Record equipment clearances, access panels and any buyer-supplied items on the drawings. Review later changes for their effect on scope, cost and timing before the changed work proceeds."
+    },
+    {
+      "heading": "Plan checks before opening",
+      "text": "Use the project programme to separate production, installation, inspections and final checks. Record outstanding items, responsibility for service testing, cleaning and the handover information required. Treat the desired opening date as a planning input, not proof that every approval or supplier is ready."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "What should a restaurant fit-out brief include?",
+      "answer": "Send the unit location, approximate area, existing condition and intended restaurant layout. Include seating and service needs, kitchen equipment information, drawings or a BOQ, and your desired opening date. Mark what is approved and what still needs design input, so the proposal can identify scope and missing decisions."
+    },
+    {
+      "question": "How are kitchen services and fit-out interfaces agreed?",
+      "answer": "Define equipment supply, installation and service connections in the project scope before adjacent work is released. Share the kitchen equipment schedule and relevant drawings so counters, joinery and finishes can be reviewed against those interfaces. Specialist services and items supplied by others need explicit responsibility rather than an assumed inclusion."
+    },
+    {
+      "question": "Who handles landlord and authority approvals?",
+      "answer": "Approval responsibilities are agreed for the actual unit and proposed work, not assumed from a standard package. Identify required drawings, the party preparing and submitting them, and any landlord or authority review steps. Confirm these responsibilities in the proposal before using an opening date to set the site programme."
+    },
+    {
+      "question": "Can FANN produce restaurant joinery?",
+      "answer": "FANN has a joinery workshop in Umm Al Quwain that supports project production. Banquettes, counters, shelving and wall panelling are reviewed against agreed drawings, materials and dimensions. Confirm equipment clearances, samples and quantities before release, and identify which items are included in the restaurant quotation or supplied by others."
+    },
+    {
+      "question": "How should we plan the opening programme?",
+      "answer": "Plan the opening programme around the actual design, approvals, materials, equipment and site access. Share your intended opening date, but distinguish it from the dates needed for drawing approval, production and installation. Review changes and unresolved supplier interfaces before treating the programme as confirmed; no universal build duration fits every restaurant."
+    }
+  ]
+}
