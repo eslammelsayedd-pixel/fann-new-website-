@@ -45,11 +45,11 @@ const Footer: React.FC = () => {
               <li className="font-semibold mt-2 pt-2 border-t border-white/10">Office:</li>
               <li>Office No. 508, Dusseldorf Business Center, Al Barsha, Dubai, UAE</li>
             </ul>
-            <div className="flex space-x-4 text-gray-500 mt-4">
-              <a href="https://www.facebook.com/fannuae/" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold transition-colors"><Facebook size={20} /></a>
-              <a href="https://www.instagram.com/fann_uae/" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold transition-colors"><Instagram size={20} /></a>
-              <a href="https://www.linkedin.com/company/fann-uae/" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold transition-colors"><Linkedin size={20} /></a>
-              <a href="https://fannae.quora.com/" target="_blank" rel="noopener noreferrer" className="hover:text-fann-gold transition-colors"><QuoraIcon width={20} height={20} /></a>
+            <div className="flex flex-wrap gap-2 text-gray-500 mt-4">
+              <a href="https://www.facebook.com/fannuae/" aria-label="FANN on Facebook (opens in a new tab)" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-sm hover:text-fann-gold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fann-gold"><Facebook aria-hidden="true" size={20} /></a>
+              <a href="https://www.instagram.com/fann_uae/" aria-label="FANN on Instagram (opens in a new tab)" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-sm hover:text-fann-gold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fann-gold"><Instagram aria-hidden="true" size={20} /></a>
+              <a href="https://www.linkedin.com/company/fann-uae/" aria-label="FANN on LinkedIn (opens in a new tab)" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-sm hover:text-fann-gold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fann-gold"><Linkedin aria-hidden="true" size={20} /></a>
+              <a href="https://fannae.quora.com/" aria-label="FANN on Quora (opens in a new tab)" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-sm hover:text-fann-gold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fann-gold"><QuoraIcon aria-hidden="true" width={20} height={20} /></a>
             </div>
           </div>
         </div>
