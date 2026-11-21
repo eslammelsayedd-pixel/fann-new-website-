@@ -1,3 +1,4 @@
+import villaScope from '../../villaScopePage.json';
 import React from 'react';
 import AnimatedPage from '../../components/AnimatedPage';
 import SEO from '../../components/SEO';
@@ -6,7 +7,7 @@ import FaqAccordion from '../../components/FaqAccordion';
 import { Link } from 'react-router-dom';
 
 const path = '/villa-renovation-dubai';
-const pageTitle = 'Villa renovation, built in-house';
+const pageTitle = 'Villa Renovation in Dubai';
 
 const breadcrumbs = [
   { name: 'Home', path: '/' },
@@ -29,13 +30,7 @@ const proof = [
   { img: '/images/projects/icons-of-porsche/37.webp', alt: 'Community Village timber entrance at dusk at Icons of Porsche 2025', caption: 'Event build: Community Village entrance, Icons of Porsche 2025', link: '/portfolio/icons-of-porsche-2025-dubai' },
 ];
 
-const faqs = [
-  { question: 'Which areas do you cover?', answer: 'We renovate villas across Dubai and Abu Dhabi.' },
-  { question: 'Do you build the kitchens and wardrobes yourselves?', answer: 'FANN has a joinery workshop in Umm Al Quwain. Materials, drawings, quantities and the production schedule are reviewed for the project.' },
-  { question: 'Who handles community and authority coordination?', answer: 'We do. Community, developer and authority coordination is part of every build, whether the villa sits in a managed community or on a standalone plot.' },
-  { question: 'Do you coordinate MEP?', answer: 'Yes. MEP coordination sits with our team as part of the renovation, so services and finishes are planned together.' },
-  { question: 'What do you need from us to quote?', answer: 'Drawings or photos of the current space, the community and your target handover date. We return a clear, itemised scope and quotation without a long tender process.' },
-];
+const faqs = villaScope.faqs;
 
 const schema = {
   '@context': 'https://schema.org',
@@ -63,33 +58,23 @@ const VillaRenovationDubaiPage: React.FC = () => (
   <AnimatedPage>
     <SEO
       title="Villa Renovation Contractor Dubai | FANN"
-      description="Villa renovation in Dubai and Abu Dhabi with one accountable team and our own joinery workshop. Kitchens, wardrobes, bathrooms, flooring, MEP coordination, finishes. Itemised quotes."
+      description="Villa renovation in Dubai and Abu Dhabi. Define rooms, joinery, service interfaces, occupied-site access, approval responsibilities and handover for a project-specific quote."
       schema={schema}
     />
     <ServicePageLayout
       heroImage="/images/site/workshop-carpentry.webp"
       heroAltText="Joinery being cut in the FANN workshop"
       pageTitle={pageTitle}
-      pageDescription="One accountable team and our own joinery workshop, from first drawing to handover."
+      pageDescription={villaScope.intro}
+      heroAction={{label: 'Discuss your villa renovation', path: '/contact'}}
       breadcrumbs={breadcrumbs}
     >
-      <p className="lead">FANN is a Dubai design and build company. We renovate villas across Dubai and Abu Dhabi with one accountable team and our own joinery workshop - from first drawing to handover.</p>
-
-      <div className="not-prose my-8 text-center">
-        <Link to="/contact" className="bg-fann-gold text-black font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider inline-block">Get an itemised quote</Link>
-      </div>
-
-      <h2>What we deliver</h2>
-      <ul className="columns-1 md:columns-2">
-        {deliver.map(d => <li key={d}>{d}</li>)}
-      </ul>
-      <p>The joinery scope, materials and production details are reviewed against the agreed drawings and project schedule.</p>
-
-      <h2>Why in-house matters for villa renovations</h2>
-      <p>Our workshop supports villa joinery against the agreed drawings, materials and specification. Production timing depends on the quantities, approved details and project schedule. Any requested change is reviewed for its effect on scope, cost and timing before the changed work proceeds.</p>
-
-      <h2>Proven on immovable deadlines</h2>
-      <p>FANN builds exhibition stands and event environments for opening dates that cannot move - including work for Icons of Porsche and ADEK. A renovation handover runs on the same clock. We plan backwards from your handover date and deliver to it.</p>
+      {villaScope.sections.map(section => <section key={section.heading}><h2>{section.heading}</h2><p>{section.text}</p></section>)}
+      <h2>Define the quoted work</h2>
+      <ul className="columns-1 md:columns-2">{deliver.map(d => <li key={d}>{d}</li>)}</ul>
+      <p>Record the included rooms, materials, service interfaces and exclusions in the proposal. Joinery production is reviewed against agreed drawings and the project programme.</p>
+      <h2>Related event and exhibition build references</h2>
+      <p>These existing portfolio references show event and exhibition work, not completed villa renovations. Keep that project context separate when discussing your residential brief.</p>
       <div className="not-prose grid md:grid-cols-3 gap-6 my-8">
         {proof.map(p => (
           <Link key={p.img} to={p.link} className="block bg-fann-charcoal-light border border-white/10 rounded-lg overflow-hidden hover:border-fann-gold transition-colors">
@@ -99,16 +84,10 @@ const VillaRenovationDubaiPage: React.FC = () => (
         ))}
       </div>
 
-      <h2>One team, start to finish</h2>
-      <p>Design, joinery production, site works, MEP coordination and finishing sit with one team. You deal with one accountable partner, not a chain of subcontractors. We handle community, developer and authority coordination as part of every build.</p>
-
-      <h2>How we quote</h2>
-      <p>Per villa, itemised, and fast. Send us drawings or photos of the current space and we return a clear scope and quotation without a long tender process.</p>
-
       <div className="not-prose my-10 p-8 border border-fann-gold/40 rounded-lg text-center">
         <p className="text-xl text-white font-serif mb-4">Renovating a villa, or upgrading a kitchen or wardrobe? Tell us about it.</p>
         <p className="text-gray-300 mb-6"><a href="mailto:sales@fann.ae" className="text-fann-gold">sales@fann.ae</a> &middot; <a href="tel:+971505667502" className="text-fann-gold">+971 50 566 7502</a></p>
-        <Link to="/contact" className="bg-fann-gold text-black font-bold py-3 px-8 rounded-full uppercase tracking-wider inline-block">Send your drawings</Link>
+        <Link to="/contact" className="bg-fann-gold !text-black font-bold py-3 px-8 rounded-full uppercase tracking-wider inline-block">Send your drawings</Link>
       </div>
 
       <FaqAccordion faqs={faqs} />
