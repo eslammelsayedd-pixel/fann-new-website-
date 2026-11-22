@@ -60,7 +60,7 @@ const schema = {
       '@type': 'Service',
       serviceType: 'Commercial Fit-Out',
       name: 'Commercial Fit-Out Contractor Dubai',
-      description: 'Commercial fit-out across Dubai and Abu Dhabi: partitioning, ceilings, flooring, custom joinery, MEP coordination and finishes, with an in-house joinery workshop.',
+      description: page.intro,
       provider: { '@type': 'Organization', name: 'FANN', url: 'https://fann.ae', telephone: '+971505667502', email: 'business@fann.ae' },
       areaServed: [{ '@type': 'City', name: 'Dubai' }, { '@type': 'City', name: 'Abu Dhabi' }],
     },
