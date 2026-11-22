@@ -99,6 +99,26 @@ export interface LeadPayload {
   website?: string;           // honeypot - must stay empty
 }
 
+// Internal route proof must never become a marketing conversion.
+function isInternalLeadTest(body: any): boolean {
+  const label = [body.name, body.company, body.message, body.details?.projectName, body.details?.eventName].filter(Boolean).join(' ');
+  return /\bFANN\b[\s\S]*\b(?:TEST|QA|PROBE)\b/i.test(label);
+}
+
+async function recordDeliveryReceipt(body: any, confirmed: boolean): Promise<any> {
+  if (typeof window === 'undefined' || typeof window.crypto?.randomUUID !== 'function') return null;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 5000);
+  try {
+    const receipt = await fetch('/api/lead-receipt', {
+      signal: controller.signal, method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ ...body, deliveryConfirmed: confirmed, requestToken: window.crypto.randomUUID() }),
+    });
+    const data = await receipt.json();
+    return receipt.ok && data.persisted === true ? data : null;
+  } finally { clearTimeout(timeout); }
+}
+
 export async function submitLead(payload: LeadPayload): Promise<void> {
   const attribution = captureLeadAttribution();
   captureLeadSource();
@@ -110,6 +130,10 @@ export async function submitLead(payload: LeadPayload): Promise<void> {
     referrer: typeof document !== 'undefined' ? document.referrer : '',
   };
   if (payload.website) return; // honeypot: silently drop bots
+  // These two Studio routes belong to Business, not the Sales-only browser provider.
+  if (['Event Studio concept request', 'Interior Studio design request'].includes(payload.formType)) {
+    return await submitViaServer(body);
+  }
   const web3Key = (import.meta as any).env?.VITE_WEB3FORMS_ACCESS_KEY as string | undefined;
   if (web3Key) {
     // Web3Forms must be called from the browser (server-side calls are blocked on the free plan).
@@ -141,7 +165,13 @@ export async function submitLead(payload: LeadPayload): Promise<void> {
         }),
       });
     } catch {
-      throw new Error('Network error - please check your connection and try again, or WhatsApp us on +971 50 566 7502.');
+      // The provider may have accepted the request before the connection failed.
+      // Save for manual follow-up; do not send a second email on an ambiguous result.
+      let saved = false;
+      try { saved = Boolean(await recordDeliveryReceipt(body, false)); } catch { /* show the honest unconfirmed state */ }
+      throw new Error(saved
+        ? 'Your request was saved for manual follow-up, but email delivery could not be confirmed. Please call or WhatsApp +971 50 566 7502. No automatic resend was made.'
+        : 'Email delivery could not be confirmed. Please call or WhatsApp +971 50 566 7502 before submitting again.');
     }
     let d: any = {};
     try { d = await r.json(); } catch { /* ignore */ }
@@ -179,23 +209,17 @@ async function submitViaServer(body: any): Promise<void> {
 // Shared post-delivery tail for BOTH delivery paths: conversion tracking + private receipt persist.
 // A receipt failure must never turn a delivered enquiry into a form error.
 async function afterDelivery(body: any): Promise<void> {
+  const internalTest = isInternalLeadTest(body);
+  if (!internalTest) {
+    try {
+      const w = window as any;
+      if (typeof w.fbq === 'function') w.fbq('track', 'Lead', { content_name: body.formType });
+      (w.dataLayer = w.dataLayer || []).push({ event: 'lead_submitted', form_type: body.formType });
+    } catch { /* tracking must never break the form */ }
+  }
   try {
-    const w = window as any;
-    if (typeof w.fbq === 'function') w.fbq('track', 'Lead', { content_name: body.formType });
-    (w.dataLayer = w.dataLayer || []).push({ event: 'lead_submitted', form_type: body.formType });
-  } catch { /* tracking must never break the form */ }
-  try {
-    if (typeof window !== 'undefined' && typeof window.crypto?.randomUUID === 'function') {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 5000);
-      let receipt: Response;
-      try { receipt = await fetch('/api/lead-receipt', {
-        signal: controller.signal, method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ ...body, deliveryConfirmed: true, requestToken: window.crypto.randomUUID() }),
-      }); } finally { clearTimeout(timeout); }
-      const data = await receipt.json();
-      if (receipt.ok && data.persisted === true) (window as any).fannOpenAIConversion?.measurePersistedLead(data);
-    }
+    const data = await recordDeliveryReceipt(body, true);
+    if (!internalTest && data) (window as any).fannOpenAIConversion?.measurePersistedLead(data);
   } catch { /* delivered enquiry stays successful; no conversion without committed receipt */ }
 }
 
