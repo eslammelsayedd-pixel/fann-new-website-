@@ -269,6 +269,27 @@ routes[adPath]={title:adPage.title,description:adPage.description,robots:'index,
  const schema=JSON.parse(routes[route].jsonld);schema['@graph'].find(s=>s['@type']==='FAQPage').mainEntity=p.faqs.map(f=>({'@type':'Question',name:f.question,acceptedAnswer:{'@type':'Answer',text:f.answer}}));routes[route].jsonld=JSON.stringify(schema);
 }
 
+// Commercial unit scope: preserve existing project references and concept context.
+{
+ const p=JSON.parse(fs.readFileSync(path.resolve('commercialScopePage.json'),'utf8')), route='/fit-out-dubai', prior=routes[route].body;
+ const E=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+ const proofStart=prior.indexOf('<h2>Completed commercial');
+ const proofEnd=prior.indexOf('<h2>One team, start to finish',proofStart);
+ if(proofStart<0 || proofEnd<0) throw new Error('Commercial proof boundary changed');
+ const proof=prior.slice(proofStart,proofEnd);
+ const conceptStart=prior.indexOf('<h2>Design concepts');
+ const conceptEnd=prior.indexOf('<p>Opening a new site',conceptStart);
+ if(conceptStart<0 || conceptEnd<0) throw new Error('Commercial concept boundary changed');
+ const concept=prior.slice(conceptStart,conceptEnd).replaceAll('mailto:sales@fann.ae','mailto:business@fann.ae').replaceAll('>sales@fann.ae<','>business@fann.ae<').replace('We design every fit-out around your brand, site and budget, and we can prepare a concept like this for your space before you commit.','The actual design and any concept scope are agreed for your site; these images are not a free design offer or a promised turnaround.');
+ const priorSchema=JSON.parse(routes[route].jsonld), faq=priorSchema['@graph'].find(x=>x['@type']==='FAQPage');
+ const faqs=[...p.faqs,...faq.mainEntity.slice(5).map(x=>({question:x.name,answer:x.acceptedAnswer.text}))];
+ routes[route].body='<h1>Commercial Interior Fit-Out in Dubai</h1><p>'+E(p.intro)+'</p><a href="/contact">Discuss your fit-out scope</a>'+p.sections.map(x=>'<section><h2>'+E(x.heading)+'</h2><p>'+E(x.text)+'</p></section>').join('')+'<h2>Define the quoted work</h2><p>Partitions, ceilings, flooring, custom joinery and panelling, MEP coordination and final finishes. Name inclusions, exclusions and work supplied by others.</p>'+proof+'<h2>Send your drawings and scope</h2><p>Email the unit details, current photographs, drawings or BOQ to <a href="mailto:business@fann.ae">business@fann.ae</a>. Add the intended use, access constraints and preferred opening date.</p><p><a href="/fit-out-company-dubai">Office and commercial fit-out company</a> | <a href="/restaurant-fit-out-dubai">Restaurant fit-out</a> | <a href="/clinic-fit-out-dubai">Clinic fit-out</a> | <a href="/villa-renovation-dubai">Villa renovation</a></p>'+concept+'<h2>Frequently Asked Questions</h2>'+faqs.map(x=>'<h3>'+E(x.question)+'</h3><p>'+E(x.answer)+'</p>').join('');
+ routes[route].description=p.description;
+ faq.mainEntity=faqs.map(x=>({'@type':'Question',name:x.question,acceptedAnswer:{'@type':'Answer',text:x.answer}}));
+ const service=priorSchema['@graph'].find(x=>x['@type']==='Service');service.description=p.intro;if(service.provider) service.provider.email='business@fann.ae';
+ routes[route].jsonld=JSON.stringify(priorSchema);
+}
+
 const esc = (s = '') => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 for (const [route, r] of Object.entries(routes)) {
