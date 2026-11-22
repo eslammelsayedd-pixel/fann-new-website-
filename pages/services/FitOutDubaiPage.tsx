@@ -1,3 +1,4 @@
+import page from '../../commercialScopePage.json';
 import buyerFaqs from '../../data/buyerScopeFaqs.json';
 import React from 'react';
 import AnimatedPage from '../../components/AnimatedPage';
@@ -50,7 +51,7 @@ const concepts = [
   { img: '/images/concepts/retail.webp', title: 'Boutique retail', text: 'Travertine display table, backlit oak niches, brass rails and a curved fitting room in a warm neutral palette.' },
 ];
 
-const faqs = buyerFaqs['/fit-out-dubai'];
+const faqs = [...page.faqs, ...buyerFaqs['/fit-out-dubai'].slice(5)];
 
 const schema = {
   '@context': 'https://schema.org',
@@ -60,7 +61,7 @@ const schema = {
       serviceType: 'Commercial Fit-Out',
       name: 'Commercial Fit-Out Contractor Dubai',
       description: 'Commercial fit-out across Dubai and Abu Dhabi: partitioning, ceilings, flooring, custom joinery, MEP coordination and finishes, with an in-house joinery workshop.',
-      provider: { '@type': 'Organization', name: 'FANN', url: 'https://fann.ae', telephone: '+971505667502', email: 'sales@fann.ae' },
+      provider: { '@type': 'Organization', name: 'FANN', url: 'https://fann.ae', telephone: '+971505667502', email: 'business@fann.ae' },
       areaServed: [{ '@type': 'City', name: 'Dubai' }, { '@type': 'City', name: 'Abu Dhabi' }],
     },
     {
@@ -78,68 +79,45 @@ const FitOutDubaiPage: React.FC = () => (
   <AnimatedPage>
     <SEO
       title="Interior Fit-Out Dubai | Commercial Contractor | FANN"
-      description="Commercial fit-out in Dubai and Abu Dhabi with one accountable team and our own joinery workshop. Partitions, ceilings, flooring, joinery, MEP coordination, finishes. Itemised quotes per site."
+      description={page.description}
       schema={schema}
     />
     <ServicePageLayout
       heroImage="/images/site/workshop-carpentry.webp"
       heroAltText="Joinery being cut in the FANN workshop"
-      pageTitle="Interior Fit-Out in Dubai, Built In-House"
-      pageDescription="One accountable team and our own joinery workshop, from first drawing to final finish."
+      pageTitle="Commercial Interior Fit-Out in Dubai"
+      pageDescription={page.intro}
+      heroAction={{ label: "Discuss your fit-out scope", path: "/contact" }}
       breadcrumbs={breadcrumbs}
     >
-      <p className="lead">FANN is a Dubai design and build company. We deliver commercial fit-outs across Dubai and Abu Dhabi with one accountable team and our own joinery workshop - from first drawing to final finish.</p>
-
-      <div className="not-prose my-8 text-center">
-        <Link to="/contact" className="bg-fann-gold text-black font-bold py-3 px-8 rounded-full text-lg uppercase tracking-wider inline-block">Get an itemised quote</Link>
-      </div>
-
-      <h2>What we deliver</h2>
-      <ul className="columns-1 md:columns-2">
-        {deliver.map(d => <li key={d}>{d}</li>)}
-      </ul>
-      <p>The joinery scope, materials and production details are reviewed against the agreed drawings and project schedule.</p>
-
-      <h2>Why in-house matters</h2>
-      <p>Our workshop supports joinery production against the agreed drawings and specification. Materials, quantities and the project schedule are reviewed before production. Any later change needs its scope, cost and timing confirmed rather than a standard turnaround promise.</p>
+      <p className="lead">{page.intro}</p>
+      {page.sections.map(section => <section key={section.heading}><h2>{section.heading}</h2><p>{section.text}</p></section>)}
+      <h2>Define the quoted work</h2>
+      <ul className="columns-1 md:columns-2">{deliver.map(item => <li key={item}>{item}</li>)}</ul>
+      <p>Name inclusions, exclusions and work supplied by others. Review equipment, specialist services, submissions, fees and any unresolved existing conditions separately.</p>
 
       <h2>Completed commercial fit-outs in Dubai</h2>
       <p>Explore documented office, restaurant and healthcare interiors from FANN's project archive. Each project links to its own photographs and details, so you can review work relevant to your space rather than rely on concept images.</p>
       <div className="not-prose grid md:grid-cols-3 gap-6 my-8">
         {proof.map(p => (
           <Link key={p.img} to={p.link} className="block bg-fann-charcoal-light border border-white/10 rounded-lg overflow-hidden hover:border-fann-gold transition-colors">
-            <img src={p.img} alt={p.alt} loading="lazy" className="w-full aspect-video object-cover" />
+            <img src={p.img} alt={p.alt} loading="lazy" width="1200" height="675" className="w-full aspect-video object-cover" />
             <p className="p-4 text-sm text-gray-300">{p.caption}</p>
           </Link>
         ))}
       </div>
 
-      <h2>One team, start to finish</h2>
-      <p>Design, joinery production, site works, MEP coordination and finishing sit with one team. You deal with one accountable partner, not a chain of subcontractors. We handle venue and authority coordination as part of every build.</p>
-
-      <h2>How we quote</h2>
-      <p>Per site, itemised, and fast. Send us drawings or a BOQ and we return a clear scope and quotation without a long tender process.</p>
-
-      <h2>Prepare your fit-out brief</h2>
-      <p>A useful brief lets us separate the work your site needs from assumptions. Send what you have; tell us which drawings or site details are still missing.</p>
-      <ul>
-        <li><strong>Site and use:</strong> Location, floor area, whether the space is an office, restaurant, clinic or another commercial use, and its current condition.</li>
-        <li><strong>Drawings and scope:</strong> Floor plans or a BOQ, the areas being changed, and any existing finishes or equipment that must stay.</li>
-        <li><strong>Design and joinery:</strong> Brand guidelines, reference images, reception or counter needs, storage and furniture requirements.</li>
-        <li><strong>Building constraints:</strong> Landlord fit-out guidance, access hours and any known submission or site restrictions. Approval needs are checked for your specific site.</li>
-        <li><strong>Budget and opening date:</strong> Your working budget, target handover date and whether the site will remain occupied during works.</li>
-      </ul>
-      <h3>Agree what the quote covers</h3>
-      <p>Ask for the scope to distinguish partitions, ceilings, flooring, joinery, MEP coordination and finishes. Confirm what is included, excluded or dependent on a site survey, along with the drawings, approval steps and handover plan. The quote should reflect your actual site, not a generic price per square foot.</p>
-      <p><Link to="/contact">Send your fit-out brief</Link>, or email drawings to <a href="mailto:sales@fann.ae">sales@fann.ae</a>. For office and commercial interiors, see our <Link to="/fit-out-company-dubai">fit-out company page</Link> with real office project photographs; for specialist spaces, review our <Link to="/restaurant-fit-out-dubai">restaurant</Link> and <Link to="/clinic-fit-out-dubai">clinic fit-out</Link> pages.</p>
+      <h2>Send your drawings and scope</h2>
+      <p>Email the unit details, current photographs, drawings or BOQ to <a href="mailto:business@fann.ae">business@fann.ae</a>. Add the intended use, access constraints and preferred opening date. Confirm the drawings, finishes and service responsibilities before work is released.</p>
+      <p>For specialist spaces, review our <Link to="/restaurant-fit-out-dubai">restaurant</Link>, <Link to="/clinic-fit-out-dubai">clinic</Link> and <Link to="/villa-renovation-dubai">villa renovation</Link> pages. The <Link to="/fit-out-company-dubai">office and commercial fit-out company page</Link> includes further existing office project photographs.</p>
 
       <h2 id="design-concepts">Design concepts</h2>
-      <p>These are design concepts created by FANN to show how we approach clinic, restaurant and retail interiors. They are concept visuals, not photos of completed projects. We design every fit-out around your brand, site and budget, and we can prepare a concept like this for your space before you commit.</p>
+      <p>These are design concepts created by FANN to show how we approach clinic, restaurant and retail interiors. They are concept visuals, not photos of completed projects. The actual design and any concept scope are agreed for your site; these images are not a free design offer or a promised turnaround.</p>
       <div className="not-prose grid md:grid-cols-3 gap-6 my-8">
         {concepts.map(c => (
           <figure key={c.img} className="bg-fann-charcoal-light border border-fann-gold/40 rounded-lg overflow-hidden">
             <div className="relative">
-              <img src={c.img} alt={`Design concept by FANN: ${c.title.toLowerCase()} interior (concept visual, not a completed project)`} loading="lazy" className="w-full aspect-video object-cover" />
+              <img src={c.img} alt={`Design concept by FANN: ${c.title.toLowerCase()} interior (concept visual, not a completed project)`} loading="lazy" width="1200" height="675" className="w-full aspect-video object-cover" />
               <span className="absolute top-3 left-3 bg-fann-gold text-black text-xs font-bold uppercase tracking-wider px-3 py-1 rounded">Design Concept</span>
             </div>
             <figcaption className="p-5">
@@ -153,7 +131,7 @@ const FitOutDubaiPage: React.FC = () => (
 
       <div className="not-prose my-10 p-8 border border-fann-gold/40 rounded-lg text-center">
         <p className="text-xl text-white font-serif mb-4">Opening a new site or refreshing an existing one? Tell us about it.</p>
-        <p className="text-gray-300 mb-6"><a href="mailto:sales@fann.ae" className="text-fann-gold">sales@fann.ae</a> &middot; <a href="tel:+971505667502" className="text-fann-gold">+971 50 566 7502</a></p>
+        <p className="text-gray-300 mb-6"><a href="mailto:business@fann.ae" className="text-fann-gold">business@fann.ae</a> &middot; <a href="tel:+971505667502" className="text-fann-gold">+971 50 566 7502</a></p>
         <Link to="/contact" className="bg-fann-gold text-black font-bold py-3 px-8 rounded-full uppercase tracking-wider inline-block">Send your drawings</Link>
       </div>
 
