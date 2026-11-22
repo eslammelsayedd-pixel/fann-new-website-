@@ -949,7 +949,7 @@ function isRateLimited(ip: string, limit = 8): boolean {
   return hits.length > limit;
 }
 
-async function deliverLead(subject: string, text: string, replyTo?: string): Promise<void> {
+async function deliverLead(subject: string, text: string, replyTo?: string, recipient: string = LEAD_TO): Promise<void> {
   // SMTP first when configured: Web3Forms blocks server-side calls on the free plan (403), so the
   // server fallback only becomes a working delivery path once SMTP_* env is set.
   if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
@@ -960,9 +960,10 @@ async function deliverLead(subject: string, text: string, replyTo?: string): Pro
       secure: Number(process.env.SMTP_PORT) === 465,
       auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
     });
-    await transport.sendMail({ from: `FANN Website <${process.env.SMTP_USER}>`, to: LEAD_TO, replyTo, subject, text });
+    await transport.sendMail({ from: `FANN Website <${process.env.SMTP_USER}>`, to: recipient, replyTo, subject, text });
     return;
   }
+  if (recipient !== LEAD_TO) throw new Error('Business form delivery requires the configured SMTP route; not sent to another inbox.');
   const web3Key = process.env.WEB3FORMS_ACCESS_KEY;
   if (web3Key) {
     const r = await fetch('https://api.web3forms.com/submit', {
@@ -1026,7 +1027,7 @@ async function leadReceipt(req: VercelRequest, res: VercelResponse) {
   if (!key) return res.status(503).json({ persisted: false });
   const b = req.body || {};
   if (JSON.stringify(b).length > 65536) return res.status(413).json({ persisted: false });
-  if (clean(b.website) || b.deliveryConfirmed !== true) return res.status(400).json({ persisted: false });
+  if (clean(b.website) || typeof b.deliveryConfirmed !== 'boolean') return res.status(400).json({ persisted: false });
   const ip = clean(req.headers['x-forwarded-for'], 100).split(',')[0];
   if (isRateLimited('receipt:' + ip)) return res.status(429).json({ persisted: false });
   const email = clean(b.email, 160), phone = clean(b.phone, 40);
@@ -1037,6 +1038,8 @@ async function leadReceipt(req: VercelRequest, res: VercelResponse) {
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(requestToken)) return res.status(400).json({ persisted: false });
   const submission = { formType: clean(b.formType, 80), name: clean(b.name, 120), email, phone,
     company: clean(b.company, 160), message: clean(b.message, 5000),
+    ...(!b.deliveryConfirmed ? { deliveryStatus: 'failed', deliveryError: 'Browser delivery unconfirmed; no automatic resend attempted.' } : {}),
+    isTest: /\bFANN\b[\s\S]*\b(?:TEST|QA|PROBE)\b/i.test([b.name,b.company,b.message,b.details?.projectName,b.details?.eventName].filter(Boolean).join(' ')),
     details: Object.fromEntries(Object.entries(typeof b.details === 'object' && b.details ? b.details : {}).slice(0,40).map(([k,v])=>[clean(k,100), clean(typeof v === 'object' ? JSON.stringify(v) : v,1000)])) };
   try {
     const { randomUUID, createHash } = await import('node:crypto');
@@ -1190,6 +1193,7 @@ async function handleLead(req: VercelRequest, res: VercelResponse, defaultType: 
   if (isRateLimited(ip)) return res.status(429).json({ success: false, error: 'Too many submissions. Please try again in a few minutes or WhatsApp us.' });
 
   const formType = clean(b.formType || b.type || defaultType, 80);
+  const recipient = ['Event Studio concept request', 'Interior Studio design request'].includes(formType) ? 'business@fann.ae' : LEAD_TO;
   const name = clean(b.name || [b.firstName, b.lastName].filter(Boolean).join(' '), 120);
   const email = clean(b.email, 160);
   const phone = clean(b.phone, 40);
@@ -1247,16 +1251,10 @@ async function handleLead(req: VercelRequest, res: VercelResponse, defaultType: 
   ].join('\n');
 
   try {
-    await deliverLead(`[fann.ae] ${formType}${name ? ' - ' + name : ''}${company ? ' (' + company + ')' : ''}`, text, email || undefined);
+    await deliverLead(`[fann.ae] ${formType}${name ? ' - ' + name : ''}${company ? ' (' + company + ')' : ''}`, text, email || undefined, recipient);
     console.log(`Lead delivered: ${formType}`);
-    if (email) {
-      try {
-        await Promise.race([
-          autoReplyLead({ formType, name, email, extra, est }),
-          new Promise((_, reject) => setTimeout(() => reject(new Error('autoreply timeout')), 9000)),
-        ]);
-      } catch (replyErr: any) { console.error('AutoReply failed (lead delivery intact):', replyErr?.message); }
-    }
+    // Delivering an enquiry does not authorize a reply to its visitor.
+    // Customer auto-replies remain disabled until separately approved.
     // Disabled unless separately configured after table/security review. Delivery stays intact.
     let persisted = false;
     let submissionId: string | undefined;
@@ -1282,7 +1280,7 @@ async function handleLead(req: VercelRequest, res: VercelResponse, defaultType: 
         await persistLeadReceipt(fetch, FLOORPLAN_STORAGE, failedKey, randomUUID(), { formType, name, email, phone, company, message, details: extra, deliveryStatus: 'failed', deliveryError: clean(err?.message || 'delivery failed', 200) });
       } catch { console.error('Failed-lead persistence unavailable.'); }
     }
-    return res.status(502).json({ success: false, error: 'Sorry, your message could not be sent right now. Please WhatsApp us on +971 50 566 7502 or email sales@fann.ae.' });
+    return res.status(502).json({ success: false, error: `Sorry, your message could not be sent right now. Please WhatsApp us on +971 50 566 7502 or email ${recipient}.` });
   }
 }
 
