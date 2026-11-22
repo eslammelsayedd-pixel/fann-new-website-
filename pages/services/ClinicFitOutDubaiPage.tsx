@@ -7,7 +7,7 @@ import FaqAccordion from '../../components/FaqAccordion';
 import { Link } from 'react-router-dom';
 
 const path = '/clinic-fit-out-dubai';
-const pageTitle = 'Clinic Fit-Out in Dubai';
+const pageTitle = clinicScope.heading;
 
 const breadcrumbs = [
   { name: 'Home', path: '/' },
@@ -58,8 +58,8 @@ const schema = {
       '@type': 'Service',
       serviceType: 'Clinic Fit-Out',
       name: 'Clinic Fit-Out Contractor Dubai',
-      description: 'Clinic and medical-centre fit-out across Dubai and Abu Dhabi: reception desks, treatment-room cabinetry, partitions, ceilings, flooring, MEP coordination and finishes, with an in-house joinery workshop.',
-      provider: { '@type': 'Organization', name: 'FANN', url: 'https://fann.ae', telephone: '+971505667502', email: 'sales@fann.ae' },
+      description: clinicScope.description,
+      provider: { '@type': 'Organization', name: 'FANN', url: 'https://fann.ae', telephone: '+971505667502', email: 'business@fann.ae' },
       areaServed: [{ '@type': 'City', name: 'Dubai' }, { '@type': 'City', name: 'Abu Dhabi' }],
     },
     {
@@ -76,18 +76,19 @@ const schema = {
 const ClinicFitOutDubaiPage: React.FC = () => (
   <AnimatedPage>
     <SEO
-      title="Clinic Fit-Out Contractor Dubai | FANN"
-      description="Clinic fit-out in Dubai and Abu Dhabi. Review reception joinery, cabinetry, finishes, equipment interfaces and approval responsibilities before a project-specific quote."
+      title={clinicScope.title}
+      description={clinicScope.description}
       schema={schema}
     />
     <ServicePageLayout
       heroImage="/images/site/workshop-carpentry.webp"
       heroAltText="Joinery being cut in the FANN workshop"
       pageTitle={pageTitle}
-      pageDescription={clinicScope.intro}
-      heroAction={{label: 'Discuss your clinic scope', path: '/contact'}}
+      pageDescription={clinicScope.subheading}
+      heroAction={{label: 'Email your clinic brief', path: 'mailto:business@fann.ae?subject=Dubai%20medical%20clinic%20fit-out%20brief'}}
       breadcrumbs={breadcrumbs}
     >
+      <p className="lead">{clinicScope.intro}</p>
       {clinicScope.sections.map(section => <section key={section.heading}><h2>{section.heading}</h2><p>{section.text}</p></section>)}
       <h2>Define the quoted work</h2><ul>{deliver.map(d => <li key={d}>{d}</li>)}</ul>
       <p>Identify the included areas, materials, service interfaces, exclusions and coordination responsibilities in the proposal. Equipment supply and any specialist requirements need confirmation for this facility.</p>
@@ -122,13 +123,13 @@ const ClinicFitOutDubaiPage: React.FC = () => (
 
       <div className="not-prose my-10 p-8 border border-fann-gold/40 rounded-lg text-center">
         <p className="text-xl text-white font-serif mb-4">Opening a clinic or refreshing an existing one? Tell us about it.</p>
-        <p className="text-gray-300 mb-6"><a href="mailto:sales@fann.ae" className="text-fann-gold">sales@fann.ae</a> &middot; <a href="tel:+971505667502" className="text-fann-gold">+971 50 566 7502</a></p>
-        <Link to="/contact" className="bg-fann-gold text-black font-bold py-3 px-8 rounded-full uppercase tracking-wider inline-block">Send your drawings</Link>
+        <p className="text-gray-300 mb-6"><a href="mailto:business@fann.ae" className="text-fann-gold">business@fann.ae</a> &middot; <a href="tel:+971505667502" className="text-fann-gold">+971 50 566 7502</a></p>
+        <Link to="mailto:business@fann.ae?subject=Dubai%20medical%20clinic%20fit-out%20brief" className="bg-fann-gold text-black font-bold py-3 px-8 rounded-full uppercase tracking-wider inline-block">Email your drawings</Link>
       </div>
 
       <FaqAccordion faqs={faqs} />
 
-      <p className="mt-8">We also deliver <Link to="/fit-out-dubai">commercial fit-out</Link> and <Link to="/restaurant-fit-out-dubai">restaurant fit-out</Link> across Dubai and Abu Dhabi. <Link to="/contact">Tell us about your space</Link>.</p>
+      <p className="mt-8">Planning several clinical services? Read the <Link to="/medical-centre-fit-out-dubai">medical centre room-planning guide</Link>. We also deliver <Link to="/fit-out-dubai">commercial fit-out</Link> and <Link to="/restaurant-fit-out-dubai">restaurant fit-out</Link> across Dubai and Abu Dhabi. <Link to="mailto:business@fann.ae?subject=Dubai%20medical%20clinic%20fit-out%20brief">Tell us about your space</Link>.</p>
     </ServicePageLayout>
   </AnimatedPage>
 );
