@@ -1,4 +1,3 @@
-
 import { submitLead } from '../lib/submitLead';
 import { validateLeadPhone } from '../lib/leadValidation';
 import React, { useState, useEffect, useCallback } from 'react';
@@ -266,7 +265,8 @@ const ExhibitionStudioPage: React.FC = () => {
         return isValid;
     };
 
-    const nextStep = () => {
+    const nextStep = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
         if (validateStep(currentStep)) {
             setCurrentStep(prev => Math.min(prev + 1, steps.length));
         }
