@@ -1,43 +1,51 @@
 {
-  "intro": "FANN delivers clinic and medical-centre fit-out in Dubai and Abu Dhabi, including reception joinery, cabinetry, partitions and finishes. The proposed scope is reviewed around the actual facility, drawings, service interfaces and approval responsibilities.",
+  "intro": "FANN delivers medical clinic fit-out in Dubai, including reception joinery, room cabinetry, partitions and finishes. Start with the facility type, room list, available drawings, equipment interfaces and approval responsibilities. The existing healthcare galleries below are project references, not an approval guarantee. A multi-room medical centre can use the linked room-planning guide alongside the clinic construction brief.",
   "sections": [
     {
-      "heading": "Start with the actual facility brief",
-      "text": "Send the facility type, location, approximate area, existing condition and intended opening date. Add room layouts, equipment information and the drawings or BOQ available. Identify what is confirmed and what still needs design or technical input, so a quotation is based on the clinic you plan to operate."
+      "heading": "Start with the medical clinic and room brief",
+      "text": "Send the Dubai address, facility type, approximate area, existing condition and target opening date. List the reception, waiting, consultation, treatment, support and staff areas in the proposed work. Add available drawings, a BOQ and the equipment schedule. Identify what is confirmed and what still needs clinical or technical design input."
     },
     {
-      "heading": "Define approval and technical responsibilities",
-      "text": "Requirements vary by facility type and emirate. Bring the applicable landlord and authority information into the scope review and name who prepares submissions, coordinates the drawings and answers comments. Confirm the responsible technical parties and any specialist equipment interfaces. Do not treat a previous clinic project as approval for a new facility."
+      "heading": "Separate clinical planning from the fit-out scope",
+      "text": "The operator and appointed qualified specialists define the clinical service requirements and applicable licensing route. Agree who prepares the design information, coordinates authority and landlord submissions and responds to comments. FANN undertakes the agreed construction and joinery work. A previous clinic project or reception photograph does not approve a new facility."
     },
     {
-      "heading": "Release joinery against agreed details",
-      "text": "FANN has a joinery workshop in Umm Al Quwain. Review reception desks, storage and treatment-room cabinetry against the agreed drawings, materials, quantities and service interfaces before production. Changes to layouts, equipment or finishes need their effect on the scope and programme reviewed before the changed work proceeds."
+      "heading": "Coordinate cabinetry, equipment and services",
+      "text": "Confirm reception desks, room cabinetry and storage against the agreed room layouts, materials and service interfaces. Name the designers and specialist suppliers responsible for equipment information, power, data, plumbing and other required services. Resolve the relevant interfaces before partitions, finishes or joinery are released for the changed work."
     },
     {
-      "heading": "Plan site checks and handover",
-      "text": "Agree the installation sequence, access arrangements and checks for the specified work. Record outstanding items and handover responsibilities, including information needed from other suppliers. The opening date, technical approvals and operating requirements should be coordinated as separate project inputs rather than replaced with a standard fit-out duration."
+      "heading": "Define finishes and joinery room by room",
+      "text": "FANN has a joinery workshop in Umm Al Quwain. Review the specified cabinetry, storage, counters and finishes against named drawing revisions and agreed quantities. Requirements differ between rooms and facilities; no standard reception image establishes a clinical specification. Changes need their effect on the scope and programme reviewed before production."
+    },
+    {
+      "heading": "Plan site work, checks and handover",
+      "text": "Agree the site access, installation sequence, protection and handover checks for the specified work. Identify dependencies on equipment suppliers, building teams and appointed specialists. For a working clinic, record operational restrictions before agreeing any phasing. Construction completion, required inspections and permission to operate remain distinct project milestones."
     }
   ],
   "faqs": [
     {
-      "question": "What information is needed for a clinic fit-out quote?",
-      "answer": "Send the clinic location, approximate area, facility type, available drawings or BOQ and target opening date. Identify the rooms, equipment interfaces and landlord requirements already known. FANN can then review the fit-out scope and prepare a project-specific quotation, with inclusions, exclusions and unresolved inputs identified rather than assumed."
+      "question": "What should I send for a medical clinic fit-out quotation in Dubai?",
+      "answer": "Send the Dubai location, facility type, approximate area, room list and target opening date. Include available drawings or BOQ, the current site condition and equipment information. Identify landlord requirements, approval status and responsible design specialists. The proposal can then define the construction and joinery work, exclusions and inputs still needed."
     },
     {
-      "question": "Are health-authority and landlord approvals included automatically?",
-      "answer": "No. Approval requirements depend on the facility type, location and project. Share the applicable landlord and authority information, then agree who prepares each submission, coordinates the drawings and responds to comments. The proposal should identify those responsibilities. A fit-out quotation is not a guarantee of a particular approval outcome."
+      "question": "Does FANN provide medical equipment or guarantee healthcare approval?",
+      "answer": "Medical equipment, specialist systems, design submissions and certification are included only when the agreed proposal expressly identifies them. Confirm the operator, regulator, landlord and qualified specialists for the actual facility. FANN is not presented as a licensing authority or an approval guarantor, and an existing project does not establish approval for a new clinic."
     },
     {
-      "question": "Can FANN produce clinic reception desks and cabinetry?",
-      "answer": "Yes. FANN has a joinery workshop in Umm Al Quwain supporting the agreed clinic joinery scope. Review reception desks, storage and cabinetry against the approved drawings, materials, quantities and equipment interfaces before production. A previous reception photograph is a reference, not confirmation that the same detail suits your clinical requirements."
+      "question": "Can you make clinic reception desks and treatment-room cabinetry?",
+      "answer": "Yes. FANN has a joinery workshop in Umm Al Quwain supporting the agreed clinic joinery scope. Confirm room layouts, drawing revisions, dimensions, materials, quantities and equipment interfaces before production. Reception and cabinetry photographs help explain preferences; they do not replace the clinical specification, service coordination or approvals needed for your facility."
     },
     {
-      "question": "How should treatment-room services and finishes be coordinated?",
-      "answer": "Review the room layout, equipment information and service requirements together before finishes or cabinetry are released. Identify the responsible technical parties, access needs and unresolved interfaces in the project scope. FANN coordinates the agreed fit-out work; the specific services, specialist equipment and checks need confirmation for the actual facility."
+      "question": "How is a medical centre fit-out different from a single clinic?",
+      "answer": "A centre with several services needs a coordinated room schedule and clear responsibilities for shared reception, waiting, support spaces, services and equipment interfaces. Use the linked medical-centre planning guide to prepare those inputs. The actual facility brief, appointed designers and applicable authority requirements determine the proposed work, not the number of reference photographs."
     },
     {
-      "question": "Can the opening date be confirmed before drawings are reviewed?",
-      "answer": "No. A target opening date is an input to planning, not a confirmed fit-out duration. Drawings, specification, approvals, site access and equipment interfaces affect the programme. Share those inputs early, then confirm the agreed sequence and handover checks. Later changes need their effect on scope and timing reviewed before work proceeds."
+      "question": "Can the clinic opening date be promised before the scope is reviewed?",
+      "answer": "No. The target opening date is a planning input, not a confirmed fit-out duration. Drawings, specification, approvals, site access and equipment interfaces affect the programme. Agree the sequence, dependencies and handover checks for the actual facility. Later changes need their effect on scope and timing reviewed before the changed work proceeds."
     }
-  ]
+  ],
+  "title": "Medical Clinic Fit-Out Dubai | Healthcare Interiors | FANN",
+  "heading": "Medical clinic fit-out in Dubai",
+  "description": "Medical clinic fit-out in Dubai: reception joinery, room cabinetry, partitions and finishes, real healthcare project references and a project-specific scope.",
+  "subheading": "Reception joinery, room cabinetry, partitions and finishes, scoped around your actual healthcare facility and responsible specialists."
 }
