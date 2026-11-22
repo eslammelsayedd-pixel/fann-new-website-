@@ -1,4 +1,3 @@
-
 import { submitLead } from '../lib/submitLead';
 import { validateLeadPhone, isWorkEmail, WORK_EMAIL_ERROR } from '../lib/leadValidation';
 import PhoneInput from '../components/PhoneInput';
@@ -137,7 +136,8 @@ const InteriorStudioPage: React.FC = () => {
         });
     };
 
-    const nextStep = () => {
+    const nextStep = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
         if (currentStep === 1) {
              if (!formData.projectName || !formData.clientName) return;
         }
