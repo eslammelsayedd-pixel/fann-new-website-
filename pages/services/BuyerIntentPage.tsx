@@ -5,11 +5,12 @@ import SEO from '../../components/SEO';
 import ServicePageLayout from '../../components/ServicePageLayout';
 import FaqAccordion from '../../components/FaqAccordion';
 import buyerPages from '../../data/buyerPages.json';
+import searchPriorityPages from '../../data/searchPriorityPages.json';
 import { buyerPageSchema } from '../../data/buyerPageSchema.js';
 
 const BuyerIntentPage: React.FC = () => {
  const path=useLocation().pathname.replace(/\/$/, "");
- const page: any=buyerPages[path as keyof typeof buyerPages];
+ const page: any=searchPriorityPages[path as keyof typeof searchPriorityPages] || buyerPages[path as keyof typeof buyerPages];
  if(!page) return null;
  return <AnimatedPage><div className="buyer-intent-page" lang={page.lang || "en"} dir={page.direction || "ltr"}><style>{`.buyer-intent-page[dir="rtl"] { text-align: right; } .buyer-intent-page[dir="rtl"] button { text-align: right; gap: 1rem; } .buyer-intent-page[dir="rtl"] ol { gap: .5rem; flex-wrap: wrap; } .buyer-intent-page[dir="rtl"] ol li { margin: 0; } .buyer-intent-page h2, .buyer-intent-page button[aria-expanded] { scroll-margin-top: 112px; }`}</style><SEO title={page.title} description={page.description} schema={buyerPageSchema(path,page)} image={page.hero ? 'https://fann.ae'+page.hero : undefined}/>
  <ServicePageLayout heroImage={page.hero} heroAltText={page.heroAlt || page.heading} pageTitle={page.heading} pageDescription={page.subheading || "A design brief built around your products, visitor journey and actual venue allocation."} heroAction={{label:page.action,path:page.actionPath || '/exhibition-stand-quote'}} breadcrumbs={[{name:page.homeLabel || 'Home',path:'/'},{name:page.servicesLabel || 'Services',path:'/services'},{name:page.breadcrumb || 'Stand design Abu Dhabi',path}]}>
