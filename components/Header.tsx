@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { navLinks } from '../constants';
 import { Menu, X, ChevronDown } from 'lucide-react';
@@ -9,6 +9,8 @@ const Header: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+    const menuButton = useRef<HTMLButtonElement>(null);
+    const mobileMenu = useRef<HTMLDivElement>(null);
     const location = useLocation();
     const isAdsLanding = location.pathname === '/exhibition-stand-quote';
 
@@ -21,6 +23,25 @@ const Header: React.FC = () => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    useEffect(() => {
+        if (!isOpen) return;
+        const previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        const frame = requestAnimationFrame(() => mobileMenu.current?.querySelector<HTMLAnchorElement>('a[href]')?.focus());
+        const handleKey = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') { event.preventDefault(); setIsOpen(false); menuButton.current?.focus(); }
+            if (event.key !== 'Tab') return;
+            const controls = [menuButton.current, ...Array.from(mobileMenu.current?.querySelectorAll<HTMLElement>('a[href], button') || [])].filter(Boolean) as HTMLElement[];
+            const first = controls[0], last = controls[controls.length - 1];
+            if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+            if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+        };
+        const closeOnDesktop = () => { if (window.innerWidth >= 1024) setIsOpen(false); };
+        document.addEventListener('keydown', handleKey);
+        window.addEventListener('resize', closeOnDesktop);
+        return () => { cancelAnimationFrame(frame); document.body.style.overflow = previousOverflow; document.removeEventListener('keydown', handleKey); window.removeEventListener('resize', closeOnDesktop); };
+    }, [isOpen]);
 
     // Mobile: solid background, no backdrop-blur. iOS Safari can drop a fixed
     // header that carries backdrop-filter during momentum scroll, which made the
@@ -52,7 +73,7 @@ const Header: React.FC = () => {
                                     aria-expanded={openDropdown === link.name}
                                     aria-controls={'desktop-nav-' + link.name.toLowerCase().replace(/\s+/g, '-')}
                                     onClick={() => setOpenDropdown(openDropdown === link.name ? null : link.name)}
-                                    className="flex items-center gap-1 text-xs font-semibold uppercase tracking-widest text-gray-300 hover:text-fann-gold transition-colors py-2 hover-trigger"
+                                    className="inline-flex min-h-[44px] min-w-[44px] items-center gap-1 rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fann-gold text-xs font-semibold uppercase tracking-widest text-gray-300 hover:text-fann-gold transition-colors py-2 hover-trigger"
                                 >
                                     {link.name}
                                     <ChevronDown size={10} className="opacity-70" />
@@ -60,7 +81,7 @@ const Header: React.FC = () => {
                             ) : (
                                 <NavLink
                                     to={link.path!}
-                                    className={({ isActive }) => `text-xs font-semibold uppercase tracking-widest transition-colors relative link-underline hover-trigger ${
+                                    className={({ isActive }) => `inline-flex min-h-[44px] min-w-[44px] items-center rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fann-gold text-xs font-semibold uppercase tracking-widest transition-colors relative link-underline hover-trigger ${
                                         isActive ? 'text-fann-gold' : 'text-gray-300 hover:text-white'
                                     }`}
                                 >
@@ -76,7 +97,7 @@ const Header: React.FC = () => {
                                             <NavLink
                                                 key={child.name}
                                                 to={child.path}
-                                                className="block px-4 py-3 text-xs font-medium uppercase tracking-wider text-gray-400 hover:text-fann-gold hover:bg-white/5 transition-colors hover-trigger"
+                                                className="flex min-h-[44px] items-center rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-fann-gold px-4 py-3 text-xs font-medium uppercase tracking-wider text-gray-400 hover:text-fann-gold hover:bg-white/5 transition-colors hover-trigger"
                                             >
                                                 {child.name}
                                             </NavLink>
@@ -91,7 +112,7 @@ const Header: React.FC = () => {
                 {/* RIGHT ACTIONS */}
                 <div className="hidden lg:flex items-center gap-4 xl:gap-6">
                     <ThemeToggle />
-                    <a href="tel:+971505667502" dir="ltr" className="text-xs font-semibold text-fann-gold hover:text-white transition-colors whitespace-nowrap" aria-label="Call FANN at +971 50 566 7502">+971 50 566 7502</a>
+                    <a href="tel:+971505667502" dir="ltr" className="inline-flex min-h-[44px] items-center rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-fann-gold text-xs font-semibold text-fann-gold hover:text-white transition-colors whitespace-nowrap" aria-label="Call FANN at +971 50 566 7502">+971 50 566 7502</a>
                     <Link to="/contact" className="btn-gold hover-trigger inline-flex min-h-[48px] items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Start Project</Link>
                 </div>
 
@@ -100,10 +121,13 @@ const Header: React.FC = () => {
                     <ThemeToggle />
                     <a href="tel:+971505667502" className="text-fann-gold p-2" aria-label="Call FANN at +971 50 566 7502"><span className="sr-only">+971 50 566 7502</span><span aria-hidden="true">Call</span></a>
                     <button 
+                        ref={menuButton}
+                        type="button"
+                        aria-controls="mobile-navigation"
                         onClick={() => setIsOpen(!isOpen)} 
                         aria-label={isOpen ? 'Close menu' : 'Open menu'}
                         aria-expanded={isOpen}
-                        className="text-white p-2 hover:text-fann-gold transition-colors"
+                        className="text-white p-2 min-h-[44px] min-w-[44px] rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-fann-gold hover:text-fann-gold transition-colors"
                     >
                         {isOpen ? <X size={24} /> : <Menu size={24} />}
                     </button>
@@ -113,7 +137,7 @@ const Header: React.FC = () => {
             {/* MOBILE MENU */}
             <AnimatePresence>
             {isOpen && (
-                <motion.div 
+                <motion.div ref={mobileMenu} id="mobile-navigation"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -132,7 +156,7 @@ const Header: React.FC = () => {
                                                     key={child.name}
                                                     to={child.path}
                                                     onClick={() => setIsOpen(false)}
-                                                    className="block text-lg font-medium text-white hover:text-fann-gold"
+                                                    className="flex min-h-[44px] items-center rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-fann-gold text-lg font-medium text-white hover:text-fann-gold"
                                                 >
                                                     {child.name}
                                                 </NavLink>
@@ -143,7 +167,7 @@ const Header: React.FC = () => {
                                     <NavLink
                                         to={link.path!}
                                         onClick={() => setIsOpen(false)}
-                                        className="block text-2xl font-serif text-white hover:text-fann-gold"
+                                        className="flex min-h-[44px] items-center rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-fann-gold text-2xl font-serif text-white hover:text-fann-gold"
                                     >
                                         {link.name}
                                     </NavLink>
