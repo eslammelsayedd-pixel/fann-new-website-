@@ -197,7 +197,7 @@ for (const [route, faqs] of Object.entries(buyerFaqs)) {
 const buyerPages = { ...JSON.parse(fs.readFileSync(path.resolve('data/buyerPages.json'),'utf8')), ...JSON.parse(fs.readFileSync(path.resolve('data/searchPriorityPages.json'),'utf8')) };
 for (const [route,page] of Object.entries(buyerPages)) {
  const E=escapeFaq;
- routes[route]={lang:page.lang || 'en',direction:page.direction || 'ltr',title:page.title,description:page.description,robots:'index, follow',jsonld:JSON.stringify(buyerPageSchema(route,page)),body:`<h1>${E(page.heading)}</h1><p>${E(page.heroCaption)}</p><p>${E(page.intro)}</p><a href="${page.actionPath || "/exhibition-stand-quote"}">${E(page.action)}</a>${page.sections.map(section=>`<section><h2>${E(section.heading)}</h2><p>${E(section.text)}</p>${section.items?`<ul>${section.items.map(item=>`<li>${E(item)}</li>`).join('')}</ul>`:''}</section>`).join('')}${page.eventsList?.length?`<h2>${E(page.eventsHeading || "Upcoming events at the venue")}</h2><p>${E(page.eventsNote)}</p><ul>${page.eventsList.map(ev=>`<li><strong>${E(ev.dates)}</strong> - ${ev.path?`<a href="${E(ev.path)}">${E(ev.name)}</a>`:E(ev.name)}${ev.hall?` (${E(ev.hall)})`:""}${ev.note?` - ${E(ev.note)}`:""}</li>`).join("")}</ul>`:""}${page.proof?`<h2>${E(page.proofHeading || "Completed stands to inform your design brief")}</h2><p>${E(page.proofNote)}</p>`:''}${(page.proof||[]).map(proof=>`<article><a href="${proof.path}"><img src="${proof.image}" alt="${E(proof.name+', '+proof.location)}"><h3>${E(proof.name)}</h3><p>${E(proof.location)}</p><p>${E(proof.text)}</p>${E(page.proofLinkLabel || "View completed stand")}</a></article>`).join('')}${page.proofGallery?`<h2>${E(page.proofGallery.heading)}</h2><p>${E(page.proofGallery.note)}</p>${page.proofGallery.items.map(item=>`<figure><img src="${item.src}" alt="${E(item.caption)}"><figcaption>${E(item.caption)}</figcaption></figure>`).join('')}`:''}<h2>${E(page.proposalHeading || "Turn the design brief into a scoped proposal")}</h2><p>${E(page.proposalText || "Share the show, dimensions, open sides, products and deadlines. Add your floor plan if available.")}</p><a href="${page.actionPath || "/exhibition-stand-quote"}">${E(page.action)}</a><h2>${E(page.faqHeading || "Frequently asked questions")}</h2>${page.faqs.map(f=>`<h3>${E(f.question)}</h3><p>${E(f.answer)}</p>`).join('')}<h2>${E(page.relatedHeading || "Continue planning your exhibition stand")}</h2><ul>${page.related.map(link=>`<li><a href="${link.path}">${E(link.label)}</a></li>`).join('')}</ul><h2>${E(page.sourcesHeading || "Venue planning source")}</h2>${page.sources.map(source=>`<p><a href="${source.url}">${E(source.label)}</a> ${E(source.note)}</p>`).join('')}`};
+ routes[route]={lang:page.lang || 'en',direction:page.direction || 'ltr',title:page.title,description:page.description,robots:'index, follow',image:page.hero,jsonld:JSON.stringify(buyerPageSchema(route,page)),body:`<h1>${E(page.heading)}</h1><p>${E(page.heroCaption)}</p><p>${E(page.intro)}</p><a href="${page.actionPath || "/exhibition-stand-quote"}">${E(page.action)}</a>${page.sections.map(section=>`<section><h2>${E(section.heading)}</h2><p>${E(section.text)}</p>${section.items?`<ul>${section.items.map(item=>`<li>${E(item)}</li>`).join('')}</ul>`:''}</section>`).join('')}${page.eventsList?.length?`<h2>${E(page.eventsHeading || "Upcoming events at the venue")}</h2><p>${E(page.eventsNote)}</p><ul>${page.eventsList.map(ev=>`<li><strong>${E(ev.dates)}</strong> - ${ev.path?`<a href="${E(ev.path)}">${E(ev.name)}</a>`:E(ev.name)}${ev.hall?` (${E(ev.hall)})`:""}${ev.note?` - ${E(ev.note)}`:""}</li>`).join("")}</ul>`:""}${page.proof?`<h2>${E(page.proofHeading || "Completed stands to inform your design brief")}</h2><p>${E(page.proofNote)}</p>`:''}${(page.proof||[]).map(proof=>`<article><a href="${proof.path}"><img src="${proof.image}" alt="${E(proof.name+', '+proof.location)}"><h3>${E(proof.name)}</h3><p>${E(proof.location)}</p><p>${E(proof.text)}</p>${E(page.proofLinkLabel || "View completed stand")}</a></article>`).join('')}${page.proofGallery?`<h2>${E(page.proofGallery.heading)}</h2><p>${E(page.proofGallery.note)}</p>${page.proofGallery.items.map(item=>`<figure><img src="${item.src}" alt="${E(item.caption)}"><figcaption>${E(item.caption)}</figcaption></figure>`).join('')}`:''}<h2>${E(page.proposalHeading || "Turn the design brief into a scoped proposal")}</h2><p>${E(page.proposalText || "Share the show, dimensions, open sides, products and deadlines. Add your floor plan if available.")}</p><a href="${page.actionPath || "/exhibition-stand-quote"}">${E(page.action)}</a><h2>${E(page.faqHeading || "Frequently asked questions")}</h2>${page.faqs.map(f=>`<h3>${E(f.question)}</h3><p>${E(f.answer)}</p>`).join('')}<h2>${E(page.relatedHeading || "Continue planning your exhibition stand")}</h2><ul>${page.related.map(link=>`<li><a href="${link.path}">${E(link.label)}</a></li>`).join('')}</ul><h2>${E(page.sourcesHeading || "Venue planning source")}</h2>${page.sources.map(source=>`<p><a href="${source.url}">${E(source.label)}</a> ${E(source.note)}</p>`).join('')}`};
 }
 // Match the visible Services guide directory. Do not promote the parked Saudi pages.
 const guideGroups = ['Dubai', 'Abu Dhabi'];
@@ -316,20 +316,25 @@ for (const [route, r] of Object.entries(routes)) {
   html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(r.title)}</title>`);
   html = html.replace(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${url}">`);
   html = html.replace(/<meta name="description"[^>]*>/, '');
-  html = html.replace(/<meta property="og:(title|description|url)"[^>]*>/g, '');
-  html = html.replace(/<meta name="twitter:(title|description)"[^>]*>/g, '');
+  html = html.replace(/<meta property="og:(title|description|url|image)"[^>]*>/g, '');
+  html = html.replace(/<meta (?:name|property)="twitter:[^"]+"[^>]*>/g, '');
+  const socialImage = r.image ? new URL(r.image, SITE).href : SITE + '/og-image.jpg';
   const head = [
     `<meta name="description" content="${esc(r.description)}">`,
     `<meta name="robots" content="${esc(r.robots || 'index, follow')}">`,
     `<meta property="og:title" content="${esc(r.title)}">`,
     `<meta property="og:description" content="${esc(r.description)}">`,
     `<meta property="og:url" content="${url}">`,
+    `<meta property="og:image" content="${esc(socialImage)}">`,
+    `<meta name="twitter:card" content="summary_large_image">`,
+    `<meta name="twitter:url" content="${url}">`,
+    `<meta name="twitter:image" content="${esc(socialImage)}">`,
     `<meta name="twitter:title" content="${esc(r.title)}">`,
     `<meta name="twitter:description" content="${esc(r.description)}">`,
     ...(r.jsonld ? [`<script id="json-ld-schema" type="application/ld+json">${r.jsonld.replace(/<\//g, '<\\/')}</script>`] : []),
   ].join('\n    ');
   html = html.replace('</head>', `    ${head}\n  </head>`);
-  html = html.replace(/<div id="root"><\/div>/, `<div id="root"><main class="prerender" lang="${r.lang || 'en'}" dir="${r.direction || 'ltr'}">${r.body}</main></div>`);
+  html = html.replace(/<div id="root"><\/div>/, `<div id="root"><main class="prerender" lang="${r.lang || 'en'}" dir="${r.direction || 'ltr'}">${r.body.replace(/<main\b/g, '<div').replace(/<\/main>/g, '</div>')}</main></div>`);
   const out = route === '/' ? path.join(dist, 'index.html') : path.join(dist, route.slice(1), 'index.html');
   fs.mkdirSync(path.dirname(out), { recursive: true });
   fs.writeFileSync(out, html);
