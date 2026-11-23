@@ -1033,10 +1033,10 @@ async function leadReceipt(req: VercelRequest, res: VercelResponse) {
   const email = clean(b.email, 160), phone = clean(b.phone, 40);
   if (!clean(b.formType, 80)) return res.status(400).json({ persisted: false });
   if ((!email && !phone) || (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))) return res.status(400).json({ persisted: false });
-  // Client token is only for idempotency, never the conversion event ID.
+  // Shared opaque token joins future analytics to this private receipt; row UUID stays server-issued.
   const requestToken = clean(b.requestToken, 80);
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(requestToken)) return res.status(400).json({ persisted: false });
-  const submission = { formType: clean(b.formType, 80), name: clean(b.name, 120), email, phone,
+  const submission = { analytics_submission_id: requestToken, formType: clean(b.formType, 80), name: clean(b.name, 120), email, phone,
     company: clean(b.company, 160), message: clean(b.message, 5000),
     ...(!b.deliveryConfirmed ? { deliveryStatus: 'failed', deliveryError: 'Browser delivery unconfirmed; no automatic resend attempted.' } : {}),
     isTest: /\bFANN\b[\s\S]*\b(?:TEST|QA|PROBE)\b/i.test([b.name,b.company,b.message,b.details?.projectName,b.details?.eventName].filter(Boolean).join(' ')),
@@ -1262,7 +1262,7 @@ async function handleLead(req: VercelRequest, res: VercelResponse, defaultType: 
       try {
         const { randomUUID } = await import('node:crypto');
         const id = randomUUID();
-        persisted = await persistLeadReceipt(fetch, process.env.FANN_LEADS_SUPABASE_URL, process.env.FANN_LEADS_SUPABASE_SERVICE_KEY, id, { formType, name, email, phone, company, message, details: extra });
+        persisted = await persistLeadReceipt(fetch, process.env.FANN_LEADS_SUPABASE_URL, process.env.FANN_LEADS_SUPABASE_SERVICE_KEY, id, { ...(typeof b.analyticsSubmissionId === 'string' && /^[0-9a-f-]{36}$/i.test(b.analyticsSubmissionId) ? { analytics_submission_id: b.analyticsSubmissionId } : {}), formType, name, email, phone, company, message, details: extra });
         if (persisted) submissionId = id;
       } catch { console.error('Lead receipt persistence unavailable; conversion suppressed.'); }
     }
@@ -1277,7 +1277,7 @@ async function handleLead(req: VercelRequest, res: VercelResponse, defaultType: 
     if (process.env.FANN_OPENAI_LEAD_RECEIPTS_ENABLED === 'true' && failedKey) {
       try {
         const { randomUUID } = await import('node:crypto');
-        await persistLeadReceipt(fetch, FLOORPLAN_STORAGE, failedKey, randomUUID(), { formType, name, email, phone, company, message, details: extra, deliveryStatus: 'failed', deliveryError: clean(err?.message || 'delivery failed', 200) });
+        await persistLeadReceipt(fetch, FLOORPLAN_STORAGE, failedKey, randomUUID(), { ...(typeof b.analyticsSubmissionId === 'string' && /^[0-9a-f-]{36}$/i.test(b.analyticsSubmissionId) ? { analytics_submission_id: b.analyticsSubmissionId } : {}), formType, name, email, phone, company, message, details: extra, deliveryStatus: 'failed', deliveryError: clean(err?.message || 'delivery failed', 200) });
       } catch { console.error('Failed-lead persistence unavailable.'); }
     }
     return res.status(502).json({ success: false, error: `Sorry, your message could not be sent right now. Please WhatsApp us on +971 50 566 7502 or email ${recipient}.` });
@@ -1699,4 +1699,4 @@ export default async function mainHandler(req: VercelRequest, res: VercelRespons
     console.error('Unified API router error:', error);
     return res.status(500).json({ error: error.message || 'Internal Server Error' });
   }
-}
+  }
