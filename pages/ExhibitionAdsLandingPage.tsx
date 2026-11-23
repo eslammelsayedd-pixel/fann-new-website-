@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
-import { submitLead } from '../lib/submitLead';
+import { submitLead, isInternalLeadTest, type LeadPayload, type LeadResult } from '../lib/submitLead';
 import { validateLeadPhone, isWorkEmail, WORK_EMAIL_ERROR } from '../lib/leadValidation';
 import PhoneInput from '../components/PhoneInput';
 
 // Existing gtag loader is in index.html. This route adds only the Ads destination.
 const ADS_CONVERSION_LABEL = 'AW-17220461597/VUwgCIrGhoYdEJ3IrZNA';
 
-function gtag_report_conversion(url?: string) {
+function gtag_report_conversion(payload: LeadPayload, result?: LeadResult, url?: string) {
+  if (!result || result.internalTest || isInternalLeadTest(payload)) return false;
   const gtag = (window as any).gtag;
   if (typeof gtag !== 'function') return false;
   const callback = () => { if (url) window.location.assign(url); };
   gtag('event', 'conversion', {
     send_to: ADS_CONVERSION_LABEL,
+    transaction_id: result.submissionId,
     value: 1.0,
     currency: 'AED',
     event_callback: callback,
@@ -75,7 +77,7 @@ export default function ExhibitionAdsLandingPage() {
         const finish = await request({ action: 'finish', path: start.path });
         floorPlanUrl = finish.downloadUrl;
       }
-      await submitLead({
+      const leadPayload: LeadPayload = {
         formType: 'Google Ads exhibition landing - 3 designs within 48 hours',
         name: form.name.trim(), phone: form.phone.trim(), phoneCountry: (form as any).phoneCountry || 'AE', email: form.email.trim(),
         details: {
@@ -85,8 +87,9 @@ export default function ExhibitionAdsLandingPage() {
           showName: form.showName.trim(), standSize: form.standSize.trim(), openSides: form.openSides,
           campaign: new URLSearchParams(window.location.search).get('utm_campaign') || '',
         },
-      });
-      gtag_report_conversion(); // Only after submitLead confirms delivery.
+      };
+      const delivery = await submitLead(leadPayload);
+      gtag_report_conversion(leadPayload, delivery); // Confirmed delivery only; internal tests stay excluded.
       setSent(true);
     } catch (err: any) {
       setError(err?.message || 'Your request could not be sent. Please call or WhatsApp us.');
@@ -141,4 +144,4 @@ export default function ExhibitionAdsLandingPage() {
     <section className="bg-[#111] px-5 py-14 text-[#f5f2eb]"><div className="mx-auto max-w-6xl"><h2 className="font-serif text-3xl">Exhibition stand builders: one team, from brief to build</h2><p className="mt-4 max-w-2xl text-[#d4d1cb]">3D concept, detailed quote, fabrication and on-site installation. We coordinate venue and authority submissions as part of the build.</p><a href="#brief" className="mt-6 inline-block rounded-sm bg-[#c9a962] px-6 py-3 font-bold text-black">Tell us about your stand</a></div></section>
     </div>
   </>;
-}
+      }
