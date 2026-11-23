@@ -6,7 +6,7 @@
     "city": "Dubai",
     "breadcrumb": "Exhibition stand design Dubai",
     "subheading": "A practical route from your Dubai stand allocation to layout, concept visuals and a clearly defined build proposal.",
-    "intro": "FANN designs and builds exhibition stands in Dubai, supported by an office in Barsha and a joinery workshop in Umm Al Quwain. Start the design with your stand allocation, products and visitor needs. Agree the layout, visual direction and required design deliverables before construction details are released. The completed Dubai stands below are real project references. They show layouts and visible features, not guaranteed visitor results or venue appointment.",
+    "intro": "FANN designs and builds exhibition stands in Dubai, supported by an office in Al Barsha 1 and a joinery workshop in Umm Al Quwain. Start the design with your stand allocation, products and visitor needs. Agree the layout, visual direction and required design deliverables before construction details are released. The completed Dubai stands below are real project references. They show layouts and visible features, not guaranteed visitor results or venue appointment.",
     "hero": "/images/stands/6-geven-aircraft-interiors.webp",
     "heroAlt": "Geven aircraft seating stand at Aircraft Interiors Middle East, Dubai, 2025, designed and built by FANN, with LED perimeter and product seating displays",
     "heroCaption": "Completed FANN project: Geven at Aircraft Interiors Middle East, Dubai, 2025. A design and build reference for product-led layouts; it does not establish a venue appointment or measured visitor result.",
@@ -31,6 +31,23 @@
       {
         "heading": "Move from approved design to an itemised build scope",
         "text": "Confirm the agreed drawing revision, materials, graphics, production, transport, installation and dismantling. Identify venue submissions, service orders, support and storage as included, excluded or supplied by others. Later revisions need their effect on scope, price and programme confirmed before the changed work is released."
+      },
+      {
+        "heading": "Confirm the open sides before comparing design options",
+        "text": "Read the allocated plan together with the dimensions and orientation, then confirm which edges face the aisle. Mark product access, reception and meeting needs on that plan before choosing a visual direction. A layout drawn for a different set of open sides may place a counter, wall or display where your visitors need to enter.",
+        "items": [
+          "Allocation: record the hall, stand number, dimensions and aisle-facing edges.",
+          "Options: compare the same products, meeting needs, storage and brand message in every layout.",
+          "Decision: name the person selecting the direction and identify what still needs a technical check."
+        ]
+      },
+      {
+        "heading": "Use a design review to make decisions, not collect renders",
+        "text": "Ask what each option changes: the visitor route, product position, meeting privacy, storage or visible branding. Select the useful elements and record one agreed direction. Keep the reference images separate from the production instruction, and mark any dimensions, materials, lighting or equipment that remain provisional."
+      },
+      {
+        "heading": "Keep the selected option tied to the quote and artwork",
+        "text": "Before releasing fabrication, compare the selected layout and drawing revision with the itemised proposal. Confirm the stand elements, finish direction, graphic locations and interfaces that the quoted work includes. Keep a record of later changes so an approved visual is not mistaken for approval of every service, material substitution or extra item."
       }
     ],
     "proofHeading": "Real Dubai stands from the FANN archive",
@@ -79,6 +96,26 @@
       {
         "question": "Who handles Dubai venue drawings and submission deadlines?",
         "answer": "Submission and service responsibilities are agreed for the project using the current show and venue manuals. Identify who prepares drawings, provides specialist inputs, submits them and answers comments. FANN undertakes the agreed scope, not an unconditional approval guarantee. The organiser schedule and actual design determine the requirements and deadlines."
+      },
+      {
+        "question": "Why do open sides matter when choosing a stand layout?",
+        "answer": "Open sides determine where visitors can approach and where walls, counters and displays can sit. Confirm the aisle-facing edges on your allocated plan before comparing options. The same footprint with different open sides is a different design brief, so a reference image should not override the booking or agreed access needs."
+      },
+      {
+        "question": "How should we compare several stand design options?",
+        "answer": "Compare every option against the same products, visitor activities, meeting needs, storage and brand message. Look at the entry route and equipment positions, not only the render style. Record the useful elements and choose one direction for development, with unresolved dimensions, materials and service requirements clearly identified before the next approval."
+      },
+      {
+        "question": "Can we send reference images with our stand allocation?",
+        "answer": "Yes, send reference images alongside your allocated plan and explain which features you like, such as an entrance, display wall, meeting area or colour direction. References help communicate preferences; they do not establish a construction specification, permission to copy another design, or suitability for your venue and actual product requirements."
+      },
+      {
+        "question": "What should be checked after selecting a design option?",
+        "answer": "Check the selected layout against the stand allocation and itemised proposal, then record the current drawing and artwork revisions. Confirm dimensions, product interfaces, materials, graphic locations and the services included in the quote. Identify outstanding technical or venue inputs before releasing affected work, rather than assuming the selected image settles every detail."
+      },
+      {
+        "question": "Can layout and artwork changes affect the build scope?",
+        "answer": "Yes. A moved display, larger screen, revised counter or new graphic can affect dimensions, materials, service connections or work already released. Describe the requested change against the current drawing revision and confirm its effect on scope, price and programme before proceeding. The original concept does not grant unlimited revisions or automatic approval."
       }
     ],
     "related": [
