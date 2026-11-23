@@ -56,6 +56,9 @@ const SEO: React.FC<SEOProps> = ({ title, description, schema, image, noindex, c
     setMeta('property', 'og:description', description);
     setMeta('property', 'og:url', url);
     setMeta('property', 'og:image', image || DEFAULT_IMAGE);
+    document.head.querySelectorAll('meta[property^="twitter:"]').forEach(el => el.remove());
+    setMeta('name', 'twitter:card', 'summary_large_image');
+    setMeta('name', 'twitter:url', url);
     setMeta('name', 'twitter:title', fullTitle);
     setMeta('name', 'twitter:description', description);
     setMeta('name', 'twitter:image', image || DEFAULT_IMAGE);
