@@ -1038,7 +1038,8 @@ async function leadReceipt(req: VercelRequest, res: VercelResponse) {
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(requestToken)) return res.status(400).json({ persisted: false });
   const submission = { analytics_submission_id: requestToken, formType: clean(b.formType, 80), name: clean(b.name, 120), email, phone,
     company: clean(b.company, 160), message: clean(b.message, 5000),
-    ...(!b.deliveryConfirmed ? { deliveryStatus: 'failed', deliveryError: 'Browser delivery unconfirmed; no automatic resend attempted.' } : {}),
+    deliveryStatus: b.deliveryConfirmed ? 'delivered' : b.deliveryState === 'pending' ? 'pending' : 'failed',
+    ...(!b.deliveryConfirmed ? { deliveryError: b.deliveryState === 'pending' ? 'Captured before delivery; confirmation pending.' : 'Email delivery unconfirmed after bounded browser recovery and existing server fallback.' } : {}),
     isTest: /\bFANN\b[\s\S]*\b(?:TEST|QA|PROBE)\b/i.test([b.name,b.company,b.message,b.details?.projectName,b.details?.eventName].filter(Boolean).join(' ')),
     details: Object.fromEntries(Object.entries(typeof b.details === 'object' && b.details ? b.details : {}).slice(0,40).map(([k,v])=>[clean(k,100), clean(typeof v === 'object' ? JSON.stringify(v) : v,1000)])) };
   try {
@@ -1052,11 +1053,21 @@ async function leadReceipt(req: VercelRequest, res: VercelResponse) {
     if (!response.ok) throw new Error('Receipt insert unavailable');
     let rows: any = await response.json();
     if (!rows.length) {
-      const existing = await fetch(`${endpoint}?request_hash=eq.${requestHash}&select=submission_id`, { headers });
+      const existing = await fetch(`${endpoint}?request_hash=eq.${requestHash}&select=submission_id,submission`, { headers });
       if (!existing.ok) throw new Error('Receipt lookup unavailable');
       rows = await existing.json();
     }
     if (!Array.isArray(rows) || rows.length !== 1 || !/^[0-9a-f-]{36}$/i.test(rows[0].submission_id)) throw new Error('Receipt not confirmed');
+    // Update the existing capture, not a second row. A late pending/failure update
+    // must never downgrade an already confirmed delivery.
+    if (b.deliveryConfirmed || rows[0].submission?.deliveryStatus !== 'delivered') {
+      const guard = b.deliveryConfirmed ? '' : '&submission->>deliveryStatus=neq.delivered';
+      const update = await fetch(`${endpoint}?request_hash=eq.${requestHash}${guard}`, {
+        method: 'PATCH', headers: { ...headers, Prefer: 'return=minimal' }, body: JSON.stringify({ submission }),
+      });
+      if (!update.ok) throw new Error('Receipt status update unavailable');
+    }
+
     return res.status(200).json({ persisted: true, submissionId: rows[0].submission_id });
   } catch { console.error('Private receipt unavailable; conversion suppressed.'); return res.status(502).json({ persisted: false }); }
 }
