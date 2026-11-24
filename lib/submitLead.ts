@@ -105,14 +105,14 @@ export function isInternalLeadTest(body: any): boolean {
   return /\bFANN\b[\s\S]*\b(?:TEST|QA|PROBE)\b/i.test(label);
 }
 
-async function recordDeliveryReceipt(body: any, confirmed: boolean): Promise<any> {
+async function recordDeliveryReceipt(body: any, confirmed: boolean | 'pending'): Promise<any> {
   if (typeof window === 'undefined' || typeof window.crypto?.randomUUID !== 'function') return null;
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 5000);
   try {
     const receipt = await fetch('/api/lead-receipt', {
       signal: controller.signal, method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ ...body, deliveryConfirmed: confirmed, requestToken: body.analyticsSubmissionId }),
+      body: JSON.stringify({ ...body, deliveryConfirmed: confirmed === true, ...(confirmed === 'pending' ? { deliveryState: 'pending' } : {}), requestToken: body.analyticsSubmissionId }),
     });
     const data = await receipt.json();
     return receipt.ok && data.persisted === true ? data : null;
@@ -155,6 +155,8 @@ async function deliverSubmission(payload: LeadPayload, submissionId: string): Pr
     referrer: typeof document !== 'undefined' ? document.referrer : '',
   };
   if (payload.website) return; // honeypot: silently drop bots
+  // Save before contacting either email route. Capture is not delivery or a conversion.
+  try { await recordDeliveryReceipt(body, 'pending'); } catch { /* do not block an available email route */ }
   // These two Studio routes belong to Business, not the Sales-only browser provider.
   if (['Event Studio concept request', 'Interior Studio design request'].includes(payload.formType)) {
     return await submitViaServer(body);
@@ -175,36 +177,30 @@ async function deliverSubmission(payload: LeadPayload, submissionId: string): Pr
       `Page: ${body.page || '-'}`, `Referrer: ${body.referrer || '-'}`,
     ].join('\n');
     if (!payload.email && !payload.phone) throw new Error('Please add an email or phone number so we can reach you.');
-    let r: Response;
-    try {
-      r = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
-          access_key: web3Key,
-          subject: `[fann.ae] ${payload.formType}${name ? ' - ' + name : ''}${payload.company ? ' (' + payload.company + ')' : ''}`,
-          from_name: 'FANN Website',
-          replyto: payload.email || undefined,
-          message: text,
-          botcheck: '',
-        }),
-      });
-    } catch {
-      // The provider may have accepted the request before the connection failed.
-      // Save for manual follow-up; do not send a second email on an ambiguous result.
-      let saved = false;
-      try { saved = Boolean(await recordDeliveryReceipt(body, false)); } catch { /* show the honest unconfirmed state */ }
-      throw new Error(saved
-        ? 'Your request was saved for manual follow-up, but email delivery could not be confirmed. Please call or WhatsApp +971 50 566 7502. No automatic resend was made.'
-        : 'Email delivery could not be confirmed. Please call or WhatsApp +971 50 566 7502 before submitting again.');
+    // One bounded retry handles transient connections. Reference makes possible duplicate
+    // notification emails recognisable; provider has no idempotency guarantee.
+    let accepted = false;
+    for (let pass = 0; pass < 2; pass++) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 12000);
+      try {
+        const r = await fetch('https://api.web3forms.com/submit', {
+          signal: controller.signal, method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ access_key: web3Key,
+            subject: `[fann.ae] ${payload.formType}${name ? ' - ' + name : ''}${payload.company ? ' (' + payload.company + ')' : ''}`,
+            from_name: 'FANN Website', replyto: payload.email || undefined,
+            message: `${text}\nSubmission reference: ${submissionId}`, botcheck: '' }),
+        });
+        const d = await r.json().catch(() => ({}));
+        if (r.ok && d.success === true) { accepted = true; break; }
+        if (r.status < 500) break; // never hammer quota, validation or rate-limit errors
+      } catch { /* bounded recovery, then same-origin existing route */ }
+      finally { clearTimeout(timeout); }
+      if (pass === 0) await new Promise(resolve => setTimeout(resolve, 1000));
     }
-    let d: any = {};
-    try { d = await r.json(); } catch { /* ignore */ }
-    if (!r.ok || d.success !== true) {
-      // Browser-to-Web3Forms failed (vendor block, adblocker, key issue): fall back to the server route
-      // instead of losing the enquiry outright.
-      return await submitViaServer(body);
-    }
+    if (!accepted) return await submitViaServer(body);
+
   } else {
     return await submitViaServer(body);
   }
@@ -220,11 +216,13 @@ async function submitViaServer(body: any): Promise<LeadResult> {
       body: JSON.stringify(body),
     });
   } catch {
-    throw new Error('Network error - please check your connection and try again, or WhatsApp us on +971 50 566 7502.');
+    try { await recordDeliveryReceipt(body, false); } catch { /* pre-capture may still be available */ }
+    throw new Error('Email delivery is unconfirmed. Please call or WhatsApp +971 50 566 7502. Network error - please check your connection and try again, or WhatsApp us on +971 50 566 7502.');
   }
   let data: any = {};
   try { data = await response.json(); } catch { /* ignore */ }
   if (!response.ok || !data.success) {
+    try { await recordDeliveryReceipt(body, false); } catch { /* pre-capture may still be available */ }
     throw new Error(data.error || 'Sorry, your message could not be sent. Please WhatsApp us on +971 50 566 7502 or email sales@fann.ae.');
   }
   return await afterDelivery(body);
@@ -277,4 +275,4 @@ export function getLeadSourceSnapshot(): Record<string, string> {
     if (!out.landing_page) out.landing_page = (last?.landing || first?.landing || window.location.pathname || '/').slice(0, 300);
   } catch { /* attribution must never break the form */ }
   return out;
-      }
+}
