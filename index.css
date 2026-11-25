@@ -285,9 +285,9 @@ body {
 }
 
 html.light {
-  --fann-charcoal: 250 248 244;
+  --fann-charcoal: 255 255 255;
   --fann-charcoal-light: 255 255 255;
-  --fann-charcoal-lighter: 240 235 226;
+  --fann-charcoal-lighter: 248 248 248;
   --fann-grey: 23 23 23;
   --fann-grey-muted: 92 84 66;
   --fann-gold: 143 110 42;
@@ -443,3 +443,7 @@ html.light .fann-brand-wordmark { color: #8f6e2a; -webkit-text-fill-color: #8f6e
   color: #fff !important;
 }
 #fann-openai-consent { background-color: #171717 !important; }
+
+/* A true-white light canvas. Keep photography and cinematic shading in dark mode. */
+html.light .fann-home-hero { background-color: #fff; }
+html.light .fann-home-hero .fann-hero-media { display: none; }
