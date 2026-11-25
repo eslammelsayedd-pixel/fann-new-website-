@@ -120,7 +120,7 @@ const HeroSection: React.FC = () => {
     };
 
     return (
-        <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-fann-charcoal">
+        <section className="fann-home-hero relative h-screen w-full flex items-center justify-center overflow-hidden bg-fann-charcoal">
             <AnimatePresence mode="wait">
                 <motion.div
                     key={heroSlides[currentSlide].id}
@@ -128,7 +128,7 @@ const HeroSection: React.FC = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 1 }}
-                    className="absolute inset-0 z-0"
+                    className="fann-hero-media absolute inset-0 z-0"
                 >
                     {animateHero && heroSlides[currentSlide].video ? (
                         <video 
