@@ -465,6 +465,7 @@ const HomePage: React.FC = () => {
             />
             
             <HeroSection />
+            <section aria-label="Certification and membership" className="py-6 px-5 text-center text-fann-gold border-y border-fann-gold/30"><p className="text-lg">ISO 20121 certified. IFES member.</p></section>
             <AboutSection />
             <ServicesSection />
             <WhyChooseUs />
