@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import AnimatedPage from '../../components/AnimatedPage';
-import SEO from '../../components/SEO';
+import SEO, { FannCredentials } from '../../components/SEO';
 import ServicePageLayout from '../../components/ServicePageLayout';
 import FaqAccordion from '../../components/FaqAccordion';
 import buyerPages from '../../data/buyerPages.json';
@@ -15,6 +15,7 @@ const BuyerIntentPage: React.FC = () => {
  return <AnimatedPage><div className="buyer-intent-page" lang={page.lang || "en"} dir={page.direction || "ltr"}><style>{`.buyer-intent-page[dir="rtl"] { text-align: right; } .buyer-intent-page[dir="rtl"] button { text-align: right; gap: 1rem; } .buyer-intent-page[dir="rtl"] ol { gap: .5rem; flex-wrap: wrap; } .buyer-intent-page[dir="rtl"] ol li { margin: 0; } .buyer-intent-page h2, .buyer-intent-page button[aria-expanded] { scroll-margin-top: 112px; }`}</style><SEO title={page.title} description={page.description} schema={buyerPageSchema(path,page)} image={page.hero ? 'https://fann.ae'+page.hero : undefined}/>
  <ServicePageLayout heroImage={page.hero} heroAltText={page.heroAlt || page.heading} pageTitle={page.heading} pageDescription={page.subheading || "A design brief built around your products, visitor journey and actual venue allocation."} heroAction={{label:page.action,path:page.actionPath || '/exhibition-stand-quote'}} breadcrumbs={[{name:page.homeLabel || 'Home',path:'/'},{name:page.servicesLabel || 'Services',path:'/services'},{name:page.breadcrumb || 'Stand design Abu Dhabi',path}]}>
  <p className="text-sm">{page.heroCaption}</p><p className="lead">{page.intro}</p>
+ {path === '/exhibition-stand-builders-dubai' && <FannCredentials/>}
  {page.sections.map(section=><section key={section.heading}><h2>{section.heading}</h2><p>{section.text}</p>{'items' in section && section.items && <ul>{section.items.map(item=><li key={item}>{item}</li>)}</ul>}</section>)}
  {page.eventsList && page.eventsList.length>0 && <><h2>{page.eventsHeading || "Upcoming events at the venue"}</h2><p>{page.eventsNote}</p><ul>{page.eventsList.map(ev=><li key={ev.name+ev.dates}><strong>{ev.dates}</strong>{' - '}{ev.path ? <Link to={ev.path}>{ev.name}</Link> : ev.name}{ev.hall ? ' ('+ev.hall+')' : ''}{ev.note ? ' - '+ev.note : ''}</li>)}</ul></>}
  {page.proof && page.proof.length>0 && <><h2>{page.proofHeading || "Completed stands to inform your design brief"}</h2><p>{page.proofNote}</p></>}
