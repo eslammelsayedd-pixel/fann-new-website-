@@ -1,7 +1,7 @@
 import React from 'react';
 import AnimatedPage from '../components/AnimatedPage';
 import { motion } from 'framer-motion';
-import SEO from '../components/SEO';
+import SEO, { FannCredentials } from '../components/SEO';
 import { Link } from 'react-router-dom';
 
 const aboutPageSchema = {
@@ -72,6 +72,7 @@ const AboutPage: React.FC = () => {
                 />
             </picture>
           </motion.div>
+<FannCredentials/>
           <motion.div variants={itemVariants} className="max-w-3xl mx-auto text-lg text-gray-300 space-y-6 text-left leading-loose">
             <p>
               Our philosophy is built on a dual commitment: relentless innovation and uncompromising excellence. We merge cutting-edge technology and global design trends with a deep understanding of the regional culture and market. This unique synthesis allows us to deliver experiences that are not only visually stunning but also strategically sound and culturally resonant.
