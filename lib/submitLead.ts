@@ -168,7 +168,7 @@ async function deliverSubmission(payload: LeadPayload, submissionId: string): Pr
     const name = payload.name || '';
     const detailLines = Object.entries(details)
       .filter(([, v]) => v !== '' && v !== null && v !== undefined)
-      .map(([k, v]) => `${k}: ${typeof v === 'object' ? JSON.stringify(v) : String(v)}`);
+      .map(([k, v]) => `${k === 'heardAbout' ? 'Heard about FANN via' : k === 'heardAboutOther' ? 'Other source detail' : k}: ${typeof v === 'object' ? JSON.stringify(v) : String(v)}`);
     const text = [
       `New ${payload.formType} from fann.ae`, '',
       `Name: ${name || '-'}`, `Email: ${payload.email || '-'}`, `Phone: ${payload.phone || '-'}`, `Company: ${payload.company || '-'}`, '',
@@ -236,7 +236,8 @@ async function afterDelivery(body: any): Promise<LeadResult> {
     try {
       const w = window as any;
       if (typeof w.fbq === 'function') w.fbq('track', 'Lead', { content_name: body.formType });
-      (w.dataLayer = w.dataLayer || []).push({ event: 'lead_submitted', form_type: body.formType, submission_id: body.analyticsSubmissionId });
+      if (typeof w.gtag === 'function') w.gtag('event', 'form_submit', { form_type: body.formType, submission_id: body.analyticsSubmissionId, heard_about_fann: body.details?.heardAbout || 'not_provided' });
+      (w.dataLayer = w.dataLayer || []).push({ event: 'lead_submitted', form_type: body.formType, submission_id: body.analyticsSubmissionId, heard_about_fann: body.details?.heardAbout || 'not_provided' });
     } catch { /* tracking must never break the form */ }
   }
   try {
