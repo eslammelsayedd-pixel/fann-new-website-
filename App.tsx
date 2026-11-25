@@ -19,6 +19,7 @@ const EventResultPage = lazy(() => import('./pages/EventResultPage'));
 const InteriorStudioPage = lazy(() => import('./pages/InteriorStudioPage'));
 const InteriorResultPage = lazy(() => import('./pages/InteriorResultPage'));
 const EventsCalendarPage = lazy(() => import('./pages/EventsCalendarPage'));
+const ChooseBuilderPage = lazy(() => import('./pages/ChooseBuilderPage'));
 const WorkshopPage = lazy(() => import('./pages/WorkshopPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
@@ -121,6 +122,7 @@ const App: React.FC = () => {
                         <Route path="/fann-studio/interior/result" element={<InteriorResultPage />} />
                         <Route path="/events-calendar" element={<EventsCalendarPage />} />
                         <Route path="/exhibitions/:showGuide" element={<EventsCalendarPage />} />
+                        <Route path="/how-to-choose-exhibition-stand-builder-dubai" element={<ChooseBuilderPage />} />
                         <Route path="/our-workshop" element={<WorkshopPage />} />
                         <Route path="/about" element={<AboutPage />} />
                         <Route path="/contact" element={<ContactPage />} />

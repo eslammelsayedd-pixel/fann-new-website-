@@ -23,6 +23,7 @@ const Footer: React.FC = () => {
             <h4 className="font-bold text-fann-grey uppercase tracking-wider mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm text-fann-grey-muted">
               <li><Link to="/about" className="hover:text-fann-gold transition-colors">About FANN</Link></li>
+              <li><Link to="/how-to-choose-exhibition-stand-builder-dubai" className="hover:text-fann-gold transition-colors">Choosing a Stand Builder</Link></li>
               <li><Link to="/our-workshop" className="hover:text-fann-gold transition-colors">Our Workshop</Link></li>
               <li><Link to="/portfolio" className="hover:text-fann-gold transition-colors">Portfolio</Link></li>
               <li><Link to="/services" className="hover:text-fann-gold transition-colors">Services</Link></li>

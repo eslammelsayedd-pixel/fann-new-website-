@@ -292,6 +292,10 @@ routes[adPath]={title:adPage.title,description:adPage.description,robots:'index,
 
 const esc = (s = '') => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
+// Shared buyer checklist data keeps initial HTML and interactive page aligned.
+const choose = JSON.parse(fs.readFileSync(path.resolve('data/chooseBuilderPage.json'),'utf8'));
+routes['/how-to-choose-exhibition-stand-builder-dubai']={title:choose.title,description:choose.description,robots:'index, follow',image:'/images/workshop/entrance.webp',jsonld:JSON.stringify({'@context':'https://schema.org','@graph':[{'@type':'WebPage',name:choose.heading,url:SITE+'/how-to-choose-exhibition-stand-builder-dubai'},{'@type':'FAQPage',mainEntity:choose.faqs.map(f=>({'@type':'Question',name:f.question,acceptedAnswer:{'@type':'Answer',text:f.answer}}))}]}),body:`<main><h1>${esc(choose.heading)}</h1><p>${esc(choose.intro)}</p><a href="/exhibition-stand-quote">Share your stand brief</a><img src="/images/workshop/entrance.webp" alt="FANN workshop entrance in Umm Al Quwain"/>${choose.sections.map(s=>`<section><h2>${esc(s.heading)}</h2><p>${esc(s.text)}</p></section>`).join('')}<h2>Questions to settle before you choose</h2>${choose.faqs.map(f=>`<h3>${esc(f.question)}</h3><p>${esc(f.answer)}</p>`).join('')}<a href="/portfolio">Completed projects</a><a href="/our-workshop">Our workshop</a></main>`};
+if(routes['/exhibition-stand-builders-dubai'])routes['/exhibition-stand-builders-dubai'].body+='<p><a href="/how-to-choose-exhibition-stand-builder-dubai">How to choose an exhibition stand builder in Dubai</a></p>';
 // Workshop internal discovery links in static HTML match the shared footer.
 for (const item of Object.values(routes)) item.body += '<nav aria-label="Workshop"><a href="/our-workshop">Our workshop</a></nav>';
 for (const [route, r] of Object.entries(routes)) {

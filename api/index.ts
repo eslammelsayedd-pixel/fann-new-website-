@@ -1490,6 +1490,7 @@ const SITEMAP_PATHS = [
   '/portfolio/verde-gulfood-2025',
   '/portfolio/venus-gulfood-2025',
   '/our-workshop',
+  '/how-to-choose-exhibition-stand-builder-dubai',
   '/about', '/contact', '/privacy-policy',
   '/insights', '/events-calendar', '/exhibitions/gulfood-manufacturing-2026-stand-planning', '/exhibitions/adipec-2026-stand-planning', '/exhibitions/automechanika-dubai-2026-stand-planning', '/fann-studio', '/book-consultation', '/resources/cost-calculator',
   '/resources/exhibition-guide', '/roi-calculator',
@@ -1711,4 +1712,4 @@ export default async function mainHandler(req: VercelRequest, res: VercelRespons
     console.error('Unified API router error:', error);
     return res.status(500).json({ error: error.message || 'Internal Server Error' });
   }
-  }
+}
