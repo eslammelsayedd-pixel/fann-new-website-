@@ -5,6 +5,7 @@ import SEO from '../components/SEO';
 import { submitLead } from '../lib/submitLead';
 import { validateLeadPhone, isWorkEmail, WORK_EMAIL_ERROR } from '../lib/leadValidation';
 import PhoneInput from '../components/PhoneInput';
+import HeardAboutField from '../components/HeardAboutField';
 import AttributionFields from '../components/AttributionFields';
 import { Mail, Phone, MapPin, Loader2, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -47,7 +48,7 @@ const ContactPage: React.FC = () => {
     if (!isWorkEmail(email)) { setError(WORK_EMAIL_ERROR); setIsSending(false); return; }
 
     try {
-        await submitLead({ formType: 'Contact form', name, email, phone: (formData.get('phone') as string) || '', phoneCountry: (formData.get('phoneCountry') as string) || 'AE', message, website: (formData.get('website') as string) || '' });
+        await submitLead({ formType: 'Contact form', name, email, phone: (formData.get('phone') as string) || '', phoneCountry: (formData.get('phoneCountry') as string) || 'AE', message, details: { heardAbout: formData.get('heardAbout') || '', heardAboutOther: formData.get('heardAbout') === 'Other' ? formData.get('heardAboutOther') || '' : '' }, website: (formData.get('website') as string) || '' });
         setIsSent(true);
     } catch (err: any) {
         setError(err.message);
@@ -181,6 +182,7 @@ const ContactPage: React.FC = () => {
                            <div>
                                <PhoneInput name="phone" required className="w-full bg-black/30 border border-white/10 rounded-md px-4 py-3 text-white focus:outline-none focus:border-fann-gold transition-colors" />
                            </div>
+                           <HeardAboutField />
                            <div>
                                <textarea name="message" placeholder="Your Message" rows={5} required className="w-full bg-black/30 border border-white/10 rounded-md px-4 py-3 text-white focus:outline-none focus:border-fann-gold transition-colors"></textarea>
                            </div>
@@ -208,4 +210,3 @@ const ContactPage: React.FC = () => {
 };
 
 export default ContactPage;
-

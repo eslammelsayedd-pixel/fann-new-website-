@@ -1243,7 +1243,7 @@ async function handleLead(req: VercelRequest, res: VercelResponse, defaultType: 
   }
   const extraLines = Object.entries(extra)
     .filter(([, v]) => v !== '' && v !== null && v !== undefined)
-    .map(([k, v]) => `${k}: ${clean(typeof v === 'object' ? JSON.stringify(v) : v, 1000)}`);
+    .map(([k, v]) => `${k === 'heardAbout' ? 'Heard about FANN via' : k === 'heardAboutOther' ? 'Other source detail' : k}: ${clean(typeof v === 'object' ? JSON.stringify(v) : v, 1000)}`);
 
   const text = [
     `New ${formType} from fann.ae`,
