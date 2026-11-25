@@ -2,6 +2,7 @@ import React from 'react';
 import AnimatedPage from '../components/AnimatedPage';
 import { motion } from 'framer-motion';
 import SEO from '../components/SEO';
+import { Link } from 'react-router-dom';
 
 const aboutPageSchema = {
     "@context": "https://schema.org",
@@ -52,6 +53,7 @@ const AboutPage: React.FC = () => {
             animate="visible"
         >
           <div className="text-center">
+            <Link to="/our-workshop" className="inline-block text-fann-gold underline underline-offset-4 mb-6">See our workshop in Umm Al Quwain</Link>
             <motion.h1 variants={itemVariants} className="text-5xl font-serif font-bold text-fann-gold mb-4">About FANN</motion.h1>
             <motion.p variants={itemVariants} className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
               Founded in Dubai in 2021, FANN was born from a passion for transforming visions into tangible, unforgettable realities. As a full-service design and build company, we believe that a well-executed project—from initial concept to final construction—has the power to inspire, connect, and drive success.

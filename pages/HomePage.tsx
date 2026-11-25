@@ -216,6 +216,7 @@ const AboutSection: React.FC = () => (
                     <p className="text-gray-400 text-lg leading-relaxed mb-8 font-light">
                         FANN is a design and build company based in Dubai, with its own workshop in Umm Al Quwain. We specialize in three core pillars: <strong>Exhibitions, Corporate Events, and Interior Design</strong>. Our integrated approach combines architectural discipline with creative flair, ensuring every project is not just built, but crafted to perfection.
                     </p>
+                    <Link to="/our-workshop" className="inline-block text-fann-gold underline underline-offset-4 mb-8">See our workshop</Link>
                     <div className="grid grid-cols-3 gap-8 border-t border-white/10 pt-8">
                         <StatItem value="200+" label="Projects Delivered" />
                         <StatItem value="UAE" label="Projects across the Emirates" />
@@ -225,8 +226,8 @@ const AboutSection: React.FC = () => (
                 <ScrollReveal variant="scale" delay={0.2}>
                     <div className="relative">
                         <OptimizedImage 
-                            src="/images/site/exhibition-tech-expo.webp" 
-                            alt="FANN Workshop Team" 
+                            src="/images/workshop/entrance.webp"
+                            alt="FANN workshop entrance in Umm Al Quwain"
                             className="w-full rounded-sm shadow-2xl grayscale hover:grayscale-0 transition-all duration-700"
                             width={600}
                             height={400}

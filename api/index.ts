@@ -1489,6 +1489,7 @@ const SITEMAP_PATHS = [
   '/portfolio/healthy-family-food-gulfood-2025',
   '/portfolio/verde-gulfood-2025',
   '/portfolio/venus-gulfood-2025',
+  '/our-workshop',
   '/about', '/contact', '/privacy-policy',
   '/insights', '/events-calendar', '/exhibitions/gulfood-manufacturing-2026-stand-planning', '/exhibitions/adipec-2026-stand-planning', '/exhibitions/automechanika-dubai-2026-stand-planning', '/fann-studio', '/book-consultation', '/resources/cost-calculator',
   '/resources/exhibition-guide', '/roi-calculator',

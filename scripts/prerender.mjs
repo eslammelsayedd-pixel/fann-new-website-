@@ -292,6 +292,8 @@ routes[adPath]={title:adPage.title,description:adPage.description,robots:'index,
 
 const esc = (s = '') => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
+// Workshop internal discovery links in static HTML match the shared footer.
+for (const item of Object.values(routes)) item.body += '<nav aria-label="Workshop"><a href="/our-workshop">Our workshop</a></nav>';
 for (const [route, r] of Object.entries(routes)) {
   const url = SITE + (route === '/' ? '/' : route);
   let html = template;
