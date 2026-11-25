@@ -72,7 +72,15 @@ const SEO: React.FC<SEOProps> = ({ title, description, schema, image, noindex, c
         scriptTag.type = 'application/ld+json';
         document.head.appendChild(scriptTag);
       }
-      scriptTag.innerHTML = JSON.stringify(schema);
+      let output:any=schema;
+      if (['/about','/exhibition-stand-builders-dubai','/how-to-choose-exhibition-stand-builder-dubai'].includes(pathname)) {
+        output=JSON.parse(JSON.stringify(schema));
+        if (!output['@graph']) output={'@context':'https://schema.org','@graph':[output]};
+        let faq=output['@graph'].find((x:any)=>x['@type']==='FAQPage');
+        if(!faq){faq={'@type':'FAQPage',mainEntity:[]};output['@graph'].push(faq)}
+        faq.mainEntity.push({'@type':'Question',name:'Is FANN certified?',acceptedAnswer:{'@type':'Answer',text: "Yes. FANN holds ISO 20121 certification for event sustainability management and is a member of IFES, the International Federation of Exhibition and Event Services, alongside its own workshop in Umm Al Quwain, Dubai licence 993770 and stand design and build work across the UAE."}});
+      }
+      scriptTag.innerHTML = JSON.stringify(output);
     } else if (scriptTag) {
       scriptTag.remove();
     }
@@ -82,3 +90,5 @@ const SEO: React.FC<SEOProps> = ({ title, description, schema, image, noindex, c
 };
 
 export default SEO;
+
+export const FannCredentials = () => (<section aria-labelledby="fann-credentials-title" className="my-10 border border-fann-gold/40 p-6 text-white"><h2 id="fann-credentials-title" className="font-serif text-2xl text-fann-gold mb-5">Certification and membership</h2><p className="text-gray-300 leading-relaxed mb-6">FANN is ISO 20121 certified for event sustainability management and a member of IFES, the International Federation of Exhibition and Event Services.</p><table className="w-full text-left text-sm"><caption className="sr-only">FANN certification and membership facts</caption><tbody><tr className="border-t border-white/15"><th scope="row" className="py-4 pr-4 align-top">Certification</th><td className="py-4">ISO 20121 (event sustainability management)</td></tr><tr className="border-t border-white/15"><th scope="row" className="py-4 pr-4 align-top">Industry membership</th><td className="py-4">IFES (International Federation of Exhibition and Event Services)</td></tr></tbody></table><details className="mt-6 border-t border-white/15 pt-5"><summary className="cursor-pointer text-lg">Is FANN certified?</summary><p className="text-gray-300 leading-relaxed mt-4">Yes. FANN holds ISO 20121 certification for event sustainability management and is a member of IFES, the International Federation of Exhibition and Event Services, alongside its own workshop in Umm Al Quwain, Dubai licence 993770 and stand design and build work across the UAE.</p></details></section>);
