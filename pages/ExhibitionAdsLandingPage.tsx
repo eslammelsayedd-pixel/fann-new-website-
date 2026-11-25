@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { submitLead, isInternalLeadTest, type LeadPayload, type LeadResult } from '../lib/submitLead';
 import { validateLeadPhone, isWorkEmail, WORK_EMAIL_ERROR } from '../lib/leadValidation';
+import HeardAboutField from '../components/HeardAboutField';
 import PhoneInput from '../components/PhoneInput';
 
 // Existing gtag loader is in index.html. This route adds only the Ads destination.
@@ -45,7 +46,7 @@ function StandDiagram({ closed }: { closed: string[] }) {
 const fieldClass = 'mt-1 w-full rounded-sm border border-white/20 bg-[#171717] px-2 py-2.5 text-base text-[#f5f2eb] md:px-3 md:py-3 placeholder:text-white/40 focus:border-[#c9a962] focus:outline-none';
 
 export default function ExhibitionAdsLandingPage() {
-  const [form, setForm] = useState({ name: '', phone: '', email: '', showName: '', standSize: '', openSides: '' });
+  const [form, setForm] = useState({ name: '', phone: '', email: '', showName: '', standSize: '', openSides: '', heardAbout: '', heardAboutOther: '' });
   const [floorPlan, setFloorPlan] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
@@ -82,6 +83,7 @@ export default function ExhibitionAdsLandingPage() {
         name: form.name.trim(), phone: form.phone.trim(), phoneCountry: (form as any).phoneCountry || 'AE', email: form.email.trim(),
         details: {
           source: 'Google Ads exhibition landing',
+          heardAbout: form.heardAbout, heardAboutOther: form.heardAbout === 'Other' ? form.heardAboutOther : '',
           floorPlan: floorPlanUrl, floorPlanFilename: floorPlan?.name || '', floorPlanLinkExpires: floorPlanUrl ? '30 days' : '',
           offer: '3D stand concepts from your show brief',
           showName: form.showName.trim(), standSize: form.standSize.trim(), openSides: form.openSides,
@@ -123,9 +125,9 @@ export default function ExhibitionAdsLandingPage() {
             <h2 className="font-serif text-2xl text-[#f5f2eb]">Tell Us About Your Stand</h2>
             <p className="mt-2 text-sm text-[#d4d1cb]">Name, phone and work email are required. Show, stand size, open sides and floor plan are optional. Get 3 free stand designs within 48 hours, then a quote for the design you choose.</p>
             <form onSubmit={send} className="mt-3 grid grid-cols-2 gap-2 md:mt-5 md:gap-3">
-              {fields.map(({key,label,type='text',hint}) => <label key={key} className={`text-xs font-medium text-[#e4dfd7] md:text-sm${key === 'phone' ? ' col-span-2' : ''}`}>{label}{['name','phone','email'].includes(key) ? ' *' : ''}{key === 'phone'
+              {fields.map(({key,label,type='text',hint}) => <React.Fragment key={key}><label className={`text-xs font-medium text-[#e4dfd7] md:text-sm${key === 'phone' ? ' col-span-2' : ''}`}>{label}{['name','phone','email'].includes(key) ? ' *' : ''}{key === 'phone'
                 ? <PhoneInput name="phone" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} onCountryChange={c => setForm(f => ({ ...f, phoneCountry: c }))} className={fieldClass} />
-                : <input className={fieldClass} name={key} type={type} placeholder={hint} autoComplete={key === 'name' ? 'name' : key === 'email' ? 'email' : undefined} required={['name','phone','email'].includes(key)} value={form[key]} onChange={e => setForm({ ...form, [key]: e.target.value })} />}</label>)}
+                : <input className={fieldClass} name={key} type={type} placeholder={hint} autoComplete={key === 'name' ? 'name' : key === 'email' ? 'email' : undefined} required={['name','phone','email'].includes(key)} value={form[key]} onChange={e => setForm({ ...form, [key]: e.target.value })} />}</label>{key === 'email' && <HeardAboutField value={form.heardAbout} onChange={(heardAbout, heardAboutOther) => setForm(f => ({ ...f, heardAbout, heardAboutOther }))} inputClass={fieldClass} />}</React.Fragment>)}
               <div className="col-span-2"><button disabled={busy} type="submit" className="mt-2 w-full rounded-sm bg-[#c9a962] px-5 py-4 font-bold text-black hover:bg-[#dfc488] disabled:opacity-60">{busy ? 'Sending...' : 'Request My 3 Free Designs'}</button>
               {error && <p role="alert" className="mt-3 text-sm text-red-300">{error}</p>}
               <p className="mt-3 text-xs leading-relaxed text-[#aaa49b]">Your details go to FANN for this request. <Link to="/privacy-policy" className="underline">Privacy policy</Link>.</p></div>
@@ -144,4 +146,4 @@ export default function ExhibitionAdsLandingPage() {
     <section className="bg-[#111] px-5 py-14 text-[#f5f2eb]"><div className="mx-auto max-w-6xl"><h2 className="font-serif text-3xl">Exhibition stand builders: one team, from brief to build</h2><p className="mt-4 max-w-2xl text-[#d4d1cb]">3D concept, detailed quote, fabrication and on-site installation. We coordinate venue and authority submissions as part of the build.</p><a href="#brief" className="mt-6 inline-block rounded-sm bg-[#c9a962] px-6 py-3 font-bold text-black">Tell us about your stand</a></div></section>
     </div>
   </>;
-      }
+}
