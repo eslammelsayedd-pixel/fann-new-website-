@@ -308,6 +308,13 @@ for (const route of ['/about','/exhibition-stand-builders-dubai','/how-to-choose
  pageFaq.mainEntity.push(certificationFaq);routes[route].jsonld=JSON.stringify(schema);
 }
 routes['/'].body += '<section><p>ISO 20121 certified. IFES member.</p></section>';
+// Money-page service scope and comparison content, shared with React.
+const moneyPages26Nov = JSON.parse(fs.readFileSync(path.resolve('data/moneyPages26Nov.json'),'utf8'));
+for (const [route,page] of Object.entries(moneyPages26Nov)) {
+ const E=escapeFaq;
+ routes[route]={title:page.title,description:page.description,robots:'index, follow',image:page.hero,jsonld:JSON.stringify(buyerPageSchema(route,page)),body:`<main><h1>${E(page.heading)}</h1><p>${E(page.subheading)}</p><a href="#project-enquiry">${E(page.action)}</a>${page.sections.map(x=>`<section><h2>${E(x.heading)}</h2><p>${E(x.text)}</p></section>`).join('')}<h2>From our project portfolio</h2>${page.proof.map(x=>`<figure><a href="${x.path}"><img src="${x.image}" alt="${E(x.name)}"><figcaption>${E(x.name)} | ${E(x.location)}</figcaption></a><p>${E(x.text)}</p></figure>`).join('')}<h2>Frequently asked questions</h2>${page.faqs.map(x=>`<h3>${E(x.question)}</h3><p>${E(x.answer)}</p>`).join('')}<section id="project-enquiry"><h2>Tell us about your project</h2><a href="/contact">Send your project enquiry</a></section><nav>${page.related.map(x=>`<a href="${x.path}">${E(x.label)}</a>`).join('')}</nav></main>`};
+}
+routes['/services'].body += '<section><h2>Compare your next project approach</h2>'+Object.entries(moneyPages26Nov).map(([path,p])=>`<p><a href="${path}">${escapeFaq(p.heading)}</a></p>`).join('')+'</section>';
 // Workshop internal discovery links in static HTML match the shared footer.
 for (const item of Object.values(routes)) item.body += '<nav aria-label="Workshop"><a href="/our-workshop">Our workshop</a></nav>';
 for (const [route, r] of Object.entries(routes)) {
