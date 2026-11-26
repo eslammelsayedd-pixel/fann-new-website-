@@ -657,22 +657,39 @@ async function calculateStandCost(req: VercelRequest, res: VercelResponse) {
   const data = req.body || {};
 
   try {
-    const size = Number(data.size) || 36;
-    const isCustom = data.type === 'custom' || data.type === 'premium';
-    const baseRatePerSqm = isCustom ? 1200 : 600;
-    const structureCost = size * baseRatePerSqm;
-    
-    let technologyCost = 0;
-    if (data.features?.includes('Digital Displays') || data.features?.includes('LED Video Wall')) technologyCost += 8000;
-    if (data.features?.includes('VR / AR Activation')) technologyCost += 12000;
-    if (data.features?.includes('Smart Lead Tech')) technologyCost += 3000;
-
-    let hospitalityCost = 0;
-    if (data.features?.includes('Bar / Lounge Area')) hospitalityCost += 5000;
-    if (data.features?.includes('Private VIP Meeting Room')) hospitalityCost += 9000;
-
-    let projectManagementAndDesign = Math.round((structureCost + technologyCost + hospitalityCost) * 0.15);
-    const totalCost = structureCost + technologyCost + hospitalityCost + projectManagementAndDesign;
+    // Approved 26 Nov 2026: use the form's actual dimensions and stand type.
+    const dims = data.dimensions;
+    const size = dims ? Number(dims.length) * Number(dims.width) : Number(data.size);
+    const standType = data.standType || ({ shell: 'Shell Scheme', custom: 'Custom-Built', premium: 'Premium/Luxury' } as any)[data.type];
+    if (!Number.isFinite(size) || size <= 0 || size > 900 ||
+        (dims && (![dims.length, dims.width].every(v => Number.isFinite(Number(v)) && Number(v) >= 3 && Number(v) <= 30) ||
+          !Number.isFinite(Number(dims.height)) || Number(dims.height) < 2.5 || Number(dims.height) > 8))) {
+      return res.status(400).json({ error: 'Please provide valid stand dimensions: length and width 3-30m, height 2.5-8m.' });
+    }
+    if (!['Shell Scheme', 'Custom-Built', 'Premium/Luxury'].includes(standType)) {
+      return res.status(400).json({ error: 'Please select a valid stand type.' });
+    }
+    if (standType === 'Premium/Luxury') {
+      return res.status(422).json({ error: 'Premium/luxury stands need a tailored quotation. Please contact sales@fann.ae with your brief.' });
+    }
+    const baseRatePerSqm = standType === 'Shell Scheme' ? 450 : 900;
+    const structureCost = Math.round(size * baseRatePerSqm);
+    const featureRates: Record<string, number> = {
+      'Reception Desk': 2500, 'Storage Room': 3500, 'Meeting Room': 6000,
+      'LED Video Wall': 7200, 'Premium Flooring': 150 * size,
+      'Hanging Structure': 5500, 'Premium Lighting': 3800, 'Audio System': 2800,
+      'Furniture Package': 1800, 'WiFi Setup': 1500,
+      'Digital Displays': 8000, 'VR / AR Activation': 12000, 'Smart Lead Tech': 3000,
+      'Bar / Lounge Area': 5000, 'Private VIP Meeting Room': 9000
+    };
+    if (data.features != null && (!Array.isArray(data.features) || data.features.some((f: any) => typeof f !== 'string' || !Object.prototype.hasOwnProperty.call(featureRates, f)))) {
+      return res.status(400).json({ error: 'Please select valid stand features.' });
+    }
+    const selectedFeatures = [...new Set<string>(data.features || [])];
+    const featureBreakdown = selectedFeatures.map(category => ({ category, amount: Math.round(featureRates[category]) }));
+    const extrasCost = featureBreakdown.reduce((sum, item) => sum + item.amount, 0);
+    const projectManagementAndDesign = Math.round((structureCost + extrasCost) * 0.15);
+    const totalCost = structureCost + extrasCost + projectManagementAndDesign;
 
     return res.status(200).json({
       estimatedCost: {
@@ -681,8 +698,7 @@ async function calculateStandCost(req: VercelRequest, res: VercelResponse) {
       },
       breakdown: [
         { category: 'Structure & Fabrication', amount: structureCost },
-        { category: 'Technology & AV', amount: technologyCost },
-        { category: 'Hospitality & VIP Experience', amount: hospitalityCost },
+        ...featureBreakdown,
         { category: 'Design & Project Management (15%)', amount: projectManagementAndDesign }
       ],
       hiddenCosts: [
@@ -693,7 +709,10 @@ async function calculateStandCost(req: VercelRequest, res: VercelResponse) {
         'After-hours build-up & teardown surcharges',
         'Civil defense & authority approval permits'
       ],
-      total: totalCost
+      total: totalCost,
+      currency: 'AED', areaSqm: size, standType, baseRatePerSqm,
+      taxBasis: 'VAT excluded',
+      scopeNote: 'Indicative planning estimate only, not a quotation. Shell scheme means branding of organiser-supplied shell. Venue services, fees and permits excluded. Height, location, duration and configuration require review; no automatic surcharge is included.'
     });
   } catch (error: any) {
     console.error('calculate-stand-cost error:', error);
@@ -779,6 +798,7 @@ async function generateRoiPdf(req: VercelRequest, res: VercelResponse) {
 
 async function generateCostPdf(req: VercelRequest, res: VercelResponse) {
   const { calculation, inputs } = req.body || {};
+  const escapeHtml = (v: unknown) => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
   const htmlContent = `
     <!DOCTYPE html>
     <html lang="en">
@@ -795,8 +815,8 @@ async function generateCostPdf(req: VercelRequest, res: VercelResponse) {
             <p class="text-slate-500 uppercase tracking-widest text-xs mt-1">Bespoke Exhibition stand budget estimate</p>
           </div>
           <div class="text-right">
-            <h2 class="text-lg font-bold text-amber-600">Turnkey Budget Proposal</h2>
-            <p class="text-slate-500 text-sm mt-1">Prepared for ${inputs?.contact?.company || 'Valued Client'}</p>
+            <h2 class="text-lg font-bold text-amber-600">Indicative Budget Estimate</h2>
+            <p class="text-slate-500 text-sm mt-1">Prepared for ${escapeHtml(inputs?.contact?.company || 'Valued Client')}</p>
           </div>
         </div>
 
@@ -804,12 +824,12 @@ async function generateCostPdf(req: VercelRequest, res: VercelResponse) {
           <h3 class="text-lg font-bold text-slate-900 border-b pb-2 mb-4">1. ESTIMATE SUMMARY</h3>
           <div class="bg-slate-50 p-6 border rounded-lg flex justify-between items-center mb-6">
             <div>
-              <span class="text-slate-500 text-xs uppercase block">Total Turnkey Budget</span>
+              <span class="text-slate-500 text-xs uppercase block">Indicative Budget Range (VAT excluded)</span>
               <h4 class="text-3xl font-bold text-slate-900">AED ${(calculation?.estimatedCost?.min ?? calculation?.total ?? 0).toLocaleString()} - ${(calculation?.estimatedCost?.max ?? calculation?.total ?? 0).toLocaleString()}</h4>
             </div>
             <div class="text-right">
-              <span class="text-slate-500 text-xs block">Stand size: <strong>${inputs?.size || 36} sqm</strong></span>
-              <span class="text-slate-500 text-xs block">Type: <strong>${inputs?.type || 'Custom'}</strong></span>
+              <span class="text-slate-500 text-xs block">Stand size: <strong>${escapeHtml(calculation?.areaSqm ?? (Number(inputs?.dimensions?.length) * Number(inputs?.dimensions?.width) || inputs?.size || 'Not supplied'))} sqm</strong></span>
+              <span class="text-slate-500 text-xs block">Type: <strong>${escapeHtml(calculation?.standType || inputs?.standType || inputs?.type || 'Not supplied')}</strong></span>
             </div>
           </div>
 
@@ -822,7 +842,7 @@ async function generateCostPdf(req: VercelRequest, res: VercelResponse) {
             </thead>
             <tbody>
               ${(Array.isArray(calculation?.breakdown) ? calculation.breakdown : []).map((item: any) => `<tr class="border-b">
-                <td class="p-3 font-semibold text-slate-800">${item.category}</td>
+                <td class="p-3 font-semibold text-slate-800">${escapeHtml(item.category)}</td>
                 <td class="p-3 text-right text-slate-700">AED ${Number(item.amount || 0).toLocaleString()}</td>
               </tr>`).join('')}
             </tbody>
@@ -832,9 +852,9 @@ async function generateCostPdf(req: VercelRequest, res: VercelResponse) {
         <div class="mb-10 text-slate-600 text-sm leading-relaxed">
           <p class="font-semibold text-slate-800 mb-2">Notes & Inclusions:</p>
           <ul class="list-disc list-inside space-y-1">
-            <li>Full architectural 3D render designs and structural drawings.</li>
-            <li>Sponsorship and venue authority approvals.</li>
-            <li>On-site logistics, turnkey installation, and dismantle.</li>
+            <li>Budget planning only, not a quotation or a design proposal.</li>
+            <li>Venue electrical services, rigging, authority permits and fees are excluded.</li>
+            <li>Shell estimates cover branding of organiser-supplied shell, not stand-space rental. Selected add-ons and design/project management are included in this estimate; final build scope is subject to review.</li>
           </ul>
         </div>
 
@@ -1713,4 +1733,4 @@ export default async function mainHandler(req: VercelRequest, res: VercelRespons
     console.error('Unified API router error:', error);
     return res.status(500).json({ error: error.message || 'Internal Server Error' });
   }
-}
+                                                                            }
