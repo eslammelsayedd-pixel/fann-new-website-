@@ -1606,7 +1606,8 @@ function robotsTxt(res: VercelResponse) {
 }
 function sitemapXml(res: VercelResponse) {
   const today = new Date().toISOString().slice(0, 10);
-  const urls = SITEMAP_PATHS.map(p => `  <url><loc>${SITE}${p === '/' ? '/' : p}</loc><lastmod>${today}</lastmod><priority>${p === '/' ? '1.0' : p.split('/').length > 2 ? '0.7' : '0.8'}</priority></url>`).join('\n');
+  const moneyPaths = ["/interior-fit-out-dubai", "/commercial-fit-out-dubai", "/villa-renovation-dubai", "/exhibition-stands-abu-dhabi", "/event-setup-dubai", "/modular-vs-custom-exhibition-stands-dubai", "/shell-scheme-upgrade-vs-custom-stand", "/in-house-exhibition-builder-vs-agency"];
+  const urls = [...new Set([...SITEMAP_PATHS, ...moneyPaths])].map(p => `  <url><loc>${SITE}${p === '/' ? '/' : p}</loc><lastmod>${today}</lastmod><priority>${p === '/' ? '1.0' : p.split('/').length > 2 ? '0.7' : '0.8'}</priority></url>`).join('\n');
   res.setHeader('Content-Type', 'application/xml; charset=utf-8');
   res.setHeader('Cache-Control', 'public, max-age=3600');
   return res.status(200).send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
