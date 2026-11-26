@@ -1088,6 +1088,10 @@ async function leadReceipt(req: VercelRequest, res: VercelResponse) {
       if (!update.ok) throw new Error('Receipt status update unavailable');
     }
 
+    if (b.deliveryConfirmed && b.formType === 'Cost Calculator estimate') {
+      try { await autoReplyLead({ formType: b.formType, name: clean(b.name, 120), email, extra: { ...(b.details || {}), company: b.company }, est: b.details?.estimate }); }
+      catch { console.error('Calculator acknowledgement failed; receipt remains saved.'); }
+    }
     return res.status(200).json({ persisted: true, submissionId: rows[0].submission_id });
   } catch { console.error('Private receipt unavailable; conversion suppressed.'); return res.status(502).json({ persisted: false }); }
 }
@@ -1128,10 +1132,15 @@ async function autoReplyWebsiteCheck(domain: string): Promise<boolean> {
 }
 
 async function autoReplyLead(args: { formType: string; name: string; email: string; extra: Record<string, unknown>; est: any }): Promise<void> {
-  if (process.env.AUTOREPLY_ENABLED !== 'true') return;
-  const host = process.env.AUTOREPLY_SMTP_HOST, user = process.env.AUTOREPLY_SMTP_USER, pass = process.env.AUTOREPLY_SMTP_PASS;
+  // Calculator-only acknowledgement approved in the owner's 26 Nov conversation.
+  if (args.formType !== 'Cost Calculator estimate' || process.env.AUTOREPLY_ENABLED === 'false') return;
+  const host = process.env.AUTOREPLY_SMTP_HOST || process.env.SMTP_HOST;
+  const user = process.env.AUTOREPLY_SMTP_USER || process.env.SMTP_USER;
+  const pass = process.env.AUTOREPLY_SMTP_PASS || process.env.SMTP_PASS;
+  if (user?.toLowerCase() !== 'sales@fann.ae') { console.error('Calculator acknowledgement unavailable: sender identity'); return; }
   if (!host || !user || !pass) return;
   const email = args.email.toLowerCase().trim();
+  if (!args.est?.estimatedCost) return;
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
   if (email.endsWith('@fann.ae')) return;
   const company = clean((args.extra as any).company || '', 160);
@@ -1147,39 +1156,24 @@ async function autoReplyLead(args: { formType: string; name: string; email: stri
   if ((await dup.json().catch(() => [])).length) { console.log(`AutoReply skipped: 24h duplicate for ${email}`); return; }
 
   const firstName = (args.name.trim().split(/\s+/)[0] || 'there');
-  const domain = email.split('@')[1];
-  let websiteLine = '';
-  if (domain && !AUTOREPLY_FREEMAIL.has(domain) && await autoReplyWebsiteCheck(domain)) {
-    websiteLine = `\nWe also took a quick look at ${domain} so we understand your business before we reply.\n`;
-  }
 
   let subject: string, body: string;
-  const est = args.est;
+  const calculation: any = { code: 200, value: null, status(code: number) { this.code = code; return this; }, json(value: any) { this.value = value; return this; } };
+  await calculateStandCost({ method: 'POST', body: args.extra } as any, calculation);
+  if (calculation.code !== 200) return;
+  const est = calculation.value;
   if (est && typeof est === 'object' && est.estimatedCost) {
     const aed = (n: any) => `AED ${Number(n || 0).toLocaleString('en-US')}`;
-    const standType = clean((args.extra as any).standType || '', 60).toLowerCase();
-    const configuration = clean((args.extra as any).configuration || '', 60).toLowerCase();
     const dims: any = (args.extra as any).dimensions || {};
     const location = clean((args.extra as any).location || '', 160);
-    const sides = autoReplyOpenSides(configuration);
-    subject = `Your stand enquiry at ${autoReplyShortLocation(location)} - FANN, Dubai`;
+    subject = 'Your FANN stand cost-calculator request';
     body = [
-      `Dear ${firstName},`,
-      '',
-      `Thank you for using the cost calculator on our website. We received your request for a ${standType} ${configuration} stand, ${Number(dims.width || 0)} m x ${Number(dims.length || 0)} m, at ${location}.`,
-      '',
-      `Your indicative budget range on the calculator was ${aed(est.estimatedCost.min)} - ${aed(est.estimatedCost.max)}. This is an indicative range for the stand structure and design; venue fees and services (for example electrical connections, rigging and permits) are charged separately by the venue.`,
-      '',
-      'To prepare a design and a proper quotation, could you please tell us:',
-      '1. Which show is this for, and what are the build-up and show dates?',
-      `2. How many sides are open? Your calculator entry says ${configuration}${sides ? `, so we assume ${sides} open side${sides === 'one' ? '' : 's'}` : ''}. Please confirm.`,
-      '3. What branding do you need? For example fascia name, logo wall, graphics, a TV or screen, and any product display.',
-      '4. Your stand number, if you already have it.',
-      '',
-      'If you have a floor plan or the exhibitor manual, please send it. We will return a 3D concept and a quotation within two working days of your reply.',
-      websiteLine,
+      `Hello ${firstName},`, '',
+      `Thank you for using FANN's stand cost calculator. We received your request for a ${Number(dims.width || 0)} x ${Number(dims.length || 0)} m stand at ${location}.`, '',
+      `The calculator showed an estimated range of ${aed(est.estimatedCost.min)} to ${aed(est.estimatedCost.max)}. This is an initial estimate, not a quotation or a design proposal. VAT and venue services, fees and permits are excluded.`, '',
+      'Could you please share your stand design or allocation floor plan, along with your event name and dates? If you do not have a design yet, please share your logo, products to display and any requirements so we can suggest suitable options.', '',
       AUTOREPLY_SIGNATURE,
-    ].join('\n').replace(/\n{3,}/g, '\n\n');
+    ].join('\n');
   } else {
     subject = 'Your enquiry - FANN, Dubai';
     body = [
@@ -1193,7 +1187,6 @@ async function autoReplyLead(args: { formType: string; name: string; email: stri
       '3. Any drawings, floor plans or reference photos.',
       '',
       'We will come back to you within one working day.',
-      websiteLine,
       AUTOREPLY_SIGNATURE,
     ].join('\n').replace(/\n{3,}/g, '\n\n');
   }
@@ -1201,11 +1194,11 @@ async function autoReplyLead(args: { formType: string; name: string; email: stri
   const nodemailer = (await import('nodemailer')).default;
   const transport = nodemailer.createTransport({
     host,
-    port: Number(process.env.AUTOREPLY_SMTP_PORT || 587),
-    secure: Number(process.env.AUTOREPLY_SMTP_PORT || 0) === 465,
+    port: Number(process.env.AUTOREPLY_SMTP_PORT || process.env.SMTP_PORT || 587),
+    secure: Number(process.env.AUTOREPLY_SMTP_PORT || process.env.SMTP_PORT || 0) === 465,
     auth: { user, pass },
   });
-  await transport.sendMail({ from: `Hassan Omar <${user}>`, to: email, cc: AUTOREPLY_CC, subject, text: body });
+  await transport.sendMail({ from: `Hassan Omar <${user}>`, to: email, cc: 'islam@fann.ae', subject, text: body });
 
   const { randomUUID, createHash } = await import('node:crypto');
   const requestHash = createHash('sha256').update(`autoreply:${email}:${cutoff.slice(0, 10)}`).digest('hex');
@@ -1284,8 +1277,10 @@ async function handleLead(req: VercelRequest, res: VercelResponse, defaultType: 
   try {
     await deliverLead(`[fann.ae] ${formType}${name ? ' - ' + name : ''}${company ? ' (' + company + ')' : ''}`, text, email || undefined, recipient);
     console.log(`Lead delivered: ${formType}`);
-    // Delivering an enquiry does not authorize a reply to its visitor.
-    // Customer auto-replies remain disabled until separately approved.
+    if (formType === 'Cost Calculator estimate') {
+      try { await autoReplyLead({ formType, name, email, extra: { ...extra, company }, est }); }
+      catch { console.error('Calculator acknowledgement failed; enquiry delivery remains confirmed.'); }
+    }
     // Disabled unless separately configured after table/security review. Delivery stays intact.
     let persisted = false;
     let submissionId: string | undefined;
@@ -1733,4 +1728,4 @@ export default async function mainHandler(req: VercelRequest, res: VercelRespons
     console.error('Unified API router error:', error);
     return res.status(500).json({ error: error.message || 'Internal Server Error' });
   }
-                                                                            }
+    }
