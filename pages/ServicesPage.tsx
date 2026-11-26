@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import AnimatedPage from '../components/AnimatedPage';
 import SEO from '../components/SEO';
 import buyerPages from '../data/buyerPages.json';
+import moneyPages from '../data/moneyPages26Nov.json';
 import { Layers, Calendar, PenTool, CheckCircle, ArrowRight } from 'lucide-react';
 
 interface ServiceSectionProps {
@@ -167,7 +168,7 @@ const ServicesPage: React.FC = () => {
           {['Dubai', 'Abu Dhabi'].map(city => <div key={city} className="mb-10">
             <h3 className="text-2xl font-serif text-white mb-4">{city}</h3>
             <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {Object.entries(buyerPages).filter(([path, page]) => !/riyadh|jeddah/.test(path) && (page.city || 'Abu Dhabi') === city).map(([path, page]) => <li key={path}>
+              {Object.entries({...buyerPages,...moneyPages}).filter(([path, page]) => !/riyadh|jeddah/.test(path) && (page.city || 'Abu Dhabi') === city).map(([path, page]) => <li key={path}>
                 <Link to={path} lang={page.lang || 'en'} dir={page.direction || 'ltr'} className="block h-full rounded-lg border border-white/15 px-5 py-4 text-gray-200 hover:text-fann-gold hover:border-fann-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-fann-gold">{page.heading}</Link>
               </li>)}
             </ul>
