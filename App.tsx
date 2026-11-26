@@ -5,6 +5,7 @@ import { AnimatePresence } from 'framer-motion';
 
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
+const MoneyPage = lazy(() => import('./pages/services/MoneyPage'));
 const BuyerIntentPage = lazy(() => import('./pages/services/BuyerIntentPage'));
 const ServicesPage = lazy(() => import('./pages/ServicesPage'));
 const PortfolioPage = lazy(() => import('./pages/PortfolioPage'));
@@ -94,6 +95,11 @@ const App: React.FC = () => {
                         <Route path="/gulfood-manufacturing-exhibition-stand-design" element={<BuyerIntentPage />} />
                         <Route path="/exhibition-stand-builders-dubai" element={<BuyerIntentPage />} />
                         <Route path="/fit-out-company-dubai" element={<BuyerIntentPage />} />
+                        <Route path="/interior-fit-out-dubai" element={<MoneyPage />} />
+                        <Route path="/commercial-fit-out-dubai" element={<MoneyPage />} />
+                        <Route path="/modular-vs-custom-exhibition-stands-dubai" element={<MoneyPage />} />
+                        <Route path="/shell-scheme-upgrade-vs-custom-stand" element={<MoneyPage />} />
+                        <Route path="/in-house-exhibition-builder-vs-agency" element={<MoneyPage />} />
                         <Route path="/services" element={<ServicesPage />} />
                         {/* Service Detail Pages */}
                         <Route path="/services/custom-exhibition-stands-dubai" element={<CustomStandsPage />} />
@@ -102,12 +108,12 @@ const App: React.FC = () => {
                         <Route path="/services/exhibition-stand-fabrication-dubai" element={<FabricationPage />} />
                         <Route path="/services/interior-fitout-exhibition-spaces-dubai" element={<FitOutPage />} />
                         
-                        <Route path="/event-setup-dubai" element={<EventSetupDubaiPage />} />
+                        <Route path="/event-setup-dubai" element={<MoneyPage />} />
                         <Route path="/fit-out-dubai" element={<FitOutDubaiPage />} />
                         <Route path="/restaurant-fit-out-dubai" element={<RestaurantFitOutDubaiPage />} />
                         <Route path="/clinic-fit-out-dubai" element={<ClinicFitOutDubaiPage />} />
-                        <Route path="/villa-renovation-dubai" element={<VillaRenovationDubaiPage />} />
-                        <Route path="/exhibition-stands-abu-dhabi" element={<ExhibitionStandsAbuDhabiPage />} />
+                        <Route path="/villa-renovation-dubai" element={<MoneyPage />} />
+                        <Route path="/exhibition-stands-abu-dhabi" element={<MoneyPage />} />
                         <Route path="/portfolio" element={<PortfolioPage />} />
                         <Route path="/exhibition-stand-quote" element={<ExhibitionAdsLandingPage />} />
                         <Route path="/portfolio/:slug" element={<ProjectDetailPage />} />
