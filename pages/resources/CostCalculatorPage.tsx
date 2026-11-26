@@ -115,10 +115,10 @@ const CostCalculatorPage: React.FC = () => {
                 body: JSON.stringify(state),
             });
 
-            if (!response.ok) throw new Error("Calculation failed");
             const data = await response.json();
+            if (!response.ok) throw new Error(data.error || "Calculation failed");
+            await submitLead({ formType: 'Cost Calculator estimate', name: state.contact.name, email: state.contact.email, phone: state.contact.phone, phoneCountry: (state.contact as any).phoneCountry || 'AE', company: state.contact.company, details: { ...state, estimate: data } });
             setResult(data);
-            submitLead({ formType: 'Cost Calculator estimate', name: state.contact.name, email: state.contact.email, phone: state.contact.phone, phoneCountry: (state.contact as any).phoneCountry || 'AE', company: state.contact.company, details: { ...state, estimate: data } }).catch(err => console.error('Lead delivery failed', err));
         } catch (err: any) {
             setError(err.message || "Something went wrong");
         } finally {
@@ -134,6 +134,7 @@ const CostCalculatorPage: React.FC = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ calculation: result, inputs: state }),
             });
+            if (!response.ok) throw new Error("Estimate download failed. Please try again.");
             const { htmlContent } = await response.json();
             const blob = new Blob([htmlContent], { type: 'text/html' });
             const url = URL.createObjectURL(blob);
@@ -159,7 +160,7 @@ const CostCalculatorPage: React.FC = () => {
                     <div className="text-center mb-12">
                         <h1 className="text-4xl md:text-6xl font-serif font-bold mb-4">Stand Cost Estimator</h1>
                         <p className="text-gray-300 text-lg max-w-2xl mx-auto mb-6">
-                            Indicative ranges for Dubai & KSA, confirmed in a free quote. Get a precise breakdown including hidden fees.
+                            Budget planning for basic shell branding and standard custom stands. Submit your contact details to see your estimate and send your brief to our team. Premium stands need a tailored quote.
                         </p>
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-fann-gold/10 border border-fann-gold/20 text-fann-gold/80 text-xs font-semibold">
                             <AlertTriangle size={14} />
@@ -347,7 +348,7 @@ const CostCalculatorPage: React.FC = () => {
                                     <div className="flex justify-between items-center pt-4">
                                         <button onClick={() => setState(prev => ({ ...prev, step: 3 }))} className="text-gray-400 hover:text-white font-medium">Back</button>
                                         <button onClick={calculateCost} disabled={isCalculating} className="btn-gold flex items-center gap-2 px-8 py-4">
-                                            {isCalculating ? <Loader2 className="animate-spin"/> : <Calculator size={18}/>} Calculate Now
+                                            {isCalculating ? <Loader2 className="animate-spin"/> : <Calculator size={18}/>} Get Estimate & Send Brief
                                         </button>
                                     </div>
                                 </motion.div>
@@ -361,7 +362,7 @@ const CostCalculatorPage: React.FC = () => {
                                         <div className="text-4xl md:text-5xl font-mono font-bold text-fann-gold mb-2">
                                             {formatCurrency(result.estimatedCost.min)} - {formatCurrency(result.estimatedCost.max)}
                                         </div>
-                                        <p className="text-xs text-gray-500">*Estimate covers stand design, build, technology and project management. Venue fees are charged separately by the venue - see below.</p>
+                                        <p className="text-xs text-gray-500">*Indicative estimate in AED, VAT excluded, not a quotation. Includes the base scope, selected add-ons and 15% design/project management. Shell means branding of organiser-supplied shell. Venue services and permits are separate. Height, venue, duration and open sides require review and have no automatic surcharge.</p>
                                     </div>
 
                                     <div className="bg-white/5 p-6 rounded-xl border border-white/10">
@@ -388,7 +389,7 @@ const CostCalculatorPage: React.FC = () => {
                                     <div className="flex gap-4">
                                         <button onClick={handleDownloadReport} disabled={isDownloading} className="flex-1 bg-fann-gold hover:bg-white hover:text-black text-black rounded-lg py-3 text-sm font-bold transition-colors flex items-center justify-center gap-2">
                                             {isDownloading ? <Loader2 className="animate-spin" size={16} /> : <Download size={16} />}
-                                            Download Report
+                                            Download Estimate
                                         </button>
                                         <button onClick={() => { setResult(null); setState(prev => ({ ...prev, step: 1 })); }} className="flex-1 border border-white/20 text-white rounded-lg py-3 text-sm font-bold hover:bg-white/5 transition-colors">Start Over</button>
                                     </div>
@@ -436,4 +437,3 @@ const CostCalculatorPage: React.FC = () => {
 };
 
 export default CostCalculatorPage;
-
