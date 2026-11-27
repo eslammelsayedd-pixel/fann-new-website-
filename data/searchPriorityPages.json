@@ -1,53 +1,36 @@
 {
   "/exhibition-stand-design-dubai": {
-    "title": "Exhibition Stand Design Dubai | Layout, 3D Brief & Build | FANN",
-    "description": "Exhibition stand design in Dubai: plan the layout, product displays, graphics and 3D concept brief, review real FANN stands and agree the build scope.",
-    "heading": "Exhibition stand design in Dubai",
+    "title": "Exhibition Stand Design Dubai: Brief to Build | FANN",
+    "description": "Plan your Dubai exhibition stand around your floor plan, products and visitor needs. Review layout, 3D concepts and build scope with FANN.",
+    "heading": "Exhibition stand design Dubai: from brief to build",
     "city": "Dubai",
     "breadcrumb": "Exhibition stand design Dubai",
     "subheading": "A practical route from your Dubai stand allocation to layout, concept visuals and a clearly defined build proposal.",
-    "intro": "FANN designs and builds exhibition stands in Dubai, supported by an office in Al Barsha 1 and a joinery workshop in Umm Al Quwain. Start the design with your stand allocation, products and visitor needs. Agree the layout, visual direction and required design deliverables before construction details are released. The completed Dubai stands below are real project references. They show layouts and visible features, not guaranteed visitor results or venue appointment.",
+    "intro": "",
     "hero": "/images/stands/6-geven-aircraft-interiors.webp",
     "heroAlt": "Geven aircraft seating stand at Aircraft Interiors Middle East, Dubai, 2025, designed and built by FANN, with LED perimeter and product seating displays",
     "heroCaption": "Completed FANN project: Geven at Aircraft Interiors Middle East, Dubai, 2025. A design and build reference for product-led layouts; it does not establish a venue appointment or measured visitor result.",
     "action": "Request a design brief",
     "sections": [
       {
-        "heading": "Turn the allocation into a stand design brief",
-        "text": "Share the show, venue, hall, floor plan, stand dimensions and open sides. Identify the products or equipment being displayed, demonstrations, meetings, reception and storage. Add brand guidelines and the current exhibitor manual. The design should answer this brief rather than reuse a layout drawn for another exhibitor."
+        "heading": "TL;DR",
+        "text": "Start exhibition stand design in Dubai with the organiser's allocation plan, your products and the activities the stand must support. Compare layouts against the same brief, then agree the design deliverables, drawing revision and itemised build scope before production.\n\nFANN designs and builds exhibition stands, with a Dubai office and a production workshop in Umm Al Quwain. Send your show, venue, dimensions, open sides and floor plan so the design can be reviewed against the space you have booked. A 3D concept shows a proposed layout and appearance; it is not a construction specification or a guarantee of venue approval."
       },
       {
-        "heading": "Plan the visitor route and product display together",
-        "text": "Decide what visitors should notice from the aisle and where they can stop without blocking the entrance. Place product displays, meeting areas, reception and storage around the allocation. Confirm product dimensions, handling and access needs before finalising counters or display furniture."
+        "heading": "What should go into your stand design brief?",
+        "text": "Put the allocation plan first. Record the venue, hall, stand number, dimensions and aisle-facing edges, then add your show date and current exhibitor manual. A reference image can explain a preference, but it cannot replace the booked plan.\n\nList the products being displayed, including dimensions and access needs. Say where demonstrations, reception, meetings and storage are needed. Add brand files and identify who will approve the layout and artwork.\n\nBefore comparing concepts, check that each option answers this same brief. Otherwise, a striking render may solve a different problem from yours."
       },
       {
-        "heading": "Agree what the 3D concept includes",
-        "text": "Specify the views, layout information, branding and material direction needed to review the concept. Identify which decisions are still provisional and who approves them. Concept visuals explain the appearance and arrangement; technical drawings, engineering and venue submissions are separate deliverables unless the agreed scope includes them."
+        "heading": "How should you compare exhibition stand design options?",
+        "text": "Walk through each layout as a visitor. Check what can be seen from the aisle, where someone can stop to look at a product and whether the entrance remains clear when a conversation starts.\n\nThen review the stand as an exhibitor. Can staff reach storage without crossing a demonstration? Does the meeting area have the privacy you need? Can the equipment be brought into position? Record what each option changes, rather than choosing only by its finish or lighting style.\n\nUse [completed exhibition projects](https://fann.ae/portfolio) to discuss visible layouts, counters and display features. Photographs show completed work, not guaranteed visitor results or the specification for your next stand."
       },
       {
-        "heading": "Check graphics, lighting and equipment interfaces",
-        "text": "Review artwork against the actual panel sizes and joins, then coordinate screens, furniture, lighting and equipment with the layout. Identify power, data and other service responsibilities in the brief. Do not infer print dimensions, electrical loads or structural details from a rendered image."
+        "heading": "What does a 3D concept include, and what still needs checking?",
+        "text": "Agree the views, layout information, branding and material direction you need to review. Mark dimensions, finishes, screens and equipment that remain provisional.\n\nKeep concept approval separate from technical sign-off. Structural information, service coordination, production drawings and venue submissions need their own agreed responsibilities. Do not infer electrical loads, print sizes or fixing details from a rendered image.\n\nFor the wider sequence after concept review, see [the custom stand build process](https://fann.ae/insights/custom-exhibition-stand-process-dubai). The actual show manual and agreed scope control your project."
       },
       {
-        "heading": "Move from approved design to an itemised build scope",
-        "text": "Confirm the agreed drawing revision, materials, graphics, production, transport, installation and dismantling. Identify venue submissions, service orders, support and storage as included, excluded or supplied by others. Later revisions need their effect on scope, price and programme confirmed before the changed work is released."
-      },
-      {
-        "heading": "Confirm the open sides before comparing design options",
-        "text": "Read the allocated plan together with the dimensions and orientation, then confirm which edges face the aisle. Mark product access, reception and meeting needs on that plan before choosing a visual direction. A layout drawn for a different set of open sides may place a counter, wall or display where your visitors need to enter.",
-        "items": [
-          "Allocation: record the hall, stand number, dimensions and aisle-facing edges.",
-          "Options: compare the same products, meeting needs, storage and brand message in every layout.",
-          "Decision: name the person selecting the direction and identify what still needs a technical check."
-        ]
-      },
-      {
-        "heading": "Use a design review to make decisions, not collect renders",
-        "text": "Ask what each option changes: the visitor route, product position, meeting privacy, storage or visible branding. Select the useful elements and record one agreed direction. Keep the reference images separate from the production instruction, and mark any dimensions, materials, lighting or equipment that remain provisional."
-      },
-      {
-        "heading": "Keep the selected option tied to the quote and artwork",
-        "text": "Before releasing fabrication, compare the selected layout and drawing revision with the itemised proposal. Confirm the stand elements, finish direction, graphic locations and interfaces that the quoted work includes. Keep a record of later changes so an approved visual is not mistaken for approval of every service, material substitution or extra item."
+        "heading": "How do you keep design, artwork and the quote aligned?",
+        "text": "Record the selected drawing revision and compare it with the itemised proposal. Check materials, graphics, lighting, furniture, AV, transport, installation and dismantling. Mark each item as included, excluded or supplied by others.\n\nUse the [stand cost estimator](https://fann.ae/resources/cost-calculator) as an indicative starting point, not a final quotation. Confirm the actual scope before comparing totals, including venue services and other separately supplied work.\n\nA larger screen, moved display or revised counter can affect fabrication, service connections and work already released. Ask for its effect on scope, price and programme before the changed work proceeds. Do not assume unlimited revisions."
       }
     ],
     "proofHeading": "Real Dubai stands from the FANN archive",
@@ -78,44 +61,16 @@
     ],
     "faqs": [
       {
-        "question": "What do you need for exhibition stand design in Dubai?",
-        "answer": "Send the show and venue, floor plan, stand dimensions and open sides, product information, planned activities and brand assets. Include the current exhibitor manual and required dates. Identify meetings, reception, storage, demonstrations and equipment. FANN can then review the layout and design deliverables against your actual allocation and brief."
+        "question": "What should exhibition stand design in Dubai start with?",
+        "answer": "Start with your organiser's allocation plan, stand dimensions and open sides. Add the products, demonstrations, meetings, reception and storage the stand needs to support, plus brand files and the current exhibitor manual."
       },
       {
-        "question": "What is the difference between a stand concept and a build-ready design?",
-        "answer": "A concept communicates layout, appearance, branding and proposed materials. A build-ready package needs the drawings, specifications, service coordination and specialist inputs required for the actual structure and show. Agree those deliverables separately. A polished 3D image is not a structural calculation, construction specification or guarantee that the venue will approve it."
+        "question": "Is stand design the same as stand construction?",
+        "answer": "No. The concept describes the proposed layout and appearance. Construction needs the drawings, specifications, coordinated services and specialist inputs agreed for the actual stand. Confirm which deliverables and venue submissions the proposal includes."
       },
       {
-        "question": "Can we review real Dubai exhibition stand designs?",
-        "answer": "Yes. The linked Geven, TREVOS and Bayara galleries are existing FANN Dubai project references. Use the visible layouts, counters, displays and brand features to explain your preferences. A photograph does not establish a material specification, visitor result or the scope appropriate for your next stand; those details need separate agreement."
-      },
-      {
-        "question": "How are design revisions and production coordinated?",
-        "answer": "Name the person approving layouts and artwork, and agree the design deliverables and revision allowance. Record the drawing revision released for production. Changes to dimensions, materials, equipment or graphics need their effect on scope, price, approvals and timing checked before the changed work proceeds. No unlimited or automatically free revisions are promised."
-      },
-      {
-        "question": "Who handles Dubai venue drawings and submission deadlines?",
-        "answer": "Submission and service responsibilities are agreed for the project using the current show and venue manuals. Identify who prepares drawings, provides specialist inputs, submits them and answers comments. FANN undertakes the agreed scope, not an unconditional approval guarantee. The organiser schedule and actual design determine the requirements and deadlines."
-      },
-      {
-        "question": "Why do open sides matter when choosing a stand layout?",
-        "answer": "Open sides determine where visitors can approach and where walls, counters and displays can sit. Confirm the aisle-facing edges on your allocated plan before comparing options. The same footprint with different open sides is a different design brief, so a reference image should not override the booking or agreed access needs."
-      },
-      {
-        "question": "How should we compare several stand design options?",
-        "answer": "Compare every option against the same products, visitor activities, meeting needs, storage and brand message. Look at the entry route and equipment positions, not only the render style. Record the useful elements and choose one direction for development, with unresolved dimensions, materials and service requirements clearly identified before the next approval."
-      },
-      {
-        "question": "Can we send reference images with our stand allocation?",
-        "answer": "Yes, send reference images alongside your allocated plan and explain which features you like, such as an entrance, display wall, meeting area or colour direction. References help communicate preferences; they do not establish a construction specification, permission to copy another design, or suitability for your venue and actual product requirements."
-      },
-      {
-        "question": "What should be checked after selecting a design option?",
-        "answer": "Check the selected layout against the stand allocation and itemised proposal, then record the current drawing and artwork revisions. Confirm dimensions, product interfaces, materials, graphic locations and the services included in the quote. Identify outstanding technical or venue inputs before releasing affected work, rather than assuming the selected image settles every detail."
-      },
-      {
-        "question": "Can layout and artwork changes affect the build scope?",
-        "answer": "Yes. A moved display, larger screen, revised counter or new graphic can affect dimensions, materials, service connections or work already released. Describe the requested change against the current drawing revision and confirm its effect on scope, price and programme before proceeding. The original concept does not grant unlimited revisions or automatic approval."
+        "question": "Can a Dubai exhibition stand design be reused for another allocation?",
+        "answer": "Treat it as a reference until the new dimensions, open sides, products and venue requirements have been checked. A layout for a different allocation may place walls, counters or entrances where the next stand needs access."
       }
     ],
     "related": [
@@ -166,7 +121,9 @@
         "label": "Dubai World Trade Centre official site",
         "note": "Checked 16 October 2026: venue homepage resolves. Your show booking and the current exhibitor manual control submissions, services and deadlines; confirm them through your organiser before relying on any date or rule."
       }
-    ]
+    ],
+    "proposalHeading": "Ready to review your Dubai stand brief?",
+    "proposalText": "Choose the layout that fits your allocation and visitor activities, then settle the outstanding technical and commercial decisions. Send your show, venue, dimensions, open sides, product list and floor plan through [FANN's contact page](https://fann.ae/contact). Identify your deadline and the design deliverables you need so the next step is a scoped proposal, not another set of disconnected renders."
   },
   "/medical-centre-fit-out-dubai": {
     "title": "Medical Centre Fit-Out Company Dubai | Operator Brief & Scope | FANN",
