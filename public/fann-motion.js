@@ -12,7 +12,7 @@
   var st = document.createElement('style');
   st.textContent =
     '#fm-bar{position:fixed;top:0;left:0;height:2px;width:0;background:#C5A572;z-index:2147483000;pointer-events:none}' +
-    '.fm-rev{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}' +
+    '.fm-rev{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)!important}' +
     '.fm-rev.fm-in{opacity:1;transform:none}' +
     '.fm-mag{transition:transform .25s ease-out}' +
     '@media (prefers-reduced-motion:reduce){.fm-rev{opacity:1!important;transform:none!important;transition:none!important}}';
@@ -28,7 +28,12 @@
 
   var io = new IntersectionObserver(function (es) {
     es.forEach(function (x) {
-      if (x.isIntersecting) { x.target.classList.add('fm-in'); io.unobserve(x.target); }
+      if (x.isIntersecting || x.boundingClientRect.top < 0) {
+        var el = x.target;
+        el.classList.add('fm-in'); io.unobserve(el);
+        // hand the element back to its own styles once the entrance is done
+        setTimeout(function () { el.classList.remove('fm-rev', 'fm-in'); el.style.transitionDelay = ''; }, 1100);
+      }
     });
   }, { rootMargin: '0px 0px -10% 0px' });
 
