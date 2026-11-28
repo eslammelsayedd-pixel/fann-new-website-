@@ -45,15 +45,15 @@
       var hero = document.querySelector('.fann-home-hero');
       if (hero && !hero.dataset.fmh && hero.firstElementChild) {
         hero.dataset.fmh = '1';
-        var bg = hero.querySelector('.fann-hero-media');
-        if (!bg) return;
         hero.addEventListener('pointermove', function (e) {
+          var bg = hero.querySelector('.fann-hero-media:last-of-type') || hero.querySelector('.fann-hero-media');
+          if (!bg) return;
           var r = hero.getBoundingClientRect();
           var nx = (e.clientX - r.left) / r.width * 2 - 1, ny = (e.clientY - r.top) / r.height * 2 - 1;
           bg.style.transition = 'transform .6s ease-out';
           bg.style.transform = 'scale(1.025) translate(' + (-nx * 8) + 'px,' + (-ny * 5) + 'px)';
         });
-        hero.addEventListener('pointerleave', function () { bg.style.transform = ''; });
+        hero.addEventListener('pointerleave', function () { hero.querySelectorAll('.fann-hero-media').forEach(function (bg) { bg.style.transform = ''; }); });
       }
     }
   }
