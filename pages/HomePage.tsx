@@ -225,8 +225,10 @@ const AboutSection: React.FC = () => (
                 </ScrollReveal>
                 <ScrollReveal variant="scale" delay={0.2}>
                     <div className="relative">
-                        <OptimizedImage 
+                        <img
                             src="/images/workshop/entrance.webp"
+                            loading="lazy"
+                            decoding="async"
                             alt="FANN workshop entrance in Umm Al Quwain"
                             className="w-full rounded-sm shadow-2xl grayscale hover:grayscale-0 transition-all duration-700"
                             width={600}
