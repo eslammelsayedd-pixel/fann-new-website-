@@ -131,9 +131,10 @@ const CONTRACTS = [
     expect: ['content'],
   },
   {
-    route: 'generate-insights', ai: true, // consumed by pages/InsightsPage.tsx
-    body: { prompt: 'In one sentence, describe exhibition stand design.' },
-    expect: ['content', 'sources'],
+    route: 'generate-insights', // retired public article generator must never invoke AI
+    body: { prompt: 'Disabled route contract check.' },
+    status: 410,
+    expect: ['error'],
   },
   {
     route: 'generate-exhibition-design', ai: true, // consumed by pages/ExhibitionStudioPage.tsx -> DesignResultPage.tsx
@@ -182,6 +183,12 @@ for (const c of CONTRACTS) {
     continue;
   }
   console.error = origError; console.warn = origWarn;
+  if (c.status) {
+    const ok = res.statusCode === c.status && c.expect.every(p => get(res.payload, p) !== undefined);
+    console[ok ? 'log' : 'error'](`${ok ? 'PASS' : 'FAIL'}  ${c.route} (retired endpoint status ${res.statusCode})`);
+    if (!ok) failures++;
+    continue;
+  }
   if (res.statusCode !== 200 || res.payload == null || res.payload.error) {
     if (c.ai && isQuotaBlock(capturedLogs)) {
       console.warn(`WARN  ${c.route}: status ${res.statusCode} caused by an upstream Gemini quota/billing block (HTTP 429) - not counted as a failure while the external cap is active`);
