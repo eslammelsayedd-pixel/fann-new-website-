@@ -154,34 +154,7 @@ async function chat(req: VercelRequest, res: VercelResponse) {
 
 // 4. Grounded Insights Generator
 async function generateInsights(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
-  const { prompt } = req.body || {};
-  if (!prompt) return res.status(400).json({ error: 'prompt is required' });
-
-  try {
-    const response = await ai.models.generateContent({
-      model: "gemini-3.8-flash",
-      contents: prompt,
-      config: {
-        systemInstruction: "You are an expert design journalist for FANN Insights & Guides, a publication in the GCC. Write an extremely engaging, high-quality, professional article based on the prompt. Cite industry reports or real examples if possible. Use clean Markdown.",
-        tools: [{ googleSearch: {} }]
-      }
-    });
-
-    const content = response.text || '';
-    const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
-    const sources = groundingChunks
-      .filter((chunk: any) => chunk.web?.uri)
-      .map((chunk: any) => ({
-        uri: chunk.web.uri,
-        title: chunk.web.title || chunk.web.uri
-      }));
-
-    return res.status(200).json({ content, sources });
-  } catch (error: any) {
-    console.error('generate-insights error:', error);
-    return res.status(500).json({ error: 'Failed to generate insights' });
-  }
+  return res.status(410).json({ error: 'Automatic article generation is disabled. Read the reviewed guides at /insights.' });
 }
 
 // 5. Exhibition Design Generator (Structured + Visuals)
@@ -1728,4 +1701,4 @@ export default async function mainHandler(req: VercelRequest, res: VercelRespons
     console.error('Unified API router error:', error);
     return res.status(500).json({ error: error.message || 'Internal Server Error' });
   }
-    }
+        }
