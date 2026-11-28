@@ -14,6 +14,7 @@ interface ArticleDef {
     title: string;
     description: string;
     datePublished: string;
+    dateModified?: string;
     hero: { src: string; alt: string };
     sections: Array<{ heading: string; paras: string[] }>;
     faqs: ArticleFaq[];
@@ -47,7 +48,7 @@ const ArticlePage: React.FC = () => {
                 headline: article.title,
                 description: article.description,
                 datePublished: article.datePublished,
-                dateModified: article.datePublished,
+                dateModified: article.dateModified || article.datePublished,
                 author: { '@type': 'Organization', name: 'FANN', url: 'https://fann.ae/' },
                 publisher: { '@type': 'Organization', name: 'FANN', url: 'https://fann.ae/', logo: { '@type': 'ImageObject', url: 'https://fann.ae/logo.png' } },
                 mainEntityOfPage: `https://fann.ae${article.path}`,
@@ -67,7 +68,7 @@ const ArticlePage: React.FC = () => {
                 <article className="max-w-3xl mx-auto px-6" dir={article.direction === 'rtl' ? 'rtl' : 'ltr'} lang={article.lang || 'en'}>
                     <Link to="/insights" className="inline-flex items-center gap-2 text-fann-gold text-sm mb-8 hover:underline"><ArrowLeft size={15} aria-hidden="true" /> All guides</Link>
                     <h1 className="text-3xl md:text-5xl font-serif font-bold text-fann-gold mb-4 leading-tight">{article.title}</h1>
-                    <p className="text-sm text-gray-400 mb-8">FANN guides · Updated {new Date(article.datePublished + 'T12:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                    <p className="text-sm text-gray-400 mb-8">FANN guides · Updated {new Date((article.dateModified || article.datePublished) + 'T12:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
                     <img src={article.hero.src} alt={article.hero.alt} loading="eager" decoding="async" className="w-full rounded-lg mb-10" />
                     {article.sections.map(section => (
                         <section key={section.heading} className="mb-10">
