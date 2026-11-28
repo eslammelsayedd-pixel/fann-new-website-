@@ -46,10 +46,10 @@ for (const article of insightArticles) {
     description: article.description,
     robots: 'index, follow',
     jsonld: JSON.stringify({'@context':'https://schema.org','@graph':[
-      {'@type':'Article',headline:article.title,description:article.description,datePublished:article.datePublished,dateModified:article.datePublished,author:{'@type':'Organization',name:'FANN',url:SITE+'/'},publisher:{'@type':'Organization',name:'FANN',url:SITE+'/',logo:{'@type':'ImageObject',url:SITE+'/logo.png'}},mainEntityOfPage:SITE+article.path,image:SITE+article.hero.src},
+      {'@type':'Article',headline:article.title,description:article.description,datePublished:article.datePublished,dateModified:article.dateModified || article.datePublished,author:{'@type':'Organization',name:'FANN',url:SITE+'/'},publisher:{'@type':'Organization',name:'FANN',url:SITE+'/',logo:{'@type':'ImageObject',url:SITE+'/logo.png'}},mainEntityOfPage:SITE+article.path,image:SITE+article.hero.src},
       {'@type':'FAQPage',mainEntity:faqLd}
     ]}),
-    body: `<main><a href="/insights">All FANN guides</a><article><h1>${E(article.title)}</h1><p>FANN guides | Updated ${E(article.datePublished)}</p><img src="${E(article.hero.src)}" alt="${E(article.hero.alt)}"/>${article.sections.map(section=>`<section><h2>${E(section.heading)}</h2>${section.paras.map(para=>`<p>${E(para)}</p>`).join('')}</section>`).join('')}<section><h2>Common questions</h2>${article.faqs.map(f=>`<h3>${E(f.q)}</h3><p>${E(f.a)}</p>`).join('')}</section><nav><h2>Next steps</h2>${article.related.map(r=>`<a href="${E(r.path)}">${E(r.label)}</a>`).join('')}</nav></article></main>`
+    body: `<main><a href="/insights">All FANN guides</a><article><h1>${E(article.title)}</h1><p>FANN guides | Updated ${E(article.dateModified || article.datePublished)}</p><img src="${E(article.hero.src)}" alt="${E(article.hero.alt)}"/>${article.sections.map(section=>`<section><h2>${E(section.heading)}</h2>${section.paras.map(para=>`<p>${E(para)}</p>`).join('')}</section>`).join('')}<section><h2>Common questions</h2>${article.faqs.map(f=>`<h3>${E(f.q)}</h3><p>${E(f.a)}</p>`).join('')}</section><nav><h2>Next steps</h2>${article.related.map(r=>`<a href="${E(r.path)}">${E(r.label)}</a>`).join('')}</nav></article></main>`
   };
   if (routes['/insights']) {
     routes['/insights'].body = (routes['/insights'].body || '') + `<p><a href="${article.path}">${E(article.title)}</a></p>`;
