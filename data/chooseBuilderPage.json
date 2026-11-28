@@ -73,6 +73,88 @@
     {
       "question": "Are installation and dismantling included?",
       "answer": "Ask for each to be stated in the proposal. The scope should identify transport, installation, handover checks, dismantling and any storage or return transport separately, including who is responsible for venue access and service orders."
+    },
+    {
+      "question": "How can I compare two stand quotations fairly?",
+      "answer": "Link each quotation to the same stand allocation, drawing revision and list of activities. Compare fabrication, graphics, lighting, AV, furniture, transport, installation and dismantling line by line. Mark venue services and other third-party items as included, excluded or supplied by a named party. Ask for missing answers before comparing the totals."
     }
-  ]
+  ],
+  "comparison": {
+    "heading": "A side-by-side stand builder comparison sheet",
+    "intro": "Use this working checklist for each shortlisted proposal. Write the proposal revision and the person responsible beside every answer. A missing answer is a question to resolve, not proof that a contractor cannot do the work.",
+    "columns": [
+      "Check",
+      "Ask for this evidence",
+      "Record in each proposal"
+    ],
+    "rows": [
+      [
+        "Comparable delivery",
+        "A finished stand with a similar layout and display requirement; confirm the builder’s role.",
+        "Project reference and scope actually delivered"
+      ],
+      [
+        "Production and quality",
+        "Who fabricates each element, where it is made and when you can review finishes.",
+        "Production owner and review point"
+      ],
+      [
+        "Stand boundary and layout",
+        "A plan matched to your allocation, open sides, product dimensions and visitor activities.",
+        "Drawing revision and unresolved layout questions"
+      ],
+      [
+        "Drawings and submissions",
+        "Who checks the current manual, prepares technical drawings and answers organiser queries.",
+        "Submission owner and manual deadline"
+      ],
+      [
+        "Graphics and artwork",
+        "Graphic dimensions, artwork formats, proof approval and the point after which changes affect production.",
+        "Artwork owner and approval point"
+      ],
+      [
+        "Lighting, power and AV",
+        "Fixture, socket and screen schedules, with venue orders separated from supplied equipment.",
+        "Included equipment and services ordered by others"
+      ],
+      [
+        "Logistics and build-up",
+        "Transport, access, installation team, delivery sequence and the project contact.",
+        "Included logistics and named contact"
+      ],
+      [
+        "Show handover",
+        "A walk-through to check agreed finishes, graphics, lighting and demonstration equipment.",
+        "Handover owner and snagging process"
+      ],
+      [
+        "Dismantling and reuse",
+        "Removal, waste handling, return transport and any storage or reuse arrangement.",
+        "Items retained, removed or stored, and by whom"
+      ],
+      [
+        "Commercial scope",
+        "A dated proposal linked to the agreed drawing and a clear change-approval process.",
+        "Revision, exclusions and approval method"
+      ]
+    ]
+  },
+  "exclusions": {
+    "heading": "Close the gaps before comparing quotations",
+    "intro": "For each item below, mark Included, Excluded, Supplied by organiser, or Supplied by exhibitor. Name the owner of anything outside the builder’s scope. Do not assume every item applies to every stand.",
+    "items": [
+      "Venue power connections and consumption",
+      "Internet, water or compressed-air connections where needed",
+      "Rigging, suspended signage and related submissions where permitted",
+      "Technical drawing, structural or electrical review where required",
+      "Access passes, vehicle access and loading arrangements",
+      "Furniture, appliances, screens and demonstration equipment",
+      "Artwork adaptation, printing, replacement graphics and proof approval",
+      "Cleaning during build-up and during the show",
+      "Transport, installation, dismantling and waste removal",
+      "Storage, return transport and repair of reusable elements"
+    ],
+    "closing": "Resolve missing scope in writing before selecting a proposal. The comparison sheet is a buying aid, not a statement of venue requirements or a guarantee that a particular design will be approved."
+  }
 }
